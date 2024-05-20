@@ -10,8 +10,6 @@ namespace DropoutCoder.PolylineAlgorithm.Internal
     /// </summary>
     internal static class Constants
     {
-        #region Constants
-
         /// <summary>
         /// Defines the coordinate precision
         /// </summary>
@@ -22,15 +20,11 @@ namespace DropoutCoder.PolylineAlgorithm.Internal
         /// </summary>
         public const int ShiftLength = 5;
 
-        #endregion
-
         /// <summary>
         /// Defines ASCII characters constant values
         /// </summary>
         internal static class ASCII
         {
-            #region Constants
-
             /// <summary>
             /// Defines the ASCII Question Mark
             /// </summary>
@@ -45,8 +39,6 @@ namespace DropoutCoder.PolylineAlgorithm.Internal
             /// Defines the ASCII Unit Separator
             /// </summary>
             public const int UnitSeparator = 31;
-
-            #endregion
         }
 
         /// <summary>
@@ -54,8 +46,6 @@ namespace DropoutCoder.PolylineAlgorithm.Internal
         /// </summary>
         internal static class Coordinate
         {
-            #region Constants
-
             /// <summary>
             /// Defines the maximum value for latitude
             /// </summary>
@@ -75,8 +65,6 @@ namespace DropoutCoder.PolylineAlgorithm.Internal
             /// Defines the maximum value for longitude
             /// </summary>
             public const int MinLongitude = -MaxLongitude;
-
-            #endregion
         }
     }
 }

@@ -3,7 +3,7 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.  
 //
 
-namespace DropoutCoder.PolylineAlgorithm
+namespace DropoutCoder.PolylineAlgorithm.Encoding
 {
     using System.Collections.Generic;
 
@@ -11,24 +11,20 @@ namespace DropoutCoder.PolylineAlgorithm
     /// Defines base interface for all polyline encodings
     /// </summary>
     /// <typeparam name="T">Desired type used to decode to and encode from</typeparam>
-    public interface IPolylineEncoder
+    public interface IPolylineEncoding<T>
     {
-        #region Methods
-
         /// <summary>
         /// Method performs decoding from polyline encoded <see cref="string"/> to <see cref="IEnumerable{T}"/>
         /// </summary>
         /// <param name="source">Encoded coordinates</param>
         /// <returns>The <see cref="IEnumerable{T}"/></returns>
-        IEnumerable<(double Latitude, double Longitude)> Decode(char[] value);
+        IEnumerable<T> Decode(string source);
 
         /// <summary>
         /// Method performs encoding from generic type to polyline encoded <see cref="string"/>
         /// </summary>
         /// <param name="source">Coordinates to encode</param>
         /// <returns>Polyline encoded result</returns>
-        string Encode(IEnumerable<(double Latitude, double Longitude)> collection);
-
-        #endregion
+        string Encode(IEnumerable<T> source);
     }
 }

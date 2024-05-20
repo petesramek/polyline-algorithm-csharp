@@ -19,8 +19,6 @@ namespace DropoutCoder.PolylineAlgorithm.Tests
         /// </summary>
         public static class Coordinate
         {
-            #region Fields
-
             /// <summary>
             /// Defines empty range of coordinates. Equals to decoded <seealso cref="Polyline.Empty"/>
             /// </summary>
@@ -30,23 +28,21 @@ namespace DropoutCoder.PolylineAlgorithm.Tests
             /// Defines range of invalid coordinates. Equals to decoded <seealso cref="Polyline.Invalid"/>
             /// </summary>
             public static readonly IEnumerable<(double Latitude, double Longitude)> Invalid = new[] {
-            (149.47383, 259.06250),
-            (-158.37407, 225.31250),
-            (152.99363, -220.93750),
-            (-144.49024, -274.37500)
-        };
+                (149.47383, 259.06250),
+                (-158.37407, 225.31250),
+                (152.99363, -220.93750),
+                (-144.49024, -274.37500)
+            };
 
             /// <summary>
             /// Defines range of valid coordinates. Equals to decoded <seealso cref="Polyline.Valid"/>
             /// </summary>
             public static readonly IEnumerable<(double Latitude, double Longitude)> Valid = new[] {
-            (49.47383, 59.06250),
-            (-58.37407, 25.31250),
-            (52.99363, -120.93750),
-            (-44.49024, -174.37500)
-        };
-
-            #endregion
+                (49.47383, 59.06250),
+                (-58.37407, 25.31250),
+                (52.99363, -120.93750),
+                (-44.49024, -174.37500)
+            };
         }
 
         /// <summary>
@@ -54,8 +50,6 @@ namespace DropoutCoder.PolylineAlgorithm.Tests
         /// </summary>
         public static class Polyline
         {
-            #region Fields
-
             /// <summary>
             /// Defines empty string of polyline encoded coordinates. Equals to encoded <seealso cref="Coordinate.Empty"/>
             /// </summary>
@@ -70,8 +64,6 @@ namespace DropoutCoder.PolylineAlgorithm.Tests
             /// Defines polyline encoded range of valid coordinates. Equals to encoded <seealso cref="Coordinate.Valid"/>
             /// </summary>
             public static readonly string Valid = "mz}lHssngJj`gqSnx~lEcovfTnms{Zdy~qQj_deI";
-
-            #endregion
         }
     }
 }

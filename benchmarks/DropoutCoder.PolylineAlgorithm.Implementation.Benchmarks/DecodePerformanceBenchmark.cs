@@ -1,44 +1,49 @@
-﻿//  
-// Copyright (c) Petr Šrámek. All rights reserved.  
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.  
-//
-
-namespace DropoutCoder.PolylineAlgorithm.Implementation.Benchmarks
+﻿namespace DropoutCoder.PolylineAlgorithm.Implementation.Benchmarks
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Engines;
+    using DropoutCoder.PolylineAlgorithm.Validation;
     using System;
 
     [MemoryDiagnoser]
     public class DecodePerformanceBenchmark
     {
         private Consumer _consumer = new Consumer();
-
-        [Params(10_000)]
-        public int N { get; set; }
-
-        public static IEnumerable<(int, char[])> Polylines()
+        public static IEnumerable<(int, string)> Polylines()
         {
-            yield return (1, "mz}lHssngJj`gqSnx~lEcovfTnms{Zdy~qQj_deI".ToCharArray());
-            yield return (2, "}vwdGjafcRsvjKi}pxUhsrtCngtcAjjgzEdqvtLrscbKj}nr@wetlUc`nq]}_kfCyrfaK~wluUl`u}|@wa{lUmmuap@va{lU~oihCu||bF`|era@wsnnIjny{DxamaScqxza@dklDf{}kb@mtpeCavfzGqhx`Wyzzkm@jm`d@dba~Pppkg@h}pxU|rtnHp|flA|~xaPuykyN}fhv[h}pxUx~p}Ymx`sZih~iB{edwB".ToCharArray());
-            yield return (3, "}adrJh}}cVazlw@uykyNhaqeE`vfzG_~kY}~`eTsr{~Cwn~aOty_g@thapJvvoqKxt{sStfahDmtvmIfmiqBhjq|HujpgComs{Z}dhdKcidPymnvBqmquE~qrfI`x{lPf|ftGn~}d_@q}saAurjmu@bwr_DxrfaK~{rO~bidPwfduXwlioFlpum@twvfFpmi~VzxcsOqyejYhh|i@pbnr[twvfF_ueUujvbSa_d~ZkcnjZla~f[pmquEebxo[j}nr@xnn|H{gyiKbh{yH`oenn@y{mpIrbd~EmipgH}fuov@hjqtTp|flAttvkFrym_d@|eyCwn~aOfvdNmeawM??{yxdUcidPca{}D_atqGenzcAlra{@trgWhn{aZ??tluqOgu~sH".ToCharArray());
+            yield return (1, "mz}lHssngJj`gqSnx~lEcovfTnms{Zdy~qQj_deI");
+            yield return (2, "}vwdGjafcRsvjKi}pxUhsrtCngtcAjjgzEdqvtLrscbKj}nr@wetlUc`nq]}_kfCyrfaK~wluUl`u}|@wa{lUmmuap@va{lU~oihCu||bF`|era@wsnnIjny{DxamaScqxza@dklDf{}kb@mtpeCavfzGqhx`Wyzzkm@jm`d@dba~Pppkg@h}pxU|rtnHp|flA|~xaPuykyN}fhv[h}pxUx~p}Ymx`sZih~iB{edwB");
+            yield return (3, "}adrJh}}cVazlw@uykyNhaqeE`vfzG_~kY}~`eTsr{~Cwn~aOty_g@thapJvvoqKxt{sStfahDmtvmIfmiqBhjq|HujpgComs{Z}dhdKcidPymnvBqmquE~qrfI`x{lPf|ftGn~}d_@q}saAurjmu@bwr_DxrfaK~{rO~bidPwfduXwlioFlpum@twvfFpmi~VzxcsOqyejYhh|i@pbnr[twvfF_ueUujvbSa_d~ZkcnjZla~f[pmquEebxo[j}nr@xnn|H{gyiKbh{yH`oenn@y{mpIrbd~EmipgH}fuov@hjqtTp|flAttvkFrym_d@|eyCwn~aOfvdNmeawM??{yxdUcidPca{}D_atqGenzcAlra{@trgWhn{aZ??tluqOgu~sH");
         }
 
         [Benchmark(Baseline = true)]
         [ArgumentsSource(nameof(Polylines))]
-        public void Decode_V1((int, char[]) arg) => V1.Decode(arg.Item2).Consume(_consumer);
+        public void Decode_V1((int, string) arg) => For.Loop(1001, () => V1.Decode(arg.Item2).Consume(_consumer));
 
         [Benchmark]
         [ArgumentsSource(nameof(Polylines))]
-        public void Decode_V2((int, char[]) arg) => V2.Decode(arg.Item2).Consume(_consumer);
+        public void Decode_V2((int, string) arg) => For.Loop(1001, () => V2.Decode(arg.Item2).Consume(_consumer));
 
         [Benchmark]
         [ArgumentsSource(nameof(Polylines))]
-        public void Decode_V3((int, char[]) arg) => V3.Decode(arg.Item2).Consume(_consumer);
+        public void Decode_V3((int, string) arg) => For.Loop(1001, () => V3.Decode(arg.Item2).Consume(_consumer));
+
+        [Benchmark]
+        [ArgumentsSource(nameof(Polylines))]
+        public void Decode_V1_Parallel((int, string) arg) => Parallel.For(0, 1001, new ParallelOptions { MaxDegreeOfParallelism = 10 }, (i) => V1.Decode(arg.Item2).Consume(_consumer));
+
+        [Benchmark]
+        [ArgumentsSource(nameof(Polylines))]
+        public void Decode_V2_Parallel((int, string) arg) => Parallel.For(0, 1001, new ParallelOptions { MaxDegreeOfParallelism = 10 }, (i) => V2.Decode(arg.Item2).Consume(_consumer));
+
+        [Benchmark]
+        [ArgumentsSource(nameof(Polylines))]
+        public void Decode_V3_Parallel((int, string) arg) => Parallel.For(0, 1001, new ParallelOptions { MaxDegreeOfParallelism = 10 }, (i) => V3.Decode(arg.Item2).Consume(_consumer));
+
 
         private class V1
         {
-            public static IEnumerable<(double Latitude, double Longitude)> Decode(char[] polyline)
+            public static IEnumerable<(double Latitude, double Longitude)> Decode(string polyline)
             {
                 if (polyline is null || polyline.Length == 0)
                 {
@@ -76,7 +81,7 @@ namespace DropoutCoder.PolylineAlgorithm.Implementation.Benchmarks
                 return result;
             }
 
-            private static bool TryCalculateNext(ref char[] polyline, ref int index, ref int value)
+            private static bool TryCalculateNext(ref string polyline, ref int index, ref int value)
             {
                 int chunk;
                 int sum = 0;
@@ -123,7 +128,7 @@ namespace DropoutCoder.PolylineAlgorithm.Implementation.Benchmarks
 
         private class V2
         {
-            public static IEnumerable<(double Latitude, double Longitude)> Decode(char[] polyline)
+            public static IEnumerable<(double Latitude, double Longitude)> Decode(string polyline)
             {
                 if (polyline is null || polyline.Length == 0)
                 {
@@ -157,7 +162,7 @@ namespace DropoutCoder.PolylineAlgorithm.Implementation.Benchmarks
                 }
             }
 
-            private static bool TryCalculateNext(ref char[] polyline, ref int offset, ref int value)
+            private static bool TryCalculateNext(ref string polyline, ref int offset, ref int value)
             {
                 int chunk;
                 int sum = 0;
@@ -204,12 +209,12 @@ namespace DropoutCoder.PolylineAlgorithm.Implementation.Benchmarks
 
         private class V3
         {
-            public static IEnumerable<(double Latitude, double Longitude)> Decode(char[] polyline)
+            public static IEnumerable<(double Latitude, double Longitude)> Decode(string polyline)
             {
                 // Checking null and at least one character
                 if (polyline == null || polyline.Length == 0)
                 {
-                    throw new ArgumentException(nameof(polyline));
+                    throw new ArgumentException(String.Empty, nameof(polyline));
                 }
 
                 // Initialize local variables
@@ -223,28 +228,28 @@ namespace DropoutCoder.PolylineAlgorithm.Implementation.Benchmarks
                     // Attempting to calculate next latitude value. If failed exception is thrown
                     if (!TryCalculateNext(polyline, ref index, ref latitude))
                     {
-                        throw new InvalidOperationException();
+                        throw new InvalidOperationException(String.Empty);
                     }
 
                     // Attempting to calculate next longitude value. If failed exception is thrown
                     if (!TryCalculateNext(polyline, ref index, ref longitude))
                     {
-                        throw new InvalidOperationException();
+                        throw new InvalidOperationException(String.Empty);
                     }
 
-                    var coordinate = CreateResult(GetCoordinate(latitude), GetCoordinate(longitude));
+                    var coordinate = (GetCoordinate(latitude), GetCoordinate(longitude));
 
-                    if (!Validator.IsValid(coordinate))
+                    // Validating decoded coordinate. If not valid exception is thrown
+                    if (!CoordinateValidator.IsValid(coordinate))
                     {
-                        throw new InvalidOperationException();
+                        throw new InvalidOperationException(String.Empty);
                     }
 
                     yield return coordinate;
 
-
                     #region Local functions
 
-                    bool TryCalculateNext(char[] polyline, ref int index, ref int value)
+                    bool TryCalculateNext(string polyline, ref int index, ref int value)
                     {
                         // Local variable initialization
                         int chunk;
@@ -274,47 +279,16 @@ namespace DropoutCoder.PolylineAlgorithm.Implementation.Benchmarks
                     #endregion
                 }
             }
+        }
 
-            protected static (double Latitude, double Longitude) CreateResult(double latitude, double longitude)
+        internal class For
+        {
+            public static void Loop(int count, Action action)
             {
-                return (latitude, longitude);
-            }
-
-            public static class Validator
-            {
-                #region Methods
-
-                /// <summary>
-                /// Performs coordinate validation
-                /// </summary>
-                /// <param name="coordinate">Coordinate to validate</param>
-                /// <returns>Returns validation result. If valid then true, otherwise false.</returns>
-                public static bool IsValid((double Latitude, double Longitude) coordinate)
+                for (int i = 0; i < count; i++)
                 {
-                    return IsValidLatitude(ref coordinate.Latitude) && IsValidLongitude(ref coordinate.Longitude);
+                    action.Invoke();
                 }
-
-                /// <summary>
-                /// Performs latitude validation
-                /// </summary>
-                /// <param name="latitude">Latitude value to validate</param>
-                /// <returns>Returns validation result. If valid then true, otherwise false.</returns>
-                private static bool IsValidLatitude(ref readonly double latitude)
-                {
-                    return latitude >= Constants.Coordinate.MinLatitude && latitude <= Constants.Coordinate.MaxLatitude;
-                }
-
-                /// <summary>
-                /// Performs longitude validation
-                /// </summary>
-                /// <param name="longitude">Longitude value to validate</param>
-                /// <returns>Returns validation result. If valid then true, otherwise false.</returns>
-                private static bool IsValidLongitude(ref readonly double longitude)
-                {
-                    return longitude >= Constants.Coordinate.MinLongitude && longitude <= Constants.Coordinate.MaxLongitude;
-                }
-
-                #endregion
             }
         }
     }

@@ -1,12 +1,8 @@
-﻿//  
-// Copyright (c) Petr Šrámek. All rights reserved.  
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.  
-//
-
-namespace DropoutCoder.PolylineAlgorithm.Implementation.Benchmarks
+﻿namespace DropoutCoder.PolylineAlgorithm.Implementation.Benchmarks
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Engines;
+    using DropoutCoder.PolylineAlgorithm.Validation;
     using Microsoft.Extensions.ObjectPool;
     using System.Collections.Generic;
     using System.Text;
@@ -15,9 +11,6 @@ namespace DropoutCoder.PolylineAlgorithm.Implementation.Benchmarks
     public class EncodePerformanceBenchmark
     {
         private Consumer _consumer = new Consumer();
-
-        [Params(10_000)]
-        public int N { get; set; }
 
         public IEnumerable<(int, IEnumerable<(double, double)>)> Coordinates()
         {
@@ -28,15 +21,29 @@ namespace DropoutCoder.PolylineAlgorithm.Implementation.Benchmarks
 
         [Benchmark(Baseline = true)]
         [ArgumentsSource(nameof(Coordinates))]
-        public void Encode_V1((int, IEnumerable<(double, double)>) arg) => V1.Encode(arg.Item2).Consume(_consumer);
+        public void Encode_V1((int, IEnumerable<(double, double)>) arg) => For.Loop(1001, () => V1.Encode(arg.Item2).Consume(_consumer));
 
         [Benchmark]
         [ArgumentsSource(nameof(Coordinates))]
-        public void Encode_V2((int, IEnumerable<(double, double)>) arg) => V2.Encode(arg.Item2).Consume(_consumer);
+        public void Encode_V2((int, IEnumerable<(double, double)>) arg) => For.Loop(1001, () => V2.Encode(arg.Item2).Consume(_consumer));
 
         [Benchmark]
         [ArgumentsSource(nameof(Coordinates))]
-        public void Encode_V3((int, IEnumerable<(double, double)>) arg) => V3.Encode(arg.Item2).Consume(_consumer);
+        public void Encode_V3((int, IEnumerable<(double, double)>) arg) => For.Loop(1001, () => V3.Encode(arg.Item2).Consume(_consumer));
+
+
+        [Benchmark]
+        [ArgumentsSource(nameof(Coordinates))]
+        public void Encode_V1_Parallel((int, IEnumerable<(double, double)>) arg) => Parallel.For(0, 1001, new ParallelOptions { MaxDegreeOfParallelism = 10 }, (i) => V1.Encode(arg.Item2).Consume(_consumer));
+
+        [Benchmark]
+        [ArgumentsSource(nameof(Coordinates))]
+        public void Encode_V2_Parallel((int, IEnumerable<(double, double)>) arg) => Parallel.For(0, 1001, new ParallelOptions { MaxDegreeOfParallelism = 10 }, (i) => V2.Encode(arg.Item2).Consume(_consumer));
+
+        [Benchmark]
+        [ArgumentsSource(nameof(Coordinates))]
+        public void Encode_V3_Parallel((int, IEnumerable<(double, double)>) arg) => Parallel.For(0, 1001, new ParallelOptions { MaxDegreeOfParallelism = 10 }, (i) => V3.Encode(arg.Item2).Consume(_consumer));
+
 
         private class V1
         {
@@ -51,7 +58,7 @@ namespace DropoutCoder.PolylineAlgorithm.Implementation.Benchmarks
 
                 int lastLatitude = 0;
                 int lastLongitude = 0;
-                var sb = new StringBuilder(coordinates.Count() * 5);
+                var sb = new StringBuilder();
 
                 foreach (var coordinate in coordinates)
                 {
@@ -223,31 +230,34 @@ namespace DropoutCoder.PolylineAlgorithm.Implementation.Benchmarks
 
         private class V3
         {
-            private static readonly ObjectPool<StringBuilder> _pool = new DefaultObjectPoolProvider().CreateStringBuilderPool(5, 250);
-
-            public static string Encode(IEnumerable<(double Latitude, double Longitude)> collection)
+            /// <summary>
+            /// Method encodes coordinates to polyline encoded representation
+            /// </summary>
+            /// <param name="coordinates">Coordinates to encode</param>
+            /// <returns>Polyline encoded representation</returns>
+            /// <exception cref="ArgumentException">If coordinates parameter is null or empty enumerable</exception>
+            /// <exception cref="AggregateException">If one or more coordinate is out of range</exception>
+            public static string Encode(IEnumerable<(double Latitude, double Longitude)> coordinates)
             {
-                if (collection == null || !collection.GetEnumerator().MoveNext())
+                if (coordinates == null || !coordinates.GetEnumerator().MoveNext())
                 {
-                    throw new ArgumentException(nameof(collection));
+                    throw new ArgumentException();
                 }
 
                 // Validate collection of coordinates
-                if (!TryValidate(collection, out var invalid))
+                if (!TryValidate(coordinates, out var exceptions))
                 {
-                    throw new ArgumentException(nameof(collection));
+                    throw new AggregateException(exceptions);
                 }
 
                 // Initializing local variables
                 int previousLatitude = 0;
                 int previousLongitude = 0;
-                var sb = _pool.Get();
+                var sb = new StringBuilder(coordinates.Count() * 4);
 
                 // Looping over coordinates and building encoded result
-                foreach (var item in collection)
+                foreach (var coordinate in coordinates)
                 {
-                    var coordinate = GetCoordinate(item);
-
                     int latitude = Round(coordinate.Latitude);
                     int longitude = Round(coordinate.Longitude);
 
@@ -258,25 +268,23 @@ namespace DropoutCoder.PolylineAlgorithm.Implementation.Benchmarks
                     previousLongitude = longitude;
                 }
 
-                var result = sb.ToString();
+                return sb.ToString();
 
-                _pool.Return(sb);
+                #region Local functions
 
-                return result;
-
-                bool TryValidate(IEnumerable<(double Latitude, double Longitude)> collection, out ICollection<(double Latitude, double Longitude)> validationErrors)
+                bool TryValidate(IEnumerable<(double Latitude, double Longitude)> collection, out ICollection<CoordinateValidationException> exceptions)
                 {
-                    validationErrors = new List<(double Latitude, double Longitude)>();
+                    exceptions = new List<CoordinateValidationException>(collection.Count());
 
                     foreach (var item in collection)
                     {
-                        if (!Validator.IsValid(item))
+                        if (!CoordinateValidator.IsValid(item))
                         {
-                            validationErrors.Add(item);
+                            exceptions.Add(new CoordinateValidationException(item.Latitude, item.Longitude));
                         }
                     }
 
-                    return !validationErrors.GetEnumerator().MoveNext();
+                    return !exceptions.GetEnumerator().MoveNext();
                 }
 
                 int Round(double value)
@@ -301,17 +309,12 @@ namespace DropoutCoder.PolylineAlgorithm.Implementation.Benchmarks
 
                     yield return (char)(rem + Constants.ASCII.QuestionMark);
                 }
+
+                #endregion
             }
 
-            protected static (double Latitude, double Longitude) GetCoordinate((double Latitude, double Longitude) value)
+            public static class CoordinateValidator
             {
-                return value;
-            }
-
-            public static class Validator
-            {
-                #region Methods
-
                 /// <summary>
                 /// Performs coordinate validation
                 /// </summary>
@@ -319,7 +322,7 @@ namespace DropoutCoder.PolylineAlgorithm.Implementation.Benchmarks
                 /// <returns>Returns validation result. If valid then true, otherwise false.</returns>
                 public static bool IsValid((double Latitude, double Longitude) coordinate)
                 {
-                    return IsValidLatitude(ref coordinate.Latitude) && IsValidLongitude(ref coordinate.Longitude);
+                    return IsValidLatitude(coordinate.Latitude) && IsValidLongitude(coordinate.Longitude);
                 }
 
                 /// <summary>
@@ -327,7 +330,7 @@ namespace DropoutCoder.PolylineAlgorithm.Implementation.Benchmarks
                 /// </summary>
                 /// <param name="latitude">Latitude value to validate</param>
                 /// <returns>Returns validation result. If valid then true, otherwise false.</returns>
-                private static bool IsValidLatitude(ref readonly double latitude)
+                public static bool IsValidLatitude(double latitude)
                 {
                     return latitude >= Constants.Coordinate.MinLatitude && latitude <= Constants.Coordinate.MaxLatitude;
                 }
@@ -337,12 +340,21 @@ namespace DropoutCoder.PolylineAlgorithm.Implementation.Benchmarks
                 /// </summary>
                 /// <param name="longitude">Longitude value to validate</param>
                 /// <returns>Returns validation result. If valid then true, otherwise false.</returns>
-                private static bool IsValidLongitude(ref readonly double longitude)
+                public static bool IsValidLongitude(double longitude)
                 {
                     return longitude >= Constants.Coordinate.MinLongitude && longitude <= Constants.Coordinate.MaxLongitude;
                 }
+            }
+        }
 
-                #endregion
+        internal class For
+        {
+            public static void Loop(int count, Action action)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    action.Invoke();
+                }
             }
         }
     }
