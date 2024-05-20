@@ -2,7 +2,6 @@
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Engines;
-    using DropoutCoder.PolylineAlgorithm.Validation;
     using Microsoft.Extensions.ObjectPool;
     using System.Collections.Generic;
     using System.Text;
@@ -344,6 +343,16 @@
                 {
                     return longitude >= Constants.Coordinate.MinLongitude && longitude <= Constants.Coordinate.MaxLongitude;
                 }
+            }
+
+            public class CoordinateValidationException : Exception
+            {
+                public CoordinateValidationException(double latitude, double longitude)
+                 : base(string.Format("Latitude {0} or longitude {1} is not valid. Latitude must be in range between -90 and +90. Longitude must be in range between -180 and +180.", latitude, longitude)) { }
+
+                public double Latitude { get; }
+
+                public double Longitude { get; }
             }
         }
 

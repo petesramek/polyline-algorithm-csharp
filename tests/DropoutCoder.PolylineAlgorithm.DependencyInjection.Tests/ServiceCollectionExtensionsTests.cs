@@ -5,6 +5,7 @@
 
 namespace DropoutCoder.PolylineAlgorithm.DependencyInjection.Tests
 {
+    using DropoutCoder.PolylineAlgorithm.Encoding;
     using Microsoft.Extensions.DependencyInjection;
 
     [TestClass]
@@ -28,10 +29,10 @@ namespace DropoutCoder.PolylineAlgorithm.DependencyInjection.Tests
 
             // Act
             var encoder = provider
-                .GetRequiredService<IPolylineEncoder>();
+                .GetRequiredService<DefaultPolylineEncoding>();
 
             // Assert
-            Assert.IsInstanceOfType<IPolylineEncoder>(encoder);
+            Assert.IsInstanceOfType<DefaultPolylineEncoding>(encoder);
         }
     }
 }

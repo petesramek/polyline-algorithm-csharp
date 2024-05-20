@@ -1,6 +1,5 @@
 ﻿namespace DropoutCoder.PolylineAlgorithm.Internal
 {
-    using System;
     using System.Runtime.CompilerServices;
 
 

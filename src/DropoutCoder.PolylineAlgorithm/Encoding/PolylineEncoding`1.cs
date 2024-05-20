@@ -13,7 +13,7 @@ namespace DropoutCoder.PolylineAlgorithm.Encoding
     /// Defines base class for all polyline encodings
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class PolylineEncodingBase<T> : IPolylineEncoding<T>
+    public abstract class PolylineEncoding<T> : IPolylineEncoding<T>
     {
         /// <summary>
         /// Method performs decode operation and coversion to desired type
