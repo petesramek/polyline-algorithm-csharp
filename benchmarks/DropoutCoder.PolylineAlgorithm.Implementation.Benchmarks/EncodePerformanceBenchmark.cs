@@ -2,6 +2,7 @@
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Engines;
+    using DropoutCoder.PolylineAlgorithm.Validation;
     using Microsoft.Extensions.ObjectPool;
     using System.Collections.Generic;
     using System.Text;
@@ -20,21 +21,29 @@
 
         [Benchmark(Baseline = true)]
         [ArgumentsSource(nameof(Coordinates))]
-        public void Encode_V1((int, IEnumerable<(double, double)>) arg) => V1.Encode(arg.Item2).Consume(_consumer);
+        public void Encode_V1((int, IEnumerable<(double, double)>) arg) => For.Loop(1001, () => V1.Encode(arg.Item2).Consume(_consumer));
 
         [Benchmark]
         [ArgumentsSource(nameof(Coordinates))]
-        public void Encode_V1_Parallel((int, IEnumerable<(double, double)>) arg) => Parallel.For(100, 200, (i) => V1.Encode(arg.Item2).Consume(_consumer));
+        public void Encode_V2((int, IEnumerable<(double, double)>) arg) => For.Loop(1001, () => V2.Encode(arg.Item2).Consume(_consumer));
+
+        [Benchmark]
+        [ArgumentsSource(nameof(Coordinates))]
+        public void Encode_V3((int, IEnumerable<(double, double)>) arg) => For.Loop(1001, () => V3.Encode(arg.Item2).Consume(_consumer));
 
 
         [Benchmark]
         [ArgumentsSource(nameof(Coordinates))]
-        public void Encode_V2((int, IEnumerable<(double, double)>) arg) => V2.Encode(arg.Item2).Consume(_consumer);
-
+        public void Encode_V1_Parallel((int, IEnumerable<(double, double)>) arg) => Parallel.For(0, 1001, new ParallelOptions { MaxDegreeOfParallelism = 10 }, (i) => V1.Encode(arg.Item2).Consume(_consumer));
 
         [Benchmark]
         [ArgumentsSource(nameof(Coordinates))]
-        public void Encode_V2_Parallel((int, IEnumerable<(double, double)>) arg) => Parallel.For(100, 200, (i) => V2.Encode(arg.Item2).Consume(_consumer));
+        public void Encode_V2_Parallel((int, IEnumerable<(double, double)>) arg) => Parallel.For(0, 1001, new ParallelOptions { MaxDegreeOfParallelism = 10 }, (i) => V2.Encode(arg.Item2).Consume(_consumer));
+
+        [Benchmark]
+        [ArgumentsSource(nameof(Coordinates))]
+        public void Encode_V3_Parallel((int, IEnumerable<(double, double)>) arg) => Parallel.For(0, 1001, new ParallelOptions { MaxDegreeOfParallelism = 10 }, (i) => V3.Encode(arg.Item2).Consume(_consumer));
+
 
         private class V1
         {
@@ -215,6 +224,136 @@
                 public static bool IsValidLongitude(double longitude)
                 {
                     return longitude >= Constants.Coordinate.MinLongitude && longitude <= Constants.Coordinate.MaxLongitude;
+                }
+            }
+        }
+
+        private class V3
+        {
+            /// <summary>
+            /// Method encodes coordinates to polyline encoded representation
+            /// </summary>
+            /// <param name="coordinates">Coordinates to encode</param>
+            /// <returns>Polyline encoded representation</returns>
+            /// <exception cref="ArgumentException">If coordinates parameter is null or empty enumerable</exception>
+            /// <exception cref="AggregateException">If one or more coordinate is out of range</exception>
+            public static string Encode(IEnumerable<(double Latitude, double Longitude)> coordinates)
+            {
+                if (coordinates == null || !coordinates.GetEnumerator().MoveNext())
+                {
+                    throw new ArgumentException();
+                }
+
+                // Validate collection of coordinates
+                if (!TryValidate(coordinates, out var exceptions))
+                {
+                    throw new AggregateException(exceptions);
+                }
+
+                // Initializing local variables
+                int previousLatitude = 0;
+                int previousLongitude = 0;
+                var sb = new StringBuilder(coordinates.Count() * 4);
+
+                // Looping over coordinates and building encoded result
+                foreach (var coordinate in coordinates)
+                {
+                    int latitude = Round(coordinate.Latitude);
+                    int longitude = Round(coordinate.Longitude);
+
+                    sb.Append(GetSequence(latitude - previousLatitude).ToArray());
+                    sb.Append(GetSequence(longitude - previousLongitude).ToArray());
+
+                    previousLatitude = latitude;
+                    previousLongitude = longitude;
+                }
+
+                return sb.ToString();
+
+                #region Local functions
+
+                bool TryValidate(IEnumerable<(double Latitude, double Longitude)> collection, out ICollection<CoordinateValidationException> exceptions)
+                {
+                    exceptions = new List<CoordinateValidationException>(collection.Count());
+
+                    foreach (var item in collection)
+                    {
+                        if (!CoordinateValidator.IsValid(item))
+                        {
+                            exceptions.Add(new CoordinateValidationException(item.Latitude, item.Longitude));
+                        }
+                    }
+
+                    return !exceptions.GetEnumerator().MoveNext();
+                }
+
+                int Round(double value)
+                {
+                    return (int)Math.Round(value * Constants.Precision);
+                }
+
+                IEnumerable<char> GetSequence(int value)
+                {
+                    int shifted = value << 1;
+                    if (value < 0)
+                        shifted = ~shifted;
+
+                    int rem = shifted;
+
+                    while (rem >= Constants.ASCII.Space)
+                    {
+                        yield return (char)((Constants.ASCII.Space | rem & Constants.ASCII.UnitSeparator) + Constants.ASCII.QuestionMark);
+
+                        rem >>= Constants.ShiftLength;
+                    }
+
+                    yield return (char)(rem + Constants.ASCII.QuestionMark);
+                }
+
+                #endregion
+            }
+
+            public static class CoordinateValidator
+            {
+                /// <summary>
+                /// Performs coordinate validation
+                /// </summary>
+                /// <param name="coordinate">Coordinate to validate</param>
+                /// <returns>Returns validation result. If valid then true, otherwise false.</returns>
+                public static bool IsValid((double Latitude, double Longitude) coordinate)
+                {
+                    return IsValidLatitude(coordinate.Latitude) && IsValidLongitude(coordinate.Longitude);
+                }
+
+                /// <summary>
+                /// Performs latitude validation
+                /// </summary>
+                /// <param name="latitude">Latitude value to validate</param>
+                /// <returns>Returns validation result. If valid then true, otherwise false.</returns>
+                public static bool IsValidLatitude(double latitude)
+                {
+                    return latitude >= Constants.Coordinate.MinLatitude && latitude <= Constants.Coordinate.MaxLatitude;
+                }
+
+                /// <summary>
+                /// Performs longitude validation
+                /// </summary>
+                /// <param name="longitude">Longitude value to validate</param>
+                /// <returns>Returns validation result. If valid then true, otherwise false.</returns>
+                public static bool IsValidLongitude(double longitude)
+                {
+                    return longitude >= Constants.Coordinate.MinLongitude && longitude <= Constants.Coordinate.MaxLongitude;
+                }
+            }
+        }
+
+        internal class For
+        {
+            public static void Loop(int count, Action action)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    action.Invoke();
                 }
             }
         }
