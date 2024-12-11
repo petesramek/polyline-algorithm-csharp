@@ -11,6 +11,7 @@
 
 	<PropertyGroup>
 		<AnalysisMode>All</AnalysisMode>
+		<AnalysisLevel>latest</AnalysisLevel>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
