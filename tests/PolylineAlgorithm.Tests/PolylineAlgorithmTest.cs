@@ -4,10 +4,6 @@
 //
 
 namespace PolylineAlgorithm.Tests {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// Defines the <see cref="PolylineAlgorithmTest" />

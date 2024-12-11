@@ -4,7 +4,6 @@
 //
 
 namespace PolylineAlgorithm.Tests {
-    using PolylineAlgorithm.Internal;
 
     /// <summary>
     /// Defines the <see cref="CoordinateValidatorTest" />

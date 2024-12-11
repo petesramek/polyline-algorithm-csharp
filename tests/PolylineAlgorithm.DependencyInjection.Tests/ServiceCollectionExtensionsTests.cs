@@ -4,8 +4,6 @@
 //
 
 namespace PolylineAlgorithm.DependencyInjection.Tests {
-    using Microsoft.Extensions.DependencyInjection;
-    using PolylineAlgorithm.Encoding;
 
     [TestClass]
     public class ServiceCollectionExtensionsTests {
