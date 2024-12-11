@@ -3,8 +3,7 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.  
 //
 
-namespace PolylineAlgorithm.Tests
-{
+namespace PolylineAlgorithm.Tests {
     using PolylineAlgorithm.Internal;
 
     /// <summary>
@@ -12,8 +11,7 @@ namespace PolylineAlgorithm.Tests
     /// </summary>
     [TestClass]
     [TestCategory(nameof(CoordinateValidator))]
-    public class CoordinateValidatorTestCoordinate
-    {
+    public class CoordinateValidatorTestCoordinate {
         private static CoordinateValidator Validator { get; } = new CoordinateValidator();
 
         #region Methods
@@ -22,13 +20,11 @@ namespace PolylineAlgorithm.Tests
         /// The IsValid_InvalidInput
         /// </summary>
         [TestMethod]
-        public void IsValid_InvalidInput_IsFalse()
-        {
+        public void IsValid_InvalidInput_IsFalse() {
             // Act
             var invalidCoordinateCollection = Defaults.Coordinate.Invalid;
 
-            foreach (var item in invalidCoordinateCollection)
-            {
+            foreach (var item in invalidCoordinateCollection) {
                 // Arrange
                 var result = CoordinateValidator.IsValid(item);
 
@@ -41,13 +37,11 @@ namespace PolylineAlgorithm.Tests
         /// The IsValid_ValidInput
         /// </summary>
         [TestMethod]
-        public void IsValid_ValidInput_IsTrue()
-        {
+        public void IsValid_ValidInput_IsTrue() {
             // Act
             var validCoordinateCollection = Defaults.Coordinate.Valid;
 
-            foreach (var item in validCoordinateCollection)
-            {
+            foreach (var item in validCoordinateCollection) {
                 // Arrange
                 var result = CoordinateValidator.IsValid(item);
 

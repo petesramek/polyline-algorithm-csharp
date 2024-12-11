@@ -3,22 +3,18 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.  
 //
 
-namespace PolylineAlgorithm.Tests
-{
+namespace PolylineAlgorithm.Tests {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// Defines default values and objects used for testing purposes
     /// </summary>
-    public static class Defaults
-    {
+    public static class Defaults {
         /// <summary>
         /// Defines default decoded values and objects udśed for testing purposes
         /// </summary>
-        public static class Coordinate
-        {
+        public static class Coordinate {
             /// <summary>
             /// Defines empty range of coordinates. Equals to decoded <seealso cref="Polyline.Empty"/>
             /// </summary>
@@ -48,8 +44,7 @@ namespace PolylineAlgorithm.Tests
         /// <summary>
         /// Defines default encoded values and objects udśed for testing purposes
         /// </summary>
-        public static class Polyline
-        {
+        public static class Polyline {
             /// <summary>
             /// Defines empty string of polyline encoded coordinates. Equals to encoded <seealso cref="Coordinate.Empty"/>
             /// </summary>

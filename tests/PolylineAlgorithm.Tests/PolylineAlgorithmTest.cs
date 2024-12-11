@@ -3,8 +3,7 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.  
 //
 
-namespace PolylineAlgorithm.Tests
-{
+namespace PolylineAlgorithm.Tests {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System;
     using System.Collections.Generic;
@@ -15,21 +14,18 @@ namespace PolylineAlgorithm.Tests
     /// </summary>
     [TestClass]
     [TestCategory(nameof(PolylineEncoder))]
-    public class PolylineAlgorithmTest
-    {
+    public class PolylineAlgorithmTest {
         /// <summary>
         /// Method is testing <see cref="PolylineEncoder.Decode(char[])" /> method. Empty <see langword="char"/>[] is passed as parameter.
         /// Expected result is <see cref="ArgumentException"/>.
         /// </summary>
         [TestMethod]
-        public void Decode_EmptyInput_ThrowsException()
-        {
+        public void Decode_EmptyInput_ThrowsException() {
             // Arrange
             var emptyPolylineCharArray = Defaults.Polyline.Empty;
 
             // Act
-            void DecodeEmptyPolylineCharArray()
-            {
+            void DecodeEmptyPolylineCharArray() {
                 PolylineEncoder.Decode(emptyPolylineCharArray).ToArray();
             }
 
@@ -42,14 +38,12 @@ namespace PolylineAlgorithm.Tests
         /// Expected result is <see cref="ArgumentException"/>.
         /// </summary>
         [TestMethod]
-        public void Decode_InvalidInput_ThrowsException()
-        {
+        public void Decode_InvalidInput_ThrowsException() {
             // Arrange
             var invalidPolylineCharrArray = Defaults.Polyline.Invalid;
 
             // Act
-            void DecodeInvalidPolylineCharArray()
-            {
+            void DecodeInvalidPolylineCharArray() {
                 PolylineEncoder.Decode(invalidPolylineCharrArray).ToArray();
             }
 
@@ -62,14 +56,12 @@ namespace PolylineAlgorithm.Tests
         /// Expected result is <see cref="ArgumentException"/>.
         /// </summary>
         [TestMethod]
-        public void Decode_NullInput_ThrowsException()
-        {
+        public void Decode_NullInput_ThrowsException() {
             // Arrange
             var nullPolylineCharArray = (string)null!;
 
             // Act
-            void DecodeNullPolylineCharArray()
-            {
+            void DecodeNullPolylineCharArray() {
                 PolylineEncoder.Decode(nullPolylineCharArray).ToArray();
             }
 
@@ -82,8 +74,7 @@ namespace PolylineAlgorithm.Tests
         /// Expected result is <see cref="CollectionAssert.AreEquivalent(System.Collections.ICollection, System.Collections.ICollection)"/>.
         /// </summary>
         [TestMethod]
-        public void Decode_ValidInput_AreEquivalent()
-        {
+        public void Decode_ValidInput_AreEquivalent() {
             // Arrange
             var validPolylineCharArray = Defaults.Polyline.Valid;
 
@@ -99,14 +90,12 @@ namespace PolylineAlgorithm.Tests
         /// Expected result is <see cref="ArgumentException"/>.
         /// </summary>
         [TestMethod]
-        public void Encode_EmptyInput_ThrowsException()
-        {
+        public void Encode_EmptyInput_ThrowsException() {
             // Arrange
             var emptyCoordinates = Defaults.Coordinate.Empty;
 
             // Act
-            void EncodeEmptyCoordinates()
-            {
+            void EncodeEmptyCoordinates() {
                 PolylineEncoder.Encode(emptyCoordinates);
             }
 
@@ -118,14 +107,12 @@ namespace PolylineAlgorithm.Tests
         /// The Encode_InvalidInput
         /// </summary>
         [TestMethod]
-        public void Encode_InvalidInput_ThrowsException()
-        {
+        public void Encode_InvalidInput_ThrowsException() {
             // Arrange
             var invalidCoordinates = Defaults.Coordinate.Invalid;
 
             // Act
-            void EncodeInvalidCoordinates()
-            {
+            void EncodeInvalidCoordinates() {
                 PolylineEncoder.Encode(invalidCoordinates);
             }
 
@@ -138,14 +125,12 @@ namespace PolylineAlgorithm.Tests
         /// Expected result is <see cref="ArgumentException"/>.
         /// </summary>
         [TestMethod]
-        public void Encode_NullInput_ThrowsException()
-        {
+        public void Encode_NullInput_ThrowsException() {
             // Arrange
             var nullCoordinates = (IEnumerable<(double, double)>)null!;
 
             // Act
-            void EncodeNullCoordinates()
-            {
+            void EncodeNullCoordinates() {
                 PolylineEncoder.Encode(nullCoordinates);
             }
 
@@ -157,8 +142,7 @@ namespace PolylineAlgorithm.Tests
         /// The Encode_ValidInput
         /// </summary>
         [TestMethod]
-        public void Encode_ValidInput_AreEqual()
-        {
+        public void Encode_ValidInput_AreEqual() {
             // Arrange
             var validCoordinates = Defaults.Coordinate.Valid;
 

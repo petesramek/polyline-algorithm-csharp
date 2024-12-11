@@ -5,24 +5,20 @@
 
 using PolylineAlgorithm.Internal;
 
-namespace PolylineAlgorithm.Encoding
-{
+namespace PolylineAlgorithm.Encoding {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Text;
 
-    public sealed class DefaultPolylineEncoding : IPolylineEncoding<(double Latitude, double Longitude)>
-    {
+    public sealed class DefaultPolylineEncoding : IPolylineEncoding<(double Latitude, double Longitude)> {
         private readonly CoordinateValidator _validator = new CoordinateValidator();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<(double Latitude, double Longitude)> Decode(string source)
-        {
+        public IEnumerable<(double Latitude, double Longitude)> Decode(string source) {
             // Checking null and at least one character
-            if (source == null || source.Length == 0)
-            {
+            if (source == null || source.Length == 0) {
                 throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeNullOrEmpty, nameof(source));
             }
 
@@ -32,25 +28,21 @@ namespace PolylineAlgorithm.Encoding
             int longitude = 0;
 
             // Looping through encoded polyline char array
-            while (index < source.Length)
-            {
+            while (index < source.Length) {
                 // Attempting to calculate next latitude value. If failed exception is thrown
-                if (!TryCalculateNext(ref source, ref index, ref latitude))
-                {
+                if (!TryCalculateNext(ref source, ref index, ref latitude)) {
                     throw new InvalidOperationException(ExceptionMessageResource.PolylineCharArrayIsMalformed);
                 }
 
                 // Attempting to calculate next longitude value. If failed exception is thrown
-                if (!TryCalculateNext(ref source, ref index, ref longitude))
-                {
+                if (!TryCalculateNext(ref source, ref index, ref longitude)) {
                     throw new InvalidOperationException(ExceptionMessageResource.PolylineCharArrayIsMalformed);
                 }
 
                 var coordinate = (GetCoordinate(latitude), GetCoordinate(longitude));
 
                 // Validating decoded coordinate. If not valid exception is thrown
-                if (!CoordinateValidator.IsValid(coordinate))
-                {
+                if (!CoordinateValidator.IsValid(coordinate)) {
                     throw new InvalidOperationException(ExceptionMessageResource.PolylineCharArrayIsMalformed);
                 }
 
@@ -59,16 +51,13 @@ namespace PolylineAlgorithm.Encoding
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public string Encode(IEnumerable<(double Latitude, double Longitude)> coordinates)
-        {
-            if (coordinates == null || !coordinates.GetEnumerator().MoveNext())
-            {
+        public string Encode(IEnumerable<(double Latitude, double Longitude)> coordinates) {
+            if (coordinates == null || !coordinates.GetEnumerator().MoveNext()) {
                 throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeNullOrEmpty, nameof(coordinates));
             }
 
             // Validate collection of coordinates
-            if (!TryValidate(coordinates, out var exceptions))
-            {
+            if (!TryValidate(coordinates, out var exceptions)) {
                 throw new AggregateException(exceptions);
             }
 
@@ -78,8 +67,7 @@ namespace PolylineAlgorithm.Encoding
             var sb = new StringBuilder(coordinates.Count() * 5);
 
             // Looping over coordinates and building encoded result
-            foreach (var coordinate in coordinates)
-            {
+            foreach (var coordinate in coordinates) {
                 int latitude = Round(coordinate.Latitude);
                 int longitude = Round(coordinate.Longitude);
 
@@ -95,15 +83,13 @@ namespace PolylineAlgorithm.Encoding
 
         #region Private methods
 
-        bool TryCalculateNext(ref string polyline, ref int index, ref int value)
-        {
+        bool TryCalculateNext(ref string polyline, ref int index, ref int value) {
             // Local variable initialization
             int chunk;
             int sum = 0;
             int shifter = 0;
 
-            do
-            {
+            do {
                 chunk = polyline[index++] - Constants.ASCII.QuestionMark;
                 sum |= (chunk & Constants.ASCII.UnitSeparator) << shifter;
                 shifter += Constants.ShiftLength;
@@ -117,19 +103,15 @@ namespace PolylineAlgorithm.Encoding
             return true;
         }
 
-        double GetCoordinate(int value)
-        {
+        double GetCoordinate(int value) {
             return Convert.ToDouble(value) / Constants.Precision;
         }
 
-        bool TryValidate(IEnumerable<(double Latitude, double Longitude)> collection, out ICollection<CoordinateValidationException> exceptions)
-        {
+        bool TryValidate(IEnumerable<(double Latitude, double Longitude)> collection, out ICollection<CoordinateValidationException> exceptions) {
             exceptions = new List<CoordinateValidationException>(collection.Count());
 
-            foreach (var item in collection)
-            {
-                if (!CoordinateValidator.IsValid(item))
-                {
+            foreach (var item in collection) {
+                if (!CoordinateValidator.IsValid(item)) {
                     exceptions.Add(new CoordinateValidationException(item.Latitude, item.Longitude));
                 }
             }
@@ -137,21 +119,18 @@ namespace PolylineAlgorithm.Encoding
             return !exceptions.GetEnumerator().MoveNext();
         }
 
-        int Round(double value)
-        {
+        int Round(double value) {
             return (int)Math.Round(value * Constants.Precision);
         }
 
-        IEnumerable<char> GetSequence(int value)
-        {
+        IEnumerable<char> GetSequence(int value) {
             int shifted = value << 1;
             if (value < 0)
                 shifted = ~shifted;
 
             int rem = shifted;
 
-            while (rem >= Constants.ASCII.Space)
-            {
+            while (rem >= Constants.ASCII.Space) {
                 yield return (char)((Constants.ASCII.Space | rem & Constants.ASCII.UnitSeparator) + Constants.ASCII.QuestionMark);
 
                 rem >>= Constants.ShiftLength;

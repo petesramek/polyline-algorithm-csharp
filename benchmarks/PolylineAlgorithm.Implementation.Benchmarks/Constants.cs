@@ -3,13 +3,11 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.  
 //
 
-namespace PolylineAlgorithm.Implementation.Benchmarks
-{
+namespace PolylineAlgorithm.Implementation.Benchmarks {
     /// <summary>
     /// Defines global constant values
     /// </summary>
-    internal static class Constants
-    {
+    internal static class Constants {
         #region Constants
 
         /// <summary>
@@ -27,8 +25,7 @@ namespace PolylineAlgorithm.Implementation.Benchmarks
         /// <summary>
         /// Defines ASCII characters constant values
         /// </summary>
-        internal static class ASCII
-        {
+        internal static class ASCII {
             #region Constants
 
             /// <summary>
@@ -52,8 +49,7 @@ namespace PolylineAlgorithm.Implementation.Benchmarks
         /// <summary>
         /// Defines coordinates constant values
         /// </summary>
-        internal static class Coordinate
-        {
+        internal static class Coordinate {
             #region Constants
 
             /// <summary>

@@ -3,13 +3,11 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.  
 //
 
-namespace PolylineAlgorithm.Internal
-{
+namespace PolylineAlgorithm.Internal {
     /// <summary>
     /// Defines global constant values
     /// </summary>
-    internal static class Constants
-    {
+    internal static class Constants {
         /// <summary>
         /// Defines the coordinate precision
         /// </summary>
@@ -23,8 +21,7 @@ namespace PolylineAlgorithm.Internal
         /// <summary>
         /// Defines ASCII characters constant values
         /// </summary>
-        internal static class ASCII
-        {
+        internal static class ASCII {
             /// <summary>
             /// Defines the ASCII Question Mark
             /// </summary>
@@ -44,8 +41,7 @@ namespace PolylineAlgorithm.Internal
         /// <summary>
         /// Defines coordinates constant values
         /// </summary>
-        internal static class Coordinate
-        {
+        internal static class Coordinate {
             /// <summary>
             /// Defines the maximum value for latitude
             /// </summary>

@@ -3,8 +3,7 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.  
 //
 
-namespace PolylineAlgorithm.Encoding
-{
+namespace PolylineAlgorithm.Encoding {
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -13,17 +12,14 @@ namespace PolylineAlgorithm.Encoding
     /// Defines base class for all polyline encodings
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class PolylineEncoding<T> : IPolylineEncoding<T>
-    {
+    public abstract class PolylineEncoding<T> : IPolylineEncoding<T> {
         /// <summary>
         /// Method performs decode operation and coversion to desired type
         /// </summary>
         /// <param name="source">The <see cref="string"/></param>
         /// <returns>The <see cref="IEnumerable{T}"/></returns>
-        public IEnumerable<T> Decode(string polyline)
-        {
-            if (string.IsNullOrWhiteSpace(polyline))
-            {
+        public IEnumerable<T> Decode(string polyline) {
+            if (string.IsNullOrWhiteSpace(polyline)) {
                 throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeNullOrEmpty, nameof(polyline));
             }
 
@@ -36,10 +32,8 @@ namespace PolylineAlgorithm.Encoding
         /// </summary>
         /// <param name="source">The <see cref="IEnumerable{T}"/></param>
         /// <returns>The <see cref="string"/></returns>
-        public string Encode(IEnumerable<T> source)
-        {
-            if (source == null || !source.Any())
-            {
+        public string Encode(IEnumerable<T> source) {
+            if (source == null || !source.Any()) {
                 throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeNullOrEmpty, nameof(source));
             }
 

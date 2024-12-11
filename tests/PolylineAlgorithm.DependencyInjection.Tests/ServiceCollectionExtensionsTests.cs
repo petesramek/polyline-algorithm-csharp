@@ -3,19 +3,16 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.  
 //
 
-namespace PolylineAlgorithm.DependencyInjection.Tests
-{
+namespace PolylineAlgorithm.DependencyInjection.Tests {
     using Microsoft.Extensions.DependencyInjection;
     using PolylineAlgorithm.Encoding;
 
     [TestClass]
-    public class ServiceCollectionExtensionsTests
-    {
+    public class ServiceCollectionExtensionsTests {
         private static IServiceCollection Services { get; } = new ServiceCollection().AddPolylineEncoder();
 
         [TestMethod]
-        public void AddDefaultPolylineEncoderTest()
-        {
+        public void AddDefaultPolylineEncoderTest() {
             // Arrange
             var provider = Services
                 .BuildServiceProvider();
