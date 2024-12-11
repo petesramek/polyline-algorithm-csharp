@@ -17,7 +17,7 @@
 		<AnalysisMode>All</AnalysisMode>
 		<AnalysisLevel>latest</AnalysisLevel>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<EnableNETAnalyzers>false</EnableNETAnalyzers>
 	</PropertyGroup>
 
 	<ItemGroup>
