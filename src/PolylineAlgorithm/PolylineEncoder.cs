@@ -58,7 +58,7 @@ namespace PolylineAlgorithm
                 var coordinate = (GetCoordinate(latitude), GetCoordinate(longitude));
 
                 // Validating decoded coordinate. If not valid exception is thrown
-                if (!_validator.IsValid(coordinate))
+                if (!CoordinateValidator.IsValid(coordinate))
                 {
                     throw new InvalidOperationException(ExceptionMessageResource.PolylineCharArrayIsMalformed);
                 }
@@ -143,7 +143,7 @@ namespace PolylineAlgorithm
 
             foreach (var item in collection)
             {
-                if (!_validator.IsValid(item))
+                if (!CoordinateValidator.IsValid(item))
                 {
                     exceptions.Add(new CoordinateValidationException(item.Latitude, item.Longitude));
                 }

@@ -14,13 +14,7 @@ namespace PolylineAlgorithm.Tests
     [TestCategory(nameof(CoordinateValidator))]
     public class CoordinateValidatorTestCoordinate
     {
-        internal static CoordinateValidator Validator { get; private set; }
-
-        [ClassInitialize]
-        public static void Initialize(TestContext context)
-        {
-            Validator = new CoordinateValidator();
-        }
+        private static CoordinateValidator Validator { get; } = new CoordinateValidator();
 
         #region Methods
 
@@ -36,7 +30,7 @@ namespace PolylineAlgorithm.Tests
             foreach (var item in invalidCoordinateCollection)
             {
                 // Arrange
-                var result = Validator.IsValid(item);
+                var result = CoordinateValidator.IsValid(item);
 
                 // Assert
                 Assert.IsFalse(result);
@@ -55,7 +49,7 @@ namespace PolylineAlgorithm.Tests
             foreach (var item in validCoordinateCollection)
             {
                 // Arrange
-                var result = Validator.IsValid(item);
+                var result = CoordinateValidator.IsValid(item);
 
                 // Assert
                 Assert.IsTrue(result);

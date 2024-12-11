@@ -8,7 +8,7 @@
     [MemoryDiagnoser]
     public class DecodePerformanceBenchmark
     {
-        private Consumer _consumer = new Consumer();
+        private readonly Consumer _consumer = new();
         public static IEnumerable<(int, string)> Polylines()
         {
             yield return (1, "mz}lHssngJj`gqSnx~lEcovfTnms{Zdy~qQj_deI");

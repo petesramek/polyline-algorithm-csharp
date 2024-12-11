@@ -22,27 +22,27 @@ namespace PolylineAlgorithm.Tests
             /// <summary>
             /// Defines empty range of coordinates. Equals to decoded <seealso cref="Polyline.Empty"/>
             /// </summary>
-            public static readonly IEnumerable<(double Latitude, double Longitude)> Empty = Enumerable.Empty<(double Latitude, double Longitude)>();
+            public static readonly IEnumerable<(double Latitude, double Longitude)> Empty = [];
 
             /// <summary>
             /// Defines range of invalid coordinates. Equals to decoded <seealso cref="Polyline.Invalid"/>
             /// </summary>
-            public static readonly IEnumerable<(double Latitude, double Longitude)> Invalid = new[] {
+            public static readonly IEnumerable<(double Latitude, double Longitude)> Invalid = [
                 (149.47383, 259.06250),
                 (-158.37407, 225.31250),
                 (152.99363, -220.93750),
                 (-144.49024, -274.37500)
-            };
+            ];
 
             /// <summary>
             /// Defines range of valid coordinates. Equals to decoded <seealso cref="Polyline.Valid"/>
             /// </summary>
-            public static readonly IEnumerable<(double Latitude, double Longitude)> Valid = new[] {
+            public static readonly IEnumerable<(double Latitude, double Longitude)> Valid = [
                 (49.47383, 59.06250),
                 (-58.37407, 25.31250),
                 (52.99363, -120.93750),
                 (-44.49024, -174.37500)
-            };
+            ];
         }
 
         /// <summary>

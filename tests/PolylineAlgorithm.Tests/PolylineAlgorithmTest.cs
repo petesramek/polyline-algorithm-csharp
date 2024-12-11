@@ -65,7 +65,7 @@ namespace PolylineAlgorithm.Tests
         public void Decode_NullInput_ThrowsException()
         {
             // Arrange
-            var nullPolylineCharArray = (string)null;
+            var nullPolylineCharArray = (string)null!;
 
             // Act
             void DecodeNullPolylineCharArray()
@@ -141,7 +141,7 @@ namespace PolylineAlgorithm.Tests
         public void Encode_NullInput_ThrowsException()
         {
             // Arrange
-            var nullCoordinates = (IEnumerable<(double, double)>)null;
+            var nullCoordinates = (IEnumerable<(double, double)>)null!;
 
             // Act
             void EncodeNullCoordinates()

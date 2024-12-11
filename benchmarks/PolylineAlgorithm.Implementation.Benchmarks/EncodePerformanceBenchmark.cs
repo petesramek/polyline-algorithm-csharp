@@ -9,7 +9,7 @@
     [MemoryDiagnoser]
     public class EncodePerformanceBenchmark
     {
-        private Consumer _consumer = new Consumer();
+        private readonly Consumer _consumer = new();
 
         public IEnumerable<(int, IEnumerable<(double, double)>)> Coordinates()
         {
@@ -59,10 +59,10 @@
                 int lastLongitude = 0;
                 var sb = new StringBuilder();
 
-                foreach (var coordinate in coordinates)
+                foreach (var (Latitude, Longitude) in coordinates)
                 {
-                    int latitude = GetIntegerRepresentation(coordinate.Latitude);
-                    int longitude = GetIntegerRepresentation(coordinate.Longitude);
+                    int latitude = GetIntegerRepresentation(Latitude);
+                    int longitude = GetIntegerRepresentation(Longitude);
 
                     sb.Append(GetEncodedCharacters(latitude - lastLatitude).ToArray());
                     sb.Append(GetEncodedCharacters(longitude - lastLongitude).ToArray());
@@ -150,10 +150,10 @@
 
                 var sb = _pool.Get();
 
-                foreach (var coordinate in coordinates)
+                foreach (var (Latitude, Longitude) in coordinates)
                 {
-                    int latitude = GetIntegerRepresentation(coordinate.Latitude);
-                    int longitude = GetIntegerRepresentation(coordinate.Longitude);
+                    int latitude = GetIntegerRepresentation(Latitude);
+                    int longitude = GetIntegerRepresentation(Longitude);
 
                     sb.Append(GetEncodedCharacters(latitude - previousLatitude).ToArray());
                     sb.Append(GetEncodedCharacters(longitude - previousLongitude).ToArray());
@@ -255,10 +255,10 @@
                 var sb = new StringBuilder(coordinates.Count() * 4);
 
                 // Looping over coordinates and building encoded result
-                foreach (var coordinate in coordinates)
+                foreach (var (Latitude, Longitude) in coordinates)
                 {
-                    int latitude = Round(coordinate.Latitude);
-                    int longitude = Round(coordinate.Longitude);
+                    int latitude = Round(Latitude);
+                    int longitude = Round(Longitude);
 
                     sb.Append(GetSequence(latitude - previousLatitude).ToArray());
                     sb.Append(GetSequence(longitude - previousLongitude).ToArray());
@@ -345,11 +345,9 @@
                 }
             }
 
-            public class CoordinateValidationException : Exception
+            public class CoordinateValidationException(double latitude, double longitude)
+                : Exception(string.Format("Latitude {0} or longitude {1} is not valid. Latitude must be in range between -90 and +90. Longitude must be in range between -180 and +180.", latitude, longitude))
             {
-                public CoordinateValidationException(double latitude, double longitude)
-                 : base(string.Format("Latitude {0} or longitude {1} is not valid. Latitude must be in range between -90 and +90. Longitude must be in range between -180 and +180.", latitude, longitude)) { }
-
                 public double Latitude { get; }
 
                 public double Longitude { get; }

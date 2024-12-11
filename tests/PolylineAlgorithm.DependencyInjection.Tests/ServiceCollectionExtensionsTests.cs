@@ -11,14 +11,7 @@ namespace PolylineAlgorithm.DependencyInjection.Tests
     [TestClass]
     public class ServiceCollectionExtensionsTests
     {
-        internal static IServiceCollection Services { get; private set; }
-
-        [ClassInitialize]
-        public static void Initialize(TestContext context)
-        {
-            Services = new ServiceCollection()
-                .AddPolylineEncoder();
-        }
+        private static IServiceCollection Services { get; } = new ServiceCollection().AddPolylineEncoder();
 
         [TestMethod]
         public void AddDefaultPolylineEncoderTest()
