@@ -12,7 +12,7 @@ namespace PolylineAlgorithm.DependencyInjection.Tests {
         private static IServiceCollection Services { get; } = new ServiceCollection().AddPolylineEncoder();
 
         [TestMethod]
-        public void AddDefaultPolylineEncoderTest() {
+        public void Add_DefaultPolylineEncoder_Test() {
             // Arrange
             var provider = Services
                 .BuildServiceProvider();
