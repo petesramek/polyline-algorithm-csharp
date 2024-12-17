@@ -3,7 +3,9 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.  
 //
 
-namespace PolylineAlgorithm.Internal {
+using PolylineAlgorithm.Internal;
+
+namespace PolylineAlgorithm {
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -11,7 +13,9 @@ namespace PolylineAlgorithm.Internal {
     /// <summary>
     /// Performs polyline algorithm decoding and encoding
     /// </summary>
-    public sealed class PolylineEncoder {
+    public sealed class PolylineEncoder(ICoordinateValidator validator) : IPolylineEncoder {
+        public ICoordinateValidator Validator { get; } = validator ?? throw new ArgumentNullException(nameof(validator));
+
         /// <summary>
         /// Method encodes coordinates to polyline encoded representation
         /// </summary>
@@ -55,9 +59,9 @@ namespace PolylineAlgorithm.Internal {
             return buffer[..index].ToString();
         }
 
-        private static bool TryValidate(IEnumerable<(double Latitude, double Longitude)> collection, ref ICollection<CoordinateValidationException> exceptions) {
+        private bool TryValidate(IEnumerable<(double Latitude, double Longitude)> collection, ref ICollection<CoordinateValidationException> exceptions) {
             foreach (var item in collection) {
-                if (!CoordinateValidator.IsValid(item)) {
+                if (!Validator.IsValid(item)) {
                     exceptions.Add(new CoordinateValidationException(item.Latitude, item.Longitude));
                 }
             }

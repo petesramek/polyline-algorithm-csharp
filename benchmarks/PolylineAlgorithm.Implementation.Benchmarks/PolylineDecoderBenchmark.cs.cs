@@ -1,7 +1,7 @@
 ﻿namespace PolylineAlgorithm.Implementation.Benchmarks {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Engines;
-    using PolylineAlgorithm.Internal;
+    using PolylineAlgorithm;
     using System;
     using System.Runtime.CompilerServices;
 
@@ -10,6 +10,7 @@
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.Declared)]
     public class PolylineDecoderBenchmark {
         private readonly Consumer _consumer = new();
+        private readonly static CoordinateValidator _validator = new();
         public static IEnumerable<string> Polylines() {
             yield return "mz}lHssngJj`gqSnx~lEcovfTnms{Zdy~qQj_deI";
             yield return "}vwdGjafcRsvjKi}pxUhsrtCngtcAjjgzEdqvtLrscbKj}nr@wetlUc`nq]}_kfCyrfaK~wluUl`u}|@wa{lUmmuap@va{lU~oihCu||bF`|era@wsnnIjny{DxamaScqxza@dklDf{}kb@mtpeCavfzGqhx`Wyzzkm@jm`d@dba~Pppkg@h}pxU|rtnHp|flA|~xaPuykyN}fhv[h}pxUx~p}Ymx`sZih~iB{edwB";
@@ -71,7 +72,7 @@
                     var coordinate = (GetCoordinate(latitude), GetCoordinate(longitude));
 
                     // Validating decoded coordinate. If not valid exception is thrown
-                    if (!CoordinateValidator.IsValid(coordinate)) {
+                    if (!_validator.IsValid(coordinate)) {
                         throw new InvalidOperationException(String.Empty);
                     }
 
@@ -542,7 +543,7 @@
                     var coordinate = (GetCoordinate(latitude), GetCoordinate(longitude));
 
                     // Validating decoded coordinate. If not valid exception is thrown
-                    if (!CoordinateValidator.IsValid(coordinate)) {
+                    if (!_validator.IsValid(coordinate)) {
                         throw new InvalidOperationException(String.Empty);
                     }
 

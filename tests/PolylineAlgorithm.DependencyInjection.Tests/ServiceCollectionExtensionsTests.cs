@@ -7,20 +7,34 @@ namespace PolylineAlgorithm.DependencyInjection.Tests {
 
     [TestClass]
     public class ServiceCollectionExtensionsTests {
-        private static IServiceCollection Services { get; } = new ServiceCollection().AddPolylineEncoder();
+        private static IServiceCollection Services { get; } = new ServiceCollection().AddPolylineAlgorithm();
 
-        //[TestMethod]
-        //public void Add_DefaultPolylineEncoder_Test() {
-        //    // Arrange
-        //    var provider = Services
-        //        .BuildServiceProvider();
+        [TestMethod]
+        public void Add_PolylineEncoder_Test() {
+            // Arrange
+            var provider = Services
+                .BuildServiceProvider();
 
-        //    // Act
-        //    var encoder = provider
-        //        .GetRequiredService<DefaultPolylineEncoding>();
+            // Act
+            var encoder = provider
+                .GetRequiredService<IPolylineEncoder>();
 
-        //    // Assert
-        //    Assert.IsInstanceOfType<DefaultPolylineEncoding>(encoder);
-        //}
+            // Assert
+            Assert.IsInstanceOfType<IPolylineEncoder>(encoder);
+        }
+
+        [TestMethod]
+        public void Add_PolylineDecoder_Test() {
+            // Arrange
+            var provider = Services
+                .BuildServiceProvider();
+
+            // Act
+            var decoder = provider
+                .GetRequiredService<IPolylineDecoder>();
+
+            // Assert
+            Assert.IsInstanceOfType<IPolylineDecoder>(decoder);
+        }
     }
 }

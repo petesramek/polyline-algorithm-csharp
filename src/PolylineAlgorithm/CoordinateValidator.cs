@@ -1,27 +1,25 @@
-﻿namespace PolylineAlgorithm.Internal {
+﻿using PolylineAlgorithm.Internal;
+
+namespace PolylineAlgorithm {
     /// <summary>
     /// Performs coordinate validation
     /// </summary>
-    internal class CoordinateValidator {
-        #region Methods
-
+    public sealed class CoordinateValidator : ICoordinateValidator {
         /// <summary>
         /// Performs coordinate validation
         /// </summary>
         /// <param name="coordinate">Coordinate to validate</param>
         /// <returns>Returns validation result. If valid then true, otherwise false.</returns>
-        public static bool IsValid((double Latitude, double Longitude) coordinate) {
-            return IsValidLatitude(coordinate.Latitude) && IsValidLongitude(coordinate.Longitude);
+        public bool IsValid((double Latitude, double Longitude) coordinate) {
+            return IsValidLatitude(ref coordinate.Latitude) && IsValidLongitude(ref coordinate.Longitude);
         }
 
-        public static bool IsValidLatitude(double latitude) {
+        private static bool IsValidLatitude(ref readonly double latitude) {
             return latitude >= Constants.Coordinate.MinLatitude && latitude <= Constants.Coordinate.MaxLatitude;
         }
 
-        public static bool IsValidLongitude(double longitude) {
+        private static bool IsValidLongitude(ref readonly double longitude) {
             return longitude >= Constants.Coordinate.MinLongitude && longitude <= Constants.Coordinate.MaxLongitude;
         }
-
-        #endregion
     }
 }

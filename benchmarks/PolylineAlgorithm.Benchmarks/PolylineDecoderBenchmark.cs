@@ -7,7 +7,6 @@ namespace PolylineAlgorithm.Benchmarks {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Engines;
     using BenchmarkDotNet.Order;
-    using PolylineAlgorithm.Internal;
 
     [MemoryDiagnoser]
     [MarkdownExporter]
@@ -15,7 +14,7 @@ namespace PolylineAlgorithm.Benchmarks {
     public class PolylineDecoderBenchmark {
         private readonly Consumer _consumer = new();
 
-        public PolylineDecoder Decoder { get; set; }
+        public IPolylineDecoder Decoder { get; set; }
 
         public static IEnumerable<string> GetPolylines() {
             yield return "mz}lHssngJj`gqSnx~lEcovfTnms{Zdy~qQj_deI";
@@ -25,7 +24,7 @@ namespace PolylineAlgorithm.Benchmarks {
 
         [GlobalSetup]
         public void Setup() {
-            Decoder = new PolylineDecoder();
+            Decoder = new PolylineDecoder(new CoordinateValidator());
         }
 
         [Benchmark]

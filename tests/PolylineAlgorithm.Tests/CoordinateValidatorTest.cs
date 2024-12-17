@@ -4,6 +4,7 @@
 //
 
 namespace PolylineAlgorithm.Tests {
+    using PolylineAlgorithm;
 
     /// <summary>
     /// Defines the <see cref="CoordinateValidatorTest" />
@@ -25,7 +26,7 @@ namespace PolylineAlgorithm.Tests {
 
             foreach (var item in invalidCoordinateCollection) {
                 // Arrange
-                var result = CoordinateValidator.IsValid(item);
+                var result = Validator.IsValid(item);
 
                 // Assert
                 Assert.IsFalse(result);
@@ -42,7 +43,7 @@ namespace PolylineAlgorithm.Tests {
 
             foreach (var item in validCoordinateCollection) {
                 // Arrange
-                var result = CoordinateValidator.IsValid(item);
+                var result = Validator.IsValid(item);
 
                 // Assert
                 Assert.IsTrue(result);

@@ -12,21 +12,11 @@ namespace PolylineAlgorithm.DependencyInjection {
         /// </summary>
         /// <param name="services">Instance of <seealso cref="IServiceCollection"/></param>
         /// <returns>nstance of <seealso cref="IServiceCollection"/></returns>
-        public static IServiceCollection AddPolylineEncoder(this IServiceCollection services) {
-            return services;
-            //.AddSingleton<DefaultPolylineEncoding, DefaultPolylineEncoding>();
-        }
-
-        /// <summary>
-        /// Registers singleton instance of <seealso cref="TImplementation" /> to dependency container.
-        /// </summary>
-        /// <param name="services">Instance of <seealso cref="IServiceCollection"/></param>
-        /// <returns>nstance of <seealso cref="IServiceCollection"/></returns>
-        public static IServiceCollection AddPolylineEncoder<TService, TImplementation>(this IServiceCollection services)
-            where TService : class
-            where TImplementation : class, TService {
+        public static IServiceCollection AddPolylineAlgorithm(this IServiceCollection services) {
             return services
-                .AddSingleton<TService, TImplementation>();
+                .AddSingleton<ICoordinateValidator, CoordinateValidator>()
+                .AddSingleton<IPolylineEncoder, PolylineEncoder>()
+                .AddSingleton<IPolylineDecoder, PolylineDecoder>();
         }
     }
 }

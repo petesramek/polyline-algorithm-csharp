@@ -7,7 +7,6 @@ namespace PolylineAlgorithm.Benchmarks {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Engines;
     using BenchmarkDotNet.Order;
-    using PolylineAlgorithm.Internal;
 
     [MemoryDiagnoser]
     [MarkdownExporter]
@@ -15,7 +14,7 @@ namespace PolylineAlgorithm.Benchmarks {
     public class PolylineEncoderBenchmark {
         private readonly Consumer _consumer = new();
 
-        public PolylineEncoder Encoder { get; set; }
+        public IPolylineEncoder Encoder { get; set; }
 
         public IEnumerable<IEnumerable<(double, double)>> GetCoordinates() {
             yield return new[] { (49.47383, 59.06250), (-58.37407, 25.31250), (52.99363, -120.93750), (-44.49024, -174.37500) };
@@ -25,7 +24,7 @@ namespace PolylineAlgorithm.Benchmarks {
 
         [GlobalSetup]
         public void Setup() {
-            Encoder = new PolylineEncoder();
+            Encoder = new PolylineEncoder(new CoordinateValidator());
         }
 
         [Benchmark]

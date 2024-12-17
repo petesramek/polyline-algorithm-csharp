@@ -1,9 +1,9 @@
-﻿namespace PolylineAlgorithm.Internal;
+﻿namespace PolylineAlgorithm;
 
-using System;
-using System.Collections.Generic;
+using PolylineAlgorithm.Internal;
 
-public sealed class PolylineDecoder {
+public sealed class PolylineDecoder(ICoordinateValidator validator) : IPolylineDecoder {
+    public ICoordinateValidator Validator { get; } = validator ?? throw new ArgumentNullException(nameof(validator));
 
     /// <summary>
     /// Method decodes polyline encoded representation to coordinates.
@@ -38,7 +38,7 @@ public sealed class PolylineDecoder {
             var coordinate = (GetCoordinate(latitude), GetCoordinate(longitude));
 
             // Validating decoded coordinate. If not valid exception is thrown
-            if (!CoordinateValidator.IsValid(coordinate)) {
+            if (!Validator.IsValid(coordinate)) {
                 throw new InvalidOperationException(string.Empty);
             }
 

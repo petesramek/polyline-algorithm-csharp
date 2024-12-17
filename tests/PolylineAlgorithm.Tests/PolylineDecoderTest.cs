@@ -4,15 +4,13 @@
 //
 
 namespace PolylineAlgorithm.Tests {
-    using PolylineAlgorithm.Internal;
-
     /// <summary>
     /// Defines the <see cref="PolylineEncoderTest" />
     /// </summary>
     [TestClass]
     [TestCategory(nameof(PolylineDecoder))]
     public class PolylineDecoderTest {
-        private static PolylineDecoder Decoder { get; } = new PolylineDecoder();
+        private static PolylineDecoder Decoder { get; } = new PolylineDecoder(new CoordinateValidator());
 
         /// <summary>
         /// Method is testing <see cref="PolylineEncoder.Decode(char[])" /> method. Empty <see langword="char"/>[] is passed as parameter.
