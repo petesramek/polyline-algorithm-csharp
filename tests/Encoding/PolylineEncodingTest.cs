@@ -3,9 +3,9 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.  
 //
 
-namespace DropoutCoder.PolylineAlgorithm.Tests.Encoding
+namespace PolylineAlgorithm.Tests.Encoding
 {
-    using DropoutCoder.PolylineAlgorithm.Encoding;
+    using PolylineAlgorithm.Encoding;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Linq;
 
@@ -16,8 +16,6 @@ namespace DropoutCoder.PolylineAlgorithm.Tests.Encoding
     [TestCategory(nameof(PolylineEncoding))]
     public class PolylineEncodingTest : PolylineEncoding
     {
-        #region Methods
-
         /// <summary>
         /// The CreateResult_AreEqual
         /// </summary>
@@ -49,7 +47,5 @@ namespace DropoutCoder.PolylineAlgorithm.Tests.Encoding
             // Assert
             Assert.AreEqual(validCoordinate, result);
         }
-
-        #endregion
     }
 }

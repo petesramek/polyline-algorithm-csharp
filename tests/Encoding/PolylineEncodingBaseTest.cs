@@ -3,9 +3,9 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.  
 //
 
-namespace DropoutCoder.PolylineAlgorithm.Tests.Encoding
+namespace PolylineAlgorithm.Tests.Encoding
 {
-    using DropoutCoder.PolylineAlgorithm.Encoding;
+    using PolylineAlgorithm.Encoding;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System;
     using System.Collections.Generic;
@@ -18,8 +18,6 @@ namespace DropoutCoder.PolylineAlgorithm.Tests.Encoding
     [TestCategory(nameof(PolylineEncodingBase<(double latitude, double longitude)>))]
     public class PolylineEncodingBaseTest : PolylineEncodingBase<(double latitude, double longitude)>
     {
-        #region Methods
-
         /// <summary>
         /// The Decode_NullInput
         /// </summary>
@@ -188,8 +186,6 @@ namespace DropoutCoder.PolylineAlgorithm.Tests.Encoding
         {
             return source;
         }
-
-        #endregion
 
         #endregion
     }

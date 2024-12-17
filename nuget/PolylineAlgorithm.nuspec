@@ -1,0 +1,19 @@
+﻿<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>$nugetid$</id>
+    <title>$nugettitle$</title>
+    <version>$nugetversion$</version>
+    <authors>$nugetauthors$</authors>
+    <owners>$nugetowners$</owners>
+    <description>$nugetdescription$</description>
+    <summary>$nugetsummary$</summary>
+    <copyright>$nugetcopyright$</copyright>
+    <tags>$nugettags$</tags>
+    <licenseUrl>$nugetlicenceurl$</licenseUrl>
+    <projectUrl>$nugetprojecturl$</projectUrl>
+  </metadata>
+  <files>
+    <file src="..\src\$nugetid$\$nugetid$\bin\$configuration$\netstandard2.1\$nugetid$.dll" target="lib\netstandard2.1" />
+  </files>
+</package>

@@ -3,9 +3,9 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.  
 //
 
-namespace DropoutCoder.PolylineAlgorithm.Tests.Validation
+namespace PolylineAlgorithm.Tests.Validation
 {
-    using DropoutCoder.PolylineAlgorithm.Validation;
+    using PolylineAlgorithm.Validation;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -15,8 +15,6 @@ namespace DropoutCoder.PolylineAlgorithm.Tests.Validation
     [TestCategory(nameof(CoordinateValidator))]
     public class CoordinateValidatorTest
     {
-        #region Methods
-
         /// <summary>
         /// The IsValid_InvalidInput
         /// </summary>
@@ -130,7 +128,5 @@ namespace DropoutCoder.PolylineAlgorithm.Tests.Validation
                 Assert.IsTrue(result);
             }
         }
-
-        #endregion
     }
 }
