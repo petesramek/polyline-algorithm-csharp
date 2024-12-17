@@ -6,12 +6,14 @@
 namespace PolylineAlgorithm.Benchmarks {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Engines;
+    using BenchmarkDotNet.Order;
     using PolylineAlgorithm.Internal;
 
     [MemoryDiagnoser]
     [MarkdownExporter]
+    [Orderer(SummaryOrderPolicy.FastestToSlowest)]
     public class PolylineDecoderBenchmark {
-        private Consumer _consumer = new();
+        private readonly Consumer _consumer = new();
 
         public PolylineDecoder Decoder { get; set; }
 
@@ -28,7 +30,8 @@ namespace PolylineAlgorithm.Benchmarks {
 
         [Benchmark]
         [ArgumentsSource(nameof(GetPolylines))]
-        public IEnumerable<(double, double)> Decode(string polyline) => Decoder
-            .Decode(polyline);
+        public void Decode(string polyline) => Decoder
+            .Decode(polyline)
+            .Consume(_consumer);
     }
 }

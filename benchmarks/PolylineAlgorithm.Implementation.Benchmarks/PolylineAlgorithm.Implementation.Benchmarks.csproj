@@ -13,10 +13,6 @@
 	<PropertyGroup>
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
-	
-	<PropertyGroup>
-		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="BenchmarkDotNet" Version="0.*" />

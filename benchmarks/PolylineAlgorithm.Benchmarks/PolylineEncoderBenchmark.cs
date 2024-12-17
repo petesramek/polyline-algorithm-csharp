@@ -6,12 +6,14 @@
 namespace PolylineAlgorithm.Benchmarks {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Engines;
+    using BenchmarkDotNet.Order;
     using PolylineAlgorithm.Internal;
 
     [MemoryDiagnoser]
     [MarkdownExporter]
+    [Orderer(SummaryOrderPolicy.FastestToSlowest)]
     public class PolylineEncoderBenchmark {
-        private Consumer _consumer = new();
+        private readonly Consumer _consumer = new();
 
         public PolylineEncoder Encoder { get; set; }
 

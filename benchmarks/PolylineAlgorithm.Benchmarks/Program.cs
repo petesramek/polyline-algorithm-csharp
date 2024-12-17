@@ -10,6 +10,8 @@ namespace PolylineAlgorithm.Benchmarks {
         static void Main(string[] _) {
             BenchmarkRunner
                 .Run<PolylineEncoderBenchmark>();
+            BenchmarkRunner
+                .Run<PolylineDecoderBenchmark>();
         }
     }
 }

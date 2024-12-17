@@ -1,6 +1,5 @@
 ﻿namespace PolylineAlgorithm.Implementation.Benchmarks {
     using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Engines;
     using Microsoft.Extensions.ObjectPool;
     using System.Collections.Generic;
     using System.Text;
