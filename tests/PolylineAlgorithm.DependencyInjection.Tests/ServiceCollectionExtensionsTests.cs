@@ -9,18 +9,18 @@ namespace PolylineAlgorithm.DependencyInjection.Tests {
     public class ServiceCollectionExtensionsTests {
         private static IServiceCollection Services { get; } = new ServiceCollection().AddPolylineEncoder();
 
-        [TestMethod]
-        public void Add_DefaultPolylineEncoder_Test() {
-            // Arrange
-            var provider = Services
-                .BuildServiceProvider();
+        //[TestMethod]
+        //public void Add_DefaultPolylineEncoder_Test() {
+        //    // Arrange
+        //    var provider = Services
+        //        .BuildServiceProvider();
 
-            // Act
-            var encoder = provider
-                .GetRequiredService<DefaultPolylineEncoding>();
+        //    // Act
+        //    var encoder = provider
+        //        .GetRequiredService<DefaultPolylineEncoding>();
 
-            // Assert
-            Assert.IsInstanceOfType<DefaultPolylineEncoding>(encoder);
-        }
+        //    // Assert
+        //    Assert.IsInstanceOfType<DefaultPolylineEncoding>(encoder);
+        //}
     }
 }

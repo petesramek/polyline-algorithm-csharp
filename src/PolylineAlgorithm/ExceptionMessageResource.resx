@@ -123,6 +123,9 @@
   <data name="ArgumentCannotBeNullOrEmpty" xml:space="preserve">
     <value>Argument cannot be null -or- empty char array.</value>
   </data>
+  <data name="ArgumentCannotBeEmptyEnumerable" xml:space="preserve">
+    <value>Argument cannot be an empty enumerable.</value>
+  </data>
   <data name="CoordinateValidationExceptionCoordinateIsOutOfRangeErrorMessageFormat" xml:space="preserve">
     <value>Latitude {0} or longitude {1} is not valid. Latitude must be in range between -90 and +90. Longitude must be in range between -180 and +180.</value>
   </data>

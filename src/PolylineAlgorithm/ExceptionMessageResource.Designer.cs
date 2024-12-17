@@ -70,6 +70,15 @@ namespace PolylineAlgorithm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Argument cannot be an empty enumerable..
+        /// </summary>
+        internal static string ArgumentCannotBeEmptyEnumerable {
+            get {
+                return ResourceManager.GetString("ArgumentCannotBeEmptyEnumerable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Argument cannot be null -or- empty char array..
         /// </summary>
         internal static string ArgumentCannotBeNullOrEmpty {

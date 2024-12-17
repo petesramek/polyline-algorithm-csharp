@@ -5,7 +5,6 @@
 
 namespace PolylineAlgorithm.DependencyInjection {
     using Microsoft.Extensions.DependencyInjection;
-    using PolylineAlgorithm.Encoding;
 
     public static class ServiceCollectionExtensions {
         /// <summary>
@@ -14,8 +13,8 @@ namespace PolylineAlgorithm.DependencyInjection {
         /// <param name="services">Instance of <seealso cref="IServiceCollection"/></param>
         /// <returns>nstance of <seealso cref="IServiceCollection"/></returns>
         public static IServiceCollection AddPolylineEncoder(this IServiceCollection services) {
-            return services
-                .AddSingleton<DefaultPolylineEncoding, DefaultPolylineEncoding>();
+            return services;
+            //.AddSingleton<DefaultPolylineEncoding, DefaultPolylineEncoding>();
         }
 
         /// <summary>

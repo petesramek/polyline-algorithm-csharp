@@ -9,9 +9,9 @@ namespace PolylineAlgorithm.Implementation.Benchmarks {
     internal class Program {
         static void Main(string[] _) {
             BenchmarkRunner
-                .Run<EncodePerformanceBenchmark>();
+                .Run<PolylineEncoderBenchmark>();
             BenchmarkRunner
-                .Run<DecodePerformanceBenchmark>();
+                .Run<PolylineDecoderBenchmark>();
         }
     }
 }
