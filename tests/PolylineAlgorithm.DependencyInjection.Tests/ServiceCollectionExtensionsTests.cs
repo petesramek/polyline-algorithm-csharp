@@ -10,6 +10,20 @@ namespace PolylineAlgorithm.DependencyInjection.Tests {
         private static IServiceCollection Services { get; } = new ServiceCollection().AddPolylineAlgorithm();
 
         [TestMethod]
+        public void Add_CoordinateValidator_Test() {
+            // Arrange
+            var provider = Services
+                .BuildServiceProvider();
+
+            // Act
+            var encoder = provider
+                .GetRequiredService<ICoordinateValidator>();
+
+            // Assert
+            Assert.IsInstanceOfType<ICoordinateValidator>(encoder);
+        }
+
+        [TestMethod]
         public void Add_PolylineEncoder_Test() {
             // Arrange
             var provider = Services
