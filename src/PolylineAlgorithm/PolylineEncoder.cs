@@ -43,7 +43,7 @@ namespace PolylineAlgorithm {
 
             // Initializing local variables
             int index = 0;
-            Memory<char> buffer = new char[count * 12];
+            Memory<char> buffer = new char[GetSafeBufferSize(count)];
             int previousLatitude = 0;
             int previousLongitude = 0;
 
@@ -57,6 +57,10 @@ namespace PolylineAlgorithm {
             }
 
             return buffer[..index].ToString();
+
+            // Each coordinate consist of two values, each one is 4 or 5 chars long
+            // We use constant 12 = [2 * 6] to create safe buffer size
+            static int GetSafeBufferSize(int count) => count * 12;
         }
 
         private bool TryValidate(IEnumerable<(double Latitude, double Longitude)> collection, ref ICollection<CoordinateValidationException> exceptions) {
