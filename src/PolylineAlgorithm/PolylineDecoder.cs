@@ -6,10 +6,10 @@ public sealed class PolylineDecoder(ICoordinateValidator validator) : IPolylineD
     public ICoordinateValidator Validator { get; } = validator ?? throw new ArgumentNullException(nameof(validator));
 
     /// <summary>
-    /// Method decodes polyline encoded representation to coordinates.
+    /// Decodes polyline representation.
     /// </summary>
     /// <param name="source">Encoded polyline string to decode</param>
-    /// <returns>Returns coordinates.</returns>
+    /// <returns>Returns coordinates</returns>
     /// <exception cref="ArgumentException">If polyline argument is null -or- empty char array.</exception>
     /// <exception cref="InvalidOperationException">If polyline representation is not in correct format.</exception>
     public IEnumerable<(double Latitude, double Longitude)> Decode(string polyline) {

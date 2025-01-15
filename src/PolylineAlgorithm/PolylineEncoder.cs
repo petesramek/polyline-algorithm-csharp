@@ -17,13 +17,13 @@ namespace PolylineAlgorithm {
         public ICoordinateValidator Validator { get; } = validator ?? throw new ArgumentNullException(nameof(validator));
 
         /// <summary>
-        /// Method encodes coordinates to polyline encoded representation
+        /// Encodes coordinates to polyline representation
         /// </summary>
         /// <param name="coordinates">Coordinates to encode</param>
         /// <returns>Polyline encoded representation</returns>
-        /// <exception cref="ArgumentException">If coordinates parameter is null</exception>
+        /// <exception cref="ArgumentNullException">If coordinates parameter is null</exception>
         /// <exception cref="ArgumentException">If coordinates parameter is empty</exception>
-        /// <exception cref="AggregateException">If one or more coordinate is out of range</exception>
+        /// <exception cref="AggregateException">If one or more coordinate is out of valid range</exception>
         public string Encode(IEnumerable<(double Latitude, double Longitude)> coordinates) {
             if (coordinates is null) {
                 throw new ArgumentNullException(nameof(coordinates));
