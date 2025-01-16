@@ -5,6 +5,7 @@
 
 namespace PolylineAlgorithm.DependencyInjection.Tests;
 
+using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.DependencyInjection.Microsoft;
 
 [TestClass]

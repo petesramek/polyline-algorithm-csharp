@@ -3,7 +3,7 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.  
 //
 
-namespace PolylineAlgorithm;
+namespace PolylineAlgorithm.Abstraction;
 
 /// <summary>
 /// Provides validation of a coordinate value.

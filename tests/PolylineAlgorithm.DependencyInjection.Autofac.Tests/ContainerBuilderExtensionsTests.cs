@@ -5,6 +5,7 @@
 
 namespace PolylineAlgorithm.DependencyInjection.Autofac.Tests;
 
+using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.DependencyInjection.Autofac;
 
 [TestClass]

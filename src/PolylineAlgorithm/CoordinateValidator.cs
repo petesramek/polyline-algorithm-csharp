@@ -5,6 +5,7 @@
 
 namespace PolylineAlgorithm;
 
+using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal;
 
 /// <inheritdoc cref="ICoordinateValidator" />

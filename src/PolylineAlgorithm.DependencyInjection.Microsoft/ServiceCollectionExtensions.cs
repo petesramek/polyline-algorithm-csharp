@@ -6,6 +6,7 @@
 namespace PolylineAlgorithm.DependencyInjection.Microsoft;
 
 using global::Microsoft.Extensions.DependencyInjection;
+using PolylineAlgorithm.Abstraction;
 
 public static class ServiceCollectionExtensions {
     /// <summary>

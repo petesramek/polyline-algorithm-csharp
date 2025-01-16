@@ -8,6 +8,7 @@ namespace PolylineAlgorithm.Benchmarks;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
 using BenchmarkDotNet.Order;
+using PolylineAlgorithm.Abstraction;
 
 [MemoryDiagnoser]
 [MarkdownExporter]

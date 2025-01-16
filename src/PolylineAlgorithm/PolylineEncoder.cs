@@ -5,6 +5,7 @@
 
 namespace PolylineAlgorithm;
 
+using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal;
 using System;
 using System.Collections.Generic;

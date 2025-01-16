@@ -2,8 +2,7 @@
 
 Lightweight .NET Standard 2.0 library implementing <a href="https://developers.google.com/maps/documentation/utilities/polylinealgorithm">Google Polyline Algorithm</a>. Designed with respect to flexibility, but still with easy to use.
 
-## Getting started
-### Prerequisites
+## Prerequisites
 
 .NET Polyline Algorithm is avalable as nuget package <a href="https://www.nuget.org/packages/Cloudikka.PolylineAlgorithm/">Cloudikka.PolylineAlgorithm</a> targeting .NET Standard 2.0.
 
@@ -15,34 +14,22 @@ NuGet Package Manager:
 
 `Cloudikka.PolylineAlgorithm`
 
-#### Warning
-
-Library is using <a href="https://msdn.microsoft.com/en-us/library/mt744804(v=vs.110).aspx">ValueTuple<T1, T2> Structure</a>. ValueTuple struct is avalable in .NET Framework 4.7 and above. Incase your project is targeting lower version of .NET Framework you probably have to install <a href="https://www.nuget.org/packages/System.ValueTuple/">System.ValueTuple</a> NuGet package. (not tested yet)
-  
-Command line:
-
-`Install-Package System.ValueTuple`
-
-NuGet Package Manager:
-
-`System.ValueTuple`
-
-### Hot to use it
+## Hot to use it
 
 There are three ways how to use .NET Polyline Algorithm library based on your needs. For each is available Encode and Decode methods.
 
-#### Static methods
+### Static methods
 
 Whenever you just need to encode or decode Google polyline you can use static methods defined in static PolylineAlgorithm class.
 
-##### Decoding
+#### Decoding
 
 ```csharp
 	string polyline = "polyline";
 	IEnumerable<(double, double)> coordinates = PolylineAlgorithm.Decode(polyline);
 ```
 
-##### Encoding
+#### Encoding
 
 ```csharp
 	IEnumerable<(double, double)> coordinates = new (double, double) [] { (35.635, 76.27182), (35.2435, 75.625), ... };
@@ -50,11 +37,11 @@ Whenever you just need to encode or decode Google polyline you can use static me
 ```
 
 
-#### Default instance
+### Default instance
 
 If you need to use dependency injection, you would like to have instance to deliver the work for you. In that case you can use default instance of PolylineEncoding class, which implements IPolylineEncoding<(double Latitude, double Longitude)> interface.
 
-##### Decoding
+#### Decoding
 
 ```csharp
 	string polyline = "polyline";
@@ -62,7 +49,7 @@ If you need to use dependency injection, you would like to have instance to deli
 	IEnumerable<(double, double)> coordinates = encoding.Decode(polyline);
 ```
 
-##### Encoding
+#### Encoding
 
 ```csharp
 	IEnumerable<(double, double)> coordinates = new (double, double) [] { (35.635, 76.27182), (35.2435, 75.625), ... };
@@ -70,11 +57,11 @@ If you need to use dependency injection, you would like to have instance to deli
 	string polyline = encoding.Encode(coordinates);
 ```
 
-#### Inherited base class
+### Inherited base class
 
 There may be a scenario you need to pass and return different types to and from without a need to add another extra layer. In this case you can inherit PolylineEncodingBase<T> class and override template methods CreateResult and GetCoordinates.
 	
-##### Inheriting
+#### Inheriting
 
 ```csharp
 	public class MyPolylineEncoding : PolylineEncodingBase<Coordinate> {

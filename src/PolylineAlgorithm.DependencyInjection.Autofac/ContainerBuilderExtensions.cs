@@ -6,6 +6,7 @@
 namespace PolylineAlgorithm.DependencyInjection.Autofac;
 
 using global::Autofac;
+using PolylineAlgorithm.Abstraction;
 
 public static class ContainerBuilderExtensions {
     /// <summary>
