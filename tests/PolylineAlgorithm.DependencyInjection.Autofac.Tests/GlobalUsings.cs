@@ -3,7 +3,5 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.  
 //
 
+global using Autofac;
 global using Microsoft.VisualStudio.TestTools.UnitTesting;
-global using System;
-global using System.Collections.Generic;
-global using System.Linq;

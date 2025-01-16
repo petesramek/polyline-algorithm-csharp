@@ -1,17 +1,20 @@
-﻿namespace PolylineAlgorithm;
+﻿//  
+// Copyright (c) Pete Sramek. All rights reserved.  
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.  
+//
+
+namespace PolylineAlgorithm;
 
 using PolylineAlgorithm.Internal;
 
+/// <inheritdoc cref="IPolylineDecoder" />
+/// <param name="validator">A coordinate validator.</param>
 public sealed class PolylineDecoder(ICoordinateValidator validator) : IPolylineDecoder {
     public ICoordinateValidator Validator { get; } = validator ?? throw new ArgumentNullException(nameof(validator));
 
-    /// <summary>
-    /// Decodes polyline representation.
-    /// </summary>
-    /// <param name="source">Encoded polyline string to decode</param>
-    /// <returns>Returns coordinates</returns>
-    /// <exception cref="ArgumentException">If polyline argument is null -or- empty char array.</exception>
-    /// <exception cref="InvalidOperationException">If polyline representation is not in correct format.</exception>
+    /// <inheritdoc />
+    /// <exception cref="ArgumentException">Thrown when <paramref name="polyline"/> argument is null -or- empty.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when <paramref name="polyline"/> is not in correct format.</exception>
     public IEnumerable<(double Latitude, double Longitude)> Decode(string polyline) {
         // Checking null and at least one character
         if (polyline == null || polyline.Length == 0) {
@@ -25,19 +28,19 @@ public sealed class PolylineDecoder(ICoordinateValidator validator) : IPolylineD
 
         // Looping through encoded polyline char array
         while (index < polyline.Length) {
-            // Attempting to calculate next latitude value. If failed exception is thrown
-            if (!TryCalculateNext(polyline, ref index, ref latitude)) {
+            // Attempting to calculate next latitude value. If failed exception is thrown.
+            if (!TryDecodeNext(polyline, ref index, ref latitude)) {
                 throw new InvalidOperationException(string.Empty);
             }
 
-            // Attempting to calculate next longitude value. If failed exception is thrown
-            if (!TryCalculateNext(polyline, ref index, ref longitude)) {
+            // Attempting to calculate next longitude value. If failed exception is thrown.
+            if (!TryDecodeNext(polyline, ref index, ref longitude)) {
                 throw new InvalidOperationException(string.Empty);
             }
 
             var coordinate = (GetCoordinate(latitude), GetCoordinate(longitude));
 
-            // Validating decoded coordinate. If not valid exception is thrown
+            // Validating decoded coordinate. If not valid exception is thrown.
             if (!Validator.IsValid(coordinate)) {
                 throw new InvalidOperationException(string.Empty);
             }
@@ -46,7 +49,14 @@ public sealed class PolylineDecoder(ICoordinateValidator validator) : IPolylineD
         }
     }
 
-    private static bool TryCalculateNext(string polyline, ref int index, ref int value) {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="polyline"></param>
+    /// <param name="index"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    private static bool TryDecodeNext(string polyline, ref int index, ref int value) {
         // Initialize local variables
         int chunk;
         int sum = 0;
