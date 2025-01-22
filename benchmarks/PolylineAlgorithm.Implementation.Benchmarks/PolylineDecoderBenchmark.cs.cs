@@ -6,113 +6,78 @@
 namespace PolylineAlgorithm.Implementation.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Engines;
-using PolylineAlgorithm;
+using BenchmarkDotNet.Diagnosers;
+using BenchmarkDotNet.Order;
 using System;
+using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
 
-[MemoryDiagnoser]
 [RankColumn]
-[Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.Declared)]
+[MemoryDiagnoser]
+[RPlotExporter]
+[EventPipeProfiler(EventPipeProfile.CpuSampling)]
+[Orderer(SummaryOrderPolicy.Declared)]
 public class PolylineDecoderBenchmark {
-    private readonly Consumer _consumer = new();
-    private readonly static CoordinateValidator _validator = new();
-    public static IEnumerable<string> Polylines() {
-        yield return "mz}lHssngJj`gqSnx~lEcovfTnms{Zdy~qQj_deI";
-        yield return "}vwdGjafcRsvjKi}pxUhsrtCngtcAjjgzEdqvtLrscbKj}nr@wetlUc`nq]}_kfCyrfaK~wluUl`u}|@wa{lUmmuap@va{lU~oihCu||bF`|era@wsnnIjny{DxamaScqxza@dklDf{}kb@mtpeCavfzGqhx`Wyzzkm@jm`d@dba~Pppkg@h}pxU|rtnHp|flA|~xaPuykyN}fhv[h}pxUx~p}Ymx`sZih~iB{edwB";
-        yield return "}adrJh}}cVazlw@uykyNhaqeE`vfzG_~kY}~`eTsr{~Cwn~aOty_g@thapJvvoqKxt{sStfahDmtvmIfmiqBhjq|HujpgComs{Z}dhdKcidPymnvBqmquE~qrfI`x{lPf|ftGn~}d_@q}saAurjmu@bwr_DxrfaK~{rO~bidPwfduXwlioFlpum@twvfFpmi~VzxcsOqyejYhh|i@pbnr[twvfF_ueUujvbSa_d~ZkcnjZla~f[pmquEebxo[j}nr@xnn|H{gyiKbh{yH`oenn@y{mpIrbd~EmipgH}fuov@hjqtTp|flAttvkFrym_d@|eyCwn~aOfvdNmeawM??{yxdUcidPca{}D_atqGenzcAlra{@trgWhn{aZ??tluqOgu~sH";
-    }
+    public static Dictionary<int, string> Values() =>
+        new Dictionary<int, string> {
+            {1, "mz}lHssngJj`gqSnx~lEcovfTnms{Zdy~qQj_deI"},
+            {2, "}vwdGjafcRsvjKi}pxUhsrtCngtcAjjgzEdqvtLrscbKj}nr@wetlUc`nq]}_kfCyrfaK~wluUl`u}|@wa{lUmmuap@va{lU~oihCu||bF`|era@wsnnIjny{DxamaScqxza@dklDf{}kb@mtpeCavfzGqhx`Wyzzkm@jm`d@dba~Pppkg@h}pxU|rtnHp|flA|~xaPuykyN}fhv[h}pxUx~p}Ymx`sZih~iB{edwB"},
+            {3, "}adrJh}}cVazlw@uykyNhaqeE`vfzG_~kY}~`eTsr{~Cwn~aOty_g@thapJvvoqKxt{sStfahDmtvmIfmiqBhjq|HujpgComs{Z}dhdKcidPymnvBqmquE~qrfI`x{lPf|ftGn~}d_@q}saAurjmu@bwr_DxrfaK~{rO~bidPwfduXwlioFlpum@twvfFpmi~VzxcsOqyejYhh|i@pbnr[twvfF_ueUujvbSa_d~ZkcnjZla~f[pmquEebxo[j}nr@xnn|H{gyiKbh{yH`oenn@y{mpIrbd~EmipgH}fuov@hjqtTp|flAttvkFrym_d@|eyCwn~aOfvdNmeawM??{yxdUcidPca{}D_atqGenzcAlra{@trgWhn{aZ??tluqOgu~sH"}
+        };
+
+    [ParamsSource(nameof(Values))]
+    public KeyValuePair<int, string> Polyline { get; set; }
 
     [Benchmark(Baseline = true)]
-    [ArgumentsSource(nameof(Polylines))]
-    public void Decode_Current(string polyline) => Current.Decode(polyline).Consume(_consumer);
+    public Span<Coordinate> Decode_Current() {
+        var decoder = new DefaultPolylineDecoder();
+        return decoder.Decode(new Polyline(Polyline.Value));
+    }
 
     [Benchmark]
-    [ArgumentsSource(nameof(Polylines))]
-    public void Decode_V1(string polyline) => V1.Decode(polyline).Consume(_consumer);
+    public (double, double)[] Decode_V1() {
+        var decoder = new V1();
+        return decoder.Decode(Polyline.Value).ToArray();
+    }
 
     [Benchmark]
-    [ArgumentsSource(nameof(Polylines))]
-    public void Decode_V2(string polyline) => V2.Decode(polyline).Consume(_consumer);
+    public (double, double)[] Decode_V2() {
+        var decoder = new V2();
+        return decoder.Decode(Polyline.Value).ToArray();
+    }
 
     [Benchmark]
-    [ArgumentsSource(nameof(Polylines))]
-    public void Decode_V3(string polyline) => V3.Decode(polyline).Consume(_consumer);
+    public (double, double)[] Decode_V3() {
+        var decoder = new V3();
+        return decoder.Decode(Polyline.Value).ToArray();
+    }
 
     [Benchmark]
-    [ArgumentsSource(nameof(Polylines))]
-    public void Decode_V4(string polyline) => V4.Decode(polyline.AsMemory()).Consume(_consumer);
+    public (double, double)[] Decode_V4() {
+        var decoder = new V4();
+        return decoder.Decode(Polyline.Value.AsMemory()).ToArray();
+    }
 
     [Benchmark]
-    [ArgumentsSource(nameof(Polylines))]
-    public void Decode_V5(string polyline) => V5.Decode(polyline).Consume(_consumer);
+    public (double, double)[] Decode_V5() {
+        var decoder = new V5();
+        return decoder.Decode(Polyline.Value).ToArray();
+    }
 
     [Benchmark]
-    [ArgumentsSource(nameof(Polylines))]
-    public void Decode_V6(string polyline) => V6.Default.Decode(polyline).Consume(_consumer);
+    public (double, double)[] Decode_V6() {
+        var decoder = new V6();
+        return decoder.Decode(Polyline.Value).ToArray();
+    }
 
-    private class Current {
-        public static IEnumerable<(double Latitude, double Longitude)> Decode(string polyline) {
-            // Checking null and at least one character
-            if (polyline == null || polyline.Length == 0) {
-                throw new ArgumentException(String.Empty, nameof(polyline));
-            }
-
-            // Initialize local variables
-            int index = 0;
-            int latitude = 0;
-            int longitude = 0;
-
-            // Looping through encoded polyline char array
-            while (index < polyline.Length) {
-                // Attempting to calculate next latitude value. If failed exception is thrown
-                if (!TryCalculateNext(polyline, ref index, ref latitude)) {
-                    throw new InvalidOperationException(String.Empty);
-                }
-
-                // Attempting to calculate next longitude value. If failed exception is thrown
-                if (!TryCalculateNext(polyline, ref index, ref longitude)) {
-                    throw new InvalidOperationException(String.Empty);
-                }
-
-                var coordinate = (GetCoordinate(latitude), GetCoordinate(longitude));
-
-                // Validating decoded coordinate. If not valid exception is thrown
-                if (!_validator.IsValid(coordinate)) {
-                    throw new InvalidOperationException(String.Empty);
-                }
-
-                yield return coordinate;
-            }
-        }
-
-        static bool TryCalculateNext(string polyline, ref int index, ref int value) {
-            // Local variable initialization
-            int chunk;
-            int sum = 0;
-            int shifter = 0;
-
-            do {
-                chunk = polyline[index++] - Constants.ASCII.QuestionMark;
-                sum |= (chunk & Constants.ASCII.UnitSeparator) << shifter;
-                shifter += Constants.ShiftLength;
-            } while (chunk >= Constants.ASCII.Space && index < polyline.Length);
-
-            if (index >= polyline.Length && chunk >= Constants.ASCII.Space)
-                return false;
-
-            value += (sum & 1) == 1 ? ~(sum >> 1) : sum >> 1;
-
-            return true;
-        }
-
-        static double GetCoordinate(int value) {
-            return Convert.ToDouble(value) / Constants.Precision;
-        }
+    [Benchmark]
+    public (double, double)[] Decode_V7() {
+        var decoder = new V7();
+        return decoder.Decode(Polyline.Value).ToArray();
     }
 
     private class V1 {
-        public static IEnumerable<(double Latitude, double Longitude)> Decode(string polyline) {
+        public IEnumerable<(double Latitude, double Longitude)> Decode(string polyline) {
             if (polyline is null || polyline.Length == 0) {
                 throw new ArgumentException(nameof(polyline));
             }
@@ -183,7 +148,7 @@ public class PolylineDecoderBenchmark {
     }
 
     private class V2 {
-        public static IEnumerable<(double Latitude, double Longitude)> Decode(string polyline) {
+        public IEnumerable<(double Latitude, double Longitude)> Decode(string polyline) {
             if (polyline is null || polyline.Length == 0) {
                 throw new ArgumentException(nameof(polyline));
             }
@@ -250,7 +215,7 @@ public class PolylineDecoderBenchmark {
     }
 
     private class V3 {
-        public static IEnumerable<(double Latitude, double Longitude)> Decode(string polyline) {
+        public IEnumerable<(double Latitude, double Longitude)> Decode(string polyline) {
             // Checking null and at least one character
             if (polyline == null || polyline.Length == 0) {
                 throw new ArgumentException(String.Empty, nameof(polyline));
@@ -343,7 +308,7 @@ public class PolylineDecoderBenchmark {
     }
 
     private class V4 {
-        public static IEnumerable<(double Latitude, double Longitude)> Decode(ReadOnlyMemory<char> polyline) {
+        public IEnumerable<(double Latitude, double Longitude)> Decode(ReadOnlyMemory<char> polyline) {
             // Checking null and at least one character
             if (polyline.IsEmpty) {
                 throw new ArgumentException(String.Empty, nameof(polyline));
@@ -432,7 +397,7 @@ public class PolylineDecoderBenchmark {
     }
 
     private class V5 {
-        public static IEnumerable<(double Latitude, double Longitude)> Decode(string polyline) {
+        public IEnumerable<(double Latitude, double Longitude)> Decode(string polyline) {
             // Checking null and at least one character
             if (polyline == null || polyline.Length == 0) {
                 throw new ArgumentException(String.Empty, nameof(polyline));
@@ -522,7 +487,6 @@ public class PolylineDecoderBenchmark {
     }
 
     private class V6 {
-        public static V6 Default = new();
         public IEnumerable<(double Latitude, double Longitude)> Decode(string polyline) {
             // Checking null and at least one character
             if (polyline == null || polyline.Length == 0) {
@@ -547,11 +511,6 @@ public class PolylineDecoderBenchmark {
                 }
 
                 var coordinate = (GetCoordinate(latitude), GetCoordinate(longitude));
-
-                // Validating decoded coordinate. If not valid exception is thrown
-                if (!_validator.IsValid(coordinate)) {
-                    throw new InvalidOperationException(String.Empty);
-                }
 
                 yield return coordinate;
             }
@@ -578,6 +537,61 @@ public class PolylineDecoderBenchmark {
         }
 
         private double GetCoordinate(int value) {
+            return Convert.ToDouble(value) / Constants.Precision;
+        }
+    }
+
+    private class V7 {
+        public IEnumerable<(double Latitude, double Longitude)> Decode(string polyline) {
+            // Checking null and at least one character
+            if (polyline == null || polyline.Length == 0) {
+                throw new ArgumentException(string.Empty, nameof(polyline));
+            }
+
+            // Initialize local variables
+            int index = 0;
+            int latitude = 0;
+            int longitude = 0;
+
+            // Looping through encoded polyline char array
+            while (index < polyline.Length) {
+                // Attempting to calculate next latitude value. If failed exception is thrown
+                if (!TryCalculateNext(polyline, ref index, ref latitude)) {
+                    throw new InvalidOperationException(string.Empty);
+                }
+
+                // Attempting to calculate next longitude value. If failed exception is thrown
+                if (!TryCalculateNext(polyline, ref index, ref longitude)) {
+                    throw new InvalidOperationException(string.Empty);
+                }
+
+                var coordinate = (GetCoordinate(latitude), GetCoordinate(longitude));
+
+                yield return coordinate;
+            }
+        }
+
+        static bool TryCalculateNext(string polyline, ref int index, ref int value) {
+            // Local variable initialization
+            int chunk;
+            int sum = 0;
+            int shifter = 0;
+
+            do {
+                chunk = polyline[index++] - Constants.ASCII.QuestionMark;
+                sum |= (chunk & Constants.ASCII.UnitSeparator) << shifter;
+                shifter += Constants.ShiftLength;
+            } while (chunk >= Constants.ASCII.Space && index < polyline.Length);
+
+            if (index >= polyline.Length && chunk >= Constants.ASCII.Space)
+                return false;
+
+            value += (sum & 1) == 1 ? ~(sum >> 1) : sum >> 1;
+
+            return true;
+        }
+
+        static double GetCoordinate(int value) {
             return Convert.ToDouble(value) / Constants.Precision;
         }
     }

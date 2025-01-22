@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PolylineAlgorithm {
+namespace PolylineAlgorithm.Internal {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace PolylineAlgorithm {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PolylineAlgorithm.ExceptionMessageResource", typeof(ExceptionMessageResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PolylineAlgorithm.Internal.ExceptionMessageResource", typeof(ExceptionMessageResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -79,11 +79,11 @@ namespace PolylineAlgorithm {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Argument cannot be null -or- empty char array..
+        ///   Looks up a localized string similar to Argument cannot be null -or- empty -or- whitespace string..
         /// </summary>
-        internal static string ArgumentCannotBeNullOrEmpty {
+        internal static string ArgumentCannotBeNullEmptyOrWhitespace {
             get {
-                return ResourceManager.GetString("ArgumentCannotBeNullOrEmpty", resourceCulture);
+                return ResourceManager.GetString("ArgumentCannotBeNullEmptyOrWhitespace", resourceCulture);
             }
         }
         
@@ -99,9 +99,9 @@ namespace PolylineAlgorithm {
         /// <summary>
         ///   Looks up a localized string similar to Polyline is malformed..
         /// </summary>
-        internal static string PolylineCharArrayIsMalformed {
+        internal static string PolylineStringIsMalformed {
             get {
-                return ResourceManager.GetString("PolylineCharArrayIsMalformed", resourceCulture);
+                return ResourceManager.GetString("PolylineStringIsMalformed", resourceCulture);
             }
         }
     }

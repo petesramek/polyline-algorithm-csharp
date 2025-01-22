@@ -10,8 +10,6 @@ using BenchmarkDotNet.Running;
 internal class Program {
     static void Main(string[] _) {
         BenchmarkRunner
-            .Run<PolylineEncoderBenchmark>();
-        BenchmarkRunner
-            .Run<PolylineDecoderBenchmark>();
+            .Run<PolylineBenchmark>();
     }
 }

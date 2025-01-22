@@ -3,28 +3,14 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.  
 //
 
-namespace PolylineAlgorithm.DependencyInjection.Tests;
+namespace PolylineAlgorithm.DependencyInjection.Microsoft.Tests;
 
 using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.DependencyInjection.Microsoft;
 
 [TestClass]
 public class ServiceCollectionExtensionsTests {
-    private static IServiceCollection Services { get; } = new ServiceCollection().AddPolylineAlgorithm();
-
-    [TestMethod]
-    public void Resolve_CoordinateValidator_Test() {
-        // Arrange
-        var provider = Services
-            .BuildServiceProvider();
-
-        // Act
-        var validator = provider
-            .GetRequiredService<ICoordinateValidator>();
-
-        // Assert
-        Assert.IsInstanceOfType<ICoordinateValidator>(validator);
-    }
+    private static IServiceCollection Services { get; } = new ServiceCollection().AddDefaultPolylineAlgorithm();
 
     [TestMethod]
     public void Resolve_PolylineEncoder_Test() {
@@ -34,10 +20,10 @@ public class ServiceCollectionExtensionsTests {
 
         // Act
         var encoder = provider
-            .GetRequiredService<IPolylineEncoder>();
+            .GetRequiredService<IPolylineEncoder<Coordinate>>();
 
         // Assert
-        Assert.IsInstanceOfType<IPolylineEncoder>(encoder);
+        Assert.IsInstanceOfType<IPolylineEncoder<Coordinate>>(encoder);
     }
 
     [TestMethod]
@@ -48,9 +34,9 @@ public class ServiceCollectionExtensionsTests {
 
         // Act
         var decoder = provider
-            .GetRequiredService<IPolylineDecoder>();
+            .GetRequiredService<IPolylineEncoder<Coordinate>>();
 
         // Assert
-        Assert.IsInstanceOfType<IPolylineDecoder>(decoder);
+        Assert.IsInstanceOfType<IPolylineEncoder<Coordinate>>(decoder);
     }
 }

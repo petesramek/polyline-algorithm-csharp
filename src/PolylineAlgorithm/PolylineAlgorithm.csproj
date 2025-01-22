@@ -18,7 +18,7 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-		<Compile Update="ExceptionMessageResource.Designer.cs">
+		<Compile Update="Internal\ExceptionMessageResource.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>ExceptionMessageResource.resx</DependentUpon>
@@ -26,7 +26,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Update="ExceptionMessageResource.resx">
+		<EmbeddedResource Update="Internal\ExceptionMessageResource.resx">
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>ExceptionMessageResource.Designer.cs</LastGenOutput>
 		</EmbeddedResource>

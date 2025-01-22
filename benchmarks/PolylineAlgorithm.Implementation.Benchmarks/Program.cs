@@ -5,10 +5,11 @@
 
 namespace PolylineAlgorithm.Implementation.Benchmarks;
 
+using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Running;
 
 internal class Program {
-    static void Main(string[] _) {
+    static void Main(string[] args) {
         BenchmarkRunner
             .Run<PolylineEncoderBenchmark>();
         BenchmarkRunner

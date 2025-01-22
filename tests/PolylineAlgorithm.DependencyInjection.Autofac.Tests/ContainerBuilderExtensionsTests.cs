@@ -19,23 +19,10 @@ public class ContainerBuilderExtensionsTests {
         var builder = new ContainerBuilder();
 
         builder
-            .RegisterPolylineAlgorithm();
+            .RegisterDefaultPolylineAlgorithm();
 
         Container = builder
             .Build();
-    }
-
-    [TestMethod]
-    public void Resolve_CoordinateValidator_Test() {
-        // Arrange
-        var container = Container;
-
-        // Act
-        var validator = container
-            .Resolve<ICoordinateValidator>();
-
-        // Assert
-        Assert.IsInstanceOfType<ICoordinateValidator>(validator);
     }
 
     [TestMethod]
@@ -45,10 +32,10 @@ public class ContainerBuilderExtensionsTests {
 
         // Act
         var encoder = container
-            .Resolve<IPolylineEncoder>();
+            .Resolve<IPolylineEncoder<Coordinate>>();
 
         // Assert
-        Assert.IsInstanceOfType<IPolylineEncoder>(encoder);
+        Assert.IsInstanceOfType<IPolylineEncoder<Coordinate>>(encoder);
     }
 
     [TestMethod]
@@ -58,9 +45,9 @@ public class ContainerBuilderExtensionsTests {
 
         // Act
         var decoder = container
-            .Resolve<IPolylineDecoder>();
+            .Resolve<IPolylineDecoder<Coordinate>>();
 
         // Assert
-        Assert.IsInstanceOfType<IPolylineDecoder>(decoder);
+        Assert.IsInstanceOfType<IPolylineDecoder<Coordinate>>(decoder);
     }
 }

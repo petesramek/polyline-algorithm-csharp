@@ -5,16 +5,16 @@
 
 namespace PolylineAlgorithm.Abstraction;
 
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 /// <summary>
 /// Converts an encoded polyline string into a set of latitude and longitude coordinates.
 /// </summary>
-public interface IPolylineDecoder {
+public interface IPolylineDecoder<TCoordinate> {
     /// <summary>
-    /// Decodes an encoded polyline string into a set of value tuples representing latitude and longitude coordinates.
+    /// Decodes an encoded polyline string into a set of <seealso cref="TCoordinate"/>.
     /// </summary>
-    /// <param name="source">An encoded polyline string to decode.</param>
-    /// <returns>A set of value tuples representing latitude and longitude coordinates.</returns>
-    IEnumerable<(double Latitude, double Longitude)> Decode(string polyline);
+    /// <param name="polyline">An encoded polyline string to decode.</param>
+    /// <returns>A decoded polyline.</returns>
+    Span<TCoordinate> Decode(Polyline polyline);
 }

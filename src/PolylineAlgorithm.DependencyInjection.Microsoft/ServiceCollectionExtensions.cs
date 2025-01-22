@@ -10,17 +10,19 @@ using PolylineAlgorithm.Abstraction;
 
 public static class ServiceCollectionExtensions {
     /// <summary>
-    /// Registers singleton instances of <seealso cref="ICoordinateValidator" />
-    /// , <seealso cref="IPolylineEncoder" />
-    /// and <seealso cref="IPolylineDecoder" />
-    /// to <seealso cref="IServiceCollection" />.
+    /// Adds a singleton service of the type specified in <see cref="IPolylineEncoder{TCoordinate}"/> and <see cref="IPolylineDecoder{TCoordinate}"/>
+    /// with an implementation type <see cref="DefaultPolylineEncoder"/> and <see cref="DefaultPolylineDecoder"/>
+    /// to the specified <see cref="IServiceCollection" />.
     /// </summary>
-    /// <param name="services">Instance of <seealso cref="IServiceCollection"/></param>
-    /// <returns>Instance of <seealso cref="IServiceCollection"/></returns>
-    public static IServiceCollection AddPolylineAlgorithm(this IServiceCollection services) {
+    /// <param name="services">The <see cref="IServiceCollection"/> to add the services to.</param>
+    /// <returns>A reference to <paramref name="services"/> instance after the operation has completed..</returns>
+    /// <remarks>
+    /// TCoordinate is <see cref="Coordinate" />.
+    /// </remarks>
+    public static IServiceCollection AddDefaultPolylineAlgorithm(this IServiceCollection services) {
         return services
-            .AddSingleton<ICoordinateValidator, CoordinateValidator>()
-            .AddSingleton<IPolylineEncoder, PolylineEncoder>()
-            .AddSingleton<IPolylineDecoder, PolylineDecoder>();
+            .AddSingleton<IPolylineEncoder<Coordinate>, DefaultPolylineEncoder>()
+            .AddSingleton<IPolylineDecoder<Coordinate>, DefaultPolylineDecoder>();
+
     }
 }

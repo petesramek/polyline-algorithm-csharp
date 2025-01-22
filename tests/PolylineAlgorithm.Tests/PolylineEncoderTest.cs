@@ -4,14 +4,13 @@
 //
 
 namespace PolylineAlgorithm.Tests;
-
 /// <summary>
 /// Defines the <see cref="PolylineEncoderTest" />
 /// </summary>
 [TestClass]
-[TestCategory(nameof(PolylineEncoder))]
+[TestCategory(nameof(DefaultPolylineEncoder))]
 public class PolylineEncoderTest {
-    private static PolylineEncoder Encoder { get; } = new PolylineEncoder(new CoordinateValidator());
+    private static DefaultPolylineEncoder Encoder { get; } = new DefaultPolylineEncoder();
 
     /// <summary>
     /// Method is testing <see cref="PolylineEncoder.Decode(char[])" /> method. Empty is passed as parameter.
@@ -20,7 +19,7 @@ public class PolylineEncoderTest {
     [TestMethod]
     public void Encode_EmptyInput_ThrowsException() {
         // Arrange
-        var emptyCoordinates = Defaults.Coordinate.Empty;
+        var emptyCoordinates = Defaults.Coordinates.Empty;
 
         // Act
         void EncodeEmptyCoordinates() {
@@ -32,30 +31,13 @@ public class PolylineEncoderTest {
     }
 
     /// <summary>
-    /// The Encode_InvalidInput
-    /// </summary>
-    [TestMethod]
-    public void Encode_InvalidInput_ThrowsException() {
-        // Arrange
-        var invalidCoordinates = Defaults.Coordinate.Invalid;
-
-        // Act
-        void EncodeInvalidCoordinates() {
-            Encoder.Encode(invalidCoordinates);
-        }
-
-        // Assert
-        Assert.ThrowsException<AggregateException>(() => EncodeInvalidCoordinates());
-    }
-
-    /// <summary>
     /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{(double Latitude, double Longitude)})" /> method. <see langword="null" /> is passed as parameter.
     /// Expected result is <see cref="ArgumentException"/>.
     /// </summary>
     [TestMethod]
     public void Encode_NullInput_ThrowsException() {
         // Arrange
-        var nullCoordinates = (IEnumerable<(double, double)>)null!;
+        var nullCoordinates = (IEnumerable<Coordinate>)null!;
 
         // Act
         void EncodeNullCoordinates() {
@@ -72,12 +54,12 @@ public class PolylineEncoderTest {
     [TestMethod]
     public void Encode_ValidInput_AreEqual() {
         // Arrange
-        var validCoordinates = Defaults.Coordinate.Valid;
+        var validCoordinates = Defaults.Coordinates.Valid;
 
         // Act
         var result = Encoder.Encode(validCoordinates);
 
         // Assert
-        Assert.AreEqual(Defaults.Polyline.Valid, result);
+        Assert.AreEqual(new Polyline(Defaults.Polyline.Valid), result);
     }
 }
