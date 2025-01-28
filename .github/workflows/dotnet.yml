@@ -26,6 +26,18 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-    - name: Benchmark
+    - name: Benchmark (.NET 5)
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
-      run: dotnet run -c Release
+      run: dotnet run -c Release --framework net5.0
+    - name: Benchmark (.NET 6)
+      working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
+      run: dotnet run -c Release --framework net6.0
+    - name: Benchmark (.NET 7)
+      working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
+      run: dotnet run -c Release --framework net7.0
+    - name: Benchmark (.NET 8)
+      working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
+      run: dotnet run -c Release --framework net8.0
+    - name: Benchmark (.NET 9)
+      working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
+      run: dotnet run -c Release --framework net9.0
