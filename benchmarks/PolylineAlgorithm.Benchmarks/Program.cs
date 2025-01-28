@@ -8,8 +8,9 @@ namespace PolylineAlgorithm.Benchmarks;
 using BenchmarkDotNet.Running;
 
 internal class Program {
-    static void Main(string[] _) {
-        BenchmarkRunner
-            .Run<PolylineBenchmark>();
+    static void Main(string[] args) {
+        BenchmarkSwitcher
+            .FromAssembly(typeof(Program).Assembly)
+            .Run(args);
     }
 }
