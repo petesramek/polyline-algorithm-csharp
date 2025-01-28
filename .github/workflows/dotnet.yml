@@ -28,4 +28,4 @@ jobs:
       run: dotnet test --no-build --verbosity normal
     - name: Benchmark (.NET 9)
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
-      run: dotnet run -c Release --framework net9.0 --runtimes net9.0 --filter *
+      run: dotnet run -c Release --framework net9.0 --runtimes net9.0
