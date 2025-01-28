@@ -11,26 +11,22 @@ using PolylineAlgorithm;
 /// Defines the <see cref="PolylineEncoderTest" />
 /// </summary>
 [TestClass]
-[TestCategory(nameof(DefaultPolylineDecoder))]
+[TestCategory(nameof(PolylineDecoder))]
 public class PolylineDecoderTest {
-    private static DefaultPolylineDecoder Decoder { get; } = new DefaultPolylineDecoder();
+    public PolylineDecoder Decoder = new PolylineDecoder();
 
     /// <summary>
     /// Method is testing <see cref="PolylineEncoder.Decode(char[])" /> method. Empty <see langword="char"/>[] is passed as parameter.
     /// Expected result is <see cref="ArgumentException"/>.
     /// </summary>
     [TestMethod]
-    public void Decode_EmptyInput_ThrowsException() {
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void Decode_InvalidInput_ThrowsException() {
         // Arrange
-        var emptyPolylineCharArray = new Polyline(Defaults.Polyline.Empty);
+        ReadOnlySpan<char> invalidPolylineCharArray = Defaults.Polyline.Invalid;
 
         // Act
-        void DecodeEmptyPolylineCharArray() {
-            Decoder.Decode(emptyPolylineCharArray).ToArray();
-        }
-
-        // Assert
-        Assert.ThrowsException<ArgumentException>(DecodeEmptyPolylineCharArray);
+        var result = Decoder.Decode(in invalidPolylineCharArray);
     }
 
     /// <summary>
@@ -40,12 +36,12 @@ public class PolylineDecoderTest {
     [TestMethod]
     public void Decode_ValidInput_AreEquivalent() {
         // Arrange
-        var validPolylineCharArray = new Polyline(Defaults.Polyline.Valid);
+        ReadOnlySpan<char> validPolylineCharArray = Defaults.Polyline.Valid;
 
         // Act
-        var result = Decoder.Decode(validPolylineCharArray);
+        var result = Decoder.Decode(in validPolylineCharArray);
 
         // Assert
-        CollectionAssert.AreEquivalent(Defaults.Coordinates.Valid.ToArray(), result.ToArray());
+        CollectionAssert.AreEqual(Defaults.Coordinates.Valid.ToArray(), result.ToArray());
     }
 }

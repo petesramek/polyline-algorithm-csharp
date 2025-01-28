@@ -8,10 +8,9 @@ namespace PolylineAlgorithm.Tests;
 /// Defines the <see cref="PolylineEncoderTest" />
 /// </summary>
 [TestClass]
-[TestCategory(nameof(DefaultPolylineEncoder))]
+[TestCategory(nameof(PolylineEncoder))]
 public class PolylineEncoderTest {
-    private static DefaultPolylineEncoder Encoder { get; } = new DefaultPolylineEncoder();
-
+    public PolylineEncoder Encoder = new PolylineEncoder();
     /// <summary>
     /// Method is testing <see cref="PolylineEncoder.Decode(char[])" /> method. Empty is passed as parameter.
     /// Expected result is <see cref="ArgumentException"/>.
@@ -60,6 +59,6 @@ public class PolylineEncoderTest {
         var result = Encoder.Encode(validCoordinates);
 
         // Assert
-        Assert.AreEqual(new Polyline(Defaults.Polyline.Valid), result);
+        Assert.AreEqual(Defaults.Polyline.Valid, result.ToString());
     }
 }
