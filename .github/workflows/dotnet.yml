@@ -24,7 +24,7 @@ jobs:
     - name: Setup .NET ${{ matrix.netversion }}
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: ${{ matrix.netversion }}.x
+        dotnet-version: 9.x
     - name: Restore
       run: dotnet restore
     - name: Build
