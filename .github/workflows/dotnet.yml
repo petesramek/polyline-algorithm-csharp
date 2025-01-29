@@ -27,7 +27,7 @@ jobs:
     - name: Restore
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore 
+      run: dotnet build --no-restore --framework net${{ matrix.netversion }}.0
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
