@@ -7,14 +7,17 @@ namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
+using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Order;
 using Cloudikka.PolylineAlgorithm.Encoding;
 using PolylineAlgorithm;
 using PolylinerNet;
-using System.Collections.Generic;
 
 [RankColumn]
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net70, baseline: true)]
+[SimpleJob(RuntimeMoniker.Net80)]
+[SimpleJob(RuntimeMoniker.Net90)]
 [Orderer(SummaryOrderPolicy.Default)]
 public class DecodeBenchmark {
     private readonly Consumer _consumer = new();

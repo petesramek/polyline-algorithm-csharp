@@ -60,7 +60,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        netversion: [7, 8, 9]
 
     concurrency:
       group: benchmark
@@ -70,15 +69,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET ${{ matrix.netversion }}
+    - name: Setup .NET 7
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: ${{ matrix.netversion }}.x
-    - name: Fix libssl
-      if: ${{ matrix.netversion == 5 && matrix.os == 'ubuntu-latest' }}
-      run: |
-        wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.23_amd64.deb
-        sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2.23_amd64.deb
+        dotnet-version: 7.x
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.x
+    - name: Setup .NET 9
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 9.x
     - uses: actions/download-artifact@v4
       with:
         name: build
@@ -86,7 +88,7 @@ jobs:
         merge-multiple: true
     - name: Decode Benchmark
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
-      run: dotnet run --configuration Release --framework net${{ matrix.netversion }}.0 --filter '*DecodeBenchmark*'
+      run: dotnet run --configuration Release
     - name: Encode Benchmark
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
-      run: dotnet run --configuration Release --framework net${{ matrix.netversion }}.0 --filter '*EncodeBenchmark*'
+      run: dotnet run --configuration Release
