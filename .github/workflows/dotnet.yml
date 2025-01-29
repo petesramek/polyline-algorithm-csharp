@@ -32,6 +32,8 @@ jobs:
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
       run: dotnet run -c Release --framework net9.0 --runtimes net9.0 --filter '*EncodeBenchmark*'
   benchmark:
+    needs: [build]
+
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
