@@ -58,15 +58,16 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        netversion: [5, 6, 7, 8, 9]
 
     runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET 9
+    - name: Setup .NET ${{ matrix.netversion }}
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 9.x
+        dotnet-version: ${{ matrix.netversion }}.x
     - uses: actions/download-artifact@v4
       with:
         name: build
@@ -74,7 +75,7 @@ jobs:
         merge-multiple: true
     - name: Decode Benchmark
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
-      run: dotnet run -c Release --no-restore --no-build --framework net9.0 --runtimes net9.0 --filter '*DecodeBenchmark*'
+      run: CI=false dotnet run -c Release --no-restore --no-build --framework net${{ matrix.netversion }}.0 --runtimes net${{ matrix.netversion }}.0 --filter '*DecodeBenchmark*'
     - name: Encode Benchmark
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
-      run: dotnet run -c Release --no-restore --no-build --framework net9.0 --runtimes net9.0 --filter '*EncodeBenchmark*'
+      run: CI=false dotnet run -c Release --no-restore --no-build --framework net${{ matrix.netversion }}.0 --runtimes net${{ matrix.netversion }}.0 --filter '*EncodeBenchmark*'
