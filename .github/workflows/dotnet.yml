@@ -90,4 +90,4 @@ jobs:
         merge-multiple: true
     - name: Benchmark
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
-      run: dotnet run --configuration Release --framework net${{ matrix.netversion }}.0
+      run: dotnet run --configuration Release
