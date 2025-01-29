@@ -26,6 +26,9 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-    - name: Benchmark
+    - name: Decode Benchmark
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
-      run: dotnet run -c Release --framework net9.0 --runtimes net9.0 --filter '*Benchmark*'
+      run: dotnet run -c Release --framework net9.0 --runtimes net9.0 --filter '*DecodeBenchmark*'
+    - name: Encode Benchmark
+      working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
+      run: dotnet run -c Release --framework net9.0 --runtimes net9.0 --filter '*EncodeBenchmark*'
