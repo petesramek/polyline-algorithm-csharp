@@ -46,7 +46,7 @@ jobs:
         path: .
         merge-multiple: true
     - name: Display structure of downloaded files
-      run: ls -R path/to/artifacts
+      run: ls -R .
     - name: Test
       run: dotnet test --no-build --verbosity normal
 
