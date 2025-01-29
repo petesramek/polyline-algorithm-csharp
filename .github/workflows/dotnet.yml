@@ -54,7 +54,7 @@ jobs:
       run: dotnet test --no-restore --no-build --configuration Release --verbosity normal
 
   benchmark:
-    name: Benchmark with .NET ${{ matrix.netversion }}.0 on ${{ matrix.os }}
+    name: Benchmarks on ${{ matrix.os }}
     needs: [build]
 
     strategy:
