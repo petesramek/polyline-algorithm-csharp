@@ -24,7 +24,7 @@ jobs:
     - name: Restore
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore --configuration Release
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
@@ -51,9 +51,10 @@ jobs:
         path: .
         merge-multiple: true
     - name: Test
-      run: dotnet test --no-restore --no-build --verbosity normal
+      run: dotnet test --no-restore --no-build  --configuration Release --verbosity normal
 
   benchmark:
+    name: Benchmark with .NET net${{ matrix.netversion }} on ${{ matrix.os }}
     needs: [build]
 
     strategy:
@@ -81,7 +82,7 @@ jobs:
         merge-multiple: true
     - name: Decode Benchmark
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
-      run: dotnet run -c Release --no-restore --no-build --framework net${{ matrix.netversion }}.0 --filter '*DecodeBenchmark*'
+      run: dotnet run -c Release --no-restore --no-build --configuration Release --framework net${{ matrix.netversion }}.0 --filter '*DecodeBenchmark*'
     - name: Encode Benchmark
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
-      run: dotnet run -c Release --no-restore --no-build --framework net${{ matrix.netversion }}.0 --filter '*EncodeBenchmark*'
+      run: dotnet run -c Release --no-restore --no-build --configuration Release --framework net${{ matrix.netversion }}.0 --filter '*EncodeBenchmark*'
