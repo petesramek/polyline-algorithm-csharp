@@ -13,22 +13,18 @@ jobs:
   build:
     name: Build with .NET ${{ matrix.netversion }}
 
-    strategy:
-      matrix:
-        netversion: [7, 8, 9]
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET ${{ matrix.netversion }}
+    - name: Setup .NET 9
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 9.x
     - name: Restore
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore --framework net${{ matrix.netversion }}.0
+      run: dotnet build --no-restore
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
