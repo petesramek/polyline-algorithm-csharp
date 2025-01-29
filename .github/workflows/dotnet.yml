@@ -41,10 +41,12 @@ jobs:
       with:
         dotnet-version: 9.x
     - uses: actions/download-artifact@v4
-      name: Display structure of downloaded files
       with:
-        path: build
-        run: ls -R
+        name: build
+        path: .
+        merge-multiple: true
+    - name: Display structure of downloaded files
+      run: ls -R path/to/artifacts
     - name: Test
       run: dotnet test --no-build --verbosity normal
 
@@ -67,6 +69,11 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 9.x
+    - uses: actions/download-artifact@v4
+      with:
+        name: build
+        path: .
+        merge-multiple: true
     - name: Decode Benchmark
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
       run: dotnet run -c Release  --no-restore --framework net9.0 --runtimes net9.0 --filter '*DecodeBenchmark*'
