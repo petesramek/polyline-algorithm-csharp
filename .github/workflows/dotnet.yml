@@ -33,6 +33,7 @@ jobs:
           **/obj/*
 
   test:
+    name: Test with MsTest
     needs: [build]
 
     runs-on: ubuntu-latest
