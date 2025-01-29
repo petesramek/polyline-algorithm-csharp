@@ -61,10 +61,6 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
-    concurrency:
-      group: benchmark-group
-      cancel-in-progress: true
-
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET 9
