@@ -62,10 +62,6 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         netversion: [7, 8, 9]
 
-    concurrency:
-      group: benchmark
-      cancel-in-progress: false
-
     runs-on: ${{ matrix.os }}
 
     steps:
