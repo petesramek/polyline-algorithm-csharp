@@ -81,6 +81,8 @@ jobs:
         path: .
         merge-multiple: true
     - name: Decode Benchmark
+      working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
       run: dotnet run --no-restore --no-build --framework net${{ matrix.netversion }}.0 --filter '*DecodeBenchmark*'
     - name: Encode Benchmark
+      working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
       run: dotnet run --no-restore --no-build --framework net${{ matrix.netversion }}.0 --filter '*EncodeBenchmark*'
