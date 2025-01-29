@@ -49,8 +49,6 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 9.x
-    - name: Restore
-      run: dotnet restore
     - name: Decode Benchmark
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
       run: dotnet run -c Release  --no-restore --framework net9.0 --runtimes net9.0 --filter '*DecodeBenchmark*'
