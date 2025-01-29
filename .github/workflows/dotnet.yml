@@ -25,7 +25,7 @@ jobs:
       with:
         dotnet-version: ${{ matrix.netversion }}.x
     - name: Restore
-      run: dotnet restore
+      run: dotnet restore --framework net${{ matrix.netversion }}.0
     - name: Build
       run: dotnet build --no-restore --framework net${{ matrix.netversion }}.0
     - name: Upload
