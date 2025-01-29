@@ -22,7 +22,7 @@ public class DecodeBenchmark {
     public static ReadOnlyMemory<char> Memory_Polyline { get; } = String_Polyline.AsMemory();
 
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public void PolylineDecoder_Decode() {
         ReadOnlySpan<char> polyline = Memory_Polyline.Span;
         var decoder = new PolylineDecoder();
