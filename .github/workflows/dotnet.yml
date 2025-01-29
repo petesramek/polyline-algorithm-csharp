@@ -60,7 +60,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        netversion: [7, 8, 9]
 
     runs-on: ${{ matrix.os }}
 
