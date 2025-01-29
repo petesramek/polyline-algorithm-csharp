@@ -69,10 +69,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET ${{ matrix.netversion }}
+    - name: Setup .NET 9
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: ${{ matrix.netversion }}.x
+        dotnet-version: 9.x
     - name: Fix libssl
       if: ${{ matrix.netversion == 5 && matrix.os == 'ubuntu-latest' }}
       run: |
@@ -85,7 +85,7 @@ jobs:
         merge-multiple: true
     - name: Decode Benchmark
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
-      run: dotnet run --configuration Release --framework net${{ matrix.netversion }}.0 --filter '*DecodeBenchmark*'
+      run: dotnet run --configuration Release
     - name: Encode Benchmark
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
-      run: dotnet run --configuration Release --framework net${{ matrix.netversion }}.0 --filter '*EncodeBenchmark*'
+      run: dotnet run --configuration Release
