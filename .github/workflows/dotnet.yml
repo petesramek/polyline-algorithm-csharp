@@ -64,6 +64,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Fix libssl
+      run: sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu5_amd64.deb
+      if: ${{ matrix.netversion }} == 5
     - name: Setup .NET ${{ matrix.netversion }}
       uses: actions/setup-dotnet@v3
       with:
