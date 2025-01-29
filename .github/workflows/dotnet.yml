@@ -11,13 +11,13 @@ on:
 
 jobs:
   build:
-    name: Build with .NET ${{ matrix.netversion }}
+    name: Build with .NET 9
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET 9
+    - name: Install .NET 9
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 9.x
@@ -51,10 +51,10 @@ jobs:
         path: .
         merge-multiple: true
     - name: Test
-      run: dotnet test --no-restore --no-build  --configuration Release --verbosity normal
+      run: dotnet test --no-restore --no-build --configuration Release --verbosity normal
 
   benchmark:
-    name: Benchmark with .NET net${{ matrix.netversion }} on ${{ matrix.os }}
+    name: Benchmark with .NET ${{ matrix.netversion }}.0 on ${{ matrix.os }}
     needs: [build]
 
     strategy:
@@ -82,7 +82,7 @@ jobs:
         merge-multiple: true
     - name: Decode Benchmark
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
-      run: dotnet run --no-restore --no-build --framework net${{ matrix.netversion }}.0 --filter '*DecodeBenchmark*'
+      run: dotnet run --no-restore --no-build --configuration Release --framework net${{ matrix.netversion }}.0 --filter '*DecodeBenchmark*'
     - name: Encode Benchmark
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
-      run: dotnet run --no-restore --no-build --framework net${{ matrix.netversion }}.0 --filter '*EncodeBenchmark*'
+      run: dotnet run --no-restore --no-build --configuration Release --framework net${{ matrix.netversion }}.0 --filter '*EncodeBenchmark*'
