@@ -64,6 +64,7 @@ jobs:
 
     concurrency:
       group: benchmark
+      cancel-in-progress: false
 
     runs-on: ${{ matrix.os }}
 
