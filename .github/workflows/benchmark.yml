@@ -1,0 +1,65 @@
+name: .NET
+
+on:
+  push:
+    branches: [ "main" ] 
+
+jobs:
+  build:
+    name: Build with .NET 9
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install .NET 9
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.x
+    - name: Restore
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+    - name: Upload
+      uses: actions/upload-artifact@v4
+      with:
+        name: build
+        path: |
+          **/bin/*
+          **/obj/*
+
+  benchmark:
+    name: Benchmark on ${{ matrix.os }}
+    needs: [build]
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install .NET SDK
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: |
+          2.0.x
+          2.1.x
+          2.2.x
+          3.0.x
+          3.1.x
+          5.x
+          6.x
+          7.x
+          8.x
+          9.x
+    - name: Download
+      uses: actions/download-artifact@v4
+      with:
+        name: build
+        path: .
+        merge-multiple: true
+    - name: Benchmark
+      working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
+      run: dotnet run -c Release -f net9.0 --runtimes netcoreapp2.0 netcoreapp2.1 netcoreapp2.2 netcoreapp3.0 netcoreapp3.1 net5.0 net6.0 net7.0 net8.0 net9.0 --filter '*Benchmark*'
