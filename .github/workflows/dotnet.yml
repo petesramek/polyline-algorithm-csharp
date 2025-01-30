@@ -18,7 +18,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Install .NET 9
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.x
     - name: Restore
@@ -42,7 +42,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET 9
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.x
     - uses: actions/download-artifact@v4
@@ -65,46 +65,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET Core 2.0
-      uses: actions/setup-dotnet@v3
+    - name: Install .NET SDK
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 2.0.x
-    - name: Setup .NET Core 2.1
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 2.1.x
-    - name: Setup .NET Core 2.2
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 2.2.x
-    - name: Setup .NET Core 3.0
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 3.0.x
-    - name: Setup .NET Core 3.1
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 3.1.x
-    - name: Setup .NET 5
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 5.x
-    - name: Setup .NET 6
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.x
-    - name: Setup .NET 7
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 7.x
-    - name: Setup .NET 8
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 8.x
-    - name: Setup .NET 9
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 9.x
+        dotnet-version: |
+          2.0.x
+          2.1.x
+          2.2.x
+          3.0.x
+          3.1.x
+          5.x
+          6.x
+          7.x
+          8.x
+          9.x
     - name: Fix libssl
       if: ${{ matrix.netversion == 5 && matrix.os == 'ubuntu-latest' }}
       run: |
