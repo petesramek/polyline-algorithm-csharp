@@ -1,18 +1,18 @@
-# .NET Polyline Algorithm (.NET Standard 2.0)
+# .NET Polyline Algorithm (.NET Standard 2.1)
 
-Lightweight .NET Standard 2.0 library implementing <a href="https://developers.google.com/maps/documentation/utilities/polylinealgorithm">Google Polyline Algorithm</a>. Designed with respect to flexibility, but still with easy to use.
+Lightweight high=performance .NET Standard 2.1 library implementing <a href="https://developers.google.com/maps/documentation/utilities/polylinealgorithm">Google Polyline Algorithm</a>.
 
 ## Prerequisites
 
-.NET Polyline Algorithm is avalable as nuget package <a href="https://www.nuget.org/packages/Cloudikka.PolylineAlgorithm/">Cloudikka.PolylineAlgorithm</a> targeting .NET Standard 2.0.
+.NET Polyline Algorithm is avalable as a NuGet package <a href="https://www.nuget.org/packages/PolylineAlgorithm/">PolylineAlgorithm</a> targeting .NET Standard 2.1.
 
 Command line:
 
-`Install-Package Cloudikka.PolylineAlgorithm`
+`Install-Package PolylineAlgorithm`
 
 NuGet Package Manager:
 
-`Cloudikka.PolylineAlgorithm`
+`PolylineAlgorithm`
 
 ## Hot to use it
 
