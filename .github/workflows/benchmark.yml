@@ -62,4 +62,4 @@ jobs:
         merge-multiple: true
     - name: Benchmark
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
-      run: dotnet run -c Release -f net9.0 --runtimes netcoreapp2.0 netcoreapp2.1 netcoreapp2.2 netcoreapp3.0 netcoreapp3.1 net5.0 net6.0 net7.0 net8.0 net9.0 --filter '*Benchmark*'
+      run: dotnet run -c Release -f net9.0 --runtimes netcoreapp2.0 netcoreapp2.1 netcoreapp2.2 netcoreapp3.0 netcoreapp3.1 net5.0 net6.0 net7.0 net8.0 net9.0 --filter *
