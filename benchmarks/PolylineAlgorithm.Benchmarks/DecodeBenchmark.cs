@@ -7,7 +7,6 @@ namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
-using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Order;
 using Cloudikka.PolylineAlgorithm.Encoding;
 using PolylineAlgorithm;
@@ -16,17 +15,7 @@ using PolylinerNet;
 [RankColumn]
 [MemoryDiagnoser]
 [MarkdownExporter]
-[SimpleJob(RuntimeMoniker.NetCoreApp20)]
-[SimpleJob(RuntimeMoniker.NetCoreApp21)]
-[SimpleJob(RuntimeMoniker.NetCoreApp22)]
-[SimpleJob(RuntimeMoniker.NetCoreApp30)]
-[SimpleJob(RuntimeMoniker.NetCoreApp31)]
-[SimpleJob(RuntimeMoniker.Net50)]
-[SimpleJob(RuntimeMoniker.Net60)]
-[SimpleJob(RuntimeMoniker.Net70)]
-[SimpleJob(RuntimeMoniker.Net80)]
-[SimpleJob(RuntimeMoniker.Net90)]
-[Orderer(SummaryOrderPolicy.Default)]
+[Orderer(SummaryOrderPolicy.Method)]
 public class DecodeBenchmark {
     private readonly Consumer _consumer = new();
     public static string String_Polyline { get; } = "}adrJh}}cVazlw@uykyNhaqeE`vfzG_~kY}~`eTsr{~Cwn~aOty_g@thapJvvoqKxt{sStfahDmtvmIfmiqBhjq|HujpgComs{Z}dhdKcidPymnvBqmquE~qrfI`x{lPf|ftGn~}d_@q}saAurjmu@bwr_DxrfaK~{rO~bidPwfduXwlioFlpum@twvfFpmi~VzxcsOqyejYhh|i@pbnr[twvfF_ueUujvbSa_d~ZkcnjZla~f[pmquEebxo[j}nr@xnn|H{gyiKbh{yH`oenn@y{mpIrbd~EmipgH}fuov@hjqtTp|flAttvkFrym_d@|eyCwn~aOfvdNmeawM??{yxdUcidPca{}D_atqGenzcAlra{@trgWhn{aZ??tluqOgu~sH";
