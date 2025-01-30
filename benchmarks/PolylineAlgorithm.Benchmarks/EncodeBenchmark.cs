@@ -15,6 +15,7 @@ using System.Collections.Generic;
 
 [RankColumn]
 [MemoryDiagnoser]
+[MarkdownExporter]
 [SimpleJob(RuntimeMoniker.NetCoreApp20)]
 [SimpleJob(RuntimeMoniker.NetCoreApp21)]
 [SimpleJob(RuntimeMoniker.NetCoreApp22)]

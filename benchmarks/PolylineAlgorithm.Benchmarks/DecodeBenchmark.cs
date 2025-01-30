@@ -15,6 +15,7 @@ using PolylinerNet;
 
 [RankColumn]
 [MemoryDiagnoser]
+[MarkdownExporter]
 [SimpleJob(RuntimeMoniker.NetCoreApp20)]
 [SimpleJob(RuntimeMoniker.NetCoreApp21)]
 [SimpleJob(RuntimeMoniker.NetCoreApp22)]
