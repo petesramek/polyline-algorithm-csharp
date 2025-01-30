@@ -15,6 +15,13 @@ using PolylinerNet;
 
 [RankColumn]
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.NetCoreApp20)]
+[SimpleJob(RuntimeMoniker.NetCoreApp21)]
+[SimpleJob(RuntimeMoniker.NetCoreApp22)]
+[SimpleJob(RuntimeMoniker.NetCoreApp30)]
+[SimpleJob(RuntimeMoniker.NetCoreApp31)]
+[SimpleJob(RuntimeMoniker.Net50)]
+[SimpleJob(RuntimeMoniker.Net60)]
 [SimpleJob(RuntimeMoniker.Net70)]
 [SimpleJob(RuntimeMoniker.Net80)]
 [SimpleJob(RuntimeMoniker.Net90)]

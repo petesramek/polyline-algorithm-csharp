@@ -54,7 +54,7 @@ jobs:
       run: dotnet test --no-restore --no-build --configuration Release --verbosity normal
 
   benchmark:
-    name: Benchmarks on ${{ matrix.os }}
+    name: Benchmark on ${{ matrix.os }}
     needs: [build]
 
     strategy:
@@ -65,6 +65,34 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Setup .NET Core 2.0
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 2.0.x
+    - name: Setup .NET Core 2.1
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 2.1.x
+    - name: Setup .NET Core 2.2
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 2.2.x
+    - name: Setup .NET Core 3.0
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 3.0.x
+    - name: Setup .NET Core 3.1
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 3.1.x
+    - name: Setup .NET 5
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 5.x
+    - name: Setup .NET 6
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.x
     - name: Setup .NET 7
       uses: actions/setup-dotnet@v3
       with:
@@ -89,4 +117,4 @@ jobs:
         merge-multiple: true
     - name: Benchmark
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
-      run: dotnet run -c Release -f net9.0 --runtimes net7.0 net8.0 net9.0 --filter '*Benchmark*'
+      run: dotnet run -c Release -f net9.0 --runtimes netcoreapp2.0 netcoreapp2.1 netcoreapp2.2 netcoreapp3.0 netcoreapp3.1 net5.0 net6.0 net7.0 net8.0 net9.0 --filter '*Benchmark*'
