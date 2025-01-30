@@ -89,4 +89,4 @@ jobs:
         merge-multiple: true
     - name: Benchmark
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
-      run: dotnet run --configuration Release --runtimes net7.0 net8.0 net9.0
+      run: dotnet run -c Release -f net9.0 --runtimes net7.0 net8.0 net9.0
