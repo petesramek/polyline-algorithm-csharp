@@ -63,6 +63,8 @@ jobs:
       run: ls -R
     - name: Pack
       run: dotnet pack ./src/**/*.csproj --configuration Release
+    - name: Display structure of after pack
+      run: ls -R
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
