@@ -31,9 +31,7 @@ jobs:
   test:
     name: Test with MsTest
     needs: [build]
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET 9
@@ -51,6 +49,7 @@ jobs:
 
   pack:
     name: Pack with .NET 9
+    needs: [test]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
