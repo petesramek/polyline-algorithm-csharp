@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: petesramek/templates/build
+    - uses: petesramek/templates/build@9f04b48af7fbea3556d6e803665b36481be33e4d
     - name: Install .NET 9
       uses: actions/setup-dotnet@v4
       with:
