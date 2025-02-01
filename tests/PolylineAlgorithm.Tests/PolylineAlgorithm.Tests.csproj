@@ -22,14 +22,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="MSTest" Version="3.*" />
 		<PackageReference Include="Microsoft.CodeCoverage" Version="17.*" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*" />
-		<PackageReference Include="MSTest.Analyzers" Version="3.*">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="MSTest.TestAdapter" Version="3.*" />
-		<PackageReference Include="MSTest.TestFramework" Version="3.*" />
 		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.*" />
 	</ItemGroup>
 
