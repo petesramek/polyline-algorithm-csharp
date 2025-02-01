@@ -63,7 +63,7 @@ jobs:
         name: build
         path: .
     - name: Pack
-      run: dotnet pack ./src/**/*.csproj --no-build --no-restore --configuration Release
+      run: dotnet pack ./src/**/*.csproj --no-build --configuration Release
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
