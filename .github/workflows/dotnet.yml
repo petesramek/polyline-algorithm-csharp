@@ -49,4 +49,3 @@ jobs:
         merge-multiple: true
     - name: Test
       run: dotnet test --no-restore --no-build --configuration Release --verbosity normal --collect:"XPlat Code Coverage" --settings coverlet.runsettings
-      working-directory: ./tests/
