@@ -11,7 +11,9 @@
 	<PropertyGroup>
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
+		<EnableMSTestRunner>true</EnableMSTestRunner>
 		<TestingExtensionsProfile>Default</TestingExtensionsProfile>
+		<OutputType>exe</OutputType>
 	</PropertyGroup>
 
 	<PropertyGroup>
