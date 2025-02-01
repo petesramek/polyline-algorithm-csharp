@@ -14,15 +14,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: petesramek/polyline-algorithm-csharp/.github/templates/build@9f04b48af7fbea3556d6e803665b36481be33e4d
-    - name: Install .NET 9
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 9.x
-    - name: Restore
-      run: dotnet restore ./src/**/*.csproj
-    - name: Build
-      run: dotnet build ./src/**/*.csproj --no-restore --configuration Release
+    - uses: ./.github/actions/build-dotnet
+    # - name: Install .NET 9
+    #   uses: actions/setup-dotnet@v4
+    #   with:
+    #     dotnet-version: 9.x
+    # - name: Restore
+    #   run: dotnet restore ./src/**/*.csproj
+    # - name: Build
+    #   run: dotnet build ./src/**/*.csproj --no-restore --configuration Release
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
