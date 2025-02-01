@@ -23,7 +23,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="MSTest" Version="3.*" />
-		<PackageReference Include="Microsoft.CodeCoverage" Version="17.*" />
 		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.*" />
 	</ItemGroup>
 
