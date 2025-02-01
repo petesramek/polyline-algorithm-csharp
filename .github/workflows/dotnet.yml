@@ -23,8 +23,8 @@ jobs:
       with:
         name: build
         path: |
-          /**/bin/*
-          /**/obj/*
+          ./src/**/bin/*
+          ./src/**/obj/*
 
   test:
     name: Test with MsTest
@@ -68,4 +68,4 @@ jobs:
       with:
         name: package
         path: |
-          **/*.nupkg
+          ./src/**/*.nupkg
