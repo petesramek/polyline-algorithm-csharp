@@ -25,8 +25,8 @@ jobs:
       with:
         name: build
         path: |
-          src/**/bin/*
-          src/**/obj/*
+          /**/bin/*
+          /**/obj/*
 
   test:
     name: Test with MsTest
