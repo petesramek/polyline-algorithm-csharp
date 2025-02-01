@@ -48,7 +48,7 @@ jobs:
         path: .
         merge-multiple: true
     - name: Test
-      run: dotnet test --no-restore --no-build --configuration Release --verbosity normal --logger trx --coverage "Code Coverage" --results-directory TestResults
+      run: dotnet test --no-restore --no-build --configuration Release --verbosity normal --logger trx --collect:"Code Coverage" --results-directory TestResults
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
