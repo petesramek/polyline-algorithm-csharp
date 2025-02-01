@@ -1,4 +1,4 @@
-﻿<Project Sdk="MSTest.Sdk">
+﻿<Project Sdk="MSTest.Sdk/3.7.3">
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
@@ -11,6 +11,7 @@
 	<PropertyGroup>
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
+		<TestingExtensionsProfile>Default</TestingExtensionsProfile>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -19,21 +20,6 @@
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<EnableNETAnalyzers>false</EnableNETAnalyzers>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Microsoft.CodeCoverage" Version="17.*" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*" />
-		<PackageReference Include="MSTest.Analyzers" Version="3.*">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="MSTest.TestAdapter" Version="3.*" />
-		<PackageReference Include="MSTest.TestFramework" Version="3.*" />
-		<PackageReference Include="coverlet.collector" Version="6.*">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\PolylineAlgorithm\PolylineAlgorithm.csproj" />
