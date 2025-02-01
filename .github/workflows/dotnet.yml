@@ -17,7 +17,7 @@ jobs:
       with:
         dotnet-version: 9.x
     - name: Build
-      run: dotnet build ./src/**/*.csproj --configuration Release --Platform AnyCPU
+      run: dotnet build ./src/**/*.csproj --configuration Release /p:Platform AnyCPU
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
@@ -37,7 +37,7 @@ jobs:
       with:
         dotnet-version: 9.x
     - name: Test
-      run: dotnet test ./tests/**/*Tests.csproj --configuration Release --Platform AnyCPU --verbosity normal --settings unit-test.runsettings --logger trx --collect:"Code Coverage" --results-directory test-results
+      run: dotnet test ./tests/**/*Tests.csproj --configuration Release /p:Platform AnyCPU --verbosity normal --settings unit-test.runsettings --logger trx --collect:"Code Coverage" --results-directory test-results
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
@@ -62,7 +62,7 @@ jobs:
     - name: Display structure of downloaded files
       run: ls -R
     - name: Pack
-      run: dotnet pack ./src/**/*.csproj --no-build --no-restore --configuration Release  --Platform AnyCPU
+      run: dotnet pack ./src/**/*.csproj --no-build --no-restore --configuration Release  /p:Platform AnyCPU
     - name: Display structure of after pack
       run: ls -R
     - name: Upload
