@@ -9,7 +9,7 @@ using PolylineAlgorithm.Internal;
 
 /// <inheritdoc cref="IPolylineDecoder{TResult}" />
 /// <param name="validator">A coordinate validator.</param>
-public class PolylineDecoder {
+public class PolylineDecoder : IPolylineDecoder {
 
     /// <inheritdoc />
     /// <exception cref="ArgumentException">Thrown when <paramref name="polyline"/> argument is null -or- empty.</exception>

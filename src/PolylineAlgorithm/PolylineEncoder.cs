@@ -12,7 +12,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Performs polyline algorithm decoding and encoding
 /// </summary>
-public class PolylineEncoder {
+public class PolylineEncoder : IPolylineEncoder {
     /// <summary>
     /// Encodes coordinates to polyline representation
     /// </summary>
