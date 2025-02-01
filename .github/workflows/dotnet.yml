@@ -61,7 +61,8 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: build
-        path: .
+    - name: Display structure of downloaded files
+      run: ls -R
     - name: Pack
       run: dotnet pack ./src/**/*.csproj --no-build --configuration Release
     - name: Upload
