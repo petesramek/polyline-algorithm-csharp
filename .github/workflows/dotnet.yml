@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: ./.github/actions/build-dotnet.yml@feature/v2-implementation
+    - uses: ./.github/actions/build-dotnet.yml
     # - name: Install .NET 9
     #   uses: actions/setup-dotnet@v4
     #   with:
