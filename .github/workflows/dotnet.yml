@@ -43,10 +43,10 @@ jobs:
       with:
         dotnet-version: 9.x
     - name: Test
-      run: dotnet test ./tests/**/*Tests.csproj --configuration Release --verbosity normal --logger trx --collect:"Code Coverage" --results-directory TestResults
+      run: dotnet test ./tests/**/*Tests.csproj --configuration Release --verbosity normal --settings unit-test.runsettings --logger trx --collect:"Code Coverage" --results-directory test-results
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: |
-          **/TestResults/*
+          **/test-results/*
