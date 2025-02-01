@@ -14,12 +14,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - uses: petesramek/templates/build
     - name: Install .NET 9
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.x
     - name: Restore
-      run: dotnet restore
+      run: dotnet restore ./src/**/*.csproj
     - name: Build
       run: dotnet build ./src/**/*.csproj --no-restore --configuration Release
     - name: Upload

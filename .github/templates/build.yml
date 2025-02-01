@@ -1,0 +1,37 @@
+name: 'Build with .NET SDK'
+description: 'Build solution or projects with specific version of .NET SDK.'
+
+inputs:
+  search-pattern:  # Solution(s) or project(s) to build e.g. src/**/*.csproj
+    description: 'Solution(s) or project(s) to build e.g. src/**/*.csproj'
+    required: true
+    default: '**/*.*'
+  dotnet-version: # .NET version(s) to be installed
+    description: '.NET version(s) to be installed'
+    required: false
+    default: '9.x'
+  configuration:
+    description: 'Build Configuration'
+    required: false
+    default: 'Release'
+  platform:
+    description: 'Build Platform'
+    required: false
+    default: 'AnyCPU'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install .NET 9
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: $DOTNET_VERSION
+    - name: Restore
+      run: dotnet restore
+    - name: Build
+      run: dotnet build $SEARCH_PATTERN --no-restore --configuration $CONFIGURATION --platform $PLATFORM
+      env:
+        SEARCH_PATTERN: ${{ inputs.search-pattern }}
+        DOTNET_VERSION: ${{ inputs.dotnet-version }}
+        CONFIGURATION: ${{ inputs.configuration }}
+        PLATFORM: ${{ inputs.platform }}
