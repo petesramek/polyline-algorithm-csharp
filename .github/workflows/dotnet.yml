@@ -21,7 +21,14 @@ jobs:
     - name: Restore
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build ./src/**/*.csproj --no-restore --configuration Release
+    - name: Upload
+      uses: actions/upload-artifact@v4
+      with:
+        name: build
+        path: |
+          src/**/bin/*
+          src/**/obj/*
 
   test:
     name: Test with MsTest
