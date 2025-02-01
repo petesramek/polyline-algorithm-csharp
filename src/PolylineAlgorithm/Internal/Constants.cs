@@ -38,29 +38,29 @@ namespace PolylineAlgorithm.Internal {
             public const int UnitSeparator = 31;
         }
 
-        ///// <summary>
-        ///// Defines coordinates constant values
-        ///// </summary>
-        //internal static class Coordinate {
-        //    /// <summary>
-        //    /// Defines the maximum value for latitude
-        //    /// </summary>
-        //    public const int MaxLatitude = 90;
+        /// <summary>
+        /// Defines coordinates constant values
+        /// </summary>
+        internal static class Coordinate {
+            /// <summary>
+            /// Defines the maximum value for latitude
+            /// </summary>
+            public const int MaxLatitude = 90;
 
-        //    /// <summary>
-        //    /// Defines the maximum value for longitude
-        //    /// </summary>
-        //    public const int MaxLongitude = 180;
+            /// <summary>
+            /// Defines the maximum value for longitude
+            /// </summary>
+            public const int MaxLongitude = 180;
 
-        //    /// <summary>
-        //    /// Defines the maximum value for latitude
-        //    /// </summary>
-        //    public const int MinLatitude = -MaxLatitude;
+            /// <summary>
+            /// Defines the maximum value for latitude
+            /// </summary>
+            public const int MinLatitude = -MaxLatitude;
 
-        //    /// <summary>
-        //    /// Defines the maximum value for longitude
-        //    /// </summary>
-        //    public const int MinLongitude = -MaxLongitude;
-        //}
+            /// <summary>
+            /// Defines the maximum value for longitude
+            /// </summary>
+            public const int MinLongitude = -MaxLongitude;
+        }
     }
 }

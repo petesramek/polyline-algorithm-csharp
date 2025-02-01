@@ -3,15 +3,16 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.  
 //
 
-namespace PolylineAlgorithm.Tests;
+namespace PolylineAlgorithm.Tests.Internal;
 
-using System;
 using System.Collections.Generic;
 
 /// <summary>
 /// Defines default values and objects used for testing purposes
 /// </summary>
-public static class Defaults {
+internal static class Defaults {
+    internal static readonly Random R = new(DateTime.Now.Millisecond);
+
     /// <summary>
     /// Defines default decoded values and objects udśed for testing purposes
     /// </summary>
@@ -24,12 +25,12 @@ public static class Defaults {
         /// <summary>
         /// Defines range of invalid coordinates. Equals to decoded <seealso cref="Polyline.Invalid"/>
         /// </summary>
-        //public static readonly IEnumerable<Coordinate> Invalid = [
-        //    new(149.47383, 259.06250),
-        //    new(-158.37407, 225.31250),
-        //    new(152.99363, -220.93750),
-        //    new(-144.49024, -274.37500)
-        //];
+        public static readonly IEnumerable<Coordinate> Invalid = [
+            new(149.47383, 259.06250),
+            new(-158.37407, 225.31250),
+            new(152.99363, -220.93750),
+            new(-144.49024, -274.37500)
+        ];
 
         /// <summary>
         /// Defines range of valid coordinates. Equals to decoded <seealso cref="Polyline.Valid"/>
@@ -60,5 +61,13 @@ public static class Defaults {
         /// Defines polyline encoded range of valid coordinates. Equals to encoded <seealso cref="Coordinates.Valid"/>
         /// </summary>
         public static readonly string Valid = "mz}lHssngJj`gqSnx~lEcovfTnms{Zdy~qQj_deI";
+    }
+
+    public static class MalformedPolylineException {
+        public static readonly int Position = R.Next();
+    }
+
+    public static class InvalidCoordinateException {
+        public static readonly Coordinate Coordinate = new(R.NextDouble(), R.NextDouble());
     }
 }

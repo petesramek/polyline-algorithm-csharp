@@ -4,43 +4,31 @@
 //
 
 namespace PolylineAlgorithm.Tests;
+
+using PolylineAlgorithm.Tests.Internal;
+
 /// <summary>
-/// Defines the <see cref="PolylineEncoderTest" />
+/// Defines tests for <see cref="PolylineEncoder"/> type.
 /// </summary>
 [TestClass]
-[TestCategory(nameof(PolylineEncoder))]
 public class PolylineEncoderTest {
-    public PolylineEncoder Encoder = new PolylineEncoder();
     /// <summary>
-    /// Method is testing <see cref="PolylineEncoder.Decode(char[])" /> method. Empty is passed as parameter.
-    /// Expected result is <see cref="ArgumentException"/>.
+    /// Subject under test.
     /// </summary>
-    [TestMethod]
-    public void Encode_EmptyInput_ThrowsException() {
-        // Arrange
-        var emptyCoordinates = Defaults.Coordinates.Empty;
-
-        // Act
-        void EncodeEmptyCoordinates() {
-            Encoder.Encode(emptyCoordinates);
-        }
-
-        // Assert
-        Assert.ThrowsException<ArgumentException>(() => EncodeEmptyCoordinates());
-    }
+    public PolylineEncoder Encoder = new();
 
     /// <summary>
-    /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{(double Latitude, double Longitude)})" /> method. <see langword="null" /> is passed as parameter.
-    /// Expected result is <see cref="ArgumentException"/>.
+    /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})" /> method. <see langword="null" /> is passed as parameter.
+    /// Expected result is <see cref="ArgumentNullException"/>.
     /// </summary>
     [TestMethod]
     public void Encode_NullInput_ThrowsException() {
         // Arrange
-        var nullCoordinates = (IEnumerable<Coordinate>)null!;
+        IEnumerable<Coordinate> @null = (IEnumerable<Coordinate>)null!;
 
         // Act
         void EncodeNullCoordinates() {
-            Encoder.Encode(nullCoordinates);
+            Encoder.Encode(@null);
         }
 
         // Assert
@@ -48,15 +36,52 @@ public class PolylineEncoderTest {
     }
 
     /// <summary>
-    /// The Encode_ValidInput
+    /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})" /> method. Empty enumeration is passed as parameter.
+    /// Expected result is <see cref="ArgumentException"/>.
     /// </summary>
     [TestMethod]
-    public void Encode_ValidInput_AreEqual() {
+    public void Encode_EmptyInput_ThrowsException() {
         // Arrange
-        var validCoordinates = Defaults.Coordinates.Valid;
+        IEnumerable<Coordinate> empty = Defaults.Coordinates.Empty;
 
         // Act
-        var result = Encoder.Encode(validCoordinates);
+        void EncodeEmptyCoordinates() {
+            Encoder.Encode(empty);
+        }
+
+        // Assert
+        Assert.ThrowsException<ArgumentException>(() => EncodeEmptyCoordinates());
+    }
+
+    /// <summary>
+    /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})" /> method. Enumeration containing only invalid values is passed as parameter.
+    /// Expected result is <see cref="InvalidCoordinateException"/>.
+    /// </summary>
+    [TestMethod]
+    public void Encode_InvalidInput_ThrowsException() {
+        // Arrange
+        IEnumerable<Coordinate> invalid = Defaults.Coordinates.Invalid;
+
+        // Act
+        void EncodeEmptyCoordinates() {
+            Encoder.Encode(invalid);
+        }
+
+        // Assert
+        Assert.ThrowsException<InvalidCoordinateException>(() => EncodeEmptyCoordinates());
+    }
+
+    /// <summary>
+    /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})" /> method. Enumeration containing only valid values is passed as parameter.
+    /// Expected result is result and <see cref="Defaults.Polyline.Valid"/> are equal.
+    /// </summary>
+    [TestMethod]
+    public void Encode_ValidInput_Ok() {
+        // Arrange
+        IEnumerable<Coordinate> valid = Defaults.Coordinates.Valid;
+
+        // Act
+        var result = Encoder.Encode(valid);
 
         // Assert
         Assert.AreEqual(Defaults.Polyline.Valid, result.ToString());

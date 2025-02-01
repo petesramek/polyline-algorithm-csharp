@@ -33,12 +33,16 @@ public class PolylineEncoder {
         }
 
         // Initializing local variables
-        int capacity = count * 11;
+        int capacity = count * 12;
         Span<char> buffer = new char[capacity];
         PolylineWriter writer = new(in buffer);
 
         // Looping over coordinates and building encoded result
         foreach (var coordinate in coordinates) {
+            if(!coordinate.IsValid) {
+                throw new InvalidCoordinateException(coordinate);
+            }
+
             writer.Write(in coordinate);
         }
 

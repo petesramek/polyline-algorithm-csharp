@@ -26,7 +26,7 @@ internal ref struct PolylineReader {
         Coordinate coordinate = new(Precise(ref latitude), Precise(ref longitude));
 
         if (!coordinate.IsValid) {
-            throw new InvalidOperationException();
+            throw new InvalidCoordinateException(coordinate);
         }
 
         return coordinate;

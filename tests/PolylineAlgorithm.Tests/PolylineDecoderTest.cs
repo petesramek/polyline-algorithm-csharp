@@ -6,40 +6,58 @@
 namespace PolylineAlgorithm.Tests;
 
 using PolylineAlgorithm;
+using PolylineAlgorithm.Tests.Internal;
 
 /// <summary>
-/// Defines the <see cref="PolylineEncoderTest" />
+/// Defines tests for <see cref="PolylineDecoder"/> type.
 /// </summary>
 [TestClass]
-[TestCategory(nameof(PolylineDecoder))]
 public class PolylineDecoderTest {
     public PolylineDecoder Decoder = new PolylineDecoder();
 
     /// <summary>
-    /// Method is testing <see cref="PolylineEncoder.Decode(char[])" /> method. Empty <see langword="char"/>[] is passed as parameter.
-    /// Expected result is <see cref="ArgumentException"/>.
+    /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})" /> method. Empty <see cref="ReadOnlyMemory{char}" /> is passed as an argument.
     /// </summary>
+    /// <remarks>Expected to throw <see cref="ArgumentException"/>.</remarks>
     [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void Decode_InvalidInput_ThrowsException() {
+    public void Decode_EmptyInput_ThrowsException() {
         // Arrange
-        ReadOnlySpan<char> invalidPolylineCharArray = Defaults.Polyline.Invalid;
+        ReadOnlyMemory<char> empty = Defaults.Polyline.Empty.AsMemory();
 
         // Act
-        var result = Decoder.Decode(in invalidPolylineCharArray);
+        void Execute(ReadOnlySpan<char> value) => Decoder.Decode(in value);
+
+        // Assert
+        Assert.ThrowsException<ArgumentException>(() => Execute(empty.Span));
     }
 
     /// <summary>
-    /// Method is testing <see cref="PolylineEncoder.Decode(char[])" /> method. <see langword="char"/>[] with valid coordinates is passed as parameter.
-    /// Expected result is <see cref="CollectionAssert.AreEquivalent(System.Collections.ICollection, System.Collections.ICollection)"/>.
+    /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})" /> method. <see cref="ReadOnlyMemory{char}" /> containing invalid polyline is passed as an argument.
     /// </summary>
+    /// <remarks>Expected to throw <see cref="InvalidCoordinateException"/>.</remarks>
     [TestMethod]
-    public void Decode_ValidInput_AreEquivalent() {
+    public void Decode_InvalidInput_ThrowsException() {
         // Arrange
-        ReadOnlySpan<char> validPolylineCharArray = Defaults.Polyline.Valid;
+        ReadOnlyMemory<char> invalid = Defaults.Polyline.Invalid.AsMemory();
 
         // Act
-        var result = Decoder.Decode(in validPolylineCharArray);
+        void Execute(ReadOnlySpan<char> value) => Decoder.Decode(in value);
+
+        // Assert
+        Assert.ThrowsException<InvalidCoordinateException>(() => Execute(invalid.Span));
+    }
+
+    /// <summary>
+    /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})" /> method. <see cref="ReadOnlyMemory{char}" /> containing valid polyline is passed as an argument.
+    /// </summary>
+    /// <remarks>Expected result to equal <see cref="Defaults.Coordinates.Valid"/>..</remarks>
+    [TestMethod]
+    public void Decode_ValidInput_Ok() {
+        // Arrange
+        ReadOnlySpan<char> valid = Defaults.Polyline.Valid;
+
+        // Act
+        var result = Decoder.Decode(in valid);
 
         // Assert
         CollectionAssert.AreEqual(Defaults.Coordinates.Valid.ToArray(), result.ToArray());
