@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    uses: ./.github/actions/build-dotnet.yml
+    uses: ./.github/actions/build-dotnet.yml@feature/v2-implementation
     # name: Build with .NET 9
     # runs-on: ubuntu-latest
     # steps:
