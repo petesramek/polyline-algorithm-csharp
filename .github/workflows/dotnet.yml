@@ -8,13 +8,11 @@ on:
 
 jobs:
   build:
-    name: Build with .NET 9
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    - uses: petesramek/polyline-algorithm-csharp/.github/actions/build-dotnet.yml@feature/v2-implementation
+    uses: ./.github/actions/build-dotnet.yml
+    # name: Build with .NET 9
+    # runs-on: ubuntu-latest
+    # steps:
+    # - uses: actions/checkout@v3
     # - name: Install .NET 9
     #   uses: actions/setup-dotnet@v4
     #   with:
@@ -23,13 +21,13 @@ jobs:
     #   run: dotnet restore ./src/**/*.csproj
     # - name: Build
     #   run: dotnet build ./src/**/*.csproj --no-restore --configuration Release
-    - name: Upload
-      uses: actions/upload-artifact@v4
-      with:
-        name: build
-        path: |
-          src/**/bin/*
-          src/**/obj/*
+    # - name: Upload
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: build
+    #     path: |
+    #       src/**/bin/*
+    #       src/**/obj/*
 
   test:
     name: Test with MsTest
