@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="MSTest.Sdk/3.7.3">
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
@@ -22,11 +22,6 @@
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<EnableNETAnalyzers>false</EnableNETAnalyzers>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<PackageReference Include="MSTest" Version="3.*" />
-		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.*" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\PolylineAlgorithm\PolylineAlgorithm.csproj" />
