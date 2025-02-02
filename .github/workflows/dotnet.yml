@@ -13,7 +13,7 @@ concurrency: ${{ github.ref }}
 
 jobs:
   build:
-    name: Build with .NET ${{ env.DOTNET_VERSION }}
+    name: Build with .NET ${{ DOTNET_VERSION }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
