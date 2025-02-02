@@ -4,18 +4,18 @@ assembly-file-versioning-scheme: MajorMinorPatchTag
 assembly-informational-format: "{FullSemVer}"
 continuous-delivery-fallback-tag: ci
 
-next-version: 0.9.0.0 #
 increment: Inherit
+next-version: 0.9.0.0 #
+tag-prefix: "[vV]"
 
 build-metadata-padding: 4
 legacy-semver-padding: 4
 
-tag-prefix: "[vV]"
+
 major-version-bump-message: '\+semver:\s?(breaking|major)'
 minor-version-bump-message: '\+semver:\s?(feature|minor)'
 patch-version-bump-message: '\+semver:\s?(fix|patch)'
 no-bump-message: '\+semver:\s?(none|skip)'
-
 
 commits-since-version-source-padding: 4
 commit-message-incrementing: Enabled
@@ -25,6 +25,7 @@ ignore:
   sha: []
 
 branches:
+
   main:
     regex: ^master$|^main$
     mode: ContinuousDelivery
@@ -37,6 +38,7 @@ branches:
     is-release-branch: false
     is-mainline: true
     pre-release-weight: 55000
+
   develop:
     regex: ^dev(elop)?(ment)?$
     mode: ContinuousDeployment
@@ -49,6 +51,7 @@ branches:
     is-release-branch: false
     is-mainline: false
     pre-release-weight: 0
+
   release:
     regex: ^release?[/-]
     mode: ContinuousDelivery
@@ -61,6 +64,7 @@ branches:
     is-release-branch: true
     is-mainline: false
     pre-release-weight: 30000
+
   feature:
     regex: ^feature?[/-]
     mode: ContinuousDeployment
@@ -73,6 +77,7 @@ branches:
     is-release-branch: false
     is-mainline: false
     pre-release-weight: 30000
+
   pull-request:
     regex: ^(pull|pull\-requests|pr)[/-]
     mode: ContinuousDelivery
@@ -86,6 +91,7 @@ branches:
     is-release-branch: false
     is-mainline: false
     pre-release-weight: 30000
+
   hotfix:
     regex: ^hotfix(es)?[/-]
     mode: ContinuousDelivery
@@ -98,6 +104,7 @@ branches:
     is-release-branch: false
     is-mainline: false
     pre-release-weight: 30000
+
   support:
     regex: ^support[/-]
     mode: ContinuousDelivery
