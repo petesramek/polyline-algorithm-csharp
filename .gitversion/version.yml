@@ -4,7 +4,7 @@ assembly-versioning-scheme: MajorMinorPatchTag
 assembly-file-versioning-scheme: MajorMinorPatchTag
 assembly-informational-format: "{FullSemVer}"
 
-increment: Inherit
+increment: Patch
 next-version: 0.9.0.0 #
 
 continuous-delivery-fallback-tag: ci
