@@ -24,6 +24,20 @@ commits-since-version-source-padding: 4
 commit-message-incrementing: Enabled
 commit-date-format: "yyyy-MM-dd"
 
+is-release-branch: false
+is-main-branch: false
+is-mainline: false
+
+prevent-increment:
+  of-merged-branch-version: true
+  when-branch-merged: true
+  when-current-commit-tagged: true
+
+track-merge-target: false
+track-merge-message: false
+tracks-release-branches: false
+
+
 ignore:
   sha: []
 
@@ -37,10 +51,7 @@ branches:
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
     source-branches: [ 'develop', 'release' ]
-    tracks-release-branches: false
-    is-release-branch: false
-    is-mainline: true
-    pre-release-weight: 55000
+    is-main-branch: true
 
   develop:
     regex: ^dev(elop)?(ment)?$
@@ -53,7 +64,6 @@ branches:
     tracks-release-branches: true
     is-release-branch: false
     is-mainline: false
-    pre-release-weight: 0
 
   release:
     regex: ^release?[/-]
@@ -66,20 +76,15 @@ branches:
     tracks-release-branches: false
     is-release-branch: true
     is-mainline: false
-    pre-release-weight: 30000
 
   feature:
     regex: ^feature?[/-]
-    mode: ContinuousDeployment
+    mode: ContinuousDelivery
     tag: useBranchName
     increment: Inherit
     prevent-increment-of-merged-branch-version: false
-    track-merge-target: false
-    source-branches: [ 'develop', 'main', 'release', 'feature', 'support', 'hotfix' ]
-    tracks-release-branches: false
-    is-release-branch: false
-    is-mainline: false
-    pre-release-weight: 30000
+    track-merge-target: true
+    source-branches: [ 'release', 'feature' ]
 
   pull-request:
     regex: ^(pull|pull\-requests|pr)[/-]
@@ -88,12 +93,7 @@ branches:
     increment: Inherit
     prevent-increment-of-merged-branch-version: false
     tag-number-pattern: '[/-](?<number>\d+)[-/]'
-    track-merge-target: false
-    source-branches: [ 'develop', 'main', 'release', 'feature', 'support', 'hotfix' ]
-    tracks-release-branches: false
-    is-release-branch: false
-    is-mainline: false
-    pre-release-weight: 30000
+    source-branches: [ 'main', 'release', 'feature', 'support', 'hotfix' ]
 
   hotfix:
     regex: ^hotfix(es)?[/-]
