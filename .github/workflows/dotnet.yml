@@ -7,20 +7,20 @@ on:
     branches: [ 'main' ]
 
 env:
-  DOTNET_VERSION: ${{ vars.DOTNET_VERSION }}
+  dotnet_version: ${{ vars.DOTNET_VERSION }}
 
 concurrency: ${{ github.ref }}
 
 jobs:
   build:
-    name: Build with .NET ${{ DOTNET_VERSION }}
+    name: Build with .NET ${{ env.dotnet_version }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Install .NET ${{ env.DOTNET_VERSION }}
+    - name: Install .NET ${{ env.dotnet_version }}
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+        dotnet-version: ${{ env.dotnet_version }}
     - name: Build
       run: dotnet build ./src/**/*.csproj --configuration Release /p:Platform=AnyCPU
     - name: Upload
