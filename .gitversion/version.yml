@@ -15,9 +15,18 @@ build-metadata-padding: 4
 commits-since-version-source-padding: 4
 commit-message-incrementing: Disabled
 commit-date-format: "yyyy-MM-dd"
+prevent-increment-of-merged-branch-version: true
+track-merge-target: false
+tracks-release-branches: false
+is-release-branch: false
+is-mainline: false
 ignore:
   sha: []
 branches:
+  release:
+    regex: ^release?[/-]
+    source-branches: [ 'develop', 'main', 'support', 'release' ]
+    is-release-branch: true
   main:
     regex: ^master$|^main$
     mode: ContinuousDelivery
@@ -42,18 +51,6 @@ branches:
     is-release-branch: false
     is-mainline: false
     pre-release-weight: 0
-  release:
-    regex: ^release?[/-]
-    mode: ContinuousDelivery
-    tag: beta
-    increment: None
-    prevent-increment-of-merged-branch-version: true
-    track-merge-target: false
-    source-branches: [ 'develop', 'main', 'support', 'release' ]
-    tracks-release-branches: false
-    is-release-branch: true
-    is-mainline: false
-    pre-release-weight: 30000
   feature:
     regex: ^feature?[/-]
     mode: ContinuousDeployment
