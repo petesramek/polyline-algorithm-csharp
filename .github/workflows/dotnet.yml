@@ -27,7 +27,7 @@ jobs:
       id: version_step
       uses: gittools/actions/gitversion/execute@v3.1.11
       with:
-        useConfigFile: false
+        useConfigFile: true
         configFilePath: ./.gitversion/version.yml
         updateAssemblyInfo: false
     - run: |
