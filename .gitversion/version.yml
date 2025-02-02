@@ -39,13 +39,13 @@ branches:
   # Release branch - branch tracks history for specific version
   release:
     mode: ContinuousDeployment
-    regex: ^(release[\/][\d]+\.[\d]+)$
+    regex: ^(release[\/][\d]+\.[\d]+)
     increment: Inherit
     is-release-branch: true
   # Preview branch - branch accumulates changes for specific version before it is first released
   preview:
     mode: ContinuousDeployment
-    regex: ^(release[\/][\d]+\.[\d]+\/preview)$
+    regex: ^(release[\/][\d]+\.[\d]+\/preview)
     increment: Inherit
     source-branches:
     - release
@@ -61,7 +61,7 @@ branches:
   # Support branch - branch accumulates changes for specific version after it was first released
   support:
     mode: ContinuousDeployment
-    regex: ^(release[\/][\d]+\.[\d]+\/support)$
+    regex: ^(release[\/][\d]+\.[\d]+\/support)
     increment: Inherit
     source-branches:
     - release
@@ -79,7 +79,7 @@ branches:
     mode: ContinuousDeployment
     label: '{BranchName}'
     increment: Inherit
-    regex: ^feature?[/-](?<BranchName>.+)$
+    regex: ^feature?[/-](?<BranchName>.+)
     tracks-release-branches: true
     source-branches:
     - preview
