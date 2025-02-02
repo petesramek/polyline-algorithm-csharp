@@ -22,7 +22,7 @@ jobs:
       with:
         dotnet-version: ${{ vars.DOTNET_VERSION }}
     - name: Build
-      run: dotnet build ./src/**/*.csproj --configuration Release /p:Platform=AnyCPU
+      run: dotnet build ./src/**/*.csproj --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }}
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
@@ -42,7 +42,7 @@ jobs:
       with:
         dotnet-version: ${{ vars.DOTNET_VERSION }}
     - name: Test
-      run: dotnet test ./tests/**/*Tests.csproj --configuration Release /p:Platform=AnyCPU --verbosity normal --settings unit-test.runsettings --logger trx --collect:"Code Coverage" --results-directory test-results
+      run: dotnet test ./tests/**/*Tests.csproj --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} --verbosity normal --settings unit-test.runsettings --logger trx --collect:"Code Coverage" --results-directory test-results
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
@@ -65,7 +65,7 @@ jobs:
       with:
         name: build
     - name: Pack
-      run: dotnet pack ./src/**/*.csproj --no-build --no-restore --configuration Release  /p:Platform=AnyCPU
+      run: dotnet pack ./src/**/*.csproj --no-build --no-restore --configuration ${{ vars.BUILD_CONFIGURATION }}  /p:Platform=${{ vars.BUILD_PLATFORM }}
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
