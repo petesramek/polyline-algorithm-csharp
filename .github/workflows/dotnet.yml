@@ -7,20 +7,20 @@ on:
     branches: [ 'main' ]
 
 env:
-  dotnet_version: ${{ vars.DOTNET_VERSION }}
+  DOTNET_VERSION: ${{ vars.DOTNET_VERSION }}
 
 concurrency: ${{ github.ref }}
 
 jobs:
   build:
-    name: Build with .NET ${{ env.$dotnet_version }}
+    name: Build with .NET ${{ DOTNET_VERSION }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Install .NET $dotnet_version
+    - name: Install .NET ${{ DOTNET_VERSION }}
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: $dotnet_version
+        dotnet-version: $DOTNET_VERSION
     - name: Build
       run: dotnet build ./src/**/*.csproj --configuration Release /p:Platform=AnyCPU
     - name: Upload
@@ -32,15 +32,15 @@ jobs:
           **/obj/*
 
   test:
-    name: Test with .NET ${{ env.$dotnet_version }}
+    name: Test with .NET ${{ DOTNET_VERSION }}
     needs: [build]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET $dotnet_version
+    - name: Setup .NET ${{ DOTNET_VERSION }}
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: $dotnet_version
+        dotnet-version: $DOTNET_VERSION
     - name: Test
       run: dotnet test ./tests/**/*Tests.csproj --configuration Release /p:Platform=AnyCPU --verbosity normal --settings unit-test.runsettings --logger trx --collect:"Code Coverage" --results-directory test-results
     - name: Upload
@@ -51,15 +51,15 @@ jobs:
           **/test-results/*
 
   pack:
-    name: Pack with .NET ${{ env.$dotnet_version }}
+    name: Pack with .NET ${{ DOTNET_VERSION }}
     needs: [test]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Install .NET $dotnet_version
+    - name: Install .NET ${{ DOTNET_VERSION }}
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: $dotnet_version
+        dotnet-version: $DOTNET_VERSION
     - name: Download
       uses: actions/download-artifact@v4
       with:
