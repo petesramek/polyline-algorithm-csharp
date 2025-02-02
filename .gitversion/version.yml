@@ -1,7 +1,7 @@
 mode: ContinuousDeployment
 
-assembly-versioning-scheme: MajorMinorPatchTag
-assembly-file-versioning-scheme: MajorMinorPatchTag
+assembly-versioning-format: '{Major}.{Minor}.{Patch}.{CommitsSinceVersionSource}'
+assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{CommitsSinceVersionSource}'
 assembly-informational-format: "{FullSemVer}"
 
 increment: Patch
