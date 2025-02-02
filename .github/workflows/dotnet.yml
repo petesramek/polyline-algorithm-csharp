@@ -30,62 +30,7 @@ jobs:
         useConfigFile: true
         configFilePath: ./.gitversion/version.yml
         updateAssemblyInfo: false
-    - run: |
-        echo FullSemVer: ${{ env.fullSemVer }}
-        name: Display GitVersion variables
-
-    - run: |
-        echo FullSemVer: ${{ env.GitVersion_FullSemVer }}
-        name: Display GitVersion variables (with prefix)
-
-    - run: |
-        echo FullSemVer: ${{ steps.version_step.outputs.fullSemVer }}
-        name: Display GitVersion outputs
-
-    - run: |
-        echo FullSemVer: ${{ steps.version_step.outputs.GitVersion_FullSemVer }}
-        name: Display GitVersion outputs
-
-    - run: |
-          echo FullSemVer: ${{ env.myvar_fullSemVer }}
-      name: Display mapped local env
-      env:
-          myvar_fullSemVer: ${{ steps.version_step.outputs.fullSemVer }}
-
-    - run: |
-        echo FullSemVer: ${{ env.myvar_GitVersion_FullSemVer }}
-        name: Display mapped local env
-        env:
-          myvar_GitVersion_FullSemVer: ${{ steps.version_step.outputs.GitVersion_FullSemVer }}
-
-    - run: |
-        echo FullSemVer (env.myvar_fullSemVer)            : $env:myvar_fullSemVer
-        name: Display mapped local env (pwsh - outputs without prefix)
-        shell: pwsh
-        env:
-          myvar_fullSemVer: ${{ steps.version_step.outputs.fullSemVer }}
-
-    - run: |
-        echo FullSemVer (env.myvar_GitVersion_FullSemVer) : $env:myvar_GitVersion_FullSemVer
-        name: Display mapped local env (pwsh - outputs with prefix)
-        shell: pwsh
-        env:
-          myvar_GitVersion_FullSemVer: ${{ steps.version_step.outputs.GitVersion_FullSemVer }}
-
-    - run: |
-        echo FullSemVer (myvar_fullSemVer)            : $myvar_fullSemVer
-        name: Display mapped local env (bash - outputs without prefix)
-        shell: bash
-        env:
-          myvar_fullSemVer: ${{ steps.version_step.outputs.fullSemVer }}
-
-    - run: |
-        echo FullSemVer (myvar_GitVersion_FullSemVer) : $myvar_GitVersion_FullSemVer
-        name: Display mapped local env (bash - outputs with prefix)
-        shell: bash
-        env:
-          myvar_GitVersion_FullSemVer: ${{ steps.version_step.outputs.GitVersion_FullSemVer }}
-    
+    - run: 'echo FullSemVer: ${{ env.fullSemVer }}'
 
   build:
     name: Build with .NET ${{ vars.DOTNET_VERSION }}
