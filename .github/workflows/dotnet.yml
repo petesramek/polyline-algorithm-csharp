@@ -2,11 +2,13 @@ name: .NET
 
 on:
   push:
-    branches:
-    - '**' 
+    branches-ignore:
+    - 'main'
+    - 'release/**' 
   pull_request:
     branches:
-    - '**' 
+    - 'main'
+    - 'release/**' 
 
 concurrency: ${{ github.ref }}
 
