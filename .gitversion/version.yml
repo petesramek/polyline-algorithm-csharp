@@ -1,11 +1,14 @@
 mode: ContinuousDeployment
+strategies:
+- VersionInBranchName
+- TrackReleaseBranches
 
-assembly-versioning-format: '{Major}.{Minor}.{Patch}.{CommitsSinceVersionSource}'
-assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{CommitsSinceVersionSource}'
+assembly-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILD_NUMBER}'
+assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILD_NUMBER}'
 assembly-informational-format: "{FullSemVer}"
 
 increment: Patch
-next-version: 0.9.0.0 #
+next-version: 0.9.0.0
 
 continuous-delivery-fallback-tag: ci
 tag-prefix: "[vV]"
