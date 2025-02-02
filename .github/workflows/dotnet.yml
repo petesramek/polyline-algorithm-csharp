@@ -13,11 +13,11 @@ concurrency: ${{ github.ref }}
 
 jobs:
   build:
-    name: Build with .NET $DOTNET_VERSION
+    name: Build with .NET ${{ env.DOTNET_VERSION }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Install .NET $DOTNET_VERSION
+    - name: Install .NET ${{ env.DOTNET_VERSION }}
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: $DOTNET_VERSION
@@ -32,7 +32,7 @@ jobs:
           **/obj/*
 
   test:
-    name: Test with .NET $DOTNET_VERSION
+    name: Test with .NET ${{ env.DOTNET_VERSION }}
     needs: [build]
     runs-on: ubuntu-latest
     steps:
@@ -40,7 +40,7 @@ jobs:
     - name: Setup .NET $DOTNET_VERSION
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: $DOTNET_VERSION
+        dotnet-version: ${{ env.DOTNET_VERSION }}
     - name: Test
       run: dotnet test ./tests/**/*Tests.csproj --configuration Release /p:Platform=AnyCPU --verbosity normal --settings unit-test.runsettings --logger trx --collect:"Code Coverage" --results-directory test-results
     - name: Upload
@@ -51,12 +51,12 @@ jobs:
           **/test-results/*
 
   pack:
-    name: Pack with .NET $DOTNET_VERSION
+    name: Pack with .NET ${{ env.DOTNET_VERSION }}
     needs: [test]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Install .NET $DOTNET_VERSION
+    - name: Install .NET ${{ env.DOTNET_VERSION }}
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: $DOTNET_VERSION
