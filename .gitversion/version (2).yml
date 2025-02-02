@@ -1,6 +1,7 @@
 # Global settings
-assembly-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILD_NUMBER  ?? 0}'
-assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILD_NUMBER  ?? 0}'
+assembly-versioning-format: MajorMinorPatchTag
+assembly-file-versioning-format: MajorMinorPatchTag
+assembly-informational-format: "{FullSemVer}"
 tag-prefix: '[vV]?'
 version-in-branch-pattern: (?<version>[vV]?\d+(\.\d+)?(\.\d+)?).*
 major-version-bump-message: ''
