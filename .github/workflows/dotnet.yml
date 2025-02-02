@@ -24,17 +24,72 @@ jobs:
         versionSpec: ${{ vars.GIT_VERSION }}
         preferLatestVersion: true
     - name: Update Version with GitVersion ${{ vars.GIT_VERSION }}
+      id: version_step
       uses: gittools/actions/gitversion/execute@v3.1.11
       with:
         useConfigFile: true
         configFilePath: ./.gitversion/version.yml
         updateAssemblyInfo: true
-    - name: Write Version
-      run: echo ${{ env.GitVersion_FullSemVer }}
+    - run: |
+        echo "FullSemVer (env.fullSemVer)            : ${{ env.fullSemVer }}"
+        name: Display GitVersion variables (without prefix)
+
+    - run: |
+        echo "FullSemVer (env.GitVersion_FullSemVer) : ${{ env.GitVersion_FullSemVer }}"
+        name: Display GitVersion variables (with prefix)
+
+    - run: |
+        echo "FullSemVer (steps.version_step.outputs.fullSemVer)            : ${{ steps.version_step.outputs.fullSemVer }}"
+        name: Display GitVersion outputs (step output without prefix)
+
+    - run: |
+        echo "FullSemVer (steps.version_step.outputs.GitVersion_FullSemVer) : ${{ steps.version_step.outputs.GitVersion_FullSemVer }}"
+        name: Display GitVersion outputs (step output with prefix)
+
+    - run: |
+          echo "FullSemVer (env.myvar_fullSemVer)            : ${{ env.myvar_fullSemVer }}"
+      name: Display mapped local env (outputs without prefix)
+      env:
+          myvar_fullSemVer: ${{ steps.version_step.outputs.fullSemVer }}
+
+    - run: |
+        echo "FullSemVer (env.myvar_GitVersion_FullSemVer) : ${{ env.myvar_GitVersion_FullSemVer }}"
+        name: Display mapped local env (outputs with prefix)
+        env:
+          myvar_GitVersion_FullSemVer: ${{ steps.version_step.outputs.GitVersion_FullSemVer }}
+
+    - run: |
+        echo "FullSemVer (env.myvar_fullSemVer)            : $env:myvar_fullSemVer"
+        name: Display mapped local env (pwsh - outputs without prefix)
+        shell: pwsh
+        env:
+          myvar_fullSemVer: ${{ steps.version_step.outputs.fullSemVer }}
+
+    - run: |
+        echo "FullSemVer (env.myvar_GitVersion_FullSemVer) : $env:myvar_GitVersion_FullSemVer"
+        name: Display mapped local env (pwsh - outputs with prefix)
+        shell: pwsh
+        env:
+          myvar_GitVersion_FullSemVer: ${{ steps.version_step.outputs.GitVersion_FullSemVer }}
+
+    - run: |
+        echo "FullSemVer (myvar_fullSemVer)            : $myvar_fullSemVer"
+        name: Display mapped local env (bash - outputs without prefix)
+        shell: bash
+        env:
+          myvar_fullSemVer: ${{ steps.version_step.outputs.fullSemVer }}
+
+    - run: |
+        echo "FullSemVer (myvar_GitVersion_FullSemVer) : $myvar_GitVersion_FullSemVer"
+        name: Display mapped local env (bash - outputs with prefix)
+        shell: bash
+        env:
+          myvar_GitVersion_FullSemVer: ${{ steps.version_step.outputs.GitVersion_FullSemVer }}
     
 
   build:
     name: Build with .NET ${{ vars.DOTNET_VERSION }}
+    needs: [version]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
