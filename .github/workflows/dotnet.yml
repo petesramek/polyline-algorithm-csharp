@@ -2,20 +2,23 @@ name: .NET
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ $default-branch ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ $default-branch ]
+
+env:
+  dotnet_version: ${{ vars.DOTNET_VERSION }}
 
 jobs:
   build:
-    name: Build with .NET 9
+    name: Build with .NET $dotnet_version
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Install .NET 9
+    - name: Install .NET $dotnet_version
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 9.x
+        dotnet-version: $dotnet_version
     - name: Build
       run: dotnet build ./src/**/*.csproj --configuration Release /p:Platform=AnyCPU
     - name: Upload
@@ -27,15 +30,15 @@ jobs:
           **/obj/*
 
   test:
-    name: Test with MsTest
+    name: Test with .NET $dotnet_version
     needs: [build]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET 9
+    - name: Setup .NET $dotnet_version
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 9.x
+        dotnet-version: $dotnet_version
     - name: Test
       run: dotnet test ./tests/**/*Tests.csproj --configuration Release /p:Platform=AnyCPU --verbosity normal --settings unit-test.runsettings --logger trx --collect:"Code Coverage" --results-directory test-results
     - name: Upload
@@ -46,15 +49,15 @@ jobs:
           **/test-results/*
 
   pack:
-    name: Pack with .NET 9
+    name: Pack with .NET $dotnet_version
     needs: [test]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Install .NET 9
+    - name: Install .NET $dotnet_version
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 9.x
+        dotnet-version: $dotnet_version
     - name: Download
       uses: actions/download-artifact@v4
       with:
