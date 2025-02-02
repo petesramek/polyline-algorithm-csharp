@@ -1,16 +1,16 @@
 mode: ContinuousDeployment
-
 assembly-versioning-scheme: MajorMinorPatchTag
 assembly-file-versioning-scheme: MajorMinorPatchTag
 assembly-informational-format: "{FullSemVer}"
+continuous-delivery-fallback-tag: ci
 
 increment: Inherit
 next-version: 0.9.0.0 #
 tag-prefix: "[vV]"
-continuous-delivery-fallback-tag: ci
 
 build-metadata-padding: 4
 legacy-semver-padding: 4
+
 
 major-version-bump-message: '\+semver:\s?(breaking|major)'
 minor-version-bump-message: '\+semver:\s?(feature|minor)'
@@ -28,7 +28,7 @@ branches:
 
   main:
     regex: ^master$|^main$
-    mode: ManualDeployment
+    mode: ContinuousDelivery
     tag: ''
     increment: Patch
     prevent-increment-of-merged-branch-version: true
