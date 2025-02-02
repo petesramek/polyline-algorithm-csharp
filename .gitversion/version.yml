@@ -1,19 +1,19 @@
+mode: ContinuousDeployment
 next-version: 0.2.0.0 #
 assembly-versioning-scheme: MajorMinorPatchTag
 assembly-file-versioning-scheme: MajorMinorPatchTag
 assembly-informational-format: "{FullSemVer}"
-mode: ContinuousDeployment
-increment: Inherit
+increment: Patch
 continuous-delivery-fallback-tag: ci
 tag-prefix: "[vV]"
-major-version-bump-message: '\+semver:\s?(breaking|major)'
-minor-version-bump-message: '\+semver:\s?(feature|minor)'
-patch-version-bump-message: '\+semver:\s?(fix|patch)'
-no-bump-message: '\+semver:\s?(none|skip)'
+major-version-bump-message: ''
+minor-version-bump-message: ''
+patch-version-bump-message: ''
+no-bump-message: ''
 legacy-semver-padding: 4
 build-metadata-padding: 4
 commits-since-version-source-padding: 4
-commit-message-incrementing: Enabled
+commit-message-incrementing: Disabled
 commit-date-format: "yyyy-MM-dd"
 ignore:
   sha: []
