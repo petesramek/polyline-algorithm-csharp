@@ -2,16 +2,37 @@ name: .NET
 
 on:
   push:
-    branches: [ $default-branch ]
+    branches:
+    - '**' 
   pull_request:
-    branches: [ 'main' ]
-
-env:
-  dotnet_version: ${{ vars.DOTNET_VERSION }}
+    branches:
+    - '**' 
 
 concurrency: ${{ github.ref }}
 
 jobs:
+  version:
+    name: Version with GitVersion ${{ vars.GIT_VERSION }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Install GitVersion ${{ vars.GIT_VERSION }}
+      uses: gittools/actions/gitversion/setup@v3.1.11
+      with:
+        versionSpec: ${{ vars.GIT_VERSION }}
+        preferLatestVersion: true
+    - name: Update Version with GitVersion ${{ vars.GIT_VERSION }}
+      uses: gittools/actions/gitversion/execute@v3.1.11
+      with:
+        useConfigFile: true
+        configFilePath: ./.gitversion/version.yml
+        updateAssemblyInfo: true
+    - name: Write Version
+      run: echo ${{ env.GitVersion_FullSemVer }}
+    
+
   build:
     name: Build with .NET ${{ vars.DOTNET_VERSION }}
     runs-on: ubuntu-latest
