@@ -1,0 +1,126 @@
+# Global settings
+assembly-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILD_NUMBER ?? 42}'
+assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILD_NUMBER ?? 42}'
+tag-prefix: '[vV]?'
+version-in-branch-pattern: (?<version>[vV]?\d+(\.\d+)?(\.\d+)?).*
+major-version-bump-message: ''
+minor-version-bump-message: ''
+patch-version-bump-message: ''
+no-bump-message: ''
+tag-pre-release-weight: 60000
+commit-date-format: yyyy-MM-dd
+merge-message-formats: {}
+update-build-number: false
+semantic-version-format: Strict
+strategies:
+- VersionInBranchName
+- TrackReleaseBranches
+mode: ContinuousDelivery
+label: ''
+increment: Patch
+prevent-increment:
+  of-merged-branch: true
+  when-branch-merged: true
+  when-current-commit-tagged: true
+track-merge:
+  target: false
+  message: false
+commit-message-incrementing: Disabled
+regex: ''
+source-branches: []
+is-source-branch-for: []
+tracks-release-branches: false
+is-release-branch: false
+is-main-branch: false
+ignore:
+  sha: []
+# Branch settings
+branches:
+  # Release branch - branch tracks history for specific version
+  release:
+    mode: ContinuousDeployment
+    regex: ^(release[\/][\d]+\.[\d]+)
+    increment: Inherit
+    is-release-branch: true
+  # Preview branch - branch accumulates changes for specific version before it is first released
+  preview:
+    mode: ContinuousDeployment
+    regex: ^(release[\/][\d]+\.[\d]+\/preview)
+    increment: Inherit
+    source-branches:
+    - release
+  # Hotfix branch - branch hotfixes a critical bug for specific version after it was first released
+  hotfix:
+    mode: ContinuousDeployment
+    label: '{BranchName}'
+    increment: Inherit
+    regex: ^hotfix?[/-](?<BranchName>.+)
+    tracks-release-branches: true
+    source-branches:
+    - release
+  # Support branch - branch accumulates changes for specific version after it was first released
+  support:
+    mode: ContinuousDeployment
+    regex: ^(release[\/][\d]+\.[\d]+\/support)
+    increment: Inherit
+    source-branches:
+    - release
+# Bugfixes branch - branch hotfixes bugs for specific version after it was first released
+  bugfix:
+    mode: ContinuousDeployment
+    label: '{BranchName}'
+    increment: Inherit
+    regex: ^bugfix?[/-](?<BranchName>.+)
+    tracks-release-branches: true
+    source-branches:
+    - support
+  # Feature branch - branch accumulates changes for specific version after it was first released
+  feature:
+    mode: ContinuousDeployment
+    label: '{BranchName}'
+    increment: Inherit
+    regex: ^feature?[/-](?<BranchName>.+)
+    tracks-release-branches: true
+    source-branches:
+    - preview
+  # PR branch - branch merges a source branch to a target branch
+  pull-request:
+    mode: ContinuousDeployment
+    label: pull-request
+    increment: Inherit
+    label-number-pattern: '[/-](?<number>\d+)'
+    regex: ^(pull|pull\-requests|pr)[/-]
+    source-branches:
+    - main
+    - release
+    - preview
+    - hotfix
+    - support
+    - bugfix
+    - feature
+  # Main branch - branch tracks historical changes between releases
+  main:
+    mode: ManualDeployment
+    increment: Inherit
+    regex: ^main$
+    tracks-release-branches: true
+    prevent-increment:
+      of-merged-branch: false
+    is-main-branch: true
+    source-branches:
+    - release
+  # Any other branch
+  unknown:
+    mode: ManualDeployment
+    label: '{BranchName}'
+    increment: Inherit
+    regex: (?<BranchName>.+)
+    source-branches:
+    - main
+    - release
+    - preview
+    - hotfix
+    - support
+    - bugfix
+    - feature
+    - pull-request
