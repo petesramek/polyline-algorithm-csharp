@@ -4,14 +4,14 @@ on:
   push:
     branches: [ $default-branch ]
   pull_request:
-    branches: [ 'main' ]
+    branches: [ $default-branch ]
 
 env:
   dotnet_version: ${{ vars.DOTNET_VERSION }}
 
 jobs:
   build:
-    name: Build with .NET $dotnet_version
+    name: Build with .NET ${{ env.$dotnet_version }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -30,7 +30,7 @@ jobs:
           **/obj/*
 
   test:
-    name: Test with .NET $dotnet_version
+    name: Test with .NET ${{ env.$dotnet_version }}
     needs: [build]
     runs-on: ubuntu-latest
     steps:
@@ -49,7 +49,7 @@ jobs:
           **/test-results/*
 
   pack:
-    name: Pack with .NET $dotnet_version
+    name: Pack with .NET ${{ env.$dotnet_version }}
     needs: [test]
     runs-on: ubuntu-latest
     steps:
