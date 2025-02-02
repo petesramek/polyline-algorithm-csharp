@@ -6,10 +6,10 @@ on:
   pull_request:
     branches: [ 'main' ]
 
-concurrency: ${{ github.ref }}
-
 env:
   dotnet_version: ${{ vars.DOTNET_VERSION }}
+
+concurrency: ${{ github.ref }}
 
 jobs:
   build:
