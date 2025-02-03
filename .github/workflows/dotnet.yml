@@ -39,6 +39,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ASSEMBLY_VERSION: ${{ needs.version.outputs.ASSEMBLY_VERSION }}
+      ASSEMBLY_INFORMATIONAL_VERSION: ${{ needs.version.outputs.ASSEMBLY_INFORMATIONAL_VERSION }}
+      FILE_VERSION: ${{ needs.version.outputs.FILE_VERSION }}
+      PACKAGE_VERSION: ${{ needs.version.outputs.PACKAGE_VERSION }}
     steps:
     - uses: actions/checkout@v3
     - run: 'echo Assembly Version: ${{ env.ASSEMBLY_VERSION }}'
