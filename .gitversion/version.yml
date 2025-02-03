@@ -1,7 +1,4 @@
 mode: ContinuousDeployment
-strategies:
-- VersionInBranchName
-- TrackReleaseBranches
 
 assembly-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILD_NUMBER}'
 assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILD_NUMBER}'
