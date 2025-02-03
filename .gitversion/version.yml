@@ -40,6 +40,7 @@ branches:
     regex: ^release(s)?\/([vV]?\d+.\d+(\.\d+){0,1})\/preview$
     source-branches:
     - release
+    - feature
   release:
     mode: ContinuousDeployment
     label: ''
@@ -53,7 +54,6 @@ branches:
     mode: ContinuousDelivery
     label: hotfix
     increment: Inherit
-    track-merge-target: false
     regex: ^hotfix(es)?\/(?<BranchName>.+)
     source-branches:
     - release
@@ -61,7 +61,6 @@ branches:
     mode: ContinuousDelivery
     label: beta
     increment: Inherit
-    track-merge-target: false
     regex: ^support\/(?<BranchName>.+)
     source-branches:
     - release
@@ -69,15 +68,13 @@ branches:
     mode: ContinuousDelivery
     label: bugfix
     increment: Inherit
-    track-merge-target: false
     regex: ^bugfix(es)?\/(?<BranchName>.+)
     source-branches:
     - support
   feature:
-    mode: ManualDeployment
+    mode: ContinuousDelivery
     label: '{BranchName}'
     increment: Inherit
-    track-merge-target: false
     regex: ^feature(s)?\/(?<BranchName>.+)
     source-branches:
     - preview
