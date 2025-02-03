@@ -47,7 +47,7 @@ jobs:
       with:
         dotnet-version: ${{ vars.DOTNET_VERSION }}
     - name: Build with .NET ${{ vars.DOTNET_VERSION }}
-      run: dotnet build ./src/**/*.csproj --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} -p:Version=${{ env:version }} -p:FileVersion=${{ env:version }} -p:AssemblyInformationalVersion=${{ env:version }} -p:VersionSuffix=${{ env:versionSuffix }}
+      run: dotnet build ./src/**/*.csproj --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} -p:Version=${{ env.version }} -p:FileVersion=${{ env.version }} -p:AssemblyInformationalVersion=${{ env.version }} -p:VersionSuffix=${{ env.versionSuffix }}
     - name: Upload Build
       uses: actions/upload-artifact@v4
       with:
