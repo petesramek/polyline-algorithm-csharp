@@ -6,6 +6,8 @@ on:
     - 'main'
     - 'release/**' 
 
+concurrency: ${{ github.ref }}
+
 jobs:
   version:
     name: Version with GitVersion ${{ vars.GIT_VERSION }}
@@ -25,6 +27,10 @@ jobs:
         useConfigFile: true
         configFilePath: ./.gitversion/version.yml
         updateAssemblyInfo: false
+        overrideConfig:
+        description: |
+            assembly-versioning-format='{Major}.{Minor}.{Patch}.${{ github.run_number }}'
+            assembly-file-versioning-format='{Major}.{Minor}.{Patch}.${{ github.run_number }}'
     - run: 'echo FullSemVer: ${{ env.fullSemVer }}'
 
   build:
