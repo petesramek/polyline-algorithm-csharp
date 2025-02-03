@@ -60,13 +60,15 @@ branches:
     mode: ContinuousDelivery
     label: hotfix
     increment: Inherit
+    track-merge-target: true
     regex: ^hotfix(es)?\/(?<BranchName>.+)
     source-branches:
     - release
   support:
+    mode: ContinuousDelivery
     label: beta
     increment: Inherit
-    track-merge-target: false
+    track-merge-target: true
     regex: ^support\/(?<BranchName>.+)
     source-branches:
     - release
@@ -74,7 +76,7 @@ branches:
     mode: ContinuousDelivery
     label: bugfix
     increment: Inherit
-    track-merge-target: false
+    track-merge-target: true
     regex: ^bugfix(es)?\/(?<BranchName>.+)
     source-branches:
     - support
@@ -82,7 +84,7 @@ branches:
     mode: ContinuousDelivery
     label: '{BranchName}'
     increment: Inherit
-    track-merge-target: false
+    track-merge-target: true
     regex: ^feature(s)?\/(?<BranchName>.+)
     source-branches:
     - preview
