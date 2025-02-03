@@ -81,10 +81,7 @@ branches:
     - main
     - support
     is-source-branch-for: []
-    tracks-release-branches: false
     is-release-branch: true
-    is-main-branch: false
-    pre-release-weight: 30000
   feature:
     mode: ManualDeployment
     label: '{BranchName}'
