@@ -6,7 +6,6 @@ on:
     - 'main'
     - 'release/**' 
   workflow_dispatch:
-   - 'release/**' 
 
 concurrency: ${{ github.ref }}
 
