@@ -81,7 +81,7 @@ branches:
     source-branches: [ 'develop', 'main', 'release', 'feature', 'support', 'hotfix' ]
     prevent-increment-of-merged-branch-version: false
     tracks-release-branches: false
-    track-merge-target: false
+    track-merge-target: true
     is-release-branch: false
     is-mainline: false
     pre-release-weight: 30000
