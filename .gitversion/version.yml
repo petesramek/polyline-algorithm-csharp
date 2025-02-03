@@ -76,10 +76,10 @@ branches:
     mode: ContinuousDelivery
     tag: pr-
     increment: Inherit
-    prevent-increment-of-merged-branch-version: false
     tag-number-pattern: '[/-](?<number>\d+)[-/]'
     track-merge-target: false
     source-branches: [ 'develop', 'main', 'release', 'feature', 'support', 'hotfix' ]
+    prevent-increment-of-merged-branch-version: false
     tracks-release-branches: false
     is-release-branch: false
     is-mainline: false
