@@ -3,13 +3,6 @@ assembly-file-versioning-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 assembly-informational-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 tag-prefix: '[vV]?'
 version-in-branch-pattern: (?<version>[vV]?\d+.\d+(\.\d+){0,1})
-major-version-bump-message: \+semver:\s?(breaking|major)
-minor-version-bump-message: \+semver:\s?(feature|minor)
-patch-version-bump-message: \+semver:\s?(fix|patch)
-no-bump-message: \+semver:\s?(none|skip)
-tag-pre-release-weight: 60000
-commit-date-format: yyyy-MM-dd
-merge-message-formats: {}
 update-build-number: false
 semantic-version-format: Loose
 strategies:
@@ -60,7 +53,7 @@ branches:
     mode: ContinuousDelivery
     label: hotfix
     increment: Inherit
-    track-merge-target: true
+    track-merge-target: false
     regex: ^hotfix(es)?\/(?<BranchName>.+)
     source-branches:
     - release
@@ -68,7 +61,7 @@ branches:
     mode: ContinuousDelivery
     label: beta
     increment: Inherit
-    track-merge-target: true
+    track-merge-target: false
     regex: ^support\/(?<BranchName>.+)
     source-branches:
     - release
@@ -76,7 +69,7 @@ branches:
     mode: ContinuousDelivery
     label: bugfix
     increment: Inherit
-    track-merge-target: true
+    track-merge-target: false
     regex: ^bugfix(es)?\/(?<BranchName>.+)
     source-branches:
     - support
@@ -84,7 +77,7 @@ branches:
     mode: ContinuousDelivery
     label: '{BranchName}'
     increment: Inherit
-    track-merge-target: true
+    track-merge-target: false
     regex: ^feature(s)?\/(?<BranchName>.+)
     source-branches:
     - preview
