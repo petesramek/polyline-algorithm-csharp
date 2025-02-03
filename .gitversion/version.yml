@@ -1,7 +1,7 @@
 assembly-versioning-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 assembly-file-versioning-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 assembly-informational-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
-tag-prefix: '[vV]?'
+tag-prefix: ''
 version-in-branch-pattern: \/(?<version>(\d+\.\d+))(\Z|\/.*)$
 major-version-bump-message: \+semver:\s?(breaking|major)
 minor-version-bump-message: \+semver:\s?(feature|minor)
