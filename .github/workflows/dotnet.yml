@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.github.run_number }}
-      ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.github.run_number }}+${{ step.gitversion.outputs.sha }}
+      ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.github.run_number }}+${{ steps.gitversion.outputs.sha }}
       FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.github.run_number }}
       PACKAGE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.github.run_number }}
     steps:
