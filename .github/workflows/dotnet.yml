@@ -22,12 +22,15 @@ jobs:
         versionSpec: ${{ vars.GIT_VERSION }}
         preferLatestVersion: true
     - name: Update Version with GitVersion ${{ vars.GIT_VERSION }}
-      id: version_step
       uses: gittools/actions/gitversion/execute@v3.1.11
       with:
         useConfigFile: true
         configFilePath: ./.gitversion/version.yml
         updateAssemblyInfo: false
+        overrideConfig:
+        description: |
+            assembly-versioning-format='{Major}.{Minor}.{Patch}.${{ github.run_number }}'
+            assembly-file-versioning-format='{Major}.{Minor}.{Patch}.${{ github.run_number }}'
     - run: 'echo FullSemVer: ${{ env.fullSemVer }}'
 
   build:
