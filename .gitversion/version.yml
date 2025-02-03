@@ -1,5 +1,6 @@
-assembly-versioning-scheme: MajorMinor
-assembly-file-versioning-scheme: MajorMinor
+assembly-versioning-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
+assembly-file-versioning-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
+assembly-informational-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 tag-prefix: '[vV]?'
 version-in-branch-pattern: (?<version>[vV]?\d+(\.\d+)?(\.\d+)?).*
 major-version-bump-message: \+semver:\s?(breaking|major)
@@ -92,6 +93,7 @@ branches:
       when-current-commit-tagged: false
     label-number-pattern: '[/-](?<number>\d+)'
     track-merge-message: true
+    track-merge-target: true
     regex: ^(pull|pull\-requests|pr)[/-]
     source-branches:
     - develop
