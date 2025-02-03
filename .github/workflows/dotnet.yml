@@ -42,9 +42,9 @@ jobs:
         configFilePath: ./.gitversion/version.yml
     - run: |
         if [[ "${{ env.is-release }}" ]]; then
-          "PACKAGE_VERSION="${{ steps.gitversion.outputs.assemblySemVer }}${{ steps.gitversion.outputs.preReleaseLabelWithDash }}.${{ github.run_number }} >> $GITHUB_OUTPUT
+          "PACKAGE_VERSION="${{ steps.gitversion.outputs.assemblySemVer }}${{ steps.gitversion.outputs.preReleaseLabelWithDash }}.${{ github.run_number }}" >> $GITHUB_OUTPUT
         else
-          "PACKAGE_VERSION="${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }} >> $GITHUB_OUTPUT
+          "PACKAGE_VERSION="${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}" >> $GITHUB_OUTPUT
         fi
 
   build:
