@@ -13,12 +13,8 @@ merge-message-formats: {}
 update-build-number: false
 semantic-version-format: Strict
 strategies:
-- Fallback
-- ConfiguredNextVersion
-- MergeMessage
-- TaggedCommit
-- TrackReleaseBranches
 - VersionInBranchName
+- Fallback
 ignore:
   sha: []
 mode: ContinuousDelivery
