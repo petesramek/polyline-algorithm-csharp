@@ -1,7 +1,7 @@
 mode: ContinuousDeployment
 
-assembly-versioning-format: '{Major}.{Minor}.{Patch}'
-assembly-file-versioning-format: '{Major}.{Minor}.{Patch}'
+assembly-versioning-format: '{Major}.{Minor}.{Patch}.${{ github.run_number }}'
+assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.${{ github.run_number }}'
 assembly-informational-format: "{FullSemVer}"
 
 increment: Patch
