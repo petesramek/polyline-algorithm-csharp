@@ -26,8 +26,7 @@ jobs:
       with:
         versionSpec: ${{ vars.GIT_VERSION }}
         preferLatestVersion: true
-    - name: Calculate version with GitVersion ${{ vars.GIT_VERSION }}
-      id: gitversion
+    - name: Show config with GitVersion ${{ vars.GIT_VERSION }}
       uses: gittools/actions/gitversion/command@v3.1.11
       with:
         useConfigFile: true
