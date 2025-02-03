@@ -2,7 +2,7 @@ assembly-versioning-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 assembly-file-versioning-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 assembly-informational-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 tag-prefix: '[vV]?'
-version-in-branch-pattern: (?<version>[vV]?(\d+){1}(\.\d+){1}(\.\d+){0,1})
+version-in-branch-pattern: (?<version>[vV]?\d+.\d+(\.\d+){0,1})
 major-version-bump-message: \+semver:\s?(breaking|major)
 minor-version-bump-message: \+semver:\s?(feature|minor)
 patch-version-bump-message: \+semver:\s?(fix|patch)
@@ -44,14 +44,14 @@ branches:
     mode: ContinuousDeployment
     label: preview
     increment: Inherit
-    regex: ^release(s)?\/([vV]?(\d+){1}(\.\d+){1}(\.\d+){0,1})\/preview$
+    regex: ^release(s)?\/([vV]?\d+.\d+(\.\d+){0,1})\/preview$
     source-branches:
     - release
   release:
     mode: ContinuousDeployment
     label: ''
     increment: Inherit
-    regex: ^release(s)?\/([vV]?(\d+){1}(\.\d+){1}(\.\d+){0,1})$
+    regex: ^release(s)?\/([vV]?\d+.\d+(\.\d+){0,1})$
     source-branches:
     - preview
     - support
