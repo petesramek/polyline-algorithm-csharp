@@ -22,7 +22,6 @@ jobs:
       ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
       ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}+${{ steps.gitversion.outputs.sha }}
       FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
-      PACKAGE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}
     env:
       is-release: ${{ !startsWith(github.ref_name, 'release') }}
     steps:
@@ -43,9 +42,9 @@ jobs:
         configFilePath: ./.gitversion/version.yml
     - run: |
         if [[ "${{ env.is-release }}" ]]; then
-          echo "::set-output name=PACKAGE_VERSION::${{ steps.gitversion.outputs.assemblySemVer }}${{ steps.gitversion.outputs.preReleaseLabelWithDash }}.${{ github.run_number }}"
+          "PACKAGE_VERSION="${{ steps.gitversion.outputs.assemblySemVer }}${{ steps.gitversion.outputs.preReleaseLabelWithDash }}.${{ github.run_number }} >> $GITHUB_OUTPUT
         else
-          echo "::set-output name=PACKAGE_VERSION::${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}"
+          "PACKAGE_VERSION="${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }} >> $GITHUB_OUTPUT
         fi
 
   build:
