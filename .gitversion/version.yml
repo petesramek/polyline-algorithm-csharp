@@ -45,10 +45,9 @@ branches:
     track-merge-message: false
     tracks-release-branches: true
 
-    prevent-increment:
-      of-merged-branch-version: false
-      when-branch-merged: true
-      when-current-commit-tagged: true
+    prevent-increment-of-merged-branch-version: false
+    prevent-increment-when-branch-merged: true
+    prevent-increment-when-current-commit-tagged: true
 
   release:
     regex: ^release?[/-]
@@ -65,10 +64,9 @@ branches:
     track-merge-message: false
     tracks-release-branches: false
 
-    prevent-increment:
-      of-merged-branch-version: true
-      when-branch-merged: true
-      when-current-commit-tagged: true
+    prevent-increment-of-merged-branch-version: true
+    prevent-increment-when-branch-merged: true
+    prevent-increment-when-current-commit-tagged: true
 
   feature:
     regex: ^feature?[/-]
@@ -77,18 +75,17 @@ branches:
     increment: Inherit
     source-branches: [ 'preview' ]
 
-    is-release-branch: true
+    is-release-branch: false
     is-main-branch: false
     is-mainline: false
 
-    track-merge-target: false
+    track-merge-target: true
     track-merge-message: false
     tracks-release-branches: false
 
-    prevent-increment:
-      of-merged-branch-version: true
-      when-branch-merged: true
-      when-current-commit-tagged: true
+    prevent-increment-of-merged-branch-version: true
+    prevent-increment-when-branch-merged: true
+    prevent-increment-when-current-commit-tagged: true
 
   pull-request:
     regex: ^(pull|pull\-requests|pr)[/-]
