@@ -6,8 +6,6 @@ on:
     - 'main'
     - 'release/**' 
 
-concurrency: ${{ github.ref }}
-
 jobs:
   version:
     name: Version with GitVersion ${{ vars.GIT_VERSION }}
