@@ -1,8 +1,8 @@
 mode: ContinuousDeployment
 
-assembly-versioning-format: '{Major}.{Minor}.{Patch}.${{ github.run_number }}'
-assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.${{ github.run_number }}'
-assembly-informational-format: "{FullSemVer}"
+assembly-versioning-format: '{Major}.{Minor}.{CommitsSinceVersionSource}.${{ github.run_number }}'
+assembly-file-versioning-format: '{Major}.{Minor}.{CommitsSinceVersionSource}.${{ github.run_number }}'
+assembly-informational-format: '{Major}.{Minor}.{CommitsSinceVersionSource}.${{ github.run_number }}'
 
 increment: Patch
 next-version: 0.9.0.0 #
