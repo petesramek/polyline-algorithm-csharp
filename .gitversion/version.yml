@@ -66,16 +66,15 @@ branches:
   support:
     label: beta
     increment: Inherit
-    prevent-increment:
-      of-merged-branch: true
     track-merge-target: false
-    regex: ^support[/-](?<BranchName>.+)
+    regex: ^support\/(?<BranchName>.+)
     source-branches:
     - release
   bugfix:
     mode: ContinuousDelivery
     label: bugfix
     increment: Inherit
+    track-merge-target: false
     regex: ^bugfix(es)?\/(?<BranchName>.+)
     source-branches:
     - support
@@ -83,6 +82,7 @@ branches:
     mode: ContinuousDelivery
     label: '{BranchName}'
     increment: Inherit
+    track-merge-target: false
     regex: ^feature(s)?\/(?<BranchName>.+)
     source-branches:
     - preview
