@@ -74,7 +74,7 @@ branches:
   pull-request:
     regex: ^(pull|pull\-requests|pr)[/-]
     mode: ContinuousDelivery
-    tag: pr-
+    tag: pr-{branhcName}-
     increment: Inherit
     tag-number-pattern: '[/-](?<number>\d+)[-/]'
     track-merge-target: false
