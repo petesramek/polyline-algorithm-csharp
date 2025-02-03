@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.gitversion.outputs.majorMinorPatch }}
-      versionSuffix: ${{ steps.gitversion.outputs.PreReleaseTag }}
+      versionSuffix: ${{ steps.gitversion.outputs.preReleaseTag }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -30,8 +30,6 @@ jobs:
       with:
         useConfigFile: true
         configFilePath: ./.gitversion/version.yml
-    - run: 'echo FullSemVer: ${{ env.fullSemVer }}'
-    - run: 'echo FullSemVer: ${{ env.majorMinorPatch }}'
 
   build:
     name: Build with .NET ${{ vars.DOTNET_VERSION }}
@@ -42,6 +40,8 @@ jobs:
       versionSuffix: ${{ needs.version.outputs.versionSuffix }}
     steps:
     - uses: actions/checkout@v3
+    - run: 'echo version: ${{ env.version }}'
+    - run: 'echo versionSuffix: ${{ env.versionSuffix }}'
     - name: Install .NET ${{ vars.DOTNET_VERSION }}
       uses: actions/setup-dotnet@v4
       with:
