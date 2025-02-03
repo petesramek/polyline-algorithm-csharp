@@ -22,11 +22,9 @@ jobs:
       ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
       ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}+${{ steps.gitversion.outputs.sha }}
       FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
-      PACKAGE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}${{ fromJSON('[ "${{ pre-release-version }}", "${{ release-version }}" ]')[env.is-release] }}
+      PACKAGE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}${{ fromJSON('[ "${{ steps.gitversion.outputs.preReleaseLabelWithDash }}.${{ github.run_number }}", ".${{ github.run_number }}" ]')[env.is-release] }}
     env:
       is-release: ${{ startsWith(github.ref_name, 'release') }}
-      pre-release-version: ${{ steps.gitversion.outputs.preReleaseLabelWithDash }}.${{ github.run_number }}
-      release-version: .${{ github.run_number }}
     steps:
     - uses: actions/checkout@v3
       with:
