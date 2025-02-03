@@ -19,6 +19,24 @@ strategies:
 - TaggedCommit
 - TrackReleaseBranches
 - VersionInBranchName
+ignore:
+  sha: []
+mode: ContinuousDelivery
+label: '{BranchName}'
+increment: Inherit
+prevent-increment:
+  of-merged-branch: true
+  when-branch-merged: true
+  when-current-commit-tagged: true
+track-merge-target: false
+track-merge-message: false
+commit-message-incrementing: Disabled
+regex: ''
+source-branches: []
+is-source-branch-for: []
+tracks-release-branches: false
+is-release-branch: false
+is-main-branch: false
 branches:
   develop:
     mode: ContinuousDelivery
@@ -92,7 +110,7 @@ branches:
       of-merged-branch: true
       when-current-commit-tagged: false
     label-number-pattern: '[/-](?<number>\d+)'
-    track-merge-message: true
+    track-merge-message: false
     track-merge-target: true
     regex: ^(pull|pull\-requests|pr)[/-]
     source-branches:
@@ -102,8 +120,6 @@ branches:
     - feature
     - support
     - hotfix
-    is-source-branch-for: []
-    pre-release-weight: 30000
   hotfix:
     mode: ManualDeployment
     label: beta
@@ -149,21 +165,3 @@ branches:
     - support
     is-source-branch-for: []
     is-main-branch: false
-ignore:
-  sha: []
-mode: ContinuousDelivery
-label: '{BranchName}'
-increment: Inherit
-prevent-increment:
-  of-merged-branch: false
-  when-branch-merged: false
-  when-current-commit-tagged: true
-track-merge-target: false
-track-merge-message: true
-commit-message-incrementing: Enabled
-regex: ''
-source-branches: []
-is-source-branch-for: []
-tracks-release-branches: false
-is-release-branch: false
-is-main-branch: false
