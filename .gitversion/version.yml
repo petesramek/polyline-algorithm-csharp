@@ -5,7 +5,6 @@ assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.${{ github.run_number 
 assembly-informational-format: "{FullSemVer}"
 
 increment: Patch
-next-version: 0.9.0.0 #
 continuous-delivery-fallback-tag: ci
 tag-prefix: "[vV]"
 build-metadata-padding: 0
@@ -27,23 +26,11 @@ branches:
     increment: Patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
-    source-branches: [ 'develop', 'release' ]
+    source-branches: [ 'release' ]
     tracks-release-branches: false
     is-release-branch: false
     is-mainline: true
     pre-release-weight: 55000
-  develop:
-    regex: ^dev(elop)?(ment)?$
-    mode: ContinuousDeployment
-    tag: alpha
-    increment: Minor
-    prevent-increment-of-merged-branch-version: false
-    track-merge-target: true
-    source-branches: []
-    tracks-release-branches: true
-    is-release-branch: false
-    is-mainline: false
-    pre-release-weight: 0
   release:
     regex: ^release?[/-]
     mode: ContinuousDelivery
@@ -51,7 +38,7 @@ branches:
     increment: None
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
-    source-branches: [ 'develop', 'main', 'support', 'release' ]
+    source-branches: [ 'main', 'release', 'hotfix', 'support', 'bugfix' ]
     tracks-release-branches: false
     is-release-branch: true
     is-mainline: false
@@ -61,13 +48,19 @@ branches:
     mode: ContinuousDeployment
     tag: useBranchName
     increment: Inherit
-    prevent-increment-of-merged-branch-version: false
-    track-merge-target: false
-    source-branches: [ 'develop', 'main', 'release', 'feature', 'support', 'hotfix' ]
+    source-branches: [ 'preview' ]
+
+    prevent-increment-of-merged-branch: false
+    prevent-increment-when-branch-merged: false
+    prevent-increment-when-current-commit-tagged: true
+
+    track-merge-target: true
+    track-merge-message: false
     tracks-release-branches: false
+
     is-release-branch: false
+    is-main-branch: false
     is-mainline: false
-    pre-release-weight: 30000
   pull-request:
     regex: ^(pull|pull\-requests|pr)[/-]
     mode: ContinuousDelivery
