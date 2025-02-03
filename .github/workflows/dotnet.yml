@@ -25,6 +25,9 @@ jobs:
         useConfigFile: true
         configFilePath: ./.gitversion/version.yml
         updateAssemblyInfo: false
+        overrideConfig: |
+          assembly-versioning-format='{Major}.{Minor}.{Patch}.${{ github.run_number }}'
+          assembly-file-versioning-format='{Major}.{Minor}.{Patch}.${{ github.run_number }}'
     - run: 'echo FullSemVer: ${{ env.fullSemVer }}'
 
   build:
