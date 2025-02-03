@@ -78,10 +78,10 @@ branches:
     tag: pull-request-
     increment: Inherit
     tag-number-pattern: '[/-](?<number>\d+)[-/]'
-    track-merge-target: false
     source-branches: [ 'develop', 'main', 'release', 'feature', 'support', 'hotfix' ]
     prevent-increment-of-merged-branch-version: false
     tracks-release-branches: false
+    track-merge-target: false
     is-release-branch: false
     is-mainline: false
     pre-release-weight: 30000
