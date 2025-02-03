@@ -101,12 +101,12 @@ branches:
     pre-release-weight: 30000
   pull-request:
     mode: ContinuousDelivery
-    label: PullRequest
+    # label: PullRequest
     increment: Inherit
     prevent-increment:
       of-merged-branch: true
       when-current-commit-tagged: false
-    label-number-pattern: '[/-](?<number>\d+)'
+    # label-number-pattern: '[/-](?<number>\d+)'
     track-merge-message: false
     track-merge-target: true
     regex: ^(pull|pull\-requests|pr)[/-]
