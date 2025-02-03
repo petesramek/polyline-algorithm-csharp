@@ -10,7 +10,7 @@ no-bump-message: \+semver:\s?(none|skip)
 tag-pre-release-weight: 60000
 commit-date-format: yyyy-MM-dd
 merge-message-formats: {}
-update-build-number: true
+update-build-number: false
 semantic-version-format: Strict
 strategies:
 - Fallback
