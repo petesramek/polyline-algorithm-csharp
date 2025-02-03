@@ -14,10 +14,6 @@ on:
 
 concurrency: ${{ github.ref }}
 
-env:
-  is-pull-request: ${{ github.event_name == 'pull_request' }}
-  is-release: ${{ startsWith(github.ref_name, 'release') }}
-
 jobs:
   version:
     name: Version with GitVersion ${{ vars.GIT_VERSION }}
@@ -27,10 +23,13 @@ jobs:
       ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}+${{ steps.gitversion.outputs.sha }}
       FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
       PACKAGE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}${{ fromJSON('[steps.gitversion.outputs.preReleaseLabelWithDash, ""]')[env.is-release] }}.${{ github.run_number }}
+    env:
+      is-release: ${{ startsWith(github.ref_name, 'release') }}
     steps:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
+    - run: 'echo Assembly Version: ${{ fromJSON("preview", "release"])[env.is-release] }}'
     - name: Install GitVersion ${{ vars.GIT_VERSION }}
       uses: gittools/actions/gitversion/setup@v3.1.11
       with:
