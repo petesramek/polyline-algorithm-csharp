@@ -24,7 +24,7 @@ jobs:
       FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
       PACKAGE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}${{ env.is-pre-release && steps.gitversion.outputs.preReleaseLabelWithDash || '''' }}.${{ github.run_number }}
     env:
-      is-pre-release: ${{ !startsWith(github.ref_name, 'release') }}
+      is-pre-release: ${{ !startsWith(github.ref_name, 'pull') }}
     steps:
     - uses: actions/checkout@v3
       with:
