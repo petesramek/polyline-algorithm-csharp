@@ -1,25 +1,25 @@
 mode: ContinuousDeployment
 
+# Formats
 assembly-versioning-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 assembly-file-versioning-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 assembly-informational-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
+commit-date-format: "yyyy-MM-dd"
 
+# Incrementing
 increment: Patch
 continuous-delivery-fallback-tag: ci
 tag-prefix: "[vV]"
-
 # Padding
 build-metadata-padding: 0
 commits-since-version-source-padding: 4
 legacy-semver-padding: 0
 # Message bumping
+commit-message-incrementing: Disabled
 major-version-bump-message: '\+semver:\s?(breaking|major)'
 minor-version-bump-message: '\+semver:\s?(feature|minor)'
 patch-version-bump-message: '\+semver:\s?(fix|patch)'
 no-bump-message: '\+semver:\s?(none|skip)'
-
-commit-message-incrementing: Disabled
-commit-date-format: "yyyy-MM-dd"
 ignore:
   sha: []
 branches:
