@@ -29,6 +29,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
+    - run: 'echo ${{ github.ref_name }}'
     - name: Install GitVersion ${{ vars.GIT_VERSION }}
       uses: gittools/actions/gitversion/setup@v3.1.11
       with:
