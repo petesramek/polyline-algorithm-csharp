@@ -1,6 +1,10 @@
 name: .NET
 
 on:
+  push:
+    branches:
+    - 'preview/**'
+    - 'release/**'
   pull_request:
     branches:
     - 'main'
@@ -10,6 +14,11 @@ on:
 
 concurrency: ${{ github.ref }}
 
+env:
+  is-pull-request: ${{ github.event_name == 'pull_request' }}
+  is-preview: ${{ startsWith(github.ref_name, 'preview') }}
+  is-release: ${{ startsWith(github.ref_name, 'release') }}
+
 jobs:
   version:
     name: Version with GitVersion ${{ vars.GIT_VERSION }}
@@ -18,7 +27,7 @@ jobs:
       ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
       ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}+${{ steps.gitversion.outputs.sha }}
       FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
-      PACKAGE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}${{ steps.gitversion.outputs.preReleaseLabelWithDash }}.${{ github.run_number }}
+      PACKAGE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}${{ ${{ !env.is-release && steps.gitversion.outputs.preReleaseLabelWithDash || '' }}.${{ github.run_number }}
     steps:
     - uses: actions/checkout@v3
       with:
