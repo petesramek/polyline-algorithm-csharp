@@ -2,7 +2,7 @@ assembly-versioning-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 assembly-file-versioning-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 assembly-informational-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 tag-prefix: '[vV]?'
-version-in-branch-pattern: (?<version>[vV]?\d+(\.\d+){1}(\.\d+){0,1})
+version-in-branch-pattern: (?<version>[vV]?(\d+){1}(\.\d+){1}(\.\d+){0,1})
 major-version-bump-message: \+semver:\s?(breaking|major)
 minor-version-bump-message: \+semver:\s?(feature|minor)
 patch-version-bump-message: \+semver:\s?(fix|patch)
@@ -40,21 +40,50 @@ branches:
     increment: Inherit
     regex: ^master$|^main$
     is-main-branch: true
+  preview:
+    mode: ContinuousDeployment
+    label: preview
+    increment: Inherit
+    regex: ^release(s)?\/([vV]?(\d+){1}(\.\d+){1}(\.\d+){0,1})\/preview$
+    source-branches:
+    - release
   release:
     mode: ContinuousDeployment
     label: ''
     increment: Inherit
-    regex: ^release(s)?[/-](?<BranchName>.+)
+    regex: ^release(s)?\/([vV]?(\d+){1}(\.\d+){1}(\.\d+){0,1})$
     source-branches:
     - preview
-    - release
     - support
     is-release-branch: true
+  hotfix:
+    mode: ContinuousDelivery
+    label: hotfix
+    increment: Inherit
+    regex: ^hotfix(es)?\/(?<BranchName>.+)
+    source-branches:
+    - release
+  support:
+    label: beta
+    increment: Inherit
+    prevent-increment:
+      of-merged-branch: true
+    track-merge-target: false
+    regex: ^support[/-](?<BranchName>.+)
+    source-branches:
+    - release
+  bugfix:
+    mode: ContinuousDelivery
+    label: bugfix
+    increment: Inherit
+    regex: ^bugfix(es)?\/(?<BranchName>.+)
+    source-branches:
+    - support
   feature:
     mode: ContinuousDelivery
     label: '{BranchName}'
     increment: Inherit
-    regex: ^feature(s)?[/-](?<BranchName>.+)
+    regex: ^feature(s)?\/(?<BranchName>.+)
     source-branches:
     - preview
   pull-request:
@@ -69,29 +98,6 @@ branches:
     - preview
     - feature
     - preview
-  hotfix:
-    mode: ContinuousDelivery
-    label: alpha
-    increment: Inherit
-    regex: ^hotfix(es)?[/-](?<BranchName>.+)
-    source-branches:
-    - release
-  support:
-    label: beta
-    increment: Inherit
-    prevent-increment:
-      of-merged-branch: true
-    track-merge-target: false
-    regex: ^support[/-](?<BranchName>.+)
-    source-branches:
-    - release
-  bugfix:
-    mode: ContinuousDelivery
-    label: alpha
-    increment: Inherit
-    regex: ^bugfix(es)?[/-](?<BranchName>.+)
-    source-branches:
-    - support
   unknown:
     mode: ManualDeployment
     label: '{BranchName}'
