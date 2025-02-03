@@ -13,8 +13,7 @@ jobs:
     name: Version with GitVersion ${{ vars.GIT_VERSION }}
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.gitversion.outputs.majorMinorPatch }}
-      versionSuffix: ${{ steps.gitversion.outputs.preReleaseTag }}
+      VERSION: ${{ steps.gitversion.outputs.majorMinorPatch }}${{ PreReleaseTagWithDash }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -36,8 +35,7 @@ jobs:
     needs: [version]
     runs-on: ubuntu-latest
     env:
-      version: ${{ needs.version.outputs.version }}
-      versionSuffix: ${{ needs.version.outputs.versionSuffix }}
+      VERSION: ${{ needs.version.outputs.VERSION }}
     steps:
     - uses: actions/checkout@v3
     - run: 'echo version: ${{ env.version }}'
@@ -47,7 +45,7 @@ jobs:
       with:
         dotnet-version: ${{ vars.DOTNET_VERSION }}
     - name: Build with .NET ${{ vars.DOTNET_VERSION }}
-      run: dotnet build ./src/**/*.csproj --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} -p:Version=${{ env.version }} -p:FileVersion=${{ env.version }} -p:AssemblyInformationalVersion=${{ env.version }} -p:VersionSuffix=${{ env.versionSuffix }}
+      run: dotnet build ./src/**/*.csproj --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} -p:Version=${{ env.VERSION }} -p:FileVersion=${{ env.VERSION }} -p:AssemblyInformationalVersion=${{ env.VERSION }}
     - name: Upload Build
       uses: actions/upload-artifact@v4
       with:
