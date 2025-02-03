@@ -10,16 +10,21 @@ commit-date-format: "yyyy-MM-dd"
 increment: Patch
 continuous-delivery-fallback-tag: ci
 tag-prefix: "[vV]"
+
 # Padding
 build-metadata-padding: 0
 commits-since-version-source-padding: 4
 legacy-semver-padding: 0
+
 # Automatic bumping
 commit-message-incrementing: Disabled
 major-version-bump-message: '\+semver:\s?(breaking|major)'
 minor-version-bump-message: '\+semver:\s?(feature|minor)'
 patch-version-bump-message: '\+semver:\s?(fix|patch)'
 no-bump-message: '\+semver:\s?(none|skip)'
+
+# Patterns
+version-in-branch-pattern: (?<version>[vV]?\d+(\.\d+)?(\.\d+)?).*
 
 ignore:
   sha: []
