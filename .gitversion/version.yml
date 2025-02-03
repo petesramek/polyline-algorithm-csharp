@@ -74,7 +74,7 @@ branches:
     source-branches:
     - support
   feature:
-    mode: ContinuousDelivery
+    mode: ManualDeployment
     label: '{BranchName}'
     increment: Inherit
     track-merge-target: false
