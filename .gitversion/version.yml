@@ -74,9 +74,9 @@ branches:
   pull-request:
     regex: ^(pull|pull\-requests|pr)[/-]
     mode: ContinuousDelivery
-    tag: '{BranchName}'
+    tag: useBranchName
     increment: Inherit
-    tag-number-pattern: '[/-](?<number>\d+)[-/]'
+    # tag-number-pattern: '[/-](?<number>\d+)[-/]'
     track-merge-target: false
     source-branches: [ 'develop', 'main', 'release', 'feature', 'support', 'hotfix' ]
     prevent-increment-of-merged-branch-version: false
