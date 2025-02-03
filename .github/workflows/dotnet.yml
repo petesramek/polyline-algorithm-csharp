@@ -3,8 +3,10 @@ name: .NET
 on:
   pull_request:
     branches:
+    - 'main'
+    - 'preview/**'
     - 'release/**'
-  workflow_dispatch:
+    - 'support/**'
 
 concurrency: ${{ github.ref }}
 
