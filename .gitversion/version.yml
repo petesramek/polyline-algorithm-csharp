@@ -6,12 +6,14 @@ strategies:
 assembly-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILD_NUMBER}'
 assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILD_NUMBER}'
 assembly-informational-format: "{FullSemVer}"
+semantic-version-format: Strict
 
 increment: Patch
 
 continuous-delivery-fallback-tag: ci
 tag-prefix: "[vV]"
 
+commits-since-version-source-padding: 0
 build-metadata-padding: 0
 legacy-semver-padding: 0
 
@@ -20,23 +22,8 @@ minor-version-bump-message: '\+semver:\s?(feature|minor)'
 patch-version-bump-message: '\+semver:\s?(fix|patch)'
 no-bump-message: '\+semver:\s?(none|skip)'
 
-commits-since-version-source-padding: 4
-commit-message-incrementing: Enabled
+commit-message-incrementing: Disable
 commit-date-format: "yyyy-MM-dd"
-
-is-release-branch: false
-is-main-branch: false
-is-mainline: false
-
-prevent-increment:
-  of-merged-branch-version: true
-  when-branch-merged: true
-  when-current-commit-tagged: true
-
-track-merge-target: false
-track-merge-message: false
-tracks-release-branches: false
-
 
 ignore:
   sha: []
@@ -47,44 +34,61 @@ branches:
     regex: ^master$|^main$
     mode: ContinuousDelivery
     tag: ''
-    increment: Patch
-    prevent-increment-of-merged-branch-version: true
-    track-merge-target: false
-    source-branches: [ 'develop', 'release' ]
-    is-main-branch: true
+    increment: Inherit
+    source-branches: [ 'release' ]
 
-  develop:
-    regex: ^dev(elop)?(ment)?$
-    mode: ContinuousDeployment
-    tag: alpha
-    increment: Minor
-    prevent-increment-of-merged-branch-version: false
-    track-merge-target: true
-    source-branches: []
-    tracks-release-branches: true
     is-release-branch: false
+    is-main-branch: false
     is-mainline: false
+
+    track-merge-target: false
+    track-merge-message: false
+    tracks-release-branches: true
+
+    prevent-increment:
+      of-merged-branch-version: false
+      when-branch-merged: true
+      when-current-commit-tagged: true
 
   release:
     regex: ^release?[/-]
     mode: ContinuousDelivery
     tag: beta
     increment: None
-    prevent-increment-of-merged-branch-version: true
-    track-merge-target: false
-    source-branches: [ 'develop', 'main', 'support', 'release' ]
-    tracks-release-branches: false
+    source-branches: [ 'main', 'release', 'preview', 'support' ]
+
     is-release-branch: true
+    is-main-branch: false
     is-mainline: false
+
+    track-merge-target: false
+    track-merge-message: false
+    tracks-release-branches: false
+
+    prevent-increment:
+      of-merged-branch-version: true
+      when-branch-merged: true
+      when-current-commit-tagged: true
 
   feature:
     regex: ^feature?[/-]
     mode: ContinuousDelivery
     tag: useBranchName
     increment: Inherit
-    prevent-increment-of-merged-branch-version: false
-    track-merge-target: true
-    source-branches: [ 'release', 'feature' ]
+    source-branches: [ 'preview' ]
+
+    is-release-branch: true
+    is-main-branch: false
+    is-mainline: false
+
+    track-merge-target: false
+    track-merge-message: false
+    tracks-release-branches: false
+
+    prevent-increment:
+      of-merged-branch-version: true
+      when-branch-merged: true
+      when-current-commit-tagged: true
 
   pull-request:
     regex: ^(pull|pull\-requests|pr)[/-]
