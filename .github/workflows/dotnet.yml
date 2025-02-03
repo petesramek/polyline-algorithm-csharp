@@ -13,7 +13,10 @@ jobs:
     name: Version with GitVersion ${{ vars.GIT_VERSION }}
     runs-on: ubuntu-latest
     outputs:
-      ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}
+      ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.github.run_number }}
+      ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.github.run_number }}+${{ step.gitversion.outputs.sha }}
+      FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.github.run_number }}
+      PACKAGE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.github.run_number }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -38,8 +41,10 @@ jobs:
       ASSEMBLY_VERSION: ${{ needs.version.outputs.ASSEMBLY_VERSION }}
     steps:
     - uses: actions/checkout@v3
-    - run: 'echo version: ${{ env.version }}'
-    - run: 'echo versionSuffix: ${{ env.versionSuffix }}'
+    - run: 'echo Assembly Version: ${{ env.ASSEMBLY_VERSION }}'
+    - run: 'echo File Version: ${{ env.FILE_VERSION }}'
+    - run: 'echo Assembly Informational Version: ${{ env.ASSEMBLY_INFORMATIONAL_VERSION }}'
+    - run: 'echo Package Version: ${{ env.PACKAGE_VERSION }}'
     - name: Install .NET ${{ vars.DOTNET_VERSION }}
       uses: actions/setup-dotnet@v4
       with:
