@@ -2,7 +2,7 @@ assembly-versioning-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 assembly-file-versioning-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 assembly-informational-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 tag-prefix: '[vV]?'
-version-in-branch-pattern: (?<version>[vV]?\d+(\.\d+)?(\.\d+)*).*
+version-in-branch-pattern: (?<version>[vV]?\d+(\.\d+)?(\.\d+)?).*
 major-version-bump-message: \+semver:\s?(breaking|major)
 minor-version-bump-message: \+semver:\s?(feature|minor)
 patch-version-bump-message: \+semver:\s?(fix|patch)
@@ -11,7 +11,7 @@ tag-pre-release-weight: 60000
 commit-date-format: yyyy-MM-dd
 merge-message-formats: {}
 update-build-number: false
-semantic-version-format: Strict
+semantic-version-format: Loose
 strategies:
 - VersionInBranchName
 - Fallback
