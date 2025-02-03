@@ -14,7 +14,7 @@ tag-prefix: "[vV]"
 build-metadata-padding: 0
 commits-since-version-source-padding: 4
 legacy-semver-padding: 0
-# Message bumping
+# Automatic bumping
 commit-message-incrementing: Disabled
 major-version-bump-message: '\+semver:\s?(breaking|major)'
 minor-version-bump-message: '\+semver:\s?(feature|minor)'
