@@ -22,7 +22,7 @@ jobs:
       ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
       ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}+${{ steps.gitversion.outputs.sha }}
       FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
-      PACKAGE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}${{ steps.gitversion.outputs.preReleaseLabelWithDash }}.${{ github.run_number }}
+      PACKAGE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}${{ env.is-pre-release && steps.gitversion.outputs.preReleaseLabelWithDash || '''' }}.${{ github.run_number }}
     env:
       is-pre-release: ${{ !startsWith(github.ref_name, 'release') }}
     steps:
@@ -40,8 +40,6 @@ jobs:
       with:
         useConfigFile: true
         configFilePath: ./.gitversion/version.yml
-    - run: 'echo Pre-Release: ${{ env.is-pre-release }}'
-    - run: 'echo Label: ${{ env.is-pre-release && steps.gitversion.outputs.preReleaseLabelWithDash || '''' }}'
 
   build:
     name: Build with .NET ${{ vars.DOTNET_VERSION }}
