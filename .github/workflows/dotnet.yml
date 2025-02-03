@@ -26,7 +26,7 @@ jobs:
       with:
         useConfigFile: true
         configFilePath: ./.gitversion/version.yml
-        updateAssemblyInfo: false
+        updateAssemblyInfo: true
     - run: 'echo FullSemVer: ${{ env.fullSemVer }}'
 
   build:
