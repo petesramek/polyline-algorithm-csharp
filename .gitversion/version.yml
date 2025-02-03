@@ -81,6 +81,7 @@ branches:
     regex: ^feature(s)?\/(?<BranchName>.+)
     source-branches:
     - preview
+    - release
   pull-request:
     mode: ContinuousDelivery
     label: pull-request-
