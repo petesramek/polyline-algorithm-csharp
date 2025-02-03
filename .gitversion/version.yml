@@ -4,7 +4,7 @@ assembly-versioning-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 assembly-file-versioning-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 assembly-informational-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 
-increment: Patch
+increment: None
 continuous-delivery-fallback-tag: ci
 tag-prefix: "[vV]"
 
