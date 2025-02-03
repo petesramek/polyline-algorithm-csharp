@@ -35,7 +35,7 @@ jobs:
     needs: [version]
     runs-on: ubuntu-latest
     env:
-      VERSION: ${{ needs.version.outputs.VERSION }}
+      ASSEMBLY_VERSION: ${{ needs.version.outputs.ASSEMBLY_VERSION }}
     steps:
     - uses: actions/checkout@v3
     - run: 'echo version: ${{ env.version }}'
