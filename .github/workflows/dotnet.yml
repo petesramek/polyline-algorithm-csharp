@@ -13,10 +13,10 @@ jobs:
     name: Version with GitVersion ${{ vars.GIT_VERSION }}
     runs-on: ubuntu-latest
     outputs:
-      ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
-      ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}+${{ steps.gitversion.outputs.sha }}
-      FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
-      PACKAGE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}${{ steps.gitversion.outputs.PreReleaseLabelWithDash }}
+      ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}+${{ github.run_number }}
+      ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}+${{ github.run_number }}.${{ steps.gitversion.outputs.sha }}
+      FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}+${{ github.run_number }}
+      PACKAGE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}+${{ github.run_number }}
     steps:
     - uses: actions/checkout@v3
       with:
