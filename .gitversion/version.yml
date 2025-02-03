@@ -93,11 +93,12 @@ branches:
     track-merge-target: true
     regex: ^(pull|pull\-requests|pr)[/-]
     source-branches:
+    - preview
+    - release
     - hotfix
     - bugfix
-    - preview
+    - support
     - feature
-    - preview
   unknown:
     mode: ManualDeployment
     label: '{BranchName}'
