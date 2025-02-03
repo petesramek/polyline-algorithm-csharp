@@ -13,7 +13,8 @@ jobs:
     name: Version with GitVersion ${{ vars.GIT_VERSION }}
     runs-on: ubuntu-latest
     outputs:
-      SemVer: ${{ steps.gitversion.outputs.fullSemVer }}
+      version: ${{ steps.gitversion.outputs.majorMinorPatch }}
+      versionSuffix: ${{ steps.gitversion.outputs.PreReleaseTag }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -30,13 +31,15 @@ jobs:
         useConfigFile: true
         configFilePath: ./.gitversion/version.yml
     - run: 'echo FullSemVer: ${{ env.fullSemVer }}'
+    - run: 'echo FullSemVer: ${{ env.majorMinorPatch }}'
 
   build:
     name: Build with .NET ${{ vars.DOTNET_VERSION }}
     needs: [version]
     runs-on: ubuntu-latest
     env:
-      semver: ${{ needs.version.outputs.SemVer }}
+      version: ${{ needs.version.outputs.version }}
+      versionSuffix: ${{ needs.version.outputs.versionSuffix }}
     steps:
     - uses: actions/checkout@v3
     - name: Install .NET ${{ vars.DOTNET_VERSION }}
@@ -44,7 +47,7 @@ jobs:
       with:
         dotnet-version: ${{ vars.DOTNET_VERSION }}
     - name: Build with .NET ${{ vars.DOTNET_VERSION }}
-      run: dotnet build ./src/**/*.csproj --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} -p:Version=$env:semver -p:FileVersion=$env:semver 
+      run: dotnet build ./src/**/*.csproj --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} -p:Version=$env:version -p:FileVersion=$env:version -p:AssemblyInformationalVersion=$env:version -p:VersionSuffix=$env:versionSuffix
     - name: Upload Build
       uses: actions/upload-artifact@v4
       with:
