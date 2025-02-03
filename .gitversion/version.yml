@@ -2,7 +2,7 @@ assembly-versioning-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 assembly-file-versioning-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 assembly-informational-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 tag-prefix: '[vV]?'
-version-in-branch-pattern: (?<version>[vV]?\d+(\.\d+)?).*
+version-in-branch-pattern: \/(?<version>(\d+\.\d+))(\Z|\/.*)$
 major-version-bump-message: \+semver:\s?(breaking|major)
 minor-version-bump-message: \+semver:\s?(feature|minor)
 patch-version-bump-message: \+semver:\s?(fix|patch)
@@ -23,7 +23,7 @@ ignore:
   sha: []
 mode: ContinuousDelivery
 label: '{BranchName}'
-increment: Inherit
+increment: None
 prevent-increment:
   of-merged-branch: true
   when-branch-merged: true
