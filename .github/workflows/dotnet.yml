@@ -13,7 +13,7 @@ jobs:
     name: Version with GitVersion ${{ vars.GIT_VERSION }}
     runs-on: ubuntu-latest
     outputs:
-      VERSION: ${{ steps.gitversion.outputs.majorMinorPatch }}${{ PreReleaseTagWithDash }}
+      VERSION: ${{ steps.gitversion.outputs.majorMinorPatch }}${{ steps.gitversion.outputs.preReleaseTagWithDash }}
     steps:
     - uses: actions/checkout@v3
       with:
