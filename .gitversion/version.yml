@@ -17,8 +17,8 @@ strategies:
 - Fallback
 ignore:
   sha: []
-mode: ContinuousDelivery
-label: '{BranchName}'
+mode: ContinuousDeployment
+label: ''
 increment: None
 prevent-increment:
   of-merged-branch: true
