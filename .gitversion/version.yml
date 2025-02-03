@@ -43,6 +43,9 @@ branches:
     is-release-branch: true
     is-mainline: false
     pre-release-weight: 30000
+  preview:
+    regex: ^feature?[/-]
+    mode: ContinuousDeployment
   feature:
     regex: ^feature?[/-]
     mode: ContinuousDeployment
