@@ -114,7 +114,7 @@ jobs:
           **/*.nupkg
 
   benchmark:
-    if: ${{ !env.is-release }}
+    if: ${{ !startsWith(github.ref_name, 'release') }}
     name: Benchmark on ${{ matrix.os }}
     needs: [build]
     strategy:
