@@ -117,13 +117,12 @@ jobs:
     if: ${{ !env.is-release }}
     name: Benchmark on ${{ matrix.os }}
     needs: [build]
-
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-
     runs-on: ${{ matrix.os }}
-
+    env:
+      is-release: ${{ startsWith(github.ref_name, 'release') }}
     steps:
     - uses: actions/checkout@v3
     - name: Install .NET SDK
