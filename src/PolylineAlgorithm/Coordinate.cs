@@ -5,6 +5,7 @@
 
 namespace PolylineAlgorithm;
 
+using PolylineAlgorithm.Validation;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -33,8 +34,8 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
         && Longitude == default;
 
     public bool IsValid
-        => CoordinateValidator.Latitude.IsInRange(Latitude)
-        && CoordinateValidator.Longitude.IsInRange(Longitude);
+        => CoordinateValidator.Default.Latitude.IsInRange(Latitude)
+        && CoordinateValidator.Default.Longitude.IsInRange(Longitude);
 
 
     public override bool Equals(object? obj) {
