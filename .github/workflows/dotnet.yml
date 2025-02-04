@@ -24,7 +24,7 @@ jobs:
       FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
       PACKAGE_VERSION: ${{ fromJSON(format('[ "{0}.{1}.{2}", "{0}.{2}" ]', steps.gitversion.outputs.assemblySemVer, steps.gitversion.outputs.preReleaseLabelWithDash, github.run_number))[fromJSON(env.is-release)] }}
     env:
-      is-release: ${{ !startsWith(github.ref_name, 'release') }}
+      is-release: ${{ startsWith(github.ref_name, 'release') }}
     steps:
     - uses: actions/checkout@v3
       with:
