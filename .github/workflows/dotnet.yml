@@ -146,4 +146,4 @@ jobs:
         path: .
         merge-multiple: true
     - name: Benchmark
-      run: dotnet run ./benchmarks/**/*.csproj -c Release -f net9.0 --filter *
+      run: dotnet run --project ./benchmarks/**/*.csproj -c Release -f net9.0 --filter *
