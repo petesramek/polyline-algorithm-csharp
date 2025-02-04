@@ -145,4 +145,4 @@ jobs:
         name: build
     - name: Benchmark
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
-      run: dotnet run -c Release -f net9.0 --filter '*'
+      run: dotnet run --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} -f net9.0 --filter '*'
