@@ -15,8 +15,8 @@ on:
 concurrency: ${{ github.ref }}
 
 jobs:
-  version:
-    name: Version with GitVersion ${{ vars.GIT_VERSION }}
+  versioning:
+    name: Versioning with GitVersion ${{ vars.GIT_VERSION }}
     runs-on: ubuntu-latest
     outputs:
       ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
@@ -44,7 +44,7 @@ jobs:
 
   build:
     name: Build with .NET ${{ vars.DOTNET_VERSION }}
-    needs: [version]
+    needs: [versioning]
     runs-on: ubuntu-latest
     env:
       ASSEMBLY_VERSION: ${{ needs.version.outputs.ASSEMBLY_VERSION }}
@@ -92,7 +92,7 @@ jobs:
 
   pack:
     name: Pack with .NET ${{ vars.DOTNET_VERSION }}
-    needs: [test]
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
