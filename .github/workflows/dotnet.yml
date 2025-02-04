@@ -143,7 +143,6 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: build
-        path: .
-        merge-multiple: true
     - name: Benchmark
-      run: dotnet run --project ./benchmarks/**/*.csproj -c Release -f net9.0 --filter *
+      working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
+      run: dotnet run ./benchmarks/**/*.csproj -c Release -f net9.0 --filter *
