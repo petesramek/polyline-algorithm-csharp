@@ -22,7 +22,7 @@ jobs:
       ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
       ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}+${{ steps.gitversion.outputs.sha }}
       FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
-      PACKAGE_VERSION: ${{ fromJSON('[ format('{0}', github.ref_name), "b" ]')[0] }}
+      PACKAGE_VERSION: ${{ fromJSON(format('[ {0}, {1} ]', github.ref_name, 'zxac'))[0] }}
     env:
       is-release: ${{ !startsWith(github.ref_name, 'release') }}
     steps:
