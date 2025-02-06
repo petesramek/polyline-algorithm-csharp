@@ -17,8 +17,8 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  IS_RELEASE: ${{ startsWith(github.ref_name, 'release') || startsWith(github.ref_name, 'preview') }}
-  IS_PREVIEW: ${{ startsWith(github.ref_name, 'preview') }}
+  is_release: ${{ startsWith(github.ref_name, 'release') || startsWith(github.ref_name, 'preview') }}
+  is_preview: ${{ startsWith(github.ref_name, 'preview') }}
 
 jobs:      
   versioning:
@@ -28,7 +28,7 @@ jobs:
       ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
       ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}+${{ steps.gitversion.outputs.sha }}
       FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
-      PACKAGE_VERSION: ${{ fromJSON(format('[ "{0}.{1}.{2}", "{0}.{2}" ]', steps.gitversion.outputs.assemblySemVer, steps.gitversion.outputs.preReleaseLabelWithDash, github.run_number))[fromJSON(env.IS_RELEASE)] }}
+      PACKAGE_VERSION: ${{ fromJSON(format('[ "{0}.{1}.{2}", "{0}.{2}" ]', steps.gitversion.outputs.assemblySemVer, steps.gitversion.outputs.preReleaseLabelWithDash, github.run_number))[fromJSON(env.is_release)] }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -114,7 +114,7 @@ jobs:
           **/*.nupkg
 
   benchmark:
-    if: ${{ env.IS_RELEASE }}
+    if: ${{ github.env.is_release }}
     name: Benchmark on ${{ matrix.os }}
     needs: [build]
     strategy:
