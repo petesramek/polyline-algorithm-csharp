@@ -16,13 +16,11 @@ concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: false
 
-jobs:
-  variables:
-    name: Prepare environment variables
-    runs-on: ubuntu-latest
-    outputs:
-      IS_RELEASE: ${{ startsWith(github.ref_name, 'release') || startsWith(github.ref_name, 'preview') }}
-      IS_PREVIEW: ${{ startsWith(github.ref_name, 'preview') }}
+env:
+  IS_RELEASE: ${{ startsWith(github.ref_name, 'release') || startsWith(github.ref_name, 'preview') }}
+  IS_PREVIEW: ${{ startsWith(github.ref_name, 'preview') }}
+
+jobs:      
   versioning:
     name: Versioning with GitVersion ${{ vars.GIT_VERSION }}
     runs-on: ubuntu-latest
@@ -32,7 +30,7 @@ jobs:
       FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
       PACKAGE_VERSION: ${{ fromJSON(format('[ "{0}.{1}.{2}", "{0}.{2}" ]', steps.gitversion.outputs.assemblySemVer, steps.gitversion.outputs.preReleaseLabelWithDash, github.run_number))[fromJSON(env.is-release)] }}
     env:
-      is-release: ${{ needs.versioning.outputs.IS_RELEASE }}
+      is-release: ${{ env.IS_RELEASE }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -118,7 +116,7 @@ jobs:
           **/*.nupkg
 
   benchmark:
-    if: ${{ needs.versioning.outputs.IS_RELEASE }}
+    if: ${{ env.IS_RELEASE }}
     name: Benchmark on ${{ matrix.os }}
     needs: [build]
     strategy:
@@ -126,7 +124,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     env:
-      is-release: ${{ needs.versioning.outputs.IS_RELEASE }}
+      is-release: ${{ env.IS_RELEASE }}
     steps:
     - uses: actions/checkout@v3
     - name: Install .NET SDK
