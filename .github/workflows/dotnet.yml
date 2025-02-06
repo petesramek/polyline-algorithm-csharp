@@ -132,5 +132,5 @@ jobs:
       with:
         name: build
     - name: Benchmark
-      working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
+      working-directory: ${{ vars.BENCHMARKDOTNET_WORKING_DIRECTORY }}
       run: dotnet run --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} --framework ${{ vars.BUILD_FRAMEWORK }} --runtimes ${{ vars.BENCHMARKDOTNET_RUNTIMES }} --filter ${{ vars.BENCHMARKDOTNET_FILTER }}
