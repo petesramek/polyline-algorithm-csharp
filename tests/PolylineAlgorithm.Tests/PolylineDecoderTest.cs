@@ -22,13 +22,13 @@ public class PolylineDecoderTest {
     [TestMethod]
     public void Decode_EmptyInput_ThrowsException() {
         // Arrange
-        ReadOnlyMemory<char> empty = Defaults.Polyline.Empty.AsMemory();
+        Polyline empty = new Polyline();
 
         // Act
-        void Execute(ReadOnlySpan<char> value) => Decoder.Decode(in value);
+        void Execute(Polyline value) => Decoder.Decode(in value);
 
         // Assert
-        Assert.ThrowsException<ArgumentException>(() => Execute(empty.Span));
+        Assert.ThrowsException<ArgumentException>(() => Execute(empty));
     }
 
     /// <summary>
@@ -38,13 +38,13 @@ public class PolylineDecoderTest {
     [TestMethod]
     public void Decode_InvalidInput_ThrowsException() {
         // Arrange
-        ReadOnlyMemory<char> invalid = Defaults.Polyline.Invalid.AsMemory();
+        Polyline invalid = new Polyline(Defaults.Polyline.Invalid);
 
         // Act
-        void Execute(ReadOnlySpan<char> value) => Decoder.Decode(in value);
+        void Execute(Polyline value) => Decoder.Decode(in value);
 
         // Assert
-        Assert.ThrowsException<InvalidCoordinateException>(() => Execute(invalid.Span));
+        Assert.ThrowsException<InvalidCoordinateException>(() => Execute(invalid));
     }
 
     /// <summary>
@@ -54,7 +54,7 @@ public class PolylineDecoderTest {
     [TestMethod]
     public void Decode_ValidInput_Ok() {
         // Arrange
-        ReadOnlySpan<char> valid = Defaults.Polyline.Valid;
+        Polyline valid = new Polyline(Defaults.Polyline.Valid);
 
         // Act
         var result = Decoder.Decode(in valid);

@@ -14,7 +14,7 @@ public class PolylineDecoder : IPolylineDecoder {
     /// <inheritdoc />
     /// <exception cref="ArgumentException">Thrown when <paramref name="polyline"/> argument is null -or- empty.</exception>
     /// <exception cref="InvalidOperationException">Thrown when <paramref name="polyline"/> is not in correct format.</exception>
-    public IEnumerable<Coordinate> Decode(ref readonly ReadOnlySpan<char> polyline) {
+    public IEnumerable<Coordinate> Decode(ref readonly Polyline polyline) {
         // Checking null and at least one character
         if (polyline.IsEmpty) {
             throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeNullEmptyOrWhitespace, nameof(polyline));

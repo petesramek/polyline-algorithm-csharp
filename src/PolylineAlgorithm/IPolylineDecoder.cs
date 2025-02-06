@@ -17,5 +17,5 @@ public interface IPolylineDecoder {
     /// </summary>
     /// <param name="polyline">An encoded polyline to decode.</param>
     /// <returns>A set of coordinates.</returns>
-    IEnumerable<Coordinate> Decode(ref readonly ReadOnlySpan<char> polyline);
+    IEnumerable<Coordinate> Decode(ref readonly Polyline polyline);
 }

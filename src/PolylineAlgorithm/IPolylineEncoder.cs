@@ -17,5 +17,5 @@ public interface IPolylineEncoder {
     /// </summary>
     /// <param name="coordinates">A set of coordinates to encode.</param>
     /// <returns>An encoded polyline.</returns>
-    ReadOnlySpan<char> Encode(IEnumerable<Coordinate> coordinates);
+    Polyline Encode(IEnumerable<Coordinate> coordinates);
 }

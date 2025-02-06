@@ -21,7 +21,7 @@ public class PolylineEncoder : IPolylineEncoder {
     /// <exception cref="ArgumentNullException">If coordinates parameter is null</exception>
     /// <exception cref="ArgumentException">If coordinates parameter is empty</exception>
     /// <exception cref="AggregateException">If one or more coordinate is out of valid range</exception>
-    public ReadOnlySpan<char> Encode(IEnumerable<Coordinate> coordinates) {
+    public Polyline Encode(IEnumerable<Coordinate> coordinates) {
         if (coordinates is null) {
             throw new ArgumentNullException(nameof(coordinates));
         }
@@ -34,7 +34,7 @@ public class PolylineEncoder : IPolylineEncoder {
 
         // Initializing local variables
         int capacity = count * 12;
-        Span<char> buffer = new char[capacity];
+        Memory<char> buffer = new char[capacity];
         PolylineWriter writer = new(in buffer);
 
         // Looping over coordinates and building encoded result
@@ -46,7 +46,7 @@ public class PolylineEncoder : IPolylineEncoder {
             writer.Write(in coordinate);
         }
 
-        return writer.ToString();
+        return writer.ToPolyline();
     }
 
     static int GetCount(ref IEnumerable<Coordinate> coordinates) => coordinates switch {

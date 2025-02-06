@@ -19,12 +19,12 @@ using PolylinerNet;
 public class DecodeBenchmark {
     private readonly Consumer _consumer = new();
     public static string String_Polyline { get; } = "}adrJh}}cVazlw@uykyNhaqeE`vfzG_~kY}~`eTsr{~Cwn~aOty_g@thapJvvoqKxt{sStfahDmtvmIfmiqBhjq|HujpgComs{Z}dhdKcidPymnvBqmquE~qrfI`x{lPf|ftGn~}d_@q}saAurjmu@bwr_DxrfaK~{rO~bidPwfduXwlioFlpum@twvfFpmi~VzxcsOqyejYhh|i@pbnr[twvfF_ueUujvbSa_d~ZkcnjZla~f[pmquEebxo[j}nr@xnn|H{gyiKbh{yH`oenn@y{mpIrbd~EmipgH}fuov@hjqtTp|flAttvkFrym_d@|eyCwn~aOfvdNmeawM??{yxdUcidPca{}D_atqGenzcAlra{@trgWhn{aZ??tluqOgu~sH";
-    public static ReadOnlyMemory<char> Memory_Polyline { get; } = String_Polyline.AsMemory();
+    public static Polyline Polyline { get; } = new Polyline(String_Polyline);
 
 
     [Benchmark(Baseline = true)]
     public void PolylineDecoder_Decode() {
-        ReadOnlySpan<char> polyline = Memory_Polyline.Span;
+        Polyline polyline = Polyline;
         var decoder = new PolylineDecoder();
         decoder.Decode(in polyline).Consume(_consumer);
     }

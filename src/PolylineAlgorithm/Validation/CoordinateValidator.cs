@@ -9,9 +9,14 @@ using PolylineAlgorithm.Internal;
 using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
-/// 
+/// Initializes an instance of coordinate validator.
 /// </summary>
-public sealed class CoordinateValidator {
+/// <remarks>
+/// Initializes an instance of coordinate validator.
+/// </remarks>
+/// <param name="latitudeRange">A latitude range.</param>
+/// <param name="longitudeRange">A longitude range.</param>
+public sealed class CoordinateValidator(CoordinateRange latitudeRange, CoordinateRange longitudeRange) : ICoordinateValidator {
     /// <summary>
     /// Represents default coordinate validator. This field is read-only.
     /// </summary>
@@ -20,22 +25,18 @@ public sealed class CoordinateValidator {
     public static readonly CoordinateValidator Default = new(new CoordinateRange(Constants.Coordinate.MinLatitude, Constants.Coordinate.MaxLatitude), new CoordinateRange(Constants.Coordinate.MinLongitude, Constants.Coordinate.MaxLongitude));
 
     /// <summary>
-    /// Initializes an instance of coordinate validator.
-    /// </summary>
-    /// <param name="latitudeRange">A latitude range.</param>
-    /// <param name="longitudeRange">A longitude range.</param>
-    public CoordinateValidator(CoordinateRange latitudeRange, CoordinateRange longitudeRange) {
-        Latitude = latitudeRange;
-        Longitude = longitudeRange;
-    }
-
-    /// <summary>
     /// A latitude validation range.
     /// </summary>
-    public CoordinateRange Latitude { get; }
+    public CoordinateRange Latitude { get; } = latitudeRange;
 
     /// <summary>
     /// A longitude validation range.
     /// </summary>
-    public CoordinateRange Longitude { get; }
+    public CoordinateRange Longitude { get; } = longitudeRange;
+
+    public bool IsValid(Coordinate coordinate) {
+        return
+            Latitude.IsInRange(coordinate.Latitude)
+            && Longitude.IsInRange(coordinate.Longitude);
+    }
 }

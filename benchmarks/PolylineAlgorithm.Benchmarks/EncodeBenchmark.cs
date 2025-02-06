@@ -23,7 +23,7 @@ public class EncodeBenchmark {
 
 
     [Benchmark(Baseline = true)]
-    public ReadOnlySpan<char> PolylineEncoder_Encode() {
+    public Polyline PolylineEncoder_Encode() {
         var encoder = new PolylineEncoder();
         return encoder.Encode(Coordinates_Enumerable);
     }

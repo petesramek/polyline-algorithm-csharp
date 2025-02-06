@@ -7,8 +7,8 @@ internal ref struct PolylineReader {
     private ReaderState _state = new();
     private ReadOnlySpan<char> _polyline;
 
-    public PolylineReader(ref readonly ReadOnlySpan<char> polyline) {
-        _polyline = polyline;
+    public PolylineReader(ref readonly Polyline polyline) {
+        _polyline = polyline.Span;
     }
 
     public readonly bool CanRead => _state.Position < _polyline.Length;

@@ -4,9 +4,9 @@ using System;
 using System.Runtime.InteropServices;
 
 [StructLayout(LayoutKind.Auto)]
-internal ref struct PolylineWriter(ref readonly Span<char> buffer) {
+internal ref struct PolylineWriter(ref readonly Memory<char> buffer) {
     private WriterState _state = new();
-    private Span<char> _buffer = buffer;
+    private Memory<char> _buffer = buffer;
 
     public void Write(ref readonly Coordinate coordinate) {
         var latitude = Round(coordinate.Latitude);
@@ -23,7 +23,7 @@ internal ref struct PolylineWriter(ref readonly Span<char> buffer) {
         }
     }
 
-    static void EncodeNext(ref int value, ref Span<char> buffer, ref WriterState state) {
+    static void EncodeNext(ref int value, ref Memory<char> buffer, ref WriterState state) {
         int shifted = value << 1;
 
         if (value < 0) {
@@ -33,13 +33,19 @@ internal ref struct PolylineWriter(ref readonly Span<char> buffer) {
         int rem = shifted;
 
         while (rem >= Constants.ASCII.Space) {
-            buffer[state.Position] = Convert.ToChar((Constants.ASCII.Space | rem & Constants.ASCII.UnitSeparator) + Constants.ASCII.QuestionMark);
+            buffer.Span[state.Position] = Convert.ToChar((Constants.ASCII.Space | rem & Constants.ASCII.UnitSeparator) + Constants.ASCII.QuestionMark);
             state.Advance();
             rem >>= Constants.ShiftLength;
         }
 
-        buffer[state.Position] = Convert.ToChar(rem + Constants.ASCII.QuestionMark);
+        buffer.Span[state.Position] = Convert.ToChar(rem + Constants.ASCII.QuestionMark);
         state.Advance();
+    }
+
+    public readonly Polyline ToPolyline() {
+        ReadOnlyMemory<char> buffer = _buffer[.._state.Position];
+        var polyline = Polyline.FromMemory(in buffer);
+        return polyline;
     }
 
     public override readonly string ToString() {
