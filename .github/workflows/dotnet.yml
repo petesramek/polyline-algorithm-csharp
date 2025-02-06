@@ -48,7 +48,7 @@ jobs:
         configFilePath: ./.gitversion/version.yml
 
   build:
-    name: Build with .NET ${{ vars.DOTNET_VERSION }}
+    name: Build with .NET ${{ vars.DOTNET_SDK_VERSION }}
     needs: [versioning]
     runs-on: ubuntu-latest
     env:
@@ -58,11 +58,11 @@ jobs:
       PACKAGE_VERSION: ${{ needs.versioning.outputs.PACKAGE_VERSION }}
     steps:
     - uses: actions/checkout@v3
-    - name: Install .NET ${{ vars.DOTNET_VERSION }}
+    - name: Install .NET ${{ vars.DOTNET_SDK_VERSION }}
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ vars.DOTNET_VERSION }}
-    - name: Build with .NET ${{ vars.DOTNET_VERSION }}
+        dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
+    - name: Build with .NET ${{ vars.DOTNET_SDK_VERSION }}
       run: dotnet build ${{ vars.SRC_SEARCH_PATTERN }} --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} -p:Version=${{ env.ASSEMBLY_VERSION }} -p:AssemblyInformationalVersion=${{ env.ASSEMBLY_INFORMATIONAL_VERSION }} -p:FileVersion=${{ env.FILE_VERSION }}
     - name: Upload Build
       uses: actions/upload-artifact@v4
@@ -73,16 +73,16 @@ jobs:
           **/obj/*
 
   test:
-    name: Test with .NET ${{ vars.DOTNET_VERSION }}
+    name: Test with .NET ${{ vars.DOTNET_SDK_VERSION }}
     needs: [build]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET ${{ vars.DOTNET_VERSION }}
+    - name: Setup .NET ${{ vars.DOTNET_SDK_VERSION }}
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ vars.DOTNET_VERSION }}
-    - name: Test with .NET ${{ vars.DOTNET_VERSION }}
+        dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
+    - name: Test with .NET ${{ vars.DOTNET_SDK_VERSION }}
       run: dotnet test ${{ vars.TEST_SEARCH_PATTERN }} --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} --verbosity normal --settings unit-test.runsettings --logger trx --collect:"Code Coverage" --results-directory test-results
     - name: Upload Test Results
       uses: actions/upload-artifact@v4
@@ -92,20 +92,20 @@ jobs:
           **/test-results/*
 
   pack:
-    name: Pack with .NET ${{ vars.DOTNET_VERSION }}
+    name: Pack with .NET ${{ vars.DOTNET_SDK_VERSION }}
     needs: [build]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Install .NET ${{ vars.DOTNET_VERSION }}
+    - name: Install .NET ${{ vars.DOTNET_SDK_VERSION }}
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ vars.DOTNET_VERSION }}
+        dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
     - name: Download Build
       uses: actions/download-artifact@v4
       with:
         name: build
-    - name: Pack with .NET ${{ vars.DOTNET_VERSION }}
+    - name: Pack with .NET ${{ vars.DOTNET_SDK_VERSION }}
       run: dotnet pack ${{ vars.SRC_SEARCH_PATTERN }} --no-build --no-restore --configuration ${{ vars.BUILD_CONFIGURATION }}  /p:Platform=${{ vars.BUILD_PLATFORM }}
     - name: Upload Package
       uses: actions/upload-artifact@v4
@@ -127,7 +127,7 @@ jobs:
     - name: Install .NET SDK
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: ${{ vars.DOTNET_VERSION }}
+        dotnet-version: ${{ vars.BENCHMARKDOTNET_SDK_VERSION }}
     - name: Download
       uses: actions/download-artifact@v4
       with:
