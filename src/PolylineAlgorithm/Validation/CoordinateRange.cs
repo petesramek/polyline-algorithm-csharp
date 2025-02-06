@@ -18,7 +18,7 @@ using System.Runtime.InteropServices;
 public readonly struct CoordinateRange : IEquatable<CoordinateRange> {
     public CoordinateRange(double min, double max) {
         if (min >= max) {
-            throw new ArgumentException(string.Format("", min.ToString(), max.ToString()), paramName: nameof(min));
+            throw new ArgumentOutOfRangeException(nameof(min), string.Format(ExceptionMessageResource.ArgumentMinCannotGreaterOfEqualThanMaxArgumentMessageFormat, min, max));
         }
 
         Min = min;

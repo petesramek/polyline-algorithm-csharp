@@ -13,7 +13,7 @@ using PolylineAlgorithm.Tests.Internal;
 /// </summary>
 [TestClass]
 public class PolylineDecoderTest {
-    public PolylineDecoder Decoder = new PolylineDecoder();
+    public PolylineDecoder Decoder = new();
 
     /// <summary>
     /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})" /> method. Empty <see cref="ReadOnlyMemory{char}" /> is passed as an argument.
@@ -22,7 +22,7 @@ public class PolylineDecoderTest {
     [TestMethod]
     public void Decode_EmptyInput_ThrowsException() {
         // Arrange
-        Polyline empty = new Polyline();
+        Polyline empty = new();
 
         // Act
         void Execute(Polyline value) => Decoder.Decode(in value);
@@ -38,7 +38,8 @@ public class PolylineDecoderTest {
     [TestMethod]
     public void Decode_InvalidInput_ThrowsException() {
         // Arrange
-        Polyline invalid = new Polyline(Defaults.Polyline.Invalid);
+        var value = Defaults.Polyline.Invalid;
+        Polyline invalid = new(value);
 
         // Act
         void Execute(Polyline value) => Decoder.Decode(in value);
@@ -54,7 +55,8 @@ public class PolylineDecoderTest {
     [TestMethod]
     public void Decode_ValidInput_Ok() {
         // Arrange
-        Polyline valid = new Polyline(Defaults.Polyline.Valid);
+        var value = Defaults.Polyline.Valid;
+        Polyline valid = new(value);
 
         // Act
         var result = Decoder.Decode(in valid);

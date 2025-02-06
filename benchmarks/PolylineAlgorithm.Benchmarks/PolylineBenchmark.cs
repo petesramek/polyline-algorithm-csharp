@@ -30,21 +30,21 @@ public class PolylineBenchmark {
     [Benchmark]
     public Polyline Polyline_Constructor_String() {
         var value = Input.String;
-        var polyline = new Polyline(in value);
+        var polyline = new Polyline(value);
         return polyline;
     }
 
     [Benchmark]
     public Polyline Polyline_Constructor_CharArray() {
         var value = Input.CharArray;
-        var polyline = new Polyline(in value);
+        var polyline = new Polyline(value);
         return polyline;
     }
 
     [Benchmark]
     public Polyline Polyline_Constructor_Memory() {
         var value = Input.Memory;
-        var polyline = new Polyline(in value);
+        var polyline = new Polyline(value);
         return polyline;
     }
 

@@ -132,4 +132,7 @@
   <data name="PolylineStringIsMalformed" xml:space="preserve">
     <value>Polyline is malformed.</value>
   </data>
+  <data name="ArgumentMinCannotGreaterOfEqualThanMaxArgumentMessageFormat" xml:space="preserve">
+    <value>Argument {0} cannot be greater or equal than {1}.</value>
+  </data>
 </root>

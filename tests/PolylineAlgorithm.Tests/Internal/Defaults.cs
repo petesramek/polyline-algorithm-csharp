@@ -11,7 +11,7 @@ using System.Collections.Generic;
 /// Defines default values and objects used for testing purposes
 /// </summary>
 internal static class Defaults {
-    internal static readonly Random R = new(DateTime.Now.Millisecond);
+    private static readonly Random _random = new(DateTime.Now.Millisecond);
 
     /// <summary>
     /// Defines default decoded values and objects udśed for testing purposes
@@ -64,10 +64,10 @@ internal static class Defaults {
     }
 
     public static class MalformedPolylineException {
-        public static readonly int Position = R.Next();
+        public static readonly int Position = _random.Next();
     }
 
     public static class InvalidCoordinateException {
-        public static readonly Coordinate Coordinate = new(R.NextDouble(), R.NextDouble());
+        public static readonly Coordinate Coordinate = new(_random.NextDouble(), _random.NextDouble());
     }
 }

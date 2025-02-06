@@ -88,6 +88,15 @@ namespace PolylineAlgorithm.Internal {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Argument {0} cannot be greater or equal than {1}..
+        /// </summary>
+        internal static string ArgumentMinCannotGreaterOfEqualThanMaxArgumentMessageFormat {
+            get {
+                return ResourceManager.GetString("ArgumentMinCannotGreaterOfEqualThanMaxArgumentMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Latitude {0} or longitude {1} is not valid. Latitude must be in range between -90 and +90. Longitude must be in range between -180 and +180..
         /// </summary>
         internal static string CoordinateValidationExceptionCoordinateIsOutOfRangeErrorMessageFormat {
