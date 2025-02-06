@@ -126,8 +126,7 @@ jobs:
     - name: Install .NET SDK
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: |
-          ${{ vars.BENCHMARKDOTNET_SDK_VERSION }}
+        dotnet-version: ${{ vars.BENCHMARKDOTNET_SDK_VERSION }}
     - name: Download
       uses: actions/download-artifact@v4
       with:
