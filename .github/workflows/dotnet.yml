@@ -12,9 +12,17 @@ on:
     - 'release/**'
     - 'support/**'
 
-concurrency: ${{ github.ref }}
+concurrency: 
+  group: ${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
+  variables:
+    name: Prepare environment variables
+    runs-on: ubuntu-latest
+    outputs:
+      IS_RELEASE: ${{ startsWith(github.ref_name, 'release') || startsWith(github.ref_name, 'preview') }}
+      IS_PREVIEW: ${{ startsWith(github.ref_name, 'preview') }}
   versioning:
     name: Versioning with GitVersion ${{ vars.GIT_VERSION }}
     runs-on: ubuntu-latest
@@ -24,7 +32,7 @@ jobs:
       FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
       PACKAGE_VERSION: ${{ fromJSON(format('[ "{0}.{1}.{2}", "{0}.{2}" ]', steps.gitversion.outputs.assemblySemVer, steps.gitversion.outputs.preReleaseLabelWithDash, github.run_number))[fromJSON(env.is-release)] }}
     env:
-      is-release: ${{ startsWith(github.ref_name, 'release') }}
+      is-release: ${{ needs.versioning.outputs.IS_RELEASE }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -53,10 +61,6 @@ jobs:
       PACKAGE_VERSION: ${{ needs.versioning.outputs.PACKAGE_VERSION }}
     steps:
     - uses: actions/checkout@v3
-    - run: 'echo Assembly Version: ${{ env.ASSEMBLY_VERSION }}'
-    - run: 'echo File Version: ${{ env.FILE_VERSION }}'
-    - run: 'echo Assembly Informational Version: ${{ env.ASSEMBLY_INFORMATIONAL_VERSION }}'
-    - run: 'echo Package Version: ${{ env.PACKAGE_VERSION }}'
     - name: Install .NET ${{ vars.DOTNET_VERSION }}
       uses: actions/setup-dotnet@v4
       with:
@@ -114,7 +118,7 @@ jobs:
           **/*.nupkg
 
   benchmark:
-    if: ${{ startsWith(github.ref_name, 'release') }}
+    if: ${{ needs.versioning.outputs.IS_RELEASE }}
     name: Benchmark on ${{ matrix.os }}
     needs: [build]
     strategy:
@@ -122,27 +126,17 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     env:
-      is-release: ${{ startsWith(github.ref_name, 'release') }}
+      is-release: ${{ needs.versioning.outputs.IS_RELEASE }}
     steps:
     - uses: actions/checkout@v3
     - name: Install .NET SDK
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: |
-          2.0.x
-          2.1.x
-          2.2.x
-          3.0.x
-          3.1.x
-          5.x
-          6.x
-          7.x
-          8.x
-          9.x
+        dotnet-version: ${{ vars.DOTNET_VERSION }}
     - name: Download
       uses: actions/download-artifact@v4
       with:
         name: build
     - name: Benchmark
       working-directory: ./benchmarks/PolylineAlgorithm.Benchmarks
-      run: dotnet run --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} -f net9.0 --filter '*'
+      run: dotnet run --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} --framework ${{ vars.BUILD_FRAMEWORK } --runtimes ${{ vars.BENCHMARKDOTNET_RUNTIMES }} --filter ${{ vars.BENCHMARKDOTNET_FILTER }}
