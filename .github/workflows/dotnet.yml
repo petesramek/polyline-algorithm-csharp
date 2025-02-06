@@ -62,7 +62,7 @@ jobs:
       with:
         dotnet-version: ${{ vars.DOTNET_VERSION }}
     - name: Build with .NET ${{ vars.DOTNET_VERSION }}
-      run: dotnet build ./src/**/*.csproj --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} -p:Version=${{ env.ASSEMBLY_VERSION }} -p:AssemblyInformationalVersion=${{ env.ASSEMBLY_INFORMATIONAL_VERSION }} -p:FileVersion=${{ env.FILE_VERSION }}
+      run: dotnet build ${{ SRC_SEARCH_PATTERN }} --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} -p:Version=${{ env.ASSEMBLY_VERSION }} -p:AssemblyInformationalVersion=${{ env.ASSEMBLY_INFORMATIONAL_VERSION }} -p:FileVersion=${{ env.FILE_VERSION }}
     - name: Upload Build
       uses: actions/upload-artifact@v4
       with:
@@ -82,7 +82,7 @@ jobs:
       with:
         dotnet-version: ${{ vars.DOTNET_VERSION }}
     - name: Test with .NET ${{ vars.DOTNET_VERSION }}
-      run: dotnet test ./tests/**/*Tests.csproj --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} --verbosity normal --settings unit-test.runsettings --logger trx --collect:"Code Coverage" --results-directory test-results
+      run: dotnet test ${{ vars.TEST_SEARCH_PATTERN }} --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} --verbosity normal --settings unit-test.runsettings --logger trx --collect:"Code Coverage" --results-directory test-results
     - name: Upload Test Results
       uses: actions/upload-artifact@v4
       with:
@@ -105,7 +105,7 @@ jobs:
       with:
         name: build
     - name: Pack with .NET ${{ vars.DOTNET_VERSION }}
-      run: dotnet pack ./src/**/*.csproj --no-build --no-restore --configuration ${{ vars.BUILD_CONFIGURATION }}  /p:Platform=${{ vars.BUILD_PLATFORM }}
+      run: dotnet pack ${{ SRC_SEARCH_PATTERN }} --no-build --no-restore --configuration ${{ vars.BUILD_CONFIGURATION }}  /p:Platform=${{ vars.BUILD_PLATFORM }}
     - name: Upload Package
       uses: actions/upload-artifact@v4
       with:
