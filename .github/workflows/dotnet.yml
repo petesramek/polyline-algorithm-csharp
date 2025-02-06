@@ -19,7 +19,6 @@ concurrency:
 env:
   is_release: ${{ startsWith(github.ref_name, 'release') || startsWith(github.ref_name, 'preview') }}
   is_preview: ${{ startsWith(github.ref_name, 'preview') }}
-  run_benchmarks: ${{ vars.RUN_BENCHMARKS }}
 
 jobs:      
   versioning:
@@ -115,7 +114,7 @@ jobs:
           **/*.nupkg
 
   benchmark:
-    if: ${{ github.env.is_release || github.env.run_benchmarks == 'true' }}
+    if: ${{ github.env.is_release || vars.RUN_BENCHMARKS == 'true' }}
     name: Benchmark on ${{ matrix.os }}
     needs: [build]
     strategy:
