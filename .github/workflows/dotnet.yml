@@ -92,7 +92,7 @@ jobs:
     - name: Test Report
       uses: dorny/test-reporter@v1
       with:
-        name: DotNET Tests
+        name: Unit Tests
         path: "**/test-results/*.trx"                            
         reporter: dotnet-trx
         fail-on-error: true
