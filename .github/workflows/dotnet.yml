@@ -96,11 +96,6 @@ jobs:
         path: "**/test-results/*.trx"                         
         reporter: dotnet-trx
         fail-on-error: true
-    - run: dotnet tool update --global dotnet-coverage
-    - run: dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
-    - run: dotnet tool install --global dotnet-reportgenerator-globaltool
-    - run: reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:"MarkdownSummary"
-    - run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
 
   pack:
     name: Pack with .NET ${{ vars.DOTNET_SDK_VERSION }}
@@ -162,3 +157,21 @@ jobs:
         name: benchmark
         path: |
           ./BenchmarkDotNet.Artifacts/**
+
+  test-summary:
+    name: Test Summary
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download
+      uses: actions/download-artifact@v4
+      with:
+        name: test-results
+    - run: dotnet tool update --global dotnet-coverage
+    - run: dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
+    - run: dotnet tool install --global dotnet-reportgenerator-globaltool
+    - run: reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:"MarkdownSummary"
+    - run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+    - run: dotnet tool update --global dotnet-trx
+    - run: trx -r --gh-summary
+      
