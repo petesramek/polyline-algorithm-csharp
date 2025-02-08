@@ -115,7 +115,7 @@ jobs:
 
   benchmark:
     if: ${{ github.env.is_release || vars.RUN_BENCHMARKS == 'true' }}
-    name: Benchmark on "$RUNNER_OS"
+    name: Benchmark with .NET ${{ vars.DOTNET_SDK_VERSION }}
     needs: [build]
     strategy:
       matrix:
