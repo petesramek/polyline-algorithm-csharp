@@ -8,7 +8,7 @@ namespace PolylineAlgorithm.Tests;
 using PolylineAlgorithm.Tests.Internal;
 
 /// <summary>
-/// Defines tests for <see cref="MalformedPolylineException"/> type.
+/// Defines tests for <see cref="PolylineMalformedException"/> type.
 /// </summary>
 [TestClass]
 public class MalformedPolylineExceptionTest {
@@ -19,7 +19,7 @@ public class MalformedPolylineExceptionTest {
         var innerException = new Exception();
 
         // Act
-        MalformedPolylineException exception = new(position, innerException);
+        PolylineMalformedException exception = new(position, innerException);
 
         // Assert
         Assert.AreEqual(Defaults.MalformedPolylineException.Position, exception.Position);

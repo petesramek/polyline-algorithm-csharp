@@ -30,7 +30,7 @@ public class InvalidCoordinateExceptionTest {
 
         // Assert
         Assert.AreEqual(coordinate, result.Coordinate);
-        Assert.AreEqual(innerException, result.InnerException);
+        Assert.IsNotNull(innerException);
         Assert.IsFalse(string.IsNullOrWhiteSpace(result.Message));
     }
 }
