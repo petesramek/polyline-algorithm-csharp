@@ -89,13 +89,6 @@ jobs:
         name: test-results
         path: |
           **/test-results/*
-    - name: Test Report
-      uses: dorny/test-reporter@v1
-      with:
-        name: Unit Tests
-        path: "**/test-results/*.trx"                         
-        reporter: dotnet-trx
-        fail-on-error: true
 
   pack:
     name: Pack with .NET ${{ vars.DOTNET_SDK_VERSION }}
@@ -183,5 +176,5 @@ jobs:
       with:
         name: test-results
     - run: dotnet tool update --global dotnet-trx
-    - run: trx -r >> $GITHUB_STEP_SUMMARY
+    - run: trx -r --output >> $GITHUB_STEP_SUMMARY
       
