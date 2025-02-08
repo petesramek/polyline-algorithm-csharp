@@ -14,27 +14,27 @@ namespace PolylineAlgorithm.Internal {
             /// <summary>
             /// Defines the coordinate precision
             /// </summary>
-            public const double Precision = 1E5;
+            internal const double Precision = 1E5;
 
             /// <summary>
             /// Defines the shift length
             /// </summary>
-            public const byte ShiftLength = 5;
+            internal const byte ShiftLength = 5;
 
             /// <summary>
             /// Defines the ASCII Question Mark
             /// </summary>
-            public const byte QuestionMark = 63;
+            internal const byte QuestionMark = 63;
 
             /// <summary>
             /// Defines the ASCII Space
             /// </summary>
-            public const byte Space = 32;
+            internal const byte Space = 32;
 
             /// <summary>
             /// Defines the ASCII Unit Separator
             /// </summary>
-            public const byte UnitSeparator = 31;
+            internal const byte UnitSeparator = 31;
         }
 
         /// <summary>
@@ -48,12 +48,12 @@ namespace PolylineAlgorithm.Internal {
                 /// <summary>
                 /// Defines the maximum value for latitude
                 /// </summary>
-                public const sbyte Min = -Max;
+                internal const sbyte Min = -Max;
 
                 /// <summary>
                 /// Defines the maximum value for latitude
                 /// </summary>
-                public const byte Max = 90;
+                internal const byte Max = 90;
             }
 
             /// <summary>
@@ -63,12 +63,12 @@ namespace PolylineAlgorithm.Internal {
                 /// <summary>
                 /// Defines the maximum value for longitude
                 /// </summary>
-                public const short Min = -Max;
+                internal const short Min = -Max;
 
                 /// <summary>
                 /// Defines the maximum value for longitude
                 /// </summary>
-                public const byte Max = 180;
+                internal const byte Max = 180;
             }
 
             /// <summary>
@@ -78,12 +78,12 @@ namespace PolylineAlgorithm.Internal {
                 /// <summary>
                 /// Defines latitude validation range
                 /// </summary>
-                public static readonly CoordinateRange Latitude = new(Coordinate.Latitude.Min, Coordinate.Latitude.Max);
+                internal static readonly CoordinateRange Latitude = new(Coordinate.Latitude.Min, Coordinate.Latitude.Max);
 
                 /// <summary>
                 /// Defines longitude validation range
                 /// </summary>
-                public static readonly CoordinateRange Longitude = new(Coordinate.Longitude.Min, Coordinate.Longitude.Max);
+                internal static readonly CoordinateRange Longitude = new(Coordinate.Longitude.Min, Coordinate.Longitude.Max);
             }
         }
     }
