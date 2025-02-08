@@ -202,17 +202,20 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: benchmark-ubuntu-latest
+        path: ${{ runner.temp }}/benchmark-results/benchmark-ubuntu-latest
         merge-multiple: true
     - name: Download Benchmark Results
       uses: actions/download-artifact@v4
       with:
         name: benchmark-windows-latest
+        path: ${{ runner.temp }}/benchmark-results/benchmark-windows-latest
         merge-multiple: true
     - name: Download Benchmark Results
       uses: actions/download-artifact@v4
       with:
         name: benchmark-macos-latest
+        path: ${{ runner.temp }}/benchmark-results/benchmark-macos-latest
         merge-multiple: true
-    - run: cat benchmarks/**/*.md >> $GITHUB_STEP_SUMMARY
+    - run: cat ${{ runner.temp }}/benchmark-results//**/*.md >> $GITHUB_STEP_SUMMARY
       name: Write Benchmark Results to Job Summary
       
