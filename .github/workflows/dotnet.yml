@@ -213,6 +213,6 @@ jobs:
       with:
         name: benchmark-macos-latest
         merge-multiple: true
-    - run: cat **/*.md >> $GITHUB_STEP_SUMMARY
+    - run: cat benchmarks/**/*.md >> $GITHUB_STEP_SUMMARY
       name: Write Benchmark Results to Job Summary
       
