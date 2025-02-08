@@ -8,6 +8,7 @@ namespace PolylineAlgorithm.Benchmarks;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Order;
 using PolylineAlgorithm;
+using System;
 
 [RankColumn]
 [MemoryDiagnoser]
@@ -18,9 +19,10 @@ public class PolylineBenchmark {
         public static string String { get; } = "}adrJh}}cVazlw@uykyNhaqeE`vfzG_~kY}~`eTsr{~Cwn~aOty_g@thapJvvoqKxt{sStfahDmtvmIfmiqBhjq|HujpgComs{Z}dhdKcidPymnvBqmquE~qrfI`x{lPf|ftGn~}d_@q}saAurjmu@bwr_DxrfaK~{rO~bidPwfduXwlioFlpum@twvfFpmi~VzxcsOqyejYhh|i@pbnr[twvfF_ueUujvbSa_d~ZkcnjZla~f[pmquEebxo[j}nr@xnn|H{gyiKbh{yH`oenn@y{mpIrbd~EmipgH}fuov@hjqtTp|flAttvkFrym_d@|eyCwn~aOfvdNmeawM??{yxdUcidPca{}D_atqGenzcAlra{@trgWhn{aZ??tluqOgu~sH";
         public static char[] CharArray { get; } = String.ToCharArray();
         public static ReadOnlyMemory<char> Memory { get; } = new Memory<char>(CharArray);
+        public static Polyline Polyline { get; } = new Polyline(String);
     }
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public Polyline Polyline_Constructor_Empty() {
         var polyline = new Polyline();
         return polyline;
@@ -85,5 +87,26 @@ public class PolylineBenchmark {
         var value = Input.Memory;
         Polyline polyline = Polyline.FromMemory(in value);
         return polyline;
+    }
+
+    [Benchmark]
+    public string Polyline_ToString() {
+        var polyline = Input.Polyline;
+        string value = polyline.ToString();
+        return value;
+    }
+
+    [Benchmark]
+    public char[] Polyline_ToCharArray() {
+        var polyline = Input.Polyline;
+        char[] value = polyline.ToCharArray();
+        return value;
+    }
+
+    [Benchmark]
+    public ReadOnlyMemory<char> Polyline_ToMemory() {
+        var polyline = Input.Polyline;
+        ReadOnlyMemory<char> value = polyline.AsMemory();
+        return value;
     }
 }

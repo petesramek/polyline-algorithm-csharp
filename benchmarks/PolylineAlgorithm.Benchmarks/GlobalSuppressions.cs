@@ -5,4 +5,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Becnhmarks need instance methods.", Scope = "member", Target = "~M:PolylineAlgorithm.Benchmarks.EncodeBenchmark.PolylineEncoder_Encode~PolylineAlgorithm.Polyline")]
+[assembly: SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Benchmarks need instance methods.")]
