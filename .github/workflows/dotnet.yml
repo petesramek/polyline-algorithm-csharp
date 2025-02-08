@@ -137,14 +137,14 @@ jobs:
          7.x
          8.x
          9.x
-    - name: Download
+    - name: Download Build
       uses: actions/download-artifact@v4
       with:
         name: build
     - name: Benchmark
       working-directory: ${{ vars.BENCHMARKDOTNET_WORKING_DIRECTORY }}
       run: dotnet run --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} --framework ${{ vars.BUILD_FRAMEWORK }} --runtimes ${{ vars.BENCHMARKDOTNET_RUNTIMES }} --filter ${{ vars.BENCHMARKDOTNET_FILTER }} --exporters GitHub
-    - name: Upload Package
+    - name: Upload Benchmark Results
       uses: actions/upload-artifact@v4
       with:
         name: benchmark
@@ -157,12 +157,14 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-    - name: Download
+    - name: Download Test Results
       uses: actions/download-artifact@v4
       with:
         name: test-results
     - run: dotnet tool update --global dotnet-trx
+      name: Update dotnet-trx tool
     - run: trx -r --output --gh-summary >> $GITHUB_STEP_SUMMARY
+      name: Write Test Results to Job Summary
   
   code-coverage-summary:
     name: Code Coverage Summary
@@ -170,15 +172,20 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-    - name: Download
+    - name: Download Test Results
       uses: actions/download-artifact@v4
       with:
         name: test-results
     - run: dotnet tool update --global dotnet-coverage
+      name: Update dotnet-coverage tool
     - run: dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
-    - run: dotnet tool install --global dotnet-reportgenerator-globaltool
+      name: Merge Code Coverage Results
+    - run: dotnet tool update --global dotnet-reportgenerator-globaltool
+      name: Update dotnet-reportgenerator-globaltool tool
     - run: reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:"MarkdownSummary"
+      name: Generate Code Coverage Results
     - run: cat coverage-report/Summary.md >> $GITHUB_STEP_SUMMARY
+      name: Write Code Coverage Results to Job Summary
 
   benchmark-summary:
     name: Benchmark Summary
@@ -186,10 +193,12 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-    - name: Download
+    - name: Download Benchmark Results
       uses: actions/download-artifact@v4
       with:
         name: benchmark
     - run: dotnet tool update --global dotnet-trx
+      name: Update dotnet-trx tool
     - run: trx -r --output --gh-summary >> $GITHUB_STEP_SUMMARY
+      name: Write Benchmark Results to Job Summary
       
