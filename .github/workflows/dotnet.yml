@@ -151,7 +151,7 @@ jobs:
       with:
         name: benchmark-${{ matrix.os }}
         path: |
-          benchmarks/**/*.md
+          benchmarks/PolylineAlgorithm.Benchmarks/BenchmarkDotNet.Artifacts/results/*-report-github.md
 
   test-summary:
     name: Test Summary
@@ -216,6 +216,6 @@ jobs:
         name: benchmark-macos-latest
         path: ${{ runner.temp }}/benchmark-results/benchmark-macos-latest
         merge-multiple: true
-    - run: cat ${{ runner.temp }}/benchmark-results//**/*.md >> $GITHUB_STEP_SUMMARY
+    - run: cat '${{ runner.temp }}/benchmark-results/**/*.md' >> $GITHUB_STEP_SUMMARY
       name: Write Benchmark Results to Job Summary
       
