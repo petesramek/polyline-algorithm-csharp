@@ -115,7 +115,7 @@ jobs:
 
   benchmark:
     if: ${{ github.env.is_release || vars.RUN_BENCHMARKS == 'true' }}
-    name: Benchmark on ${{ matrix.os }}
+    name: Benchmark on ${{ runner.os }} ${{ runner.arch }}
     needs: [build]
     strategy:
       matrix:
@@ -153,7 +153,20 @@ jobs:
 
   test-summary:
     name: Test Summary
-    needs: [test]
+    needs: [test-summary]
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+    - name: Download
+      uses: actions/download-artifact@v4
+      with:
+        name: test-results
+    - run: dotnet tool update --global dotnet-trx
+    - run: trx -r --output --gh-summary >> $GITHUB_STEP_SUMMARY
+  
+  code-coverage-summary:
+    name: Code Coverage Summary
+    needs: [test-summary]
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
@@ -167,23 +180,9 @@ jobs:
     - run: reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:"MarkdownSummary"
     - run: cat coverage-report/Summary.md >> $GITHUB_STEP_SUMMARY
 
-  code-coverage-summary:
-    name: Code Coverage Summary
-    needs: [test-summary]
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-    - name: Download
-      uses: actions/download-artifact@v4
-      with:
-        name: test-results
-    - run: dotnet tool update --global dotnet-trx
-    - run: trx -r --output --gh-summary >> $GITHUB_STEP_SUMMARY
-
-
   benchmark-summary:
     name: Benchmark Summary
-    needs: [test-summary]
+    needs: [code-coverage-summary,benchmark]
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
