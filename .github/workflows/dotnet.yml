@@ -5,6 +5,8 @@ on:
     branches:
     - 'preview/**'
     - 'release/**'
+    paths:
+    - 'src/**'
   pull_request:
     branches:
     - 'main'
@@ -189,7 +191,7 @@ jobs:
 
   benchmark-summary:
     name: Benchmark Summary
-    needs: [code-coverage-summary,benchmark]
+    needs: [benchmark, code-coverage-summary]
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
