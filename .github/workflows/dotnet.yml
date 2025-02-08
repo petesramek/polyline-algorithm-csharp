@@ -115,7 +115,7 @@ jobs:
 
   benchmark:
     if: ${{ github.env.is_release || vars.RUN_BENCHMARKS == 'true' }}
-    name: Benchmark on $ID $VERSION_ID
+    name: Benchmark on "$RUNNER_OS"
     needs: [build]
     strategy:
       matrix:
