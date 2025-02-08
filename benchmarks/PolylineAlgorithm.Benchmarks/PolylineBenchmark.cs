@@ -10,9 +10,6 @@ using BenchmarkDotNet.Order;
 using PolylineAlgorithm;
 using System;
 
-[RankColumn]
-[MemoryDiagnoser]
-[MarkdownExporter]
 [Orderer(SummaryOrderPolicy.Declared)]
 public class PolylineBenchmark {
     private static class Input {

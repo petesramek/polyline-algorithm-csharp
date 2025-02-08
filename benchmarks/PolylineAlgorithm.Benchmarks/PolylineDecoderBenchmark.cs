@@ -10,9 +10,6 @@ using BenchmarkDotNet.Engines;
 using BenchmarkDotNet.Order;
 using PolylineAlgorithm;
 
-[RankColumn]
-[MemoryDiagnoser]
-[MarkdownExporter]
 [Orderer(SummaryOrderPolicy.Declared)]
 public class PolylineDecoderBenchmark {
     private readonly Consumer _consumer = new();

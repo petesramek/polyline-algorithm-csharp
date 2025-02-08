@@ -5,9 +5,6 @@ using BenchmarkDotNet.Order;
 using System;
 using static PolylineAlgorithm.Internal.Defaults.Coordinate;
 
-[RankColumn]
-[MemoryDiagnoser]
-[MarkdownExporter]
 [Orderer(SummaryOrderPolicy.Declared)]
 public class CoordinateBenchmark {
     private static class Input {

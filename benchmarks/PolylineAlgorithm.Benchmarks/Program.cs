@@ -6,10 +6,16 @@
 namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Diagnosers;
+using BenchmarkDotNet.Reports;
 using BenchmarkDotNet.Running;
 
 internal class Program {
     static void Main(string[] args) {
+        var config = DefaultConfig.Instance
+            .AddDiagnoser(new MemoryDiagnoser(new MemoryDiagnoserConfig(true)))
+            .WithOptions(ConfigOptions.JoinSummary);
+
         BenchmarkSwitcher
             .FromAssembly(typeof(Program).Assembly)
             .Run(args, DefaultConfig.Instance);
