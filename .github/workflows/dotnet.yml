@@ -176,5 +176,5 @@ jobs:
       with:
         name: test-results
     - run: dotnet tool update --global dotnet-trx
-    - run: trx -r --output >> $GITHUB_STEP_SUMMARY
+    - run: trx -r --output --gh-summary >> $GITHUB_STEP_SUMMARY
       
