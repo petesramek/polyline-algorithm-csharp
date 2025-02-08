@@ -99,7 +99,7 @@ jobs:
     - run: dotnet tool update --global dotnet-coverage
     - run: dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
     - run: dotnet tool install --global dotnet-reportgenerator-globaltool
-    - run: reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:"MarkdownSummaryGithub"
+    - run: reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:"MarkdownSummary"
     - run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
 
   pack:
