@@ -151,7 +151,7 @@ jobs:
       with:
         name: benchmark
         path: |
-          ./BenchmarkDotNet.Artifacts/results
+          ./BenchmarkDotNet.Artifacts/**
 
   test-summary:
     name: Test Summary
