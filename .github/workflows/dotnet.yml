@@ -149,12 +149,13 @@ jobs:
       with:
         name: benchmark
         path: |
-          ./BenchmarkDotNet.Artifacts/**
+          ./BenchmarkDotNet.Artifacts/**/*.md
 
   test-summary:
     name: Test Summary
     needs: [test]
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - name: Download
       uses: actions/download-artifact@v4
@@ -170,6 +171,21 @@ jobs:
     name: Code Coverage Summary
     needs: [test-summary]
     runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+    - name: Download
+      uses: actions/download-artifact@v4
+      with:
+        name: test-results
+    - run: dotnet tool update --global dotnet-trx
+    - run: trx -r --output --gh-summary >> $GITHUB_STEP_SUMMARY
+
+
+  benchmark-summary:
+    name: Benchmark Summary
+    needs: [test-summary]
+    runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - name: Download
       uses: actions/download-artifact@v4
