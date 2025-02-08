@@ -10,11 +10,8 @@
 						<!-- Match assembly file paths: -->
 						<ModulePaths>
 							<Include>
-								<ModulePath>.*\.dll$</ModulePath>
+								<ModulePath>.*\\src\\.*\.dll$</ModulePath>
 							</Include>
-							<IncludeDirectories>
-								<Directory Recursive="true">.*\\src\\.*</Directory>
-							</IncludeDirectories>
 						</ModulePaths>
 
 						<!-- Match attributes on any code element: -->
