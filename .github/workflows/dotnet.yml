@@ -96,18 +96,11 @@ jobs:
         path: "**/test-results/*.trx"                         
         reporter: dotnet-trx
         fail-on-error: true
-    - name: Code Coverage Report
-      uses: irongut/CodeCoverageSummary@v1.3.0
-      with:
-        filename: "**/test-results/**/coverage.cobertura.xml"
-        badge: true
-        fail_below_min: true
-        format: markdown
-        hide_branch_rate: false
-        hide_complexity: true
-        indicators: true
-        output: both
-        thresholds: '60 80'
+    - run: dotnet tool update --global dotnet-coverage
+    - run: dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
+    - run: dotnet tool install --global dotnet-reportgenerator-globaltool
+    - run: reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:"MarkdownSummaryGithub"
+    - run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
 
   pack:
     name: Pack with .NET ${{ vars.DOTNET_SDK_VERSION }}
