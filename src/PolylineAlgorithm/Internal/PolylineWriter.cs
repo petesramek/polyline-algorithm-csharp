@@ -1,45 +1,70 @@
 ﻿namespace PolylineAlgorithm.Internal;
 
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using static PolylineAlgorithm.Internal.Defaults.Coordinate;
 
 [StructLayout(LayoutKind.Auto)]
 internal ref struct PolylineWriter(ref readonly Memory<char> buffer) {
     private WriterState _state = new();
     private Memory<char> _buffer = buffer;
 
+    public readonly bool CanWrite => _state.Position < _buffer.Length;
+
+    public readonly int Position => _state.Position;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Write(ref readonly Coordinate coordinate) {
-        var latitude = Round(coordinate.Latitude);
-        var longitude = Round(coordinate.Longitude);
+        Imprecise(coordinate.Latitude, out int latitude);
+        Imprecise(coordinate.Longitude, out int longitude);
 
-        var latDiff = latitude - _state.ExchangeLatitude(ref latitude);
-        var longDiff = longitude - _state.ExchangeLongitude(ref longitude);
+        UpdateCurrent(in latitude, in longitude, out int latDiff, out int longDiff);
         
-        EncodeNext(ref latDiff, ref _buffer, ref _state);
-        EncodeNext(ref longDiff, ref _buffer, ref _state);
+        WriteNext(in latDiff);
+        WriteNext(in longDiff);
 
-        static int Round(double value) {
-            return Convert.ToInt32(Math.Round(value * Constants.Precision));
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static void Imprecise(double value, out int result) {
+            result = Convert.ToInt32(value * Defaults.Algorithm.Precision);
         }
     }
 
-    static void EncodeNext(ref int value, ref Memory<char> buffer, ref WriterState state) {
-        int shifted = value << 1;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    void WriteNext(ref readonly int value) {
+        int rem = value << 1;
 
         if (value < 0) {
-            shifted = ~shifted;
+            rem = ~rem;
         }
 
-        int rem = shifted;
-
-        while (rem >= Constants.ASCII.Space) {
-            buffer.Span[state.Position] = Convert.ToChar((Constants.ASCII.Space | rem & Constants.ASCII.UnitSeparator) + Constants.ASCII.QuestionMark);
-            state.Advance();
-            rem >>= Constants.ShiftLength;
+        while (rem >= Defaults.Algorithm.Space) {
+            WriteChar(Convert.ToChar((Defaults.Algorithm.Space | rem & Defaults.Algorithm.UnitSeparator) + Defaults.Algorithm.QuestionMark));
+            rem >>= Defaults.Algorithm.ShiftLength;
         }
 
-        buffer.Span[state.Position] = Convert.ToChar(rem + Constants.ASCII.QuestionMark);
-        state.Advance();
+        WriteChar(Convert.ToChar(rem + Defaults.Algorithm.QuestionMark));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    void WriteChar(char value) {
+        _buffer.Span[Position] = value;
+        _state.Position += 1;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    void GetCurrent(out int latitude, out int longitude) {
+        latitude = _state.Latitude;
+        longitude = _state.Longitude;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    void UpdateCurrent(ref readonly int latitude, ref readonly int longitude, out int latDiff, out int longDiff) {
+        latDiff = latitude - _state.Latitude;
+        _state.Latitude = latitude;
+
+        longDiff = longitude - _state.Longitude;
+        _state.Longitude = longitude;
     }
 
     public readonly Polyline ToPolyline() {
@@ -48,36 +73,16 @@ internal ref struct PolylineWriter(ref readonly Memory<char> buffer) {
         return polyline;
     }
 
-    public override readonly string ToString() {
-        return _buffer[.._state.Position].ToString();
-    }
-
     [StructLayout(LayoutKind.Sequential, Pack = 4, Size = 12)]
     private ref struct WriterState {
         public WriterState() {
             Position = Latitude = Longitude = 0;
         }
 
-        internal int Position { get; private set; }
+        public int Position { get; set; }
 
-        internal int Latitude { get; private set; }
+        public int Latitude { get; set; }
 
-        internal int Longitude { get; private set; }
-
-        internal void Advance() {
-            Position += 1;
-        }
-
-        internal int ExchangeLatitude(ref int latitude) {
-            var current = Latitude;
-            Latitude = latitude;
-            return current;
-        }
-
-        internal int ExchangeLongitude(ref int longitude) {
-            var current = Longitude;
-            Longitude = longitude;
-            return current;
-        }
+        public int Longitude { get; set; }
     }
 }

@@ -5,9 +5,40 @@
 
 namespace PolylineAlgorithm.Validation;
 
+using PolylineAlgorithm.Internal;
+
+/// <summary>
+/// Defines proprties and methods used for validating coordinates.
+/// </summary>
 public interface ICoordinateValidator {
+    /// <summary>
+    /// Represents latitude validation range
+    /// </summary>
     CoordinateRange Latitude { get; }
+
+    /// <summary>
+    /// Represents longitude validation range
+    /// </summary>
     CoordinateRange Longitude { get; }
 
+    /// <summary>
+    /// Validates coordinate.
+    /// </summary>
+    /// <param name="coordinate"></param>
+    /// <returns<see langword="true"/> </returns>
     bool IsValid(Coordinate coordinate);
+
+    /// <summary>
+    /// Represents default coordinate validator instance.
+    /// </summary>
+    static ICoordinateValidator Default { get; private set; } = new CoordinateValidator(Defaults.Coordinate.Range.Latitude, Defaults.Coordinate.Range.Longitude);
+
+    /// <summary>
+    /// Assigns passed value to <see cref="ICoordinateValidator.Default"/>.
+    /// </summary>
+    /// <param name="validator"></param>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="validator"/> argument is null.</exception>
+    static void SetDefault(ICoordinateValidator validator) {
+        Default = validator ?? throw new ArgumentNullException(nameof(validator));
+    }
 }

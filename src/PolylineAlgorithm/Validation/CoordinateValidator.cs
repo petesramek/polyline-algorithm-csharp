@@ -17,12 +17,11 @@ using System.Diagnostics.CodeAnalysis;
 /// <param name="latitudeRange">A latitude range.</param>
 /// <param name="longitudeRange">A longitude range.</param>
 public sealed class CoordinateValidator(CoordinateRange latitudeRange, CoordinateRange longitudeRange) : ICoordinateValidator {
-    /// <summary>
-    /// Represents default coordinate validator. This field is read-only.
-    /// </summary>
-    /// <remarks>Validates latitude between -90 and 90; longitude between -180 and 180.</remarks>
-    [SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "We just want to deal with it this way.")]
-    public static readonly CoordinateValidator Default = new(new CoordinateRange(Constants.Coordinate.MinLatitude, Constants.Coordinate.MaxLatitude), new CoordinateRange(Constants.Coordinate.MinLongitude, Constants.Coordinate.MaxLongitude));
+    ///// <summary>
+    ///// Represents default coordinate validator. This field is read-only.
+    ///// </summary>
+    ///// <remarks>Validates latitude between -90 and 90; longitude between -180 and 180.</remarks>
+    //[SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "We want to expose default instance of .")]
 
     /// <summary>
     /// A latitude validation range.

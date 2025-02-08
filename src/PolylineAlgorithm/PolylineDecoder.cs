@@ -7,8 +7,10 @@ namespace PolylineAlgorithm;
 
 using PolylineAlgorithm.Internal;
 
-/// <inheritdoc cref="IPolylineDecoder{TResult}" />
-/// <param name="validator">A coordinate validator.</param>
+
+/// <summary>
+/// Performs polyline algorithm decoding
+/// </summary>
 public class PolylineDecoder : IPolylineDecoder {
 
     /// <inheritdoc />
@@ -29,7 +31,6 @@ public class PolylineDecoder : IPolylineDecoder {
         // Looping through encoded polyline char array
         while (reader.CanRead) {
             var coordinate = reader.Read();
-
             result.Add(coordinate);
         }
 

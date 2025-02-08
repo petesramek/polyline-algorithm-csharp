@@ -14,29 +14,46 @@ using System.Runtime.InteropServices;
 [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
 public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <summary>
-    /// Initialized default instance of <see cref="Coordinate"/>.
+    /// Initializes default instance of <see cref="Coordinate"/> with latitude and longitude equal to 0.
     /// </summary>
     public Coordinate() {
         Latitude = 0d;
         Longitude = 0d;
     }
 
+    /// <summary>
+    /// Initializes instance of <see cref="Coordinate"/> with <paramref name="latitude"/> and <paramref name="longitude"/> values.
+    /// </summary>
+    /// <param name="latitude">A latitude value.</param>
+    /// <param name="longitude">A latitude value.</param>
     public Coordinate(double latitude, double longitude) {
         Latitude = latitude;
         Longitude = longitude;
     }
 
     public readonly double Latitude { get; }
+
     public readonly double Longitude { get; }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public bool IsDefault
         => Latitude == default
         && Longitude == default;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>
+    /// Uses <see cref="ICoordinateValidator.Default"/>.
+    /// </remarks>
     public bool IsValid
-        => CoordinateValidator.Default.Latitude.IsInRange(Latitude)
-        && CoordinateValidator.Default.Longitude.IsInRange(Longitude);
+        => ICoordinateValidator.Default.Latitude.IsInRange(Latitude)
+        && ICoordinateValidator.Default.Longitude.IsInRange(Longitude);
 
+
+    #region IEquatable<Coordinate> implementation
 
     public override bool Equals(object? obj) {
         return obj is Coordinate coordinate && Equals(coordinate);
@@ -58,4 +75,6 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     public static bool operator !=(Coordinate left, Coordinate right) {
         return !(left == right);
     }
+
+    #endregion
 }

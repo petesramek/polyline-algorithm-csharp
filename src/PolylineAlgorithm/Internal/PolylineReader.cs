@@ -1,11 +1,12 @@
 ﻿namespace PolylineAlgorithm.Internal;
 
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [StructLayout(LayoutKind.Auto)]
 internal ref struct PolylineReader {
     private ReaderState _state = new();
-    private ReadOnlySpan<char> _polyline;
+    private readonly ReadOnlySpan<char> _polyline;
 
     public PolylineReader(ref readonly Polyline polyline) {
         _polyline = polyline.Span;
@@ -13,15 +14,16 @@ internal ref struct PolylineReader {
 
     public readonly bool CanRead => _state.Position < _polyline.Length;
 
+    public readonly int Position => _state.Position;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Coordinate Read() {
-        int latitude = _state.Latitude;
-        int longitude = _state.Longitude;
+        GetCurrent(out int currentLatitude, out int currentLongitude);
 
-        DecodeNext(ref latitude, ref _polyline, ref _state);
-        DecodeNext(ref longitude, ref _polyline, ref _state);
+        int latitude = ReadNext(in currentLatitude);
+        int longitude = ReadNext(in currentLongitude);
 
-        _state.SetLatitude(in latitude);
-        _state.SetLongitude(in longitude);
+        SetCurrent(in latitude, in longitude);
 
         Coordinate coordinate = new(Precise(ref latitude), Precise(ref longitude));
 
@@ -31,29 +33,48 @@ internal ref struct PolylineReader {
 
         return coordinate;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static double Precise(ref int value) {
-            return Convert.ToDouble(value) / Constants.Precision;
+            return value / Defaults.Algorithm.Precision;
         }
     }
 
-    static void DecodeNext(ref int value, ref ReadOnlySpan<char> polyline, ref ReaderState state) {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    void Advance() {
+        _state.Position += 1;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    void SetCurrent(ref readonly int latitude, ref readonly int longitude) {
+        _state.Latitude = latitude;
+        _state.Longitude = longitude;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    void GetCurrent(out int latitude, out int longitude) {
+        latitude = _state.Latitude;
+        longitude = _state.Longitude;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    int ReadNext(ref readonly int value) {
         // Initialize local variables
         int chunk;
         int sum = 0;
         int shifter = 0;
 
         do {
-            chunk = polyline[state.Position] - Constants.ASCII.QuestionMark;
-            sum |= (chunk & Constants.ASCII.UnitSeparator) << shifter;
-            shifter += Constants.ShiftLength;
-            state.Advance();
-        } while (chunk >= Constants.ASCII.Space && state.Position < polyline.Length);
+            chunk = _polyline[Position] - Defaults.Algorithm.QuestionMark;
+            sum |= (chunk & Defaults.Algorithm.UnitSeparator) << shifter;
+            shifter += Defaults.Algorithm.ShiftLength;
+            Advance();
+        } while (chunk >= Defaults.Algorithm.Space && CanRead);
 
-        if (state.Position >= polyline.Length && chunk >= Constants.ASCII.Space) {
-            throw new InvalidOperationException(ExceptionMessageResource.PolylineStringIsMalformed);
+        if (!CanRead && chunk >= Defaults.Algorithm.Space) {
+            throw new PolylineMalformedException(Position);
         }
 
-        value += (sum & 1) == 1 ? ~(sum >> 1) : sum >> 1;
+        return value + ((sum & 1) == 1 ? ~(sum >> 1) : sum >> 1);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4, Size = 12)]
@@ -62,22 +83,11 @@ internal ref struct PolylineReader {
             Position = Latitude = Longitude = 0;
         }
 
-        internal int Position { get; private set; }
 
-        internal int Latitude { get; private set; }
+        public int Position { get; set; }
 
-        internal int Longitude { get; private set; }
+        public int Latitude { get; set; }
 
-        internal void Advance() {
-            Position += 1;
-        }
-
-        internal void SetLatitude(ref readonly int latitude) {
-            Latitude = latitude;
-        }
-
-        internal void SetLongitude(ref readonly int longitude) {
-            Longitude = longitude;
-        }
+        public int Longitude { get; set; }
     }
 }

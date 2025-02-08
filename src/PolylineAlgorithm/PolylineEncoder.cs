@@ -8,36 +8,34 @@ namespace PolylineAlgorithm;
 using PolylineAlgorithm.Internal;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 /// <summary>
-/// Performs polyline algorithm decoding and encoding
+/// Performs polyline algorithm encoding
 /// </summary>
 public class PolylineEncoder : IPolylineEncoder {
     /// <summary>
-    /// Encodes coordinates to polyline representation
+    /// Encodes a set of coordinates to polyline.
     /// </summary>
-    /// <param name="coordinates">Coordinates to encode</param>
-    /// <returns>Polyline encoded representation</returns>
-    /// <exception cref="ArgumentNullException">If coordinates parameter is null</exception>
-    /// <exception cref="ArgumentException">If coordinates parameter is empty</exception>
-    /// <exception cref="AggregateException">If one or more coordinate is out of valid range</exception>
+    /// <param name="coordinates">Coordinates to encode.</param>
+    /// <returns>Polyline encoded representation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="coordinates"/> argument is null.</exception>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="coordinates"/> argument is empty enumeration.</exception>
     public Polyline Encode(IEnumerable<Coordinate> coordinates) {
         if (coordinates is null) {
             throw new ArgumentNullException(nameof(coordinates));
         }
 
-        int count = GetCount(ref coordinates);
+        int count = GetCount(in coordinates);
 
         if (count == 0) {
-            throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeEmptyEnumerable, nameof(coordinates));
+            throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeEmptyEnumeration, nameof(coordinates));
         }
 
-        // Initializing local variables
         int capacity = count * 12;
         Memory<char> buffer = new char[capacity];
         PolylineWriter writer = new(in buffer);
 
-        // Looping over coordinates and building encoded result
         foreach (var coordinate in coordinates) {
             if(!coordinate.IsValid) {
                 throw new InvalidCoordinateException(coordinate);
@@ -47,10 +45,11 @@ public class PolylineEncoder : IPolylineEncoder {
         }
 
         return writer.ToPolyline();
-    }
 
-    static int GetCount(ref IEnumerable<Coordinate> coordinates) => coordinates switch {
-        ICollection<Coordinate> collection => collection.Count,
-        _ => coordinates.Count(),
-    };
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static int GetCount(ref readonly IEnumerable<Coordinate> coordinates) => coordinates switch {
+            ICollection<Coordinate> collection => collection.Count,
+            _ => coordinates.Count(),
+        };
+    }
 }

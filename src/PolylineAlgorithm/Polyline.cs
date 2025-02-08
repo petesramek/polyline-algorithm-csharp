@@ -28,7 +28,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
         _value = value.AsMemory();
     }
 
-    public Polyline(ReadOnlyMemory<char> value) => _value = value;
+    public  Polyline(ReadOnlyMemory<char> value) => _value = value;
 
     public bool IsEmpty => _value.IsEmpty;
 
@@ -42,8 +42,6 @@ public readonly struct Polyline : IEquatable<Polyline> {
 
     public ReadOnlyMemory<char> AsMemory() => _value;
 
-    public ReadOnlySpan<char> AsSpan() => _value.Span;
-
     public override bool Equals(object? obj) => obj is Polyline polyline && Equals(polyline);
 
     public bool Equals(Polyline other) => _value.Equals(other._value);
@@ -54,16 +52,16 @@ public readonly struct Polyline : IEquatable<Polyline> {
 
     public static bool operator !=(Polyline left, Polyline right) =>  !(left == right);
 
+    public static Polyline FromString(ref readonly string polyline) => new(polyline);
+
+    public static Polyline FromCharArray(ref readonly char[] polyline) => new(polyline);
+
+    public static Polyline FromMemory(ref readonly ReadOnlyMemory<char> polyline) => new(polyline);
+
     public static implicit operator Polyline(string polyline) => FromString(in polyline);
 
     public static implicit operator Polyline(char[] polyline) => FromCharArray(in polyline);
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = $"Provided alternative {nameof(Polyline)}.{nameof(FromMemory)} to follow {nameof(String)}.{nameof(AsMemory)} naming pattern.")]
     public static implicit operator Polyline(ReadOnlyMemory<char> polyline) => FromMemory(in polyline);
-
-    public static Polyline FromString(ref readonly string polyline) => new(polyline);
-
-    public static Polyline FromCharArray(ref readonly char[] polyline) => new(polyline);
-
-    public static Polyline FromMemory(ref readonly ReadOnlyMemory<char> polyline) => new(polyline);
 }
