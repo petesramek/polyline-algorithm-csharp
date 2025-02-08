@@ -82,7 +82,7 @@ jobs:
       with:
         dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
     - name: Test with .NET ${{ vars.DOTNET_SDK_VERSION }}
-      run: dotnet test ${{ vars.TEST_SEARCH_PATTERN }} --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} --verbosity normal --settings unit-test.runsettings --logger trx --collect:"Code Coverage" --results-directory test-results
+      run: dotnet test ${{ vars.TEST_SEARCH_PATTERN }} --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} --verbosity normal --settings unit-test.runsettings --logger trx --collect:"Code Coverage" /p:CoverletOutputFormat=cobertura --results-directory test-results
     - name: Upload Test Results
       uses: actions/upload-artifact@v4
       with:
@@ -99,7 +99,7 @@ jobs:
     - name: Code Coverage Report
       uses: irongut/CodeCoverageSummary@v1.3.0
       with:
-        filename: "**/test-results/**/*.coverage"
+        filename: "**/test-results/**/coverage.cobertura.xml"
         badge: true
         fail_below_min: true
         format: markdown
