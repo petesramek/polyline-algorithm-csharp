@@ -42,7 +42,7 @@ public class PolylineEncoderTest {
     [TestMethod]
     public void Encode_EmptyInput_ThrowsException() {
         // Arrange
-        IEnumerable<Coordinate> empty = Defaults.Coordinates.Empty;
+        IEnumerable<Coordinate> empty = Values.Coordinates.Empty;
 
         // Act
         void EncodeEmptyCoordinates() {
@@ -60,7 +60,7 @@ public class PolylineEncoderTest {
     [TestMethod]
     public void Encode_InvalidInput_ThrowsException() {
         // Arrange
-        IEnumerable<Coordinate> invalid = Defaults.Coordinates.Invalid;
+        IEnumerable<Coordinate> invalid = Values.Coordinates.Invalid;
 
         // Act
         void EncodeEmptyCoordinates() {
@@ -73,17 +73,17 @@ public class PolylineEncoderTest {
 
     /// <summary>
     /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})" /> method. Enumeration containing only valid values is passed as parameter.
-    /// Expected result is result and <see cref="Defaults.Polyline.Valid"/> are equal.
+    /// Expected result is result and <see cref="Values.Polyline.Valid"/> are equal.
     /// </summary>
     [TestMethod]
     public void Encode_ValidInput_Ok() {
         // Arrange
-        IEnumerable<Coordinate> valid = Defaults.Coordinates.Valid;
+        IEnumerable<Coordinate> valid = Values.Coordinates.Valid;
 
         // Act
         var result = Encoder.Encode(valid);
 
         // Assert
-        Assert.AreEqual(Defaults.Polyline.Valid, result.ToString());
+        Assert.AreEqual(Values.Polyline.Valid, result.ToString());
     }
 }

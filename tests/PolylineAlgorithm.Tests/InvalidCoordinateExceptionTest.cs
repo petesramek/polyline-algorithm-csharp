@@ -22,7 +22,7 @@ public class InvalidCoordinateExceptionTest {
     [TestMethod]
     public void Constructor_Ok() {
         // Arrange
-        var coordinate = Defaults.InvalidCoordinateException.Coordinate;
+        var coordinate = Values.InvalidCoordinateException.Coordinate;
         var innerException = new Exception();
 
         // Act

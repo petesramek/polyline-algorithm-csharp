@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 [StructLayout(LayoutKind.Auto)]
 [DebuggerDisplay("Value: {ToString()}, IsEmpty: {IsEmpty}, Length: {Length}")]
@@ -76,6 +77,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     public static Polyline FromMemory(ref readonly ReadOnlyMemory<char> polyline) => new(polyline);
 
     public static Polyline FromString(ref readonly string polyline) => new(polyline);
+
 
     #endregion
 

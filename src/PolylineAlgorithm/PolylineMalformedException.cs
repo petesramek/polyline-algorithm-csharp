@@ -12,7 +12,7 @@ using System.Diagnostics.CodeAnalysis;
 /// <summary>
 /// Represents error that occurs during polyline encoding. 
 /// </summary>
-[SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Main purpose is to report position in which failure occurs, thus we have to have only one construtor.")]
+[SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Main purpose is to report position in which failure occurs, thus we have to have only one constructor.")]
 public sealed class PolylineMalformedException : Exception {
     /// <summary>
     /// Initializes an instance
@@ -20,7 +20,7 @@ public sealed class PolylineMalformedException : Exception {
     /// <param name="position"></param>
     /// <param name="innerException"></param>
     public PolylineMalformedException(int position, Exception? innerException = null)
-        : base(string.Format(ExceptionMessageResource.PolylineStringIsMalformed, position),
+        : base(string.Format(ExceptionMessageResource.PolylineStringIsMalformedMessage, position),
                innerException) {
         Position = position;
     }

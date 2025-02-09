@@ -10,7 +10,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Defines default values and objects used for testing purposes
 /// </summary>
-internal static class Defaults {
+internal static class Values {
     private static readonly Random _random = new(DateTime.Now.Millisecond);
 
     /// <summary>

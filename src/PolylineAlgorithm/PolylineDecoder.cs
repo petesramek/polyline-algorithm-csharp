@@ -19,7 +19,7 @@ public class PolylineDecoder : IPolylineDecoder {
     public IEnumerable<Coordinate> Decode(ref readonly Polyline polyline) {
         // Checking null and at least one character
         if (polyline.IsEmpty) {
-            throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeNullEmptyOrWhitespace, nameof(polyline));
+            throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeNullEmptyOrWhitespaceMessage, nameof(polyline));
         }
 
         // Initialize local variables

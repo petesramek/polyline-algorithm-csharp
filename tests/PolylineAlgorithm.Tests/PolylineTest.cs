@@ -14,18 +14,18 @@ using System;
 [TestClass]
 public class PolylineTest {
     public static IEnumerable<object[]> MemoryParameters => [
-        [Defaults.Polyline.Empty.AsMemory()],
-        [Defaults.Polyline.Valid.AsMemory()]
+        [Values.Polyline.Empty.AsMemory()],
+        [Values.Polyline.Valid.AsMemory()]
     ];
 
     public static IEnumerable<object[]> StringParameters => [
-        [Defaults.Polyline.Empty],
-        [Defaults.Polyline.Valid]
+        [Values.Polyline.Empty],
+        [Values.Polyline.Valid]
     ];
 
     public static IEnumerable<object[]> CharArrayParameters => [
-        [Defaults.Polyline.Empty.ToCharArray()],
-        [Defaults.Polyline.Valid.ToCharArray()]
+        [Values.Polyline.Empty.ToCharArray()],
+        [Values.Polyline.Valid.ToCharArray()]
     ];
 
     [TestMethod]

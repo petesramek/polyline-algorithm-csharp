@@ -5,10 +5,12 @@
 
 namespace PolylineAlgorithm.Internal {
     using PolylineAlgorithm.Validation;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Defines global constant values
     /// </summary>
+    [ExcludeFromCodeCoverage]
     internal static class Defaults {
         internal static class Algorithm {
             /// <summary>

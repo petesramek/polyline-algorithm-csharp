@@ -29,7 +29,7 @@ public class PolylineEncoder : IPolylineEncoder {
         int count = GetCount(in coordinates);
 
         if (count == 0) {
-            throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeEmptyEnumeration, nameof(coordinates));
+            throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeEmptyEnumerationMessage, nameof(coordinates));
         }
 
         int capacity = count * 12;

@@ -61,56 +61,74 @@ namespace PolylineAlgorithm.Internal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to One or more coordinates are invalid. Check InnerExceptions property for details..
-        /// </summary>
-        internal static string AggregateExceptionCoordinatesAreInvalidErrorMessage {
-            get {
-                return ResourceManager.GetString("AggregateExceptionCoordinatesAreInvalidErrorMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Argument cannot be an empty enumeration..
         /// </summary>
-        internal static string ArgumentCannotBeEmptyEnumeration {
+        internal static string ArgumentCannotBeEmptyEnumerationMessage {
             get {
-                return ResourceManager.GetString("ArgumentCannotBeEmptyEnumeration", resourceCulture);
+                return ResourceManager.GetString("ArgumentCannotBeEmptyEnumerationMessage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Argument cannot be null -or- empty -or- whitespace string..
+        ///   Looks up a localized string similar to Argument cannot be null -or- empty -or- whitespace..
         /// </summary>
-        internal static string ArgumentCannotBeNullEmptyOrWhitespace {
+        internal static string ArgumentCannotBeNullEmptyOrWhitespaceMessage {
             get {
-                return ResourceManager.GetString("ArgumentCannotBeNullEmptyOrWhitespace", resourceCulture);
+                return ResourceManager.GetString("ArgumentCannotBeNullEmptyOrWhitespaceMessage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Argument {0} cannot be greater or equal than {1}..
         /// </summary>
-        internal static string ArgumentMinCannotGreaterOfEqualThanMaxArgumentMessageFormat {
+        internal static string ArgumentMinCannotBeGreaterOfEqualThanMaxArgumentMessageFormat {
             get {
-                return ResourceManager.GetString("ArgumentMinCannotGreaterOfEqualThanMaxArgumentMessageFormat", resourceCulture);
+                return ResourceManager.GetString("ArgumentMinCannotBeGreaterOfEqualThanMaxArgumentMessageFormat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Latitude {0} or longitude {1} is not valid. Latitude must be in range between -90 and +90. Longitude must be in range between -180 and +180..
         /// </summary>
-        internal static string CoordinateValidationExceptionCoordinateIsOutOfRangeErrorMessageFormat {
+        internal static string CoordinateIsOutOfRangeMessageFormat {
             get {
-                return ResourceManager.GetString("CoordinateValidationExceptionCoordinateIsOutOfRangeErrorMessageFormat", resourceCulture);
+                return ResourceManager.GetString("CoordinateIsOutOfRangeMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to One or more coordinates are invalid. Check InnerExceptions property for details..
+        /// </summary>
+        internal static string CoordinatesAreInvalidErrorMessage {
+            get {
+                return ResourceManager.GetString("CoordinatesAreInvalidErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot read empty polyline..
+        /// </summary>
+        internal static string PolylineStringIsEmptyMessage {
+            get {
+                return ResourceManager.GetString("PolylineStringIsEmptyMessage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Polyline is malformed..
         /// </summary>
-        internal static string PolylineStringIsMalformed {
+        internal static string PolylineStringIsMalformedMessage {
             get {
-                return ResourceManager.GetString("PolylineStringIsMalformed", resourceCulture);
+                return ResourceManager.GetString("PolylineStringIsMalformedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to read polyline at position {0}. Polyline length is {1}..
+        /// </summary>
+        internal static string UnableToReadPolylineAtPositionMessageFormat {
+            get {
+                return ResourceManager.GetString("UnableToReadPolylineAtPositionMessageFormat", resourceCulture);
             }
         }
     }

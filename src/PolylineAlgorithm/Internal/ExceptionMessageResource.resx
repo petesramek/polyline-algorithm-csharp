@@ -117,22 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AggregateExceptionCoordinatesAreInvalidErrorMessage" xml:space="preserve">
+  <data name="CoordinatesAreInvalidErrorMessage" xml:space="preserve">
     <value>One or more coordinates are invalid. Check InnerExceptions property for details.</value>
   </data>
-  <data name="ArgumentCannotBeNullEmptyOrWhitespace" xml:space="preserve">
-    <value>Argument cannot be null -or- empty -or- whitespace string.</value>
-  </data>
-  <data name="ArgumentCannotBeEmptyEnumeration" xml:space="preserve">
+  <data name="ArgumentCannotBeEmptyEnumerationMessage" xml:space="preserve">
     <value>Argument cannot be an empty enumeration.</value>
   </data>
-  <data name="CoordinateValidationExceptionCoordinateIsOutOfRangeErrorMessageFormat" xml:space="preserve">
+  <data name="CoordinateIsOutOfRangeMessageFormat" xml:space="preserve">
     <value>Latitude {0} or longitude {1} is not valid. Latitude must be in range between -90 and +90. Longitude must be in range between -180 and +180.</value>
   </data>
-  <data name="PolylineStringIsMalformed" xml:space="preserve">
+  <data name="PolylineStringIsMalformedMessage" xml:space="preserve">
     <value>Polyline is malformed.</value>
   </data>
-  <data name="ArgumentMinCannotGreaterOfEqualThanMaxArgumentMessageFormat" xml:space="preserve">
+  <data name="ArgumentMinCannotBeGreaterOfEqualThanMaxArgumentMessageFormat" xml:space="preserve">
     <value>Argument {0} cannot be greater or equal than {1}.</value>
+  </data>
+  <data name="PolylineStringIsEmptyMessage" xml:space="preserve">
+    <value>Cannot read empty polyline.</value>
+  </data>
+  <data name="ArgumentCannotBeNullEmptyOrWhitespaceMessage" xml:space="preserve">
+    <value>Argument cannot be null -or- empty -or- whitespace.</value>
+  </data>
+  <data name="UnableToReadPolylineAtPositionMessageFormat" xml:space="preserve">
+    <value>Unable to read polyline at position {0}. Polyline length is {1}.</value>
   </data>
 </root>

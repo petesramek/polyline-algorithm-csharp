@@ -32,36 +32,19 @@ public class PolylineDecoderTest {
     }
 
     /// <summary>
-    /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})" /> method. <see cref="ReadOnlyMemory{char}" /> containing invalid polyline is passed as an argument.
-    /// </summary>
-    /// <remarks>Expected to throw <see cref="InvalidCoordinateException"/>.</remarks>
-    [TestMethod]
-    public void Decode_InvalidInput_ThrowsException() {
-        // Arrange
-        var value = Defaults.Polyline.Invalid;
-        Polyline invalid = new(value);
-
-        // Act
-        void Execute(Polyline value) => Decoder.Decode(in value);
-
-        // Assert
-        Assert.ThrowsException<InvalidCoordinateException>(() => Execute(invalid));
-    }
-
-    /// <summary>
     /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})" /> method. <see cref="ReadOnlyMemory{char}" /> containing valid polyline is passed as an argument.
     /// </summary>
-    /// <remarks>Expected result to equal <see cref="Defaults.Coordinates.Valid"/>..</remarks>
+    /// <remarks>Expected result to equal <see cref="Values.Coordinates.Valid"/>..</remarks>
     [TestMethod]
     public void Decode_ValidInput_Ok() {
         // Arrange
-        var value = Defaults.Polyline.Valid;
+        var value = Values.Polyline.Valid;
         Polyline valid = new(value);
 
         // Act
         var result = Decoder.Decode(in valid);
 
         // Assert
-        CollectionAssert.AreEqual(Defaults.Coordinates.Valid.ToArray(), result.ToArray());
+        CollectionAssert.AreEqual(Values.Coordinates.Valid.ToArray(), result.ToArray());
     }
 }
