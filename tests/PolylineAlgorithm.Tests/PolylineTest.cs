@@ -32,7 +32,7 @@ public class PolylineTest {
     [TestMethod]
     public void Constructor_Parameterless_Ok() {
         // Arrange
-        bool isEmpty = true;
+        bool empty = true;
         int length = 0;
         ReadOnlySpan<char> span = [];
 
@@ -40,7 +40,7 @@ public class PolylineTest {
         Polyline polyline = new();
 
         // Assert
-        Assert.AreEqual(isEmpty, polyline.IsEmpty);
+        Assert.AreEqual(empty, polyline.IsEmpty);
         Assert.AreEqual(length, polyline.Length);
         Assert.IsTrue(span.SequenceEqual(polyline.Span));
     }
@@ -59,9 +59,9 @@ public class PolylineTest {
 
     [TestMethod]
     [DynamicData(nameof(StringParamaters))]
-    public void Constructor_Empty_String_Ok(string value) {
+    public void Constructor_String_Paramater_Ok(string value) {
         // Arrange
-        bool isEmpty = value.Length == 0;
+        bool empty = value.Length == 0;
         int length = value.Length;
         ReadOnlySpan<char> span = value.AsSpan();
 
@@ -69,13 +69,13 @@ public class PolylineTest {
         Polyline polyline = new(value);
 
         // Assert
-        Assert.AreEqual(isEmpty, polyline.IsEmpty);
+        Assert.AreEqual(empty, polyline.IsEmpty);
         Assert.AreEqual(length, polyline.Length);
         Assert.IsTrue(span.SequenceEqual(polyline.Span));
     }
 
     [TestMethod]
-    public void Constructor_Null_CHarArray_ArgumentNullException() {
+    public void Constructor_Null_CharArray_ArgumentNullException() {
         // Arrange
         char[] value = null!;
 
@@ -89,9 +89,9 @@ public class PolylineTest {
 
     [TestMethod]
     [DynamicData(nameof(CharArrayParamaters))]
-    public void Constructor_Empty_CharArray_Ok(char[] value) {
+    public void Constructor_CharArray_Paramater_Ok(char[] value) {
         // Arrange
-        bool isEmpty = value.Length == 0;
+        bool empty = value.Length == 0;
         int length = value.Length;
         ReadOnlySpan<char> span = value.AsSpan();
 
@@ -99,7 +99,7 @@ public class PolylineTest {
         Polyline polyline = new(value);
 
         // Assert
-        Assert.AreEqual(isEmpty, polyline.IsEmpty);
+        Assert.AreEqual(empty, polyline.IsEmpty);
         Assert.AreEqual(length, polyline.Length);
         Assert.IsTrue(span.SequenceEqual(polyline.Span));
     }
@@ -108,7 +108,7 @@ public class PolylineTest {
     [DynamicData(nameof(MemoryParamaters))]
     public void Constructor_Memory_Paramater_Ok(ReadOnlyMemory<char> value) {
         // Arrange
-        bool isEmpty = value.IsEmpty;
+        bool empty = value.IsEmpty;
         int length = value.Length;
         ReadOnlySpan<char> span = value.Span;
 
@@ -116,7 +116,7 @@ public class PolylineTest {
         Polyline polyline = new(value);
 
         // Assert
-        Assert.AreEqual(isEmpty, polyline.IsEmpty);
+        Assert.AreEqual(empty, polyline.IsEmpty);
         Assert.AreEqual(length, polyline.Length);
         Assert.IsTrue(span.SequenceEqual(polyline.Span));
     }
