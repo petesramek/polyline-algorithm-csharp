@@ -95,7 +95,7 @@ public class PolylineWriterTest {
 
     [TestMethod]
 
-    public void Write_Full_Buffer_InvalidOperationException() {
+    public void Write_Small_Buffer_InvalidOperationException() {
         // Arrange
         Coordinate coordinate = new();
 
@@ -104,6 +104,26 @@ public class PolylineWriterTest {
             Memory<char> buffer = new char[1];
             PolylineWriter writer = new(in buffer);
 
+            writer.Write(in coordinate);
+        };
+
+        // Assert
+        var exception = Assert.ThrowsException<InvalidOperationException>(() => Write(coordinate));
+        Assert.IsInstanceOfType<InvalidWriterStateException>(exception.InnerException);
+    }
+
+    [TestMethod]
+
+    public void Write_Full_Buffer_InvalidOperationException() {
+        // Arrange
+        Coordinate coordinate = new();
+
+        // Act
+        static void Write(Coordinate coordinate) {
+            Memory<char> buffer = new char[2];
+            PolylineWriter writer = new(in buffer);
+
+            writer.Write(in coordinate);
             writer.Write(in coordinate);
         };
 
