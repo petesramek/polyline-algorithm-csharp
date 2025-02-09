@@ -24,7 +24,7 @@ public class PolylineEncoderTest {
     [TestMethod]
     public void Encode_NullInput_ThrowsException() {
         // Arrange
-        IEnumerable<Coordinate> @null = (IEnumerable<Coordinate>)null!;
+        IEnumerable<Coordinate> @null = null!;
 
         // Act
         void EncodeNullCoordinates() {

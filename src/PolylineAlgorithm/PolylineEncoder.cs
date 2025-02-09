@@ -8,6 +8,7 @@ namespace PolylineAlgorithm;
 using PolylineAlgorithm.Internal;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 /// <summary>
@@ -46,6 +47,7 @@ public class PolylineEncoder : IPolylineEncoder {
 
         return writer.ToPolyline();
 
+        [ExcludeFromCodeCoverage]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static int GetCount(ref readonly IEnumerable<Coordinate> coordinates) => coordinates switch {
             ICollection<Coordinate> collection => collection.Count,
