@@ -154,7 +154,7 @@ jobs:
           benchmarks/PolylineAlgorithm.Benchmarks/BenchmarkDotNet.Artifacts/results/*-report-github.md
 
   test-summary:
-    name: Test Summary
+    name: Unit test
     needs: [test]
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -169,7 +169,7 @@ jobs:
       name: Write Test Results to Job Summary
   
   code-coverage-summary:
-    name: Code Coverage Summary
+    name: Code coverage
     needs: [test-summary]
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -190,7 +190,7 @@ jobs:
       name: Write Code Coverage Results to Job Summary
 
   benchmark-summary:
-    name: Benchmark Summary
+    name: Benchmark
     needs: [benchmark, code-coverage-summary]
     runs-on: ubuntu-latest
     concurrency: 
