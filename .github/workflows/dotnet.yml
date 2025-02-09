@@ -97,7 +97,7 @@ jobs:
       name: Write Test Results Summary
     - run: dotnet tool update --global dotnet-coverage
       name: Update dotnet-coverage tool
-    - run: dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
+    - run: dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.cobertura.xml"
       name: Merge Code Coverage Results
     - run: dotnet tool update --global dotnet-reportgenerator-globaltool
       name: Update dotnet-reportgenerator-globaltool tool
