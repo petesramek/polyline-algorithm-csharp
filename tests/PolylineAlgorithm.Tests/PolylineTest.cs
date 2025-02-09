@@ -176,4 +176,60 @@ public class PolylineTest {
         // Assert
         Assert.AreEqual(value, result);
     }
+
+    [TestMethod]
+    [DynamicData(nameof(StringParamaters))]
+    public void Equals_Polyline_Ok(string value) {
+        // Arrange
+        Polyline @this = new(value);
+        Polyline other = new(value);
+
+        // Act
+        bool result = @this.Equals(other);
+
+        // Assert
+        Assert.IsTrue(result);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(StringParamaters))]
+    public void Equals_Object_Ok(string value) {
+        // Arrange
+        Polyline @this = new(value);
+        object other = new Polyline(value);
+
+        // Act
+        bool result = @this.Equals(other);
+
+        // Assert
+        Assert.IsTrue(result);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(StringParamaters))]
+    public void Equality_Operator_Polyline_Ok(string value) {
+        // Arrange
+        Polyline @this = new(value);
+        Polyline other = new(value);
+
+        // Act
+        bool result = @this == other;
+
+        // Assert
+        Assert.IsTrue(result);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(StringParamaters))]
+    public void Inequality_Operator_Polyline_Ok(string value) {
+        // Arrange
+        Polyline @this = new(value);
+        Polyline other = new(value);
+
+        // Act
+        bool result = @this != other;
+
+        // Assert
+        Assert.IsFalse(result);
+    }
 }
