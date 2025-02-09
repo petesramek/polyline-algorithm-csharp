@@ -49,19 +49,19 @@ public class PolylineBenchmark {
 
     [Benchmark]
     public Polyline Polyline_Implicit_Conversion_String() {
-        Polyline polyline = Input.String;
+        Polyline polyline = (Polyline)Input.String;
         return polyline;
     }
 
     [Benchmark]
     public Polyline Polyline_Implicit_Conversion_CharArray() {
-        Polyline polyline = Input.CharArray;
+        Polyline polyline = (Polyline)Input.CharArray;
         return polyline;
     }
 
     [Benchmark]
     public Polyline Polyline_Implicit_Conversion_Memory() {
-        Polyline polyline = Input.Memory;
+        Polyline polyline = (Polyline)Input.Memory;
         return polyline;
     }
 
