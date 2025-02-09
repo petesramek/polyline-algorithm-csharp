@@ -22,8 +22,8 @@ internal ref struct PolylineReader {
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Coordinate Read() {
-        if(!CanRead) {
-            throw new InvalidReaderStateException(Position, _polyline.Length);
+        if (!CanRead) {
+            throw new InvalidOperationException(ExceptionMessageResource.PolylineReaderCannotRead, innerException: new InvalidReaderStateException(Position, _polyline.Length));
         }
 
         GetCurrent(out int currentLatitude, out int currentLongitude);
@@ -33,9 +33,7 @@ internal ref struct PolylineReader {
 
         SetCurrent(in latitude, in longitude);
 
-        Coordinate coordinate = new(Precise(ref latitude), Precise(ref longitude));
-
-        return coordinate;
+        return new(Precise(ref latitude), Precise(ref longitude));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static double Precise(ref int value) {
@@ -62,7 +60,6 @@ internal ref struct PolylineReader {
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     int ReadNext(ref readonly int value) {
-        // Initialize local variables
         int chunk;
         int sum = 0;
         int shifter = 0;

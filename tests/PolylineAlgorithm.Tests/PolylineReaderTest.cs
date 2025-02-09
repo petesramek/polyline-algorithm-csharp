@@ -14,17 +14,13 @@ using PolylineAlgorithm.Tests.Data;
 /// </summary>
 [TestClass]
 public class PolylineReaderTest {
-    public static IEnumerable<object[]> ValidConstructorParameters => [
+    public static IEnumerable<object[]> Valid_Constructor_Parameters => [
         [ Values.Polyline.Empty ],
         [ Values.Polyline.Valid ],
         [ Values.Polyline.Invalid ]
     ];
 
-    public static IEnumerable<object[]> ValidReadMethodParameters => [
-        [ Values.Polyline.Valid, Values.Coordinates.Valid.Select(c => (c.Latitude, c.Longitude)).ToList() ]
-    ];
-
-    public static IEnumerable<object[]> InvalidReadMethodParameters => [
+    public static IEnumerable<object[]> Invalid_Read_Method_Parameters => [
         [ Values.Polyline.Empty, Values.Coordinates.Empty.Select(c => (c.Latitude, c.Longitude)).ToList() ],
         [ Values.Polyline.Invalid, Values.Coordinates.Invalid.Select(c => (c.Latitude, c.Longitude)).ToList() ]
     ];
@@ -45,12 +41,12 @@ public class PolylineReaderTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(ValidConstructorParameters))]
+    [DynamicData(nameof(Valid_Constructor_Parameters))]
     public void Constructor_Valid_Parameter_Ok(string value) {
         // Arrange
-        int position = 0;
         Polyline polyline = Polyline.FromString(in value);
         bool canRead = !polyline.IsEmpty;
+        int position = 0;
 
         // Act
         PolylineReader reader = new(in polyline);
@@ -61,18 +57,18 @@ public class PolylineReaderTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(ValidReadMethodParameters))]
-    public void Read_Valid_Parameter_Ok(string value, IEnumerable<(double Latitude, double Longitude)> expected) {
+    public void Read_Valid_Parameter_Ok() {
         // Arrange
-        int iterations = expected.Count();
+        string value = Values.Polyline.Valid;
         bool canRead = false;
         int position = value.Length;
         Polyline polyline = Polyline.FromString(in value);
         PolylineReader reader = new(in polyline);
+        List<Coordinate> expected = Values.Coordinates.Valid.ToList();
         List<Coordinate> result = new(expected.Count());
 
         // Act
-        for (int i = 0; i < iterations; i++) {
+        for (int i = 0; i < expected.Count(); i++) {
             var coordinate = reader.Read();
             result.Add(coordinate);
         }
@@ -80,14 +76,31 @@ public class PolylineReaderTest {
         // Assert
         Assert.AreEqual(canRead, reader.CanRead);
         Assert.AreEqual(position, reader.Position);
-        CollectionAssert.AreEqual(expected.Select(c => new Coordinate(c.Latitude, c.Longitude)).ToList(), result);
+        CollectionAssert.AreEqual(expected, result);
     }
 
     [TestMethod]
-    [DynamicData(nameof(InvalidReadMethodParameters))]
-    public void Read_Invalid_Parameter_InvalidReaderStateException(string value, IEnumerable<(double Latitude, double Longitude)> expected) {
+    public void Read_Empty_Polyline_InvalidOperationException() {
         // Arrange
-        int iterations = expected.Count() + 1;
+        string value = string.Empty;
+
+        // Act
+        static void Read(string value) {
+            Polyline polyline = Polyline.FromString(in value);
+            PolylineReader reader = new(in polyline);
+            _ = reader.Read();
+        }
+
+        // Assert
+        var exception = Assert.ThrowsException<InvalidOperationException>(() => Read(value));
+        Assert.IsInstanceOfType<InvalidReaderStateException>(exception.InnerException);
+    }
+
+    [TestMethod]
+    public void Read_Index_Out_Of_Range_InvalidOperationException() {
+        // Arrange
+        string value = Values.Polyline.Valid;
+        int iterations = Values.Coordinates.Valid.Count() + 1;
 
         // Act
         static void Read(string value, int iterations) {
@@ -97,14 +110,15 @@ public class PolylineReaderTest {
             for (int i = 0; i < iterations; i++) {
                 _ = reader.Read();
             }
-        };
+        }
 
         // Assert
-        Assert.ThrowsException<InvalidReaderStateException>(() => Read(value, iterations));
+        var exception = Assert.ThrowsException<InvalidOperationException>(() => Read(value, iterations));
+        Assert.IsInstanceOfType<InvalidReaderStateException>(exception.InnerException);
     }
 
     [TestMethod]
-    public void Read_Malformed_Parameter_PolylineMalformedException() {
+    public void Read_Malformed_Polyline_PolylineMalformedException() {
         // Arrange
         string value = Values.Polyline.Malformed;
 

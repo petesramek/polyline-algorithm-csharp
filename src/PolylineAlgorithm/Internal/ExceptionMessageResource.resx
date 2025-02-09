@@ -133,12 +133,24 @@
     <value>Argument {0} cannot be greater or equal than {1}.</value>
   </data>
   <data name="PolylineStringIsEmptyMessage" xml:space="preserve">
-    <value>Cannot read empty polyline.</value>
+    <value>Cannot read an empty polyline.</value>
   </data>
   <data name="ArgumentCannotBeNullEmptyOrWhitespaceMessage" xml:space="preserve">
     <value>Argument cannot be null -or- empty -or- whitespace.</value>
   </data>
   <data name="UnableToReadPolylineAtPositionMessageFormat" xml:space="preserve">
     <value>Unable to read polyline at position {0}. Polyline length is {1}.</value>
+  </data>
+  <data name="UnableToWritePolylineBufferAtPositionMessageFormat" xml:space="preserve">
+    <value>Unable to write polyline buffer at position {0}. Polyline buffer length is {1}.</value>
+  </data>
+  <data name="PolylineBufferIsEmptyMessage" xml:space="preserve">
+    <value>Cannot write to an empty polyline buffer.</value>
+  </data>
+  <data name="PolylineReaderCannotRead" xml:space="preserve">
+    <value>Polyline reader cannot read value. See inner exception for more information.</value>
+  </data>
+  <data name="PolylineWriterCannotWrite" xml:space="preserve">
+    <value>Polyline writer cannot write value. See inner exception for more information.</value>
   </data>
 </root>

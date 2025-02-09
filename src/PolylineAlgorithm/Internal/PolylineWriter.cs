@@ -5,9 +5,13 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [StructLayout(LayoutKind.Auto)]
-internal ref struct PolylineWriter(ref readonly Memory<char> buffer) {
+internal ref struct PolylineWriter {
     private WriterState _state = new();
-    private Memory<char> _buffer = buffer;
+    private Memory<char> _buffer;
+
+    public PolylineWriter(ref readonly Memory<char> buffer) {
+        _buffer = buffer;
+    }
 
     public readonly bool CanWrite => _state.Position < _buffer.Length;
 
@@ -15,6 +19,10 @@ internal ref struct PolylineWriter(ref readonly Memory<char> buffer) {
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Write(ref readonly Coordinate coordinate) {
+        if (!CanWrite) {
+            throw new InvalidOperationException(ExceptionMessageResource.PolylineWriterCannotWrite, new InvalidWriterStateException(Position, _buffer.Length));
+        }
+
         Imprecise(coordinate.Latitude, out int latitude);
         Imprecise(coordinate.Longitude, out int longitude);
 
@@ -47,6 +55,10 @@ internal ref struct PolylineWriter(ref readonly Memory<char> buffer) {
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     void WriteChar(char value) {
+        if (Position >= _buffer.Length) {
+            throw new InvalidOperationException(ExceptionMessageResource.PolylineWriterCannotWrite, new InvalidWriterStateException(Position, _buffer.Length));
+        }
+
         _buffer.Span[Position] = value;
         _state.Position += 1;
     }

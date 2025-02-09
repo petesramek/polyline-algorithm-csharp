@@ -106,7 +106,25 @@ namespace PolylineAlgorithm.Internal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot read empty polyline..
+        ///   Looks up a localized string similar to Cannot write to an empty polyline buffer..
+        /// </summary>
+        internal static string PolylineBufferIsEmptyMessage {
+            get {
+                return ResourceManager.GetString("PolylineBufferIsEmptyMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Polyline reader cannot read value. See inner exception for more information..
+        /// </summary>
+        internal static string PolylineReaderCannotRead {
+            get {
+                return ResourceManager.GetString("PolylineReaderCannotRead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot read an empty polyline..
         /// </summary>
         internal static string PolylineStringIsEmptyMessage {
             get {
@@ -124,11 +142,29 @@ namespace PolylineAlgorithm.Internal {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Polyline writer cannot write value. See inner exception for more information..
+        /// </summary>
+        internal static string PolylineWriterCannotWrite {
+            get {
+                return ResourceManager.GetString("PolylineWriterCannotWrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to read polyline at position {0}. Polyline length is {1}..
         /// </summary>
         internal static string UnableToReadPolylineAtPositionMessageFormat {
             get {
                 return ResourceManager.GetString("UnableToReadPolylineAtPositionMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to write polyline buffer at position {0}. Polyline buffer length is {1}..
+        /// </summary>
+        internal static string UnableToWritePolylineBufferAtPositionMessageFormat {
+            get {
+                return ResourceManager.GetString("UnableToWritePolylineBufferAtPositionMessageFormat", resourceCulture);
             }
         }
     }
