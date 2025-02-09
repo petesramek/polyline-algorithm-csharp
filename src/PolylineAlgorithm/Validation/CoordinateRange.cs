@@ -16,6 +16,11 @@ using System.Runtime.InteropServices;
 [DebuggerDisplay(@"{ Min: {Min}, Max: {Max} }")]
 [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
 public readonly struct CoordinateRange : IEquatable<CoordinateRange> {
+    public CoordinateRange() {
+        Min = double.MinValue;
+        Max = double.MaxValue;
+    }
+
     public CoordinateRange(double min, double max) {
         if (min >= max) {
             throw new ArgumentOutOfRangeException(nameof(min), string.Format(ExceptionMessageResource.ArgumentMinCannotBeGreaterOfEqualThanMaxArgumentMessageFormat, min, max));
