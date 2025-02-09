@@ -216,6 +216,6 @@ jobs:
         name: benchmark-macos-latest
         path: ${{ runner.temp }}/benchmark-results/benchmark-macos-latest
         merge-multiple: true
-    - run: cat '${{ runner.temp }}/benchmark-results/**/*.md' >> $GITHUB_STEP_SUMMARY
+    - run: cat ${{ runner.temp }}/benchmark-results/*-report-github.md >> $GITHUB_STEP_SUMMARY
       name: Write Benchmark Results to Job Summary
       
