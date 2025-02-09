@@ -31,6 +31,11 @@ public class PolylineDecoder : IPolylineDecoder {
         // Looping through encoded polyline char array
         while (reader.CanRead) {
             var coordinate = reader.Read();
+
+            if(!coordinate.IsValid) {
+                throw new InvalidCoordinateException(coordinate);
+            }
+
             result.Add(coordinate);
         }
 

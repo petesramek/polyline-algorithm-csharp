@@ -20,7 +20,7 @@ public class PolylineDecoderTest {
     /// </summary>
     /// <remarks>Expected to throw <see cref="ArgumentException"/>.</remarks>
     [TestMethod]
-    public void Decode_EmptyInput_ThrowsException() {
+    public void Decode_Empty_Input_ThrowsException() {
         // Arrange
         Polyline empty = new();
 
@@ -32,17 +32,32 @@ public class PolylineDecoderTest {
     }
 
     /// <summary>
+    /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})" /> method. Empty <see cref="ReadOnlyMemory{char}" /> is passed as an argument.
+    /// </summary>
+    /// <remarks>Expected to throw <see cref="ArgumentException"/>.</remarks>
+    [TestMethod]
+    public void Decode_Invalid_Input_ThrowsException() {
+        // Arrange
+        Polyline value = new(Values.Polyline.Invalid);
+
+        // Act
+        void Execute(Polyline value) => Decoder.Decode(in value);
+
+        // Assert
+        var exception = Assert.ThrowsException<InvalidCoordinateException>(() => Execute(value));
+    }
+
+    /// <summary>
     /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})" /> method. <see cref="ReadOnlyMemory{char}" /> containing valid polyline is passed as an argument.
     /// </summary>
     /// <remarks>Expected result to equal <see cref="Values.Coordinates.Valid"/>..</remarks>
     [TestMethod]
-    public void Decode_ValidInput_Ok() {
+    public void Decode_Valid_Input_Ok() {
         // Arrange
-        var value = Values.Polyline.Valid;
-        Polyline valid = new(value);
+        Polyline value = new(Values.Polyline.Valid);
 
         // Act
-        var result = Decoder.Decode(in valid);
+        var result = Decoder.Decode(in value);
 
         // Assert
         CollectionAssert.AreEqual(Values.Coordinates.Valid.ToArray(), result.ToArray());
