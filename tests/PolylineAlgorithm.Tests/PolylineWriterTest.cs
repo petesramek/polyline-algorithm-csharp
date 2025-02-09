@@ -94,6 +94,7 @@ public class PolylineWriterTest {
     }
 
     [TestMethod]
+
     public void Write_Full_Buffer_InvalidOperationException() {
         // Arrange
         Coordinate coordinate = new();

@@ -19,10 +19,6 @@ internal ref struct PolylineWriter {
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Write(ref readonly Coordinate coordinate) {
-        if (!CanWrite) {
-            throw new InvalidOperationException(ExceptionMessageResource.PolylineWriterCannotWrite, new InvalidWriterStateException(Position, _buffer.Length));
-        }
-
         Imprecise(coordinate.Latitude, out int latitude);
         Imprecise(coordinate.Longitude, out int longitude);
 
@@ -55,7 +51,7 @@ internal ref struct PolylineWriter {
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     void WriteChar(char value) {
-        if (Position >= _buffer.Length) {
+        if (!CanWrite) {
             throw new InvalidOperationException(ExceptionMessageResource.PolylineWriterCannotWrite, new InvalidWriterStateException(Position, _buffer.Length));
         }
 
