@@ -8,10 +8,11 @@ namespace PolylineAlgorithm;
 using PolylineAlgorithm.Validation;
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
-[DebuggerDisplay(@"Latitude: {Latitude}, Longitude: {Longitude}")]
 [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
+[DebuggerDisplay("Latitude: {Latitude}, Longitude: {Longitude}")]
 public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <summary>
     /// Initializes default instance of <see cref="Coordinate"/> with latitude and longitude equal to 0.
@@ -52,26 +53,42 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
         => ICoordinateValidator.Default.Latitude.IsInRange(Latitude)
         && ICoordinateValidator.Default.Longitude.IsInRange(Longitude);
 
+    #region Overrides
 
-    #region IEquatable<Coordinate> implementation
-
+    /// <inheritdoc />
+    [ExcludeFromCodeCoverage]
     public override bool Equals(object? obj) {
         return obj is Coordinate coordinate && Equals(coordinate);
     }
 
+    /// <inheritdoc />
+    [ExcludeFromCodeCoverage]
+    public override int GetHashCode() {
+        return HashCode.Combine(Latitude, Longitude);
+    }
+
+    #endregion
+
+    #region IEquatable<Coordinate> implementation
+
+    /// <inheritdoc />
     public bool Equals(Coordinate other) {
         return Latitude == other.Latitude &&
                Longitude == other.Longitude;
     }
 
-    public override int GetHashCode() {
-        return HashCode.Combine(Latitude, Longitude);
-    }
+    #endregion
 
+    #region Equality operators
+
+    /// <inheritdoc />
+    [ExcludeFromCodeCoverage]
     public static bool operator ==(Coordinate left, Coordinate right) {
         return left.Equals(right);
     }
 
+    /// <inheritdoc />
+    [ExcludeFromCodeCoverage]
     public static bool operator !=(Coordinate left, Coordinate right) {
         return !(left == right);
     }
