@@ -1,10 +1,12 @@
 ﻿namespace PolylineAlgorithm;
 
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 [StructLayout(LayoutKind.Auto)]
+[DebuggerDisplay("Value: {ToString()}, IsEmpty: {IsEmpty}, Length: {Length}")]
 public readonly struct Polyline : IEquatable<Polyline> {
     public readonly ReadOnlyMemory<char> _value;
 
