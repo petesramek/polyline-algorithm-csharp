@@ -8,6 +8,7 @@ namespace PolylineAlgorithm.Validation;
 using PolylineAlgorithm.Internal;
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 /// <summary>
@@ -57,6 +58,7 @@ public readonly struct CoordinateRange : IEquatable<CoordinateRange> {
     }
 
     /// <inheritdoc />
+    [ExcludeFromCodeCoverage]
     public override bool Equals(object? obj) {
         return obj is CoordinateRange range && Equals(range);
     }
@@ -68,14 +70,17 @@ public readonly struct CoordinateRange : IEquatable<CoordinateRange> {
     }
 
     /// <inheritdoc />
+    [ExcludeFromCodeCoverage]
     public override int GetHashCode() {
         return HashCode.Combine(Min, Max);
     }
 
+    [ExcludeFromCodeCoverage]
     public static bool operator ==(CoordinateRange left, CoordinateRange right) {
         return left.Equals(right);
     }
 
+    [ExcludeFromCodeCoverage]
     public static bool operator !=(CoordinateRange left, CoordinateRange right) {
         return !(left == right);
     }
