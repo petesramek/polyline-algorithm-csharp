@@ -58,6 +58,11 @@ internal static class Values {
         public static readonly string Invalid = "mnc~Qsm_ja@";
 
         /// <summary>
+        /// Defines polyline encoded range of invalid coordinates. Equals to encoded <seealso cref="Coordinates.Invalid"/>
+        /// </summary>
+        public static readonly string Malformed = "d";
+
+        /// <summary>
         /// Defines polyline encoded range of valid coordinates. Equals to encoded <seealso cref="Coordinates.Valid"/>
         /// </summary>
         public static readonly string Valid = "mz}lHssngJj`gqSnx~lEcovfTnms{Zdy~qQj_deI";

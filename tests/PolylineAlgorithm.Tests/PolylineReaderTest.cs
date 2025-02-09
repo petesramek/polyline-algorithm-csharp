@@ -21,12 +21,12 @@ public class PolylineReaderTest {
     ];
 
     public static IEnumerable<object[]> ValidReadMethodParameters => [
-        [ Values.Polyline.Valid, Values.Coordinates.Valid.Select(c => (c.Latitude, c.Longitude))]
+        [ Values.Polyline.Valid, Values.Coordinates.Valid.Select(c => (c.Latitude, c.Longitude)).ToList() ]
     ];
 
     public static IEnumerable<object[]> InvalidReadMethodParameters => [
-        [ Values.Polyline.Empty, Values.Coordinates.Empty.Select(c => (c.Latitude, c.Longitude)) ],
-        [ Values.Polyline.Invalid, Values.Coordinates.Invalid.Select(c => (c.Latitude, c.Longitude))]
+        [ Values.Polyline.Empty, Values.Coordinates.Empty.Select(c => (c.Latitude, c.Longitude)).ToList() ],
+        [ Values.Polyline.Invalid, Values.Coordinates.Invalid.Select(c => (c.Latitude, c.Longitude)).ToList() ]
     ];
 
 
@@ -51,7 +51,7 @@ public class PolylineReaderTest {
         int position = 0;
         Polyline polyline = Polyline.FromString(in value);
         bool canRead = !polyline.IsEmpty;
-        
+
         // Act
         PolylineReader reader = new(in polyline);
 
@@ -90,8 +90,7 @@ public class PolylineReaderTest {
         int iterations = expected.Count() + 1;
 
         // Act
-        static void Read(string value, int iterations)
-        {
+        static void Read(string value, int iterations) {
             Polyline polyline = Polyline.FromString(in value);
             PolylineReader reader = new(in polyline);
 
@@ -99,8 +98,24 @@ public class PolylineReaderTest {
                 _ = reader.Read();
             }
         };
-        
+
         // Assert
         Assert.ThrowsException<InvalidReaderStateException>(() => Read(value, iterations));
+    }
+
+    [TestMethod]
+    public void Read_Malformed_Parameter_PolylineMalformedException() {
+        // Arrange
+        string value = Values.Polyline.Malformed;
+
+        // Act
+        static void Read(string value) {
+            Polyline polyline = Polyline.FromString(in value);
+            PolylineReader reader = new(in polyline);
+            _ = reader.Read();
+        };
+
+        // Assert
+        Assert.ThrowsException<PolylineMalformedException>(() => Read(value));
     }
 }
