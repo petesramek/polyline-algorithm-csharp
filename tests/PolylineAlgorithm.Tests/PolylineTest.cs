@@ -14,17 +14,17 @@ using System;
 /// </summary>
 [TestClass]
 public class PolylineTest {
-    public static IEnumerable<object[]> MemoryParamaters => [
+    public static IEnumerable<object[]> MemoryParameters => [
         [Defaults.Polyline.Empty.AsMemory()],
         [Defaults.Polyline.Valid.AsMemory()]
     ];
 
-    public static IEnumerable<object[]> StringParamaters => [
+    public static IEnumerable<object[]> StringParameters => [
         [Defaults.Polyline.Empty],
         [Defaults.Polyline.Valid]
     ];
 
-    public static IEnumerable<object[]> CharArrayParamaters => [
+    public static IEnumerable<object[]> CharArrayParameters => [
         [Defaults.Polyline.Empty.ToCharArray()],
         [Defaults.Polyline.Valid.ToCharArray()]
     ];
@@ -58,8 +58,8 @@ public class PolylineTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(StringParamaters))]
-    public void Constructor_String_Paramater_Ok(string value) {
+    [DynamicData(nameof(StringParameters))]
+    public void Constructor_String_Parameter_Ok(string value) {
         // Arrange
         bool empty = value.Length == 0;
         int length = value.Length;
@@ -88,8 +88,8 @@ public class PolylineTest {
 
 
     [TestMethod]
-    [DynamicData(nameof(CharArrayParamaters))]
-    public void Constructor_CharArray_Paramater_Ok(char[] value) {
+    [DynamicData(nameof(CharArrayParameters))]
+    public void Constructor_CharArray_Parameter_Ok(char[] value) {
         // Arrange
         bool empty = value.Length == 0;
         int length = value.Length;
@@ -105,8 +105,8 @@ public class PolylineTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(MemoryParamaters))]
-    public void Constructor_Memory_Paramater_Ok(ReadOnlyMemory<char> value) {
+    [DynamicData(nameof(MemoryParameters))]
+    public void Constructor_Memory_Parameter_Ok(ReadOnlyMemory<char> value) {
         // Arrange
         bool empty = value.IsEmpty;
         int length = value.Length;
@@ -122,7 +122,7 @@ public class PolylineTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(StringParamaters))]
+    [DynamicData(nameof(StringParameters))]
     public void FromString_Equals_New(string value) {
         // Arrange
         Polyline polyline = new(value);
@@ -135,7 +135,7 @@ public class PolylineTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(CharArrayParamaters))]
+    [DynamicData(nameof(CharArrayParameters))]
     public void FromCharArray_Equals_New(char[] value) {
         // Arrange
         Polyline polyline = new(value);
@@ -148,7 +148,7 @@ public class PolylineTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(MemoryParamaters))]
+    [DynamicData(nameof(MemoryParameters))]
     public void FromMemory_Equals_New(ReadOnlyMemory<char> value) {
         // Arrange
         Polyline polyline = new(value);
@@ -162,7 +162,7 @@ public class PolylineTest {
 
 
     [TestMethod]
-    [DynamicData(nameof(StringParamaters))]
+    [DynamicData(nameof(StringParameters))]
     public void ToString_Equals_Constructor_Parameter(string value) {
         // Arrange
         Polyline polyline = new(value);
@@ -175,7 +175,7 @@ public class PolylineTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(CharArrayParamaters))]
+    [DynamicData(nameof(CharArrayParameters))]
     public void ToCharArray_Equals_Constructor_Parameter(char[] value) {
         // Arrange
         Polyline polyline = new(value);
@@ -188,7 +188,7 @@ public class PolylineTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(MemoryParamaters))]
+    [DynamicData(nameof(MemoryParameters))]
     public void AsMemory_Equals_Constructor_Parameter(ReadOnlyMemory<char> value) {
         // Arrange
         Polyline polyline = new(value);

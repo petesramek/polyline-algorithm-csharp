@@ -14,14 +14,14 @@ using System;
 /// </summary>
 [TestClass]
 public class CoordinateTest {
-    public static IEnumerable<object[]> ValidParamaters => [
+    public static IEnumerable<object[]> ValidParameters => [
         [ 90, 180 ],
         [ -90, -180 ],
         [ 90, -180 ],
         [ -90, 180 ],
     ];
 
-    public static IEnumerable<object[]> InvalidParamaters => [
+    public static IEnumerable<object[]> InvalidParameters => [
         [ double.MaxValue, double.MaxValue ],
         [ double.MinValue, double.MinValue ],
         [ double.MaxValue, double.MinValue ],
@@ -47,8 +47,8 @@ public class CoordinateTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(ValidParamaters))]
-    public void Constructor_Valid_Paramaters_Ok(double latitude, double longitude) {
+    [DynamicData(nameof(ValidParameters))]
+    public void Constructor_Valid_Parameters_Ok(double latitude, double longitude) {
         // Arrange
         bool valid = true;
         bool @default = false;
@@ -64,8 +64,8 @@ public class CoordinateTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(InvalidParamaters))]
-    public void Constructor_Invalid_Paramaters_Ok(double latitude, double longitude) {
+    [DynamicData(nameof(InvalidParameters))]
+    public void Constructor_Invalid_Parameters_Ok(double latitude, double longitude) {
         // Arrange
         bool valid = false;
         bool @default = false;
@@ -82,7 +82,7 @@ public class CoordinateTest {
 
 
     [TestMethod]
-    [DynamicData(nameof(ValidParamaters))]
+    [DynamicData(nameof(ValidParameters))]
     public void Equals_Coordinate_True(double latitude, double longitude) {
         // Arrange
         Coordinate @this = new(latitude, longitude);
@@ -96,7 +96,7 @@ public class CoordinateTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(ValidParamaters))]
+    [DynamicData(nameof(ValidParameters))]
     public void Equals_Coordinate_False(double latitude, double longitude) {
         // Arrange
         Coordinate @this = new(latitude, longitude);
