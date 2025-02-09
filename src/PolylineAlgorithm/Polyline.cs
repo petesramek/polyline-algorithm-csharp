@@ -49,6 +49,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     public override bool Equals(object? obj) => obj is Polyline polyline && Equals(polyline);
 
     /// <inheritdoc />
+    [ExcludeFromCodeCoverage]
     public override int GetHashCode() => HashCode.Combine(_value);
 
     /// <inheritdoc />
