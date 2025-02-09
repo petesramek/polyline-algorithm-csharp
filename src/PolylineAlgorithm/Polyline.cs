@@ -30,14 +30,16 @@ public readonly struct Polyline : IEquatable<Polyline> {
 
     public readonly int Length => _value.Length;
 
-
+    [ExcludeFromCodeCoverage]
     public char[] ToCharArray() => _value.ToArray();
 
+    [ExcludeFromCodeCoverage]
     public ReadOnlyMemory<char> AsMemory() => _value;
 
     #region Overrides
 
     /// <inheritdoc />
+    [ExcludeFromCodeCoverage]
     public override bool Equals(object? obj) => obj is Polyline polyline && Equals(polyline);
 
     /// <inheritdoc />
@@ -45,21 +47,24 @@ public readonly struct Polyline : IEquatable<Polyline> {
     public override int GetHashCode() => HashCode.Combine(_value);
 
     /// <inheritdoc />
-    public override string ToString() => _value.ToString(); 
+    public override string ToString() => _value.ToString();
 
     #endregion
 
     #region IEquatable<Polyline> implementation
 
     /// <inheritdoc />
+    [ExcludeFromCodeCoverage]
     public bool Equals(Polyline other) => _value.Equals(other._value);
 
     #endregion
 
     #region Equality operators
 
+    [ExcludeFromCodeCoverage]
     public static bool operator ==(Polyline left, Polyline right) => left.Equals(right);
 
+    [ExcludeFromCodeCoverage]
     public static bool operator !=(Polyline left, Polyline right) => !(left == right);
 
     #endregion
@@ -76,11 +81,14 @@ public readonly struct Polyline : IEquatable<Polyline> {
 
     #region Explicit conversions
 
+    [ExcludeFromCodeCoverage]
     public static explicit operator Polyline(char[] polyline) => FromCharArray(in polyline);
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = $"Provided alternative {nameof(Polyline)}.{nameof(FromMemory)} to follow {nameof(String)}.{nameof(AsMemory)} naming pattern.")]
+    [ExcludeFromCodeCoverage]
     public static explicit operator Polyline(ReadOnlyMemory<char> polyline) => FromMemory(in polyline);
 
+    [ExcludeFromCodeCoverage]
     public static explicit operator Polyline(string polyline) => FromString(in polyline);
 
     #endregion
