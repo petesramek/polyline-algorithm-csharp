@@ -232,4 +232,46 @@ public class PolylineTest {
         // Assert
         Assert.IsFalse(result);
     }
+
+    [TestMethod]
+    [DynamicData(nameof(StringParamaters))]
+    public void Explicit_Operator_String_Polyline_Ok(string value) {
+        // Arrange
+        Polyline @this = (Polyline)value;
+        Polyline other = new(value);
+
+        // Act
+        bool result = @this == other;
+
+        // Assert
+        Assert.IsTrue(result);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(CharArrayParamaters))]
+    public void Explicit_Operator_CharArray_Polyline_Ok(char[] value) {
+        // Arrange
+        Polyline @this = (Polyline)value;
+        Polyline other = new(value);
+
+        // Act
+        bool result = @this == other;
+
+        // Assert
+        Assert.IsTrue(result);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(MemoryParamaters))]
+    public void Explicit_Operator_Memory_Polyline_Ok(ReadOnlyMemory<char> value) {
+        // Arrange
+        Polyline @this = (Polyline)value;
+        Polyline other = new(value);
+
+        // Act
+        bool result = @this == other;
+
+        // Assert
+        Assert.IsTrue(result);
+    }
 }
