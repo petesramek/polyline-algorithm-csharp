@@ -22,9 +22,7 @@ internal ref struct PolylineReader {
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Coordinate Read() {
-        if (!CanRead) {
-            throw new InvalidOperationException(ExceptionMessageResource.PolylineReaderCannotRead, innerException: new InvalidReaderStateException(Position, _polyline.Length));
-        }
+        EnsureRead();
 
         GetCurrent(out int currentLatitude, out int currentLongitude);
 
@@ -65,6 +63,7 @@ internal ref struct PolylineReader {
         int shifter = 0;
 
         do {
+            EnsureRead();
             chunk = _polyline[Position] - Defaults.Algorithm.QuestionMark;
             sum |= (chunk & Defaults.Algorithm.UnitSeparator) << shifter;
             shifter += Defaults.Algorithm.ShiftLength;
@@ -76,6 +75,12 @@ internal ref struct PolylineReader {
         }
 
         return value + ((sum & 1) == 1 ? ~(sum >> 1) : sum >> 1);
+    }
+
+    readonly void EnsureRead() {
+        if (!CanRead) {
+            throw new InvalidOperationException(ExceptionMessageResource.PolylineReaderCannotRead, innerException: new InvalidReaderStateException(Position, _polyline.Length));
+        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4, Size = 12)]
