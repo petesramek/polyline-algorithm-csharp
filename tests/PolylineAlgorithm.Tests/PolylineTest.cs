@@ -29,7 +29,6 @@ public class PolylineTest {
         [Defaults.Polyline.Valid.ToCharArray()]
     ];
 
-
     [TestMethod]
     public void Constructor_Parameterless_Ok() {
         // Arrange
@@ -47,6 +46,18 @@ public class PolylineTest {
     }
 
     [TestMethod]
+    public void Constructor_Null_String_ArgumentNullException() {
+        // Arrange
+        string value = null!;
+
+        // Act
+        Polyline New(string value) => new(value);
+
+        // Assert
+        Assert.ThrowsException<ArgumentNullException>(() => New(value));
+    }
+
+    [TestMethod]
     [DynamicData(nameof(StringParamaters))]
     public void Constructor_Empty_String_Ok(string value) {
         // Arrange
@@ -61,6 +72,18 @@ public class PolylineTest {
         Assert.AreEqual(isEmpty, polyline.IsEmpty);
         Assert.AreEqual(length, polyline.Length);
         Assert.IsTrue(span.SequenceEqual(polyline.Span));
+    }
+
+    [TestMethod]
+    public void Constructor_Null_CHarArray_ArgumentNullException() {
+        // Arrange
+        char[] value = null!;
+
+        // Act
+        Polyline New(char[] value) => new(value);
+
+        // Assert
+        Assert.ThrowsException<ArgumentNullException>(() => New(value));
     }
 
 

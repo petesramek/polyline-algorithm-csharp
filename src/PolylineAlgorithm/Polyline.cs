@@ -13,19 +13,11 @@ public readonly struct Polyline : IEquatable<Polyline> {
     }
 
     public Polyline(string value) {
-        if (value is null) {
-            throw new ArgumentNullException(nameof(value));
-        }
-
-        _value = value.AsMemory();
+        _value = value?.AsMemory() ?? throw new ArgumentNullException(nameof(value));
     }
 
     public Polyline(char[] value) {
-        if (value is null) {
-            throw new ArgumentNullException(nameof(value));
-        }
-
-        _value = value.AsMemory();
+        _value = value?.AsMemory() ?? throw new ArgumentNullException(nameof(value));
     }
 
     public Polyline(ReadOnlyMemory<char> value) {
