@@ -24,17 +24,18 @@ public readonly struct Polyline : IEquatable<Polyline> {
         _value = value;
     }
 
-    public readonly ReadOnlySpan<char> Span => _value.Span;
+    internal readonly ReadOnlySpan<char> Span => _value.Span;
 
     public readonly bool IsEmpty => _value.IsEmpty;
 
     public readonly int Length => _value.Length;
 
-    [ExcludeFromCodeCoverage]
     public char[] ToCharArray() => _value.ToArray();
 
-    [ExcludeFromCodeCoverage]
     public ReadOnlyMemory<char> AsMemory() => _value;
+
+    /// <inheritdoc />
+    public override string ToString() => _value.ToString();
 
     #region Overrides
 
@@ -45,9 +46,6 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <inheritdoc />
     [ExcludeFromCodeCoverage]
     public override int GetHashCode() => HashCode.Combine(_value);
-
-    /// <inheritdoc />
-    public override string ToString() => _value.ToString();
 
     #endregion
 
