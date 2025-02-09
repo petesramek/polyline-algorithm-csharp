@@ -91,9 +91,9 @@ jobs:
         name: test-results
         path: |
           **/test-results/*
-    - run: dotnet tool update --global dotnet-trx
-      name: Update dotnet-trx tool
-    - run: trx -r --output --gh-summary >> $GITHUB_STEP_SUMMARY
+    - run: dotnet tool install --global LiquidTestReports.Cli
+    - run: liquid --inputs "File=**/*.trx" --output-file test-report.md
+    - run: cat test-report.md >> $GITHUB_STEP_SUMMARY
       name: Write Test Results Summary
     - run: dotnet tool update --global dotnet-coverage
       name: Update dotnet-coverage tool
