@@ -60,12 +60,6 @@ internal ref struct PolylineWriter {
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    void GetCurrent(out int latitude, out int longitude) {
-        latitude = _state.Latitude;
-        longitude = _state.Longitude;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     void UpdateCurrent(ref readonly int latitude, ref readonly int longitude, out int latDiff, out int longDiff) {
         latDiff = latitude - _state.Latitude;
         _state.Latitude = latitude;
