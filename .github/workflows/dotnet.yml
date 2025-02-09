@@ -154,7 +154,7 @@ jobs:
         name: build
     - name: Benchmark
       working-directory: ${{ vars.BENCHMARKDOTNET_WORKING_DIRECTORY }}
-      run: dotnet run --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} --framework ${{ vars.BUILD_FRAMEWORK }} --runtimes ${{ vars.BENCHMARKDOTNET_RUNTIMES }} --filter ${{ vars.BENCHMARKDOTNET_FILTER }} --exporters GitHub
+      run: dotnet run --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} --framework ${{ vars.BUILD_FRAMEWORK }} --runtimes ${{ vars.BENCHMARKDOTNET_RUNTIMES }} --filter ${{ vars.BENCHMARKDOTNET_FILTER }} --exporters GitHub --join
     - name: Upload Benchmark Results
       uses: actions/upload-artifact@v4
       with:
