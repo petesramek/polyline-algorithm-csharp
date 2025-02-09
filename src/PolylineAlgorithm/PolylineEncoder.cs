@@ -37,7 +37,7 @@ public class PolylineEncoder : IPolylineEncoder {
         PolylineWriter writer = new(in buffer);
 
         foreach (var coordinate in coordinates) {
-            if(!coordinate.IsValid) {
+            if (!coordinate.IsValid) {
                 throw new InvalidCoordinateException(coordinate);
             }
 

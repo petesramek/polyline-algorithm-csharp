@@ -5,7 +5,6 @@
 
 namespace PolylineAlgorithm;
 
-using System;
 using System.Collections.Generic;
 
 /// <summary>

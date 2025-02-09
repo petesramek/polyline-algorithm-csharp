@@ -15,8 +15,7 @@ using System.Diagnostics.CodeAnalysis;
 public sealed class InvalidCoordinateException : Exception {
     public InvalidCoordinateException(Coordinate coordinate, Exception? innerException = null)
         : base(string.Format(ExceptionMessageResource.CoordinateValidationExceptionCoordinateIsOutOfRangeErrorMessageFormat, coordinate.Latitude, coordinate.Longitude),
-               innerException)
-    {
+               innerException) {
         Coordinate = coordinate;
     }
 

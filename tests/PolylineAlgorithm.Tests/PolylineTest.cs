@@ -5,8 +5,7 @@
 
 namespace PolylineAlgorithm.Tests;
 
-using Newtonsoft.Json.Linq;
-using PolylineAlgorithm.Tests.Internal;
+using PolylineAlgorithm.Tests.Data;
 using System;
 
 /// <summary>

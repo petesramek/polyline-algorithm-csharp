@@ -7,7 +7,6 @@ namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
-using BenchmarkDotNet.Reports;
 using BenchmarkDotNet.Running;
 
 internal class Program {

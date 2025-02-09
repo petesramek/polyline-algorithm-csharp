@@ -4,11 +4,6 @@
 //
 
 namespace PolylineAlgorithm.Tests;
-
-using Newtonsoft.Json.Linq;
-using PolylineAlgorithm.Tests.Internal;
-using System;
-
 /// <summary>
 /// Tests <see cref="Polyline"/> type.
 /// </summary>

@@ -6,7 +6,7 @@
 namespace PolylineAlgorithm.Tests;
 
 using PolylineAlgorithm;
-using PolylineAlgorithm.Tests.Internal;
+using PolylineAlgorithm.Tests.Data;
 
 /// <summary>
 /// Defines tests for <see cref="PolylineDecoder"/> type.

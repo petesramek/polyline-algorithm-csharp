@@ -21,8 +21,7 @@ public sealed class PolylineMalformedException : Exception {
     /// <param name="innerException"></param>
     public PolylineMalformedException(int position, Exception? innerException = null)
         : base(string.Format(ExceptionMessageResource.PolylineStringIsMalformed, position),
-               innerException)
-    {
+               innerException) {
         Position = position;
     }
 

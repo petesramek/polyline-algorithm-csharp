@@ -2,8 +2,6 @@
 using BenchmarkDotNet.Attributes;
 
 using BenchmarkDotNet.Order;
-using System;
-using static PolylineAlgorithm.Internal.Defaults.Coordinate;
 
 [Orderer(SummaryOrderPolicy.Declared)]
 public class CoordinateBenchmark {

@@ -4,10 +4,6 @@
 //
 
 namespace PolylineAlgorithm.Validation;
-
-using PolylineAlgorithm.Internal;
-using System.Diagnostics.CodeAnalysis;
-
 /// <summary>
 /// Initializes an instance of coordinate validator.
 /// </summary>

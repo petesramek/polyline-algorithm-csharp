@@ -5,7 +5,7 @@
 
 namespace PolylineAlgorithm.Tests;
 
-using PolylineAlgorithm.Tests.Internal;
+using PolylineAlgorithm.Tests.Data;
 
 /// <summary>
 /// Performs tests for <see cref="InvalidCoordinateException"/> type.

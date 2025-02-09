@@ -3,7 +3,6 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using static PolylineAlgorithm.Internal.Defaults.Coordinate;
 
 [StructLayout(LayoutKind.Auto)]
 internal ref struct PolylineWriter(ref readonly Memory<char> buffer) {
@@ -20,7 +19,7 @@ internal ref struct PolylineWriter(ref readonly Memory<char> buffer) {
         Imprecise(coordinate.Longitude, out int longitude);
 
         UpdateCurrent(in latitude, in longitude, out int latDiff, out int longDiff);
-        
+
         WriteNext(in latDiff);
         WriteNext(in longDiff);
 
