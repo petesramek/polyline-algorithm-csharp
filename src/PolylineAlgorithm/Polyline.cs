@@ -55,7 +55,6 @@ public readonly struct Polyline : IEquatable<Polyline> {
     #region IEquatable<Polyline> implementation
 
     /// <inheritdoc />
-    [ExcludeFromCodeCoverage]
     public bool Equals(Polyline other) => _value.Span.SequenceEqual(other._value.Span);
 
     #endregion

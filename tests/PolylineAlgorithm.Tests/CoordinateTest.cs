@@ -4,19 +4,22 @@
 //
 
 namespace PolylineAlgorithm.Tests;
+
+using PolylineAlgorithm.Validation;
+
 /// <summary>
 /// Tests <see cref="Polyline"/> type.
 /// </summary>
 [TestClass]
 public class CoordinateTest {
-    public static IEnumerable<object[]> ValidParameters => [
+    public static IEnumerable<object[]> Constructor_Valid_Parameters => [
         [ 90, 180 ],
         [ -90, -180 ],
         [ 90, -180 ],
         [ -90, 180 ],
     ];
 
-    public static IEnumerable<object[]> InvalidParameters => [
+    public static IEnumerable<object[]> Constructor_Invalid_Parameters => [
         [ double.MaxValue, double.MaxValue ],
         [ double.MinValue, double.MinValue ],
         [ double.MaxValue, double.MinValue ],
@@ -42,7 +45,7 @@ public class CoordinateTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(ValidParameters))]
+    [DynamicData(nameof(Constructor_Valid_Parameters))]
     public void Constructor_Valid_Parameters_Ok(double latitude, double longitude) {
         // Arrange
         bool valid = true;
@@ -59,7 +62,7 @@ public class CoordinateTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(InvalidParameters))]
+    [DynamicData(nameof(Constructor_Invalid_Parameters))]
     public void Constructor_Invalid_Parameters_Ok(double latitude, double longitude) {
         // Arrange
         bool valid = false;
@@ -77,7 +80,7 @@ public class CoordinateTest {
 
 
     [TestMethod]
-    [DynamicData(nameof(ValidParameters))]
+    [DynamicData(nameof(Constructor_Valid_Parameters))]
     public void Equals_Coordinate_True(double latitude, double longitude) {
         // Arrange
         Coordinate @this = new(latitude, longitude);
@@ -91,7 +94,7 @@ public class CoordinateTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(ValidParameters))]
+    [DynamicData(nameof(Constructor_Valid_Parameters))]
     public void Equals_Coordinate_False(double latitude, double longitude) {
         // Arrange
         Coordinate @this = new(latitude, longitude);
