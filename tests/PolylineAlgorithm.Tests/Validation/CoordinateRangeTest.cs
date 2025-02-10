@@ -12,7 +12,7 @@ using PolylineAlgorithm.Validation;
 /// </summary>
 [TestClass]
 public class CoordinateRangeTest {
-    public static IEnumerable<object[]> Consructor_Valid_Parameters => [
+    public static IEnumerable<object[]> Constructor_Valid_Parameters => [
         [ -90, 90 ],
         [ -180, 180 ],
     ];
@@ -37,7 +37,7 @@ public class CoordinateRangeTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(Consructor_Valid_Parameters))]
+    [DynamicData(nameof(Constructor_Valid_Parameters))]
     public void Constructor_Valid_Parameters_Ok(double min, double max) {
         // Arrange
         double belowMax = max - 1;
@@ -46,14 +46,13 @@ public class CoordinateRangeTest {
         double equalMin = min;
         double aboveMax = max + 1;
         double aboveMin = min + 1;
-        
 
         // Act
         CoordinateRange range = new(min, max);
 
         // Assert
-        Assert.IsTrue(range.IsInRange(aboveMin));
         Assert.IsTrue(range.IsInRange(equalMin));
+        Assert.IsTrue(range.IsInRange(aboveMin));
         Assert.IsTrue(range.IsInRange(equalMax));
         Assert.IsTrue(range.IsInRange(belowMax));
 
@@ -67,20 +66,18 @@ public class CoordinateRangeTest {
         double min = 0;
         double max = 0;
 
-
         // Act
         void New(double min, double max) {
             CoordinateRange range = new(min, max);
 
         }
 
-
         // Assert
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => New(min, max));
     }
 
     [TestMethod]
-    [DynamicData(nameof(Consructor_Valid_Parameters))]
+    [DynamicData(nameof(Constructor_Valid_Parameters))]
     public void Equals_CoordinateRange_True(double min, double max) {
         // Arrange
         CoordinateRange @this = new(min, max);
@@ -94,7 +91,7 @@ public class CoordinateRangeTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(Consructor_Valid_Parameters))]
+    [DynamicData(nameof(Constructor_Valid_Parameters))]
     public void Equals_CoordinateRange_False(double min, double max) {
         // Arrange
         Coordinate @this = new(min, max);
