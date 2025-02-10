@@ -9,6 +9,7 @@ using PolylineAlgorithm.Internal;
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Runtime.InteropServices;
 
 /// <summary>
@@ -55,7 +56,7 @@ public readonly struct CoordinateRange : IEquatable<CoordinateRange> {
     /// <remarks>{ Min: [double], Max: [double] }</remarks>
     [ExcludeFromCodeCoverage]
     public override string ToString() {
-        return $"{{ {nameof(Min)}: {Min}, {nameof(Max)}: {Max} }}";
+        return $"{{ {nameof(Min)}: {Min.ToString("G", CultureInfo.InvariantCulture)}, {nameof(Max)}: {Max.ToString("G", CultureInfo.InvariantCulture)} }}";
     }
 
     /// <inheritdoc />

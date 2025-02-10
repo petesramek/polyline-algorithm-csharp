@@ -9,10 +9,11 @@ using PolylineAlgorithm.Validation;
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Runtime.InteropServices;
 
 [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
-[DebuggerDisplay("Latitude: {Latitude}, Longitude: {Longitude}")]
+[DebuggerDisplay("{ToString()}")]
 public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <summary>
     /// Initializes default instance of <see cref="Coordinate"/> with latitude and longitude equal to 0.
@@ -74,7 +75,7 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <remarks>{ Latitude: [double], Longitude: [double] }</remarks>
     [ExcludeFromCodeCoverage]
     public override string ToString() {
-        return $"{{ {nameof(Latitude)}: {Latitude}, {nameof(Longitude)}: {Longitude} }}";
+        return $"{{ {nameof(Latitude)}: {Latitude.ToString("G", CultureInfo.InvariantCulture)}, {nameof(Longitude)}: {Longitude.ToString("G", CultureInfo.InvariantCulture)} }}";
     }
 
     #endregion
