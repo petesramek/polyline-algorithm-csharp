@@ -67,6 +67,16 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
         return HashCode.Combine(Latitude, Longitude);
     }
 
+    /// <summary>
+    /// Returns the formatted string respresentation of this instance.
+    /// </summary>
+    /// <returns>The formatted string respresentation of this instance.</returns>
+    /// <remarks>{ Latitude: [double], Longitude: [double] }</remarks>
+    [ExcludeFromCodeCoverage]
+    public override string ToString() {
+        return $"{{ {nameof(Latitude)}: {Latitude}, {nameof(Longitude)}: {Longitude} }}";
+    }
+
     #endregion
 
     #region IEquatable<Coordinate> implementation

@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 /// <summary>
 /// Represents a range within coordinate value, latitude or longitude, is considered valid.
 /// </summary>
-[DebuggerDisplay(@"{ Min: {Min}, Max: {Max} }")]
+[DebuggerDisplay("{ToString()}")]
 [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
 public readonly struct CoordinateRange : IEquatable<CoordinateRange> {
     public CoordinateRange() {
@@ -53,6 +53,7 @@ public readonly struct CoordinateRange : IEquatable<CoordinateRange> {
     /// </summary>
     /// <returns>The formatted string respresentation of this instance.</returns>
     /// <remarks>{ Min: [double], Max: [double] }</remarks>
+    [ExcludeFromCodeCoverage]
     public override string ToString() {
         return $"{{ {nameof(Min)}: {Min}, {nameof(Max)}: {Max} }}";
     }
