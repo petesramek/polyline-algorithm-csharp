@@ -13,16 +13,14 @@ using System.Diagnostics.CodeAnalysis;
 /// Represents error that is caused by invalid reader state.
 /// </summary>
 [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Main purpose is to report position in which failure occurs, thus we have to have only one constructor.")]
-public class InvalidReaderStateException : Exception {
-    public InvalidReaderStateException(int position, int length)
-        : base(GetErrorMessage(position, length)) {
-    }
+public sealed class InvalidReaderStateException(string message)
+    : Exception(message) {
 
-    private static string GetErrorMessage(int readerPosition, int polylineLength) {
+    public static void Throw(int readerPosition, int polylineLength) {
         if (polylineLength == 0) {
-            return ExceptionMessageResource.PolylineStringIsEmptyMessage;
+            throw new InvalidReaderStateException(ExceptionMessageResource.PolylineStringIsEmptyMessage);
         } else {
-            return string.Format(ExceptionMessageResource.UnableToReadPolylineAtPositionMessageFormat, readerPosition, polylineLength);
+            throw new InvalidReaderStateException(string.Format(ExceptionMessageResource.UnableToReadPolylineAtPositionMessageFormat, readerPosition, polylineLength));
         }
     }
 }

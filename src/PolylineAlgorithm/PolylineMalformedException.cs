@@ -19,9 +19,8 @@ public sealed class PolylineMalformedException : Exception {
     /// </summary>
     /// <param name="position"></param>
     /// <param name="innerException"></param>
-    public PolylineMalformedException(int position, Exception? innerException = null)
-        : base(string.Format(ExceptionMessageResource.PolylineStringIsMalformedMessage, position),
-               innerException) {
+    private PolylineMalformedException(int position, string message, Exception? innerException = null)
+        : base(message, innerException) {
         Position = position;
     }
 
@@ -29,4 +28,8 @@ public sealed class PolylineMalformedException : Exception {
     /// Position in polyline string at which error occurs.
     /// </summary>
     public int Position { get; }
+
+    public static void Throw(int position, Exception? innerException = null) {
+        throw new PolylineMalformedException(position, string.Format(ExceptionMessageResource.PolylineStringIsMalformedMessage, position), innerException);
+    }
 }

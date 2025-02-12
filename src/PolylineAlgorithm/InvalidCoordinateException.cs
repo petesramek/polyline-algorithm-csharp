@@ -13,8 +13,8 @@ using System.Diagnostics.CodeAnalysis;
 /// </summary>
 [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Main purpose is to report coordinate that is invalid, thus we have to have only one construtor.")]
 public sealed class InvalidCoordinateException : Exception {
-    public InvalidCoordinateException(Coordinate coordinate, Exception? innerException = null)
-        : base(string.Format(ExceptionMessageResource.CoordinateIsOutOfRangeMessageFormat, coordinate.Latitude, coordinate.Longitude), innerException) {
+    private InvalidCoordinateException(Coordinate coordinate, string message, Exception? innerException = null)
+        : base(message, innerException) {
         Coordinate = coordinate;
     }
 
@@ -22,4 +22,8 @@ public sealed class InvalidCoordinateException : Exception {
     /// Coordinate that caused the exception.
     /// </summary>
     public Coordinate Coordinate { get; }
+
+    public static void Throw(Coordinate coordinate, Exception? innerException = null) {
+        throw new InvalidCoordinateException(coordinate, string.Format(ExceptionMessageResource.CoordinateIsOutOfRangeMessageFormat, coordinate.Latitude, coordinate.Longitude), innerException);
+    }
 }
