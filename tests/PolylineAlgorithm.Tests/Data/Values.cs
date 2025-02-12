@@ -5,7 +5,6 @@
 
 namespace PolylineAlgorithm.Tests.Data;
 
-using PolylineAlgorithm.Validation;
 using System.Collections.Generic;
 
 /// <summary>
