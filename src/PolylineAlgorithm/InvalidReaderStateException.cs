@@ -16,7 +16,11 @@ using System.Diagnostics.CodeAnalysis;
 public sealed class InvalidReaderStateException(string message)
     : Exception(message) {
 
-    public static void Throw(int readerPosition, int polylineLength) {
+    public static void ThrowIfCannotRead(bool canRead, int readerPosition, int polylineLength) {
+        if(canRead) {
+            return;
+        }
+
         if (polylineLength == 0) {
             throw new InvalidReaderStateException(ExceptionMessageResource.PolylineStringIsEmptyMessage);
         } else {

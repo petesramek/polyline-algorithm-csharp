@@ -32,9 +32,7 @@ public class PolylineDecoder : IPolylineDecoder {
         while (reader.CanRead) {
             var coordinate = reader.Read();
 
-            if(!coordinate.IsValid) {
-                throw new InvalidCoordinateException(coordinate);
-            }
+            InvalidCoordinateException.ThrowIfNotValid(coordinate);
 
             result.Add(coordinate);
         }

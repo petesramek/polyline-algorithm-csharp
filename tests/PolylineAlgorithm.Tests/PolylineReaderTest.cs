@@ -80,7 +80,7 @@ public class PolylineReaderTest {
     }
 
     [TestMethod]
-    public void Read_Empty_Polyline_InvalidOperationException() {
+    public void Read_Empty_Polyline_InvalidReaderStateException_Thrown() {
         // Arrange
         string value = string.Empty;
 
@@ -92,12 +92,11 @@ public class PolylineReaderTest {
         }
 
         // Assert
-        var exception = Assert.ThrowsException<InvalidOperationException>(() => Read(value));
-        Assert.IsInstanceOfType<InvalidReaderStateException>(exception.InnerException);
+        var exception = Assert.ThrowsException<InvalidReaderStateException>(() => Read(value));
     }
 
     [TestMethod]
-    public void Read_Index_Out_Of_Range_InvalidOperationException() {
+    public void Read_Index_Out_Of_Range_InvalidReaderStateException_Thrown() {
         // Arrange
         string value = Values.Polyline.Valid;
         int iterations = Values.Coordinates.Valid.Count() + 1;
@@ -113,8 +112,7 @@ public class PolylineReaderTest {
         }
 
         // Assert
-        var exception = Assert.ThrowsException<InvalidOperationException>(() => Read(value, iterations));
-        Assert.IsInstanceOfType<InvalidReaderStateException>(exception.InnerException);
+        var exception = Assert.ThrowsException<InvalidReaderStateException>(() => Read(value, iterations));
     }
 
     [TestMethod]

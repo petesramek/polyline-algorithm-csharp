@@ -20,17 +20,30 @@ public class InvalidCoordinateExceptionTest {
     /// <see cref="Exception.InnerException" /> equals passed argument,
     /// and <see cref="Exception.Message"/> in not <see langword="null"/>, empty -or- whitespace.</remarks>
     [TestMethod]
-    public void Constructor_Ok() {
+    public void ThrowIfNotValid_Valid_Parameter_Ok() {
         // Arrange
-        var coordinate = Values.InvalidCoordinateException.Coordinate;
-        var innerException = new Exception();
+        var coordinate = Values.InvalidCoordinateException.Valid;
 
         // Act
-        InvalidCoordinateException result = new(coordinate, innerException);
+        InvalidCoordinateException.ThrowIfNotValid(coordinate);
 
         // Assert
-        Assert.AreEqual(coordinate, result.Coordinate);
-        Assert.IsNotNull(innerException);
-        Assert.IsFalse(string.IsNullOrWhiteSpace(result.Message));
+        // We are assering exception was not thrown, if it was test won't pass
+    }
+
+    [TestMethod]
+    public void ThrowIfNotValid_Invalid_Parameter_InvalidCoordinateException_Thrown() {
+        // Arrange
+        var coordinate = Values.InvalidCoordinateException.Invalid;
+
+        // Act
+        void ThrowIfNotValid(Coordinate coordinate) {
+            InvalidCoordinateException.ThrowIfNotValid(coordinate);
+        }
+
+        // Assert
+        var exception = Assert.ThrowsException<InvalidCoordinateException>(() => ThrowIfNotValid(coordinate));
+        Assert.AreEqual(coordinate, exception.Coordinate);
+        Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 }

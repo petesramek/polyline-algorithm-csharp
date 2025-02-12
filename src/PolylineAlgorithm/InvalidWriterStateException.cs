@@ -16,8 +16,12 @@ using System.Diagnostics.CodeAnalysis;
 public sealed class InvalidWriterStateException(string message)
     : Exception(message) {
 
-    public static void Throw(int readerPosition, int polylineLength) {
-        if (polylineLength == 0) {
+    public static void ThrowIfCannotWrite(bool canWrite, int readerPosition, int bufferSize) {
+        if (canWrite) {
+            return;
+        }
+
+        if (bufferSize == 0) {
             throw new InvalidWriterStateException(ExceptionMessageResource.PolylineBufferIsEmptyMessage);
         } else {
             throw new InvalidWriterStateException(string.Format(ExceptionMessageResource.UnableToWritePolylineBufferAtPositionMessageFormat, readerPosition, bufferSize));

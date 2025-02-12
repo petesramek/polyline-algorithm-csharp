@@ -76,7 +76,7 @@ public class PolylineWriterTest {
     }
 
     [TestMethod]
-    public void Write_Empty_Buffer_InvalidOperationException() {
+    public void Write_Empty_Buffer_InvalidWriterStateException_Thrown() {
         // Arrange
         Coordinate coordinate = new();
 
@@ -89,13 +89,12 @@ public class PolylineWriterTest {
         };
 
         // Assert
-        var exception = Assert.ThrowsException<InvalidOperationException>(() => Write(coordinate));
-        Assert.IsInstanceOfType<InvalidWriterStateException>(exception.InnerException);
+        var exception = Assert.ThrowsException<InvalidWriterStateException>(() => Write(coordinate));
     }
 
     [TestMethod]
 
-    public void Write_Small_Buffer_InvalidOperationException() {
+    public void Write_Small_Buffer_InvalidWriterStateException_Thrown() {
         // Arrange
         Coordinate coordinate = new();
 
@@ -108,13 +107,12 @@ public class PolylineWriterTest {
         };
 
         // Assert
-        var exception = Assert.ThrowsException<InvalidOperationException>(() => Write(coordinate));
-        Assert.IsInstanceOfType<InvalidWriterStateException>(exception.InnerException);
+        var exception = Assert.ThrowsException<InvalidWriterStateException>(() => Write(coordinate));
     }
 
     [TestMethod]
 
-    public void Write_Full_Buffer_InvalidOperationException() {
+    public void Write_Full_Buffer_InvalidWriterStateException_Thrown() {
         // Arrange
         Coordinate coordinate = new();
 
@@ -128,7 +126,6 @@ public class PolylineWriterTest {
         };
 
         // Assert
-        var exception = Assert.ThrowsException<InvalidOperationException>(() => Write(coordinate));
-        Assert.IsInstanceOfType<InvalidWriterStateException>(exception.InnerException);
+        var exception = Assert.ThrowsException<InvalidWriterStateException>(() => Write(coordinate));
     }
 }

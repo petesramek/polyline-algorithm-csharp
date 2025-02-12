@@ -5,6 +5,7 @@
 
 namespace PolylineAlgorithm.Tests.Data;
 
+using PolylineAlgorithm.Validation;
 using System.Collections.Generic;
 
 /// <summary>
@@ -73,6 +74,8 @@ internal static class Values {
     }
 
     public static class InvalidCoordinateException {
-        public static readonly Coordinate Coordinate = new(_random.NextDouble(), _random.NextDouble());
+        public static readonly Coordinate Valid = new(_random.NextDouble(), _random.NextDouble());
+
+        public static readonly Coordinate Invalid = new(double.MinValue, double.MaxValue);
     }
 }

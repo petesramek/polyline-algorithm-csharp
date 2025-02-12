@@ -13,17 +13,17 @@ using PolylineAlgorithm.Tests.Data;
 [TestClass]
 public class MalformedPolylineExceptionTest {
     [TestMethod]
-    public void Constructor_Ok() {
+    public void Throw_Method_Invalid_Coordinate_Parameter_PolylineMalformedException_Throw() {
         // Arrange
         var position = Values.MalformedPolylineException.Position;
-        var innerException = new Exception();
 
         // Act
-        PolylineMalformedException exception = new(position, innerException);
+        void Throw(int position) => PolylineMalformedException.Throw(position);
+
 
         // Assert
-        Assert.AreEqual(Values.MalformedPolylineException.Position, exception.Position);
+        var exception = Assert.ThrowsException<PolylineMalformedException>(() => Throw(position));
+        Assert.AreEqual(position, exception.Position);
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
-        Assert.IsNotNull(exception.InnerException);
     }
 }
