@@ -37,7 +37,7 @@ public class InvalidCoordinateExceptionTest {
         var coordinate = Values.InvalidCoordinateException.Invalid;
 
         // Act
-        void ThrowIfNotValid(Coordinate coordinate) {
+        static void ThrowIfNotValid(Coordinate coordinate) {
             InvalidCoordinateException.ThrowIfNotValid(coordinate);
         }
 

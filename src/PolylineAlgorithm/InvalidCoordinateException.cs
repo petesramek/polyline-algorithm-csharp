@@ -11,7 +11,7 @@ using System.Diagnostics.CodeAnalysis;
 /// <summary>
 /// Represents error that is caused by invalid coordinate.
 /// </summary>
-[SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Main purpose is to report coordinate that is invalid, thus we have to have only one construtor.")]
+[SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Internal use only.")]
 public sealed class InvalidCoordinateException : Exception {
     private InvalidCoordinateException(Coordinate coordinate, string message)
         : base(message) {
@@ -23,7 +23,7 @@ public sealed class InvalidCoordinateException : Exception {
     /// </summary>
     public Coordinate Coordinate { get; }
 
-    public static void ThrowIfNotValid(Coordinate coordinate) {
+    internal static void ThrowIfNotValid(Coordinate coordinate) {
         if(coordinate.IsValid) {
             return;
         }

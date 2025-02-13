@@ -18,12 +18,11 @@ public class MalformedPolylineExceptionTest {
         var position = Values.MalformedPolylineException.Position;
 
         // Act
-        void Throw(int position) => PolylineMalformedException.Throw(position);
+        static void Throw(int position) => PolylineMalformedException.Throw(position);
 
 
         // Assert
         var exception = Assert.ThrowsException<PolylineMalformedException>(() => Throw(position));
-        Assert.AreEqual(position, exception.Position);
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 }

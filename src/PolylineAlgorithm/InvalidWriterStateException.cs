@@ -12,11 +12,12 @@ using System.Diagnostics.CodeAnalysis;
 /// <summary>
 /// Represents error that is caused by invalid reader state.
 /// </summary>
-[SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Main purpose is to report position in which failure occurs, thus we have to have only one constructor.")]
-public sealed class InvalidWriterStateException(string message)
-    : Exception(message) {
+[SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Internal use only.")]
+public sealed class InvalidWriterStateException : Exception {
+    private InvalidWriterStateException(string message)
+        : base(message) { }
 
-    public static void ThrowIfCannotWrite(bool canWrite, int readerPosition, int bufferSize) {
+    internal static void ThrowIfCannotWrite(bool canWrite, int writerPosition, int bufferSize) {
         if (canWrite) {
             return;
         }
@@ -24,7 +25,7 @@ public sealed class InvalidWriterStateException(string message)
         if (bufferSize == 0) {
             throw new InvalidWriterStateException(ExceptionMessageResource.PolylineBufferIsEmptyMessage);
         } else {
-            throw new InvalidWriterStateException(string.Format(ExceptionMessageResource.UnableToWritePolylineBufferAtPositionMessageFormat, readerPosition, bufferSize));
+            throw new InvalidWriterStateException(string.Format(ExceptionMessageResource.UnableToWritePolylineBufferAtPositionMessageFormat, writerPosition, bufferSize));
         }
     }
 }

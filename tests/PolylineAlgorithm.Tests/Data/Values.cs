@@ -77,4 +77,14 @@ internal static class Values {
 
         public static readonly Coordinate Invalid = new(double.MinValue, double.MaxValue);
     }
+
+    public static class InvalidReaderStateException {
+        public static readonly int Position = _random.Next();
+        public static readonly int Length = Position;
+    }
+
+    public static class InvalidWriterStateException {
+        public static readonly int Position = _random.Next();
+        public static readonly int Length = Position;
+    }
 }

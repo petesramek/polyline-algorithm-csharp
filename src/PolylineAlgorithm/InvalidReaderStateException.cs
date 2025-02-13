@@ -12,11 +12,12 @@ using System.Diagnostics.CodeAnalysis;
 /// <summary>
 /// Represents error that is caused by invalid reader state.
 /// </summary>
-[SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Main purpose is to report position in which failure occurs, thus we have to have only one constructor.")]
-public sealed class InvalidReaderStateException(string message)
-    : Exception(message) {
+[SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Internal use only.")]
+public sealed class InvalidReaderStateException : Exception {
+    private InvalidReaderStateException(string message)
+        : base(message) { }
 
-    public static void ThrowIfCannotRead(bool canRead, int readerPosition, int polylineLength) {
+    internal static void ThrowIfCannotRead(bool canRead, int readerPosition, int polylineLength) {
         if(canRead) {
             return;
         }
