@@ -3,13 +3,15 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.  
 //
 
-namespace PolylineAlgorithm.Internal {
+namespace PolylineAlgorithm.Internal;
+
     using PolylineAlgorithm.Validation;
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
 /// Defines default values
     /// </summary>
+[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
     [ExcludeFromCodeCoverage]
     internal static class Defaults {
         internal static class Algorithm {
@@ -89,4 +91,3 @@ namespace PolylineAlgorithm.Internal {
             }
         }
     }
-}
