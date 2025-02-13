@@ -7,12 +7,14 @@ namespace PolylineAlgorithm;
 
 using PolylineAlgorithm.Internal;
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
 /// Represents error that occurs during polyline encoding. 
 /// </summary>
 [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Internal use only.")]
+[DebuggerDisplay($"{nameof(PolylineMalformedException)}: {{ToString()}}")]
 public sealed class PolylineMalformedException : Exception {
     /// <summary>
     /// Initializes an instance

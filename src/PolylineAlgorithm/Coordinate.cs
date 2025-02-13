@@ -48,11 +48,11 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// 
     /// </summary>
     /// <remarks>
-    /// Uses <see cref="ICoordinateValidator.Default"/>.
+    /// Uses <see cref="ICoordinateValidator.Global"/>.
     /// </remarks>
     public bool IsValid
-        => ICoordinateValidator.Default.Latitude.IsInRange(Latitude)
-        && ICoordinateValidator.Default.Longitude.IsInRange(Longitude);
+        => ICoordinateValidator.Global.Latitude.IsInRange(Latitude)
+        && ICoordinateValidator.Global.Longitude.IsInRange(Longitude);
 
     #region Overrides
 

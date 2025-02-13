@@ -13,7 +13,7 @@ using PolylineAlgorithm.Tests.Data;
 [TestClass]
 public class InvalidWriterStateExceptionTest {
     [TestMethod]
-    public void ThrowIfCannotwrite_Method_True_Random_Random_Parameter_InvalidReaderStateException_Throw() {
+    public void ThrowIfCannotWrite_Method_True_Random_Random_Parameter_InvalidReaderStateException_Throw() {
         // Arrange
         bool canRead = true;
         int position = Values.InvalidWriterStateException.Position;

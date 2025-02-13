@@ -60,15 +60,15 @@ public class CoordinateValidatorTest {
         CoordinateValidator validator = new(range, range);
 
         // Act
-        ICoordinateValidator original = ICoordinateValidator.Default;
+        ICoordinateValidator original = ICoordinateValidator.Global;
 
         ICoordinateValidator
-            .SetDefault(validator);
+            .SetGlobal(validator);
 
-        ICoordinateValidator @new = ICoordinateValidator.Default;
+        ICoordinateValidator @new = ICoordinateValidator.Global;
 
         ICoordinateValidator
-            .SetDefault(original);
+            .SetGlobal(original);
 
         // Assert
         Assert.AreEqual(validator, @new);

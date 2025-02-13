@@ -29,16 +29,16 @@ public interface ICoordinateValidator {
     bool IsValid(Coordinate coordinate);
 
     /// <summary>
-    /// Represents default coordinate validator instance.
+    /// Represents global coordinate validator instance.
     /// </summary>
-    static ICoordinateValidator Default { get; private set; } = new CoordinateValidator(Defaults.Coordinate.Range.Latitude, Defaults.Coordinate.Range.Longitude);
+    static ICoordinateValidator Global { get; private set; } = new CoordinateValidator(Defaults.Coordinate.Range.Latitude, Defaults.Coordinate.Range.Longitude);
 
     /// <summary>
-    /// Assigns passed value to <see cref="ICoordinateValidator.Default"/>.
+    /// Assigns passed value to <see cref="ICoordinateValidator.Global"/>.
     /// </summary>
     /// <param name="validator"></param>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="validator"/> argument is null.</exception>
-    static void SetDefault(ICoordinateValidator validator) {
-        Default = validator ?? throw new ArgumentNullException(nameof(validator));
+    static void SetGlobal(ICoordinateValidator validator) {
+        Global = validator ?? throw new ArgumentNullException(nameof(validator));
     }
 }

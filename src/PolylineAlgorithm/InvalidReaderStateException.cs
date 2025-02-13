@@ -7,12 +7,14 @@ namespace PolylineAlgorithm;
 
 using PolylineAlgorithm.Internal;
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
 /// Represents error that is caused by invalid reader state.
 /// </summary>
 [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Internal use only.")]
+[DebuggerDisplay($"{nameof(InvalidReaderStateException)}: {{ToString()}}")]
 public sealed class InvalidReaderStateException : Exception {
     private InvalidReaderStateException(string message)
         : base(message) { }

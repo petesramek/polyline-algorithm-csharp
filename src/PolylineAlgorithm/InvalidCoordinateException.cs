@@ -6,12 +6,14 @@
 namespace PolylineAlgorithm;
 
 using PolylineAlgorithm.Internal;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
 /// Represents error that is caused by invalid coordinate.
 /// </summary>
 [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Internal use only.")]
+[DebuggerDisplay($"{nameof(InvalidCoordinateException)}: {{ToString()}}")]
 public sealed class InvalidCoordinateException : Exception {
     private InvalidCoordinateException(Coordinate coordinate, string message)
         : base(message) {
