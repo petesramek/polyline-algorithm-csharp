@@ -5,89 +5,89 @@
 
 namespace PolylineAlgorithm.Internal;
 
-    using PolylineAlgorithm.Validation;
-    using System.Diagnostics.CodeAnalysis;
+using PolylineAlgorithm.Validation;
+using System.Diagnostics.CodeAnalysis;
+
+/// <summary>
+/// Defines default values
+/// </summary>
+[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+[ExcludeFromCodeCoverage]
+internal static class Defaults {
+    internal static class Algorithm {
+        /// <summary>
+        /// Defines the coordinate precision
+        /// </summary>
+        internal const double Precision = 1E5;
+
+        /// <summary>
+        /// Defines the shift length
+        /// </summary>
+        internal const byte ShiftLength = 5;
+
+        /// <summary>
+        /// Defines the ASCII Question Mark
+        /// </summary>
+        internal const byte QuestionMark = 63;
+
+        /// <summary>
+        /// Defines the ASCII Space
+        /// </summary>
+        internal const byte Space = 32;
+
+        /// <summary>
+        /// Defines the ASCII Unit Separator
+        /// </summary>
+        internal const byte UnitSeparator = 31;
+    }
 
     /// <summary>
-/// Defines default values
+    /// Defines coordinates default values
     /// </summary>
-[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
-    [ExcludeFromCodeCoverage]
-    internal static class Defaults {
-        internal static class Algorithm {
+    internal static class Coordinate {
+        /// <summary>
+        /// Defines latitude default values
+        /// </summary>
+        internal static class Latitude {
             /// <summary>
-            /// Defines the coordinate precision
+            /// Defines the maximum value for latitude
             /// </summary>
-            internal const double Precision = 1E5;
+            internal const sbyte Min = -Max;
 
             /// <summary>
-            /// Defines the shift length
+            /// Defines the maximum value for latitude
             /// </summary>
-            internal const byte ShiftLength = 5;
-
-            /// <summary>
-            /// Defines the ASCII Question Mark
-            /// </summary>
-            internal const byte QuestionMark = 63;
-
-            /// <summary>
-            /// Defines the ASCII Space
-            /// </summary>
-            internal const byte Space = 32;
-
-            /// <summary>
-            /// Defines the ASCII Unit Separator
-            /// </summary>
-            internal const byte UnitSeparator = 31;
+            internal const byte Max = 90;
         }
 
         /// <summary>
-        /// Defines coordinates default values
+        /// Defines longitude default values
         /// </summary>
-        internal static class Coordinate {
+        internal static class Longitude {
             /// <summary>
-            /// Defines latitude default values
+            /// Defines the maximum value for longitude
             /// </summary>
-            internal static class Latitude {
-                /// <summary>
-                /// Defines the maximum value for latitude
-                /// </summary>
-                internal const sbyte Min = -Max;
-
-                /// <summary>
-                /// Defines the maximum value for latitude
-                /// </summary>
-                internal const byte Max = 90;
-            }
+            internal const short Min = -Max;
 
             /// <summary>
-            /// Defines longitude default values
+            /// Defines the maximum value for longitude
             /// </summary>
-            internal static class Longitude {
-                /// <summary>
-                /// Defines the maximum value for longitude
-                /// </summary>
-                internal const short Min = -Max;
+            internal const byte Max = 180;
+        }
 
-                /// <summary>
-                /// Defines the maximum value for longitude
-                /// </summary>
-                internal const byte Max = 180;
-            }
+        /// <summary>
+        /// Defines default ranges for latitude and longitude
+        /// </summary>
+        internal static class Range {
+            /// <summary>
+            /// Defines latitude validation range
+            /// </summary>
+            internal static readonly CoordinateRange Latitude = new(Coordinate.Latitude.Min, Coordinate.Latitude.Max);
 
             /// <summary>
-            /// Defines default ranges for latitude and longitude
+            /// Defines longitude validation range
             /// </summary>
-            internal static class Range {
-                /// <summary>
-                /// Defines latitude validation range
-                /// </summary>
-                internal static readonly CoordinateRange Latitude = new(Coordinate.Latitude.Min, Coordinate.Latitude.Max);
-
-                /// <summary>
-                /// Defines longitude validation range
-                /// </summary>
-                internal static readonly CoordinateRange Longitude = new(Coordinate.Longitude.Min, Coordinate.Longitude.Max);
-            }
+            internal static readonly CoordinateRange Longitude = new(Coordinate.Longitude.Min, Coordinate.Longitude.Max);
         }
     }
+}
