@@ -8,7 +8,7 @@ namespace PolylineAlgorithm.Internal {
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Defines global constant values
+/// Defines default values
     /// </summary>
     [ExcludeFromCodeCoverage]
     internal static class Defaults {
