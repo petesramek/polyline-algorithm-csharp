@@ -14,17 +14,17 @@ using System.Diagnostics.CodeAnalysis;
 /// Represents error that occurs during polyline encoding. 
 /// </summary>
 [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Internal use only.")]
-[DebuggerDisplay($"{nameof(PolylineMalformedException)}: {{ToString()}}")]
-public sealed class PolylineMalformedException : Exception {
+[DebuggerDisplay($"{nameof(MalformedPolylineException)}: {{ToString()}}")]
+public sealed class MalformedPolylineException : Exception {
     /// <summary>
     /// Initializes an instance
     /// </summary>
     /// <param name="position"></param>
     /// <param name="innerException"></param>
-    private PolylineMalformedException(string message)
+    private MalformedPolylineException(string message)
         : base(message) { }
 
     internal static void Throw(int position) {
-        throw new PolylineMalformedException(string.Format(ExceptionMessageResource.PolylineStringIsMalformedMessage, position));
+        throw new MalformedPolylineException(string.Format(ExceptionMessageResource.PolylineStringIsMalformedMessage, position));
     }
 }

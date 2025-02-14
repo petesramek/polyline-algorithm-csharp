@@ -5,7 +5,6 @@
 
 namespace PolylineAlgorithm.Tests;
 
-using Newtonsoft.Json.Linq;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Tests.Data;
 
@@ -128,6 +127,6 @@ public class PolylineReaderTest {
         };
 
         // Assert
-        Assert.ThrowsException<PolylineMalformedException>(() => Read(value));
+        Assert.ThrowsException<MalformedPolylineException>(() => Read(value));
     }
 }

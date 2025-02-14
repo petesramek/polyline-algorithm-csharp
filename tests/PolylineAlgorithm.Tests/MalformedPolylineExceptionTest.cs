@@ -8,7 +8,7 @@ namespace PolylineAlgorithm.Tests;
 using PolylineAlgorithm.Tests.Data;
 
 /// <summary>
-/// Defines tests for <see cref="PolylineMalformedException"/> type.
+/// Defines tests for <see cref="MalformedPolylineException"/> type.
 /// </summary>
 [TestClass]
 public class MalformedPolylineExceptionTest {
@@ -18,11 +18,11 @@ public class MalformedPolylineExceptionTest {
         var position = Values.MalformedPolylineException.Position;
 
         // Act
-        static void Throw(int position) => PolylineMalformedException.Throw(position);
+        static void Throw(int position) => MalformedPolylineException.Throw(position);
 
 
         // Assert
-        var exception = Assert.ThrowsException<PolylineMalformedException>(() => Throw(position));
+        var exception = Assert.ThrowsException<MalformedPolylineException>(() => Throw(position));
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 }

@@ -115,15 +115,6 @@ namespace PolylineAlgorithm.Internal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Polyline reader cannot read value. See inner exception for more information..
-        /// </summary>
-        internal static string PolylineReaderCannotRead {
-            get {
-                return ResourceManager.GetString("PolylineReaderCannotRead", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cannot read an empty polyline..
         /// </summary>
         internal static string PolylineStringIsEmptyMessage {
@@ -133,7 +124,7 @@ namespace PolylineAlgorithm.Internal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Polyline is malformed..
+        ///   Looks up a localized string similar to Polyline is malformed at position {0}..
         /// </summary>
         internal static string PolylineStringIsMalformedMessage {
             get {
@@ -142,16 +133,7 @@ namespace PolylineAlgorithm.Internal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Polyline writer cannot write value. See inner exception for more information..
-        /// </summary>
-        internal static string PolylineWriterCannotWrite {
-            get {
-                return ResourceManager.GetString("PolylineWriterCannotWrite", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to read polyline at position {0}. Polyline length is {1}..
+        ///   Looks up a localized string similar to Unable to read polyline at position {0}. Polyline length is {1}. Capacity of the buffer is {1}..
         /// </summary>
         internal static string UnableToReadPolylineAtPositionMessageFormat {
             get {
