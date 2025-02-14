@@ -29,10 +29,7 @@
 		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.*" />
 		<PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="1.*" />
 		<PackageReference Include="MSTest" Version="3.*" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
+		<PackageReference Include="Microsoft.Testing.Platform.MSBuild" Version="1.*" />
 	</ItemGroup>
 
 	<ItemGroup>
