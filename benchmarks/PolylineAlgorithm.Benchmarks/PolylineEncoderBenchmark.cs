@@ -12,9 +12,9 @@ using PolylineAlgorithm.Benchmarks.Internal;
 using System.Collections.Generic;
 
 [Orderer(SummaryOrderPolicy.Declared)]
-//[BenchmarkCategory(BenchmarkCategory.PublicApi)]
+[BenchmarkCategory(BenchmarkCategory.PublicApi)]
 //[CategoriesColumn]
-[RankColumn]
+//[RankColumn]
 public class PolylineEncoderBenchmark {
     private static readonly Random R = new();
     public static List<Coordinate> GetList() {
