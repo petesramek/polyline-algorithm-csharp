@@ -28,19 +28,21 @@ public class PolylineEncoderBenchmark {
     }
 
     [Benchmark]
-    public Polyline PolylineEncoder_Encode_List() {
+    [ArgumentsSource(nameof(GetList))]
+    public Polyline PolylineEncoder_Encode_List(List<Coordinate> source) {
         var encoder = new PolylineEncoder();
 
         return encoder
-            .Encode(GetList());
+            .Encode(source);
     }
 
     [Benchmark]
-    public Polyline PolylineEncoder_Encode_Enumerator() {
+    [ArgumentsSource(nameof(GetEnumeration))]
+    public Polyline PolylineEncoder_Encode_Enumerator(IEnumerable<Coordinate> source) {
         var encoder = new PolylineEncoder();
 
         return encoder
-            .Encode(GetEnumeration());
+            .Encode(source);
     }
 
 }
