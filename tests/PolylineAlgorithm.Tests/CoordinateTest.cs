@@ -5,6 +5,7 @@
 
 namespace PolylineAlgorithm.Tests;
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PolylineAlgorithm.Validation;
 
 /// <summary>
