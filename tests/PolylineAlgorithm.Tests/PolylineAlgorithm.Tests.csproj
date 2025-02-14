@@ -11,12 +11,6 @@
 	<PropertyGroup>
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
-		<TestingExtensionsProfile>Default</TestingExtensionsProfile>
-	</PropertyGroup>
-
-	<PropertyGroup>
-		<EnableStaticNativeInstrumentation>true</EnableStaticNativeInstrumentation>
-		<EnableDynamicNativeInstrumentation>true</EnableDynamicNativeInstrumentation>
 	</PropertyGroup>
 
 	<PropertyGroup>
