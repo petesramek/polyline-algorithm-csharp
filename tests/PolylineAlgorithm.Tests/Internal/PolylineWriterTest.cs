@@ -3,7 +3,7 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.  
 //
 
-namespace PolylineAlgorithm.Tests;
+namespace PolylineAlgorithm.Tests.Internal;
 
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Tests.Data;
@@ -13,7 +13,7 @@ using PolylineAlgorithm.Tests.Data;
 /// </summary>
 [TestClass]
 public class PolylineWriterTest {
-    public static IEnumerable<object[]> Valid_Constructor_Parameters => [
+    public static IEnumerable<object[]> Valid_Constructor_Parameter => [
         [ 0 ],
         [ 100 ]
     ];
@@ -43,7 +43,7 @@ public class PolylineWriterTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(Valid_Constructor_Parameters))]
+    [DynamicData(nameof(Valid_Constructor_Parameter))]
     public void Constructor_Valid_Parameter_Ok(int length) {
         // Arrange
         Memory<char> buffer = new char[length];
@@ -84,7 +84,6 @@ public class PolylineWriterTest {
     public void Write_Invalid_Coordinate_Parameter_Ok((double Latitude, double Longitude) value) {
         // Arrange
         Coordinate coordinate = new(value.Latitude, value.Longitude);
-        string expected = Values.Polyline.Invalid;
         int bufferSize = 12;
 
         // Act
