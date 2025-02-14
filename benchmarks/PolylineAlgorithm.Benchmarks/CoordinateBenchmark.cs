@@ -19,13 +19,11 @@ public class CoordinateBenchmark {
         return coordinate;
     }
 
-
     [Benchmark]
     public Coordinate Coordinate_Constructor_Latitude_Longitude() {
         Coordinate coordinate = new(Input.Latitude, Input.Longitude);
         return coordinate;
     }
-
 
     [Benchmark]
     [ArgumentsSource(nameof(Coordinates))]

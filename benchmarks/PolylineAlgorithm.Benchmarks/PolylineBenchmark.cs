@@ -25,7 +25,6 @@ public class PolylineBenchmark {
         return polyline;
     }
 
-
     [Benchmark]
     public Polyline Polyline_Constructor_String() {
         var value = Input.String;
