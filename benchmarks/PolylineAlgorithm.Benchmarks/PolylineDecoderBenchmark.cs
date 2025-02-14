@@ -17,15 +17,14 @@ using PolylineAlgorithm.Benchmarks.Internal;
 [RankColumn]
 public class PolylineDecoderBenchmark {
     private readonly Consumer _consumer = new();
-    public static Polyline Polyline { get; } = (Polyline)"|koyD_tmn[|sfDltuii@qjarFkvifi@uepdF~bwdSb{cfSf|y{Nhc}Gfp}~OabanXo{p_t@kfx[rb`yDaiwkAncxm]beulDitjhYqsloAiigeM`uzPhtkxDqiaT`pplw@jzfvXx~i|B_dxuC_sk{[uqktKstyl@pra`BuwasUmvjr@rvs{j@x`dcM}tqbe@mkbiJr_zbFlpc}K~rt{BetlmQw`wnQj|ckKobv{Icbw~Bf}p|b@}mcnDa_usb@zkc|G`pgg\\\\ifuhBhbe~Z~ul`NilxbHunrxZvo}qJ`}efQvfaaAty{yDx_kE{vf_Hwns`r@ucq`NzfziVxznnEz`vaD|yzrMkkjf`@{sewCxrv`i@pbrg@cpfeUgulnBsmapKhdbnHsrusCqt}sHvajfl@mygsRl{aoF`|{eQn`hFjhi_Esj_tk@lsfk@}rpgAtggHtgzQprpjBphmn]wacxWdpiyDdtxdAeqtrBjkjAscknk@_egt@s}qiBxp}eUhypv^onrxSnyndPvazxViswuX_efmTvy`gApigfTb`|uB_bacSnxjbHvihiRmrxsGsy{qBfihyIcrexM{{cle@jcjpDzbx`\\\\u~jzEyjseJcw`pEw`rlUpew|JlqqcKj}~uFlmk`GmjudUqj}~Jz|_rAb~bgH|lstUfh|gj@vwygCmlyhWwhbmCc}uzTwvklKam|dDasi{KrmenSpi_Bzkznb@xsdaKcvzsq@~~f{Fz_}}Pq}nrA{qe_\\\\lmw}BxvzwSaqbiBkqnyLumkhF`nnic@mntzEsz_oc@tikmIffhob@rnauKccmp]jmdkDbcorUqkerQ~gby\\\\lfytIml`sSbiyyC_njae@gvrnIjsahTg|}xGuw~pWywyyCjgag|@dphjZgmh~]k}zxYc~ciNdmzwHp}rhB`rkhJrafaIghfvVxdzp`@ffctJetj~b@bz|rFd_oaGqslzMo{djUlwtaSrowsb@czmtQenbnWlkqjS~hhwEwxqc@vnzyP";
+    public static Polyline Polyline { get; } = (Polyline)@"sq_|Fptm{UrbxoHinoiEuhmbHctjfc@`rocCt|nfJgiauLvc_uIh`pg_@h_fkVgctZoyqfW{rxgQhhymFpuvvDwqcfTlqbcBiegdTwf{uNngc|z@{vhlDnsi_B~nz`O}d_hNp{n`E}kcoKm`bCiul~\jhg|Hv{qoWshzh\{lf_G`pzMqm|bLzswoQbhcm`@b`}cIgignPgxntR|}vo^f~|}L}|_jBa|ujWuxkjQfj|w[wsz`Pmdb{XohnwA`srxWjitms@c_~`Tava_l@jxxcF`d|zHcpnaMnd{kYzccwPxzpiHfsxlL}jjjQqvdbIikyvj@cjdqTh`zoDzqleHnfmik@tbnoB_t}gFkzx_Ct_eiP`wxrBcd_|w@zlhfPtlxgBkwyyZn|~tFlpj|HxqiwUnddkFoo|nTee}dSfkcg`@py`uQiguom@zkkpEfcgkAntuuDzl~il@ir_gCrd~nI_ryeC_qmmMl_kgCz`qgFzkejBmlchYyp`hZ`_cuYzuc}Onqz}Ew~Gcsmj@lp{Hqj_gz@ne{pJnny~]g{tuNxbno[lfq_Lqhwjt@qn|cCuxnMyivuIh{|tR`ylsQlqbfO}rf`LxghfBg~{nAv`gdNbjh_Fglt|NfxwyBowwhW{bdtNdbkqe@rxtwSy{_fX{btm@va`_LkhwuUyqgzK`xdnKgbwsFigt_Mofdn\h|x[ccoPtbpvNz}skb@pl~xEqascV_wsx[`f_z]zewFs`zjAhturWxayhJqmfaAjmhhHxwuwF_aru@ojemVq|beu@kkucBdmryTevflDcbmdAnp|dHfpbd^io}z@e~}dFzcybQ}`hxOyt|bNl}blLnuspKk|t|k@itjfHt}}aVyzmcF_rgmLct}x@bazdq@loajBxygb@f}krVgnuqOcrx_Daqvp_@ew}yUn}kpU|uwnItashEpe_aHusi{Fsu}_Ewfhv[dzhzKxh_qXucxfXmynkGxuqbW|ppgi@vrsq@clryZk`bt^spkyP";
+    public PolylineDecoder Decoder = new();
 
     [Benchmark]
     public void PolylineDecoder_Decode() {
         Polyline polyline = Polyline;
 
-        var decoder = new PolylineDecoder();
-
-        decoder
+        Decoder
             .Decode(in polyline)
             .Consume(_consumer);
     }

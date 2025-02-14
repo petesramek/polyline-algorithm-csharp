@@ -10,6 +10,7 @@ using BenchmarkDotNet.Order;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Benchmarks.Internal;
 using System.Collections.Generic;
+using System.Text;
 
 [Orderer(SummaryOrderPolicy.Declared)]
 [BenchmarkCategory(BenchmarkCategory.PublicApi)]
@@ -22,6 +23,8 @@ public class PolylineEncoderBenchmark {
 
     public List<Coordinate> List { get; private set; }
 
+    public PolylineEncoder Encoder = new();
+
     [GlobalSetup]
     public void SetupData() {
         Enumeration = Enumerable.Range(0, 100).Select(i => new Coordinate(R.Next(-90, 90) + R.NextDouble(), R.Next(-180, 180) + R.NextDouble()));
@@ -30,18 +33,13 @@ public class PolylineEncoderBenchmark {
 
     [Benchmark]
     public Polyline PolylineEncoder_Encode_List() {
-        var encoder = new PolylineEncoder();
-
-        return encoder
+        return Encoder
             .Encode(List);
     }
 
     [Benchmark]
     public Polyline PolylineEncoder_Encode_Enumerator() {
-        var encoder = new PolylineEncoder();
-
-        return encoder
+        return Encoder
             .Encode(Enumeration);
     }
-
 }
