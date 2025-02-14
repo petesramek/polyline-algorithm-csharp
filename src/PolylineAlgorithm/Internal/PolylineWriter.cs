@@ -19,6 +19,7 @@ internal ref struct PolylineWriter {
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Write(ref readonly Coordinate coordinate) {
+        InvalidCoordinateException.ThrowIfNotValid(coordinate);
         InvalidWriterStateException.ThrowIfCannotWrite(CanWrite, Position, _buffer.Length);
 
         Imprecise(coordinate.Latitude, out int latitude);
