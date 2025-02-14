@@ -8,7 +8,6 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<InvariantGlobalization>true</InvariantGlobalization>
 		<NeutralLanguage>en</NeutralLanguage>
-		<CheckEolTargetFramework>false</CheckEolTargetFramework>
 	</PropertyGroup>
 
 	<PropertyGroup>

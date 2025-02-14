@@ -13,36 +13,35 @@ using System.Collections.Generic;
 
 [Orderer(SummaryOrderPolicy.Declared)]
 [BenchmarkCategory(BenchmarkCategory.PublicApi)]
-//[CategoriesColumn]
-//[RankColumn]
+[CategoriesColumn]
+[RankColumn]
 public class PolylineEncoderBenchmark {
     private static readonly Random R = new();
-    public static List<Coordinate> GetList() {
-        return [..GetEnumeration()];
-    }
 
-    public static IEnumerable<Coordinate> GetEnumeration() {
-        for (int i = 0; i < 1_000_000; i++) {
-            yield return new Coordinate(R.Next(-90, 90) + R.NextDouble(), R.Next(-180, 180) + R.NextDouble());
-        }
-    }
+    public IEnumerable<Coordinate> Enumeration { get; private set; }
 
-    [Benchmark]
-    [ArgumentsSource(nameof(GetList))]
-    public Polyline PolylineEncoder_Encode_List(List<Coordinate> source) {
-        var encoder = new PolylineEncoder();
+    public List<Coordinate> List { get; private set; }
 
-        return encoder
-            .Encode(source);
+    [GlobalSetup]
+    public void SetupData() {
+        Enumeration = Enumerable.Range(0, 1_000).Select(i => new Coordinate(R.Next(-90, 90) + R.NextDouble(), R.Next(-180, 180) + R.NextDouble()));
+        List = [..Enumeration];
     }
 
     [Benchmark]
-    [ArgumentsSource(nameof(GetEnumeration))]
-    public Polyline PolylineEncoder_Encode_Enumerator(IEnumerable<Coordinate> source) {
+    public Polyline PolylineEncoder_Encode_List() {
         var encoder = new PolylineEncoder();
 
         return encoder
-            .Encode(source);
+            .Encode(List);
+    }
+
+    [Benchmark]
+    public Polyline PolylineEncoder_Encode_Enumerator() {
+        var encoder = new PolylineEncoder();
+
+        return encoder
+            .Encode(Enumeration);
     }
 
 }

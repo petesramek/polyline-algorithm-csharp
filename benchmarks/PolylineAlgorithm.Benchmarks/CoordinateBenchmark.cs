@@ -4,6 +4,8 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Order;
 
 [Orderer(SummaryOrderPolicy.Declared)]
+[CategoriesColumn]
+[RankColumn]
 public class CoordinateBenchmark {
     private static class Input {
         public static double Latitude { get; } = 90;
