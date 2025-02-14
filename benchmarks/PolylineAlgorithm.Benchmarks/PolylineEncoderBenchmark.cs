@@ -24,7 +24,7 @@ public class PolylineEncoderBenchmark {
 
     [GlobalSetup]
     public void SetupData() {
-        Enumeration = Enumerable.Range(0, 1_000).Select(i => new Coordinate(R.Next(-90, 90) + R.NextDouble(), R.Next(-180, 180) + R.NextDouble()));
+        Enumeration = Enumerable.Range(0, 100).Select(i => new Coordinate(R.Next(-90, 90) + R.NextDouble(), R.Next(-180, 180) + R.NextDouble()));
         List = [..Enumeration];
     }
 
