@@ -12,8 +12,8 @@ using PolylineAlgorithm;
 using PolylineAlgorithm.Benchmarks.Internal;
 
 [Orderer(SummaryOrderPolicy.Declared)]
-[BenchmarkCategory(BenchmarkCategory.PublicApi)]
-[CategoriesColumn]
+//[BenchmarkCategory(BenchmarkCategory.PublicApi)]
+//[CategoriesColumn]
 [RankColumn]
 public class PolylineDecoderBenchmark {
     private readonly Consumer _consumer = new();

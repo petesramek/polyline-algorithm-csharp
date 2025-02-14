@@ -12,8 +12,8 @@ using PolylineAlgorithm.Benchmarks.Internal;
 using System.Collections.Generic;
 
 [Orderer(SummaryOrderPolicy.Declared)]
-[BenchmarkCategory(BenchmarkCategory.PublicApi)]
-[CategoriesColumn]
+//[BenchmarkCategory(BenchmarkCategory.PublicApi)]
+//[CategoriesColumn]
 [RankColumn]
 public class PolylineEncoderBenchmark {
     private static readonly Random R = new();
