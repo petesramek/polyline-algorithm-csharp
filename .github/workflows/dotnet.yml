@@ -130,7 +130,7 @@ jobs:
           **/*.nupkg
 
   benchmark:
-    if: ${{ github.env.is_release || vars.RUN_BENCHMARKS == 'true' }}
+    if: ${{ github.env.is_release || vars.BENCHMARKDOTNET_RUN_OVERRIDE == 'true' }}
     name: Benchmark with .NET ${{ vars.DOTNET_SDK_VERSION }} on ${{ matrix.os }}
     needs: [build]
     strategy:
