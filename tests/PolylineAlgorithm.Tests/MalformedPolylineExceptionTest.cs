@@ -22,7 +22,7 @@ public class MalformedPolylineExceptionTest {
 
 
         // Assert
-        var exception = Assert.ThrowsException<MalformedPolylineException>(() => Throw(position));
+        var exception = Assert.ThrowsExactly<MalformedPolylineException>(() => Throw(position));
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 }

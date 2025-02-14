@@ -32,7 +32,7 @@ public class PolylineEncoderTest {
         }
 
         // Assert
-        Assert.ThrowsException<ArgumentNullException>(() => EncodeNullCoordinates());
+        Assert.ThrowsExactly<ArgumentNullException>(() => EncodeNullCoordinates());
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ public class PolylineEncoderTest {
         }
 
         // Assert
-        Assert.ThrowsException<ArgumentException>(() => EncodeEmptyCoordinates());
+        Assert.ThrowsExactly<ArgumentException>(() => EncodeEmptyCoordinates());
     }
 
     /// <summary>
@@ -68,7 +68,7 @@ public class PolylineEncoderTest {
         }
 
         // Assert
-        Assert.ThrowsException<InvalidCoordinateException>(() => EncodeEmptyCoordinates());
+        Assert.ThrowsExactly<InvalidCoordinateException>(() => EncodeEmptyCoordinates());
     }
 
     /// <summary>

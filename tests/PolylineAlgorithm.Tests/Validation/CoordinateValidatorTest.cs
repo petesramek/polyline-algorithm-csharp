@@ -49,7 +49,7 @@ public class CoordinateValidatorTest {
         }
 
         // Assert
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => New(min, max));
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => New(min, max));
     }
 
     [TestMethod]

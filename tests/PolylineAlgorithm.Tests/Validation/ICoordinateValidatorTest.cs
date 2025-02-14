@@ -24,18 +24,32 @@ public class ICoordinateValidatorTest {
     [TestMethod]
     public void SetDefault_Validator_Ok() {
         // Arrange
-        CoordinateRange range = new(double.MinValue, double.MaxValue);
-        CoordinateValidator validator = new(range, range);
+        CoordinateRange latitudeRange = new(_original.Latitude.Min, _original.Latitude.Max);
+        CoordinateRange longitudeRange = new(_original.Longitude.Min, _original.Longitude.Max);
+        CoordinateValidator validator = new(latitudeRange, longitudeRange);
 
         // Act
         ICoordinateValidator
             .SetGlobal(validator);
 
-        ICoordinateValidator @new = ICoordinateValidator.Global;
+        // Assert
+        Assert.AreSame(validator, ICoordinateValidator.Global);
+        Assert.AreNotSame(_original, ICoordinateValidator.Global);
+    }
+
+    [TestMethod]
+    public void SetDefault_Null_Parameter_ArgumentNullException_Thrown() {
+        // Arrange
+        CoordinateValidator validator = null!;
+
+        // Act
+        static void SetGlobal(ICoordinateValidator validator) {
+            ICoordinateValidator
+                .SetGlobal(validator);
+        }
 
         // Assert
-        Assert.AreEqual(validator, @new);
-        Assert.AreNotEqual(_original, @new);
+        Assert.ThrowsExactly<ArgumentNullException>(() => SetGlobal(validator));
     }
 
     [ClassCleanup(ClassCleanupBehavior.EndOfClass)]

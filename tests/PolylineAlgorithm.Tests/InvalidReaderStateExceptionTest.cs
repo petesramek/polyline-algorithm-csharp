@@ -37,7 +37,7 @@ public class InvalidReaderStateExceptionTest {
         static void Throw(bool canRead, int position, int length) => InvalidReaderStateException.ThrowIfCannotRead(canRead, position, length);
 
         // Assert
-        var exception = Assert.ThrowsException<InvalidReaderStateException>(() => Throw(canRead, position, length));
+        var exception = Assert.ThrowsExactly<InvalidReaderStateException>(() => Throw(canRead, position, length));
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 }

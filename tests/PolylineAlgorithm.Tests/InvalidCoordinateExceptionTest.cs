@@ -42,7 +42,7 @@ public class InvalidCoordinateExceptionTest {
         }
 
         // Assert
-        var exception = Assert.ThrowsException<InvalidCoordinateException>(() => ThrowIfNotValid(coordinate));
+        var exception = Assert.ThrowsExactly<InvalidCoordinateException>(() => ThrowIfNotValid(coordinate));
         Assert.AreEqual(coordinate, exception.Coordinate);
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }

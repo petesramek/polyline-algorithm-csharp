@@ -94,7 +94,7 @@ public class PolylineWriterTest {
         }
 
         // Assert
-        Assert.ThrowsException<InvalidCoordinateException>(() => Write(coordinate, bufferSize));
+        Assert.ThrowsExactly<InvalidCoordinateException>(() => Write(coordinate, bufferSize));
     }
 
     [TestMethod]
@@ -114,6 +114,6 @@ public class PolylineWriterTest {
         ;
 
         // Assert
-        var exception = Assert.ThrowsException<InvalidWriterStateException>(() => Write(coordinate, bufferSize));
+        var exception = Assert.ThrowsExactly<InvalidWriterStateException>(() => Write(coordinate, bufferSize));
     }
 }

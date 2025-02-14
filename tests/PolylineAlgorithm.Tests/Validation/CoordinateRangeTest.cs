@@ -73,7 +73,7 @@ public class CoordinateRangeTest {
         }
 
         // Assert
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => New(min, max));
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => New(min, max));
     }
 
     [TestMethod]

@@ -43,7 +43,7 @@ public class PolylineTest {
         static Polyline New(string value) => new(value);
 
         // Assert
-        Assert.ThrowsException<ArgumentNullException>(() => New(value));
+        Assert.ThrowsExactly<ArgumentNullException>(() => New(value));
     }
 
     [TestMethod]
@@ -72,7 +72,7 @@ public class PolylineTest {
         static Polyline New(char[] value) => new(value);
 
         // Assert
-        Assert.ThrowsException<ArgumentNullException>(() => New(value));
+        Assert.ThrowsExactly<ArgumentNullException>(() => New(value));
     }
 
 

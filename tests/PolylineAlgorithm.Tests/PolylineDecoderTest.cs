@@ -28,7 +28,7 @@ public class PolylineDecoderTest {
         void Execute(Polyline value) => Decoder.Decode(in value);
 
         // Assert
-        Assert.ThrowsException<ArgumentException>(() => Execute(empty));
+        Assert.ThrowsExactly<ArgumentException>(() => Execute(empty));
     }
 
     /// <summary>
@@ -44,7 +44,7 @@ public class PolylineDecoderTest {
         void Execute(Polyline value) => Decoder.Decode(in value);
 
         // Assert
-        var exception = Assert.ThrowsException<InvalidCoordinateException>(() => Execute(value));
+        var exception = Assert.ThrowsExactly<InvalidCoordinateException>(() => Execute(value));
     }
 
     /// <summary>

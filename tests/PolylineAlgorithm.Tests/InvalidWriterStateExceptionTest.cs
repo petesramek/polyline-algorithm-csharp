@@ -37,7 +37,7 @@ public class InvalidWriterStateExceptionTest {
         static void Throw(bool canRead, int position, int length) => InvalidWriterStateException.ThrowIfCannotWrite(canRead, position, length);
 
         // Assert
-        var exception = Assert.ThrowsException<InvalidWriterStateException>(() => Throw(canRead, position, length));
+        var exception = Assert.ThrowsExactly<InvalidWriterStateException>(() => Throw(canRead, position, length));
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 }

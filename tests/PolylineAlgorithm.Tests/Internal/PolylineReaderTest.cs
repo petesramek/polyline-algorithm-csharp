@@ -91,7 +91,7 @@ public class PolylineReaderTest {
         }
 
         // Assert
-        var exception = Assert.ThrowsException<InvalidReaderStateException>(() => Read(value));
+        var exception = Assert.ThrowsExactly<InvalidReaderStateException>(() => Read(value));
     }
 
     [TestMethod]
@@ -111,7 +111,7 @@ public class PolylineReaderTest {
         }
 
         // Assert
-        var exception = Assert.ThrowsException<InvalidReaderStateException>(() => Read(value, iterations));
+        var exception = Assert.ThrowsExactly<InvalidReaderStateException>(() => Read(value, iterations));
     }
 
     [TestMethod]
@@ -127,6 +127,6 @@ public class PolylineReaderTest {
         };
 
         // Assert
-        Assert.ThrowsException<MalformedPolylineException>(() => Read(value));
+        Assert.ThrowsExactly<MalformedPolylineException>(() => Read(value));
     }
 }
