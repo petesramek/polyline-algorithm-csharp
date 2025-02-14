@@ -18,9 +18,13 @@ public class PolylineWriterTest {
         [ 100 ]
     ];
 
-    public static IEnumerable<object[]> Invalid_Write_Method_Parameters => [
-        [ Values.Coordinates.Empty.Select(c => (c.Latitude, c.Longitude)).ToList(), Values.Polyline.Empty ],
-        [ Values.Coordinates.Invalid.Select(c => (c.Latitude, c.Longitude)).ToList(), Values.Polyline.Invalid ]
+    public static IEnumerable<object[]> Invalid_Coordinate_Parameter =>
+        Values.Coordinates.Invalid.Select(c => new object[] { (c.Latitude, c.Longitude) });
+
+    public static IEnumerable<object[]> Invalid_Buffer_Size_Parameter => [
+        [0],
+        [1],
+        [2]
     ];
 
 
@@ -75,42 +79,42 @@ public class PolylineWriterTest {
         Assert.AreEqual(expected, writer.ToPolyline());
     }
 
+    [TestMethod]
+    [DynamicData(nameof(Invalid_Coordinate_Parameter))]
+    public void Write_Invalid_Coordinate_Parameter_Ok((double Latitude, double Longitude) value) {
+        // Arrange
+        Coordinate coordinate = new(value.Latitude, value.Longitude);
+        string expected = Values.Polyline.Invalid;
+        int bufferSize = 12;
 
-    //[TestMethod]
-    //[DynamicData(nameof(Invalid_Write_Method_Parameters))]
-    //public void Write_Invalid_Parameter_Ok(IEnumerable<(double Latitude, double Longitude)> coordinates, string expected) {
-    //    // Arrange
-    //    Memory<char> buffer = new char[coordinates.Count() * 12];
-    //    PolylineWriter writer = new(in buffer);
-    //    bool canWrite = buffer.Length > expected.Length;
-    //    int position = expected.Length;
+        // Act
+        static void Write(Coordinate coordinate, int bufferSize) {
+            Memory<char> buffer = new char[bufferSize];
+            PolylineWriter writer = new(in buffer);
+            writer.Write(in coordinate);
+        }
 
-    //    // Act
-    //    foreach (var coordinate in coordinates.Select(c => new Coordinate(c.Latitude, c.Longitude))) {
-    //        writer.Write(in coordinate);
-    //    }
+        // Assert
+        Assert.ThrowsException<InvalidCoordinateException>(() => Write(coordinate, bufferSize));
+    }
 
-    //    // Assert
-    //    Assert.AreEqual(canWrite, writer.CanWrite);
-    //    Assert.AreEqual(position, writer.Position);
-    //    Assert.AreEqual(Polyline.FromString(in expected), writer.ToPolyline());
-    //}
+    [TestMethod]
+    [DynamicData(nameof(Invalid_Buffer_Size_Parameter))]
+    public void Write_Buffer_Overflow_InvalidWriterStateException_Thrown(int bufferSize) {
+        // Arrange
+        Coordinate coordinate = new();
 
-    //[TestMethod]
-    //public void Write_Buffer_Overflow_InvalidWriterStateException_Thrown(int bufferSize) {
-    //    // Arrange
-    //    Coordinate coordinate = new();
+        // Act
+        static void Write(Coordinate coordinate, int bufferSize) {
+            Memory<char> buffer = new char[bufferSize];
+            PolylineWriter writer = new(in buffer);
 
-    //    // Act
-    //    static void Write(Coordinate coordinate, int bufferSize) {
-    //        Memory<char> buffer = new char[bufferSize];
-    //        PolylineWriter writer = new(in buffer);
+            writer.Write(in coordinate);
+            writer.Write(in coordinate);
+        }
+        ;
 
-    //        writer.Write(in coordinate);
-    //        writer.Write(in coordinate);
-    //    };
-
-    //    // Assert
-    //    var exception = Assert.ThrowsException<InvalidWriterStateException>(() => Write(coordinate, bufferSize));
-    //}
+        // Assert
+        var exception = Assert.ThrowsException<InvalidWriterStateException>(() => Write(coordinate, bufferSize));
+    }
 }
