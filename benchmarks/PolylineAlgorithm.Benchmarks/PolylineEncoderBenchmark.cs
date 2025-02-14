@@ -8,13 +8,15 @@ namespace PolylineAlgorithm.Benchmarks;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Order;
 using PolylineAlgorithm;
+using PolylineAlgorithm.Benchmarks.Internal;
 using System.Collections.Generic;
 
 [Orderer(SummaryOrderPolicy.Declared)]
+[BenchmarkCategory(BenchmarkCategory.PublicApi)]
 public class PolylineEncoderBenchmark {
     private static readonly Random R = new();
     public static List<Coordinate> GetList() {
-        return new List<Coordinate>(GetEnumeration());
+        return [..GetEnumeration()];
     }
 
     public static IEnumerable<Coordinate> GetEnumeration() {
