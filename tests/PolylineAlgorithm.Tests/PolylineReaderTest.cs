@@ -63,7 +63,7 @@ public class PolylineReaderTest {
         int position = value.Length;
         Polyline polyline = Polyline.FromString(in value);
         PolylineReader reader = new(in polyline);
-        List<Coordinate> expected = Values.Coordinates.Valid.ToList();
+        List<Coordinate> expected = [.. Values.Coordinates.Valid];
         List<Coordinate> result = new(expected.Count());
 
         // Act

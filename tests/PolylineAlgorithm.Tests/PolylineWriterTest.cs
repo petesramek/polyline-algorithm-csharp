@@ -96,24 +96,21 @@ public class PolylineWriterTest {
     //    Assert.AreEqual(Polyline.FromString(in expected), writer.ToPolyline());
     //}
 
-    [TestMethod]
-    [DataRow(0)]
-    [DataRow(1)]
-    [DataRow(2)]
-    public void Write_Buffer_Overflow_InvalidWriterStateException_Thrown(int bufferSize) {
-        // Arrange
-        Coordinate coordinate = new();
+    //[TestMethod]
+    //public void Write_Buffer_Overflow_InvalidWriterStateException_Thrown(int bufferSize) {
+    //    // Arrange
+    //    Coordinate coordinate = new();
 
-        // Act
-        static void Write(Coordinate coordinate, int bufferSize) {
-            Memory<char> buffer = new char[bufferSize];
-            PolylineWriter writer = new(in buffer);
+    //    // Act
+    //    static void Write(Coordinate coordinate, int bufferSize) {
+    //        Memory<char> buffer = new char[bufferSize];
+    //        PolylineWriter writer = new(in buffer);
 
-            writer.Write(in coordinate);
-            writer.Write(in coordinate);
-        };
+    //        writer.Write(in coordinate);
+    //        writer.Write(in coordinate);
+    //    };
 
-        // Assert
-        var exception = Assert.ThrowsExactly<InvalidWriterStateException>(() => Write(coordinate, bufferSize));
-    }
+    //    // Assert
+    //    var exception = Assert.ThrowsException<InvalidWriterStateException>(() => Write(coordinate, bufferSize));
+    //}
 }

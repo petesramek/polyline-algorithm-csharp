@@ -3,7 +3,7 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.  
 //
 
-namespace PolylineAlgorithm.Tests;
+namespace PolylineAlgorithm.Tests.Validation;
 
 using PolylineAlgorithm.Validation;
 
@@ -67,7 +67,7 @@ public class CoordinateRangeTest {
         double max = 0;
 
         // Act
-        void New(double min, double max) {
+        static void New(double min, double max) {
             CoordinateRange range = new(min, max);
 
         }

@@ -40,7 +40,7 @@ public class PolylineTest {
         string value = null!;
 
         // Act
-        Polyline New(string value) => new(value);
+        static Polyline New(string value) => new(value);
 
         // Assert
         Assert.ThrowsException<ArgumentNullException>(() => New(value));
@@ -69,7 +69,7 @@ public class PolylineTest {
         char[] value = null!;
 
         // Act
-        Polyline New(char[] value) => new(value);
+        static Polyline New(char[] value) => new(value);
 
         // Assert
         Assert.ThrowsException<ArgumentNullException>(() => New(value));
@@ -128,7 +128,7 @@ public class PolylineTest {
     public void FromCharArray_Equals_New(string value) {
         // Arrange
         char[] array = [..value];
-        Polyline polyline = new();
+        Polyline polyline = new(array);
 
         // Act
         Polyline result = Polyline.FromCharArray(in array);
