@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [StructLayout(LayoutKind.Auto)]
 [DebuggerDisplay("Value: {ToString()}, IsEmpty: {IsEmpty}, Length: {Length}")]
 public readonly struct Polyline : IEquatable<Polyline> {
-    public readonly ReadOnlyMemory<char> _value;
+    private readonly ReadOnlyMemory<char> _value;
 
     public Polyline() {
         _value = ReadOnlyMemory<char>.Empty;
