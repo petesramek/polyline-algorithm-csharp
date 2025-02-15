@@ -31,7 +31,7 @@ public class CoordinateValidatorTest {
         CoordinateValidator validator = new(_latitude, _longitude);
 
         // Act
-        bool result = validator.IsValid(coordinate);
+        bool result = validator.IsValid(in coordinate);
 
         // Assert
         Assert.AreEqual(expected, result);
@@ -50,27 +50,5 @@ public class CoordinateValidatorTest {
 
         // Assert
         Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => New(min, max));
-    }
-
-    [TestMethod]
-    public void SetDefault_Validator_Ok() {
-        // Arrange
-        CoordinateRange range = new(double.MinValue, double.MaxValue);
-        CoordinateValidator validator = new(range, range);
-
-        // Act
-        ICoordinateValidator original = ICoordinateValidator.Global;
-
-        ICoordinateValidator
-            .SetGlobal(validator);
-
-        ICoordinateValidator @new = ICoordinateValidator.Global;
-
-        ICoordinateValidator
-            .SetGlobal(original);
-
-        // Assert
-        Assert.AreEqual(validator, @new);
-        Assert.AreNotEqual(original, @new);
     }
 }

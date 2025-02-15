@@ -26,7 +26,7 @@ public interface ICoordinateValidator {
     /// </summary>
     /// <param name="coordinate"></param>
     /// <returns<see langword="true"/> </returns>
-    bool IsValid(Coordinate coordinate);
+    bool IsValid(ref readonly Coordinate coordinate);
 
     /// <summary>
     /// Represents global coordinate validator instance.

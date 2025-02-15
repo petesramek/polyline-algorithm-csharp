@@ -23,7 +23,7 @@ public sealed class CoordinateValidator(CoordinateRange latitudeRange, Coordinat
     /// </summary>
     public CoordinateRange Longitude { get; } = longitudeRange;
 
-    public bool IsValid(Coordinate coordinate) {
+    public bool IsValid(ref readonly Coordinate coordinate) {
         return
             Latitude.IsInRange(coordinate.Latitude)
             && Longitude.IsInRange(coordinate.Longitude);
