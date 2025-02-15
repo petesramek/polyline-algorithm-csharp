@@ -84,20 +84,20 @@ jobs:
       with:
         dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
     - name: Test with .NET ${{ vars.DOTNET_SDK_VERSION }}
-      run: dotnet test ${{ vars.TEST_SEARCH_PATTERN }} --configuration ${{ vars.BUILD_CONFIGURATION }} --verbosity normal --settings unit-test.runsettings -- --coverage --coverage-output-format cobertura --report-trx
+      run: dotnet test ${{ vars.TEST_SEARCH_PATTERN }} --configuration ${{ vars.BUILD_CONFIGURATION }} --verbosity normal --settings unit-test.runsettings -- --coverage --coverage-output-format cobertura --report-trx --results-directory ${{ runner.temp }}/test-results/
     - name: Upload Test Results
       uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: |
-          **/test-results/*
+          ${{ runner.temp }}/test-results/*
     - run: dotnet tool install --global LiquidTestReports.Cli --prerelease
     - run: liquid --inputs "File=**/*.trx" --output-file test-report.md
     - run: cat test-report.md >> $GITHUB_STEP_SUMMARY
       name: Write Test Results Summary
     - run: dotnet tool update --global dotnet-coverage
       name: Update dotnet-coverage tool
-    - run: dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
+    - run: dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "${{ runner.temp }}/test-results/**/*.coverage"
       name: Merge Code Coverage Results
     - run: dotnet tool update --global dotnet-reportgenerator-globaltool
       name: Update dotnet-reportgenerator-globaltool tool
