@@ -96,8 +96,8 @@ jobs:
     # - run: ls -d
     #   working-directory: ${{ runner.temp }}/test-results/
     # - run: liquid --inputs "Folder=${{ runner.temp }}/test-results/;File=**/*.trx;Format=Trx" --output-file ${{ runner.temp }}/test-results/test-report.md
-    # - run: cat ${{ runner.temp }}/test-results/test-report.md >> $GITHUB_STEP_SUMMARY
-    #   name: Write Test Results Summary
+    - run: cat ${{ runner.temp }}/test-results/*.md >> $GITHUB_STEP_SUMMARY
+      name: Write Test Results Summary
     - run: dotnet tool update --global dotnet-coverage
       name: Update dotnet-coverage tool
     - run: dotnet-coverage merge --output ${{ runner.temp }}/test-results/test-result.cobertura.xml --output-format cobertura "${{ runner.temp }}/test-results/**/*.coverage"
