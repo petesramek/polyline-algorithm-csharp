@@ -83,20 +83,21 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
+    - run: dotnet add package LiquidTestReports.Markdown
     - name: Test with .NET ${{ vars.DOTNET_SDK_VERSION }}
-      run: dotnet test ${{ vars.TEST_SEARCH_PATTERN }} --configuration ${{ vars.BUILD_CONFIGURATION }} --verbosity normal --settings unit-test.runsettings -- --coverage --coverage-output-format cobertura --report-trx --results-directory ${{ runner.temp }}/test-results/
+      run: dotnet test ${{ vars.TEST_SEARCH_PATTERN }} --logger "liquid.md" --configuration ${{ vars.BUILD_CONFIGURATION }} --verbosity normal --settings unit-test.runsettings -- --coverage --coverage-output-format cobertura --report-trx --results-directory ${{ runner.temp }}/test-results/
     - name: Upload Test Results
       uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: |
           ${{ runner.temp }}/test-results/*
-    - run: dotnet tool install --global LiquidTestReports.Cli --prerelease
-    - run: ls -d
-      working-directory: ${{ runner.temp }}/test-results/
-    - run: liquid --inputs "Folder=${{ runner.temp }}/test-results/;File=**/*.trx;Format=Trx" --output-file ${{ runner.temp }}/test-results/test-report.md
-    - run: cat ${{ runner.temp }}/test-results/test-report.md >> $GITHUB_STEP_SUMMARY
-      name: Write Test Results Summary
+    # - run: dotnet tool install --global LiquidTestReports.Cli --prerelease
+    # - run: ls -d
+    #   working-directory: ${{ runner.temp }}/test-results/
+    # - run: liquid --inputs "Folder=${{ runner.temp }}/test-results/;File=**/*.trx;Format=Trx" --output-file ${{ runner.temp }}/test-results/test-report.md
+    # - run: cat ${{ runner.temp }}/test-results/test-report.md >> $GITHUB_STEP_SUMMARY
+    #   name: Write Test Results Summary
     - run: dotnet tool update --global dotnet-coverage
       name: Update dotnet-coverage tool
     - run: dotnet-coverage merge --output ${{ runner.temp }}/test-results/test-result.cobertura.xml --output-format cobertura "${{ runner.temp }}/test-results/**/*.coverage"
