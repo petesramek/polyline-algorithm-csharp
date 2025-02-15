@@ -161,5 +161,6 @@ jobs:
         name: benchmark-${{ matrix.os }}
         path: |
           benchmarks/PolylineAlgorithm.Benchmarks/BenchmarkDotNet.Artifacts/results/*-report-github.md
-    - run: cat benchmarks/PolylineAlgorithm.Benchmarks/BenchmarkDotNet.Artifacts/results/*-report-github.md > $GITHUB_STEP_SUMMARY
-      name: Write Benchmark Summary 
+    - name: Write Benchmark Summary 
+      shell: bash
+      run: cat benchmarks/PolylineAlgorithm.Benchmarks/BenchmarkDotNet.Artifacts/results/*-report-github.md > $GITHUB_STEP_SUMMARY
