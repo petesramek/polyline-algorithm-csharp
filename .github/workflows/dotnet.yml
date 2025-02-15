@@ -35,7 +35,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
-    - uses: petesramek/.github/action/versioning.yml@ff65c698fe9cafaf33325a22bdad3d4b0c0f4100
+    - uses: petesramek/polyline-algorithm-csharp/.github/action/versioning.yml@ff65c698fe9cafaf33325a22bdad3d4b0c0f4100
       id: gitversion
       with:
         is-release: ${{ env.is_release }}
