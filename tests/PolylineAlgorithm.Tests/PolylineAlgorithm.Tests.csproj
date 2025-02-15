@@ -25,6 +25,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="LiquidTestReports.Markdown" Version="1.*" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*" />
 		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.*" />
 		<PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="1.*" />

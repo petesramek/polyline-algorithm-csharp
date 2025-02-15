@@ -83,7 +83,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
-    - run: dotnet add package LiquidTestReports.Markdown
     - name: Test with .NET ${{ vars.DOTNET_SDK_VERSION }}
       run: dotnet test ${{ vars.TEST_SEARCH_PATTERN }} --logger "liquid.md" --configuration ${{ vars.BUILD_CONFIGURATION }} --verbosity normal --settings unit-test.runsettings -- --coverage --coverage-output-format cobertura --report-trx --results-directory ${{ runner.temp }}/test-results/
     - name: Upload Test Results
