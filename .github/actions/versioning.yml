@@ -1,5 +1,5 @@
-name: 'Hello World'
-description: 'Greet someone'
+name: 'Versioning with GitVersion $INPUT_GIT_VERSION'
+description: 'Generating software versions'
 inputs:
   git-version:  # id of input
     description: 'Version of GitVersion'
