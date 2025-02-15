@@ -92,18 +92,18 @@ jobs:
         path: |
           ${{ runner.temp }}/test-results/*
     - run: dotnet tool install --global LiquidTestReports.Cli --prerelease
-    - run: liquid --inputs "File=**/*.trx" --output-file test-report.md
+    - run: liquid --inputs "File=${{ runner.temp }}/test-results/**/*.trx" --output-file test-report.md
     - run: cat test-report.md >> $GITHUB_STEP_SUMMARY
       name: Write Test Results Summary
     - run: dotnet tool update --global dotnet-coverage
       name: Update dotnet-coverage tool
-    - run: dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "${{ runner.temp }}/test-results/**/*.coverage"
+    - run: dotnet-coverage merge --output ${{ runner.temp }}/test-results/test-result.cobertura.xml --output-format cobertura "${{ runner.temp }}/test-results/**/*.coverage"
       name: Merge Code Coverage Results
     - run: dotnet tool update --global dotnet-reportgenerator-globaltool
       name: Update dotnet-reportgenerator-globaltool tool
-    - run: reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:"MarkdownSummary"
+    - run: reportgenerator -reports:${{ runner.temp }}/test-results/test-result.cobertura.xml -targetdir:${{ runner.temp }}/test-results/coverage-report -reporttypes:"MarkdownSummary"
       name: Generate Code Coverage Results
-    - run: cat coverage-report/Summary.md >> $GITHUB_STEP_SUMMARY
+    - run: cat ${{ runner.temp }}/test-results/coverage-report/Summary.md >> $GITHUB_STEP_SUMMARY
       name: Write Code Coverage Summary
 
   pack:
@@ -121,13 +121,13 @@ jobs:
       with:
         name: build
     - name: Pack with .NET ${{ vars.DOTNET_SDK_VERSION }}
-      run: dotnet pack ${{ vars.SRC_SEARCH_PATTERN }} --no-build --no-restore --configuration ${{ vars.BUILD_CONFIGURATION }}  /p:Platform=${{ vars.BUILD_PLATFORM }}
+      run: dotnet pack ${{ vars.SRC_SEARCH_PATTERN }} --no-build --no-restore --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} --output ${{ runner.temp }}/packages/
     - name: Upload Package
       uses: actions/upload-artifact@v4
       with:
         name: package
         path: |
-          **/*.nupkg
+          ${{ runner.temp }}/packages/**/*.nupkg
 
   benchmark:
     if: ${{ github.env.is_release || vars.BENCHMARKDOTNET_RUN_OVERRIDE == 'true' }}
@@ -154,13 +154,13 @@ jobs:
         name: build
     - name: Benchmark
       working-directory: ${{ vars.BENCHMARKDOTNET_WORKING_DIRECTORY }}
-      run: dotnet run --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} --framework ${{ vars.BUILD_FRAMEWORK }} --runtimes ${{ vars.BENCHMARKDOTNET_RUNTIMES }} --filter ${{ vars.BENCHMARKDOTNET_FILTER }} ${{ vars.BENCHMARKDOTNET_CATEGORY_SWITCH }} --exporters GitHub --memory
+      run: dotnet run --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} --framework ${{ vars.BUILD_FRAMEWORK }} --runtimes ${{ vars.BENCHMARKDOTNET_RUNTIMES }} --filter ${{ vars.BENCHMARKDOTNET_FILTER }} ${{ vars.BENCHMARKDOTNET_CATEGORY_SWITCH }} --exporters GitHub --memory --artifacts ${{ runner.temp }}/benchmarks/
     - name: Upload Benchmark Results
       uses: actions/upload-artifact@v4
       with:
         name: benchmark-${{ matrix.os }}
         path: |
-          benchmarks/PolylineAlgorithm.Benchmarks/BenchmarkDotNet.Artifacts/results/*-report-github.md
+          ${{ runner.temp }}/benchmarks/**/*-report-github.md
     - name: Write Benchmark Summary 
       shell: bash
-      run: cat benchmarks/PolylineAlgorithm.Benchmarks/BenchmarkDotNet.Artifacts/results/*-report-github.md > $GITHUB_STEP_SUMMARY
+      run: cat ${{ runner.temp }}/benchmarks/**/*-report-github.md > $GITHUB_STEP_SUMMARY
