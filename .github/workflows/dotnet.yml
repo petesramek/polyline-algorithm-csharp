@@ -92,6 +92,7 @@ jobs:
         path: |
           ${{ runner.temp }}/test-results/*
     - run: dotnet tool install --global LiquidTestReports.Cli --prerelease
+    - run: ls -d
     - run: liquid --inputs "Folder=${{ runner.temp }}/test-results/" --output-file ${{ runner.temp }}/test-results/test-report.md
     - run: cat ${{ runner.temp }}/test-results/test-report.md >> $GITHUB_STEP_SUMMARY
       name: Write Test Results Summary
