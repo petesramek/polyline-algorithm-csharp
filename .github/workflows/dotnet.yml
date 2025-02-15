@@ -92,8 +92,8 @@ jobs:
         path: |
           ${{ runner.temp }}/test-results/*
     - run: dotnet tool install --global LiquidTestReports.Cli --prerelease
-    - run: liquid --inputs "File=${{ runner.temp }}/test-results/**/*.trx" --output-file test-report.md
-    - run: cat test-report.md >> $GITHUB_STEP_SUMMARY
+    - run: liquid --inputs "Folder=${{ runner.temp }}/test-results/" --output-file ${{ runner.temp }}/test-results/test-report.md
+    - run: cat ${{ runner.temp }}/test-results/test-report.md >> $GITHUB_STEP_SUMMARY
       name: Write Test Results Summary
     - run: dotnet tool update --global dotnet-coverage
       name: Update dotnet-coverage tool
@@ -143,9 +143,7 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: |
-         5.x
          6.x
-         7.x
          8.x
          9.x
     - name: Download Build
@@ -163,4 +161,5 @@ jobs:
           ${{ runner.temp }}/benchmarks/**/*-report-github.md
     - name: Write Benchmark Summary 
       shell: bash
-      run: cat ${{ runner.temp }}/benchmarks/**/*-report-github.md > $GITHUB_STEP_SUMMARY
+      run: cat **/*-report-github.md > $GITHUB_STEP_SUMMARY
+      working-directory: ${{ runner.temp }}/benchmarks/
