@@ -193,7 +193,8 @@ jobs:
     
     - run: mkdir docs/benchmarks
     - run: touch docs/benchmarks/index.md
-    - run: cat ${{ runner.temp }}/benchmarks/**/*.md > docs/benchmarks/index.md
+    - run: cat **/*.md > docs/benchmarks/index.md
+      working-directory: ${{ runner.temp }}/benchmarks/
   
     - run: dotnet tool update -g docfx
     - run: docfx ./docs/docfx.json
