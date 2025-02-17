@@ -170,7 +170,8 @@ jobs:
       working-directory: ${{ runner.temp }}/benchmarks/
 
   publish-docs:
-    # if: ${{ github.env.is_release && !github.env.is_preview }}  
+    # if: ${{ github.env.is_release && !github.env.is_preview }}
+    name: Docs with .NET ${{ vars.DOTNET_SDK_VERSION }}
     needs: [benchmark,test]  
     environment:
       name: github-pages
@@ -182,9 +183,8 @@ jobs:
     - name: Dotnet Setup
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 9.0.x
-   
-  
+        dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
+
     - name: Download Benchmarks
       uses: actions/download-artifact@v4
       with:
