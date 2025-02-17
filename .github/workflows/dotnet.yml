@@ -190,8 +190,9 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         pattern: benchmark-*
-        path: docs/benchmarks
-
+        path: ${{ runner.temp }}/benchmarks/
+    - run: cat ${{ runner.temp }}/benchmarks/**/*.md > /docs/benchmarks/index.md
+  
     - run: dotnet tool update -g docfx
     - run: docfx ./docs/docfx.json
 
