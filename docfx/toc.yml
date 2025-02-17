@@ -1,2 +1,4 @@
 - name: API reference
   href: api-reference/
+- name: Benchmarks
+  href: benchmarks/index.md
