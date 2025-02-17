@@ -14,6 +14,11 @@ on:
     - 'release/**'
     - 'support/**'
 
+permissions:
+  actions: read
+  pages: write
+  id-token: write
+
 concurrency: 
   group: ${{ github.ref }}
   cancel-in-progress: false
@@ -163,3 +168,35 @@ jobs:
       shell: bash
       run: cat **/*-report-github.md > $GITHUB_STEP_SUMMARY
       working-directory: ${{ runner.temp }}/benchmarks/
+
+  publish-docs:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Dotnet Setup
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 9.0.x
+
+    - name: Download Benchmarks
+      uses: actions/download-artifact@v4
+      with:
+        pattern: benchmark-*
+        path: /docs/benchmarks
+        
+
+    - run: dotnet tool update -g docfx
+    - run: docfx ./docs/docfx.json
+
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        # Upload entire repository
+        path: './docs/_site'
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
