@@ -145,7 +145,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Install .NET SDK
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: |
          6.x
@@ -181,7 +181,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
     - name: Dotnet Setup
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
 
@@ -190,6 +190,7 @@ jobs:
       with:
         pattern: benchmark-*
         path: ${{ runner.temp }}/benchmarks/
+        merge-multiple: true
     
     - run: mkdir docs/benchmarks
     - run: touch docs/benchmarks/index.md
