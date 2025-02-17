@@ -25,7 +25,8 @@
     "resource": [
       {
         "files": [
-          "media/**"
+          "media/**",
+          "favicon.ico"
         ]
       }
     ],
@@ -38,7 +39,7 @@
       "_appName": " Polyline Algorithm for .NET",
       "_appTitle": "Polyline Algorithm for .NET",
       "_appFooter": "",
-      "_appFaviconPath": "media/polyline-algorithm.ico",
+      "_appFaviconPath": "favicon.ico",
       "_appLogoPath": "media/polyline-algorithm-50x46.png",
       "_enableSearch": true,
       "_enableNewTab": true,
