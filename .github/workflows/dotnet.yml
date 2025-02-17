@@ -170,6 +170,7 @@ jobs:
       working-directory: ${{ runner.temp }}/benchmarks/
 
   publish-docs:
+    needs: [benchmark,test]  
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
