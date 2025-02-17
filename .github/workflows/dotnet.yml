@@ -13,6 +13,8 @@ on:
     - 'preview/**'
     - 'release/**'
     - 'support/**'
+    paths:
+    - 'src/**'
 
 permissions:
   actions: read
@@ -32,6 +34,7 @@ jobs:
     name: Versioning with GitVersion ${{ vars.GIT_VERSION }}
     runs-on: ubuntu-latest
     outputs:
+      SHORT_VERSION: ${{ steps.gitversion.outputs.major }}.${{ steps.gitversion.outputs.minor }}
       ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
       ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}+${{ steps.gitversion.outputs.sha }}
       FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
@@ -191,14 +194,18 @@ jobs:
         pattern: benchmark-*
         path: ${{ runner.temp }}/benchmarks/
         merge-multiple: true
-    
-    - run: mkdir docs/benchmarks
-    - run: touch docs/benchmarks/index.md
-    - run: cat **/*.md >> ${{ github.workspace}}/docs/benchmarks/index.md
+
+    - run: |
+        cat '## Windows' >> ${{ github.workspace}}/docfx/benchmarks/index.md
+        cat benchmark-windows-latest/**/*.md >> ${{ github.workspace}}/docfx/benchmarks/index.md
+        cat '## Linux' >> ${{ github.workspace}}/docfx/benchmarks/index.md
+        cat benchmark-ubuntu-latest/**/*.md >> ${{ github.workspace}}/docfx/benchmarks/index.md
+        cat '## macOS' >> ${{ github.workspace}}/docfx/benchmarks/index.md
+        cat benchmark-macos-latest/**/*.md >> ${{ github.workspace}}/docfx/benchmarks/index.md
       working-directory: ${{ runner.temp }}/benchmarks/
   
     - run: dotnet tool update -g docfx
-    - run: docfx ./docs/docfx.json
+    - run: docfx ./docfx/docfx.json
 
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
