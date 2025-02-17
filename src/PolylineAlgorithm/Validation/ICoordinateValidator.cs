@@ -25,20 +25,11 @@ public interface ICoordinateValidator {
     /// Validates coordinate.
     /// </summary>
     /// <param name="coordinate"></param>
-    /// <returns<see langword="true"/> </returns>
+    /// <returns><see langword="true"/></returns>
     bool IsValid(ref readonly Coordinate coordinate);
 
     /// <summary>
     /// Represents global coordinate validator instance.
     /// </summary>
-    static ICoordinateValidator Global { get; private set; } = new CoordinateValidator(Defaults.Coordinate.Range.Latitude, Defaults.Coordinate.Range.Longitude);
-
-    /// <summary>
-    /// Assigns passed value to <see cref="ICoordinateValidator.Global"/>.
-    /// </summary>
-    /// <param name="validator"></param>
-    /// <exception cref="ArgumentNullException">Thrown when <paramref name="validator"/> argument is null.</exception>
-    static void SetGlobal(ICoordinateValidator validator) {
-        Global = validator ?? throw new ArgumentNullException(nameof(validator));
-    }
+    internal static ICoordinateValidator Global { get; private set; } = new CoordinateValidator(Defaults.Coordinate.Range.Latitude, Defaults.Coordinate.Range.Longitude);
 }
