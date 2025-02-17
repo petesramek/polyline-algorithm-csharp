@@ -170,7 +170,7 @@ jobs:
       working-directory: ${{ runner.temp }}/benchmarks/
 
   publish-docs:
-    if: ${{ github.env.is_release && !github.env.is_preview }}  
+    # if: ${{ github.env.is_release && !github.env.is_preview }}  
     needs: [benchmark,test]  
     environment:
       name: github-pages
