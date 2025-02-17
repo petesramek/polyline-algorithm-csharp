@@ -27,18 +27,25 @@ jobs:
     name: Versioning with GitVersion ${{ vars.GIT_VERSION }}
     runs-on: ubuntu-latest
     outputs:
-      ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.ASSEMBLY_VERSION }}
-      ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.ASSEMBLY_INFORMATIONAL_VERSION }}
-      FILE_VERSION: ${{ steps.gitversion.outputs.FILE_VERSION }}
-      PACKAGE_VERSION: ${{ steps.gitversion.outputs.PACKAGE_VERSION }}
+      ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
+      ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}+${{ steps.gitversion.outputs.sha }}
+      FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
+      PACKAGE_VERSION: ${{ fromJSON(format('[ "{0}.{1}.{2}", "{0}.{2}" ]', steps.gitversion.outputs.assemblySemVer, steps.gitversion.outputs.preReleaseLabelWithDash, github.run_number))[fromJSON(env.is_release)] }}
     steps:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
-    - uses: petesramek/polyline-algorithm-csharp/.github/action/versioning.yml@ff65c698fe9cafaf33325a22bdad3d4b0c0f4100
-      id: gitversion
+    - name: Install GitVersion ${{ vars.GIT_VERSION }}
+      uses: gittools/actions/gitversion/setup@v3.1.11
       with:
-        is-release: ${{ env.is_release }}
+        versionSpec: ${{ vars.GIT_VERSION }}
+        preferLatestVersion: true
+    - name: Calculate version with GitVersion ${{ vars.GIT_VERSION }}
+      id: gitversion
+      uses: gittools/actions/gitversion/execute@v3.1.11
+      with:
+        useConfigFile: true
+        configFilePath: ./.gitversion/version.yml
 
   build:
     name: Build with .NET ${{ vars.DOTNET_SDK_VERSION }}
