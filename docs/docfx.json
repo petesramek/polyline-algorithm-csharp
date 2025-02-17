@@ -10,15 +10,13 @@
           ]
         }
       ],
-      "dest": "api"
+      "dest": "api-reference"
     }
   ],
   "build": {
     "content": [
       {
-        "files": [
-          "**/*.{md,yml}"
-        ],
+        "files": "**/*.{md,yml}",
         "exclude": [
           "_site/**"
         ]
@@ -27,7 +25,7 @@
     "resource": [
       {
         "files": [
-          "images/**"
+          "media/**"
         ]
       }
     ],
@@ -37,10 +35,24 @@
       "modern"
     ],
     "globalMetadata": {
-      "_appName": "",
-      "_appTitle": "",
+      "_appName": "Polyline Algorithm for .NET",
+      "_appTitle": "Polyline Algorithm for .NET",
+      "_appFooter": "",
+      "_appFaviconPath": "media/polyline-algorithm.ico",
+      "_appLogoPath": "media/polyline-algorithm-50x46.png",
       "_enableSearch": true,
+      "_enableNewTab": true,
+      "_disableNavbar": false,
+      "_disableBreadcrumb": false,
+      "_disableToc": false,
+      "_disableAffix": false,
+      "_disableContribution": true,
       "pdf": true
+    },
+    "sitemap": {
+      "baseUrl": "https://petesramek.github.io/polyline-algorithm-csharp",
+      "priority": 0.1,
+      "changefreq": "monthly"
     }
   }
 }
