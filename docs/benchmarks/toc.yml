@@ -1,0 +1,6 @@
+- name: Windows
+  href: benchmarks/benchmark-windows-latest/
+- name: Linux
+  href: benchmarks/benchmark-linux-latest/
+- name: Mac OS
+  href: benchmarks/benchmark-macos-latest/

@@ -1,4 +1,6 @@
 - name: API reference
   href: api-reference/
+- name: Benchmarks
+  href: benchmarks/
 # - name: Get started
 #   href: guide/

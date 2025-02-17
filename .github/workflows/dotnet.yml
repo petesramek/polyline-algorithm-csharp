@@ -170,6 +170,7 @@ jobs:
       working-directory: ${{ runner.temp }}/benchmarks/
 
   publish-docs:
+    if: ${{ github.env.is_release && !github.env.is_preview }}  
     needs: [benchmark,test]  
     environment:
       name: github-pages
@@ -197,7 +198,6 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        # Upload entire repository
         path: './docs/_site'
     - name: Deploy to GitHub Pages
       id: deployment
