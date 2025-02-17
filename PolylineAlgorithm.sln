@@ -15,8 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{7F9807A1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolylineAlgorithm.Tests", "tests\PolylineAlgorithm.Tests\PolylineAlgorithm.Tests.csproj", "{30324A08-AA42-425D-87DA-8F9C6AF60454}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C13E31F9-B8EF-4915-A1C8-BC33F6431EB9}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmarks", "benchmarks", "{33C03F16-4313-4579-87E6-65892AF21D7D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolylineAlgorithm.Benchmarks", "benchmarks\PolylineAlgorithm.Benchmarks\PolylineAlgorithm.Benchmarks.csproj", "{9C7CBAD5-415B-4589-86E1-01C849F9C56C}"
