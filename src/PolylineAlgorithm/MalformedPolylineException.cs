@@ -11,16 +11,11 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
-/// Represents error that occurs during polyline encoding. 
+/// Represents error that is caused by malformed polyline.
 /// </summary>
 [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Internal use only.")]
 [DebuggerDisplay($"{nameof(MalformedPolylineException)}: {{ToString()}}")]
 public sealed class MalformedPolylineException : Exception {
-    /// <summary>
-    /// Initializes an instance
-    /// </summary>
-    /// <param name="position"></param>
-    /// <param name="innerException"></param>
     private MalformedPolylineException(string message)
         : base(message) { }
 

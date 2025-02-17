@@ -31,5 +31,5 @@ public interface ICoordinateValidator {
     /// <summary>
     /// Represents global coordinate validator instance.
     /// </summary>
-    internal static ICoordinateValidator Global { get; private set; } = new CoordinateValidator(Defaults.Coordinate.Range.Latitude, Defaults.Coordinate.Range.Longitude);
+    internal static ICoordinateValidator Default { get; private set; } = new CoordinateValidator(Defaults.Coordinate.Range.Latitude, Defaults.Coordinate.Range.Longitude);
 }

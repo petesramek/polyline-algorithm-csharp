@@ -12,11 +12,14 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.InteropServices;
 
+/// <summary>
+/// Represents a latitude and longitude pair.
+/// </summary>
 [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
 [DebuggerDisplay("{ToString()}")]
 public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <summary>
-    /// Initializes default instance of <see cref="Coordinate"/> with latitude and longitude equal to 0.
+    /// Initializes default instance of <see cref="Coordinate"/> with <see cref="Latitude" /> and <see cref="Longitude" /> equal to 0.
     /// </summary>
     public Coordinate() {
         Latitude = 0d;
@@ -24,7 +27,7 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     }
 
     /// <summary>
-    /// Initializes instance of <see cref="Coordinate"/> with <paramref name="latitude"/> and <paramref name="longitude"/> values.
+    /// Initializes a new instance of <see cref="Coordinate"/> with <paramref name="latitude"/> and <paramref name="longitude"/> values.
     /// </summary>
     /// <param name="latitude">A latitude value.</param>
     /// <param name="longitude">A latitude value.</param>
@@ -33,26 +36,29 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
         Longitude = longitude;
     }
 
+    /// <summary>
+    /// Gets the latitude value as a double.
+    /// </summary>
     public readonly double Latitude { get; }
 
+    /// <summary>
+    /// Gets the longitude value as a double.
+    /// </summary>
     public readonly double Longitude { get; }
 
     /// <summary>
-    /// 
+    /// Gets a value that indicates whether both, the <see cref="Latitude" /> and <see cref="Longitude"/> values, are equal to 0.
     /// </summary>
     public bool IsDefault
         => Latitude == default
         && Longitude == default;
 
     /// <summary>
-    /// 
+    /// Gets a value that indicates whether both, the <see cref="Latitude" /> and <see cref="Longitude"/> values, are in valid range.
     /// </summary>
-    /// <remarks>
-    /// Uses <see cref="ICoordinateValidator.Global"/>.
-    /// </remarks>
     public bool IsValid
-        => ICoordinateValidator.Global.Latitude.IsInRange(Latitude)
-        && ICoordinateValidator.Global.Longitude.IsInRange(Longitude);
+        => ICoordinateValidator.Default.Latitude.IsInRange(Latitude)
+        && ICoordinateValidator.Default.Longitude.IsInRange(Longitude);
 
     #region Overrides
 
