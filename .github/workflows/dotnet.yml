@@ -193,7 +193,7 @@ jobs:
       with:
         pattern: benchmark-*
         path: ${{ runner.temp }}/benchmarks/
-        merge-multiple: true
+        merge-multiple: false
 
     - run: |
         echo '## Windows' >> ${{ github.workspace}}/docfx/benchmarks/index.md
