@@ -196,11 +196,11 @@ jobs:
         merge-multiple: false
 
     - run: |
-        echo -e '/n## Windows' >> ${{ github.workspace}}/docfx/benchmarks/index.md
+        echo -e '\n## Windows' >> ${{ github.workspace}}/docfx/benchmarks/index.md
         cat benchmark-windows-latest/**/*.md >> ${{ github.workspace}}/docfx/benchmarks/index.md
-        echo -e '/n## Linux' >> ${{ github.workspace}}/docfx/benchmarks/index.md
+        echo -e '\n## Linux' >> ${{ github.workspace}}/docfx/benchmarks/index.md
         cat benchmark-ubuntu-latest/**/*.md >> ${{ github.workspace}}/docfx/benchmarks/index.md
-        echo -e '/n## macOS' >> ${{ github.workspace}}/docfx/benchmarks/index.md
+        echo -e '\n## macOS' >> ${{ github.workspace}}/docfx/benchmarks/index.md
         cat benchmark-macos-latest/**/*.md >> ${{ github.workspace}}/docfx/benchmarks/index.md
       working-directory: ${{ runner.temp }}/benchmarks/
   
