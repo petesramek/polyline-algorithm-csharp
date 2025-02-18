@@ -250,7 +250,7 @@ jobs:
   
   release-package:
     if: ${{ !github.env.is_release }}
-    name: Publish package with .NET ${{ vars.DOTNET_SDK_VERSION }}
+    name: Release package with .NET ${{ vars.DOTNET_SDK_VERSION }}
     needs: [pack, test]  
     runs-on: ubuntu-latest
     steps:
