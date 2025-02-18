@@ -243,5 +243,6 @@ jobs:
 
     - run: |
         dotnet nuget add source ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED }} --name private-feed
+        dotnet restore --interactive
         dotnet nuget push **/*.nupkg --source private-feed --api-key AzureArtifacts
       working-directory: ${{ runner.temp }}/packages/
