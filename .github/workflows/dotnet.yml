@@ -5,16 +5,16 @@ on:
     branches:
     - 'preview/**'
     - 'release/**'
-    paths:
-    - 'src/**'
+    paths-ignore:
+    - '!src/**'
   pull_request:
     branches:
     - 'main'
     - 'preview/**'
     - 'release/**'
     - 'support/**'
-    paths:
-    - 'src/**'
+    paths-ignore:
+    - '!src/**'
 
 permissions:
   actions: read
@@ -249,7 +249,7 @@ jobs:
       working-directory: ${{ runner.temp }}/packages/
   
   release-package:
-    if: ${{ !github.env.is_release }}
+    if: ${{ github.env.is_release }}
     name: Release package with .NET ${{ vars.DOTNET_SDK_VERSION }}
     needs: [pack, test]  
     runs-on: ubuntu-latest
