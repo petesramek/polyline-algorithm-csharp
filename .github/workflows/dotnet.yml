@@ -245,7 +245,7 @@ jobs:
 
     - run: |
         dotnet nuget add source ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED }} --name private-feed --username irrelevant --password ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }} --store-password-in-clear-text
-        dotnet nuget push **/*.*nupkg --source private-feed --api-key ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }}
+        dotnet nuget push **/*.nupkg --source private-feed --api-key ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }}
       working-directory: ${{ runner.temp }}/packages/
   
   release-package:
@@ -268,6 +268,6 @@ jobs:
         path: ${{ runner.temp }}/packages/
 
     - run: |
-        dotnet nuget add source ${{ secrets.PUBLIC_NUGET_PACKAGE_FEED }} --name public-feed --username irrelevant --password ${{ secrets.PUBLIC_NUGET_PACKAGE_FEED_API_KEY }} --store-password-in-clear-text
-        dotnet nuget push **/*.*nupkg --source public-feed --api-key ${{ secrets.PUBLIC_NUGET_PACKAGE_FEED_API_KEY }}
+        dotnet nuget add source ${{ env.PUBLIC_NUGET_PACKAGE_FEED }} --name public-feed --username irrelevant --password ${{ secrets.PUBLIC_NUGET_PACKAGE_FEED_API_KEY }} --store-password-in-clear-text
+        dotnet nuget push **/*.nupkg --source public-feed --api-key ${{ secrets.PUBLIC_NUGET_PACKAGE_FEED_API_KEY }}
       working-directory: ${{ runner.temp }}/packages/
