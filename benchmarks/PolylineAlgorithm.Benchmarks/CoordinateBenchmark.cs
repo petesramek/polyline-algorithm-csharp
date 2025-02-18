@@ -1,9 +1,6 @@
 ﻿namespace PolylineAlgorithm.Benchmarks;
 using BenchmarkDotNet.Attributes;
 
-using BenchmarkDotNet.Order;
-
-[Orderer(SummaryOrderPolicy.Declared)]
 [CategoriesColumn]
 [RankColumn]
 public class CoordinateBenchmark {

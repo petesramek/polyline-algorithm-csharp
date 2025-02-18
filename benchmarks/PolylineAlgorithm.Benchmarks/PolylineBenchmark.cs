@@ -10,7 +10,6 @@ using BenchmarkDotNet.Order;
 using PolylineAlgorithm;
 using System;
 
-[Orderer(SummaryOrderPolicy.Declared)]
 [CategoriesColumn]
 [RankColumn]
 public class PolylineBenchmark {

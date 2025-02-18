@@ -6,13 +6,11 @@
 namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Order;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Benchmarks.Internal;
 using System.Collections.Generic;
 using System.Text;
 
-[Orderer(SummaryOrderPolicy.Declared)]
 [BenchmarkCategory(BenchmarkCategory.PublicApi)]
 [CategoriesColumn]
 [RankColumn]
