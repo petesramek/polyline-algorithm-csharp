@@ -231,9 +231,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
-        source-url: https://pkgs.dev.azure.com/petesramek/_packaging/petesramek-development/nuget/v3/index.json
-      env:
-          NUGET_AUTH_TOKEN: ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }}
 
     - name: Download Benchmarks
       uses: actions/download-artifact@v4
@@ -241,7 +238,5 @@ jobs:
         name: package
         path: ${{ runner.temp }}/packages/
 
-    - run: |
-        dotnet nuget add source https://pkgs.dev.azure.com/petesramek/_packaging/petesramek-development/nuget/v3/index.json --name private-feed --username irrelevant --password ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }} --store-password-in-clear-text
-        dotnet nuget push **/*.nupkg --source private-feed --api-key ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }}
+    - run: dotnet nuget push **/*.nupkg --source ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED }} --api-key ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }}
       working-directory: ${{ runner.temp }}/packages/
