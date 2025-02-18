@@ -118,6 +118,11 @@ jobs:
     name: Pack with .NET ${{ vars.DOTNET_SDK_VERSION }}
     needs: [build]
     runs-on: ubuntu-latest
+    env:
+      ASSEMBLY_VERSION: ${{ needs.versioning.outputs.ASSEMBLY_VERSION }}
+      ASSEMBLY_INFORMATIONAL_VERSION: ${{ needs.versioning.outputs.ASSEMBLY_INFORMATIONAL_VERSION }}
+      FILE_VERSION: ${{ needs.versioning.outputs.FILE_VERSION }}
+      PACKAGE_VERSION: ${{ needs.versioning.outputs.PACKAGE_VERSION }}
     steps:
     - uses: actions/checkout@v3
     - name: Install .NET ${{ vars.DOTNET_SDK_VERSION }}
@@ -129,7 +134,7 @@ jobs:
       with:
         name: build
     - name: Pack with .NET ${{ vars.DOTNET_SDK_VERSION }}
-      run: dotnet pack ${{ vars.SRC_SEARCH_PATTERN }} --no-build --no-restore --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} /p:PackageVersion=${{ env.ASSEMBLY_VERSION }} --output ${{ runner.temp }}/packages/
+      run: dotnet pack ${{ vars.SRC_SEARCH_PATTERN }} --no-build --no-restore --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} -p:Version=${{ env.ASSEMBLY_VERSION }} -p:AssemblyInformationalVersion=${{ env.ASSEMBLY_INFORMATIONAL_VERSION }} -p:FileVersion=${{ env.FILE_VERSION }} --output ${{ runner.temp }}/packages/
     - name: Upload Package
       uses: actions/upload-artifact@v4
       with:
