@@ -43,7 +43,7 @@ public class PolylineReaderTest {
     [DynamicData(nameof(Valid_Constructor_Parameters))]
     public void Constructor_Valid_Parameter_Ok(string value) {
         // Arrange
-        Polyline polyline = Polyline.FromString(in value);
+        Polyline polyline = Polyline.FromString(value);
         bool canRead = !polyline.IsEmpty;
         int position = 0;
 
@@ -61,7 +61,7 @@ public class PolylineReaderTest {
         string value = Values.Polyline.Valid;
         bool canRead = false;
         int position = value.Length;
-        Polyline polyline = Polyline.FromString(in value);
+        Polyline polyline = Polyline.FromString(value);
         PolylineReader reader = new(in polyline);
         List<Coordinate> expected = [.. Values.Coordinates.Valid];
         List<Coordinate> result = new(expected.Count());
@@ -85,7 +85,7 @@ public class PolylineReaderTest {
 
         // Act
         static void Read(string value) {
-            Polyline polyline = Polyline.FromString(in value);
+            Polyline polyline = Polyline.FromString(value);
             PolylineReader reader = new(in polyline);
             _ = reader.Read();
         }
@@ -102,7 +102,7 @@ public class PolylineReaderTest {
 
         // Act
         static void Read(string value, int iterations) {
-            Polyline polyline = Polyline.FromString(in value);
+            Polyline polyline = Polyline.FromString(value);
             PolylineReader reader = new(in polyline);
 
             for (int i = 0; i < iterations; i++) {
@@ -121,7 +121,7 @@ public class PolylineReaderTest {
 
         // Act
         static void Read(string value) {
-            Polyline polyline = Polyline.FromString(in value);
+            Polyline polyline = Polyline.FromString(value);
             PolylineReader reader = new(in polyline);
             _ = reader.Read();
         }

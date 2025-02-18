@@ -71,7 +71,7 @@ internal ref struct PolylineWriter {
 
     public readonly Polyline ToPolyline() {
         ReadOnlyMemory<char> buffer = _buffer[.._state.Position];
-        var polyline = Polyline.FromMemory(in buffer);
+        var polyline = Polyline.FromMemory(buffer);
         return polyline;
     }
 

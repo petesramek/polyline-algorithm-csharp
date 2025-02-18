@@ -117,7 +117,7 @@ public class PolylineTest {
         Polyline polyline = new(value);
 
         // Act
-        Polyline result = Polyline.FromString(in value);
+        Polyline result = Polyline.FromString(value);
 
         // Assert
         Assert.AreEqual(polyline, result);
@@ -131,7 +131,7 @@ public class PolylineTest {
         Polyline polyline = new(array);
 
         // Act
-        Polyline result = Polyline.FromCharArray(in array);
+        Polyline result = Polyline.FromCharArray(array);
 
         // Assert
         Assert.AreEqual(polyline, result);
@@ -145,7 +145,7 @@ public class PolylineTest {
         Polyline polyline = new(value);
 
         // Act
-        Polyline result = Polyline.FromMemory(in memory);
+        Polyline result = Polyline.FromMemory(memory);
 
         // Assert
         Assert.AreEqual(polyline, result);

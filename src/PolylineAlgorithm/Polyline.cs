@@ -82,14 +82,14 @@ public readonly struct Polyline : IEquatable<Polyline> {
     #region Explicit conversions
 
     [ExcludeFromCodeCoverage]
-    public static explicit operator Polyline(char[] polyline) => FromCharArray(in polyline);
+    public static explicit operator Polyline(char[] polyline) => FromCharArray(polyline);
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = $"Provided alternative {nameof(Polyline)}.{nameof(FromMemory)} to follow {nameof(String)}.{nameof(AsMemory)} naming pattern.")]
     [ExcludeFromCodeCoverage]
-    public static explicit operator Polyline(ReadOnlyMemory<char> polyline) => FromMemory(in polyline);
+    public static explicit operator Polyline(ReadOnlyMemory<char> polyline) => FromMemory(polyline);
 
     [ExcludeFromCodeCoverage]
-    public static explicit operator Polyline(string polyline) => FromString(in polyline);
+    public static explicit operator Polyline(string polyline) => FromString(polyline);
 
     #endregion
 }

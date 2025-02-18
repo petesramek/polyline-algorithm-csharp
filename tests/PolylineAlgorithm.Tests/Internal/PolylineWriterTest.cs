@@ -62,7 +62,7 @@ public class PolylineWriterTest {
     public void Write_Valid_Parameter_Ok() {
         // Arrange
         IEnumerable<Coordinate> coordinates = Values.Coordinates.Valid;
-        Polyline expected = Polyline.FromString(in Values.Polyline.Valid);
+        Polyline expected = Polyline.FromString(Values.Polyline.Valid);
         Memory<char> buffer = new char[coordinates.Count() * 12];
         PolylineWriter writer = new(in buffer);
         bool canWrite = buffer.Length > expected.Length;
