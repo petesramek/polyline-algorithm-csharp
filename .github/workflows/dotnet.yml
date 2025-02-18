@@ -238,5 +238,7 @@ jobs:
         name: package
         path: ${{ runner.temp }}/packages/
 
-    - run: dotnet nuget push **/*.nupkg --source ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED }} --api-key ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }}
+    - run: |
+        dotnet nuget add source ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED }} --name private-feed --username irrelevant --password ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }} --store-password-in-clear-text
+        dotnet nuget push **/*.nupkg --source private-feed --api-key ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }}
       working-directory: ${{ runner.temp }}/packages/
