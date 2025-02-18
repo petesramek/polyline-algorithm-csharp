@@ -8,11 +8,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{51C886AF-D61
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{576FEFFC-B624-40C3-A8AF-4E5233802EA0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{7F9807A1-01FF-40C3-9342-3F3F35D632DA}"
-	ProjectSection(SolutionItems) = preProject
-		nuget\PolylineAlgorithm.nuspec = nuget\PolylineAlgorithm.nuspec
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolylineAlgorithm.Tests", "tests\PolylineAlgorithm.Tests\PolylineAlgorithm.Tests.csproj", "{30324A08-AA42-425D-87DA-8F9C6AF60454}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmarks", "benchmarks", "{33C03F16-4313-4579-87E6-65892AF21D7D}"

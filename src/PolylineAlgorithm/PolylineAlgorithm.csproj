@@ -30,6 +30,15 @@
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Title>Polyline Algorithm for .NET</Title>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageTags>google;polyline;algorithm;maps;encoding;</PackageTags>
+		<Copyright>© 2025, Pete Sramek.</Copyright>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<Compile Update="Internal\ExceptionMessageResource.Designer.cs">
 			<DesignTime>True</DesignTime>
@@ -58,6 +67,13 @@
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
 			<_Parameter1>PolylineAlgorithm.Implementation.Benchmarks</_Parameter1>
 		</AssemblyAttribute>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
 	</ItemGroup>
 
 </Project>
