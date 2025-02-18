@@ -231,7 +231,7 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
-        source-url: ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED }}
+        source-url: https://pkgs.dev.azure.com/petesramek/_packaging/petesramek-development/nuget/v3/index.json
       env:
           NUGET_AUTH_TOKEN: ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }}
 
@@ -242,7 +242,7 @@ jobs:
         path: ${{ runner.temp }}/packages/
 
     - run: |
-        dotnet nuget add source ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED }} --name private-feed
+        dotnet nuget add source https://pkgs.dev.azure.com/petesramek/_packaging/petesramek-development/nuget/v3/index.json --name private-feed
         dotnet restore --interactive
         dotnet nuget push **/*.nupkg --source private-feed --api-key AzureArtifacts
       working-directory: ${{ runner.temp }}/packages/
