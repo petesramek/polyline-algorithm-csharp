@@ -19,7 +19,13 @@
 	<PropertyGroup>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
-	
+
+	<PropertyGroup>
+		<DebugType>pdbonly</DebugType>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<Compile Update="Internal\ExceptionMessageResource.Designer.cs">
 			<DesignTime>True</DesignTime>
