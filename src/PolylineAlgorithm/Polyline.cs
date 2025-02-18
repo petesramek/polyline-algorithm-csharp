@@ -70,11 +70,11 @@ public readonly struct Polyline : IEquatable<Polyline> {
 
     #region Factory methods
 
-    public static Polyline FromCharArray(ref readonly char[] polyline) => new(polyline);
+    public static Polyline FromCharArray(char[] polyline) => new(polyline);
 
-    public static Polyline FromMemory(ref readonly ReadOnlyMemory<char> polyline) => new(polyline);
+    public static Polyline FromMemory(ReadOnlyMemory<char> polyline) => new(polyline);
 
-    public static Polyline FromString(ref readonly string polyline) => new(polyline);
+    public static Polyline FromString(string polyline) => new(polyline);
 
 
     #endregion
