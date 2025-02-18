@@ -14,12 +14,12 @@ using System.Diagnostics.CodeAnalysis;
 /// Represents error that is caused by malformed polyline.
 /// </summary>
 [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Internal use only.")]
-[DebuggerDisplay($"{nameof(MalformedPolylineException)}: {{ToString()}}")]
-public sealed class MalformedPolylineException : Exception {
-    private MalformedPolylineException(string message)
+[DebuggerDisplay($"{nameof(InvalidPolylineException)}: {{ToString()}}")]
+public sealed class InvalidPolylineException : Exception {
+    private InvalidPolylineException(string message)
         : base(message) { }
 
     internal static void Throw(int position) {
-        throw new MalformedPolylineException(string.Format(ExceptionMessageResource.PolylineStringIsMalformedMessage, position));
+        throw new InvalidPolylineException(string.Format(ExceptionMessageResource.PolylineStringIsMalformedMessage, position));
     }
 }

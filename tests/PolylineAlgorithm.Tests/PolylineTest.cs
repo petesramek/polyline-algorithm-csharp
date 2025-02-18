@@ -127,7 +127,7 @@ public class PolylineTest {
     [DynamicData(nameof(StringParameters))]
     public void FromCharArray_Equals_New(string value) {
         // Arrange
-        char[] array = [..value];
+        char[] array = [.. value];
         Polyline polyline = new(array);
 
         // Act

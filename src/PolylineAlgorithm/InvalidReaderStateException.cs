@@ -20,7 +20,7 @@ public sealed class InvalidReaderStateException : Exception {
         : base(message) { }
 
     internal static void ThrowIfCannotRead(bool canRead, int readerPosition, int polylineLength) {
-        if(canRead) {
+        if (canRead) {
             return;
         }
 

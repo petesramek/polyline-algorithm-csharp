@@ -26,7 +26,7 @@ public sealed class InvalidCoordinateException : Exception {
     public Coordinate Coordinate { get; }
 
     internal static void ThrowIfNotValid(Coordinate coordinate) {
-        if(coordinate.IsValid) {
+        if (coordinate.IsValid) {
             return;
         }
 

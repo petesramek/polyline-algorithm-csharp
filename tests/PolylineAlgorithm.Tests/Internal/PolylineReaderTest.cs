@@ -124,9 +124,10 @@ public class PolylineReaderTest {
             Polyline polyline = Polyline.FromString(in value);
             PolylineReader reader = new(in polyline);
             _ = reader.Read();
-        };
+        }
+        ;
 
         // Assert
-        Assert.ThrowsExactly<MalformedPolylineException>(() => Read(value));
+        Assert.ThrowsExactly<InvalidPolylineException>(() => Read(value));
     }
 }

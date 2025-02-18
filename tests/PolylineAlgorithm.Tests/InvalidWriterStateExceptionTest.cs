@@ -8,7 +8,7 @@ namespace PolylineAlgorithm.Tests;
 using PolylineAlgorithm.Tests.Data;
 
 /// <summary>
-/// Defines tests for <see cref="MalformedPolylineException"/> type.
+/// Defines tests for <see cref="InvalidPolylineException"/> type.
 /// </summary>
 [TestClass]
 public class InvalidWriterStateExceptionTest {

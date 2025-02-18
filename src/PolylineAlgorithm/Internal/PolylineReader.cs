@@ -71,7 +71,7 @@ internal ref struct PolylineReader {
         } while (chunk >= Defaults.Algorithm.Space && CanRead);
 
         if (!CanRead && chunk >= Defaults.Algorithm.Space) {
-            MalformedPolylineException.Throw(Position);
+            InvalidPolylineException.Throw(Position);
         }
 
         return value + ((sum & 1) == 1 ? ~(sum >> 1) : sum >> 1);
