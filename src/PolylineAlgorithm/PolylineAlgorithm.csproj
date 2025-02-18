@@ -21,6 +21,10 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+	</PropertyGroup>
+
+	<PropertyGroup>
 		<DebugType>pdbonly</DebugType>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
