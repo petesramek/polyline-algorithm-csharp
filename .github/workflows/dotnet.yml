@@ -241,5 +241,7 @@ jobs:
         name: package
         path: ${{ runner.temp }}/packages/
 
-    - run: dotnet nuget push --api-key AzureArtifacts **/*.nupkg
+    - run: |
+        dotnet nuget add source ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED }} --name private-feed
+        dotnet nuget push **/*.nupkg --source private-feed --api-key AzureArtifacts
       working-directory: ${{ runner.temp }}/packages/
