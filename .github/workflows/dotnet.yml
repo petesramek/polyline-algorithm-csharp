@@ -179,7 +179,7 @@ jobs:
       working-directory: ${{ runner.temp }}/benchmarks/
 
   publish-docs:
-    # if: ${{ github.env.is_release && !github.env.is_preview }}
+    if: ${{ github.env.is_release && !github.env.is_preview }}
     name: Docs with .NET ${{ vars.DOTNET_SDK_VERSION }}
     needs: [benchmark,test]  
     environment:
@@ -246,4 +246,28 @@ jobs:
     - run: |
         dotnet nuget add source ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED }} --name private-feed --username irrelevant --password ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }} --store-password-in-clear-text
         dotnet nuget push **/*.*nupkg --source private-feed --api-key ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }}
+      working-directory: ${{ runner.temp }}/packages/
+  
+  release-package:
+    if: ${{ !github.env.is_release }}
+    name: Publish package with .NET ${{ vars.DOTNET_SDK_VERSION }}
+    needs: [pack, test]  
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Dotnet Setup
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
+
+    - name: Download Benchmarks
+      uses: actions/download-artifact@v4
+      with:
+        name: package
+        path: ${{ runner.temp }}/packages/
+
+    - run: |
+        dotnet nuget add source ${{ secrets.PUBLIC_NUGET_PACKAGE_FEED }} --name public-feed --username irrelevant --password ${{ secrets.PUBLIC_NUGET_PACKAGE_FEED_API_KEY }} --store-password-in-clear-text
+        dotnet nuget push **/*.*nupkg --source public-feed --api-key ${{ secrets.PUBLIC_NUGET_PACKAGE_FEED_API_KEY }}
       working-directory: ${{ runner.temp }}/packages/
