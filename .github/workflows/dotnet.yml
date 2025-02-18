@@ -231,6 +231,7 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
+        source-url: ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED }}
 
     - name: Download Benchmarks
       uses: actions/download-artifact@v4
@@ -238,5 +239,5 @@ jobs:
         name: package
         path: ${{ runner.temp }}/packages/
 
-    - run: dotnet nuget push --source ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED }} --api-key ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }} **/*.nupkg
+    - run: dotnet nuget push --api-key ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }} **/*.nupkg
       working-directory: ${{ runner.temp }}/packages/
