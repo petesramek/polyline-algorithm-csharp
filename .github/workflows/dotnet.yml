@@ -129,7 +129,7 @@ jobs:
       with:
         name: build
     - name: Pack with .NET ${{ vars.DOTNET_SDK_VERSION }}
-      run: dotnet pack ${{ vars.SRC_SEARCH_PATTERN }} --no-build --no-restore --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} --output ${{ runner.temp }}/packages/
+      run: dotnet pack ${{ vars.SRC_SEARCH_PATTERN }} --no-build --no-restore --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} -p:Version=${{ env.ASSEMBLY_VERSION }} -p:AssemblyInformationalVersion=${{ env.ASSEMBLY_INFORMATIONAL_VERSION }} -p:FileVersion=${{ env.FILE_VERSION }} --output ${{ runner.temp }}/packages/
     - name: Upload Package
       uses: actions/upload-artifact@v4
       with:
