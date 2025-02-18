@@ -239,4 +239,4 @@ jobs:
         path: ${{ runner.temp }}/packages/
 
     - run: dotnet nuget push --source ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED }} --api-key ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }} **/*.nupkg
-      working-directory: ${{ runner.temp }}/package/
+      working-directory: ${{ runner.temp }}/packages/
