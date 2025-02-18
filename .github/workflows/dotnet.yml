@@ -243,6 +243,5 @@ jobs:
 
     - run: |
         dotnet nuget add source https://pkgs.dev.azure.com/petesramek/_packaging/petesramek-development/nuget/v3/index.json --name private-feed
-        dotnet restore --interactive
         dotnet nuget push **/*.nupkg --source private-feed --api-key AzureArtifacts
       working-directory: ${{ runner.temp }}/packages/
