@@ -136,6 +136,7 @@ jobs:
         name: package
         path: |
           ${{ runner.temp }}/packages/**/*.nupkg
+          ${{ runner.temp }}/packages/**/*.snupkg
 
   benchmark:
     if: ${{ github.env.is_release || vars.BENCHMARKDOTNET_RUN_OVERRIDE == 'true' }}
@@ -214,3 +215,28 @@ jobs:
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
+
+  publish-package-internal:
+    if: ${{ !github.env.is_release }}
+    name: Publish package with .NET ${{ vars.DOTNET_SDK_VERSION }}
+    needs: [pack]  
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Dotnet Setup
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
+
+    - name: Download Benchmarks
+      uses: actions/download-artifact@v4
+      with:
+        name: package
+        path: ${{ runner.temp }}/packages/
+
+    - run: dotnet nuget push --source ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED }} --api-key ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }} **/*.nupkg
+      working-directory: ${{ runner.temp }}/package/
