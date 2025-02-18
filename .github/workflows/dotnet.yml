@@ -116,7 +116,7 @@ jobs:
 
   pack:
     name: Pack with .NET ${{ vars.DOTNET_SDK_VERSION }}
-    needs: [build]
+    needs: [build, versioning]
     runs-on: ubuntu-latest
     env:
       ASSEMBLY_VERSION: ${{ needs.versioning.outputs.ASSEMBLY_VERSION }}
