@@ -37,18 +37,14 @@ jobs:
         dotnet format whitespace
         dotnet format style
         dotnet format analyzers --no-restore --diagnostics IDE0073 --verbosity diagnostic
-      name: Apply file header rule
-      working-directory: ${{ github.workspace }}
-    - run: git add .
-      name: Stage file header rule changes
+      name: Apply style formatting and file header rule
       working-directory: ${{ github.workspace }}
     - run: |
+        git add .
         git config user.name "$(git log -n 1 --pretty=format:%an)"
         git config user.email "$(git log -n 1 --pretty=format:%ae)"
-      name: Set user and email from the last commit
-    - run: git commit -m "applied file header rule" 
-      name: Commit file header rule changes
-      working-directory: ${{ github.workspace }}
-    - run: git push origin ${{ github.ref }}
-      name: Push file header rule changes to ${{ github.ref }}
+        git commit -m "applied file header rule" 
+        git pull origin ${{ github.ref }}
+        git push origin ${{ github.ref }}
+      name: Push style formatting and file header rule to ${{ github.ref }}
       working-directory: ${{ github.workspace }}
