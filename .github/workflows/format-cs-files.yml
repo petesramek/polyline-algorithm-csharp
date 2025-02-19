@@ -34,10 +34,10 @@ jobs:
       with:
         dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
     - run: |
-        dotnet format whitespace --no-restore
-        dotnet format style --no-restore 
-        dotnet format analyzers --no-restore --diagnostics IDE0073
-      name: Apply formatting styles and file header rule
+        dotnet format whitespace
+        dotnet format style
+        dotnet format analyzers --no-restore --diagnostics IDE0073 --verbosity diagnostic
+      name: Apply file header rule
       working-directory: ${{ github.workspace }}
     - run: git add .
       name: Stage file header rule changes
@@ -46,7 +46,7 @@ jobs:
         git config user.name "$(git log -n 1 --pretty=format:%an)"
         git config user.email "$(git log -n 1 --pretty=format:%ae)"
       name: Set user and email from the last commit
-    - run: git commit -m "applied formatting styles and file header rule" 
+    - run: git commit -m "applied file header rule" 
       name: Commit file header rule changes
       working-directory: ${{ github.workspace }}
     - run: git push origin ${{ github.ref }}
