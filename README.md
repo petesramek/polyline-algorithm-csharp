@@ -1,4 +1,4 @@
-# olyline Algorithm for .NET (.NET Standard 2.1)
+# Polyline Algorithm for .NET (.NET Standard 2.1)
 
 Lightweight, high performance, low allocation, library providing Google Polyline Algorithm decoding and encoding capabalities.
 
