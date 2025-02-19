@@ -40,7 +40,9 @@ jobs:
       id: validate
       continue-on-error: true
       working-directory: ${{ github.workspace }}
-    - run: echo ${{ steps.validate.outputs.has-changes }}
+    - run: |
+        echo ${{ steps.validate.outputs.has-changes }}
+        echo ${{ steps.validate.outcome }}
     - run: |
         dotnet format style --verbosity diagnostic
         dotnet format analyzers --diagnostics IDE0073 --verbosity diagnostic
