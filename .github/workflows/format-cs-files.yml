@@ -46,7 +46,7 @@ jobs:
         dotnet format style
         dotnet format analyzers --no-restore --diagnostics IDE0073 --verbosity diagnostic
       name: Apply style formatting and file header rule
-      if: ${{ steps.validate.output.has-changes != true }}
+      if: ${{ steps.validate.output.has-changes != 'true' }}
       working-directory: ${{ github.workspace }}
     - run: |
         git add .
@@ -56,5 +56,5 @@ jobs:
         git pull origin ${{ github.ref }}
         git push origin ${{ github.ref }}
       name: Push style formatting and file header rule to ${{ github.ref }}
-      if: ${{ steps.validate.output.has-changes != true }}
+      if: ${{ steps.validate.output.has-changes != 'true' }}
       working-directory: ${{ github.workspace }}
