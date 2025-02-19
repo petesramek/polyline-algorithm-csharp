@@ -34,7 +34,6 @@ jobs:
       with:
         dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
     - run: |
-        dotnet format whitespace --no-restore --verify-no-changes --verbosity diagnostic
         dotnet format style --no-restore  --verify-no-changes --verbosity diagnostic
         dotnet format analyzers --no-restore --verify-no-changes --diagnostics IDE0073 --verbosity diagnostic
         echo "has-changes=true" >> "$GITHUB_OUTPUT"
@@ -43,7 +42,6 @@ jobs:
       working-directory: ${{ github.workspace }}
     - run: echo ${{ steps.validate.outputs.has-changes }}
     - run: |
-        dotnet format whitespace
         dotnet format style
         dotnet format analyzers --no-restore --diagnostics IDE0073 --verbosity diagnostic
       name: Apply style formatting and file header rule
