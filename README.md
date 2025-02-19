@@ -8,10 +8,9 @@ Lightweight, high performance, low allocation, library providing Google Polyline
 
 .NET CLI: `dotnet add package PolylineAlgorithm`
 
-Package Manager: `NuGet\Install-Package PolylineAlgorithm`
+Package Manager Console: `Install-Package PolylineAlgorithm`
 
 ## Hot to use it
-
 
 ### Documentation
 
