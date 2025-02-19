@@ -25,6 +25,8 @@ jobs:
   formatting:
     name: Format file headers with .NET ${{ vars.DOTNET_SDK_VERSION }}
     runs-on: windows-latest
+    env:
+      has-changes: true
     steps:
     - uses: actions/checkout@v3
       with:
@@ -36,23 +38,18 @@ jobs:
     - name: Install dotnet-format tool
       run: dotnet tool install -g dotnet-format
     - run: |
-        echo "has-changes=true" >> "$GITHUB_OUTPUT"
         dotnet format whitespace --verify-no-changes --verbosity diagnostic
         dotnet format style --verify-no-changes --verbosity diagnostic
         dotnet format analyzers --verify-no-changes --diagnostics IDE0073 --verbosity diagnostic
-        echo "has-changes=false" >> "$GITHUB_OUTPUT"
       id: validate
       continue-on-error: true
       working-directory: ${{ github.workspace }}
-    - run: |
-        echo ${{ steps.validate.outputs.has-changes }}
-        echo ${{ steps.validate.outcome }}
     - run: |
         dotnet format whitespace --verbosity diagnostic
         dotnet format style --verbosity diagnostic
         dotnet format analyzers --diagnostics IDE0073 --verbosity diagnostic
       name: Apply style formatting and file header rule
-      if: ${{ fromJSON(steps.validate.outputs.has-changes) }}
+      if: ${{ steps.validate.outcome != 'success' }}"
       working-directory: ${{ github.workspace }}
     - run: |
         git add .
@@ -62,5 +59,5 @@ jobs:
         git pull origin ${{ github.ref }}
         git push origin ${{ github.ref }}
       name: Push style formatting and file header rule to ${{ github.ref }}
-      if: ${{ fromJSON(steps.validate.outputs.has-changes) }}
+      if: ${{ steps.validate.outcome != 'success' }}"
       working-directory: ${{ github.workspace }}
