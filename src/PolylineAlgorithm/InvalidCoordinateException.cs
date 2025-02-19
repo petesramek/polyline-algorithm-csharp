@@ -15,9 +15,11 @@ using System.Diagnostics.CodeAnalysis;
 /// </summary>
 [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Internal use only.")]
 [DebuggerDisplay($"{nameof(InvalidCoordinateException)}: {{ToString()}}")]
-public sealed class InvalidCoordinateException : Exception {
+public sealed class InvalidCoordinateException : Exception
+{
     private InvalidCoordinateException(Coordinate coordinate, string message)
-        : base(message) {
+        : base(message)
+    {
         Coordinate = coordinate;
     }
 
@@ -26,8 +28,10 @@ public sealed class InvalidCoordinateException : Exception {
     /// </summary>
     public Coordinate Coordinate { get; }
 
-    internal static void ThrowIfNotValid(Coordinate coordinate) {
-        if (coordinate.IsValid) {
+    internal static void ThrowIfNotValid(Coordinate coordinate)
+    {
+        if (coordinate.IsValid)
+        {
             return;
         }
 

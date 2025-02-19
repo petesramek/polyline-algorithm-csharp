@@ -10,11 +10,13 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [StructLayout(LayoutKind.Auto)]
-internal ref struct PolylineWriter {
+internal ref struct PolylineWriter
+{
     private WriterState _state = new();
     private Memory<char> _buffer;
 
-    public PolylineWriter(ref readonly Memory<char> buffer) {
+    public PolylineWriter(ref readonly Memory<char> buffer)
+    {
         _buffer = buffer;
     }
 
@@ -23,7 +25,8 @@ internal ref struct PolylineWriter {
     public readonly int Position => _state.Position;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Write(ref readonly Coordinate coordinate) {
+    public void Write(ref readonly Coordinate coordinate)
+    {
         InvalidCoordinateException.ThrowIfNotValid(coordinate);
         InvalidWriterStateException.ThrowIfCannotWrite(CanWrite, Position, _buffer.Length);
 
@@ -36,20 +39,24 @@ internal ref struct PolylineWriter {
         WriteNext(in longDiff);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static void Imprecise(double value, out int result) {
+        static void Imprecise(double value, out int result)
+        {
             result = Convert.ToInt32(value * Defaults.Algorithm.Precision);
         }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    void WriteNext(ref readonly int value) {
+    void WriteNext(ref readonly int value)
+    {
         int rem = value << 1;
 
-        if (value < 0) {
+        if (value < 0)
+        {
             rem = ~rem;
         }
 
-        while (rem >= Defaults.Algorithm.Space) {
+        while (rem >= Defaults.Algorithm.Space)
+        {
             WriteChar(Convert.ToChar((Defaults.Algorithm.Space | rem & Defaults.Algorithm.UnitSeparator) + Defaults.Algorithm.QuestionMark));
             rem >>= Defaults.Algorithm.ShiftLength;
         }
@@ -58,7 +65,8 @@ internal ref struct PolylineWriter {
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    void WriteChar(char value) {
+    void WriteChar(char value)
+    {
         InvalidWriterStateException.ThrowIfCannotWrite(CanWrite, Position, _buffer.Length);
 
         _buffer.Span[Position] = value;
@@ -66,7 +74,8 @@ internal ref struct PolylineWriter {
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    void UpdateCurrent(ref readonly int latitude, ref readonly int longitude, out int latDiff, out int longDiff) {
+    void UpdateCurrent(ref readonly int latitude, ref readonly int longitude, out int latDiff, out int longDiff)
+    {
         latDiff = latitude - _state.Latitude;
         _state.Latitude = latitude;
 
@@ -74,15 +83,18 @@ internal ref struct PolylineWriter {
         _state.Longitude = longitude;
     }
 
-    public readonly Polyline ToPolyline() {
+    public readonly Polyline ToPolyline()
+    {
         ReadOnlyMemory<char> buffer = _buffer[.._state.Position];
         var polyline = Polyline.FromMemory(buffer);
         return polyline;
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4, Size = 12)]
-    private ref struct WriterState {
-        public WriterState() {
+    private ref struct WriterState
+    {
+        public WriterState()
+        {
             Position = Latitude = Longitude = 0;
         }
 

@@ -10,7 +10,8 @@ using System.Collections.Generic;
 /// <summary>
 /// Defines method to encode a set of coordinates.
 /// </summary>
-public interface IPolylineEncoder {
+public interface IPolylineEncoder
+{
     /// <summary>
     /// Converts a set of coordinates to an encoded polyline.
     /// </summary>

@@ -12,7 +12,8 @@ using PolylineAlgorithm.Tests.Data;
 /// Defines tests for <see cref="PolylineDecoder"/> type.
 /// </summary>
 [TestClass]
-public class PolylineDecoderTest {
+public class PolylineDecoderTest
+{
     public PolylineDecoder Decoder = new();
 
     /// <summary>
@@ -20,7 +21,8 @@ public class PolylineDecoderTest {
     /// </summary>
     /// <remarks>Expected to throw <see cref="ArgumentException"/>.</remarks>
     [TestMethod]
-    public void Decode_Empty_Input_ThrowsException() {
+    public void Decode_Empty_Input_ThrowsException()
+    {
         // Arrange
         Polyline empty = new();
 
@@ -36,7 +38,8 @@ public class PolylineDecoderTest {
     /// </summary>
     /// <remarks>Expected to throw <see cref="ArgumentException"/>.</remarks>
     [TestMethod]
-    public void Decode_Invalid_Input_ThrowsException() {
+    public void Decode_Invalid_Input_ThrowsException()
+    {
         // Arrange
         Polyline value = new(Values.Polyline.Invalid);
 
@@ -52,7 +55,8 @@ public class PolylineDecoderTest {
     /// </summary>
     /// <remarks>Expected result to equal <see cref="Values.Coordinates.Valid"/>..</remarks>
     [TestMethod]
-    public void Decode_Valid_Input_Ok() {
+    public void Decode_Valid_Input_Ok()
+    {
         // Arrange
         Polyline value = new(Values.Polyline.Valid);
 

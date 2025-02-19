@@ -12,7 +12,8 @@ using PolylineAlgorithm.Tests.Data;
 /// Defines tests for <see cref="PolylineReader"/> type.
 /// </summary>
 [TestClass]
-public class PolylineReaderTest {
+public class PolylineReaderTest
+{
     public static IEnumerable<object[]> Valid_Constructor_Parameters => [
         [ Values.Polyline.Empty ],
         [ Values.Polyline.Valid ],
@@ -26,7 +27,8 @@ public class PolylineReaderTest {
 
 
     [TestMethod]
-    public void Constructor_Parameterless_Ok() {
+    public void Constructor_Parameterless_Ok()
+    {
         // Arrange
         bool canRead = false;
         int position = 0;
@@ -41,7 +43,8 @@ public class PolylineReaderTest {
 
     [TestMethod]
     [DynamicData(nameof(Valid_Constructor_Parameters))]
-    public void Constructor_Valid_Parameter_Ok(string value) {
+    public void Constructor_Valid_Parameter_Ok(string value)
+    {
         // Arrange
         Polyline polyline = Polyline.FromString(value);
         bool canRead = !polyline.IsEmpty;
@@ -56,7 +59,8 @@ public class PolylineReaderTest {
     }
 
     [TestMethod]
-    public void Read_Valid_Parameter_Ok() {
+    public void Read_Valid_Parameter_Ok()
+    {
         // Arrange
         string value = Values.Polyline.Valid;
         bool canRead = false;
@@ -67,7 +71,8 @@ public class PolylineReaderTest {
         List<Coordinate> result = new(expected.Count());
 
         // Act
-        for (int i = 0; i < expected.Count(); i++) {
+        for (int i = 0; i < expected.Count(); i++)
+        {
             var coordinate = reader.Read();
             result.Add(coordinate);
         }
@@ -79,12 +84,14 @@ public class PolylineReaderTest {
     }
 
     [TestMethod]
-    public void Read_Empty_Polyline_InvalidReaderStateException_Thrown() {
+    public void Read_Empty_Polyline_InvalidReaderStateException_Thrown()
+    {
         // Arrange
         string value = string.Empty;
 
         // Act
-        static void Read(string value) {
+        static void Read(string value)
+        {
             Polyline polyline = Polyline.FromString(value);
             PolylineReader reader = new(in polyline);
             _ = reader.Read();
@@ -95,17 +102,20 @@ public class PolylineReaderTest {
     }
 
     [TestMethod]
-    public void Read_Index_Out_Of_Range_InvalidReaderStateException_Thrown() {
+    public void Read_Index_Out_Of_Range_InvalidReaderStateException_Thrown()
+    {
         // Arrange
         string value = Values.Polyline.Valid;
         int iterations = Values.Coordinates.Valid.Count() + 1;
 
         // Act
-        static void Read(string value, int iterations) {
+        static void Read(string value, int iterations)
+        {
             Polyline polyline = Polyline.FromString(value);
             PolylineReader reader = new(in polyline);
 
-            for (int i = 0; i < iterations; i++) {
+            for (int i = 0; i < iterations; i++)
+            {
                 _ = reader.Read();
             }
         }
@@ -115,12 +125,14 @@ public class PolylineReaderTest {
     }
 
     [TestMethod]
-    public void Read_Malformed_Polyline_PolylineMalformedException() {
+    public void Read_Malformed_Polyline_PolylineMalformedException()
+    {
         // Arrange
         string value = Values.Polyline.Malformed;
 
         // Act
-        static void Read(string value) {
+        static void Read(string value)
+        {
             Polyline polyline = Polyline.FromString(value);
             PolylineReader reader = new(in polyline);
             _ = reader.Read();
