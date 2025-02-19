@@ -7,10 +7,8 @@ on:
     - 'preview/**'
     - 'release/**'
     - 'support/**'
-    paths-ignore:
-    - '!src/**'
-  merge_group:
-    types: [checks_requested]
+    paths:
+      - '**.cs'
 
 permissions:
   contents: write
@@ -21,22 +19,19 @@ concurrency:
 
 jobs:      
   versioning:
-    name: Versioning with GitVersion ${{ vars.GIT_VERSION }}
+    name: Format file headers with .NET ${{ vars.DOTNET_SDK_VERSION }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - name: Install .NET ${{ vars.DOTNET_SDK_VERSION }}
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
     - run: dotnet format --diagnostics IDE0073
       name: Apply file header rule
-      working-directory: src
-    - run: dotnet format --diagnostics IDE0073
-      name: Apply file header rule
-      working-directory: src
     - run: git add .
-      name: Apply file header rule
-      working-directory: src
+      name: Stage file header rule changes
     - run: git commit -m "applied file header rule"
       name: Commit file header rule changes
-      working-directory: src
     - run: git push origin ${{ github.ref }}
-      name: Push to ${{ github.ref }}
-      working-directory: src
+      name: Push file header rule changes to ${{ github.ref }}
