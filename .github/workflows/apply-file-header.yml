@@ -33,7 +33,7 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
-    - run: dotnet format --diagnostics IDE0073 --verbosity diagnostic
+    - run: dotnet format analyzers --no-restore --diagnostics IDE0073 --verbosity diagnostic
       name: Apply file header rule
       working-directory: ${{ github.workspace }}
     - run: git add .
