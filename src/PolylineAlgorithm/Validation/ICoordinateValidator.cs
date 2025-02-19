@@ -10,8 +10,7 @@ using PolylineAlgorithm.Internal;
 /// <summary>
 /// Defines proprties and methods used for validating coordinates.
 /// </summary>
-public interface ICoordinateValidator
-{
+public interface ICoordinateValidator {
     /// <summary>
     /// Represents latitude validation range
     /// </summary>

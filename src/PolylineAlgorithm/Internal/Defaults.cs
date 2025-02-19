@@ -12,10 +12,8 @@ using System.Diagnostics.CodeAnalysis;
 /// Defines default values
 /// </summary>
 [ExcludeFromCodeCoverage]
-internal static class Defaults
-{
-    public static class Algorithm
-    {
+internal static class Defaults {
+    public static class Algorithm {
         /// <summary>
         /// Defines the coordinate precision
         /// </summary>
@@ -45,13 +43,11 @@ internal static class Defaults
     /// <summary>
     /// Defines coordinates default values
     /// </summary>
-    public static class Coordinate
-    {
+    public static class Coordinate {
         /// <summary>
         /// Defines latitude default values
         /// </summary>
-        public static class Latitude
-        {
+        public static class Latitude {
             /// <summary>
             /// Defines the maximum value for latitude
             /// </summary>
@@ -66,8 +62,7 @@ internal static class Defaults
         /// <summary>
         /// Defines longitude default values
         /// </summary>
-        public static class Longitude
-        {
+        public static class Longitude {
             /// <summary>
             /// Defines the maximum value for longitude
             /// </summary>
@@ -82,8 +77,7 @@ internal static class Defaults
         /// <summary>
         /// Defines default ranges for latitude and longitude
         /// </summary>
-        public static class Range
-        {
+        public static class Range {
             /// <summary>
             /// Defines latitude validation range
             /// </summary>

@@ -11,11 +11,9 @@ using PolylineAlgorithm.Tests.Data;
 /// Defines tests for <see cref="InvalidPolylineException"/> type.
 /// </summary>
 [TestClass]
-public class InvalidReaderStateExceptionTest
-{
+public class InvalidReaderStateExceptionTest {
     [TestMethod]
-    public void ThrowIfCannotwrite_Method_True_Random_Random_Parameter_InvalidReaderStateException_Throw()
-    {
+    public void ThrowIfCannotwrite_Method_True_Random_Random_Parameter_InvalidReaderStateException_Throw() {
         // Arrange
         bool canRead = true;
         int position = Values.InvalidReaderStateException.Position;
@@ -29,8 +27,7 @@ public class InvalidReaderStateExceptionTest
     }
 
     [TestMethod]
-    public void ThrowIfCannotRead_Method_False_Random_Random_Parameter_InvalidReaderStateException_Throw()
-    {
+    public void ThrowIfCannotRead_Method_False_Random_Random_Parameter_InvalidReaderStateException_Throw() {
         // Arrange
         bool canRead = false;
         int position = Values.InvalidReaderStateException.Position;

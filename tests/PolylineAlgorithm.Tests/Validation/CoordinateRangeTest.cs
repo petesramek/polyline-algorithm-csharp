@@ -11,16 +11,14 @@ using PolylineAlgorithm.Validation;
 /// Tests <see cref="Polyline"/> type.
 /// </summary>
 [TestClass]
-public class CoordinateRangeTest
-{
+public class CoordinateRangeTest {
     public static IEnumerable<object[]> Constructor_Valid_Parameters => [
         [ -90, 90 ],
         [ -180, 180 ],
     ];
 
     [TestMethod]
-    public void Constructor_Parameterless_Ok()
-    {
+    public void Constructor_Parameterless_Ok() {
         // Arrange
         double min = double.MinValue;
         double max = double.MaxValue;
@@ -40,8 +38,7 @@ public class CoordinateRangeTest
 
     [TestMethod]
     [DynamicData(nameof(Constructor_Valid_Parameters))]
-    public void Constructor_Valid_Parameters_Ok(double min, double max)
-    {
+    public void Constructor_Valid_Parameters_Ok(double min, double max) {
         // Arrange
         double belowMax = max - 1;
         double belowMin = min - 1;
@@ -64,15 +61,13 @@ public class CoordinateRangeTest
     }
 
     [TestMethod]
-    public void Constructor_Invalid_Min_Parameter_ArgumentOutOfRangeException()
-    {
+    public void Constructor_Invalid_Min_Parameter_ArgumentOutOfRangeException() {
         // Arrange
         double min = 0;
         double max = 0;
 
         // Act
-        static void New(double min, double max)
-        {
+        static void New(double min, double max) {
             CoordinateRange range = new(min, max);
 
         }
@@ -83,8 +78,7 @@ public class CoordinateRangeTest
 
     [TestMethod]
     [DynamicData(nameof(Constructor_Valid_Parameters))]
-    public void Equals_CoordinateRange_True(double min, double max)
-    {
+    public void Equals_CoordinateRange_True(double min, double max) {
         // Arrange
         CoordinateRange @this = new(min, max);
         CoordinateRange other = new(min, max);
@@ -98,8 +92,7 @@ public class CoordinateRangeTest
 
     [TestMethod]
     [DynamicData(nameof(Constructor_Valid_Parameters))]
-    public void Equals_CoordinateRange_False(double min, double max)
-    {
+    public void Equals_CoordinateRange_False(double min, double max) {
         // Arrange
         Coordinate @this = new(min, max);
         Coordinate other = new(0, 0);

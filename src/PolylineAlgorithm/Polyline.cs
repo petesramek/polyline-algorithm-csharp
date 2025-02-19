@@ -12,27 +12,22 @@ using System.Runtime.InteropServices;
 
 [StructLayout(LayoutKind.Auto)]
 [DebuggerDisplay("Value: {ToString()}, IsEmpty: {IsEmpty}, Length: {Length}")]
-public readonly struct Polyline : IEquatable<Polyline>
-{
+public readonly struct Polyline : IEquatable<Polyline> {
     private readonly ReadOnlyMemory<char> _value;
 
-    public Polyline()
-    {
+    public Polyline() {
         _value = ReadOnlyMemory<char>.Empty;
     }
 
-    public Polyline(string value)
-    {
+    public Polyline(string value) {
         _value = value?.AsMemory() ?? throw new ArgumentNullException(nameof(value));
     }
 
-    public Polyline(char[] value)
-    {
+    public Polyline(char[] value) {
         _value = value?.AsMemory() ?? throw new ArgumentNullException(nameof(value));
     }
 
-    public Polyline(ReadOnlyMemory<char> value)
-    {
+    public Polyline(ReadOnlyMemory<char> value) {
         _value = value;
     }
 

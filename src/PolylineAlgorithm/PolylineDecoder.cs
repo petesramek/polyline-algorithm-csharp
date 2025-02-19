@@ -12,17 +12,14 @@ using PolylineAlgorithm.Properties;
 /// <summary>
 /// Performs polyline algorithm decoding
 /// </summary>
-public class PolylineDecoder : IPolylineDecoder
-{
+public class PolylineDecoder : IPolylineDecoder {
 
     /// <inheritdoc />
     /// <exception cref="ArgumentException">Thrown when <paramref name="polyline"/> argument is null -or- empty.</exception>
     /// <exception cref="InvalidOperationException">Thrown when <paramref name="polyline"/> is not in correct format.</exception>
-    public IEnumerable<Coordinate> Decode(ref readonly Polyline polyline)
-    {
+    public IEnumerable<Coordinate> Decode(ref readonly Polyline polyline) {
         // Checking null and at least one character
-        if (polyline.IsEmpty)
-        {
+        if (polyline.IsEmpty) {
             throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeNullEmptyOrWhitespaceMessage, nameof(polyline));
         }
 
@@ -33,8 +30,7 @@ public class PolylineDecoder : IPolylineDecoder
         PolylineReader reader = new(in polyline);
 
         // Looping through encoded polyline char array
-        while (reader.CanRead)
-        {
+        while (reader.CanRead) {
             var coordinate = reader.Read();
 
             InvalidCoordinateException.ThrowIfNotValid(coordinate);

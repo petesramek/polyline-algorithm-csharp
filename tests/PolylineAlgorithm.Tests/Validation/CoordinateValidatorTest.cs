@@ -11,8 +11,7 @@ using PolylineAlgorithm.Validation;
 /// Tests <see cref="Polyline"/> type.
 /// </summary>
 [TestClass]
-public class CoordinateValidatorTest
-{
+public class CoordinateValidatorTest {
     private static readonly CoordinateRange _latitude = new(-90, 90);
     private static readonly CoordinateRange _longitude = new(-180, 180);
 
@@ -26,8 +25,7 @@ public class CoordinateValidatorTest
 
     [TestMethod]
     [DynamicData(nameof(IsValid_Method_Parameters))]
-    public void IsValid_Valid_Parameters_Ok(double latitude, double longitude, bool expected)
-    {
+    public void IsValid_Valid_Parameters_Ok(double latitude, double longitude, bool expected) {
         // Arrange
         Coordinate coordinate = new(latitude, longitude);
         CoordinateValidator validator = new(_latitude, _longitude);
@@ -40,15 +38,13 @@ public class CoordinateValidatorTest
     }
 
     [TestMethod]
-    public void Constructor_Invalid_Min_Parameter_ArgumentOutOfRangeException()
-    {
+    public void Constructor_Invalid_Min_Parameter_ArgumentOutOfRangeException() {
         // Arrange
         double min = 0;
         double max = 0;
 
         // Act
-        static void New(double min, double max)
-        {
+        static void New(double min, double max) {
             CoordinateRange range = new(min, max);
         }
 

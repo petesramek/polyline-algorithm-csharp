@@ -11,8 +11,7 @@ using PolylineAlgorithm.Tests.Data;
 /// Performs tests for <see cref="InvalidCoordinateException"/> type.
 /// </summary>
 [TestClass]
-public class InvalidCoordinateExceptionTest
-{
+public class InvalidCoordinateExceptionTest {
 
     /// <summary>
     /// Method is testing <see cref="InvalidCoordinateException" /> constructor. <see cref="Coordinate" /> and <see cref="Exception"/> are passed as arguments.
@@ -21,8 +20,7 @@ public class InvalidCoordinateExceptionTest
     /// <see cref="Exception.InnerException" /> equals passed argument,
     /// and <see cref="Exception.Message"/> in not <see langword="null"/>, empty -or- whitespace.</remarks>
     [TestMethod]
-    public void ThrowIfNotValid_Valid_Parameter_Ok()
-    {
+    public void ThrowIfNotValid_Valid_Parameter_Ok() {
         // Arrange
         var coordinate = Values.InvalidCoordinateException.Valid;
 
@@ -34,14 +32,12 @@ public class InvalidCoordinateExceptionTest
     }
 
     [TestMethod]
-    public void ThrowIfNotValid_Invalid_Parameter_InvalidCoordinateException_Thrown()
-    {
+    public void ThrowIfNotValid_Invalid_Parameter_InvalidCoordinateException_Thrown() {
         // Arrange
         var coordinate = Values.InvalidCoordinateException.Invalid;
 
         // Act
-        static void ThrowIfNotValid(Coordinate coordinate)
-        {
+        static void ThrowIfNotValid(Coordinate coordinate) {
             InvalidCoordinateException.ThrowIfNotValid(coordinate);
         }
 

@@ -12,8 +12,7 @@ using PolylineAlgorithm.Tests.Data;
 /// Defines tests for <see cref="PolylineReader"/> type.
 /// </summary>
 [TestClass]
-public class PolylineWriterTest
-{
+public class PolylineWriterTest {
     public static IEnumerable<object[]> Valid_Constructor_Parameter => [
         [ 0 ],
         [ 100 ]
@@ -30,8 +29,7 @@ public class PolylineWriterTest
 
 
     [TestMethod]
-    public void Constructor_Parameterless_Ok()
-    {
+    public void Constructor_Parameterless_Ok() {
         // Arrange
         bool canWrite = false;
         int position = 0;
@@ -46,8 +44,7 @@ public class PolylineWriterTest
 
     [TestMethod]
     [DynamicData(nameof(Valid_Constructor_Parameter))]
-    public void Constructor_Valid_Parameter_Ok(int length)
-    {
+    public void Constructor_Valid_Parameter_Ok(int length) {
         // Arrange
         Memory<char> buffer = new char[length];
         bool canWrite = !buffer.IsEmpty;
@@ -62,8 +59,7 @@ public class PolylineWriterTest
     }
 
     [TestMethod]
-    public void Write_Valid_Parameter_Ok()
-    {
+    public void Write_Valid_Parameter_Ok() {
         // Arrange
         IEnumerable<Coordinate> coordinates = Values.Coordinates.Valid;
         Polyline expected = Polyline.FromString(Values.Polyline.Valid);
@@ -73,8 +69,7 @@ public class PolylineWriterTest
         int position = expected.Length;
 
         // Act
-        foreach (var coordinate in coordinates)
-        {
+        foreach (var coordinate in coordinates) {
             writer.Write(in coordinate);
         }
 
@@ -86,15 +81,13 @@ public class PolylineWriterTest
 
     [TestMethod]
     [DynamicData(nameof(Invalid_Coordinate_Parameter))]
-    public void Write_Invalid_Coordinate_Parameter_Ok((double Latitude, double Longitude) value)
-    {
+    public void Write_Invalid_Coordinate_Parameter_Ok((double Latitude, double Longitude) value) {
         // Arrange
         Coordinate coordinate = new(value.Latitude, value.Longitude);
         int bufferSize = 12;
 
         // Act
-        static void Write(Coordinate coordinate, int bufferSize)
-        {
+        static void Write(Coordinate coordinate, int bufferSize) {
             Memory<char> buffer = new char[bufferSize];
             PolylineWriter writer = new(in buffer);
             writer.Write(in coordinate);
@@ -106,14 +99,12 @@ public class PolylineWriterTest
 
     [TestMethod]
     [DynamicData(nameof(Invalid_Buffer_Size_Parameter))]
-    public void Write_Buffer_Overflow_InvalidWriterStateException_Thrown(int bufferSize)
-    {
+    public void Write_Buffer_Overflow_InvalidWriterStateException_Thrown(int bufferSize) {
         // Arrange
         Coordinate coordinate = new();
 
         // Act
-        static void Write(Coordinate coordinate, int bufferSize)
-        {
+        static void Write(Coordinate coordinate, int bufferSize) {
             Memory<char> buffer = new char[bufferSize];
             PolylineWriter writer = new(in buffer);
 

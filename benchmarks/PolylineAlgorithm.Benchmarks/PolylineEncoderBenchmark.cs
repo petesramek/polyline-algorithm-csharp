@@ -10,8 +10,7 @@ using PolylineAlgorithm;
 using System.Collections.Generic;
 
 [RankColumn]
-public class PolylineEncoderBenchmark
-{
+public class PolylineEncoderBenchmark {
     private static readonly Random R = new();
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
@@ -24,22 +23,19 @@ public class PolylineEncoderBenchmark
     public PolylineEncoder Encoder = new();
 
     [GlobalSetup]
-    public void SetupData()
-    {
+    public void SetupData() {
         Enumeration = Enumerable.Range(0, 100).Select(i => new Coordinate(R.Next(-90, 90) + R.NextDouble(), R.Next(-180, 180) + R.NextDouble()));
         List = [.. Enumeration];
     }
 
     [Benchmark]
-    public Polyline PolylineEncoder_Encode_List()
-    {
+    public Polyline PolylineEncoder_Encode_List() {
         return Encoder
             .Encode(List!);
     }
 
     [Benchmark]
-    public Polyline PolylineEncoder_Encode_Enumerator()
-    {
+    public Polyline PolylineEncoder_Encode_Enumerator() {
         return Encoder
             .Encode(Enumeration!);
     }

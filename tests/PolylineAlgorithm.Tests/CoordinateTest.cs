@@ -11,8 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 /// Tests <see cref="Polyline"/> type.
 /// </summary>
 [TestClass]
-public class CoordinateTest
-{
+public class CoordinateTest {
     public static IEnumerable<object[]> Constructor_Valid_Parameters => [
         [ 90, 180 ],
         [ -90, -180 ],
@@ -28,8 +27,7 @@ public class CoordinateTest
     ];
 
     [TestMethod]
-    public void Constructor_Parameterless_Ok()
-    {
+    public void Constructor_Parameterless_Ok() {
         // Arrange
         bool valid = true;
         bool @default = true;
@@ -48,8 +46,7 @@ public class CoordinateTest
 
     [TestMethod]
     [DynamicData(nameof(Constructor_Valid_Parameters))]
-    public void Constructor_Valid_Parameters_Ok(double latitude, double longitude)
-    {
+    public void Constructor_Valid_Parameters_Ok(double latitude, double longitude) {
         // Arrange
         bool valid = true;
         bool @default = false;
@@ -66,8 +63,7 @@ public class CoordinateTest
 
     [TestMethod]
     [DynamicData(nameof(Constructor_Invalid_Parameters))]
-    public void Constructor_Invalid_Parameters_Ok(double latitude, double longitude)
-    {
+    public void Constructor_Invalid_Parameters_Ok(double latitude, double longitude) {
         // Arrange
         bool valid = false;
         bool @default = false;
@@ -85,8 +81,7 @@ public class CoordinateTest
 
     [TestMethod]
     [DynamicData(nameof(Constructor_Valid_Parameters))]
-    public void Equals_Coordinate_True(double latitude, double longitude)
-    {
+    public void Equals_Coordinate_True(double latitude, double longitude) {
         // Arrange
         Coordinate @this = new(latitude, longitude);
         Coordinate other = new(latitude, longitude);
@@ -100,8 +95,7 @@ public class CoordinateTest
 
     [TestMethod]
     [DynamicData(nameof(Constructor_Valid_Parameters))]
-    public void Equals_Coordinate_False(double latitude, double longitude)
-    {
+    public void Equals_Coordinate_False(double latitude, double longitude) {
         // Arrange
         Coordinate @this = new(latitude, longitude);
         Coordinate other = new(0, 0);

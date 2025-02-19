@@ -17,13 +17,11 @@ using System.Runtime.InteropServices;
 /// </summary>
 [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
 [DebuggerDisplay("{ToString()}")]
-public readonly struct Coordinate : IEquatable<Coordinate>
-{
+public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <summary>
     /// Initializes default instance of <see cref="Coordinate"/> with <see cref="Latitude" /> and <see cref="Longitude" /> equal to 0.
     /// </summary>
-    public Coordinate()
-    {
+    public Coordinate() {
         Latitude = 0d;
         Longitude = 0d;
     }
@@ -33,8 +31,7 @@ public readonly struct Coordinate : IEquatable<Coordinate>
     /// </summary>
     /// <param name="latitude">A latitude value.</param>
     /// <param name="longitude">A latitude value.</param>
-    public Coordinate(double latitude, double longitude)
-    {
+    public Coordinate(double latitude, double longitude) {
         Latitude = latitude;
         Longitude = longitude;
     }
@@ -67,15 +64,13 @@ public readonly struct Coordinate : IEquatable<Coordinate>
 
     /// <inheritdoc />
     [ExcludeFromCodeCoverage]
-    public override bool Equals(object? obj)
-    {
+    public override bool Equals(object? obj) {
         return obj is Coordinate coordinate && Equals(coordinate);
     }
 
     /// <inheritdoc />
     [ExcludeFromCodeCoverage]
-    public override int GetHashCode()
-    {
+    public override int GetHashCode() {
         return HashCode.Combine(Latitude, Longitude);
     }
 
@@ -85,8 +80,7 @@ public readonly struct Coordinate : IEquatable<Coordinate>
     /// <returns>The formatted string respresentation of this instance.</returns>
     /// <remarks>{ Latitude: [double], Longitude: [double] }</remarks>
     [ExcludeFromCodeCoverage]
-    public override string ToString()
-    {
+    public override string ToString() {
         return $"{{ {nameof(Latitude)}: {Latitude.ToString("G", CultureInfo.InvariantCulture)}, {nameof(Longitude)}: {Longitude.ToString("G", CultureInfo.InvariantCulture)} }}";
     }
 
@@ -95,8 +89,7 @@ public readonly struct Coordinate : IEquatable<Coordinate>
     #region IEquatable<Coordinate> implementation
 
     /// <inheritdoc />
-    public bool Equals(Coordinate other)
-    {
+    public bool Equals(Coordinate other) {
         return Latitude == other.Latitude &&
                Longitude == other.Longitude;
     }
@@ -107,15 +100,13 @@ public readonly struct Coordinate : IEquatable<Coordinate>
 
     /// <inheritdoc />
     [ExcludeFromCodeCoverage]
-    public static bool operator ==(Coordinate left, Coordinate right)
-    {
+    public static bool operator ==(Coordinate left, Coordinate right) {
         return left.Equals(right);
     }
 
     /// <inheritdoc />
     [ExcludeFromCodeCoverage]
-    public static bool operator !=(Coordinate left, Coordinate right)
-    {
+    public static bool operator !=(Coordinate left, Coordinate right) {
         return !(left == right);
     }
 

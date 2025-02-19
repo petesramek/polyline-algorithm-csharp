@@ -15,8 +15,7 @@ using System.Runtime.CompilerServices;
 /// <summary>
 /// Performs polyline algorithm encoding
 /// </summary>
-public class PolylineEncoder : IPolylineEncoder
-{
+public class PolylineEncoder : IPolylineEncoder {
     /// <summary>
     /// Encodes a set of coordinates to polyline.
     /// </summary>
@@ -24,17 +23,14 @@ public class PolylineEncoder : IPolylineEncoder
     /// <returns>Polyline encoded representation.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="coordinates"/> argument is null.</exception>
     /// <exception cref="ArgumentException">Thrown when <paramref name="coordinates"/> argument is empty enumeration.</exception>
-    public Polyline Encode(IEnumerable<Coordinate> coordinates)
-    {
-        if (coordinates is null)
-        {
+    public Polyline Encode(IEnumerable<Coordinate> coordinates) {
+        if (coordinates is null) {
             throw new ArgumentNullException(nameof(coordinates));
         }
 
         int count = GetCount(in coordinates);
 
-        if (count == 0)
-        {
+        if (count == 0) {
             throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeEmptyEnumerationMessage, nameof(coordinates));
         }
 
@@ -42,8 +38,7 @@ public class PolylineEncoder : IPolylineEncoder
         Memory<char> buffer = new char[capacity];
         PolylineWriter writer = new(in buffer);
 
-        foreach (var coordinate in coordinates)
-        {
+        foreach (var coordinate in coordinates) {
             InvalidCoordinateException.ThrowIfNotValid(coordinate);
             writer.Write(in coordinate);
         }
@@ -52,8 +47,7 @@ public class PolylineEncoder : IPolylineEncoder
 
         [ExcludeFromCodeCoverage]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int GetCount(ref readonly IEnumerable<Coordinate> coordinates) => coordinates switch
-        {
+        static int GetCount(ref readonly IEnumerable<Coordinate> coordinates) => coordinates switch {
             ICollection<Coordinate> collection => collection.Count,
             _ => coordinates.Count(),
         };

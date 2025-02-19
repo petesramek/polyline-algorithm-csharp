@@ -12,16 +12,14 @@ using System;
 /// Tests <see cref="Polyline"/> type.
 /// </summary>
 [TestClass]
-public class PolylineTest
-{
+public class PolylineTest {
     public static IEnumerable<object[]> StringParameters => [
         [Values.Polyline.Empty],
         [Values.Polyline.Valid]
     ];
 
     [TestMethod]
-    public void Constructor_Parameterless_Ok()
-    {
+    public void Constructor_Parameterless_Ok() {
         // Arrange
         bool empty = true;
         int length = 0;
@@ -37,8 +35,7 @@ public class PolylineTest
     }
 
     [TestMethod]
-    public void Constructor_Null_String_ArgumentNullException()
-    {
+    public void Constructor_Null_String_ArgumentNullException() {
         // Arrange
         string value = null!;
 
@@ -51,8 +48,7 @@ public class PolylineTest
 
     [TestMethod]
     [DynamicData(nameof(StringParameters))]
-    public void Constructor_String_Parameter_Ok(string value)
-    {
+    public void Constructor_String_Parameter_Ok(string value) {
         // Arrange
         bool empty = value.Length == 0;
         int length = value.Length;
@@ -68,8 +64,7 @@ public class PolylineTest
     }
 
     [TestMethod]
-    public void Constructor_Null_CharArray_ArgumentNullException()
-    {
+    public void Constructor_Null_CharArray_ArgumentNullException() {
         // Arrange
         char[] value = null!;
 
@@ -83,8 +78,7 @@ public class PolylineTest
 
     [TestMethod]
     [DynamicData(nameof(StringParameters))]
-    public void Constructor_CharArray_Parameter_Ok(string value)
-    {
+    public void Constructor_CharArray_Parameter_Ok(string value) {
         // Arrange
         bool empty = value.Length == 0;
         int length = value.Length;
@@ -101,8 +95,7 @@ public class PolylineTest
 
     [TestMethod]
     [DynamicData(nameof(StringParameters))]
-    public void Constructor_Memory_Parameter_Ok(string value)
-    {
+    public void Constructor_Memory_Parameter_Ok(string value) {
         // Arrange
         bool empty = value.Length == 0;
         int length = value.Length;
@@ -119,8 +112,7 @@ public class PolylineTest
 
     [TestMethod]
     [DynamicData(nameof(StringParameters))]
-    public void FromString_Equals_New(string value)
-    {
+    public void FromString_Equals_New(string value) {
         // Arrange
         Polyline polyline = new(value);
 
@@ -133,8 +125,7 @@ public class PolylineTest
 
     [TestMethod]
     [DynamicData(nameof(StringParameters))]
-    public void FromCharArray_Equals_New(string value)
-    {
+    public void FromCharArray_Equals_New(string value) {
         // Arrange
         char[] array = [.. value];
         Polyline polyline = new(array);
@@ -148,8 +139,7 @@ public class PolylineTest
 
     [TestMethod]
     [DynamicData(nameof(StringParameters))]
-    public void FromMemory_Equals_New(string value)
-    {
+    public void FromMemory_Equals_New(string value) {
         // Arrange
         ReadOnlyMemory<char> memory = value.AsMemory();
         Polyline polyline = new(value);
@@ -164,8 +154,7 @@ public class PolylineTest
 
     [TestMethod]
     [DynamicData(nameof(StringParameters))]
-    public void ToString_Equals_Constructor_Parameter(string value)
-    {
+    public void ToString_Equals_Constructor_Parameter(string value) {
         // Arrange
         Polyline polyline = new(value);
         string expected = value;
@@ -179,8 +168,7 @@ public class PolylineTest
 
     [TestMethod]
     [DynamicData(nameof(StringParameters))]
-    public void ToCharArray_Equals_Constructor_Parameter(string value)
-    {
+    public void ToCharArray_Equals_Constructor_Parameter(string value) {
         // Arrange
         Polyline polyline = new(value);
         char[] expected = value.ToCharArray();
@@ -194,8 +182,7 @@ public class PolylineTest
 
     [TestMethod]
     [DynamicData(nameof(StringParameters))]
-    public void AsMemory_Equals_Constructor_Parameter(string value)
-    {
+    public void AsMemory_Equals_Constructor_Parameter(string value) {
         // Arrange
         Polyline polyline = new(value);
         ReadOnlyMemory<char> expected = value.AsMemory();

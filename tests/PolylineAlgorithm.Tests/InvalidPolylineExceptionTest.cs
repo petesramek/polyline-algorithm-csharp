@@ -11,11 +11,9 @@ using PolylineAlgorithm.Tests.Data;
 /// Defines tests for <see cref="InvalidPolylineException"/> type.
 /// </summary>
 [TestClass]
-public class InvalidPolylineExceptionTest
-{
+public class InvalidPolylineExceptionTest {
     [TestMethod]
-    public void Throw_Method_Invalid_Coordinate_Parameter_PolylineMalformedException_Throw()
-    {
+    public void Throw_Method_Invalid_Coordinate_Parameter_PolylineMalformedException_Throw() {
         // Arrange
         var position = Values.MalformedPolylineException.Position;
 
