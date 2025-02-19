@@ -34,16 +34,16 @@ jobs:
       with:
         dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
     - run: |
-        dotnet format style --no-restore  --verify-no-changes --verbosity diagnostic
-        dotnet format analyzers --no-restore --verify-no-changes --diagnostics IDE0073 --verbosity diagnostic
+        dotnet format style --verify-no-changes --verbosity diagnostic
+        dotnet format analyzers --verify-no-changes --diagnostics IDE0073 --verbosity diagnostic
         echo "has-changes=true" >> "$GITHUB_OUTPUT"
       id: validate
       continue-on-error: true
       working-directory: ${{ github.workspace }}
     - run: echo ${{ steps.validate.outputs.has-changes }}
     - run: |
-        dotnet format style
-        dotnet format analyzers --no-restore --diagnostics IDE0073 --verbosity diagnostic
+        dotnet format style --verbosity diagnostic
+        dotnet format analyzers --diagnostics IDE0073 --verbosity diagnostic
       name: Apply style formatting and file header rule
       if: ${{ fromJSON(steps.validate.outputs.has-changes) }}
       working-directory: ${{ github.workspace }}
