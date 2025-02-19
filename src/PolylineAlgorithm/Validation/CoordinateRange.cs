@@ -6,6 +6,7 @@
 namespace PolylineAlgorithm.Validation;
 
 using PolylineAlgorithm.Internal;
+using PolylineAlgorithm.Properties;
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;

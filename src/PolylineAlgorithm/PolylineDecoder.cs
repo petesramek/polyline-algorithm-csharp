@@ -1,11 +1,7 @@
-﻿//  
-// Copyright (c) Pete Sramek. All rights reserved.  
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.  
-//
-
-namespace PolylineAlgorithm;
+﻿namespace PolylineAlgorithm;
 
 using PolylineAlgorithm.Internal;
+using PolylineAlgorithm.Properties;
 
 
 /// <summary>

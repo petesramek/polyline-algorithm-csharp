@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PolylineAlgorithm.Internal {
+namespace PolylineAlgorithm.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace PolylineAlgorithm.Internal {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PolylineAlgorithm.Internal.ExceptionMessageResource", typeof(ExceptionMessageResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PolylineAlgorithm.Properties.ExceptionMessageResource", typeof(ExceptionMessageResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
