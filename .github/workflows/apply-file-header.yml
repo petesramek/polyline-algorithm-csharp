@@ -30,7 +30,7 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
-    - run: dotnet format --diagnostics IDE0073
+    - run: dotnet format --diagnostics IDE0073 --verbosity diagnostics
       name: Apply file header rule
     - run: git add .
       name: Stage file header rule changes
