@@ -1,4 +1,8 @@
+# File header
+
 file_header_template = //\n// Copyright (c) Pete Sramek. All rights reserved.\n// Licensed under the MIT License. See LICENSE file in the project root for full license information.\n//
+dotnet_diagnostic.IDE0073.severity = warning
+
 [*.cs]
 #### Naming styles ####
 
@@ -38,7 +42,7 @@ csharp_style_expression_bodied_accessors = true:silent
 csharp_style_expression_bodied_lambdas = when_on_single_line:silent
 csharp_style_expression_bodied_local_functions = when_on_single_line:silent
 
-[*.{cs,vb}]
+[*.cs]
 #### Naming styles ####
 
 # Naming rules
