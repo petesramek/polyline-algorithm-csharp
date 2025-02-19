@@ -11,7 +11,8 @@ using PolylineAlgorithm.Tests.Data;
 /// Defines tests for <see cref="PolylineEncoder"/> type.
 /// </summary>
 [TestClass]
-public class PolylineEncoderTest {
+public class PolylineEncoderTest
+{
     /// <summary>
     /// Subject under test.
     /// </summary>
@@ -22,12 +23,14 @@ public class PolylineEncoderTest {
     /// Expected result is <see cref="ArgumentNullException"/>.
     /// </summary>
     [TestMethod]
-    public void Encode_NullInput_ThrowsException() {
+    public void Encode_NullInput_ThrowsException()
+    {
         // Arrange
         IEnumerable<Coordinate> @null = null!;
 
         // Act
-        void EncodeNullCoordinates() {
+        void EncodeNullCoordinates()
+        {
             Encoder.Encode(@null);
         }
 
@@ -40,12 +43,14 @@ public class PolylineEncoderTest {
     /// Expected result is <see cref="ArgumentException"/>.
     /// </summary>
     [TestMethod]
-    public void Encode_EmptyInput_ThrowsException() {
+    public void Encode_EmptyInput_ThrowsException()
+    {
         // Arrange
         IEnumerable<Coordinate> empty = Values.Coordinates.Empty;
 
         // Act
-        void EncodeEmptyCoordinates() {
+        void EncodeEmptyCoordinates()
+        {
             Encoder.Encode(empty);
         }
 
@@ -58,12 +63,14 @@ public class PolylineEncoderTest {
     /// Expected result is <see cref="InvalidCoordinateException"/>.
     /// </summary>
     [TestMethod]
-    public void Encode_InvalidInput_ThrowsException() {
+    public void Encode_InvalidInput_ThrowsException()
+    {
         // Arrange
         IEnumerable<Coordinate> invalid = Values.Coordinates.Invalid;
 
         // Act
-        void EncodeEmptyCoordinates() {
+        void EncodeEmptyCoordinates()
+        {
             Encoder.Encode(invalid);
         }
 
@@ -76,7 +83,8 @@ public class PolylineEncoderTest {
     /// Expected result is result and <see cref="Values.Polyline.Valid"/> are equal.
     /// </summary>
     [TestMethod]
-    public void Encode_ValidInput_Ok() {
+    public void Encode_ValidInput_Ok()
+    {
         // Arrange
         IEnumerable<Coordinate> valid = Values.Coordinates.Valid;
 

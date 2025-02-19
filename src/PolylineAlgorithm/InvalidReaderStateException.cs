@@ -16,18 +16,24 @@ using System.Diagnostics.CodeAnalysis;
 /// </summary>
 [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Internal use only.")]
 [DebuggerDisplay($"{nameof(InvalidReaderStateException)}: {{ToString()}}")]
-public sealed class InvalidReaderStateException : Exception {
+public sealed class InvalidReaderStateException : Exception
+{
     private InvalidReaderStateException(string message)
         : base(message) { }
 
-    internal static void ThrowIfCannotRead(bool canRead, int readerPosition, int polylineLength) {
-        if (canRead) {
+    internal static void ThrowIfCannotRead(bool canRead, int readerPosition, int polylineLength)
+    {
+        if (canRead)
+        {
             return;
         }
 
-        if (polylineLength == 0) {
+        if (polylineLength == 0)
+        {
             throw new InvalidReaderStateException(ExceptionMessageResource.PolylineStringIsEmptyMessage);
-        } else {
+        }
+        else
+        {
             throw new InvalidReaderStateException(string.Format(ExceptionMessageResource.UnableToReadPolylineAtPositionMessageFormat, readerPosition, polylineLength));
         }
     }

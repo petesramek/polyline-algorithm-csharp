@@ -10,13 +10,15 @@ using System.Collections.Generic;
 /// <summary>
 /// Defines default values and objects used for testing purposes
 /// </summary>
-internal static class Values {
+internal static class Values
+{
     private static readonly Random _random = new(DateTime.Now.Millisecond);
 
     /// <summary>
     /// Defines default decoded values and objects udśed for testing purposes
     /// </summary>
-    public static class Coordinates {
+    public static class Coordinates
+    {
         /// <summary>
         /// Defines empty range of coordinates. Equals to decoded <seealso cref="Polyline.Empty"/>
         /// </summary>
@@ -142,7 +144,8 @@ internal static class Values {
     /// <summary>
     /// Defines default encoded values and objects udśed for testing purposes
     /// </summary>
-    public static class Polyline {
+    public static class Polyline
+    {
         /// <summary>
         /// Defines empty string of polyline encoded coordinates. Equals to encoded <seealso cref="Coordinates.Empty"/>
         /// </summary>
@@ -164,22 +167,26 @@ internal static class Values {
         public static readonly string Valid = @"sq_|Fptm{UrbxoHinoiEuhmbHctjfc@`rocCt|nfJgiauLvc_uIh`pg_@h_fkVgctZoyqfW{rxgQhhymFpuvvDwqcfTlqbcBiegdTwf{uNngc|z@{vhlDnsi_B~nz`O}d_hNp{n`E}kcoKm`bCiul~\jhg|Hv{qoWshzh\{lf_G`pzMqm|bLzswoQbhcm`@b`}cIgignPgxntR|}vo^f~|}L}|_jBa|ujWuxkjQfj|w[wsz`Pmdb{XohnwA`srxWjitms@c_~`Tava_l@jxxcF`d|zHcpnaMnd{kYzccwPxzpiHfsxlL}jjjQqvdbIikyvj@cjdqTh`zoDzqleHnfmik@tbnoB_t}gFkzx_Ct_eiP`wxrBcd_|w@zlhfPtlxgBkwyyZn|~tFlpj|HxqiwUnddkFoo|nTee}dSfkcg`@py`uQiguom@zkkpEfcgkAntuuDzl~il@ir_gCrd~nI_ryeC_qmmMl_kgCz`qgFzkejBmlchYyp`hZ`_cuYzuc}Onqz}Ew~Gcsmj@lp{Hqj_gz@ne{pJnny~]g{tuNxbno[lfq_Lqhwjt@qn|cCuxnMyivuIh{|tR`ylsQlqbfO}rf`LxghfBg~{nAv`gdNbjh_Fglt|NfxwyBowwhW{bdtNdbkqe@rxtwSy{_fX{btm@va`_LkhwuUyqgzK`xdnKgbwsFigt_Mofdn\h|x[ccoPtbpvNz}skb@pl~xEqascV_wsx[`f_z]zewFs`zjAhturWxayhJqmfaAjmhhHxwuwF_aru@ojemVq|beu@kkucBdmryTevflDcbmdAnp|dHfpbd^io}z@e~}dFzcybQ}`hxOyt|bNl}blLnuspKk|t|k@itjfHt}}aVyzmcF_rgmLct}x@bazdq@loajBxygb@f}krVgnuqOcrx_Daqvp_@ew}yUn}kpU|uwnItashEpe_aHusi{Fsu}_Ewfhv[dzhzKxh_qXucxfXmynkGxuqbW|ppgi@vrsq@clryZk`bt^spkyP";
     }
 
-    public static class MalformedPolylineException {
+    public static class MalformedPolylineException
+    {
         public static readonly int Position = _random.Next();
     }
 
-    public static class InvalidCoordinateException {
+    public static class InvalidCoordinateException
+    {
         public static readonly Coordinate Valid = new(_random.NextDouble(), _random.NextDouble());
 
         public static readonly Coordinate Invalid = new(double.MinValue, double.MaxValue);
     }
 
-    public static class InvalidReaderStateException {
+    public static class InvalidReaderStateException
+    {
         public static readonly int Position = _random.Next();
         public static readonly int Length = Position;
     }
 
-    public static class InvalidWriterStateException {
+    public static class InvalidWriterStateException
+    {
         public static readonly int Position = _random.Next();
         public static readonly int Length = Position;
     }
