@@ -7,6 +7,7 @@ Lightweight, high performance, low allocation, library providing Google Polyline
 .NET Polyline Algorithm is avalable as a NuGet package targeting .NET Standard 2.1.
 
 .NET CLI:
+
 `dotnet add package PolylineAlgorithm`
 
 Package Manager:
