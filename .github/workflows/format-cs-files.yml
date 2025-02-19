@@ -41,6 +41,7 @@ jobs:
       id: validate
       continue-on-error: true
       working-directory: ${{ github.workspace }}
+    - run: echo ${{ steps.validate.outputs.has-changes }}
     - run: |
         dotnet format whitespace
         dotnet format style
