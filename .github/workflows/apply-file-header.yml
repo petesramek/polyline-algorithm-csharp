@@ -14,6 +14,7 @@ on:
       - '**.cs'
 
 permissions:
+  actions: read
   contents: write
 
 concurrency: 
@@ -32,9 +33,13 @@ jobs:
         dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
     - run: dotnet format --diagnostics IDE0073 --verbosity diagnostic
       name: Apply file header rule
+      working-directory: ${{ github.workspace }}
     - run: git add .
       name: Stage file header rule changes
+      working-directory: ${{ github.workspace }}
     - run: git commit -m "applied file header rule"
       name: Commit file header rule changes
+      working-directory: ${{ github.workspace }}
     - run: git push origin ${{ github.ref }}
       name: Push file header rule changes to ${{ github.ref }}
+      working-directory: ${{ github.workspace }}
