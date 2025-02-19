@@ -36,6 +36,7 @@ jobs:
     - name: Install dotnet-format tool
       run: dotnet tool install -g dotnet-format
     - run: |
+        echo "has-changes=true" >> "$GITHUB_OUTPUT"
         dotnet format whitespace --verify-no-changes --verbosity diagnostic
         dotnet format style --verify-no-changes --verbosity diagnostic
         dotnet format analyzers --verify-no-changes --diagnostics IDE0073 --verbosity diagnostic
