@@ -36,7 +36,7 @@ jobs:
     - run: |
         dotnet format style --verify-no-changes --verbosity diagnostic
         dotnet format analyzers --verify-no-changes --diagnostics IDE0073 --verbosity diagnostic
-        echo "has-changes=true" >> "$GITHUB_OUTPUT"
+        echo "has-changes=false" >> "$GITHUB_OUTPUT"
       id: validate
       continue-on-error: true
       working-directory: ${{ github.workspace }}
