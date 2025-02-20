@@ -53,8 +53,10 @@ jobs:
     - name: Validate with .NET ${{ vars.DOTNET_SDK_VERSION }}
       shell: bash
       run: |
-        trap 'echo "has-changes=$?" >> "$GITHUB_OUTPUT"' EXIT
+        set +e
         git diff --quiet --exit-code --cached
+        result="$?"
+        echo $result
       id: validate
       continue-on-error: true
       working-directory: ${{ github.workspace }}
