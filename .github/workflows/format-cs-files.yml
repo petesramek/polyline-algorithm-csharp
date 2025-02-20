@@ -47,7 +47,8 @@ jobs:
       run: |
         set +e
         git diff --quiet --exit-code --cached
-        echo has-changes="$?" >> $GITHUB_OUTPUT
+        exitcode="$?"
+        echo has-changes=$exitcode >> $GITHUB_OUTPUT
         set -e
       working-directory: ${{ github.workspace }}
     - name: Push to ${{ github.ref }}
