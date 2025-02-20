@@ -39,6 +39,7 @@ jobs:
       run: dotnet tool install -g dotnet-format
     - name: Format with .NET ${{ vars.DOTNET_SDK_VERSION }}
       run: |
+        git pull origin ${{ github.ref }}
         dotnet format whitespace --verbosity diagnostic
         dotnet format style --verbosity diagnostic
         dotnet format analyzers --diagnostics IDE0073 --verbosity diagnostic
@@ -46,10 +47,10 @@ jobs:
     - name: Push to ${{ github.ref }}
       run: |
         git config --global core.autocrlf false
-        git pull origin ${{ github.ref }}
         git add .
         git config user.name "$(git log -n 1 --pretty=format:%an)"
         git config user.email "$(git log -n 1 --pretty=format:%ae)"
         git commit -m "applied file header rule"
+        git pull origin ${{ github.ref }}
         git push origin ${{ github.ref }}
       working-directory: ${{ github.workspace }}
