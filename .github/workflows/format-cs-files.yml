@@ -52,7 +52,7 @@ jobs:
       continue-on-error: true
       working-directory: ${{ github.workspace }}
     - name: Push to ${{ github.ref }}
-      if: ${{ fromJSON(steps.validate.outputs.has-changes) }}"
+      if: ${{ fromJSON(steps.validate.outputs.has-changes) == 1 }}"
       run: |
         echo ${{ steps.validate.outputs.has-changes }}
         echo ${{ fromJSON(steps.validate.outputs.has-changes) }}
