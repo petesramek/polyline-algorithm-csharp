@@ -12,16 +12,24 @@ inputs:
   is-release:
     description: 'Release flag'
     required: false
-    default: false
+    default: 'false'
 outputs:
-  ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
-  ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}+${{ steps.gitversion.outputs.sha }}
-  FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
-  PACKAGE_VERSION: ${{ fromJSON(format('[ "{0}{1}", "{0}" ]', steps.gitversion.outputs.assemblySemVer, steps.gitversion.outputs.preReleaseLabelWithDash))[fromJSON($INPUT_IS_RELEASE)] }}
+  ASSEMBLY_VERSION:
+    description: ''
+    value: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
+  ASSEMBLY_INFORMATIONAL_VERSION:
+    description: ''
+    value: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}+${{ steps.gitversion.outputs.sha }}
+  FILE_VERSION:
+    description: ''
+    value: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
+  PACKAGE_VERSION:
+    description: ''
+    value: ${{ fromJSON(format('[ "{0}{1}", "{0}" ]', steps.gitversion.outputs.assemblySemVer, steps.gitversion.outputs.preReleaseLabelWithDash))[fromJSON($INPUT_IS_RELEASE)] }}
+    
 runs:
   using: "composite"
   steps:
-    steps:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
