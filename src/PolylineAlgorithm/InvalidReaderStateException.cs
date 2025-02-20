@@ -16,7 +16,11 @@ using System.Diagnostics.CodeAnalysis;
 /// </summary>
 [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Internal use only.")]
 [DebuggerDisplay($"{nameof(InvalidReaderStateException)}: {{ToString()}}")]
-public sealed class InvalidReaderStateException : Exception {
+public sealed class InvalidReaderStateException : Exception
+    
+    
+    
+    {
     private InvalidReaderStateException(string message)
         : base(message) { }
 
