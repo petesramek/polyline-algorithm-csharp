@@ -37,9 +37,9 @@ jobs:
       run: dotnet tool install -g dotnet-format
     - name: Format with .NET ${{ vars.DOTNET_SDK_VERSION }}
       run: |
-        dotnet format whitespace
-        dotnet format style
-        dotnet format analyzers --diagnostics IDE0073
+        dotnet format whitespace --verbosity diagnostic
+        dotnet format style --verbosity diagnostic
+        dotnet format analyzers --diagnostics IDE0073 --verbosity diagnostic
       working-directory: ${{ github.workspace }}
     - name: Validate with .NET ${{ vars.DOTNET_SDK_VERSION }}
       id: git
@@ -51,8 +51,9 @@ jobs:
         set -e
       working-directory: ${{ github.workspace }}
     - name: Push to ${{ github.ref }}
-      if: ${{ steps.git.outputs.has-changes == '1' }}
+      # if: ${{ steps.git.outputs.has-changes == '1' }}
       run: |
+        echo ${{ steps.git.outputs.has-changes == '1' }}
         git add .
         git config user.name "$(git log -n 1 --pretty=format:%an)"
         git config user.email "$(git log -n 1 --pretty=format:%ae)"
