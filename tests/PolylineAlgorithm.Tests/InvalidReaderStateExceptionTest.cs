@@ -47,8 +47,3 @@ public class InvalidReaderStateExceptionTest {
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 }
-
-
-
-
-

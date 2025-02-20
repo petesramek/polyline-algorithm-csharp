@@ -84,8 +84,3 @@ public class PolylineEncoderTest {
         Assert.AreEqual(Values.Polyline.Valid, result.ToString());
     }
 }
-
-
-
-
-

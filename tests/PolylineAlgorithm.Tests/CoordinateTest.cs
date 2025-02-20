@@ -135,6 +135,3 @@ public class CoordinateTest {
         Assert.IsFalse(result);
     }
 }
-
-
-

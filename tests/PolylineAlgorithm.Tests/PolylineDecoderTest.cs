@@ -64,8 +64,3 @@ public class PolylineDecoderTest {
         CollectionAssert.AreEqual(Values.Coordinates.Valid.ToArray(), result.ToArray());
     }
 }
-
-
-
-
-

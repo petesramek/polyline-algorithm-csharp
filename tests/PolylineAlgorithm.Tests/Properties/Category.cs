@@ -14,5 +14,3 @@ internal static class Category {
     /// </summary>
     public const string Unit = nameof(Unit);
 }
-
-

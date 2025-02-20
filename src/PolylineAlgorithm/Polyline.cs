@@ -179,4 +179,3 @@ public readonly struct Polyline : IEquatable<Polyline> {
 
     #endregion
 }
-

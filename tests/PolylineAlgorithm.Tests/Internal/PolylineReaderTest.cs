@@ -154,6 +154,3 @@ public class PolylineReaderTest {
         Assert.ThrowsExactly<InvalidPolylineException>(() => Read(value));
     }
 }
-
-
-

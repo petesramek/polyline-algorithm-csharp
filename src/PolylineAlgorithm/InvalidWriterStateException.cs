@@ -45,4 +45,3 @@ public sealed class InvalidWriterStateException : Exception {
         }
     }
 }
-

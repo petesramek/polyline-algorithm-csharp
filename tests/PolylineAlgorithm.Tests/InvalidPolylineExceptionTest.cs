@@ -28,7 +28,3 @@ public class InvalidPolylineExceptionTest {
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 }
-
-
-
-
