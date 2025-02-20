@@ -55,16 +55,14 @@ jobs:
       run: |
         set +e
         git diff --quiet --exit-code --cached
-        result="$?"
-        echo result is $result
-        echo has-changes=$result >> $GITHUB_OUTPUT
+        echo has-changes="$?" >> $GITHUB_OUTPUT
       id: validate
       continue-on-error: true
       working-directory: ${{ github.workspace }}
     - name: Push to ${{ github.ref }}
-      if: ${{ fromJSON(steps.validate.outputs.has-changes) }}"
+      if: ${{ steps.validate.outputs.has-changes == '1' }}"
       run: |
-        echo output is ${{ steps.validate.outputs.has-changes }}
+        echo ${{ steps.validate.outputs.has-changes }}
         git add .
         git config user.name "$(git log -n 1 --pretty=format:%an)"
         git config user.email "$(git log -n 1 --pretty=format:%ae)"
