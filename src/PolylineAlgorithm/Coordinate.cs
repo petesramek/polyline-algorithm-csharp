@@ -13,13 +13,13 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 
 /// <summary>
-/// Represents a latitude and longitude pair.
+/// Represents a latitude and longitude coordinate pair.
 /// </summary>
 [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
 [DebuggerDisplay("{ToString()}")]
 public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <summary>
-    /// Initializes default instance of <see cref="Coordinate"/> with <see cref="Latitude" /> and <see cref="Longitude" /> equal to 0.
+    /// Creates a new <see cref="Coordinate"/> structure that contains <see cref="Latitude" /> and <see cref="Longitude" /> set to 0.
     /// </summary>
     public Coordinate() {
         Latitude = 0d;
@@ -27,7 +27,7 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     }
 
     /// <summary>
-    /// Initializes a new instance of <see cref="Coordinate"/> with <paramref name="latitude"/> and <paramref name="longitude"/> values.
+    /// Creates a new <see cref="Coordinate"/> structure that contains <see cref="Latitude" /> and <see cref="Longitude" /> set to specified values.
     /// </summary>
     /// <param name="latitude">A latitude value.</param>
     /// <param name="longitude">A latitude value.</param>
@@ -54,7 +54,7 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
         && Longitude == default;
 
     /// <summary>
-    /// Gets a value that indicates whether both, the <see cref="Latitude" /> and <see cref="Longitude"/> values, are in valid range.
+    /// Gets a value that indicates whether both, the <see cref="Latitude" /> and <see cref="Longitude"/> values, are in the valid range.
     /// </summary>
     public bool IsValid
         => ICoordinateValidator.Default.Latitude.IsInRange(Latitude)
@@ -98,13 +98,24 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
 
     #region Equality operators
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Indicates whether the values of two specified <see cref="Coordinate" /> objects are equal.
+    /// </summary>
+    /// <param name="left">The first object to compare.</param>
+    /// <param name="right">The second object to compare.</param>
+    /// <returns><see langword="true"/> if <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <see langword="false"/>.</returns>
+
     [ExcludeFromCodeCoverage]
     public static bool operator ==(Coordinate left, Coordinate right) {
         return left.Equals(right);
     }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Indicates whether the values of two specified <see cref="CoordinateRange" /> objects are not equal.
+    /// </summary>
+    /// <param name="left">The first object to compare.</param>
+    /// <param name="right">The second object to compare.</param>
+    /// <returns><see langword="true"/> if <paramref name="left"/> and <paramref name="right"/> are not equal; otherwise, <see langword="false"/>.</returns>
     [ExcludeFromCodeCoverage]
     public static bool operator !=(Coordinate left, Coordinate right) {
         return !(left == right);
