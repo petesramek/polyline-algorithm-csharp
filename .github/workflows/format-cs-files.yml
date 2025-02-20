@@ -47,12 +47,13 @@ jobs:
       run: |
         set +e
         git diff --quiet --exit-code --cached
-        echo has-changes="$?" >> $GITHUB_OUTPUT
+        echo has-changes=$(1 == $?) >> $GITHUB_OUTPUT
         set -e
       working-directory: ${{ github.workspace }}
     - name: Push to ${{ github.ref }}
-      if: ${{ fromJSON(steps.git.outputs.has-changes) }}
+      if: ${{ steps.git.outputs.has-changes }}
       run: |
+        echo ${{ steps.git.outputs.has-changes }}
         git add .
         git config user.name "$(git log -n 1 --pretty=format:%an)"
         git config user.email "$(git log -n 1 --pretty=format:%ae)"
