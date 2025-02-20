@@ -4,26 +4,28 @@
 //
 
 namespace PolylineAlgorithm.Validation;
-/// <summary>
-/// Initializes an instance of coordinate validator.
-/// </summary>
-/// <remarks>
-/// Initializes an instance of coordinate validator.
-/// </remarks>
-/// <param name="latitudeRange">A latitude range.</param>
-/// <param name="longitudeRange">A longitude range.</param>
-public sealed class CoordinateValidator(CoordinateRange latitudeRange, CoordinateRange longitudeRange) : ICoordinateValidator {
-    /// <summary>
-    /// A latitude validation range.
-    /// </summary>
-    public CoordinateRange Latitude { get; } = latitudeRange;
 
+/// <inheritdoc cref="ICoordinateValidator" />
+public sealed class CoordinateValidator : ICoordinateValidator {
     /// <summary>
-    /// A longitude validation range.
+    /// Creates a new <see cref="CoordinateValidator"/> class that uses
+    /// specified <paramref name="latitudeRange"/> and <paramref name="longitudeRange"/> to determine if <see cref="Coordinate"/> value is valid.
     /// </summary>
-    public CoordinateRange Longitude { get; } = longitudeRange;
+    /// <param name="latitudeRange"></param>
+    /// <param name="longitudeRange"></param>
+    public CoordinateValidator(CoordinateRange latitudeRange, CoordinateRange longitudeRange) {
+        Latitude = latitudeRange;
+        Longitude = longitudeRange;
+    }
 
-    public bool IsValid(ref readonly Coordinate coordinate) {
+    /// <inheritdoc/>
+    public CoordinateRange Latitude { get; }
+
+    /// <inheritdoc/>
+    public CoordinateRange Longitude { get; }
+
+    /// <inheritdoc/>
+    public bool IsValid(Coordinate coordinate) {
         return
             Latitude.IsInRange(coordinate.Latitude)
             && Longitude.IsInRange(coordinate.Longitude);
