@@ -26,7 +26,7 @@ concurrency:
 jobs:      
   formatting:
     name: Format whitespace, code style and file header with .NET ${{ vars.DOTNET_SDK_VERSION }}
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
       with:
@@ -46,7 +46,6 @@ jobs:
       working-directory: ${{ github.workspace }}
     - name: Push to ${{ github.ref }}
       run: |
-        git config --global core.autocrlf false
         git add .
         git config user.name "$(git log -n 1 --pretty=format:%an)"
         git config user.email "$(git log -n 1 --pretty=format:%ae)"
