@@ -42,23 +42,20 @@ jobs:
         dotnet format analyzers --diagnostics IDE0073 --verbosity diagnostic
       working-directory: ${{ github.workspace }}
     - name: Validate with .NET ${{ vars.DOTNET_SDK_VERSION }}
-      id: git
+      id: validate
       shell: bash
       run: |
         set +e
         git diff --quiet --exit-code --cached
-        exitcode="$?"
-        echo has-changes=$exitcode >> $GITHUB_OUTPUT
+        echo has-changes="$?" >> $GITHUB_OUTPUT
         set -e
       working-directory: ${{ github.workspace }}
     - name: Push to ${{ github.ref }}
-      # if: ${{ steps.git.outputs.has-changes == '1' }}
+      if: ${{ fromJSON(steps.validate.outputs.has-changes) == 1 }}
       run: |
-        echo ${{ steps.git.outputs.has-changes }}
-        echo ${{ fromJSON(steps.git.outputs.has-changes) }}
-        echo ${{ steps.git.outputs.has-changes == '1' }}
-        echo ${{ fromJSON(steps.git.outputs.has-changes) == 1 }}
-        echo ${{ fromJSON(steps.git.outputs.has-changes) == '1' }}
+        echo ${{ steps.validate.outputs.has-changes }}
+        echo ${{ fromJSON(steps.validate.outputs.has-changes) }}
+        echo ${{ fromJSON(steps.validate.outputs.has-changes) == 1 }}
         git add .
         git config user.name "$(git log -n 1 --pretty=format:%an)"
         git config user.email "$(git log -n 1 --pretty=format:%ae)"
