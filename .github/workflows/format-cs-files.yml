@@ -54,6 +54,7 @@ jobs:
       if: ${{ fromJSON(steps.validate.outputs.has-changes) }}"
       run: |
         echo ${{ steps.validate.outputs.has-changes }}
+        echo ${{ fromJSON(steps.validate.outputs.has-changes) }}
         git add .
         git config user.name "$(git log -n 1 --pretty=format:%an)"
         git config user.email "$(git log -n 1 --pretty=format:%ae)"
