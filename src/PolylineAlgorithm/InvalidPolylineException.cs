@@ -16,7 +16,11 @@ using System.Diagnostics.CodeAnalysis;
 /// </summary>
 [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Internal use only.")]
 [DebuggerDisplay($"{nameof(InvalidPolylineException)}: {{ToString()}}")]
-public sealed class InvalidPolylineException : Exception {
+public sealed class InvalidPolylineException : Exception 
+    
+    
+    
+    {
     private InvalidPolylineException(string message)
         : base(message) { }
 
