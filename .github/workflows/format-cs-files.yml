@@ -51,7 +51,7 @@ jobs:
         set -e
       working-directory: ${{ github.workspace }}
     - name: Push to ${{ github.ref }}
-      if: ${{ fromJSON(steps.git.outputs.has-changes) == '1' }}
+      if: ${{ steps.git.outputs.has-changes == '1' }}
       run: |
         git add .
         git config user.name "$(git log -n 1 --pretty=format:%an)"
