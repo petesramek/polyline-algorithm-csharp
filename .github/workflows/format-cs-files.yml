@@ -45,6 +45,7 @@ jobs:
       working-directory: ${{ github.workspace }}
     - name: Push to ${{ github.ref }}
       run: |
+        git config --global core.autocrlf false
         git pull origin ${{ github.ref }}
         git add .
         git config user.name "$(git log -n 1 --pretty=format:%an)"
