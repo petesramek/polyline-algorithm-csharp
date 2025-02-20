@@ -56,9 +56,8 @@ jobs:
       env:
         result: false
       run: |
-        result='git diff --quiet --exit-code --cached'
-        echo $result
-        echo has-changes=$result >> $GITHUB_OUTPUT
+        git diff --quiet --exit-code --cached
+        echo "has-changes=$?" >> $GITHUB_OUTPUT
         echo ${{ steps.validate.output.has-changes }}
       id: validate
       continue-on-error: true
