@@ -42,7 +42,7 @@ jobs:
         dotnet format analyzers --diagnostics IDE0073
       working-directory: ${{ github.workspace }}
     - name: Validate with .NET ${{ vars.DOTNET_SDK_VERSION }}
-      id: validate
+      id: git
       shell: bash
       run: |
         set +e
@@ -51,11 +51,8 @@ jobs:
         set -e
       working-directory: ${{ github.workspace }}
     - name: Push to ${{ github.ref }}
-      if: ${{ fromJSON(steps.validate.outputs.has-changes) }}
+      if: ${{ fromJSON(steps.git.outputs.has-changes) }}
       run: |
-        echo ${{ steps.validate.outputs.has-changes }}
-        echo ${{ fromJSON(steps.validate.outputs.has-changes) }}
-        echo ${{ fromJSON(steps.validate.outputs.has-changes) == 1 }}
         git add .
         git config user.name "$(git log -n 1 --pretty=format:%an)"
         git config user.email "$(git log -n 1 --pretty=format:%ae)"
