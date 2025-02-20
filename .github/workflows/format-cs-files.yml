@@ -49,7 +49,6 @@ jobs:
         echo has-changes="$?" >> $GITHUB_OUTPUT
         set -e
       id: validate
-      continue-on-error: true
       working-directory: ${{ github.workspace }}
     - name: Push to ${{ github.ref }}
       if: ${{ fromJSON(steps.validate.outputs.has-changes) == 1 }}"
