@@ -19,11 +19,21 @@ using System.Runtime.InteropServices;
 [DebuggerDisplay("{ToString()}")]
 [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
 public readonly struct CoordinateRange : IEquatable<CoordinateRange> {
+    /// <summary>
+    /// Creates a new <see cref="CoordinateRange"/> structure that contains <see cref="Min"/>
+    /// set to <see cref="double.MinValue"/> and <see cref="Max"/> to <see cref="double.MaxValue"/>.
+    /// </summary>
     public CoordinateRange() {
         Min = double.MinValue;
         Max = double.MaxValue;
     }
 
+    /// <summary>
+    /// Creates a new <see cref="CoordinateRange"/> structure that contains <see cref="Min"/> and <see cref="Max"/> set to specified values.
+    /// </summary>
+    /// <param name="min">A minimal allowed value.</param>
+    /// <param name="max">A maximal allowed value.</param>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="min" /> argument is greater or equal to <paramref name="max" /> argument.</exception>
     public CoordinateRange(double min, double max) {
         if (min >= max) {
             throw new ArgumentOutOfRangeException(nameof(min), string.Format(ExceptionMessageResource.ArgumentMinCannotBeGreaterOfEqualThanMaxArgumentMessageFormat, min, max));
@@ -34,19 +44,19 @@ public readonly struct CoordinateRange : IEquatable<CoordinateRange> {
     }
 
     /// <summary>
-    /// Represents inclusive minimal value of the range.
+    /// Gets minimal allowed value.
     /// </summary>
     public readonly double Min { get; }
 
     /// <summary>
-    /// Represents inclusive maximal value of the range.
+    /// Gets maximal allowed value.
     /// </summary>
     public readonly double Max { get; }
 
     /// <summary>
-    /// Indicates whether the <paramref name="value"/> is within the range.
+    /// Returns a value indicating whether <see cref="double" /> value is within the allowed range.
     /// </summary>
-    /// <param name="value">A value to be validated is in range.</param>
+    /// <param name="value">The value to be evaluated.</param>
     /// <returns><see langword="true" /> if <paramref name="value"/> is within the range; otherwise, <see langword="false"/>.</returns>
     public bool IsInRange(double value) => value >= Min && value <= Max;
 
@@ -78,11 +88,23 @@ public readonly struct CoordinateRange : IEquatable<CoordinateRange> {
         return HashCode.Combine(Min, Max);
     }
 
+    /// <summary>
+    /// Indicates whether the values of two specified <see cref="CoordinateRange" /> objects are equal.
+    /// </summary>
+    /// <param name="left">The first object to compare.</param>
+    /// <param name="right">The second object to compare.</param>
+    /// <returns><see langword="true"/> if <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <see langword="false"/>.</returns>
     [ExcludeFromCodeCoverage]
     public static bool operator ==(CoordinateRange left, CoordinateRange right) {
         return left.Equals(right);
     }
 
+    /// <summary>
+    /// Indicates whether the values of two specified <see cref="CoordinateRange" /> objects are not equal.
+    /// </summary>
+    /// <param name="left">The first object to compare.</param>
+    /// <param name="right">The second object to compare.</param>
+    /// <returns><see langword="true"/> if <paramref name="left"/> and <paramref name="right"/> are not equal; otherwise, <see langword="false"/>.</returns>
     [ExcludeFromCodeCoverage]
     public static bool operator !=(CoordinateRange left, CoordinateRange right) {
         return !(left == right);
