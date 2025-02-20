@@ -46,9 +46,9 @@ jobs:
     - name: Format with .NET ${{ vars.DOTNET_SDK_VERSION }}
       if: ${{ steps.validate.outcome == 'failure' }}"
       run: |
-        dotnet format whitespace --verbosity diagnostic
-        dotnet format style --verbosity diagnostic
-        dotnet format analyzers --diagnostics IDE0073 --verbosity diagnostic
+        dotnet format whitespace
+        dotnet format style
+        dotnet format analyzers --diagnostics IDE0073
       working-directory: ${{ github.workspace }}
     - name: Validate with .NET ${{ vars.DOTNET_SDK_VERSION }}
       shell: bash
