@@ -45,6 +45,11 @@ public class PolylineEncoder : IPolylineEncoder {
 
         return writer.ToPolyline();
 
+        /// <summary>
+        /// Gets the count of coordinates in the enumerable.
+        /// </summary>
+        /// <param name="coordinates">The enumerable of coordinates.</param>
+        /// <returns>The count of coordinates.</returns>
         [ExcludeFromCodeCoverage]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static int GetCount(ref readonly IEnumerable<Coordinate> coordinates) => coordinates switch {
