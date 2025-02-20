@@ -225,8 +225,7 @@ jobs:
     name: Publish package with .NET ${{ vars.DOTNET_SDK_VERSION }}
     needs: [pack]  
     environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      name: private-nuget-feed
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -241,16 +240,17 @@ jobs:
       with:
         name: package
         path: ${{ runner.temp }}/packages/
-
     - run: |
-        dotnet nuget add source ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED }} --name private-feed --username irrelevant --password ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }} --store-password-in-clear-text
-        dotnet nuget push **/*.nupkg --source private-feed --api-key ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }}
+        dotnet nuget add source ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_URL }} --name private-feed --username irrelevant --password ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }} --store-password-in-clear-text
+        dotnet nuget push **/*.nupkg --source private-feed
       working-directory: ${{ runner.temp }}/packages/
   
   release-package:
     if: ${{ github.env.is_release }}
     name: Release package with .NET ${{ vars.DOTNET_SDK_VERSION }}
-    needs: [pack, test]  
+    needs: [pack, test]
+    environment:
+      name: public-nuget-feed
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -267,5 +267,5 @@ jobs:
         path: ${{ runner.temp }}/packages/
 
     - run: |
-        dotnet nuget push **/*.nupkg --source ${{ vars.PUBLIC_NUGET_PACKAGE_FEED }} --api-key ${{ secrets.PUBLIC_NUGET_PACKAGE_FEED_API_KEY }}
+        dotnet nuget push **/*.nupkg --source ${{ vars.PUBLIC_NUGET_PACKAGE_FEED_URL }} --api-key ${{ secrets.PUBLIC_NUGET_PACKAGE_FEED_API_KEY }}
       working-directory: ${{ runner.temp }}/packages/
