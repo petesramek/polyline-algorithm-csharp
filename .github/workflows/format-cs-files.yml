@@ -56,7 +56,7 @@ jobs:
       run: |
         git diff --quiet --exit-code --cached
         echo $?
-        echo 'has-changes=$?' >> $GITHUB_OUTPUT
+        echo 'has-changes=${{ $? }}' >> $GITHUB_OUTPUT
         echo ${{ steps.validate.output.has-changes }}
       id: validate
       continue-on-error: true
