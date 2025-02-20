@@ -26,7 +26,7 @@ concurrency:
 jobs:      
   formatting:
     name: Format whitespace, code style and file header with .NET ${{ vars.DOTNET_SDK_VERSION }}
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
       with:
