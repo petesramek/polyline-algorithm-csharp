@@ -13,16 +13,16 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 /// <summary>
-/// Performs polyline algorithm encoding
+/// Provides methods to encode a set of coordinates into a polyline string.
 /// </summary>
 public class PolylineEncoder : IPolylineEncoder {
     /// <summary>
-    /// Encodes a set of coordinates to polyline.
+    /// Encodes a set of coordinates into a polyline string.
     /// </summary>
-    /// <param name="coordinates">Coordinates to encode.</param>
-    /// <returns>Polyline encoded representation.</returns>
-    /// <exception cref="ArgumentNullException">Thrown when <paramref name="coordinates"/> argument is null.</exception>
-    /// <exception cref="ArgumentException">Thrown when <paramref name="coordinates"/> argument is empty enumeration.</exception>
+    /// <param name="coordinates">The coordinates to encode.</param>
+    /// <returns>A <see cref="Polyline"/> representing the encoded coordinates.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when the <paramref name="coordinates"/> argument is null.</exception>
+    /// <exception cref="ArgumentException">Thrown when the <paramref name="coordinates"/> argument is an empty enumeration.</exception>
     public Polyline Encode(IEnumerable<Coordinate> coordinates) {
         if (coordinates is null) {
             throw new ArgumentNullException(nameof(coordinates));
