@@ -57,6 +57,7 @@ jobs:
         echo ${{ fromJSON(steps.git.outputs.has-changes) }}
         echo ${{ steps.git.outputs.has-changes == '1' }}
         echo ${{ fromJSON(steps.git.outputs.has-changes) == 1 }}
+        echo ${{ fromJSON(steps.git.outputs.has-changes) == '1' }}
         git add .
         git config user.name "$(git log -n 1 --pretty=format:%an)"
         git config user.email "$(git log -n 1 --pretty=format:%ae)"
