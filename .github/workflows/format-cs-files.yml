@@ -37,23 +37,32 @@ jobs:
         dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
     - name: Install dotnet-format tool
       run: dotnet tool install -g dotnet-format
-    - name: Validate with .NET ${{ vars.DOTNET_SDK_VERSION }}
-      run: |
-        dotnet format whitespace --verify-no-changes --verbosity diagnostic
-        dotnet format style --verify-no-changes --verbosity diagnostic
-        dotnet format analyzers --verify-no-changes --diagnostics IDE0073 --verbosity diagnostic
-      id: validate
-      continue-on-error: true
-      working-directory: ${{ github.workspace }}
+    # - name: Validate with .NET ${{ vars.DOTNET_SDK_VERSION }}
+    #   run: |
+    #     dotnet format whitespace --verify-no-changes --verbosity diagnostic
+    #     dotnet format style --verify-no-changes --verbosity diagnostic
+    #     dotnet format analyzers --verify-no-changes --diagnostics IDE0073 --verbosity diagnostic
+    #   id: validate
+    #   continue-on-error: true
+    #   working-directory: ${{ github.workspace }}
     - name: Format with .NET ${{ vars.DOTNET_SDK_VERSION }}
-      if: ${{ steps.validate.outcome != 'success' }}"
+      if: ${{ steps.validate.outcome == 'failure' }}"
       run: |
         dotnet format whitespace --verbosity diagnostic
         dotnet format style --verbosity diagnostic
         dotnet format analyzers --diagnostics IDE0073 --verbosity diagnostic
       working-directory: ${{ github.workspace }}
+    - name: Validate with .NET ${{ vars.DOTNET_SDK_VERSION }}
+      run: |
+        git diff --quiet --exit-code --cached
+        echo $?
+        echo 'has-changes=$?' >> $GITHUB_OUTPUT
+        echo ${{ steps.validate.output.has-changes }}
+      id: validate
+      continue-on-error: true
+      working-directory: ${{ github.workspace }}
     - name: Push to ${{ github.ref }}
-      if: ${{ steps.validate.outcome != 'success' }}"
+      if: ${{ fromJSON(steps.validate.output.has-changes) }}"
       run: |
         git add .
         git config user.name "$(git log -n 1 --pretty=format:%an)"
