@@ -23,7 +23,7 @@ concurrency:
 
 jobs:      
   formatting:
-    name: Format file headers with .NET ${{ vars.DOTNET_SDK_VERSION }}
+    name: Format whitespace, code style and file header with .NET ${{ vars.DOTNET_SDK_VERSION }}
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
@@ -43,7 +43,6 @@ jobs:
       working-directory: ${{ github.workspace }}
     - name: Push to ${{ github.ref }}
       run: |
-        git pull origin ${{ github.ref }}
         git add .
         git config user.name "$(git log -n 1 --pretty=format:%an)"
         git config user.email "$(git log -n 1 --pretty=format:%ae)"
