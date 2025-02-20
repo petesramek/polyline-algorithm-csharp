@@ -51,7 +51,7 @@ jobs:
         set -e
       working-directory: ${{ github.workspace }}
     - name: Push to ${{ github.ref }}
-      if: ${{ fromJSON(steps.validate.outputs.has-changes) }}
+      if: ${{ steps.validate.outputs.has-changes }}
       run: |
         echo ${{ steps.validate.outputs.has-changes }}
         echo ${{ fromJSON(steps.validate.outputs.has-changes) }}
