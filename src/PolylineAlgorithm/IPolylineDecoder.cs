@@ -18,4 +18,3 @@ public interface IPolylineDecoder {
     /// <returns>A set of coordinates represented by the encoded polyline.</returns>
     IEnumerable<Coordinate> Decode(ref readonly Polyline polyline);
 }
-

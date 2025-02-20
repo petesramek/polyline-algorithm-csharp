@@ -219,6 +219,3 @@ internal static class Values {
         public static readonly int Length = Position;
     }
 }
-
-
-

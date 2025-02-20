@@ -240,9 +240,3 @@ public class PolylineTest {
         Assert.AreEqual(expected, result);
     }
 }
-
-
-
-
-
-

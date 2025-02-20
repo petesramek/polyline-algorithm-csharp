@@ -64,5 +64,3 @@ public class CoordinateValidatorTest {
         Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => New(min, max));
     }
 }
-
-

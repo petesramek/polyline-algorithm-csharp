@@ -142,6 +142,3 @@ public class PolylineWriterTest {
         Assert.ThrowsExactly<InvalidWriterStateException>(() => Write(coordinate, bufferSize));
     }
 }
-
-
-

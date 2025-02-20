@@ -47,8 +47,3 @@ public class InvalidWriterStateExceptionTest {
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 }
-
-
-
-
-

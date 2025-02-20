@@ -50,7 +50,3 @@ public class InvalidCoordinateExceptionTest {
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 }
-
-
-
-
