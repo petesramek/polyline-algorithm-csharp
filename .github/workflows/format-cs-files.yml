@@ -43,6 +43,7 @@ jobs:
       working-directory: ${{ github.workspace }}
     - name: Push to ${{ github.ref }}
       run: |
+        git pull origin ${{ github.ref }}
         git add .
         git config user.name "$(git log -n 1 --pretty=format:%an)"
         git config user.email "$(git log -n 1 --pretty=format:%ae)"
