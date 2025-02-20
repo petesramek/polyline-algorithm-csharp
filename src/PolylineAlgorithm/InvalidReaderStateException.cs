@@ -12,14 +12,27 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
-/// Represents error that is caused by invalid reader state.
+/// Represents an error that is caused by an invalid reader state.
 /// </summary>
 [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Internal use only.")]
 [DebuggerDisplay($"{nameof(InvalidReaderStateException)}: {{ToString()}}")]
 public sealed class InvalidReaderStateException : Exception {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InvalidReaderStateException"/> class with the specified error message.
+    /// </summary>
+    /// <param name="message">The error message that explains the reason for the exception.</param>
     private InvalidReaderStateException(string message)
         : base(message) { }
 
+    /// <summary>
+    /// Throws an <see cref="InvalidReaderStateException"/> if the reader cannot read from the polyline.
+    /// </summary>
+    /// <param name="canRead">A value indicating whether the reader can read from the polyline.</param>
+    /// <param name="readerPosition">The current position of the reader.</param>
+    /// <param name="polylineLength">The length of the polyline.</param>
+    /// <exception cref="InvalidReaderStateException">
+    /// Thrown when the reader cannot read from the polyline because the polyline is either empty or the reader has reached the end of the polyline.
+    /// </exception>
     internal static void ThrowIfCannotRead(bool canRead, int readerPosition, int polylineLength) {
         if (canRead) {
             return;
@@ -32,3 +45,4 @@ public sealed class InvalidReaderStateException : Exception {
         }
     }
 }
+

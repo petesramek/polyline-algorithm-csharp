@@ -8,11 +8,10 @@ namespace PolylineAlgorithm.Validation;
 /// <inheritdoc cref="ICoordinateValidator" />
 public sealed class CoordinateValidator : ICoordinateValidator {
     /// <summary>
-    /// Creates a new <see cref="CoordinateValidator"/> class that uses
-    /// specified <paramref name="latitudeRange"/> and <paramref name="longitudeRange"/> to determine if <see cref="Coordinate"/> value is valid.
+    /// Initializes a new instance of the <see cref="CoordinateValidator"/> class with the specified latitude and longitude ranges.
     /// </summary>
-    /// <param name="latitudeRange"></param>
-    /// <param name="longitudeRange"></param>
+    /// <param name="latitudeRange">The range within which the latitude value is considered valid.</param>
+    /// <param name="longitudeRange">The range within which the longitude value is considered valid.</param>
     public CoordinateValidator(CoordinateRange latitudeRange, CoordinateRange longitudeRange) {
         Latitude = latitudeRange;
         Longitude = longitudeRange;

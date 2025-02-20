@@ -12,24 +12,24 @@ using PolylineAlgorithm.Internal;
 /// </summary>
 public interface ICoordinateValidator {
     /// <summary>
-    /// Gets latitude validation range.
+    /// Gets the range within which the latitude value is considered valid.
     /// </summary>
     CoordinateRange Latitude { get; }
 
     /// <summary>
-    /// Gets longitude validation range.
+    /// Gets the range within which the longitude value is considered valid.
     /// </summary>
     CoordinateRange Longitude { get; }
 
     /// <summary>
-    /// Returns a value indicating whether <see cref="Coordinate" /> is valid.
+    /// Determines whether the specified coordinate is valid based on the latitude and longitude ranges.
     /// </summary>
-    /// <param name="coordinate">The coordinate to be validated.</param>
-    /// <returns><see langword="true"/> if <paramref name="coordinate"/> is valid; otherwise, <see langword="false"/>.</returns>
+    /// <param name="coordinate">The coordinate to validate.</param>
+    /// <returns><see langword="true"/> if the coordinate is within the valid ranges; otherwise, <see langword="false"/>.</returns>
     bool IsValid(Coordinate coordinate);
 
     /// <summary>
-    /// Represents default coordinate validator instance.
+    /// Gets the default coordinate validator instance.
     /// </summary>
     internal static ICoordinateValidator Default { get; } = new CoordinateValidator(Defaults.Coordinate.Range.Latitude, Defaults.Coordinate.Range.Longitude);
 }

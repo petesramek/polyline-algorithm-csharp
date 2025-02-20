@@ -28,26 +28,32 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <summary>
     /// Creates a new <see cref="Polyline"/> structure that contains the specified string value.
     /// </summary>
+    /// <param name="value">The string value to initialize the polyline with.</param>
+    /// <exception cref="ArgumentNullException">Thrown when the <paramref name="value"/> is null.</exception>
     public Polyline(string value) {
         _value = value?.AsMemory() ?? throw new ArgumentNullException(nameof(value));
     }
 
-
     /// <summary>
     /// Creates a new <see cref="Polyline"/> structure that contains the specified Unicode character array.
     /// </summary>
+    /// <param name="value">The Unicode character array to initialize the polyline with.</param>
+    /// <exception cref="ArgumentNullException">Thrown when the <paramref name="value"/> is null.</exception>
     public Polyline(char[] value) {
         _value = value?.AsMemory() ?? throw new ArgumentNullException(nameof(value));
     }
 
-
     /// <summary>
     /// Creates a new <see cref="Polyline"/> structure that contains the specified readonly memory region.
     /// </summary>
+    /// <param name="value">The readonly memory region to initialize the polyline with.</param>
     public Polyline(ReadOnlyMemory<char> value) {
         _value = value;
     }
 
+    /// <summary>
+    /// Gets the span of characters in the polyline.
+    /// </summary>
     internal readonly ReadOnlySpan<char> Span => _value.Span;
 
     /// <summary>
@@ -67,9 +73,9 @@ public readonly struct Polyline : IEquatable<Polyline> {
     public char[] ToCharArray() => _value.ToArray();
 
     /// <summary>
-    /// Returns underlying <see cref="ReadOnlyMemory{T}" /> this instance represents.
+    /// Returns the underlying <see cref="ReadOnlyMemory{T}" /> this instance represents.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>The underlying <see cref="ReadOnlyMemory{T}"/>.</returns>
     public ReadOnlyMemory<char> AsMemory() => _value;
 
     /// <summary>
@@ -98,6 +104,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     #endregion
 
     #region Equality operators
+
     /// <summary>
     /// Indicates whether the values of two specified <see cref="Polyline" /> objects are equal.
     /// </summary>
@@ -124,7 +131,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// Creates an instance of the current type from a Unicode character array.
     /// </summary>
     /// <param name="polyline">A Unicode character array representing an encoded polyline.</param>
-    /// <returns>The <see cref="Polyline"/> value that corresponds to the specified Unicide character array.</returns>
+    /// <returns>The <see cref="Polyline"/> value that corresponds to the specified Unicode character array.</returns>
     public static Polyline FromCharArray(char[] polyline) => new(polyline);
 
     /// <summary>
@@ -140,7 +147,6 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <param name="polyline">A string representing an encoded polyline.</param>
     /// <returns>The <see cref="Polyline"/> value that corresponds to the specified string value.</returns>
     public static Polyline FromString(string polyline) => new(polyline);
-
 
     #endregion
 
@@ -173,3 +179,4 @@ public readonly struct Polyline : IEquatable<Polyline> {
 
     #endregion
 }
+

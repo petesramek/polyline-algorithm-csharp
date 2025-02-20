@@ -14,14 +14,14 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 
 /// <summary>
-/// Represents a range within coordinate value, latitude or longitude, is considered valid.
+/// Represents a range within which a coordinate value, either latitude or longitude, is considered valid.
 /// </summary>
 [DebuggerDisplay("{ToString()}")]
 [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
 public readonly struct CoordinateRange : IEquatable<CoordinateRange> {
     /// <summary>
-    /// Creates a new <see cref="CoordinateRange"/> structure that contains <see cref="Min"/>
-    /// set to <see cref="double.MinValue"/> and <see cref="Max"/> to <see cref="double.MaxValue"/>.
+    /// Initializes a new instance of the <see cref="CoordinateRange"/> struct with <see cref="Min"/>
+    /// set to <see cref="double.MinValue"/> and <see cref="Max"/> set to <see cref="double.MaxValue"/>.
     /// </summary>
     public CoordinateRange() {
         Min = double.MinValue;
@@ -29,11 +29,11 @@ public readonly struct CoordinateRange : IEquatable<CoordinateRange> {
     }
 
     /// <summary>
-    /// Creates a new <see cref="CoordinateRange"/> structure that contains <see cref="Min"/> and <see cref="Max"/> set to specified values.
+    /// Initializes a new instance of the <see cref="CoordinateRange"/> struct with specified minimum and maximum values.
     /// </summary>
-    /// <param name="min">A minimal allowed value.</param>
-    /// <param name="max">A maximal allowed value.</param>
-    /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="min" /> argument is greater or equal to <paramref name="max" /> argument.</exception>
+    /// <param name="min">The minimum allowed value.</param>
+    /// <param name="max">The maximum allowed value.</param>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="min"/> is greater than or equal to <paramref name="max"/>.</exception>
     public CoordinateRange(double min, double max) {
         if (min >= max) {
             throw new ArgumentOutOfRangeException(nameof(min), string.Format(ExceptionMessageResource.ArgumentMinCannotBeGreaterOfEqualThanMaxArgumentMessageFormat, min, max));
@@ -44,27 +44,26 @@ public readonly struct CoordinateRange : IEquatable<CoordinateRange> {
     }
 
     /// <summary>
-    /// Gets minimal allowed value.
+    /// Gets the minimum allowed value.
     /// </summary>
     public readonly double Min { get; }
 
     /// <summary>
-    /// Gets maximal allowed value.
+    /// Gets the maximum allowed value.
     /// </summary>
     public readonly double Max { get; }
 
     /// <summary>
-    /// Returns a value indicating whether <see cref="double" /> value is within the allowed range.
+    /// Determines whether a specified value is within the range.
     /// </summary>
-    /// <param name="value">The value to be evaluated.</param>
-    /// <returns><see langword="true" /> if <paramref name="value"/> is within the range; otherwise, <see langword="false"/>.</returns>
+    /// <param name="value">The value to evaluate.</param>
+    /// <returns><see langword="true"/> if <paramref name="value"/> is within the range; otherwise, <see langword="false"/>.</returns>
     public bool IsInRange(double value) => value >= Min && value <= Max;
 
     /// <summary>
-    /// Returns the formatted string respresentation of this instance.
+    /// Returns a string representation of this instance.
     /// </summary>
-    /// <returns>The formatted string respresentation of this instance.</returns>
-    /// <remarks>{ Min: [double], Max: [double] }</remarks>
+    /// <returns>A string representation of this instance in the format { Min: [double], Max: [double] }.</returns>
     [ExcludeFromCodeCoverage]
     public override string ToString() {
         return $"{{ {nameof(Min)}: {Min.ToString("G", CultureInfo.InvariantCulture)}, {nameof(Max)}: {Max.ToString("G", CultureInfo.InvariantCulture)} }}";
@@ -78,8 +77,7 @@ public readonly struct CoordinateRange : IEquatable<CoordinateRange> {
 
     /// <inheritdoc />
     public bool Equals(CoordinateRange other) {
-        return Min == other.Min &&
-               Max == other.Max;
+        return Min == other.Min && Max == other.Max;
     }
 
     /// <inheritdoc />
@@ -89,22 +87,22 @@ public readonly struct CoordinateRange : IEquatable<CoordinateRange> {
     }
 
     /// <summary>
-    /// Indicates whether the values of two specified <see cref="CoordinateRange" /> objects are equal.
+    /// Determines whether two specified <see cref="CoordinateRange"/> instances are equal.
     /// </summary>
-    /// <param name="left">The first object to compare.</param>
-    /// <param name="right">The second object to compare.</param>
-    /// <returns><see langword="true"/> if <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <see langword="false"/>.</returns>
+    /// <param name="left">The first instance to compare.</param>
+    /// <param name="right">The second instance to compare.</param>
+    /// <returns><see langword="true"/> if the values of <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <see langword="false"/>.</returns>
     [ExcludeFromCodeCoverage]
     public static bool operator ==(CoordinateRange left, CoordinateRange right) {
         return left.Equals(right);
     }
 
     /// <summary>
-    /// Indicates whether the values of two specified <see cref="CoordinateRange" /> objects are not equal.
+    /// Determines whether two specified <see cref="CoordinateRange"/> instances are not equal.
     /// </summary>
-    /// <param name="left">The first object to compare.</param>
-    /// <param name="right">The second object to compare.</param>
-    /// <returns><see langword="true"/> if <paramref name="left"/> and <paramref name="right"/> are not equal; otherwise, <see langword="false"/>.</returns>
+    /// <param name="left">The first instance to compare.</param>
+    /// <param name="right">The second instance to compare.</param>
+    /// <returns><see langword="true"/> if the values of <paramref name="left"/> and <paramref name="right"/> are not equal; otherwise, <see langword="false"/>.</returns>
     [ExcludeFromCodeCoverage]
     public static bool operator !=(CoordinateRange left, CoordinateRange right) {
         return !(left == right);
