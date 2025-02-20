@@ -47,6 +47,7 @@ jobs:
         set +e
         git diff --quiet --exit-code --cached
         echo has-changes="$?" >> $GITHUB_OUTPUT
+        set -e
       id: validate
       continue-on-error: true
       working-directory: ${{ github.workspace }}
