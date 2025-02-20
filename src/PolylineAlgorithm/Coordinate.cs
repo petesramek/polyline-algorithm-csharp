@@ -19,11 +19,11 @@ using System.Runtime.InteropServices;
 [DebuggerDisplay("{ToString()}")]
 public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <summary>
-    /// Creates a new <see cref="Coordinate"/> structure that contains <see cref="Latitude" /> and <see cref="Longitude" /> set to 0.
+    /// Creates a new <see cref="Coordinate"/> structure that contains <see cref="Latitude" /> and <see cref="Longitude" /> set to <see langword="default"/> value.
     /// </summary>
     public Coordinate() {
-        Latitude = 0d;
-        Longitude = 0d;
+        Latitude = default;
+        Longitude = default;
     }
 
     /// <summary>
@@ -47,7 +47,7 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     public readonly double Longitude { get; }
 
     /// <summary>
-    /// Gets a value that indicates whether both, the <see cref="Latitude" /> and <see cref="Longitude"/> values, are equal to 0.
+    /// Gets a value that indicates whether both, the <see cref="Latitude" /> and <see cref="Longitude"/> values, are equal to <see langword="default" />.
     /// </summary>
     public bool IsDefault
         => Latitude == default
