@@ -58,13 +58,13 @@ jobs:
         result="$?"
         echo result is $result
         echo has-changes=$result >> $GITHUB_OUTPUT
-        echo output is ${{ steps.validate.outputs.has-changes }}
       id: validate
       continue-on-error: true
       working-directory: ${{ github.workspace }}
     - name: Push to ${{ github.ref }}
       if: ${{ fromJSON(steps.validate.outputs.has-changes) }}"
       run: |
+        echo output is ${{ steps.validate.outputs.has-changes }}
         git add .
         git config user.name "$(git log -n 1 --pretty=format:%an)"
         git config user.email "$(git log -n 1 --pretty=format:%ae)"
