@@ -26,7 +26,7 @@ jobs:
     name: Format whitespace, code style and file header with .NET ${{ vars.DOTNET_SDK_VERSION }}
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
     - name: Install .NET ${{ vars.DOTNET_SDK_VERSION }}
