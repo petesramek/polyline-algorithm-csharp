@@ -9,82 +9,85 @@ using PolylineAlgorithm.Validation;
 using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
-/// Defines default values
+/// Provides default values used in the Polyline Algorithm.
 /// </summary>
 [ExcludeFromCodeCoverage]
 internal static class Defaults {
+    /// <summary>
+    /// Contains default values related to the algorithm.
+    /// </summary>
     public static class Algorithm {
         /// <summary>
-        /// Defines the coordinate precision
+        /// The precision used for coordinates.
         /// </summary>
         public const double Precision = 1E5;
 
         /// <summary>
-        /// Defines the shift length
+        /// The length of the shift used in the algorithm.
         /// </summary>
         public const byte ShiftLength = 5;
 
         /// <summary>
-        /// Defines the ASCII Question Mark
+        /// The ASCII value for the question mark character.
         /// </summary>
         public const byte QuestionMark = 63;
 
         /// <summary>
-        /// Defines the ASCII Space
+        /// The ASCII value for the space character.
         /// </summary>
         public const byte Space = 32;
 
         /// <summary>
-        /// Defines the ASCII Unit Separator
+        /// The ASCII value for the unit separator character.
         /// </summary>
         public const byte UnitSeparator = 31;
     }
 
     /// <summary>
-    /// Defines coordinates default values
+    /// Contains default values related to coordinates.
     /// </summary>
     public static class Coordinate {
         /// <summary>
-        /// Defines latitude default values
+        /// Contains default values related to latitude.
         /// </summary>
         public static class Latitude {
             /// <summary>
-            /// Defines the maximum value for latitude
+            /// The minimum value for latitude.
             /// </summary>
             public const sbyte Min = -Max;
 
             /// <summary>
-            /// Defines the maximum value for latitude
+            /// The maximum value for latitude.
             /// </summary>
             public const byte Max = 90;
         }
 
         /// <summary>
-        /// Defines longitude default values
+        /// Contains default values related to longitude.
         /// </summary>
         public static class Longitude {
             /// <summary>
-            /// Defines the maximum value for longitude
+            /// The minimum value for longitude.
             /// </summary>
             public const short Min = -Max;
 
             /// <summary>
-            /// Defines the maximum value for longitude
+            /// The maximum value for longitude.
             /// </summary>
             public const byte Max = 180;
         }
 
         /// <summary>
-        /// Defines default ranges for latitude and longitude
+        /// Contains default ranges for latitude and longitude.
         /// </summary>
         public static class Range {
             /// <summary>
-            /// Defines latitude validation range
+            /// The validation range for latitude.
             /// </summary>
             public static readonly CoordinateRange Latitude = new(Coordinate.Latitude.Min, Coordinate.Latitude.Max);
 
             /// <summary>
-            /// Defines longitude validation range
+            /// The validation range for longitude.
             /// </summary>
             public static readonly CoordinateRange Longitude = new(Coordinate.Longitude.Min, Coordinate.Longitude.Max);
         }
