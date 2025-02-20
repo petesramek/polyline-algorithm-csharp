@@ -9,21 +9,27 @@ using PolylineAlgorithm.Tests.Data;
 using System;
 
 /// <summary>
-/// Tests <see cref="Polyline"/> type.
+/// Tests for the <see cref="Polyline"/> type.
 /// </summary>
 [TestClass]
 public class PolylineTest {
-    public static IEnumerable<object[]> StringParameters => [
-        [Values.Polyline.Empty],
-        [Values.Polyline.Valid]
-    ];
+    /// <summary>
+    /// Provides test data for the string parameter tests.
+    /// </summary>
+    public static IEnumerable<object[]> StringParameters => new List<object[]> {
+        new object[] { Values.Polyline.Empty },
+        new object[] { Values.Polyline.Valid }
+    };
 
+    /// <summary>
+    /// Tests the parameterless constructor of the <see cref="Polyline"/> class.
+    /// </summary>
     [TestMethod]
     public void Constructor_Parameterless_Ok() {
         // Arrange
         bool empty = true;
         int length = 0;
-        ReadOnlySpan<char> span = [];
+        ReadOnlySpan<char> span = ReadOnlySpan<char>.Empty;
 
         // Act
         Polyline polyline = new();
@@ -34,6 +40,9 @@ public class PolylineTest {
         Assert.IsTrue(span.SequenceEqual(polyline.Span));
     }
 
+    /// <summary>
+    /// Tests the <see cref="Polyline"/> constructor with a null string, expecting an <see cref="ArgumentNullException"/>.
+    /// </summary>
     [TestMethod]
     public void Constructor_Null_String_ArgumentNullException() {
         // Arrange
@@ -46,6 +55,10 @@ public class PolylineTest {
         Assert.ThrowsExactly<ArgumentNullException>(() => New(value));
     }
 
+    /// <summary>
+    /// Tests the <see cref="Polyline"/> constructor with a string parameter.
+    /// </summary>
+    /// <param name="value">The string value.</param>
     [TestMethod]
     [DynamicData(nameof(StringParameters))]
     public void Constructor_String_Parameter_Ok(string value) {
@@ -63,6 +76,9 @@ public class PolylineTest {
         Assert.IsTrue(span.SequenceEqual(polyline.Span));
     }
 
+    /// <summary>
+    /// Tests the <see cref="Polyline"/> constructor with a null character array, expecting an <see cref="ArgumentNullException"/>.
+    /// </summary>
     [TestMethod]
     public void Constructor_Null_CharArray_ArgumentNullException() {
         // Arrange
@@ -75,7 +91,10 @@ public class PolylineTest {
         Assert.ThrowsExactly<ArgumentNullException>(() => New(value));
     }
 
-
+    /// <summary>
+    /// Tests the <see cref="Polyline"/> constructor with a character array parameter.
+    /// </summary>
+    /// <param name="value">The string value.</param>
     [TestMethod]
     [DynamicData(nameof(StringParameters))]
     public void Constructor_CharArray_Parameter_Ok(string value) {
@@ -93,6 +112,10 @@ public class PolylineTest {
         Assert.IsTrue(span.SequenceEqual(polyline.Span));
     }
 
+    /// <summary>
+    /// Tests the <see cref="Polyline"/> constructor with a memory parameter.
+    /// </summary>
+    /// <param name="value">The string value.</param>
     [TestMethod]
     [DynamicData(nameof(StringParameters))]
     public void Constructor_Memory_Parameter_Ok(string value) {
@@ -110,6 +133,10 @@ public class PolylineTest {
         Assert.IsTrue(span.SequenceEqual(polyline.Span));
     }
 
+    /// <summary>
+    /// Tests the <see cref="Polyline.FromString(string)"/> method.
+    /// </summary>
+    /// <param name="value">The string value.</param>
     [TestMethod]
     [DynamicData(nameof(StringParameters))]
     public void FromString_Equals_New(string value) {
@@ -123,11 +150,15 @@ public class PolylineTest {
         Assert.AreEqual(polyline, result);
     }
 
+    /// <summary>
+    /// Tests the <see cref="Polyline.FromCharArray(char[])"/> method.
+    /// </summary>
+    /// <param name="value">The string value.</param>
     [TestMethod]
     [DynamicData(nameof(StringParameters))]
     public void FromCharArray_Equals_New(string value) {
         // Arrange
-        char[] array = [.. value];
+        char[] array = value.ToCharArray();
         Polyline polyline = new(array);
 
         // Act
@@ -137,6 +168,10 @@ public class PolylineTest {
         Assert.AreEqual(polyline, result);
     }
 
+    /// <summary>
+    /// Tests the <see cref="Polyline.FromMemory(ReadOnlyMemory{char})"/> method.
+    /// </summary>
+    /// <param name="value">The string value.</param>
     [TestMethod]
     [DynamicData(nameof(StringParameters))]
     public void FromMemory_Equals_New(string value) {
@@ -151,7 +186,10 @@ public class PolylineTest {
         Assert.AreEqual(polyline, result);
     }
 
-
+    /// <summary>
+    /// Tests the <see cref="Polyline.ToString"/> method.
+    /// </summary>
+    /// <param name="value">The string value.</param>
     [TestMethod]
     [DynamicData(nameof(StringParameters))]
     public void ToString_Equals_Constructor_Parameter(string value) {
@@ -166,6 +204,10 @@ public class PolylineTest {
         Assert.AreEqual(expected, result);
     }
 
+    /// <summary>
+    /// Tests the <see cref="Polyline.ToCharArray"/> method.
+    /// </summary>
+    /// <param name="value">The string value.</param>
     [TestMethod]
     [DynamicData(nameof(StringParameters))]
     public void ToCharArray_Equals_Constructor_Parameter(string value) {
@@ -180,6 +222,10 @@ public class PolylineTest {
         CollectionAssert.AreEqual(expected, result);
     }
 
+    /// <summary>
+    /// Tests the <see cref="Polyline.AsMemory"/> method.
+    /// </summary>
+    /// <param name="value">The string value.</param>
     [TestMethod]
     [DynamicData(nameof(StringParameters))]
     public void AsMemory_Equals_Constructor_Parameter(string value) {
@@ -194,3 +240,9 @@ public class PolylineTest {
         Assert.AreEqual(expected, result);
     }
 }
+
+
+
+
+
+

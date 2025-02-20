@@ -8,18 +8,17 @@ namespace PolylineAlgorithm.Tests;
 using PolylineAlgorithm.Tests.Data;
 
 /// <summary>
-/// Defines tests for <see cref="PolylineEncoder"/> type.
+/// Defines tests for the <see cref="PolylineEncoder"/> type.
 /// </summary>
 [TestClass]
 public class PolylineEncoderTest {
     /// <summary>
-    /// Subject under test.
+    /// The instance of the <see cref="PolylineEncoder"/> used for testing.
     /// </summary>
     public PolylineEncoder Encoder = new();
 
     /// <summary>
-    /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})" /> method. <see langword="null" /> is passed as parameter.
-    /// Expected result is <see cref="ArgumentNullException"/>.
+    /// Tests the <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})"/> method with a null input, expecting an <see cref="ArgumentNullException"/>.
     /// </summary>
     [TestMethod]
     public void Encode_NullInput_ThrowsException() {
@@ -36,8 +35,7 @@ public class PolylineEncoderTest {
     }
 
     /// <summary>
-    /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})" /> method. Empty enumeration is passed as parameter.
-    /// Expected result is <see cref="ArgumentException"/>.
+    /// Tests the <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})"/> method with an empty input, expecting an <see cref="ArgumentException"/>.
     /// </summary>
     [TestMethod]
     public void Encode_EmptyInput_ThrowsException() {
@@ -54,8 +52,7 @@ public class PolylineEncoderTest {
     }
 
     /// <summary>
-    /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})" /> method. Enumeration containing only invalid values is passed as parameter.
-    /// Expected result is <see cref="InvalidCoordinateException"/>.
+    /// Tests the <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})"/> method with an invalid input, expecting an <see cref="InvalidCoordinateException"/>.
     /// </summary>
     [TestMethod]
     public void Encode_InvalidInput_ThrowsException() {
@@ -63,18 +60,18 @@ public class PolylineEncoderTest {
         IEnumerable<Coordinate> invalid = Values.Coordinates.Invalid;
 
         // Act
-        void EncodeEmptyCoordinates() {
+        void EncodeInvalidCoordinates() {
             Encoder.Encode(invalid);
         }
 
         // Assert
-        Assert.ThrowsExactly<InvalidCoordinateException>(() => EncodeEmptyCoordinates());
+        Assert.ThrowsExactly<InvalidCoordinateException>(() => EncodeInvalidCoordinates());
     }
 
     /// <summary>
-    /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})" /> method. Enumeration containing only valid values is passed as parameter.
-    /// Expected result is result and <see cref="Values.Polyline.Valid"/> are equal.
+    /// Tests the <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})"/> method with a valid input.
     /// </summary>
+    /// <remarks>Expected result is that the encoded polyline matches <see cref="Values.Polyline.Valid"/>.</remarks>
     [TestMethod]
     public void Encode_ValidInput_Ok() {
         // Arrange
@@ -87,3 +84,8 @@ public class PolylineEncoderTest {
         Assert.AreEqual(Values.Polyline.Valid, result.ToString());
     }
 }
+
+
+
+
+

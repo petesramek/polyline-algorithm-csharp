@@ -8,36 +8,47 @@ namespace PolylineAlgorithm.Tests;
 using PolylineAlgorithm.Tests.Data;
 
 /// <summary>
-/// Defines tests for <see cref="InvalidPolylineException"/> type.
+/// Defines tests for the <see cref="InvalidWriterStateException"/> type.
 /// </summary>
 [TestClass]
 public class InvalidWriterStateExceptionTest {
+    /// <summary>
+    /// Tests the <see cref="InvalidWriterStateException.ThrowIfCannotWrite(bool, int, int)"/> method with valid parameters, expecting no exception.
+    /// </summary>
     [TestMethod]
-    public void ThrowIfCannotWrite_Method_True_Random_Random_Parameter_InvalidReaderStateException_Throw() {
+    public void ThrowIfCannotWrite_Method_True_Random_Random_Parameter_NoException() {
         // Arrange
-        bool canRead = true;
+        bool canWrite = true;
         int position = Values.InvalidWriterStateException.Position;
         int length = Values.InvalidWriterStateException.Length;
 
         // Act
-        InvalidWriterStateException.ThrowIfCannotWrite(canRead, position, length);
+        InvalidWriterStateException.ThrowIfCannotWrite(canWrite, position, length);
 
         // Assert
-        // We are assering exception was not thrown, if it was test won't pass
+        // We are asserting that no exception was thrown. If an exception is thrown, the test will fail.
     }
 
+    /// <summary>
+    /// Tests the <see cref="InvalidWriterStateException.ThrowIfCannotWrite(bool, int, int)"/> method with invalid parameters, expecting an <see cref="InvalidWriterStateException"/>.
+    /// </summary>
     [TestMethod]
-    public void ThrowIfCannotWrite_Method_False_Random_Random_Parameter_InvalidReaderStateException_Throw() {
+    public void ThrowIfCannotWrite_Method_False_Random_Random_Parameter_InvalidWriterStateException_Throw() {
         // Arrange
-        bool canRead = false;
+        bool canWrite = false;
         int position = Values.InvalidWriterStateException.Position;
         int length = Values.InvalidWriterStateException.Length;
 
         // Act
-        static void Throw(bool canRead, int position, int length) => InvalidWriterStateException.ThrowIfCannotWrite(canRead, position, length);
+        static void Throw(bool canWrite, int position, int length) => InvalidWriterStateException.ThrowIfCannotWrite(canWrite, position, length);
 
         // Assert
-        var exception = Assert.ThrowsExactly<InvalidWriterStateException>(() => Throw(canRead, position, length));
+        var exception = Assert.ThrowsExactly<InvalidWriterStateException>(() => Throw(canWrite, position, length));
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 }
+
+
+
+
+

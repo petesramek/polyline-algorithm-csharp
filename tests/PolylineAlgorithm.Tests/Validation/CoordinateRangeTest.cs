@@ -8,22 +8,27 @@ namespace PolylineAlgorithm.Tests.Validation;
 using PolylineAlgorithm.Validation;
 
 /// <summary>
-/// Tests <see cref="Polyline"/> type.
+/// Tests for the <see cref="CoordinateRange"/> type.
 /// </summary>
 [TestClass]
 public class CoordinateRangeTest {
-    public static IEnumerable<object[]> Constructor_Valid_Parameters => [
-        [ -90, 90 ],
-        [ -180, 180 ],
-    ];
+    /// <summary>
+    /// Provides test data for the <see cref="Constructor_Valid_Parameters_Ok"/> method.
+    /// </summary>
+    public static IEnumerable<object[]> Constructor_Valid_Parameters => new List<object[]> {
+        new object[] { -90, 90 },
+        new object[] { -180, 180 },
+    };
 
+    /// <summary>
+    /// Tests the parameterless constructor of the <see cref="CoordinateRange"/> class.
+    /// </summary>
     [TestMethod]
     public void Constructor_Parameterless_Ok() {
         // Arrange
         double min = double.MinValue;
         double max = double.MaxValue;
         double value = 0d;
-
 
         // Act
         CoordinateRange range = new();
@@ -36,6 +41,11 @@ public class CoordinateRangeTest {
         Assert.IsTrue(range.IsInRange(max));
     }
 
+    /// <summary>
+    /// Tests the <see cref="CoordinateRange"/> constructor with valid parameters.
+    /// </summary>
+    /// <param name="min">The minimum value for the range.</param>
+    /// <param name="max">The maximum value for the range.</param>
     [TestMethod]
     [DynamicData(nameof(Constructor_Valid_Parameters))]
     public void Constructor_Valid_Parameters_Ok(double min, double max) {
@@ -60,6 +70,9 @@ public class CoordinateRangeTest {
         Assert.IsFalse(range.IsInRange(aboveMax));
     }
 
+    /// <summary>
+    /// Tests the <see cref="CoordinateRange"/> constructor with invalid minimum parameter.
+    /// </summary>
     [TestMethod]
     public void Constructor_Invalid_Min_Parameter_ArgumentOutOfRangeException() {
         // Arrange
@@ -69,13 +82,17 @@ public class CoordinateRangeTest {
         // Act
         static void New(double min, double max) {
             CoordinateRange range = new(min, max);
-
         }
 
         // Assert
         Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => New(min, max));
     }
 
+    /// <summary>
+    /// Tests the <see cref="CoordinateRange.Equals(CoordinateRange)"/> method with equal ranges.
+    /// </summary>
+    /// <param name="min">The minimum value for the range.</param>
+    /// <param name="max">The maximum value for the range.</param>
     [TestMethod]
     [DynamicData(nameof(Constructor_Valid_Parameters))]
     public void Equals_CoordinateRange_True(double min, double max) {
@@ -90,6 +107,11 @@ public class CoordinateRangeTest {
         Assert.IsTrue(result);
     }
 
+    /// <summary>
+    /// Tests the <see cref="CoordinateRange.Equals(CoordinateRange)"/> method with unequal ranges.
+    /// </summary>
+    /// <param name="min">The minimum value for the range.</param>
+    /// <param name="max">The maximum value for the range.</param>
     [TestMethod]
     [DynamicData(nameof(Constructor_Valid_Parameters))]
     public void Equals_CoordinateRange_False(double min, double max) {
@@ -104,3 +126,5 @@ public class CoordinateRangeTest {
         Assert.IsFalse(result);
     }
 }
+
+

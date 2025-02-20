@@ -8,12 +8,15 @@ namespace PolylineAlgorithm.Tests;
 using PolylineAlgorithm.Tests.Data;
 
 /// <summary>
-/// Defines tests for <see cref="InvalidPolylineException"/> type.
+/// Defines tests for the <see cref="InvalidReaderStateException"/> type.
 /// </summary>
 [TestClass]
 public class InvalidReaderStateExceptionTest {
+    /// <summary>
+    /// Tests the <see cref="InvalidReaderStateException.ThrowIfCannotRead(bool, int, int)"/> method with valid parameters, expecting no exception.
+    /// </summary>
     [TestMethod]
-    public void ThrowIfCannotwrite_Method_True_Random_Random_Parameter_InvalidReaderStateException_Throw() {
+    public void ThrowIfCannotRead_Method_True_Random_Random_Parameter_NoException() {
         // Arrange
         bool canRead = true;
         int position = Values.InvalidReaderStateException.Position;
@@ -23,9 +26,12 @@ public class InvalidReaderStateExceptionTest {
         InvalidReaderStateException.ThrowIfCannotRead(canRead, position, length);
 
         // Assert
-        // We are assering exception was not thrown, if it was test won't pass
+        // We are asserting that no exception was thrown. If an exception is thrown, the test will fail.
     }
 
+    /// <summary>
+    /// Tests the <see cref="InvalidReaderStateException.ThrowIfCannotRead(bool, int, int)"/> method with invalid parameters, expecting an <see cref="InvalidReaderStateException"/>.
+    /// </summary>
     [TestMethod]
     public void ThrowIfCannotRead_Method_False_Random_Random_Parameter_InvalidReaderStateException_Throw() {
         // Arrange
@@ -41,3 +47,8 @@ public class InvalidReaderStateExceptionTest {
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 }
+
+
+
+
+

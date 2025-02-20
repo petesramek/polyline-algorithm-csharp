@@ -8,10 +8,13 @@ namespace PolylineAlgorithm.Tests;
 using PolylineAlgorithm.Tests.Data;
 
 /// <summary>
-/// Defines tests for <see cref="InvalidPolylineException"/> type.
+/// Defines tests for the <see cref="InvalidPolylineException"/> type.
 /// </summary>
 [TestClass]
 public class InvalidPolylineExceptionTest {
+    /// <summary>
+    /// Tests the <see cref="InvalidPolylineException.Throw(int)"/> method with an invalid coordinate parameter, expecting an <see cref="InvalidPolylineException"/>.
+    /// </summary>
     [TestMethod]
     public void Throw_Method_Invalid_Coordinate_Parameter_PolylineMalformedException_Throw() {
         // Arrange
@@ -20,9 +23,12 @@ public class InvalidPolylineExceptionTest {
         // Act
         static void Throw(int position) => InvalidPolylineException.Throw(position);
 
-
         // Assert
         var exception = Assert.ThrowsExactly<InvalidPolylineException>(() => Throw(position));
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 }
+
+
+
+

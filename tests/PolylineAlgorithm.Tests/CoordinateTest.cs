@@ -8,24 +8,33 @@ namespace PolylineAlgorithm.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 /// <summary>
-/// Tests <see cref="Polyline"/> type.
+/// Tests for the <see cref="Coordinate"/> type.
 /// </summary>
 [TestClass]
 public class CoordinateTest {
-    public static IEnumerable<object[]> Constructor_Valid_Parameters => [
-        [ 90, 180 ],
-        [ -90, -180 ],
-        [ 90, -180 ],
-        [ -90, 180 ],
-    ];
+    /// <summary>
+    /// Provides test data for the <see cref="Constructor_Valid_Parameters_Ok"/> method.
+    /// </summary>
+    public static IEnumerable<object[]> Constructor_Valid_Parameters => new List<object[]> {
+        new object[] { 90, 180 },
+        new object[] { -90, -180 },
+        new object[] { 90, -180 },
+        new object[] { -90, 180 },
+    };
 
-    public static IEnumerable<object[]> Constructor_Invalid_Parameters => [
-        [ double.MaxValue, double.MaxValue ],
-        [ double.MinValue, double.MinValue ],
-        [ double.MaxValue, double.MinValue ],
-        [ double.MinValue, double.MaxValue ],
-    ];
+    /// <summary>
+    /// Provides test data for the <see cref="Constructor_Invalid_Parameters_Ok"/> method.
+    /// </summary>
+    public static IEnumerable<object[]> Constructor_Invalid_Parameters => new List<object[]> {
+        new object[] { double.MaxValue, double.MaxValue },
+        new object[] { double.MinValue, double.MinValue },
+        new object[] { double.MaxValue, double.MinValue },
+        new object[] { double.MinValue, double.MaxValue },
+    };
 
+    /// <summary>
+    /// Tests the parameterless constructor of the <see cref="Coordinate"/> class.
+    /// </summary>
     [TestMethod]
     public void Constructor_Parameterless_Ok() {
         // Arrange
@@ -44,6 +53,11 @@ public class CoordinateTest {
         Assert.AreEqual(longitude, result.Longitude);
     }
 
+    /// <summary>
+    /// Tests the <see cref="Coordinate"/> constructor with valid parameters.
+    /// </summary>
+    /// <param name="latitude">The latitude value.</param>
+    /// <param name="longitude">The longitude value.</param>
     [TestMethod]
     [DynamicData(nameof(Constructor_Valid_Parameters))]
     public void Constructor_Valid_Parameters_Ok(double latitude, double longitude) {
@@ -61,6 +75,11 @@ public class CoordinateTest {
         Assert.AreEqual(longitude, result.Longitude);
     }
 
+    /// <summary>
+    /// Tests the <see cref="Coordinate"/> constructor with invalid parameters.
+    /// </summary>
+    /// <param name="latitude">The latitude value.</param>
+    /// <param name="longitude">The longitude value.</param>
     [TestMethod]
     [DynamicData(nameof(Constructor_Invalid_Parameters))]
     public void Constructor_Invalid_Parameters_Ok(double latitude, double longitude) {
@@ -78,7 +97,11 @@ public class CoordinateTest {
         Assert.AreEqual(longitude, result.Longitude);
     }
 
-
+    /// <summary>
+    /// Tests the <see cref="Coordinate.Equals(Coordinate)"/> method with equal coordinates.
+    /// </summary>
+    /// <param name="latitude">The latitude value.</param>
+    /// <param name="longitude">The longitude value.</param>
     [TestMethod]
     [DynamicData(nameof(Constructor_Valid_Parameters))]
     public void Equals_Coordinate_True(double latitude, double longitude) {
@@ -93,6 +116,11 @@ public class CoordinateTest {
         Assert.IsTrue(result);
     }
 
+    /// <summary>
+    /// Tests the <see cref="Coordinate.Equals(Coordinate)"/> method with unequal coordinates.
+    /// </summary>
+    /// <param name="latitude">The latitude value.</param>
+    /// <param name="longitude">The longitude value.</param>
     [TestMethod]
     [DynamicData(nameof(Constructor_Valid_Parameters))]
     public void Equals_Coordinate_False(double latitude, double longitude) {
@@ -107,3 +135,6 @@ public class CoordinateTest {
         Assert.IsFalse(result);
     }
 }
+
+
+

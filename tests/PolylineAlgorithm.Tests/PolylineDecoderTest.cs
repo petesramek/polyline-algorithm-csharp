@@ -9,16 +9,18 @@ using PolylineAlgorithm;
 using PolylineAlgorithm.Tests.Data;
 
 /// <summary>
-/// Defines tests for <see cref="PolylineDecoder"/> type.
+/// Defines tests for the <see cref="PolylineDecoder"/> type.
 /// </summary>
 [TestClass]
 public class PolylineDecoderTest {
+    /// <summary>
+    /// The instance of the <see cref="PolylineDecoder"/> used for testing.
+    /// </summary>
     public PolylineDecoder Decoder = new();
 
     /// <summary>
-    /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})" /> method. Empty <see cref="ReadOnlyMemory{char}" /> is passed as an argument.
+    /// Tests the <see cref="PolylineDecoder.Decode(ref readonly Polyline)"/> method with an empty input, expecting an <see cref="ArgumentException"/>.
     /// </summary>
-    /// <remarks>Expected to throw <see cref="ArgumentException"/>.</remarks>
     [TestMethod]
     public void Decode_Empty_Input_ThrowsException() {
         // Arrange
@@ -32,9 +34,8 @@ public class PolylineDecoderTest {
     }
 
     /// <summary>
-    /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})" /> method. Empty <see cref="ReadOnlyMemory{char}" /> is passed as an argument.
+    /// Tests the <see cref="PolylineDecoder.Decode(ref readonly Polyline)"/> method with an invalid input, expecting an <see cref="InvalidCoordinateException"/>.
     /// </summary>
-    /// <remarks>Expected to throw <see cref="ArgumentException"/>.</remarks>
     [TestMethod]
     public void Decode_Invalid_Input_ThrowsException() {
         // Arrange
@@ -48,9 +49,9 @@ public class PolylineDecoderTest {
     }
 
     /// <summary>
-    /// Method is testing <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})" /> method. <see cref="ReadOnlyMemory{char}" /> containing valid polyline is passed as an argument.
+    /// Tests the <see cref="PolylineDecoder.Decode(ref readonly Polyline)"/> method with a valid input.
     /// </summary>
-    /// <remarks>Expected result to equal <see cref="Values.Coordinates.Valid"/>..</remarks>
+    /// <remarks>Expected result to equal <see cref="Values.Coordinates.Valid"/>.</remarks>
     [TestMethod]
     public void Decode_Valid_Input_Ok() {
         // Arrange
@@ -63,3 +64,8 @@ public class PolylineDecoderTest {
         CollectionAssert.AreEqual(Values.Coordinates.Valid.ToArray(), result.ToArray());
     }
 }
+
+
+
+
+

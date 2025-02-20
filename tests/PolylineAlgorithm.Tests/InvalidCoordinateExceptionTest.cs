@@ -8,17 +8,17 @@ namespace PolylineAlgorithm.Tests;
 using PolylineAlgorithm.Tests.Data;
 
 /// <summary>
-/// Performs tests for <see cref="InvalidCoordinateException"/> type.
+/// Performs tests for the <see cref="InvalidCoordinateException"/> type.
 /// </summary>
 [TestClass]
 public class InvalidCoordinateExceptionTest {
 
     /// <summary>
-    /// Method is testing <see cref="InvalidCoordinateException" /> constructor. <see cref="Coordinate" /> and <see cref="Exception"/> are passed as arguments.
+    /// Tests the <see cref="InvalidCoordinateException.ThrowIfNotValid(Coordinate)"/> method with a valid coordinate.
     /// </summary>
-    /// <remarks>Expected: <see cref="InvalidCoordinateException.Coordinate"/> equals passed argument,
-    /// <see cref="Exception.InnerException" /> equals passed argument,
-    /// and <see cref="Exception.Message"/> in not <see langword="null"/>, empty -or- whitespace.</remarks>
+    /// <remarks>
+    /// Expected: No exception is thrown.
+    /// </remarks>
     [TestMethod]
     public void ThrowIfNotValid_Valid_Parameter_Ok() {
         // Arrange
@@ -28,9 +28,12 @@ public class InvalidCoordinateExceptionTest {
         InvalidCoordinateException.ThrowIfNotValid(coordinate);
 
         // Assert
-        // We are assering exception was not thrown, if it was test won't pass
+        // We are asserting that no exception was thrown. If an exception is thrown, the test will fail.
     }
 
+    /// <summary>
+    /// Tests the <see cref="InvalidCoordinateException.ThrowIfNotValid(Coordinate)"/> method with an invalid coordinate, expecting an <see cref="InvalidCoordinateException"/>.
+    /// </summary>
     [TestMethod]
     public void ThrowIfNotValid_Invalid_Parameter_InvalidCoordinateException_Thrown() {
         // Arrange
@@ -47,3 +50,7 @@ public class InvalidCoordinateExceptionTest {
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 }
+
+
+
+
