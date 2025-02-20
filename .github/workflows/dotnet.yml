@@ -42,7 +42,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: ./.github/actions/versioning.yml
+      - uses: ./.github/actions/versioning
         id: versioning
         with:
           git-version: ${{ vars.GIT_VERSION }}
