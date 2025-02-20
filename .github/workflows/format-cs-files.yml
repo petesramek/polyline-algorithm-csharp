@@ -53,10 +53,12 @@ jobs:
         dotnet format analyzers --diagnostics IDE0073 --verbosity diagnostic
       working-directory: ${{ github.workspace }}
     - name: Validate with .NET ${{ vars.DOTNET_SDK_VERSION }}
+      env:
+        result: false
       run: |
-        git diff --quiet --exit-code --cached
-        echo $?
-        echo 'has-changes=${{ $? }}' >> $GITHUB_OUTPUT
+        result='git diff --quiet --exit-code --cached'
+        echo $result
+        echo has-changes=$result >> $GITHUB_OUTPUT
         echo ${{ steps.validate.output.has-changes }}
       id: validate
       continue-on-error: true
