@@ -51,7 +51,7 @@ jobs:
       continue-on-error: true
       working-directory: ${{ github.workspace }}
     - name: Push to ${{ github.ref }}
-      if: ${{ steps.validate.outputs.has-changes == '1' }}"
+      if: ${{ steps.validate.outputs.has-changes != '0' }}"
       run: |
         echo ${{ steps.validate.outputs.has-changes }}
         git add .
