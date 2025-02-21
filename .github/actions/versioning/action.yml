@@ -36,7 +36,7 @@ runs:
     - name: Install GitVersion ${{ inputs.git-version }}
       uses: gittools/actions/gitversion/setup@${{ inputs.git-version }}
       with:
-        versionSpec: $INPUT_GIT_VERSION
+        versionSpec: ${{ inputs.git-version }}
         preferLatestVersion: true
     - name: Calculate version with GitVersion ${{ inputs.git-version }}
       id: gitversion
