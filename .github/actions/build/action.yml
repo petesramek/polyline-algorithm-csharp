@@ -39,7 +39,6 @@ inputs:
     default: |
       '**/bin/*'
       '**/obj/*'
-      '**/.nuget/packages'
   build-artifacts-name:
     description: 'Upload build artifacts, Default: build'
     required: false
