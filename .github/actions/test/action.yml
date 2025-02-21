@@ -13,10 +13,6 @@ inputs:
     description: 'Build configuration. Default: Release'
     required: false
     default: 'Release'
-  build-platform:
-    description: 'Build platform. Deafult: Any CPU'
-    required: false
-    default: 'Any CPU'
   test-project-glob-pattern:
     description: 'Search pattern for test projects. Default: **/*Tests.csproj'
     required: false
@@ -69,7 +65,7 @@ runs:
         TRX_LOGGER_ARGS: "${{ inputs.test-result-logger != '' && ' --report-trx' || '' }}" 
         RUN_SETTINGS_ARGS: "${{ inputs.test-runsettings-path != '' && '--settings inputs.test-runsettings-path' || '' }}"
         CODE_COVERAGE_ARGS: "${{ inputs.collect-code-coverage == 'true' && '--coverage --coverage-output-format inputs.code-coverage-output-format' || '' }}" 
-      run: dotnet test ${{ inputs.test-project-glob-pattern }} --configuration ${{ inputs.build-configuration }} /p:Platform="${{ inputs.build-platform }}" --verbosity normal -- ${{ env.CODE_COVERAGE_ARGS }} ${{ env.RUN_SETTINGS_ARGS }} --results-directory ${{ inputs.test-results-directory }}
+      run: dotnet test ${{ inputs.test-project-glob-pattern }} --configuration ${{ inputs.build-configuration }} --verbosity normal -- ${{ env.CODE_COVERAGE_ARGS }} ${{ env.RUN_SETTINGS_ARGS }} --results-directory ${{ inputs.test-results-directory }}
     
     - name: 'Upload test results'
       if: ${{ inputs.upload-test-artifacts == 'true' }}
