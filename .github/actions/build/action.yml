@@ -1,0 +1,68 @@
+name: 'Build with .NET ${{ inputs.dotnet_sdk_version }}'
+author: 'Pete Sramek'
+description: 'Generating software versions'
+inputs:
+# Required
+  assembly-version:
+    description: 'Assembly version.'
+    required: true
+  assembly-informational-version:
+    description: 'Assembly informational version.'
+    required: true
+  assembly-file-version:
+    description: 'Assembly file version.'
+    required: true
+# Optional
+  dotnet_sdk_version:
+    description: '.NET SDK version'
+    required: false
+    default: vars.DOTNET_SDK_VERSION
+  build-configuration:
+    description: 'Build configuration. Default: vars.DEFAULT_BUILD_CONFIGURATION'
+    required: false
+    default: vars.DEFAULT_BUILD_CONFIGURATION
+  build-platform:
+    description: 'Build platform. Deafult: vars.DEFAULT_BUILD_PLATFORM'
+    required: false
+    default: vars.DEFAULT_BUILD_PLATFORM
+  build-glob-pattern:
+    description: 'Search pattern for source code. Default: vars.SRC_SEARCH_PATTERN'
+    required: false
+    default: vars.SRC_SEARCH_PATTERN
+  upload-build-artifacts:
+    description: 'Upload build artifacts, Default: ''true'''
+    required: false
+    default: 'true'
+  build-artifacts-glob-pattern:
+    description: 'Search pattern for build artifacts. Default: ''{**/bin/*,**/obj/*}'''
+    required: false
+    default: '{**/bin/*,**/obj/*}'  
+  build-artifacts-name:
+    description: 'Upload build artifacts, Default: ''build'''
+    required: false
+    default: 'build'
+    
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+    
+    - name: 'Setup .NET ${{ inputs.dotnet_sdk_version }}'
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ inputs.dotnet_sdk_version }}
+    
+    - name: 'Build with dotnet CLI'
+      shell: cmd
+      run: dotnet build ${{ inputs.search-pattern }} --configuration ${{ inputs.build-configuration }} /p:Platform=${{ inputs.build-platform }} /p:Version=${{ inputs.assembly-version }} /p:AssemblyInformationalVersion=${{ inputs.assembly--informational-version }} /p:FileVersion=${{ inputs.assembly-file-version }}
+    
+    - name: 'Upload build artifacts'
+      if: ${{ inputs.upload-build-artifacts == 'true' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.build-artifacts-name }}
+        path: inputs.build-artifacts-glob-pattern
+          
+          
+
+

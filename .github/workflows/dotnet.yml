@@ -42,60 +42,59 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: ./.github/actions/versioning
-        id: versioning
+      - name: Install GitVersion ${{ vars.GIT_VERSION }}
+        uses: gittools/actions/gitversion/setup@v3.1.11
         with:
-          git-version: ${{ vars.GIT_VERSION }}
-          is-release: ${{ env.is_release }}
-      # - name: Install GitVersion ${{ vars.GIT_VERSION }}
-      #   uses: gittools/actions/gitversion/setup@v3.1.11
-      #   with:
-      #     versionSpec: ${{ vars.GIT_VERSION }}
-      #     preferLatestVersion: true
-      # - name: Calculate version with GitVersion ${{ vars.GIT_VERSION }}
-      #   id: gitversion
-      #   uses: gittools/actions/gitversion/execute@v3.1.11
-      #   with:
-      #     useConfigFile: true
-      #     configFilePath: ./.gitversion/version.yml
+          versionSpec: ${{ vars.GIT_VERSION }}
+          preferLatestVersion: true
+      - name: Calculate version with GitVersion ${{ vars.GIT_VERSION }}
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v3.1.11
+        with:
+          useConfigFile: true
+          configFilePath: ./.gitversion/version.yml
 
   build:
-    name: Build with .NET ${{ vars.DOTNET_SDK_VERSION }}
+    name: Build with .NET ${{ vars.DEFAULT_DOTNET_SDK_VERSION }}
     needs: [versioning]
     runs-on: ubuntu-latest
     env:
       ASSEMBLY_VERSION: ${{ needs.versioning.outputs.ASSEMBLY_VERSION }}
       ASSEMBLY_INFORMATIONAL_VERSION: ${{ needs.versioning.outputs.ASSEMBLY_INFORMATIONAL_VERSION }}
       FILE_VERSION: ${{ needs.versioning.outputs.FILE_VERSION }}
-      PACKAGE_VERSION: ${{ needs.versioning.outputs.PACKAGE_VERSION }}
     steps:
       - uses: actions/checkout@v4
-      - name: Setup .NET ${{ vars.DOTNET_SDK_VERSION }}
-        uses: actions/setup-dotnet@v4
+      - uses: ./.github/actions/build
         with:
-          dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
-      - name: Build with .NET ${{ vars.DOTNET_SDK_VERSION }}
-        run: dotnet build ${{ vars.SRC_SEARCH_PATTERN }} --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} /p:Version=${{ env.ASSEMBLY_VERSION }} /p:AssemblyInformationalVersion=${{ env.ASSEMBLY_INFORMATIONAL_VERSION }} /p:FileVersion=${{ env.FILE_VERSION }}
-      - name: Upload Build
-        uses: actions/upload-artifact@v4
-        with:
-          name: build
-          path: |
-            **/bin/*
-            **/obj/*
+          assembly-version: ${{ needs.versioning.outputs.ASSEMBLY_VERSION }}
+          assembly-informational-version: ${{ needs.versioning.outputs.ASSEMBLY_INFORMATIONAL_VERSION }}
+          assembly-file-version: ${{ needs.versioning.outputs.FILE_VERSION }}
+      # - name: Setup .NET ${{ vars.DEFAULT_DOTNET_SDK_VERSION }}
+      #   uses: actions/setup-dotnet@v4
+      #   with:
+      #     dotnet-version: ${{ vars.DEFAULT_DOTNET_SDK_VERSION }}
+      # - name: Build with .NET ${{ vars.DEFAULT_DOTNET_SDK_VERSION }}
+      #   run: dotnet build ${{ vars.SRC_SEARCH_PATTERN }} --configuration ${{ vars.DEFAULT_BUILD_CONFIGURATION }} /p:Platform=${{ vars.DEFAULT_BUILD_PLATFORM }} /p:Version=${{ env.ASSEMBLY_VERSION }} /p:AssemblyInformationalVersion=${{ env.ASSEMBLY_INFORMATIONAL_VERSION }} /p:FileVersion=${{ env.FILE_VERSION }}
+      # - name: Upload Build
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: build
+      #     path: |
+      #       **/bin/*
+      #       **/obj/*
 
   test:
-    name: Test with .NET ${{ vars.DOTNET_SDK_VERSION }}
+    name: Test with .NET ${{ vars.DEFAULT_DOTNET_SDK_VERSION }}
     needs: [build]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup .NET ${{ vars.DOTNET_SDK_VERSION }}
+      - name: Setup .NET ${{ vars.DEFAULT_DOTNET_SDK_VERSION }}
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
-      - name: Test with .NET ${{ vars.DOTNET_SDK_VERSION }}
-        run: dotnet test ${{ vars.TEST_SEARCH_PATTERN }} --configuration ${{ vars.BUILD_CONFIGURATION }} --verbosity normal --settings unit-test.runsettings -- --coverage --coverage-output-format cobertura --report-trx --results-directory ${{ runner.temp }}/test-results/
+          dotnet-version: ${{ vars.DEFAULT_DOTNET_SDK_VERSION }}
+      - name: Test with .NET ${{ vars.DEFAULT_DOTNET_SDK_VERSION }}
+        run: dotnet test ${{ vars.TEST_SEARCH_PATTERN }} --configuration ${{ vars.DEFAULT_BUILD_CONFIGURATION }} --verbosity normal --settings unit-test.runsettings -- --coverage --coverage-output-format cobertura --report-trx --results-directory ${{ runner.temp }}/test-results/
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
         with:
@@ -119,7 +118,7 @@ jobs:
         name: Write Code Coverage Summary
 
   pack:
-    name: Pack with .NET ${{ vars.DOTNET_SDK_VERSION }}
+    name: Pack with .NET ${{ vars.DEFAULT_DOTNET_SDK_VERSION }}
     needs: [build, versioning]
     runs-on: ubuntu-latest
     env:
@@ -129,16 +128,16 @@ jobs:
       PACKAGE_VERSION: ${{ needs.versioning.outputs.PACKAGE_VERSION }}
     steps:
       - uses: actions/checkout@v4
-      - name: Setup .NET ${{ vars.DOTNET_SDK_VERSION }}
+      - name: Setup .NET ${{ vars.DEFAULT_DOTNET_SDK_VERSION }}
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
+          dotnet-version: ${{ vars.DEFAULT_DOTNET_SDK_VERSION }}
       - name: Download Build
         uses: actions/download-artifact@v4
         with:
           name: build
-      - name: Pack with .NET ${{ vars.DOTNET_SDK_VERSION }}
-        run: dotnet pack ${{ vars.SRC_SEARCH_PATTERN }} --no-build --no-restore --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} /p:PackageVersion=${{ env.PACKAGE_VERSION }} /p:Version=${{ env.ASSEMBLY_VERSION }} /p:AssemblyInformationalVersion=${{ env.ASSEMBLY_INFORMATIONAL_VERSION }} /p:FileVersion=${{ env.FILE_VERSION }} --output ${{ runner.temp }}/packages/
+      - name: Pack with .NET ${{ vars.DEFAULT_DOTNET_SDK_VERSION }}
+        run: dotnet pack ${{ vars.SRC_SEARCH_PATTERN }} --no-build --no-restore --configuration ${{ vars.DEFAULT_BUILD_CONFIGURATION }} /p:Platform=${{ vars.DEFAULT_BUILD_PLATFORM }} /p:PackageVersion=${{ env.PACKAGE_VERSION }} /p:Version=${{ env.ASSEMBLY_VERSION }} /p:AssemblyInformationalVersion=${{ env.ASSEMBLY_INFORMATIONAL_VERSION }} /p:FileVersion=${{ env.FILE_VERSION }} --output ${{ runner.temp }}/packages/
       - name: Upload Package
         uses: actions/upload-artifact@v4
         with:
@@ -149,7 +148,7 @@ jobs:
 
   benchmark:
     if: ${{ github.env.is_release || vars.BENCHMARKDOTNET_RUN_OVERRIDE == 'true' }}
-    name: Benchmark with .NET ${{ vars.DOTNET_SDK_VERSION }} on ${{ matrix.os }}
+    name: Benchmark with .NET ${{ vars.DEFAULT_DOTNET_SDK_VERSION }} on ${{ matrix.os }}
     needs: [build]
     strategy:
       matrix:
@@ -170,7 +169,7 @@ jobs:
           name: build
       - name: Benchmark
         working-directory: ${{ vars.BENCHMARKDOTNET_WORKING_DIRECTORY }}
-        run: dotnet run --configuration ${{ vars.BUILD_CONFIGURATION }} /p:Platform=${{ vars.BUILD_PLATFORM }} --framework ${{ vars.BUILD_FRAMEWORK }} --runtimes ${{ vars.BENCHMARKDOTNET_RUNTIMES }} --filter ${{ vars.BENCHMARKDOTNET_FILTER }} --exporters GitHub --memory --artifacts ${{ runner.temp }}/benchmarks/ --join
+        run: dotnet run --configuration ${{ vars.DEFAULT_BUILD_CONFIGURATION }} /p:Platform=${{ vars.DEFAULT_BUILD_PLATFORM }} --framework ${{ vars.DEFAULT_BUILD_FRAMEWORK }} --runtimes ${{ vars.BENCHMARKDOTNET_RUNTIMES }} --filter ${{ vars.BENCHMARKDOTNET_FILTER }} --exporters GitHub --memory --artifacts ${{ runner.temp }}/benchmarks/ --join
       - name: Upload Benchmark Results
         uses: actions/upload-artifact@v4
         with:
@@ -184,7 +183,7 @@ jobs:
 
   publish-docs:
     if: ${{ github.env.is_release && !github.env.is_preview }}
-    name: Docs with .NET ${{ vars.DOTNET_SDK_VERSION }}
+    name: Docs with .NET ${{ vars.DEFAULT_DOTNET_SDK_VERSION }}
     needs: [benchmark, test]  
     environment:
       name: github-pages
@@ -196,7 +195,7 @@ jobs:
       - name: Dotnet Setup
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
+          dotnet-version: ${{ vars.DEFAULT_DOTNET_SDK_VERSION }}
       - name: Download Benchmarks
         uses: actions/download-artifact@v4
         with:
@@ -223,7 +222,7 @@ jobs:
 
   publish-package-internal:
     if: ${{ !github.env.is_release }}
-    name: Publish package with .NET ${{ vars.DOTNET_SDK_VERSION }}
+    name: Publish package with .NET ${{ vars.DEFAULT_DOTNET_SDK_VERSION }}
     needs: [pack]  
     environment:
       name: private-nuget-feed
@@ -234,7 +233,7 @@ jobs:
       - name: Dotnet Setup
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
+          dotnet-version: ${{ vars.DEFAULT_DOTNET_SDK_VERSION }}
       - name: Download Packages
         uses: actions/download-artifact@v4
         with:
@@ -247,7 +246,7 @@ jobs:
   
   release-package:
     if: ${{ github.env.is_release }}
-    name: Release package with .NET ${{ vars.DOTNET_SDK_VERSION }}
+    name: Release package with .NET ${{ vars.DEFAULT_DOTNET_SDK_VERSION }}
     needs: [pack, test]
     environment:
       name: public-nuget-feed
@@ -258,7 +257,7 @@ jobs:
       - name: Dotnet Setup
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
+          dotnet-version: ${{ vars.DEFAULT_DOTNET_SDK_VERSION }}
       - name: Download Packages
         uses: actions/download-artifact@v4
         with:
