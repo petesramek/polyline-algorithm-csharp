@@ -22,9 +22,9 @@ inputs:
     required: false
     default: 'Release'
   build-platform:
-    description: 'Build platform. Deafult: anycpu'
+    description: 'Build platform. Deafult: Any CPU'
     required: false
-    default: 'anycpu'
+    default: 'Any CPU'
   build-glob-pattern:
     description: 'Search pattern for source code. Default: **/*.csproj'
     required: false
@@ -56,7 +56,7 @@ runs:
 
     - name: 'Build with .NET CLI'
       shell: bash
-      run: dotnet build ${{ inputs.search-pattern }} --configuration ${{ inputs.build-configuration }} /p:Platform=${{ inputs.build-platform }} /p:Version=${{ inputs.assembly-version }} /p:AssemblyInformationalVersion=${{ inputs.assembly--informational-version }} /p:FileVersion=${{ inputs.assembly-file-version }}
+      run: dotnet build ${{ inputs.search-pattern }} --configuration ${{ inputs.build-configuration }} /p:Platform="${{ inputs.build-platform }}" /p:Version=${{ inputs.assembly-version }} /p:AssemblyInformationalVersion=${{ inputs.assembly--informational-version }} /p:FileVersion=${{ inputs.assembly-file-version }}
     
     - name: 'Upload build artifacts'
       if: ${{ inputs.upload-build-artifacts == 'true' }}
