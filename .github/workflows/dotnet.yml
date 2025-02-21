@@ -38,10 +38,10 @@ jobs:
     name: Versioning with GitVersion
     runs-on: ubuntu-latest
     outputs:
-      ASSEMBLY_VERSION: ${{ steps.versioning.outputs.ASSEMBLY_VERSION }}
-      ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.versioning.outputs.ASSEMBLY_INFORMATIONAL_VERSION }}
-      FILE_VERSION: ${{ steps.versioning.outputs.FILE_VERSION }}
-      PACKAGE_VERSION: ${{ steps.versioning.outputs.PACKAGE_VERSION }}
+      ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.ASSEMBLY_VERSION }}
+      ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.ASSEMBLY_INFORMATIONAL_VERSION }}
+      FILE_VERSION: ${{ steps.gitversion.outputs.FILE_VERSION }}
+      PACKAGE_VERSION: ${{ steps.gitversion.outputs.PACKAGE_VERSION }}
     steps:
       - uses: actions/checkout@v4
         with:
