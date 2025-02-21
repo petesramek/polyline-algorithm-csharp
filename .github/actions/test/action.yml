@@ -1,0 +1,79 @@
+name: 'Test with .NET CLI'
+author: 'Pete Sramek'
+description: 'Run tests, collects code coverage, logs test results, uploads test artifacts'
+inputs:
+# Required
+
+# Optional
+  dotnet_sdk_version:
+    description: '.NET SDK version. Default: 9.x'
+    required: false
+    default: '9.x'
+  build-configuration:
+    description: 'Build configuration. Default: Release'
+    required: false
+    default: 'Release'
+  build-platform:
+    description: 'Build platform. Deafult: Any CPU'
+    required: false
+    default: 'Any CPU'
+  test-project-glob-pattern:
+    description: 'Search pattern for test projects. Default: **/*Tests.csproj'
+    required: false
+    default: |
+      **/*Tests.csproj
+  test-runsettings-path:
+    description: 'Path to the test runsettings file. Default: '''''
+    required: false
+    default: ''
+  test-result-logger:
+    description: 'Test result logger. Default: trx'
+    required: false
+    default: 'trx'
+  collect-code-coverage:
+    description: 'Collect code coverage. Default: true'
+    required: false
+    default: 'true'
+  code-coverage-output-format:
+    description: 'Code coverage output format. Default: cobertura'
+    required: false
+    default: 'cobertura'
+  upload-test-artifacts:
+    description: 'Upload test artifacts, Default: true'
+    required: false
+    default: 'true'
+  test-results-directory:
+    description: 'Search pattern for test artifacts. Default: ${{ runner.temp }}/test-results/'
+    required: false
+    default: |
+      '${{ runner.temp }}/test-results/'
+  test-artifacts-name:
+    description: 'Test artifacts name, Default: test-results'
+    required: false
+    default: 'test-results'
+    
+runs:  
+  using: "composite"
+  steps:
+    - name: 'Checkout ${{ github.head_ref || github.ref }}'
+      uses: actions/checkout@v4
+    
+    - name: 'Setup .NET ${{ inputs.dotnet_sdk_version }}'
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ inputs.dotnet_sdk_version }}
+    
+    - name: 'Test with .NET CLI'
+      shell: bash
+      env:
+        TRX_LOGGER_ARGS: "${{ inputs.test-result-logger != '' && ' --report-trx' || '' }}" 
+        RUN_SETTINGS_ARGS: "${{ inputs.test-runsettings-path != '' && '--settings ${{ inputs.test-runsettings-path }}' || '' }}"
+        CODE_COVERAGE_ARGS: "${{ inputs.collect-code-coverage == 'true' && '--coverage --coverage-output-format ${{ inputs.code-coverage-output-format }}' || '' }}" 
+      run: dotnet test ${{ inputs.test-project-glob-pattern }} --configuration ${{ inputs.build-configuration }} /p:Platform="${{ inputs.build-platform }}" --verbosity normal -- ${{ env.CODE_COVERAGE_ARGS }} ${{ env.RUN_SETTINGS_ARGS }} --results-directory ${{ inputs.test-results-directory }}
+    
+    - name: 'Upload test results'
+      if: ${{ inputs.upload-test-artifacts == 'true' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: '${{ inputs.test-artifacts-name }}'
+        path: '${{ inputs.test-results-directory }}*'
