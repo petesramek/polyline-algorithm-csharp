@@ -39,7 +39,7 @@ inputs:
     default: |
       '**/bin/*'
       '**/obj/*'
-      '~/.nuget/packages'
+      '**/.nuget/packages'
   build-artifacts-name:
     description: 'Upload build artifacts, Default: build'
     required: false
@@ -54,14 +54,10 @@ runs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ inputs.dotnet_sdk_version }}
-
-    - name: 'Restore packages with .NET CLI'
-      shell: bash
-      run: dotnet restore
     
     - name: 'Build with .NET CLI'
       shell: bash
-      run: dotnet build ${{ inputs.search-pattern }} --no-restore --configuration ${{ inputs.build-configuration }} /p:Platform="${{ inputs.build-platform }}" /p:Version=${{ inputs.assembly-version }} /p:AssemblyInformationalVersion=${{ inputs.assembly--informational-version }} /p:FileVersion=${{ inputs.assembly-file-version }}
+      run: dotnet build ${{ inputs.search-pattern }} --configuration ${{ inputs.build-configuration }} /p:Platform="${{ inputs.build-platform }}" /p:Version=${{ inputs.assembly-version }} /p:AssemblyInformationalVersion=${{ inputs.assembly--informational-version }} /p:FileVersion=${{ inputs.assembly-file-version }}
     
     - name: 'Upload build artifacts'
       if: ${{ inputs.upload-build-artifacts == 'true' }}
