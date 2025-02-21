@@ -93,7 +93,7 @@ jobs:
       - uses: ./.github/actions/test
         with:
           test-project-glob-pattern: ${{ vars.TEST_DEFAULT_GLOB_PATTERN }}
-          test-runsettings-path: 'unit-test.runsettings'
+          test-runsettings-path: '${{ github.workspace }}/unit-test.runsettings'
           test-results-directory: '${{ runner.temp }}/test-results/'
       # - run: dotnet tool install --global LiquidTestReports.Cli --prerelease
       # - run: ls -R ${{ runner.temp }}/test-results/
