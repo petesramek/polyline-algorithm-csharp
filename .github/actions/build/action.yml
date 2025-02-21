@@ -42,7 +42,7 @@ inputs:
     required: false
     default: 'build'
     
-runs:
+runs:  
   using: "composite"
   steps:
     - uses: actions/checkout@v4
@@ -51,9 +51,9 @@ runs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ inputs.dotnet_sdk_version }}
-    
-    - name: 'Build with dotnet CLI'
-      shell: cmd
+
+    - name: 'Build with .NET CLI'
+      shell: bash
       run: dotnet build ${{ inputs.search-pattern }} --configuration ${{ inputs.build-configuration }} /p:Platform=${{ inputs.build-platform }} /p:Version=${{ inputs.assembly-version }} /p:AssemblyInformationalVersion=${{ inputs.assembly--informational-version }} /p:FileVersion=${{ inputs.assembly-file-version }}
     
     - name: 'Upload build artifacts'
@@ -61,7 +61,7 @@ runs:
       uses: actions/upload-artifact@v4
       with:
         name: ${{ inputs.build-artifacts-name }}
-        path: inputs.build-artifacts-glob-pattern
+        path: ${{ inputs.build-artifacts-glob-pattern }}
           
           
 
