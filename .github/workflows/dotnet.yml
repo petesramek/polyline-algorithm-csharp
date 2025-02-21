@@ -32,7 +32,7 @@ env:
   build-configuration: 'Release'
   build-platform: 'Any CPU'
   git-version: '6.0.x'
-  test-result-directory: ${{ runner.temp }}/test-results
+  test-result-directory: 'test-results'
 
 jobs:      
   versioning:
@@ -94,13 +94,7 @@ jobs:
         with:
           test-project-glob-pattern: ${{ vars.TEST_DEFAULT_GLOB_PATTERN }}
           test-runsettings-path: 'unit-test.runsettings'
-      - name: Test with .NET
-        run: dotnet test ${{ vars.TEST_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} --verbosity normal --settings  -- --coverage --coverage-output-format cobertura --report-trx --results-directory ${{ runner.temp }}/test-results/
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: ${{ runner.temp }}/test-results/*
+          test-results-directory: ${{ runner.temp }}/${{ env.test-result-directory }}/
       # - run: dotnet tool install --global LiquidTestReports.Cli --prerelease
       # - run: ls -R ${{ runner.temp }}/test-results/
       # - run: liquid --inputs "Folder=${{ runner.temp }}/test-results/;File=**/*.trx;Format=Trx" --output-file ${{ runner.temp }}/test-results/test-report.md
