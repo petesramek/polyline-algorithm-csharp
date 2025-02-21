@@ -16,19 +16,19 @@ inputs:
   dotnet_sdk_version:
     description: '.NET SDK version'
     required: false
-    default: vars.DEFAULT_DOTNET_SDK_VERSION
+    default: ${{ vars.DEFAULT_DOTNET_SDK_VERSION }}
   build-configuration:
     description: 'Build configuration. Default: vars.DEFAULT_BUILD_CONFIGURATION'
     required: false
-    default: vars.DEFAULT_BUILD_CONFIGURATION
+    default: ${{ vars.DEFAULT_BUILD_CONFIGURATION }}
   build-platform:
     description: 'Build platform. Deafult: vars.DEFAULT_BUILD_PLATFORM'
     required: false
-    default: vars.DEFAULT_BUILD_PLATFORM
+    default: ${{ vars.DEFAULT_BUILD_PLATFORM }}
   build-glob-pattern:
     description: 'Search pattern for source code. Default: vars.SRC_SEARCH_PATTERN'
     required: false
-    default: vars.SRC_SEARCH_PATTERN
+    default: ${{ vars.SRC_SEARCH_PATTERN }}
   upload-build-artifacts:
     description: 'Upload build artifacts, Default: ''true'''
     required: false
