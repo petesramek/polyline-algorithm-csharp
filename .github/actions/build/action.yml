@@ -22,9 +22,9 @@ inputs:
     required: false
     default: 'Release'
   build-platform:
-    description: 'Build platform. Deafult: ''AnyCPU'''
+    description: 'Build platform. Deafult: ''Any CPU'''
     required: false
-    default: 'AnyCPU'
+    default: 'Any CPU'
   build-glob-pattern:
     description: 'Search pattern for source code. Default: ''**/*.csproj'''
     required: false
