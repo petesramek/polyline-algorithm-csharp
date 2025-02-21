@@ -33,14 +33,14 @@ runs:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
-    - name: Install GitVersion $inputs.git-version
-      uses: gittools/actions/gitversion/setup@$inputs.git-version
+    - name: Install GitVersion ${{ inputs.git-version }}
+      uses: gittools/actions/gitversion/setup@${{ inputs.git-version }}
       with:
         versionSpec: $INPUT_GIT_VERSION
         preferLatestVersion: true
-    - name: Calculate version with GitVersion $inputs.git-version
+    - name: Calculate version with GitVersion ${{ inputs.git-version }}
       id: gitversion
-      uses: gittools/actions/gitversion/execute@$inputs.git-action-version
+      uses: gittools/actions/gitversion/execute@${{ inputs.git-action-version }}
       with:
         useConfigFile: true
         configFilePath: ./.gitversion/version.yml
