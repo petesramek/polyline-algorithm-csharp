@@ -43,10 +43,10 @@ inputs:
     required: false
     default: 'true'
   test-results-directory:
-    description: 'Search pattern for test artifacts. Default: ${{ runner.temp }}/test-results/'
+    description: 'Search pattern for test artifacts. Default: ${{ RUNNER_TEMP }}/test-results/'
     required: false
     default: |
-      '${{ runner.temp }}/test-results/'
+      '${{ RUNNER_TEMP }}/test-results/'
   test-artifacts-name:
     description: 'Test artifacts name, Default: test-results'
     required: false
