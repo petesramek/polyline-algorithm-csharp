@@ -22,7 +22,7 @@ permissions:
   id-token: write
 
 concurrency: 
-  group: ${{ github.ref }}
+  group: ${{ github.head_ref || github.ref }}      
   cancel-in-progress: false
 
 env:
@@ -44,7 +44,8 @@ jobs:
       PACKAGE_VERSION: ${{ fromJSON(format('[ "{0}{1}", "{0}" ]', steps.gitversion.outputs.assemblySemVer, steps.gitversion.outputs.preReleaseLabelWithDash))[fromJSON(env.is-release)] }}
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout ${{ github.head_ref || github.ref }}
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Install GitVersion
@@ -68,7 +69,8 @@ jobs:
       ASSEMBLY_INFORMATIONAL_VERSION: ${{ needs.versioning.outputs.ASSEMBLY_INFORMATIONAL_VERSION }}
       FILE_VERSION: ${{ needs.versioning.outputs.FILE_VERSION }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout ${{ github.head_ref || github.ref }}
+        uses: actions/checkout@v4
       - uses: ./.github/actions/build
         with:
           assembly-version: ${{ env.ASSEMBLY_VERSION }}
@@ -94,7 +96,8 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout ${{ github.head_ref || github.ref }}
+        uses: actions/checkout@v4
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -133,7 +136,8 @@ jobs:
       FILE_VERSION: ${{ needs.versioning.outputs.FILE_VERSION }}
       PACKAGE_VERSION: ${{ needs.versioning.outputs.PACKAGE_VERSION }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout ${{ github.head_ref || github.ref }}
+        uses: actions/checkout@v4
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -162,7 +166,8 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout ${{ github.head_ref || github.ref }}
+        uses: actions/checkout@v4
       - name: Install .NET SDK
         uses: actions/setup-dotnet@v4
         with:
@@ -197,7 +202,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout ${{ github.head_ref || github.ref }}
         uses: actions/checkout@v4
       - name: Dotnet Setup
         uses: actions/setup-dotnet@v4
@@ -235,7 +240,7 @@ jobs:
       name: private-nuget-feed
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout ${{ github.head_ref || github.ref }}
         uses: actions/checkout@v4
       - name: Dotnet Setup
         uses: actions/setup-dotnet@v4
@@ -259,7 +264,7 @@ jobs:
       name: public-nuget-feed
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout ${{ github.head_ref || github.ref }}
         uses: actions/checkout@v4
       - name: Dotnet Setup
         uses: actions/setup-dotnet@v4
