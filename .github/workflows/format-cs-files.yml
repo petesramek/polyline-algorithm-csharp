@@ -44,6 +44,10 @@ jobs:
         dotnet format style --verbosity diagnostic
         dotnet format analyzers --diagnostics IDE0073 --verbosity diagnostic
       working-directory: ${{ github.workspace }}
+    # - if: runner.os == 'Windows'
+    #   run: |
+    #     git config --global core.autocrlf false
+    #     git config --global core.eol lf
     - name: Push to ${{ github.head_ref || github.ref }}
       run: |
         git add .
