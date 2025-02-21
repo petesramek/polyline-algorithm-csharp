@@ -18,27 +18,27 @@ inputs:
     required: false
     default: '9.x'
   build-configuration:
-    description: 'Build configuration. Default: ''Release'''
+    description: 'Build configuration. Default: Release'
     required: false
     default: 'Release'
   build-platform:
     description: 'Build platform. Deafult: ''Any CPU'''
     required: false
-    default: 'Any CPU'
+    default: '''Any CPU'''
   build-glob-pattern:
-    description: 'Search pattern for source code. Default: ''**/*.csproj'''
+    description: 'Search pattern for source code. Default: **/*.csproj'
     required: false
     default: '**/*.csproj'
   upload-build-artifacts:
-    description: 'Upload build artifacts, Default: ''true'''
+    description: 'Upload build artifacts, Default: true'
     required: false
     default: 'true'
   build-artifacts-glob-pattern:
-    description: 'Search pattern for build artifacts. Default: ''{**/bin/*,**/obj/*}'''
+    description: 'Search pattern for build artifacts. Default: {**/bin/*,**/obj/*}'
     required: false
     default: '{**/bin/*,**/obj/*}'  
   build-artifacts-name:
-    description: 'Upload build artifacts, Default: ''build'''
+    description: 'Upload build artifacts, Default: build'
     required: false
     default: 'build'
     
