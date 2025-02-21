@@ -1,6 +1,6 @@
-name: 'Build with .NET'
+name: 'Build with .NET CLI'
 author: 'Pete Sramek'
-description: 'Generating software versions'
+description: 'Compiles source code, uploads build artifacts.'
 inputs:
 # Required
   assembly-version:
