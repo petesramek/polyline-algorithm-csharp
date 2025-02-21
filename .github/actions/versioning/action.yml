@@ -25,7 +25,7 @@ outputs:
     value: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
   PACKAGE_VERSION:
     description: ''
-    value: ${{ fromJSON(format('[ "{0}{1}", "{0}" ]', steps.gitversion.outputs.assemblySemVer, steps.gitversion.outputs.preReleaseLabelWithDash))[fromJSON($inputs.is-release)] }}
+    value: ${{ fromJSON(format('[ "{0}{1}", "{0}" ]', steps.gitversion.outputs.assemblySemVer, steps.gitversion.outputs.preReleaseLabelWithDash))[fromJSON(inputs.is-release)] }}
     
 runs:
   using: "composite"
