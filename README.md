@@ -1,6 +1,7 @@
 # Polyline Algorithm for .NET (.NET Standard 2.1)
 
-Lightweight, high performance, low allocation, library providing Google Polyline Algorithm decoding and encoding capabalities.
+Lightweight .NET Standard 2.1 library implementing Google Encoded Polyline Algorithm.
+More info about the algorithm can be found at [Google Developers](https://developers.google.com/maps/documentation/utilities/polylinealgorithm).
 
 ## Prerequisites
 
