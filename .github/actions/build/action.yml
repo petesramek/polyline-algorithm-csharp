@@ -1,4 +1,4 @@
-name: 'Build with .NET ${{ inputs.dotnet_sdk_version }}'
+name: 'Build with .NET'
 author: 'Pete Sramek'
 description: 'Generating software versions'
 inputs:
