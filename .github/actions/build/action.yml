@@ -34,9 +34,11 @@ inputs:
     required: false
     default: 'true'
   build-artifacts-glob-pattern:
-    description: 'Search pattern for build artifacts. Default: {**/bin/*,**/obj/*}'
+    description: 'Search pattern for build artifacts. Default: **/bin/*, **/obj/*'
     required: false
-    default: '{**/bin/*,**/obj/*}'  
+    default: |
+      **/bin/*
+      **/obj/* 
   build-artifacts-name:
     description: 'Upload build artifacts, Default: build'
     required: false
