@@ -32,6 +32,7 @@ env:
   build-configuration: 'Release'
   build-platform: 'Any CPU'
   git-version: '6.0.x'
+  test-result-directory: ${{ runner.temp }}/test-results
 
 jobs:      
   versioning:
@@ -44,16 +45,16 @@ jobs:
       PACKAGE_VERSION: ${{ fromJSON(format('[ "{0}{1}", "{0}" ]', steps.gitversion.outputs.assemblySemVer, steps.gitversion.outputs.preReleaseLabelWithDash))[fromJSON(env.is-release)] }}
 
     steps:
-      - name: Checkout ${{ github.head_ref || github.ref }}
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Install GitVersion
+      - name: Install GitVersion ${{ env.git-version }}
         uses: gittools/actions/gitversion/setup@v3.1.11
         with:
           versionSpec: ${{ env.git-version }}
           preferLatestVersion: true
-      - name: Calculate version with GitVersion ${{ env.git-version }}
+      - name: Determine version with GitVersion ${{ env.git-version }}
         id: gitversion
         uses: gittools/actions/gitversion/execute@v3.1.11
         with:
@@ -69,7 +70,7 @@ jobs:
       ASSEMBLY_INFORMATIONAL_VERSION: ${{ needs.versioning.outputs.ASSEMBLY_INFORMATIONAL_VERSION }}
       FILE_VERSION: ${{ needs.versioning.outputs.FILE_VERSION }}
     steps:
-      - name: Checkout ${{ github.head_ref || github.ref }}
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
       - uses: ./.github/actions/build
         with:
@@ -77,54 +78,44 @@ jobs:
           assembly-informational-version: ${{ env.ASSEMBLY_INFORMATIONAL_VERSION }}
           assembly-file-version: ${{ env.FILE_VERSION }}
           build-glob-pattern: ${{ vars.SRC_DEFAULT_GLOB_PATTERN }}
-      # - name: Setup .NET ${{ env.dotnet-sdk-version }}
-      #   uses: actions/setup-dotnet@v4
-      #   with:
-      #     dotnet-version: ${{ env.dotnet-sdk-version }}
-      # - name: Build with .NET ${{ env.dotnet-sdk-version }}
-      #   run: dotnet build ${{ vars.SRC_SEARCH_PATTERN }} --configuration ${{ env.build-configuration }} /p:Platform=${{ env.build-platform }} /p:Version=${{ env.ASSEMBLY_VERSION }} /p:AssemblyInformationalVersion=${{ env.ASSEMBLY_INFORMATIONAL_VERSION }} /p:FileVersion=${{ env.FILE_VERSION }}
-      # - name: Upload Build
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: build
-      #     path: |
-      #       **/bin/*
-      #       **/obj/*
 
   test:
     name: Test with .NET
     needs: [build]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout ${{ github.head_ref || github.ref }}
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
-      - name: Setup .NET
+      - name: 'Setup .NET'
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.dotnet-sdk-version }}
+      - uses: ./.github/actions/test
+        with:
+          test-project-glob-pattern: ${{ vars.TEST_DEFAULT_GLOB_PATTERN }}
+          test-runsettings-path: 'unit-test.runsettings'
       - name: Test with .NET
-        run: dotnet test ${{ vars.TEST_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} --verbosity normal --settings unit-test.runsettings -- --coverage --coverage-output-format cobertura --report-trx --results-directory ${{ runner.temp }}/test-results/
+        run: dotnet test ${{ vars.TEST_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} --verbosity normal --settings  -- --coverage --coverage-output-format cobertura --report-trx --results-directory ${{ runner.temp }}/test-results/
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: |
-            ${{ runner.temp }}/test-results/*
-      - run: dotnet tool install --global LiquidTestReports.Cli --prerelease
-      - run: ls -R ${{ runner.temp }}/test-results/
-      - run: liquid --inputs "Folder=${{ runner.temp }}/test-results/;File=**/*.trx;Format=Trx" --output-file ${{ runner.temp }}/test-results/test-report.md
-      - run: cat ${{ runner.temp }}/test-results/*.md >> $GITHUB_STEP_SUMMARY
-        name: Write Test Results Summary
-      - run: dotnet tool update --global dotnet-coverage
-        name: Update dotnet-coverage tool
-      - run: dotnet-coverage merge --output ${{ runner.temp }}/test-results/test-result.cobertura.xml --output-format cobertura "${{ runner.temp }}/test-results/**/*.cobertura.xml"
-        name: Merge Code Coverage Results
-      - run: dotnet tool update --global dotnet-reportgenerator-globaltool
-        name: Update dotnet-reportgenerator-globaltool tool
-      - run: reportgenerator -reports:${{ runner.temp }}/test-results/test-result.cobertura.xml -targetdir:${{ runner.temp }}/test-results/coverage-report -reporttypes:"MarkdownSummary"
-        name: Generate Code Coverage Results
-      - run: cat ${{ runner.temp }}/test-results/coverage-report/Summary.md >> $GITHUB_STEP_SUMMARY
-        name: Write Code Coverage Summary
+          path: ${{ runner.temp }}/test-results/*
+      # - run: dotnet tool install --global LiquidTestReports.Cli --prerelease
+      # - run: ls -R ${{ runner.temp }}/test-results/
+      # - run: liquid --inputs "Folder=${{ runner.temp }}/test-results/;File=**/*.trx;Format=Trx" --output-file ${{ runner.temp }}/test-results/test-report.md
+      # - run: cat ${{ runner.temp }}/test-results/*.md >> $GITHUB_STEP_SUMMARY
+      #   name: Write Test Results Summary
+      # - run: dotnet tool update --global dotnet-coverage
+      #   name: Update dotnet-coverage tool
+      # - run: dotnet-coverage merge --output ${{ runner.temp }}/test-results/test-result.cobertura.xml --output-format cobertura "${{ runner.temp }}/test-results/**/*.cobertura.xml"
+      #   name: Merge Code Coverage Results
+      # - run: dotnet tool update --global dotnet-reportgenerator-globaltool
+      #   name: Update dotnet-reportgenerator-globaltool tool
+      # - run: reportgenerator -reports:${{ runner.temp }}/test-results/test-result.cobertura.xml -targetdir:${{ runner.temp }}/test-results/coverage-report -reporttypes:"MarkdownSummary"
+      #   name: Generate Code Coverage Results
+      # - run: cat ${{ runner.temp }}/test-results/coverage-report/Summary.md >> $GITHUB_STEP_SUMMARY
+      #   name: Write Code Coverage Summary
 
   pack:
     name: Pack with .NET
@@ -136,7 +127,7 @@ jobs:
       FILE_VERSION: ${{ needs.versioning.outputs.FILE_VERSION }}
       PACKAGE_VERSION: ${{ needs.versioning.outputs.PACKAGE_VERSION }}
     steps:
-      - name: Checkout ${{ github.head_ref || github.ref }}
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -166,7 +157,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout ${{ github.head_ref || github.ref }}
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
       - name: Install .NET SDK
         uses: actions/setup-dotnet@v4
@@ -202,7 +193,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout ${{ github.head_ref || github.ref }}
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
       - name: Dotnet Setup
         uses: actions/setup-dotnet@v4
@@ -240,7 +231,7 @@ jobs:
       name: private-nuget-feed
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout ${{ github.head_ref || github.ref }}
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
       - name: Dotnet Setup
         uses: actions/setup-dotnet@v4
@@ -264,7 +255,7 @@ jobs:
       name: public-nuget-feed
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout ${{ github.head_ref || github.ref }}
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
       - name: Dotnet Setup
         uses: actions/setup-dotnet@v4
