@@ -62,10 +62,10 @@ runs:
     - name: 'Test with .NET CLI'
       shell: bash
       env:
-        TRX_LOGGER_ARGS: "${{ inputs.test-result-logger != '' && ' --report-trx' || '' }}" 
-        RUN_SETTINGS_ARGS: "${{ inputs.test-runsettings-path != '' && '--settings $(inputs.test-runsettings-path)' || '' }}"
-        CODE_COVERAGE_ARGS: "${{ inputs.collect-code-coverage == 'true' && '--coverage --coverage-output-format $(inputs.code-coverage-output-format)' || '' }}" 
-      run: dotnet test ${{ inputs.test-project-glob-pattern }} --configuration ${{ inputs.build-configuration }} --verbosity normal -- ${{ env.CODE_COVERAGE_ARGS }} ${{ env.RUN_SETTINGS_ARGS }} --results-directory ${{ inputs.test-results-directory }}
+        TRX_LOGGER_ARGS: ${{ inputs.test-result-logger != '' && ' --report-trx' || '' }}
+        RUN_SETTINGS_ARGS: ${{ inputs.test-runsettings-path != '' && '--settings $(inputs.test-runsettings-path)' || '' }}
+        CODE_COVERAGE_ARGS: ${{ inputs.collect-code-coverage == 'true' && '--coverage --coverage-output-format $(inputs.code-coverage-output-format)'  || '' }}
+      run: dotnet test ${{ inputs.test-project-glob-pattern }} --configuration ${{ inputs.build-configuration }} --verbosity normal -- ${{ env.CODE_COVERAGE_ARGS }} ${{ env.RUN_SETTINGS_ARGS }} ${{ env.TRX_LOGGER_ARGS }} --results-directory ${{ inputs.test-results-directory }}
     
     - name: 'Upload test results'
       if: ${{ inputs.upload-test-artifacts == 'true' }}
