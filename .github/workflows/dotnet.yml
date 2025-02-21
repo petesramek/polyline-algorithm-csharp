@@ -143,7 +143,7 @@ jobs:
         with:
           name: build
       - name: Pack with .NET
-        run: dotnet pack ${{ vars.SRC_DEFAULT_GLOB_PATTERN }} --no-build --no-restore --configuration ${{ env.build-configuration }} /p:Platform="${{ env.build-platform }}" /p:PackageVersion=${{ env.PACKAGE_VERSION }} /p:Version=${{ env.ASSEMBLY_VERSION }} /p:AssemblyInformationalVersion=${{ env.ASSEMBLY_INFORMATIONAL_VERSION }} /p:FileVersion=${{ env.FILE_VERSION }} --output ${{ runner.temp }}/packages/
+        run: dotnet pack ${{ vars.SRC_DEFAULT_GLOB_PATTERN }} --no-build --configuration ${{ env.build-configuration }} /p:Platform="${{ env.build-platform }}" /p:PackageVersion=${{ env.PACKAGE_VERSION }} /p:Version=${{ env.ASSEMBLY_VERSION }} /p:AssemblyInformationalVersion=${{ env.ASSEMBLY_INFORMATIONAL_VERSION }} /p:FileVersion=${{ env.FILE_VERSION }} --output ${{ runner.temp }}/packages/
       - name: Upload Package
         uses: actions/upload-artifact@v4
         with:

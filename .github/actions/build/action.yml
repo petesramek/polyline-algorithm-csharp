@@ -54,16 +54,6 @@ runs:
       with:
         dotnet-version: ${{ inputs.dotnet_sdk_version }}
 
-    - name: Cache NuGet packages
-      id: cache-nuget
-      uses: actions/cache@v3.3.2
-      with:
-          path: |
-            ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-cache-${{ hashFiles('inputs.search-pattern') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-cache-${{ hashFiles('inputs.search-pattern') }}
-
     - name: 'Restore packages with .NET CLI'
       shell: bash
       run: dotnet restore
