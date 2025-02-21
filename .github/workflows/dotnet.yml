@@ -30,7 +30,7 @@ env:
   is-preview: ${{ startsWith(github.ref_name, 'preview') }}
   dotnet-sdk-version: '9.x'
   build-configuration: 'Release'
-  build-platform: 'Any CPU'
+  build-platform: 'anycpu'
   git-version: '6.0.x'
 
 jobs:      
