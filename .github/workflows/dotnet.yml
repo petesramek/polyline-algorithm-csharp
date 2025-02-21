@@ -70,9 +70,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/build
         with:
-          assembly-version: ${{ needs.versioning.outputs.ASSEMBLY_VERSION }}
-          assembly-informational-version: ${{ needs.versioning.outputs.ASSEMBLY_INFORMATIONAL_VERSION }}
-          assembly-file-version: ${{ needs.versioning.outputs.FILE_VERSION }}
+          assembly-version: ${{ env.ASSEMBLY_VERSION }}
+          assembly-informational-version: ${{ env.ASSEMBLY_INFORMATIONAL_VERSION }}
+          assembly-file-version: ${{ env.FILE_VERSION }}
           build-glob-pattern: ${{ vars.BUILD_DEFAULT_GLOB_PATTERN }}
       # - name: Setup .NET ${{ env.dotnet-sdk-version }}
       #   uses: actions/setup-dotnet@v4
