@@ -34,7 +34,7 @@ inputs:
     required: false
     default: 'true'
   build-artifacts-glob-pattern:
-    description: 'Search pattern for build artifacts. Default: **/bin/*, **/obj/*, ~/.nuget/packages'
+    description: 'Search pattern for build artifacts. Default: **/bin/*, **/obj/*'
     required: false
     default: |
       '**/bin/*'
