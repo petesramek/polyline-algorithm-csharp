@@ -16,7 +16,7 @@ inputs:
   dotnet_sdk_version:
     description: '.NET SDK version'
     required: false
-    default: vars.DOTNET_SDK_VERSION
+    default: vars.DEFAULT_DOTNET_SDK_VERSION
   build-configuration:
     description: 'Build configuration. Default: vars.DEFAULT_BUILD_CONFIGURATION'
     required: false
