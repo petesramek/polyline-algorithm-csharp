@@ -20,7 +20,7 @@ permissions:
   contents: write
 
 concurrency: 
-  group: ${{ github.ref }}
+  group: ${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
 jobs:      
@@ -39,17 +39,17 @@ jobs:
       run: dotnet tool install -g dotnet-format
     - name: Format with .NET ${{ vars.DOTNET_SDK_VERSION }}
       run: |
-        git pull origin ${{ github.ref }}
+        git pull origin ${{ github.head_ref || github.ref }}
         dotnet format whitespace --verbosity diagnostic
         dotnet format style --verbosity diagnostic
         dotnet format analyzers --diagnostics IDE0073 --verbosity diagnostic
       working-directory: ${{ github.workspace }}
-    - name: Push to ${{ github.ref }}
+    - name: Push to ${{ github.head_ref || github.ref }}
       run: |
         git add .
         git config user.name "$(git log -n 1 --pretty=format:%an)"
         git config user.email "$(git log -n 1 --pretty=format:%ae)"
         git commit -m "applied file header rule"
-        git pull origin ${{ github.ref }}
-        git push origin ${{ github.ref }}
+        git pull origin ${{ github.head_ref || github.ref }}
+        git push origin ${{ github.head_ref || github.ref }}
       working-directory: ${{ github.workspace }}
