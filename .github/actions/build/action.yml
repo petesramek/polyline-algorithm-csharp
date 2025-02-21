@@ -47,7 +47,7 @@ inputs:
 runs:  
   using: "composite"
   steps:
-    - name: Checkout ${{ github.head_ref || github.ref }}
+    - name: 'Checkout ${{ github.head_ref || github.ref }}'
       uses: actions/checkout@v4
     
     - name: 'Setup .NET ${{ inputs.dotnet_sdk_version }}'
