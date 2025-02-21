@@ -33,19 +33,26 @@ branches:
     increment: Inherit
     regex: ^master$|^main$
     is-main-branch: true
+  develop:
+    mode: ContinuousDeployment
+    label: preview
+    increment: Inherit
+    regex: ^develop\/([vV]?\d+.\d+(\.\d+){0,1})$
+    source-branches:
+    - feature
   preview:
     mode: ContinuousDeployment
     label: preview
     increment: Inherit
-    regex: ^release(s)?\/([vV]?\d+.\d+(\.\d+){0,1})\/preview$
+    regex: ^preview\/([vV]?\d+.\d+(\.\d+){0,1})$
     source-branches:
     - release
-    - feature
+    - develop
   release:
     mode: ContinuousDeployment
     label: ''
     increment: Inherit
-    regex: ^release(s)?\/([vV]?\d+.\d+(\.\d+){0,1})$
+    regex: ^release\/([vV]?\d+.\d+(\.\d+){0,1})$
     source-branches:
     - preview
     - support
@@ -77,8 +84,7 @@ branches:
     increment: Inherit
     regex: ^feature(s)?\/(?<BranchName>.+)
     source-branches:
-    - preview
-    - release
+    - develop
   pull-request:
     mode: ContinuousDelivery
     label: pull-request-
@@ -86,6 +92,7 @@ branches:
     track-merge-target: true
     regex: ^(pull|pull\-requests|pr)[/-]
     source-branches:
+    - develop
     - preview
     - release
     - hotfix
@@ -100,8 +107,9 @@ branches:
     source-branches:
     - main
     - develop
+    - preview
     - release
-    - feature
-    - pull-request
     - hotfix
+    - bugfix
     - support
+    - feature
