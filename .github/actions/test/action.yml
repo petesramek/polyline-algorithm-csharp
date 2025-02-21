@@ -67,7 +67,7 @@ runs:
     - if: ${{ inputs.test-runsettings-path != '' }}
       name: 'Set RUN_SETTINGS_ARGS environment variable'
       shell: bash
-      run: echo "RUN_SETTINGS_ARGS=${{ inputs.test-runsettings-path }}" >> $GITHUB_ENV
+      run: echo "RUN_SETTINGS_ARGS=--setttings ${{ inputs.test-runsettings-path }}" >> $GITHUB_ENV
 
     - if: ${{ inputs.collect-code-coverage == 'true' }}
       name: 'Set CODE_COVERAGE_ARGS environment variable'
