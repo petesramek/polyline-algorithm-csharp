@@ -15,4 +15,4 @@ Package Manager Console: `Install-Package PolylineAlgorithm`
 
 ### Documentation
 
-Documentation is can be found at [https://petesramek.github.io/polyline-algorithm-csharp/](https://petesramek.github.io/polyline-algorithm-csharp/).
+Documentation is can be found at [https://sramekpete.github.io/polyline-algorithm-csharp/](https://sramekpete.github.io/polyline-algorithm-csharp/).
