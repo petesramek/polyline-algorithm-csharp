@@ -72,7 +72,7 @@ runs:
     - if: ${{ inputs.collect-code-coverage == 'true' }}
       name: 'Set CODE_COVERAGE_ARGS environment variable'
       shell: bash
-      run: echo "CODE_COVERAGE_ARGS=---coverage --coverage-output-format ${{ inputs.code-coverage-output-format}}" >> $GITHUB_ENV
+      run: echo "CODE_COVERAGE_ARGS=--coverage --coverage-output-format ${{ inputs.code-coverage-output-format}}" >> $GITHUB_ENV
       
     - name: 'Test with .NET CLI'
       shell: bash
