@@ -38,10 +38,11 @@ jobs:
     name: Versioning with GitVersion
     runs-on: ubuntu-latest
     outputs:
-      ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.ASSEMBLY_VERSION }}
-      ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.ASSEMBLY_INFORMATIONAL_VERSION }}
-      FILE_VERSION: ${{ steps.gitversion.outputs.FILE_VERSION }}
-      PACKAGE_VERSION: ${{ steps.gitversion.outputs.PACKAGE_VERSION }}
+      ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
+      ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}+${{ steps.gitversion.outputs.sha }}
+      FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
+      PACKAGE_VERSION: ${{ fromJSON(format('[ "{0}{1}", "{0}" ]', steps.gitversion.outputs.assemblySemVer, steps.gitversion.outputs.preReleaseLabelWithDash))[fromJSON(inputs.is-release)] }}
+
     steps:
       - uses: actions/checkout@v4
         with:
