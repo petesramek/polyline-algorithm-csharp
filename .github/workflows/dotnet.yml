@@ -155,7 +155,7 @@ jobs:
 
   benchmark:
     if: ${{ github.env.is_release || vars.BENCHMARKDOTNET_RUN_OVERRIDE == 'true' }}
-    name: Benchmark with .NET on ${{ matrix.os }}
+    name: Benchmark with .NET CLI on ${{ matrix.os }}
     needs: [build]
     strategy:
       matrix:
@@ -190,7 +190,7 @@ jobs:
 
   publish-docs:
     if: ${{ github.env.is_release && !github.env.is_preview }}
-    name: Docs with .NET
+    name: Docs with docfx
     needs: [benchmark, test]  
     environment:
       name: github-pages
@@ -229,7 +229,7 @@ jobs:
 
   publish-package-internal:
     if: ${{ !github.env.is_release }}
-    name: Publish package with .NET
+    name: Publish package with .NET CLI
     needs: [pack]  
     environment:
       name: private-nuget-feed
@@ -247,13 +247,13 @@ jobs:
           name: package
           path: ${{ runner.temp }}/packages/
       - run: |
-          dotnet nuget add source ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_URL }} --name private-feed
+          dotnet nuget add source ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_URL }} --name private-feed --username username --password ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }} --store-password-in-clear-text
           dotnet nuget push **/*.nupkg --source private-feed --api-key ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }}
         working-directory: ${{ runner.temp }}/packages/
   
   release-package:
     if: ${{ github.env.is_release }}
-    name: Release package with .NET
+    name: Release package with .NET CLI
     needs: [pack, test]
     environment:
       name: public-nuget-feed
