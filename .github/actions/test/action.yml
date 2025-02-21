@@ -22,10 +22,10 @@ inputs:
     description: 'Path to the test runsettings file. Default: '''''
     required: false
     default: ''
-  test-result-logger:
-    description: 'Test result logger. Default: trx'
+  use-trf-logger:
+    description: 'Use TRX logger. Default: true'
     required: false
-    default: 'trx'
+    default: 'true'
   collect-code-coverage:
     description: 'Collect code coverage. Default: true'
     required: false
@@ -47,9 +47,9 @@ inputs:
     description: 'Test artifacts name, Default: test-results'
     required: false
     default: 'test-results'
-    
-runs:  
-  using: "composite"
+
+runs:
+  using: composite
   steps:
     - name: 'Checkout ${{ github.head_ref || github.ref }}'
       uses: actions/checkout@v4
@@ -58,13 +58,24 @@ runs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ inputs.dotnet_sdk_version }}
+
+    - if: ${{ inputs.use-trf-logger == 'true' }}
+      name: 'Set TRX_LOGGER_ARGS environment variable'
+      shell: bash
+      run: echo "TRX_LOGGER_ARGS=--report-trx" >> $GITHUB_ENV
     
+    - if: ${{ inputs.test-runsettings-path != '' }}
+      name: 'Set RUN_SETTINGS_ARGS environment variable'
+      shell: bash
+      run: echo "RUN_SETTINGS_ARGS=${{ inputs.test-runsettings-path }}" >> $GITHUB_ENV
+
+    - if: ${{ inputs.collect-code-coverage == 'true' }}
+      name: 'Set CODE_COVERAGE_ARGS environment variable'
+      shell: bash
+      run: echo "CODE_COVERAGE_ARGS=---coverage --coverage-output-format ${{ inputs.code-coverage-output-format}}" >> $GITHUB_ENV
+      
     - name: 'Test with .NET CLI'
       shell: bash
-      env:
-        TRX_LOGGER_ARGS: ${{ inputs.test-result-logger != '' && ' --report-trx' || '' }}
-        RUN_SETTINGS_ARGS: ${{ inputs.test-runsettings-path != '' && '--settings $(inputs.test-runsettings-path)' || '' }}
-        CODE_COVERAGE_ARGS: ${{ inputs.collect-code-coverage == 'true' && '--coverage --coverage-output-format $(inputs.code-coverage-output-format)'  || '' }}
       run: dotnet test ${{ inputs.test-project-glob-pattern }} --configuration ${{ inputs.build-configuration }} --verbosity normal -- ${{ env.CODE_COVERAGE_ARGS }} ${{ env.RUN_SETTINGS_ARGS }} ${{ env.TRX_LOGGER_ARGS }} --results-directory ${{ inputs.test-results-directory }}
     
     - name: 'Upload test results'
