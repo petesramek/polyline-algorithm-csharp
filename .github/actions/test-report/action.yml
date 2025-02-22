@@ -17,8 +17,8 @@ inputs:
     default: 'test-report.md'
 
 outputs:
-  test-report-file:
-    description: 'Path to the generated test report'
+  code-coverage-report:
+    description: 'Path to the generated code coverage report'
     value: ${{ env.TEST_REPORT_FILE }}
 runs:
   using: composite

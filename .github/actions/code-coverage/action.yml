@@ -3,47 +3,19 @@ author: 'Pete Sramek'
 description: 'Run tests, collects code coverage, logs test results, uploads test artifacts'
 inputs:
 # Required
-
+  test-result-folder:
+    description: 'Folder where test results are stored'
+    required: true
 # Optional
   dotnet_sdk_version:
     description: '.NET SDK version. Default: 9.x'
     required: false
     default: '9.x'
-  build-configuration:
-    description: 'Build configuration. Default: Release'
-    required: false
-    default: 'Release'
-  test-project-glob-pattern:
-    description: 'Search pattern for test projects. Default: **/*Tests.csproj'
-    required: false
-    default: |
-      **/*Tests.csproj
-  use-trf-logger:
-    description: 'Use TRX logger. Default: true'
-    required: false
-    default: 'true'
-  collect-code-coverage:
-    description: 'Collect code coverage. Default: true'
-    required: false
-    default: 'true'
-  code-coverage-output-format:
-    description: 'Code coverage output format. Default: cobertura'
-    required: false
-    default: 'cobertura'
-  upload-test-artifacts:
-    description: 'Upload test artifacts, Default: true'
-    required: false
-    default: 'true'
-  test-results-directory:
-    description: 'Search pattern for test artifacts. Default: test-results'
-    required: false
-    default: |
-      'test-results'
-  test-artifacts-name:
-    description: 'Test artifacts name, Default: test-results'
-    required: false
-    default: 'test-results'
 
+outputs:
+  test-report-file:
+    description: 'Path to the generated test report'
+    value: ${{ env.TEST_REPORT_FILE }}
 runs:
   using: composite
   steps:
@@ -55,28 +27,36 @@ runs:
       with:
         dotnet-version: ${{ inputs.dotnet_sdk_version }}
 
-    - if: ${{ inputs.use-trf-logger == 'true' }}
-      name: 'Set TRX_LOGGER_ARGS environment variable'
-      shell: bash
-      run: echo "TRX_LOGGER_ARGS=--report-trx" >> $GITHUB_ENV
-    
-    - if: ${{ inputs.test-runsettings-path != '' }}
-      name: 'Set RUN_SETTINGS_ARGS environment variable'
-      shell: bash
-      run: echo "RUN_SETTINGS_ARGS=--setttings ${{ inputs.test-runsettings-path }}" >> $GITHUB_ENV
-
-    - if: ${{ inputs.collect-code-coverage == 'true' }}
-      name: 'Set CODE_COVERAGE_ARGS environment variable'
-      shell: bash
-      run: echo "CODE_COVERAGE_ARGS=--coverage --coverage-output-format ${{ inputs.code-coverage-output-format}}" >> $GITHUB_ENV
       
-    - name: 'Test with .NET CLI'
+    - if: ${{ endsWith(inputs.test-result-folder, '/') }}
+      name: 'Set TEST_RESULT_FOLDER environment variable'
       shell: bash
-      run: dotnet test ${{ inputs.test-project-glob-pattern }} --configuration ${{ inputs.build-configuration }} --verbosity normal -- ${{ env.CODE_COVERAGE_ARGS }} ${{ env.TRX_LOGGER_ARGS }} --results-directory ${{ inputs.test-results-directory }}
+      run: echo "TEST_RESULT_FOLDER=${{ inputs.test-result-folder }}" >> $GITHUB_ENV
+
+    - if: ${{ !endsWith(inputs.test-result-folder, '/') }}
+      name: 'Set TEST_RESULT_FOLDER environment variable'
+      shell: bash
+      run: echo "TEST_RESULT_FOLDER=${{ inputs.test-result-folder }}/" >> $GITHUB_ENV
+
+    - name: 'Set CODE_COVERAGE_REPORT_FOLDER environment variable'
+      shell: bash
+      run: echo "CODE_COVERAGE_REPORT_FOLDER=${{ env.TEST_RESULT_FOLDER }}coverage-report/" >> $GITHUB_ENV
     
-    - name: 'Upload test results'
-      if: ${{ inputs.upload-test-artifacts == 'true' }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: '${{ inputs.test-artifacts-name }}'
-        path: '${{ inputs.test-results-directory }}*'
+    - name: 'Set CODE_COVERAGE_REPORT_FILE environment variable'
+      shell: bash
+      run: echo "CODE_COVERAGE_REPORT_FILE=${{ env.CODE_COVERAGE_REPORT_FOLDER }}code-coverage.cobertura.xml" >> $GITHUB_ENV
+
+    - name: 'Update dotnet-coverage tool'
+      shell: bash
+      run: dotnet tool update --global dotnet-coverage
+
+    - name: 'Merge code coverage reports'
+      shell: bash
+      run: dotnet-coverage merge --output ${{ env.CODE_COVERAGE_REPORT_FILE }} --output-format cobertura "${{ env.TEST_RESULT_FOLDER }}**/*.cobertura.xml"
+    
+    - name: 'Update dotnet-reportgenerator-globaltool tool'
+      shell: bash
+      run: dotnet tool update --global dotnet-reportgenerator-globaltool
+    - name: 'Generate code coverage report'
+      shell: bash
+      run: reportgenerator -reports:${{ env.CODE_COVERAGE_REPORT_FILE }} -targetdir:${{ env.CODE_COVERAGE_REPORT_FOLDER }} -reporttypes:"MarkdownSummary"

@@ -98,8 +98,14 @@ jobs:
         id: test-report
         with:
           test-result-folder: '${{ runner.temp }}/test-results/'
-      - name: Write Summary
+      - name: Write test report summary
         run: cat ${{ steps.test-report.outputs.test-report-file }} >> $GITHUB_STEP_SUMMARY
+      - uses: ./.github/actions/code-coverage
+        id: code-coverage-report
+        with:
+          test-result-folder: '${{ runner.temp }}/test-results/'
+      - name: Write test report summary
+        run: cat ${{ steps.code-coverage-report.outputs.code-coverage-report-file }} >> $GITHUB_STEP_SUMMARY
       # - run: dotnet tool update --global dotnet-coverage
       #   name: Update dotnet-coverage tool
       # - run: dotnet-coverage merge --output ${{ runner.temp }}/test-results/test-result.cobertura.xml --output-format cobertura "${{ runner.temp }}/test-results/**/*.cobertura.xml"
