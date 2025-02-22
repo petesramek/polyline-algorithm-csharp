@@ -15,7 +15,11 @@ using System.Diagnostics.CodeAnalysis;
 /// </summary>
 [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Internal use only.")]
 [DebuggerDisplay($"{nameof(InvalidCoordinateException)}: {{ToString()}}")]
-public sealed class InvalidCoordinateException : Exception {
+public sealed class InvalidCoordinateException : Exception
+    
+    
+    
+    {
     /// <summary>
     /// Initializes a new instance of the <see cref="InvalidCoordinateException"/> class with the specified coordinate and error message.
     /// </summary>
