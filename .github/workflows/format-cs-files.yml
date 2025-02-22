@@ -1,11 +1,6 @@
 name: Format *.cs files 
 
 on:
-  push:
-    branches:
-    - 'develop/**'
-    paths:
-      - '**.cs'
   pull_request:
     branches:
     - 'main'
