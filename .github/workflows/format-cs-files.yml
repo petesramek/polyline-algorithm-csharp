@@ -40,9 +40,9 @@ jobs:
       run: |
         git checkout ${{ github.head_ref || github.ref }}
         git pull origin ${{ github.head_ref || github.ref }}
-        dotnet format whitespace --verbosity diagnostic
-        dotnet format style --verbosity diagnostic
-        dotnet format analyzers --diagnostics IDE0005 IDE0073 --verbosity diagnostic
+        dotnet format whitespace
+        dotnet format style
+        dotnet format analyzers --diagnostics IDE0005 IDE0073
       working-directory: ${{ github.workspace }}
 
     - if: runner.os == 'Windows'
@@ -65,13 +65,6 @@ jobs:
         echo has-changes="$?" >> $GITHUB_OUTPUT
         set -e
       working-directory: ${{ github.workspace }}
-
-    - name: Review state
-      run: |
-        echo ${{ steps.validate.outputs.has-changes }}
-        echo ${{ fromJSON(steps.validate.outputs.has-changes) }}
-        echo ${{ fromJSON(steps.validate.outputs.has-changes) == 1 }}
-        echo ${{ fromJSON(steps.validate.outputs.has-changes) == '1' }}
 
     - name: Push changes to ${{ github.head_ref || github.ref }}
       if: ${{ fromJSON(steps.validate.outputs.has-changes) == '1' }}
