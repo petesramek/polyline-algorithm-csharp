@@ -26,7 +26,6 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  CI: true
   is-release: ${{ startsWith(github.ref_name, 'release') || startsWith(github.ref_name, 'preview') }}
   is-preview: ${{ startsWith(github.ref_name, 'preview') }}
   dotnet-sdk-version: '9.x'
@@ -73,6 +72,8 @@ jobs:
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
+      - name: Disable CI checks
+        run: echo "CI=true" >> $GITHUB_ENV
       - uses: ./.github/actions/build
         with:
           assembly-version: ${{ env.ASSEMBLY_VERSION }}
