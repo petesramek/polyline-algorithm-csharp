@@ -12,6 +12,9 @@ inputs:
   assembly-file-version:
     description: 'Assembly file version.'
     required: true
+  treat-warnins-as-error:
+    description: 'Treat warnings as errors.'
+    required: true
 # Optional
   dotnet_sdk_version:
     description: '.NET SDK version. Default: 9.x'
@@ -55,7 +58,7 @@ runs:
       with:
         dotnet-version: ${{ inputs.dotnet_sdk_version }}
     
-    - name: Validate with .NET CLI
+    - name: 'Validate warnings with .NET CLI's
       shell: bash
       run: dotnet format analyzers --severity warn --verify-no-changes
 

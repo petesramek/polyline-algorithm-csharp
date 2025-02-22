@@ -78,6 +78,7 @@ jobs:
           assembly-version: ${{ env.ASSEMBLY_VERSION }}
           assembly-informational-version: ${{ env.ASSEMBLY_INFORMATIONAL_VERSION }}
           assembly-file-version: ${{ env.FILE_VERSION }}
+          treat-warnins-as-error: ${{ env.is-release }}
           build-glob-pattern: ${{ vars.SRC_DEFAULT_GLOB_PATTERN }}
 
   test:
