@@ -23,6 +23,9 @@ concurrency:
   group: ${{ github.head_ref || github.ref }}
   cancel-in-progress: false
 
+env:
+  dotnet-sdk-version: '9.x'
+
 jobs:      
   formatting:
     name: Format whitespace, code style and file header
@@ -35,7 +38,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ vars.DOTNET_SDK_VERSION }}
+        dotnet-version: ${{ env.dotnet-sdk-version }}
     - name: Install dotnet-format tool
       run: dotnet tool install -g dotnet-format
     - name: Format with .NET CLI
