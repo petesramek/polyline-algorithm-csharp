@@ -1,4 +1,4 @@
-name: 'Generate markdown with Liquid Test Reports CLI'
+name: 'Generate test report with Liquid Test Reports CLI'
 author: 'Pete Sramek'
 description: 'Run tests, collects code coverage, logs test results, uploads test artifacts'
 inputs:
@@ -15,11 +15,11 @@ inputs:
     description: 'Filename of the test report. Default: test-report.md'
     required: false
     default: 'test-report.md'
-  write-step-summary:
-    description: 'Write test summary to step summary. Default: true'
-    required: false
-    default: 'true'
 
+outputs:
+  test-report-file:
+    description: 'Path to the generated test report'
+    value: ${{ env.TEST_REPORT_FILE }}
 runs:
   using: composite
   steps:
@@ -52,8 +52,3 @@ runs:
     - name: Generate test report
       shell: bash
       run: liquid --inputs "Folder=${{ env.TEST_RESULT_FOLDER }};File=**/*.trx;Format=Trx" --output-file ${{ env.TEST_REPORT_FILE }}
-    
-    - name: Write summary
-      if: ${{ inputs.write-step-summary == 'true' }}
-      shell: bash
-      run: cat ${{ env.TEST_REPORT_FILE }} >> $GITHUB_STEP_SUMMARY
