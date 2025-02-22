@@ -37,9 +37,6 @@ jobs:
       with:
         dotnet-version: ${{ env.dotnet-sdk-version }}
 
-    - name: Install dotnet-format tool
-      run: dotnet tool install -g dotnet-format
-
     - name: Format with .NET CLI
       run: |
         git checkout ${{ github.head_ref || github.ref }}
