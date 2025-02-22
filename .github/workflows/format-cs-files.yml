@@ -18,7 +18,6 @@ concurrency:
   group: format-${{ github.head_ref || github.ref }}
   cancel-in-progress: false
 
-
 env:
   dotnet-sdk-version: '9.x'
 
