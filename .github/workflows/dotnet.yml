@@ -72,8 +72,10 @@ jobs:
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
-      - name: Disable CI checks
-        run: echo "CI=true" >> $GITHUB_ENV
+
+      - name: Validate with .NET CLI
+        run: dotnet format analyzers --severity warn --verify-no-changes
+
       - uses: ./.github/actions/build
         with:
           assembly-version: ${{ env.ASSEMBLY_VERSION }}
