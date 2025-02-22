@@ -55,6 +55,10 @@ runs:
       with:
         dotnet-version: ${{ inputs.dotnet_sdk_version }}
     
+    - name: Validate with .NET CLI
+      shell: bash
+      run: dotnet format analyzers --severity warn --verify-no-changes
+
     - name: 'Build with .NET CLI'
       shell: bash
       run: dotnet build ${{ inputs.search-pattern }} --configuration ${{ inputs.build-configuration }} /p:Platform="${{ inputs.build-platform }}" /p:Version=${{ inputs.assembly-version }} /p:AssemblyInformationalVersion=${{ inputs.assembly--informational-version }} /p:FileVersion=${{ inputs.assembly-file-version }}
