@@ -62,7 +62,7 @@ runs:
 
     - name: 'Merge code coverage reports'
       shell: bash
-      run: dotnet-coverage merge --output ${{ env.CODE_COVERAGE_REPORT_FILE }} --output-format cobertura "${{ env.TEST_RESULT_FOLDER }}**/*.cobertura.xml"
+      run: dotnet-coverage merge --output ${{ env.CODE_COVERAGE_MERGED_FILE }} --output-format cobertura "${{ env.TEST_RESULT_FOLDER }}**/*.cobertura.xml"
     
     - name: 'Update dotnet-reportgenerator-globaltool tool'
       shell: bash
@@ -70,4 +70,4 @@ runs:
 
     - name: 'Generate code coverage report'
       shell: bash
-      run: reportgenerator -reports:${{ env.CODE_COVERAGE_REPORT_FILE }} -targetdir:${{ env.CODE_COVERAGE_REPORT_FOLDER }} -reporttypes:"MarkdownSummary"
+      run: reportgenerator -reports:${{ env.CODE_COVERAGE_MERGED_FILE }} -targetdir:${{ env.CODE_COVERAGE_REPORT_FOLDER }} -reporttypes:"MarkdownSummary"
