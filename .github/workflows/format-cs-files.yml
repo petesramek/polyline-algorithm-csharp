@@ -67,6 +67,7 @@ jobs:
       shell: bash
       run: |
         set +e
+        git add .
         git diff --quiet --exit-code --cached
         echo has-changes="$?" >> $GITHUB_OUTPUT
         set -e
@@ -82,7 +83,6 @@ jobs:
     - name: Push changes to ${{ github.head_ref || github.ref }}
       if: ${{ fromJSON(steps.validate.outputs.has-changes) == '1' }}
       run: |
-        git add .
         git config user.name "$(git log -n 1 --pretty=format:%an)"
         git config user.email "$(git log -n 1 --pretty=format:%ae)"
         git commit -m "applied file header rule"
