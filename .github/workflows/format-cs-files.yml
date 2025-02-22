@@ -15,7 +15,7 @@ permissions:
   contents: write
 
 concurrency: 
-  group: ${{ github.head_ref || github.ref }}
+  group: format-${{ github.head_ref || github.ref }}
   cancel-in-progress: false
 
 env:
@@ -42,6 +42,7 @@ jobs:
     - name: Format with .NET CLI
       run: |
         git checkout ${{ github.head_ref || github.ref }}
+        git pull origin ${{ github.head_ref || github.ref }}
         dotnet format whitespace --verbosity diagnostic
         dotnet format style --verbosity diagnostic
         dotnet format analyzers --diagnostics IDE0005 IDE0073 --verbosity diagnostic
