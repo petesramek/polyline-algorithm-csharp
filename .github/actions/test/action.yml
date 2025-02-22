@@ -29,7 +29,7 @@ inputs:
   code-coverage-output-format:
     description: 'Code coverage output format. Default: cobertura'
     required: false
-    default: 'cobertura'
+    default: 'coverage'
   upload-test-artifacts:
     description: 'Upload test artifacts, Default: true'
     required: false
@@ -72,7 +72,7 @@ runs:
       
     - name: 'Test with .NET CLI'
       shell: bash
-      run: dotnet test ${{ inputs.test-project-glob-pattern }} --configuration ${{ inputs.build-configuration }} --verbosity normal -- ${{ env.CODE_COVERAGE_ARGS }} ${{ env.TRX_LOGGER_ARGS }} --results-directory ${{ inputs.test-results-directory }}
+      run: dotnet test ${{ inputs.test-project-glob-pattern }} --configuration ${{ inputs.build-configuration }} -- ${{ env.CODE_COVERAGE_ARGS }} ${{ env.TRX_LOGGER_ARGS }} --results-directory ${{ inputs.test-results-directory }}
     
     - name: 'Upload test results'
       if: ${{ inputs.upload-test-artifacts == 'true' }}

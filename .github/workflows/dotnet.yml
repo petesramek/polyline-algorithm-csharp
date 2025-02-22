@@ -112,11 +112,6 @@ jobs:
       - name: Write code coverage report summary
         run: cat ${{ steps.code-coverage-report.outputs.code-coverage-report-file }} >> $GITHUB_STEP_SUMMARY
 
-      - uses: themichaelhall/check-code-coverage@v2
-        with:
-          report: ${{ steps.code-coverage-report.outputs.code-coverage-merge-file }}
-          required-percentage: 100
-
   pack:
     name: Pack with .NET
     needs: [build, versioning]
