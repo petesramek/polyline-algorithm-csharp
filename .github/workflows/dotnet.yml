@@ -86,36 +86,30 @@ jobs:
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
+
       - name: 'Setup .NET'
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.dotnet-sdk-version }}
+
       - uses: ./.github/actions/test
         with:
           test-project-glob-pattern: ${{ vars.TEST_DEFAULT_GLOB_PATTERN }}
           test-results-directory: '${{ runner.temp }}/test-results/'
+
       - uses: ./.github/actions/test-report
         id: test-report
         with:
           test-result-folder: '${{ runner.temp }}/test-results/'
       - name: Write test report summary
         run: cat ${{ steps.test-report.outputs.test-report-file }} >> $GITHUB_STEP_SUMMARY
+
       - uses: ./.github/actions/code-coverage
         id: code-coverage-report
         with:
           test-result-folder: '${{ runner.temp }}/test-results/'
       - name: Write test report summary
         run: cat ${{ steps.code-coverage-report.outputs.code-coverage-report-file }} >> $GITHUB_STEP_SUMMARY
-      # - run: dotnet tool update --global dotnet-coverage
-      #   name: Update dotnet-coverage tool
-      # - run: dotnet-coverage merge --output ${{ runner.temp }}/test-results/test-result.cobertura.xml --output-format cobertura "${{ runner.temp }}/test-results/**/*.cobertura.xml"
-      #   name: Merge Code Coverage Results
-      # - run: dotnet tool update --global dotnet-reportgenerator-globaltool
-      #   name: Update dotnet-reportgenerator-globaltool tool
-      # - run: reportgenerator -reports:${{ runner.temp }}/test-results/test-result.cobertura.xml -targetdir:${{ runner.temp }}/test-results/coverage-report -reporttypes:"MarkdownSummary"
-      #   name: Generate Code Coverage Results
-      # - run: cat ${{ runner.temp }}/test-results/coverage-report/Summary.md >> $GITHUB_STEP_SUMMARY
-      #   name: Write Code Coverage Summary
 
   pack:
     name: Pack with .NET

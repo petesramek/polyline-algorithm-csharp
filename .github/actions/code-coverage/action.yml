@@ -13,9 +13,10 @@ inputs:
     default: '9.x'
 
 outputs:
-  test-report-file:
-    description: 'Path to the generated test report'
-    value: ${{ env.TEST_REPORT_FILE }}
+  code-coverage-report-file:
+    description: 'Path to the generated code coverage report'
+    value: ${{ steps.variables.outputs.code-coverage-report-file }}
+
 runs:
   using: composite
   steps:
@@ -27,7 +28,6 @@ runs:
       with:
         dotnet-version: ${{ inputs.dotnet_sdk_version }}
 
-      
     - if: ${{ endsWith(inputs.test-result-folder, '/') }}
       name: 'Set TEST_RESULT_FOLDER environment variable'
       shell: bash
@@ -46,6 +46,11 @@ runs:
       shell: bash
       run: echo "CODE_COVERAGE_REPORT_FILE=${{ env.CODE_COVERAGE_REPORT_FOLDER }}code-coverage.cobertura.xml" >> $GITHUB_ENV
 
+    - name: 'Set code-coverage-report output'
+      id: variables
+      shell: bash
+      run: echo "code-coverage-report-file=${{ env.CODE_COVERAGE_REPORT_FILE }}" >> $GITHUB_OUTPUT
+
     - name: 'Update dotnet-coverage tool'
       shell: bash
       run: dotnet tool update --global dotnet-coverage
@@ -57,6 +62,7 @@ runs:
     - name: 'Update dotnet-reportgenerator-globaltool tool'
       shell: bash
       run: dotnet tool update --global dotnet-reportgenerator-globaltool
+
     - name: 'Generate code coverage report'
       shell: bash
       run: reportgenerator -reports:${{ env.CODE_COVERAGE_REPORT_FILE }} -targetdir:${{ env.CODE_COVERAGE_REPORT_FOLDER }} -reporttypes:"MarkdownSummary"

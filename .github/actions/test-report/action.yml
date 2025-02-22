@@ -17,9 +17,10 @@ inputs:
     default: 'test-report.md'
 
 outputs:
-  code-coverage-report:
-    description: 'Path to the generated code coverage report'
-    value: ${{ env.TEST_REPORT_FILE }}
+  test-report-file:
+    description: 'Path to the generated test report'
+    value: ${{ steps.variables.outputs.test-report-file }}
+
 runs:
   using: composite
   steps:
@@ -48,6 +49,11 @@ runs:
     - name: 'Set TEST_REPORT_FILE environment variable'
       shell: bash
       run: echo "TEST_REPORT_FILE=${{ env.TEST_RESULT_FOLDER }}${{ inputs.test-report-filename }}" >> $GITHUB_ENV
+
+    - name: 'Set test-report-file output'
+      id: variables
+      shell: bash
+      run: echo "test-report-file=${{ env.TEST_REPORT_FILE }}" >> $GITHUB_OUTPUT
 
     - name: Generate test report
       shell: bash
