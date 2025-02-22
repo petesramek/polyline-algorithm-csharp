@@ -51,11 +51,9 @@ runs:
 
     - name: Generate test report
       shell: bash
-      run: liquid --inputs "Folder=${{ env.test-result-folder }};File=**/*.trx;Format=Trx" --output-file ${{ env.TEST_REPORT_FILE }}
+      run: liquid --inputs "Folder=${{ env.TEST_RESULT_FOLDER }};File=**/*.trx;Format=Trx" --output-file ${{ env.TEST_REPORT_FILE }}
     
     - name: Write summary
       if: ${{ inputs.write-step-summary == 'true' }}
       shell: bash
-      env:
-        test-report-file: $(env.TEST_RESULT_FOLDER)$(inputs.test-report-filename)
       run: cat ${{ env.TEST_REPORT_FILE }} >> $GITHUB_STEP_SUMMARY
