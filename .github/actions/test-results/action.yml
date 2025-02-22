@@ -38,12 +38,12 @@ runs:
     - name: Generate test report
       shell: bash
       env:
-        test-report-file: endsWith(${{ inputs.test-result-folder }}, '/') && ${{ inputs.test-result-folder }}${{ inputs.test-report-filename }} || ${{ inputs.test-result-folder }}/${{ inputs.test-report-filename }}
+        test-report-file: ${{ endsWith($(inputs.test-result-folder), '/') && ${inputs.test-result-folder)$(inputs.test-report-filename) || $(inputs.test-result-folder)/$(inputs.test-report-filename)
       run: liquid --inputs "Folder=${{ env.test-result-folder }};File=**/*.trx;Format=Trx" --output-file ${{ env.test-report-file }}
     
     - name: Write summary
       if: ${{ inputs.write-step-summary == 'true' }}
       shell: bash
       env:
-        test-report-file: endsWith(${{ inputs.test-result-folder }}, '/') && ${{ inputs.test-result-folder }}${{ inputs.test-report-filename }} || ${{ inputs.test-result-folder }}/${{ inputs.test-report-filename }})
+        test-report-file: ${{ endsWith($(inputs.test-result-folder), '/') && ${inputs.test-result-folder)$(inputs.test-report-filename) || $(inputs.test-result-folder)/$(inputs.test-report-filename)
       run: cat ${{ env.test-report-file }} >> $GITHUB_STEP_SUMMARY
