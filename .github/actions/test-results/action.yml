@@ -38,12 +38,12 @@ runs:
     - if: ${{ endsWith(inputs.test-result-folder, '/') }}
       name: 'Set TEST_RESULT_FOLDER environment variable'
       shell: bash
-      run: echo "TEST_RESULT_FOLDER=${{ inputs.code-coverage-output-format}}" >> $GITHUB_ENV
+      run: echo "TEST_RESULT_FOLDER=${{ test-result-folder }}" >> $GITHUB_ENV
 
     - if: ${{ !endsWith(inputs.test-result-folder, '/') }}
       name: 'Set TEST_RESULT_FOLDER environment variable'
       shell: bash
-      run: echo "TEST_RESULT_FOLDER=${{ inputs.code-coverage-output-format}}/" >> $GITHUB_ENV
+      run: echo "TEST_RESULT_FOLDER=${{ test-result-folder }}/" >> $GITHUB_ENV
 
     - name: 'Set TEST_REPORT_FILE environment variable'
       shell: bash
