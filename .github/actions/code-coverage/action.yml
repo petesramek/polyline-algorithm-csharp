@@ -49,7 +49,7 @@ runs:
     - name: 'Set code-coverage-report output'
       id: variables
       shell: bash
-      run: echo "code-coverage-report-file=:${{ env.CODE_COVERAGE_REPORT_FOLDER }}/Summary.md" >> $GITHUB_OUTPUT
+      run: echo "code-coverage-report-file=:${{ env.CODE_COVERAGE_REPORT_FOLDER }}Summary.md" >> $GITHUB_OUTPUT
 
     - name: 'Update dotnet-coverage tool'
       shell: bash
