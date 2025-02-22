@@ -58,7 +58,8 @@ runs:
       with:
         dotnet-version: ${{ inputs.dotnet_sdk_version }}
     
-    - name: 'Validate warnings with .NET CLI's
+    - if: ${{ inputs.treat-warnings-as-error == 'true' }}
+      name: 'Validate warnings with .NET CLI'
       shell: bash
       run: dotnet format analyzers --severity warn --verify-no-changes
 
