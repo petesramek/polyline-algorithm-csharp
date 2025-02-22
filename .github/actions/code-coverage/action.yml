@@ -16,6 +16,9 @@ outputs:
   code-coverage-report-file:
     description: 'Path to the generated code coverage report'
     value: ${{ steps.variables.outputs.code-coverage-report-file }}
+  code-coverage-merge-file:
+    description: 'Path to the merged code coverage file'
+    value: ${{ steps.variables.outputs.code-coverage-merge-file }}
 
 runs:
   using: composite
@@ -42,14 +45,16 @@ runs:
       shell: bash
       run: echo "CODE_COVERAGE_REPORT_FOLDER=${{ env.TEST_RESULT_FOLDER }}coverage-report/" >> $GITHUB_ENV
     
-    - name: 'Set CODE_COVERAGE_REPORT_FILE environment variable'
+    - name: 'Set CODE_COVERAGE_MERGED_FILE environment variable'
       shell: bash
-      run: echo "CODE_COVERAGE_REPORT_FILE=${{ env.CODE_COVERAGE_REPORT_FOLDER }}code-coverage.cobertura.xml" >> $GITHUB_ENV
+      run: echo "CODE_COVERAGE_MERGED_FILE=${{ env.CODE_COVERAGE_REPORT_FOLDER }}code-coverage.cobertura.xml" >> $GITHUB_ENV
 
     - name: 'Set code-coverage-report output'
       id: variables
       shell: bash
-      run: echo "code-coverage-report-file=${{ env.CODE_COVERAGE_REPORT_FOLDER }}Summary.md" >> $GITHUB_OUTPUT
+      run: |
+        echo "code-coverage-report-file=${{ env.CODE_COVERAGE_REPORT_FOLDER }}Summary.md" >> $GITHUB_OUTPUT
+        echo "code-coverage-merge-file=${{ env.CODE_COVERAGE_MERGED_FILE }}" >> $GITHUB_OUTPUT
 
     - name: 'Update dotnet-coverage tool'
       shell: bash
