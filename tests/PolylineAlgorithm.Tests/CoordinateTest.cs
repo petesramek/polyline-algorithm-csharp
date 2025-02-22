@@ -98,6 +98,25 @@ public class CoordinateTest {
     }
 
     /// <summary>
+    /// Tests the <see cref="Coordinate.Deconstruct(out double, out double)"/> method.
+    /// </summary>
+    /// <param name="latitude">The latitude value.</param>
+    /// <param name="longitude">The longitude value.</param>
+    [TestMethod]
+    [DynamicData(nameof(Constructor_Valid_Parameters))]
+    public void Deconstruct_Equals_Parameters(double latitude, double longitude) {
+        // Arrange
+        Coordinate coordinate = new(latitude, longitude);
+
+        // Act
+        var (Latitude, Longitude) = coordinate;
+
+        // Assert
+        Assert.AreEqual(latitude, Latitude);
+        Assert.AreEqual(longitude, Longitude);
+    }
+
+    /// <summary>
     /// Tests the <see cref="Coordinate.Equals(Coordinate)"/> method with equal coordinates.
     /// </summary>
     /// <param name="latitude">The latitude value.</param>
