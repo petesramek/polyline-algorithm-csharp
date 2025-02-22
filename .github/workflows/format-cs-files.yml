@@ -25,7 +25,7 @@ env:
 jobs:      
   formatting:
     name: Format whitespace, code style and file header
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
     - name: Checkout ${{ github.head_ref || github.ref }}
       uses: actions/checkout@v4
