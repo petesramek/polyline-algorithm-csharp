@@ -108,7 +108,7 @@ jobs:
         id: code-coverage-report
         with:
           test-result-folder: '${{ runner.temp }}/test-results/'
-      - name: Write test report summary
+      - name: Write code coverage report summary
         run: cat ${{ steps.code-coverage-report.outputs.code-coverage-report-file }} >> $GITHUB_STEP_SUMMARY
 
   pack:
