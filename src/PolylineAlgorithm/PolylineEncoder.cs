@@ -36,11 +36,11 @@ public class PolylineEncoder : IPolylineEncoder {
 
         int capacity = count * 12;
         Memory<char> buffer = new char[capacity];
-        PolylineWriter writer = new(in buffer);
+        PolylineWriter writer = new(buffer);
 
         foreach (var coordinate in coordinates) {
             InvalidCoordinateException.ThrowIfNotValid(coordinate);
-            writer.Write(in coordinate);
+            writer.Write(coordinate);
         }
 
         return writer.ToPolyline();

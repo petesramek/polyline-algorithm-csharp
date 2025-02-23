@@ -21,7 +21,7 @@ internal ref struct PolylineWriter {
     /// Initializes a new instance of the <see cref="PolylineWriter"/> struct with the specified buffer.
     /// </summary>
     /// <param name="buffer">The buffer to write to.</param>
-    public PolylineWriter(ref readonly Memory<char> buffer) {
+    public PolylineWriter(Memory<char> buffer) {
         _buffer = buffer;
     }
 
@@ -42,7 +42,7 @@ internal ref struct PolylineWriter {
     /// <exception cref="InvalidCoordinateException">Thrown when the coordinate is invalid.</exception>
     /// <exception cref="InvalidWriterStateException">Thrown when the writer is in an invalid state.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Write(ref readonly Coordinate coordinate) {
+    public void Write(Coordinate coordinate) {
         InvalidCoordinateException.ThrowIfNotValid(coordinate);
         InvalidWriterStateException.ThrowIfCannotWrite(CanWrite, Position, _buffer.Length);
 

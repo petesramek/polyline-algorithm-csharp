@@ -66,7 +66,7 @@ public class PolylineWriterTest {
         int position = 0;
 
         // Act
-        PolylineWriter writer = new(in buffer);
+        PolylineWriter writer = new(buffer);
 
         // Assert
         Assert.AreEqual(canWrite, writer.CanWrite);
@@ -82,13 +82,13 @@ public class PolylineWriterTest {
         IEnumerable<Coordinate> coordinates = Values.Coordinates.Valid;
         Polyline expected = Polyline.FromString(Values.Polyline.Valid);
         Memory<char> buffer = new char[coordinates.Count() * 12];
-        PolylineWriter writer = new(in buffer);
+        PolylineWriter writer = new(buffer);
         bool canWrite = buffer.Length > expected.Length;
         int position = expected.Length;
 
         // Act
         foreach (var coordinate in coordinates) {
-            writer.Write(in coordinate);
+            writer.Write(coordinate);
         }
 
         // Assert
@@ -111,8 +111,8 @@ public class PolylineWriterTest {
         // Act
         static void Write(Coordinate coordinate, int bufferSize) {
             Memory<char> buffer = new char[bufferSize];
-            PolylineWriter writer = new(in buffer);
-            writer.Write(in coordinate);
+            PolylineWriter writer = new(buffer);
+            writer.Write(coordinate);
         }
 
         // Assert
@@ -132,10 +132,10 @@ public class PolylineWriterTest {
         // Act
         static void Write(Coordinate coordinate, int bufferSize) {
             Memory<char> buffer = new char[bufferSize];
-            PolylineWriter writer = new(in buffer);
+            PolylineWriter writer = new(buffer);
 
-            writer.Write(in coordinate);
-            writer.Write(in coordinate);
+            writer.Write(coordinate);
+            writer.Write(coordinate);
         }
 
         // Assert
