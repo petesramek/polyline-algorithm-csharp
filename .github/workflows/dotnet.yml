@@ -98,6 +98,7 @@ jobs:
         with:
           test-project-glob-pattern: ${{ vars.TEST_DEFAULT_GLOB_PATTERN }}
           test-results-directory: '${{ runner.temp }}/test-results/'
+          code-coverage-settings-file: '${{ github.workspace}}/code-coverage-settings.xml'
 
       - uses: ./.github/actions/test-report
         id: test-report

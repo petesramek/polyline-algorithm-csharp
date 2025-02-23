@@ -29,7 +29,11 @@ inputs:
   code-coverage-output-format:
     description: 'Code coverage output format. Default: cobertura'
     required: false
-    default: 'coverage'
+    default: 'cobertura'
+  code-coverage-settings-file:
+    description: 'Code coverage settings file. Default: '
+    required: false
+    default: ''
   upload-test-artifacts:
     description: 'Upload test artifacts, Default: true'
     required: false
@@ -68,7 +72,14 @@ runs:
     - if: ${{ inputs.collect-code-coverage == 'true' }}
       name: 'Set CODE_COVERAGE_ARGS environment variable'
       shell: bash
-      run: echo "CODE_COVERAGE_ARGS=--coverage --coverage-output-format ${{ inputs.code-coverage-output-format}}" >> $GITHUB_ENV
+      run: |
+        echo "CODE_COVERAGE_ARGS=--coverage --coverage-output-format ${{ inputs.code-coverage-output-format}}" >> $GITHUB_ENV
+
+    - if: ${{ inputs.collect-code-coverage == 'true' && inputs.code-coverage-settings-file != ''}}
+      name: 'Set CODE_COVERAGE_ARGS environment variable'
+      shell: bash
+      run: |
+        echo "CODE_COVERAGE_ARGS=${{ env.CODE_COVERAGE_ARGS }} --coverage-settings ${{ inputs.code-coverage-settings-file }}" >> $GITHUB_ENV
       
     - name: 'Test with .NET CLI'
       shell: bash
