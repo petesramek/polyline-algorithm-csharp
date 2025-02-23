@@ -71,9 +71,7 @@ public readonly struct CoordinateRange : IEquatable<CoordinateRange> {
 
     /// <inheritdoc />
     [ExcludeFromCodeCoverage]
-    public override bool Equals(object? obj) {
-        return obj is CoordinateRange range && Equals(range);
-    }
+    public override bool Equals(object? obj) => obj is CoordinateRange range && Equals(range);
 
     /// <inheritdoc />
     public bool Equals(CoordinateRange other) {
@@ -82,9 +80,7 @@ public readonly struct CoordinateRange : IEquatable<CoordinateRange> {
 
     /// <inheritdoc />
     [ExcludeFromCodeCoverage]
-    public override int GetHashCode() {
-        return HashCode.Combine(Min, Max);
-    }
+    public override int GetHashCode() => HashCode.Combine(Min, Max);
 
     /// <summary>
     /// Determines whether two specified <see cref="CoordinateRange"/> instances are equal.
@@ -93,9 +89,7 @@ public readonly struct CoordinateRange : IEquatable<CoordinateRange> {
     /// <param name="right">The second instance to compare.</param>
     /// <returns><see langword="true"/> if the values of <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <see langword="false"/>.</returns>
     [ExcludeFromCodeCoverage]
-    public static bool operator ==(CoordinateRange left, CoordinateRange right) {
-        return left.Equals(right);
-    }
+    public static bool operator ==(CoordinateRange left, CoordinateRange right) => left.Equals(right);
 
     /// <summary>
     /// Determines whether two specified <see cref="CoordinateRange"/> instances are not equal.
@@ -104,7 +98,5 @@ public readonly struct CoordinateRange : IEquatable<CoordinateRange> {
     /// <param name="right">The second instance to compare.</param>
     /// <returns><see langword="true"/> if the values of <paramref name="left"/> and <paramref name="right"/> are not equal; otherwise, <see langword="false"/>.</returns>
     [ExcludeFromCodeCoverage]
-    public static bool operator !=(CoordinateRange left, CoordinateRange right) {
-        return !(left == right);
-    }
+    public static bool operator !=(CoordinateRange left, CoordinateRange right) => !(left == right);
 }

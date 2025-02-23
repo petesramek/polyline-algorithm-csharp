@@ -74,15 +74,11 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
 
     /// <inheritdoc />
     [ExcludeFromCodeCoverage]
-    public override bool Equals(object? obj) {
-        return obj is Coordinate coordinate && Equals(coordinate);
-    }
+    public override bool Equals(object? obj) => obj is Coordinate coordinate && Equals(coordinate);
 
     /// <inheritdoc />
     [ExcludeFromCodeCoverage]
-    public override int GetHashCode() {
-        return HashCode.Combine(Latitude, Longitude);
-    }
+    public override int GetHashCode() => HashCode.Combine(Latitude, Longitude);
 
     /// <summary>
     /// Returns the formatted string representation of this instance.
@@ -115,9 +111,7 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <param name="right">The second object to compare.</param>
     /// <returns><see langword="true"/> if <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <see langword="false"/>.</returns>
     [ExcludeFromCodeCoverage]
-    public static bool operator ==(Coordinate left, Coordinate right) {
-        return left.Equals(right);
-    }
+    public static bool operator ==(Coordinate left, Coordinate right) => left.Equals(right);
 
     /// <summary>
     /// Indicates whether the values of two specified <see cref="Coordinate"/> objects are not equal.
@@ -126,9 +120,7 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <param name="right">The second object to compare.</param>
     /// <returns><see langword="true"/> if <paramref name="left"/> and <paramref name="right"/> are not equal; otherwise, <see langword="false"/>.</returns>
     [ExcludeFromCodeCoverage]
-    public static bool operator !=(Coordinate left, Coordinate right) {
-        return !(left == right);
-    }
+    public static bool operator !=(Coordinate left, Coordinate right) => !(left == right);
 
     #endregion
 }
