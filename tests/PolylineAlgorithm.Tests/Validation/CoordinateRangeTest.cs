@@ -116,8 +116,8 @@ public class CoordinateRangeTest {
     [DynamicData(nameof(Constructor_Valid_Parameters))]
     public void Equals_CoordinateRange_False(double min, double max) {
         // Arrange
-        Coordinate @this = new(min, max);
-        Coordinate other = new(0, 0);
+        CoordinateRange @this = new(min, max);
+        CoordinateRange other = new(0, 0);
 
         // Act
         bool result = @this.Equals(other);
