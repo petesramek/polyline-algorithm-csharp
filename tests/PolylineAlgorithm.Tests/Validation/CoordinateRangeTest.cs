@@ -117,7 +117,7 @@ public class CoordinateRangeTest {
     public void Equals_CoordinateRange_False(double min, double max) {
         // Arrange
         CoordinateRange @this = new(min, max);
-        CoordinateRange other = new(0, 0);
+        CoordinateRange other = new(0, 1);
 
         // Act
         bool result = @this.Equals(other);
