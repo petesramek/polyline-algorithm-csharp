@@ -124,6 +124,8 @@ jobs:
       ASSEMBLY_INFORMATIONAL_VERSION: ${{ needs.versioning.outputs.ASSEMBLY_INFORMATIONAL_VERSION }}
       FILE_VERSION: ${{ needs.versioning.outputs.FILE_VERSION }}
       PACKAGE_VERSION: ${{ needs.versioning.outputs.PACKAGE_VERSION }}
+    outputs:
+        packages-directory: ${{ runner.temp }}/${{ env.nuget-packages-directory }}/
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
@@ -222,13 +224,12 @@ jobs:
   #       uses: actions/deploy-pages@v4
 
   publish-dev-package:
-    permissions:
-      actions: read
     uses: ./.github/workflows/release-package.yml
+    needs: [pack]
     with:
       nuget-feed-url: 'https://pkgs.dev.azure.com/petesramek/_packaging/petesramek-development/nuget/v3/index.json'
       nuget-feed-server: 'AzureArtifacts'
-      package-root-folder: ${{ env.nuget-packages-directory }}
+      package-root-folder: ${{ needs.pack.outputs.packages-directory }}
     secrets:
       nuget_api_key: ${{ secrets.NUGET_PACKAGE_FEED_API_KEY }}
 
