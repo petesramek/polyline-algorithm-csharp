@@ -37,7 +37,7 @@ env:
 
 jobs:
   variables:
-    name: 'Expose GitHub variables'
+    name: 'GitHub variables'
     runs-on: ubuntu-latest
 
     outputs:
