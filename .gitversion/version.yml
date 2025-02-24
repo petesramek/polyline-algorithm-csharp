@@ -11,7 +11,7 @@ strategies:
 ignore:
   sha: []
 mode: ContinuousDeployment
-label: ''
+label: '{BranchName}'
 increment: None
 prevent-increment:
   of-merged-branch: true
