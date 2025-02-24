@@ -10,7 +10,7 @@ on:
       artifact-run-id:
         description: 'The run ID of the artifact workflow.'
         required: true
-        type: number
+        type: string
       artifact-name:
         description: 'The name of the artifact to download.'
         required: true
