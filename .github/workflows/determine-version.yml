@@ -10,7 +10,7 @@ on:
         required: true
       run-number:
         description: 'The run number of the parent workflow.'
-        type: number
+        type: string
         required: true
     # Optional
       dotnet-sdk-version:
