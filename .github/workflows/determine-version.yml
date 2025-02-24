@@ -34,10 +34,10 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      assembly-version: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ inputs.run-number }}
-      assembly-informational-version: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}+${{ steps.gitversion.outputs.sha }}
-      file-version: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
-      package-version: ${{ fromJSON(format('[ "{0}{1}", "{0}" ]', steps.gitversion.outputs.assemblySemVer, steps.gitversion.outputs.preReleaseLabelWithDash))[fromJSON(inputs.prerelease)] }}
+      assembly-version: ${{ steps.gitversion.outputs.AssemblySemVer }}.${{ inputs.run-number }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
+      assembly-informational-version: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ inputs.run-number }}+${{ steps.gitversion.outputs.sha }}
+      file-version: ${{ steps.gitversion.outputs.AssemblySemFileVer }}.${{ inputs.run-number }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
+      package-version: ${{ fromJSON(format('[ "{0}.{1}{2)", "{0}.{1}" ]', steps.gitversion.outputs.AssemblySemVer, inputs.run-number , steps.gitversion.outputs.preReleaseLabelWithDash))[fromJSON(inputs.prerelease)] }}
 
     steps:
 

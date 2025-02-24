@@ -35,7 +35,7 @@ branches:
     is-main-branch: true
   develop:
     mode: ContinuousDeployment
-    label: alpha
+    label: 'alpha'
     increment: Inherit
     regex: ^develop\/([vV]?\d+.\d+(\.\d+){0,1})$
     source-branches:
@@ -43,7 +43,7 @@ branches:
     is-release-branch: true
   preview:
     mode: ContinuousDeployment
-    label: preview
+    label: 'preview'
     increment: Inherit
     regex: ^preview\/([vV]?\d+.\d+(\.\d+){0,1})$
     source-branches:
@@ -61,7 +61,7 @@ branches:
     is-release-branch: true
   support:
     mode: ContinuousDelivery
-    label: beta
+    label: 'beta'
     increment: Inherit
     regex: ^(support|maintenance)\/(?<BranchName>.+)
     source-branches:
@@ -69,14 +69,14 @@ branches:
     is-release-branch: true
   hotfix:
     mode: ContinuousDelivery
-    label: hotfix
+    label: 'hotfix'
     increment: Inherit
     regex: ^hotfix(es)?\/(?<BranchName>.+)
     source-branches:
     - release
   bugfix:
     mode: ContinuousDelivery
-    label: bugfix
+    label: 'bugfix'
     increment: Inherit
     regex: ^bugfix(es)?\/(?<BranchName>.+)
     source-branches:
