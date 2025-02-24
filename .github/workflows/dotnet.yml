@@ -225,7 +225,7 @@ jobs:
   #       uses: actions/deploy-pages@v4
 
   variables:
-    name: Variables
+    name: 'Variables'
     needs: [pack]
     runs-on: ubuntu-latest
     outputs:
@@ -245,10 +245,8 @@ jobs:
     with:
       artifact-run-id: ${{ needs.variables.outputs.github-run-id }}
       artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
-      nuget-feed-url: 'https://pkgs.dev.azure.com/petesramek/_packaging/petesramek-development/nuget/v3/index.json'
       nuget-feed-server: 'AzureArtifacts'
-    secrets:
-      nuget_api_key: ${{ secrets.NUGET_PACKAGE_FEED_API_KEY }}
+      environment: 'Development'
 
   # publish-package-internal:
   #   if: ${{ !github.env.is_release }}

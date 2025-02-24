@@ -15,12 +15,12 @@ on:
         description: 'The name of the artifact to download.'
         required: true
         type: string
-      nuget-feed-url:
-        description: 'NuGet feed URL.'
-        type: 'string'
-        required: true
       nuget-feed-server:
         description: 'NuGet feed type. Allowed values: ''NuGet'', ''AzureArtifacts''.'
+        type: 'string'
+        required: true
+      environment:
+        description: 'Environment to run the action in.'
         type: 'string'
         required: true
     # Optional
@@ -29,15 +29,7 @@ on:
         type: string
         required: false
         default: '9.0.x'
-      environment:
-        description: 'Environment to run the action in. Default: ''''.'
-        type: 'string'
-        required: false
-        default: 'development'
-    secrets:
-      nuget_api_key:
-        description: 'NuGet API key.'
-        required: true
+
 jobs:
   release-package:
     name: Release package with .NET CLI
@@ -77,13 +69,13 @@ jobs:
         name: 'Publish package to NuGet'
         shell: bash
         run: |
-          dotnet nuget push **/*.nupkg --source ${{ inputs.nuget-feed-url }} --api-key ${{ secrets.nuget_api_key }}
+          dotnet nuget push **/*.nupkg --source ${{ vars.NUGET_PACKAGE_FEED_URL }} --api-key ${{ secrets.NUGET_PACKAGE_FEED_API_KEY }}
         working-directory: ${{ runner.temp }}/${{ env.working-directory }}
 
       - if: ${{ inputs.nuget-feed-server == 'AzureArtifacts' }}
         name: 'Publish package to Azure Artifacts'
         shell: bash
         run: |
-          dotnet nuget add source ${{ inputs.nuget-feed-url }} --name nuget-feed --username username --password ${{ secrets.nuget_api_key }} --store-password-in-clear-text
-          dotnet nuget push **/*.nupkg --source nuget-feed --api-key ${{ secrets.nuget_api_key }}
+          dotnet nuget add source ${{ vars.NUGET_PACKAGE_FEED_URL }} --name nuget-feed --username username --password ${{ secrets.NUGET_PACKAGE_FEED_API_KEY }} --store-password-in-clear-text
+          dotnet nuget push **/*.nupkg --source nuget-feed --api-key ${{ vars.NUGET_PACKAGE_FEED_API_KEY }}
         working-directory: ${{ runner.temp }}/${{ env.working-directory }}
