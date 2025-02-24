@@ -15,6 +15,10 @@ on:
         description: 'NuGet feed type. Allowed values: ''NuGet'', ''AzureArtifacts''.'
         type: 'string'
         required: true
+      package-root-folder:
+        description: 'Root directory to search for nuspec files.'
+        type: string
+        required: true
     # Optional
       environment:
         description: 'Environment to run the action in. Default: ''''.'
@@ -26,11 +30,6 @@ on:
         type: string
         required: false
         default: '9.0.x'
-      package-root-folder:
-        description: 'Root directory to search for nuspec files. Default: ${{ github.workspace }}.'
-        type: string
-        required: false
-        default: ${{ github.workspace }}
     secrets:
       nuget_api_key:
         description: 'NuGet API key.'
