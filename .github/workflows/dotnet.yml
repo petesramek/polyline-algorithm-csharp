@@ -36,18 +36,6 @@ env:
   nuget-packages-directory: 'nuget-packages'
 
 jobs:
-  variables:
-    name: Variables
-    runs-on: ubuntu-latest
-    outputs:
-      github-run-id: ${{ github.run_id }}
-
-    steps:
-      - name: 'GitHub variables'
-        id: github
-        run: |
-          echo "github.run_id=${{ github.run_id }}"
-
   versioning:
     name: Versioning with GitVersion
     runs-on: ubuntu-latest
@@ -236,9 +224,22 @@ jobs:
   #       id: deployment
   #       uses: actions/deploy-pages@v4
 
+  variables:
+    name: Variables
+    needs: [pack]
+    runs-on: ubuntu-latest
+    outputs:
+      github-run-id: ${{ github.run_id }}
+
+    steps:
+      - name: 'GitHub variables'
+        id: github
+        run: |
+          echo "github.run_id=${{ github.run_id }}"
+
   publish-dev-package:
     uses: ./.github/workflows/release-package.yml
-    needs: [variables,pack]
+    needs: [pack,variables]
     permissions:
       actions: read
     with:
