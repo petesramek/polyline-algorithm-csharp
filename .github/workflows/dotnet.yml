@@ -230,6 +230,7 @@ jobs:
       nuget-feed-url: 'https://pkgs.dev.azure.com/petesramek/_packaging/petesramek-development/nuget/v3/index.json'
       nuget-feed-server: 'AzureArtifacts'
       package-root-folder: ${{ needs.pack.outputs.packages-directory }}
+      environment: 'development'
     secrets:
       nuget_api_key: ${{ secrets.NUGET_PACKAGE_FEED_API_KEY }}
 
