@@ -54,7 +54,7 @@ jobs:
     name: Versioning with GitVersion
     needs: [variables]
 
-    uses: ./.github/workflows/release-nuget-package.yml
+    uses: ./.github/workflows/determine-version.yml
 
     with:
       config-file-path: './.gitversion/version.yml'
