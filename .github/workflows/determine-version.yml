@@ -73,7 +73,7 @@ jobs:
           useConfigFile: true
           configFilePath: ${{ inputs.config-file-path }}
 
-      - name: 'Set assembky version'
+      - name: 'Set assembly version'
         shell: bash
         run: echo "assembly-version=${{ steps.gitversion.outputs.AssemblySemFileVer }}.${{ inputs.run-number }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}" >> $GITHUB_ENV
 
