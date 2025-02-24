@@ -39,18 +39,6 @@ on:
         description: 'NuGet API key.'
         required: true
 jobs:
-  validate-nuget-server:
-    name: Validate NuGet feed server type
-    runs-on: ubuntu-latest
-
-    steps:
-      - if: ${{ !(inputs.nuget-feed-server == 'NuGet' || inputs.nuget-feed-server == 'AzureArtifacts') }}
-        name: 'Invalid NuGet feed server type'
-        shell: bash
-        run: |
-          echo "Invalid NuGet feed server type. Allowed values are ''NuGet'' or ''AzureArtifacts''."
-          exit 1
-
   release-package:
     name: Release package with .NET CLI
     needs: [validate-nuget-server]
@@ -59,11 +47,17 @@ jobs:
     env:
       working-directory: '/packages/${{ github.run_id }}-${{ github.run_attempt }}'
 
-    if: ${{ inputs.environment != '' }}
     environment:
       name: ${{ inputs.environment }}
 
     steps:
+
+      - if: ${{ !(inputs.nuget-feed-server == 'NuGet' || inputs.nuget-feed-server == 'AzureArtifacts') }}
+        name: 'Invalid NuGet feed server type'
+        shell: bash
+        run: |
+          echo "Invalid NuGet feed server type. Allowed values are ''NuGet'' or ''AzureArtifacts''."
+          exit 1
 
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
