@@ -1,4 +1,4 @@
-name: .NET
+name: Version, compile, test, pack and publish dev version
 
 on:
   push:
