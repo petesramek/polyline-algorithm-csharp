@@ -19,12 +19,11 @@ on:
         description: 'Root directory to search for nuspec files.'
         type: string
         required: true
-    # Optional
       environment:
-        description: 'Environment to run the action in. Default: ''''.'
+        description: 'Environment to run the action in.'
         type: 'string'
-        required: false
-        default: ''
+        required: true
+    # Optional
       dotnet-sdk-version:
         description: 'Version of the .NET SDK to use. Default: ''9.0.x''.'
         type: string
