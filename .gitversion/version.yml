@@ -3,11 +3,10 @@ assembly-file-versioning-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 assembly-informational-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 tag-prefix: '[vV]?'
 version-in-branch-pattern: (?<version>[vV]?\d+.\d+(\.\d+){0,1})
-update-build-number: true
+update-build-number: false
 semantic-version-format: Loose
 strategies:
 - VersionInBranchName
-- TrackReleaseBranches
 - Fallback
 ignore:
   sha: []
@@ -41,6 +40,7 @@ branches:
     regex: ^develop\/([vV]?\d+.\d+(\.\d+){0,1})$
     source-branches:
     - feature
+    is-release-branch: true
   preview:
     mode: ContinuousDeployment
     label: preview
@@ -49,6 +49,7 @@ branches:
     source-branches:
     - release
     - develop
+    is-release-branch: true
   release:
     mode: ContinuousDeployment
     label: ''
@@ -58,18 +59,19 @@ branches:
     - preview
     - support
     is-release-branch: true
-  hotfix:
-    mode: ContinuousDelivery
-    label: hotfix
-    increment: Inherit
-    regex: ^hotfix(es)?\/(?<BranchName>.+)
-    source-branches:
-    - release
   support:
     mode: ContinuousDelivery
     label: beta
     increment: Inherit
     regex: ^(support|maintenance)\/(?<BranchName>.+)
+    source-branches:
+    - release
+    is-release-branch: true
+  hotfix:
+    mode: ContinuousDelivery
+    label: hotfix
+    increment: Inherit
+    regex: ^hotfix(es)?\/(?<BranchName>.+)
     source-branches:
     - release
   bugfix:
