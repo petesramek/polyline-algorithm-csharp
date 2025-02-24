@@ -6,8 +6,8 @@ version-in-branch-pattern: (?<version>[vV]?\d+.\d+(\.\d+){0,1})
 update-build-number: false
 semantic-version-format: Loose
 strategies:
-- VersionInBranchName
 - TrackReleaseBranches
+- VersionInBranchName
 - Fallback
 ignore:
   sha: []
@@ -39,6 +39,7 @@ branches:
     label: 'alpha'
     increment: Inherit
     regex: ^develop\/([vV]?\d+.\d+(\.\d+){0,1})$
+    tracks-release-branches: true
     source-branches:
     - feature
   preview:
@@ -46,6 +47,7 @@ branches:
     label: 'preview'
     increment: Inherit
     regex: ^preview\/([vV]?\d+.\d+(\.\d+){0,1})$
+    tracks-release-branches: true
     source-branches:
     - release
     - develop
@@ -63,6 +65,7 @@ branches:
     label: 'beta'
     increment: Inherit
     regex: ^(support|maintenance)\/(?<BranchName>.+)
+    tracks-release-branches: true
     source-branches:
     - release
   hotfix:
@@ -70,6 +73,7 @@ branches:
     label: 'hotfix'
     increment: Inherit
     regex: ^hotfix(es)?\/(?<BranchName>.+)
+    tracks-release-branches: true
     source-branches:
     - release
   bugfix:
@@ -77,6 +81,7 @@ branches:
     label: 'bugfix'
     increment: Inherit
     regex: ^bugfix(es)?\/(?<BranchName>.+)
+    tracks-release-branches: true
     source-branches:
     - support
   feature:
@@ -84,6 +89,7 @@ branches:
     label: '{BranchName}'
     increment: Inherit
     regex: ^feature(s)?\/(?<BranchName>.+)
+    tracks-release-branches: true
     source-branches:
     - develop
   pull-request:
