@@ -29,7 +29,7 @@ on:
 
 jobs:
   release-package:
-    name: 'Environment: ${{ inputs.environment }}'
+    name: ${{ inputs.environment }}
     runs-on: ubuntu-latest
 
     env:
