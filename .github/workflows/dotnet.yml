@@ -243,10 +243,6 @@ jobs:
     uses: ./.github/workflows/release-package.yml
     needs: [pack,variables]
 
-    permissions:
-      actions: read
-      id-token: write
-
     with:
       artifact-run-id: ${{ needs.variables.outputs.github-run-id }}
       artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
