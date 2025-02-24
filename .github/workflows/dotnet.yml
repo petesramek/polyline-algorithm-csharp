@@ -63,11 +63,16 @@ jobs:
     name: Build with .NET
     needs: [versioning]
     runs-on: ubuntu-latest
+
     env:
       assembly-version: ${{ needs.versioning.outputs.assembly-version }}
       assembly-informational-version: ${{ needs.versioning.outputs.assembly-informational-version }}
       file-version: ${{ needs.versioning.outputs.file-version }}
+
     steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v4
+
       - uses: ./.github/actions/build
         with:
           assembly-version: ${{ env.assembly-version }}
