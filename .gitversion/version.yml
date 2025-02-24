@@ -41,6 +41,7 @@ branches:
     regex: ^develop\/([vV]?\d+.\d+(\.\d+){0,1})$
     source-branches:
     - feature
+    is-release-branch: true
   preview:
     mode: ContinuousDeployment
     label: 'preview'
@@ -49,6 +50,7 @@ branches:
     source-branches:
     - release
     - develop
+    is-release-branch: true
   release:
     mode: ContinuousDeployment
     label: ''
@@ -65,6 +67,7 @@ branches:
     regex: ^(support|maintenance)\/(?<BranchName>.+)
     source-branches:
     - release
+    is-release-branch: true
   hotfix:
     mode: ContinuousDelivery
     label: 'hotfix'
