@@ -224,9 +224,9 @@ jobs:
   publish-dev-package:
     uses: ./.github/workflows/release-package.yml
     with:
-      nuget-feed-url: '${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_URL }}'
+      nuget-feed-url: ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_URL }}
       nuget-feed-server: 'AzureArtifacts'
-      package-root-folder: '${{ runner.temp }}/${{ env.nuget-packages-directory }}/'
+      package-root-folder: ${{ runner.temp }}/${{ env.nuget-packages-directory }}/
     secrets:
       nuget_api_key: ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }}
 
