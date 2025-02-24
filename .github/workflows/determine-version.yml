@@ -8,10 +8,6 @@ on:
         description: 'Path to the configuration file.'
         type: string
         required: true
-      prerelease:
-        description: 'Indicates whether the version should be a pre-release version.'
-        type: boolean
-        required: true
       run-number:
         description: 'The run number of the parent workflow.'
         type: number
@@ -27,6 +23,11 @@ on:
         required: true
         type: string
         default: '6.0.x'
+      prerelease-tag:
+        description: 'The prerelease tag to use. Default: ''''.'
+        type: string
+        required: false
+        default: ''
 
 jobs:
   version:
@@ -34,19 +35,12 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      assembly-version: ${{ steps.gitversion.outputs.AssemblySemVer }}.${{ inputs.run-number }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
-      assembly-informational-version: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ inputs.run-number }}+${{ steps.gitversion.outputs.sha }}
-      file-version: ${{ steps.gitversion.outputs.AssemblySemFileVer }}.${{ inputs.run-number }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
-      package-version: ${{ fromJSON(format('[ "{0}.{1}{2)", "{0}.{1}" ]', steps.gitversion.outputs.AssemblySemVer, inputs.run-number , steps.gitversion.outputs.preReleaseLabelWithDash))[fromJSON(inputs.prerelease)] }}
+      assembly-version: ${{ env.assembly-version }}
+      assembly-informational-version: ${{ env.assembly-informational-version }}
+      file-version: ${{ env.file-version }}
+      package-version: ${{ env.package-version }}
 
     steps:
-
-      - if: ${{ !(inputs.nuget-feed-server == 'NuGet' || inputs.nuget-feed-server == 'AzureArtifacts') }}
-        name: 'Invalid NuGet feed server type'
-        shell: bash
-        run: |
-          echo 'Invalid NuGet feed server type ${{ inputs.nuget-feed-server }}. Allowed values are 'NuGet' or 'AzureArtifacts'.'
-          exit 1
 
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
@@ -65,4 +59,31 @@ jobs:
         with:
           useConfigFile: true
           configFilePath: ${{ inputs.config-file-path }}
+
+      - name: 'Set assembky version'
+        shell: bash
+        run: echo "assembly-version=${{ steps.gitversion.outputs.AssemblySemFileVer }}.${{ inputs.run-number }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}" >> $GITHUB_ENV
+
+      - name: 'Set assembky informational version'
+        shell: bash
+        run: echo "assembly-informational-version=${{ steps.gitversion.outputs.assemblySemVer }}.${{ inputs.run-number }}+${{ steps.gitversion.outputs.sha }}" >> $GITHUB_ENV
+
+      - name: 'Set file version'
+        shell: bash
+        run: echo "file-version=${{ steps.gitversion.outputs.AssemblySemFileVer }}.${{ inputs.run-number }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}" >> $GITHUB_ENV
+
+      - if: ${{ inputs.prerelease-tag == '' }}
+        name: 'Set package version'
+        shell: bash
+        run: echo "package-version=${{ steps.gitversion.outputs.AssemblySemVer }}.${{ inputs.run-number }}" >> $GITHUB_ENV
+
+      - if: ${{ inputs.prerelease-tag != '' && startWith('-', inputs.prerelease-tag) }}
+        name: 'Set package version'
+        shell: bash
+        run: echo "package-version=${{ steps.gitversion.outputs.AssemblySemVer }}.${{ inputs.run-number }}${{ inputs.prerelease-tag}}" >> $GITHUB_ENV
+
+      - if: ${{ inputs.prerelease-tag != '' && !startWith('-', inputs.prerelease-tag) }}
+        name: 'Set package version'
+        shell: bash
+        run: echo "package-version=${{ steps.gitversion.outputs.AssemblySemVer }}.${{ inputs.run-number }}-${{ inputs.prerelease-tag}}" >> $GITHUB_ENV
           

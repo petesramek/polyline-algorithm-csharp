@@ -53,29 +53,36 @@ jobs:
 
   versioning:
     name: Versioning with GitVersion
-    runs-on: ubuntu-latest
-    outputs:
-      ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
-      ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}+${{ steps.gitversion.outputs.sha }}
-      FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
-      PACKAGE_VERSION: ${{ fromJSON(format('[ "{0}{1}", "{0}" ]', steps.gitversion.outputs.assemblySemVer, steps.gitversion.outputs.preReleaseLabelWithDash))[fromJSON(env.is-release)] }}
+    needs: [variables]
 
-    steps:
-      - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Install GitVersion ${{ env.git-version }}
-        uses: gittools/actions/gitversion/setup@v3.1.11
-        with:
-          versionSpec: ${{ env.git-version }}
-          preferLatestVersion: true
-      - name: Determine version with GitVersion ${{ env.git-version }}
-        id: gitversion
-        uses: gittools/actions/gitversion/execute@v3.1.11
-        with:
-          useConfigFile: true
-          configFilePath: ./.gitversion/version.yml
+    uses: ./.github/workflows/release-nuget-package.yml
+
+    with:
+      config-file-path: './.gitversion/version.yml'
+      run-number: ${{ needs.variables.outputs.github-run-number }}
+
+    # outputs:
+    #   ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
+    #   ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}+${{ steps.gitversion.outputs.sha }}
+    #   FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
+    #   PACKAGE_VERSION: ${{ fromJSON(format('[ "{0}{1}", "{0}" ]', steps.gitversion.outputs.assemblySemVer, steps.gitversion.outputs.preReleaseLabelWithDash))[fromJSON(env.is-release)] }}
+
+    # steps:
+    #   - name: 'Checkout ${{ github.head_ref || github.ref }}'
+    #     uses: actions/checkout@v4
+    #     with:
+    #       fetch-depth: 0
+    #   - name: Install GitVersion ${{ env.git-version }}
+    #     uses: gittools/actions/gitversion/setup@v3.1.11
+    #     with:
+    #       versionSpec: ${{ env.git-version }}
+    #       preferLatestVersion: true
+    #   - name: Determine version with GitVersion ${{ env.git-version }}
+    #     id: gitversion
+    #     uses: gittools/actions/gitversion/execute@v3.1.11
+    #     with:
+    #       useConfigFile: true
+    #       configFilePath: ./.gitversion/version.yml
 
   build:
     name: Build with .NET
