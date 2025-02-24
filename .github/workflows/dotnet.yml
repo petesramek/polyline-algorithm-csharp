@@ -54,6 +54,7 @@ jobs:
   versioning:
     name: Versioning with GitVersion
     needs: [variables]
+
     uses: ./.github/workflows/determine-version.yml
     with:
       config-file-path: './.gitversion/version.yml'
