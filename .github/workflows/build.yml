@@ -19,6 +19,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
+  is-release: ${{ startsWith(github.ref_name, 'release') || startsWith(github.ref_name, 'preview') }}
   dotnet-sdk-version: '9.x'
   build-configuration: 'Release'
   build-platform: 'Any CPU'
