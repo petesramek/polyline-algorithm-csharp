@@ -43,11 +43,11 @@ jobs:
 
     steps:
 
-      - if: ${{ inputs.nuget-feed-server != 'NuGet' || inputs.nuget-feed-server != 'AzureArtifacts' }}
+      - if: ${{ !(inputs.nuget-feed-server == 'NuGet' || inputs.nuget-feed-server == 'AzureArtifacts') }}
         name: 'Invalid NuGet feed server type'
         shell: bash
         run: |
-          echo 'Invalid NuGet feed server type ${{ inputs.nuget-feed-server }}. Allowed values are ''NuGet'' or ''AzureArtifacts''.'
+          echo 'Invalid NuGet feed server type ${{ inputs.nuget-feed-server }}. Allowed values are 'NuGet' or 'AzureArtifacts'.'
           exit 1
 
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
