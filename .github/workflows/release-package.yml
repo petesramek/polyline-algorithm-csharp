@@ -1,4 +1,4 @@
-name: 'Release NuGet package'
+name: 'Push NuGet package'
 
 permissions:
   actions: read
