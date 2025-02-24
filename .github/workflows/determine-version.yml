@@ -77,12 +77,12 @@ jobs:
         shell: bash
         run: echo "package-version=${{ steps.gitversion.outputs.AssemblySemVer }}.${{ inputs.run-number }}" >> $GITHUB_ENV
 
-      - if: ${{ inputs.prerelease-tag != '' && startWith('-', inputs.prerelease-tag) }}
+      - if: ${{ inputs.prerelease-tag != '' && startsWith('-', inputs.prerelease-tag) }}
         name: 'Set package version'
         shell: bash
         run: echo "package-version=${{ steps.gitversion.outputs.AssemblySemVer }}.${{ inputs.run-number }}${{ inputs.prerelease-tag}}" >> $GITHUB_ENV
 
-      - if: ${{ inputs.prerelease-tag != '' && !startWith('-', inputs.prerelease-tag) }}
+      - if: ${{ inputs.prerelease-tag != '' && !startsWith('-', inputs.prerelease-tag) }}
         name: 'Set package version'
         shell: bash
         run: echo "package-version=${{ steps.gitversion.outputs.AssemblySemVer }}.${{ inputs.run-number }}-${{ inputs.prerelease-tag}}" >> $GITHUB_ENV
