@@ -35,7 +35,13 @@ env:
   test-result-directory: 'test-results'
   nuget-packages-directory: 'nuget-packages'
 
-jobs:      
+jobs:
+  variables:
+    name: Variables
+    runs-on: ubuntu-latest
+    outputs:
+      github_run_id: ${{ github.run_id }}
+
   versioning:
     name: Versioning with GitVersion
     runs-on: ubuntu-latest
@@ -124,8 +130,9 @@ jobs:
       ASSEMBLY_INFORMATIONAL_VERSION: ${{ needs.versioning.outputs.ASSEMBLY_INFORMATIONAL_VERSION }}
       FILE_VERSION: ${{ needs.versioning.outputs.FILE_VERSION }}
       PACKAGE_VERSION: ${{ needs.versioning.outputs.PACKAGE_VERSION }}
+      package-artifact-name: package
     outputs:
-        packages-directory: ${{ runner.temp }}/${{ env.nuget-packages-directory }}/
+        package-artifact-name: ${{ env.package-artifact-name }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
@@ -143,7 +150,7 @@ jobs:
       - name: Upload Package
         uses: actions/upload-artifact@v4
         with:
-          name: package
+          name: ${{ env.package-artifact-name }}
           path: |
             ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.nupkg
             ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.snupkg
@@ -225,12 +232,14 @@ jobs:
 
   publish-dev-package:
     uses: ./.github/workflows/release-package.yml
-    needs: [pack]
+    needs: [variables,pack]
+    permissions:
+      actions: read
     with:
+      artifact-run-id: ${{ variables.outputs.github_run_id }}
+      artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
       nuget-feed-url: 'https://pkgs.dev.azure.com/petesramek/_packaging/petesramek-development/nuget/v3/index.json'
       nuget-feed-server: 'AzureArtifacts'
-      package-root-folder: ${{ needs.pack.outputs.packages-directory }}
-      environment: 'development'
     secrets:
       nuget_api_key: ${{ secrets.NUGET_PACKAGE_FEED_API_KEY }}
 
