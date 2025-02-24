@@ -40,7 +40,13 @@ jobs:
     name: Variables
     runs-on: ubuntu-latest
     outputs:
-      github_run_id: ${{ github.run_id }}
+      github-run-id: ${{ github.run_id }}
+
+    steps:
+      - name: 'GitHub variables'
+        id: github
+        run: |
+          echo "github.run_id=${{ github.run_id }}"
 
   versioning:
     name: Versioning with GitVersion
