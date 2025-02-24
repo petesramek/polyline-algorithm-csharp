@@ -85,18 +85,13 @@ jobs:
         shell: bash
         run: echo "file-version=${{ steps.gitversion.outputs.AssemblySemFileVer }}.${{ inputs.run-number }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}" >> $GITHUB_ENV
 
-      - if: ${{ inputs.prerelease-tag == '' }}
+      - if: ${{ steps.gitversion.outputs.PreReleaseLabelWithDash == '' }}
         name: 'Set package version'
         shell: bash
         run: echo "package-version=${{ steps.gitversion.outputs.AssemblySemVer }}.${{ inputs.run-number }}" >> $GITHUB_ENV
 
-      - if: ${{ inputs.prerelease-tag != '' && startsWith('-', inputs.prerelease-tag) }}
+      - if: ${{ steps.gitversion.outputs.PreReleaseLabelWithDash != '' }}
         name: 'Set package version'
         shell: bash
-        run: echo "package-version=${{ steps.gitversion.outputs.AssemblySemVer }}.${{ inputs.run-number }}${{ inputs.prerelease-tag}}" >> $GITHUB_ENV
-
-      - if: ${{ inputs.prerelease-tag != '' && !startsWith('-', inputs.prerelease-tag) }}
-        name: 'Set package version'
-        shell: bash
-        run: echo "package-version=${{ steps.gitversion.outputs.AssemblySemVer }}.${{ inputs.run-number }}-${{ inputs.prerelease-tag}}" >> $GITHUB_ENV
+        run: echo "package-version=${{ steps.gitversion.outputs.AssemblySemVer }}.${{ inputs.run-number }}-${{ steps.gitversion.outputs.PreReleaseLabel }}-${{ steps.gitversion.outputs.CommitsSinceVersionSource }}" >> $GITHUB_ENV
           
