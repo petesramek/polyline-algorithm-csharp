@@ -242,7 +242,7 @@ jobs:
     permissions:
       actions: read
     with:
-      artifact-run-id: ${{ variables.outputs.github-run-id }}
+      artifact-run-id: ${{ needs.variables.outputs.github-run-id }}
       artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
       nuget-feed-url: 'https://pkgs.dev.azure.com/petesramek/_packaging/petesramek-development/nuget/v3/index.json'
       nuget-feed-server: 'AzureArtifacts'
