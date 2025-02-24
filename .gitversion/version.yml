@@ -35,24 +35,22 @@ branches:
     regex: ^master$|^main$
     is-main-branch: true
   develop:
-    mode: ContinuousDeployment
+    mode: ContinuousDelivery
     label: 'alpha'
     increment: Inherit
     regex: ^develop\/([vV]?\d+.\d+(\.\d+){0,1})$
     source-branches:
     - feature
-    is-release-branch: true
   preview:
-    mode: ContinuousDeployment
+    mode: ManualDeployment
     label: 'preview'
     increment: Inherit
     regex: ^preview\/([vV]?\d+.\d+(\.\d+){0,1})$
     source-branches:
     - release
     - develop
-    is-release-branch: true
   release:
-    mode: ContinuousDeployment
+    mode: ManualDeployment
     label: ''
     increment: Inherit
     regex: ^release\/([vV]?\d+.\d+(\.\d+){0,1})$
@@ -67,7 +65,6 @@ branches:
     regex: ^(support|maintenance)\/(?<BranchName>.+)
     source-branches:
     - release
-    is-release-branch: true
   hotfix:
     mode: ContinuousDelivery
     label: 'hotfix'
