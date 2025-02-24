@@ -88,18 +88,18 @@ jobs:
     needs: [versioning]
     runs-on: ubuntu-latest
     env:
-      ASSEMBLY_VERSION: ${{ needs.versioning.outputs.ASSEMBLY_VERSION }}
-      ASSEMBLY_INFORMATIONAL_VERSION: ${{ needs.versioning.outputs.ASSEMBLY_INFORMATIONAL_VERSION }}
-      FILE_VERSION: ${{ needs.versioning.outputs.FILE_VERSION }}
+      assembly-version: ${{ needs.versioning.outputs.assembly-version }}
+      assembly-informational-version: ${{ needs.versioning.outputs.assembly-informational-version }}
+      file-version: ${{ needs.versioning.outputs.file-version }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
 
       - uses: ./.github/actions/build
         with:
-          assembly-version: ${{ env.ASSEMBLY_VERSION }}
-          assembly-informational-version: ${{ env.ASSEMBLY_INFORMATIONAL_VERSION }}
-          assembly-file-version: ${{ env.FILE_VERSION }}
+          assembly-version: ${{ env.assembly-version }}
+          assembly-informational-version: ${{ env.assembly-informational-version }}
+          file-version: ${{ env.file-version }}
           treat-warnins-as-error: ${{ env.is-release }}
           build-glob-pattern: ${{ vars.SRC_DEFAULT_GLOB_PATTERN }}
 
