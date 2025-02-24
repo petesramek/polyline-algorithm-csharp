@@ -67,7 +67,7 @@ jobs:
           dotnet-version: ${{ inputs.dotnet-sdk-version }}
 
       - name: 'Download artifact'
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           run-id: ${{ inputs.artifact-run-id }}
           name: ${{ inputs.artifact-name }}
