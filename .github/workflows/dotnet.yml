@@ -222,7 +222,7 @@ jobs:
   #       uses: actions/deploy-pages@v4
 
   publish-dev-package:
-    uses: ./.github/workflows/release-opackage.yml@develop/1.0
+    uses: ./.github/workflows/release-opackage.yml@.
     with:
       nuget-feed-url: 'secrets.PRIVATE_NUGET_PACKAGE_FEED_URL'
       nuget-feed-server: 'AzureArtifacts'
