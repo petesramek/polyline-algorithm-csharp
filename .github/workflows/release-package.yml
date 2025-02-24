@@ -85,7 +85,7 @@ jobs:
         shell: bash
         run: |
           dotnet nuget push **/*.nupkg --source ${{ inputs.nuget-feed-url }} --api-key ${{ secrets.nuget_api_key }}
-        working-directory: ${{ env.working-directory }}
+        working-directory: ${{ runner.temp }}/${{ env.working-directory }}
 
       - if: ${{ inputs.nuget-feed-server == 'AzureArtifacts' }}
         name: 'Publish package to Azure Artifacts'
@@ -93,4 +93,4 @@ jobs:
         run: |
           dotnet nuget add source ${{ inputs.nuget-feed-url }} --name nuget-feed --username username --password ${{ secrets.nuget_api_key }} --store-password-in-clear-text
           dotnet nuget push **/*.nupkg --source nuget-feed --api-key ${{ secrets.nuget_api_key }}
-        working-directory: ${{ env.working-directory }}
+        working-directory: ${{ runner.temp }}/${{ env.working-directory }}
