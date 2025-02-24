@@ -33,7 +33,7 @@ on:
         description: 'Environment to run the action in. Default: ''''.'
         type: 'string'
         required: false
-        default: ''
+        default: 'development'
     secrets:
       nuget_api_key:
         description: 'NuGet API key.'
@@ -41,7 +41,6 @@ on:
 jobs:
   release-package:
     name: Release package with .NET CLI
-    needs: [validate-nuget-server]
     runs-on: ubuntu-latest
 
     env:
