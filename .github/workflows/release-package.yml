@@ -1,0 +1,83 @@
+name: 'Release NuGet package'
+
+permissions:
+  actions: read
+
+on:
+  workflow_call:
+    inputs:
+    # Required
+      nuget-feed-url:
+        description: 'NuGet feed URL.'
+        type: 'string'
+        required: true
+      nuget-feed-server:
+        description: 'NuGet feed type. Allowed values: ''NuGet'', ''AzureArtifacts''.'
+        type: 'string'
+        required: true
+    # Optional
+      environment:
+        description: 'Environment to run the action in. Default: ''''.'
+        type: 'string'
+        required: false
+        default: ''
+      dotnet-sdk-version:
+        description: 'Version of the .NET SDK to use. Default: ''9.0.x''.'
+        type: string
+        required: false
+        default: '9.0.x'
+      package-root-folder:
+        description: 'Root directory to search for nuspec files. Default: ${{ github.workspace }}.'
+        type: string
+        required: false
+        default: ${{ github.workspace }}
+    secrets:
+      nuget_api_key:
+        description: 'NuGet API key.'
+        required: true
+jobs:
+  validate-nuget-server:
+    name: Validate NuGet feed server type
+    runs-on: ubuntu-latest
+
+    steps:
+      - if: ${{ inputs.nuget-feed-server != 'NuGet' && inputs.nuget-feed-server != 'AzureArtifacts' }}
+        name: 'Validate NuGet feed server type'
+        shell: bash
+        run: |
+          echo "Invalid NuGet feed server type. Allowed values are ''NuGet'' or ''AzureArtifacts''."
+          exit 1
+
+  release-package:
+    name: Release package with .NET CLI
+    needs: [validate-nuget-server]
+    runs-on: ubuntu-latest
+
+    if: ${{ inputs.environment != '' }}
+    environment:
+      name: ${{ inputs.environment }}
+
+    steps:
+
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v4
+
+      - name: 'Setup .NET ${{ inputs.dotnet-sdk-version }}'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ inputs.dotnet-sdk-version }}
+
+      - if: ${{ inputs.nuget-feed-server == 'NuGet' }}
+        name: 'Publish package to NuGet'
+        shell: bash
+        run: |
+          dotnet nuget push **/*.nupkg --source ${{ inputs.nuget-feed-url }} --api-key ${{ secrets.nuget_api_key }}
+        working-directory: ${{ inputs.package-root-folder }}
+
+      - if: ${{ inputs.nuget-feed-server == 'AzureArtifacts' }}
+        name: 'Publish package to Azure Artifacts'
+        shell: bash
+        run: |
+          dotnet nuget add source ${{ inputs.nuget-feed-url }} --name nuget-feed --username username --password ${{ secrets.nuget_api_key }} --store-password-in-clear-text
+          dotnet nuget push **/*.nupkg --source nuget-feed --api-key ${{ secrets.nuget_api_key }}
+        working-directory: ${{ inputs.package-root-folder }}

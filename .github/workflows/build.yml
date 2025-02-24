@@ -1,0 +1,165 @@
+name: .NET
+
+on:
+  push:
+    branches-ignore:
+      - 'preview/**'
+      - 'release/**'
+      - 'support/**'
+    paths-ignore:
+      - '!src/**'
+
+permissions:
+  actions: read
+  pages: write
+  id-token: write
+
+concurrency: 
+  group: build-${{ github.head_ref || github.ref }}      
+  cancel-in-progress: false
+
+env:
+  dotnet-sdk-version: '9.x'
+  build-configuration: 'Release'
+  build-platform: 'Any CPU'
+  git-version: '6.0.x'
+  test-result-directory: 'test-results'
+
+jobs:      
+  versioning:
+    name: Versioning with GitVersion
+    runs-on: ubuntu-latest
+    outputs:
+      ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
+      ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}+${{ steps.gitversion.outputs.sha }}
+      FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
+      PACKAGE_VERSION: ${{ fromJSON(format('[ "{0}{1}", "{0}" ]', steps.gitversion.outputs.assemblySemVer, steps.gitversion.outputs.preReleaseLabelWithDash))[fromJSON(env.is-release)] }}
+
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GitVersion ${{ env.git-version }}
+        uses: gittools/actions/gitversion/setup@v3.1.11
+        with:
+          versionSpec: ${{ env.git-version }}
+          preferLatestVersion: true
+      - name: Determine version with GitVersion ${{ env.git-version }}
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v3.1.11
+        with:
+          useConfigFile: true
+          configFilePath: ./.gitversion/version.yml
+
+  build:
+    name: Build with .NET
+    needs: [versioning]
+    runs-on: ubuntu-latest
+    env:
+      ASSEMBLY_VERSION: ${{ needs.versioning.outputs.ASSEMBLY_VERSION }}
+      ASSEMBLY_INFORMATIONAL_VERSION: ${{ needs.versioning.outputs.ASSEMBLY_INFORMATIONAL_VERSION }}
+      FILE_VERSION: ${{ needs.versioning.outputs.FILE_VERSION }}
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/build
+        with:
+          assembly-version: ${{ env.ASSEMBLY_VERSION }}
+          assembly-informational-version: ${{ env.ASSEMBLY_INFORMATIONAL_VERSION }}
+          assembly-file-version: ${{ env.FILE_VERSION }}
+          treat-warnins-as-error: ${{ env.is-release }}
+          build-glob-pattern: ${{ vars.SRC_DEFAULT_GLOB_PATTERN }}
+
+  test:
+    name: Test with .NET
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v4
+
+      - name: 'Setup .NET'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+
+      - uses: ./.github/actions/test
+        with:
+          test-project-glob-pattern: ${{ vars.TEST_DEFAULT_GLOB_PATTERN }}
+          test-results-directory: '${{ runner.temp }}/test-results/'
+          code-coverage-settings-file: '${{ github.workspace}}/code-coverage-settings.xml'
+
+      - uses: ./.github/actions/test-report
+        id: test-report
+        with:
+          test-result-folder: '${{ runner.temp }}/test-results/'
+
+      - name: Write test report summary
+        uses: ./.github/action/write-file-to-summary
+        with:
+          file-path: ${{ steps.test-report.outputs.test-report-file }}
+
+      - uses: ./.github/actions/code-coverage
+        id: code-coverage-report
+        with:
+          test-result-folder: '${{ runner.temp }}/test-results/'
+
+      - name: Write code coverage report summary
+        uses: ./.github/action/write-file-to-summary
+        with:
+          file-path: ${{ steps.code-coverage-report.outputs.code-coverage-report-file }}
+
+  pack:
+    name: Pack with .NET
+    needs: [build, versioning]
+    runs-on: ubuntu-latest
+    env:
+      ASSEMBLY_VERSION: ${{ needs.versioning.outputs.ASSEMBLY_VERSION }}
+      ASSEMBLY_INFORMATIONAL_VERSION: ${{ needs.versioning.outputs.ASSEMBLY_INFORMATIONAL_VERSION }}
+      FILE_VERSION: ${{ needs.versioning.outputs.FILE_VERSION }}
+      PACKAGE_VERSION: ${{ needs.versioning.outputs.PACKAGE_VERSION }}
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+      - name: Download Build
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+      - name: Pack with .NET
+        run: |
+          dotnet pack ${{ vars.SRC_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} /p:Platform="${{ env.build-platform }}" /p:PackageVersion=${{ env.PACKAGE_VERSION }} /p:Version=${{ env.ASSEMBLY_VERSION }} /p:AssemblyInformationalVersion=${{ env.ASSEMBLY_INFORMATIONAL_VERSION }} /p:FileVersion=${{ env.FILE_VERSION }} --output ${{ runner.temp }}/packages/
+      - name: Upload Package
+        uses: actions/upload-artifact@v4
+        with:
+          name: package
+          path: |
+            ${{ runner.temp }}/packages/**/*.nupkg
+            ${{ runner.temp }}/packages/**/*.snupkg
+
+  publish-internal-package:
+    if: ${{ !github.env.is_release }}
+    name: Publish package with .NET CLI
+    needs: [pack]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v4
+      - name: Dotnet Setup
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+      - name: Download Packages
+        uses: actions/download-artifact@v4
+        with:
+          name: package
+          path: ${{ runner.temp }}/packages/
+      - run: |
+          dotnet nuget add source ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_URL }} --name private-feed --username username --password ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }} --store-password-in-clear-text
+          dotnet nuget push **/*.nupkg --source private-feed --api-key ${{ secrets.PRIVATE_NUGET_PACKAGE_FEED_API_KEY }}
+        working-directory: ${{ runner.temp }}/packages/
