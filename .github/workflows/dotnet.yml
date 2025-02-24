@@ -39,6 +39,7 @@ jobs:
   variables:
     name: 'Expose GitHub variables'
     runs-on: ubuntu-latest
+
     outputs:
       github-run-id: ${{ github.run_id }}
       github-run-number: ${{ github.run_number }}
