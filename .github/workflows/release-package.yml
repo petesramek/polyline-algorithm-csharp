@@ -51,7 +51,7 @@ jobs:
 
     steps:
 
-      - if: ${{ !(inputs.nuget-feed-server == 'NuGet' || inputs.nuget-feed-server == 'AzureArtifacts') }}
+      - if: ${{ inputs.nuget-feed-server == 'NuGet' || inputs.nuget-feed-server == 'AzureArtifacts' }}
         name: 'Invalid NuGet feed server type'
         shell: bash
         run: |
