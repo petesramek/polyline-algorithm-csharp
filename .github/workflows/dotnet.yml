@@ -36,6 +36,21 @@ env:
   nuget-packages-directory: 'nuget-packages'
 
 jobs:
+  variables:
+    name: 'Expose GitHub variables'
+    needs: [pack]
+    runs-on: ubuntu-latest
+    outputs:
+      github-run-id: ${{ github.run_id }}
+      github-run-number: ${{ github.run_number }}
+
+    steps:
+      - name: 'GitHub variables'
+        id: github
+        run: |
+          echo "github.run_id=${{ github.run_id }}"
+          echo "github.run_number=${{ github.run_number }}"
+
   versioning:
     name: Versioning with GitVersion
     runs-on: ubuntu-latest
@@ -224,19 +239,6 @@ jobs:
   #     - name: Deploy to GitHub Pages
   #       id: deployment
   #       uses: actions/deploy-pages@v4
-
-  variables:
-    name: 'Expose GitHub variables'
-    needs: [pack]
-    runs-on: ubuntu-latest
-    outputs:
-      github-run-id: ${{ github.run_id }}
-
-    steps:
-      - name: 'GitHub variables'
-        id: github
-        run: |
-          echo "github.run_id=${{ github.run_id }}"
 
   publish-package:
     name: 'Publish'
