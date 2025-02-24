@@ -140,7 +140,7 @@ jobs:
           name: build
       - name: Pack with .NET
         run: |
-          dotnet pack ${{ vars.SRC_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} /p:Platform="${{ env.build-platform }}" /p:PackageVersion=${{ env.PACKAGE_VERSION }} /p:Version=${{ env.ASSEMBLY_VERSION }} /p:AssemblyInformationalVersion=${{ env.ASSEMBLY_INFORMATIONAL_VERSION }} /p:FileVersion=${{ env.FILE_VERSION }} --output ${{ runner.temp }}/${{ env.nuget-packages-directory }}
+          dotnet pack ${{ vars.SRC_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} /p:Platform="${{ env.build-platform }}" /p:PackageVersion=${{ env.PACKAGE_VERSION }} /p:Version=${{ env.ASSEMBLY_VERSION }} /p:AssemblyInformationalVersion=${{ env.ASSEMBLY_INFORMATIONAL_VERSION }} /p:FileVersion=${{ env.FILE_VERSION }} --output ${{ runner.temp }}/${{ env.packages-directory }}
       - name: Upload Package
         uses: actions/upload-artifact@v4
         with:
@@ -237,8 +237,8 @@ jobs:
         run: |
           echo "github.run_id=${{ github.run_id }}"
 
-  publish-dev-package:
-    name: 'Publish development package with .NET CLI'
+  publish-package:
+    name: 'Publish'
     uses: ./.github/workflows/release-package.yml
     needs: [pack,variables]
     permissions:
