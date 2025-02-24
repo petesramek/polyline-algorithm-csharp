@@ -4,7 +4,7 @@ assembly-informational-format: '{Major}.{Minor}.{CommitsSinceVersionSource}'
 tag-prefix: '[vV]?'
 version-in-branch-pattern: (?<version>[vV]?\d+.\d+(\.\d+){0,1})
 update-build-number: true
-semantic-version-format: Strict
+semantic-version-format: Loose
 strategies:
 - VersionInBranchName
 - TrackReleaseBranches
