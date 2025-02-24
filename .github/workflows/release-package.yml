@@ -29,7 +29,7 @@ on:
 
 jobs:
   release-package:
-    name: Push package to NuGet
+    name: 'Environment: ${{ inputs.environment }}'
     runs-on: ubuntu-latest
 
     env:
