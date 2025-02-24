@@ -222,10 +222,11 @@ jobs:
   #       uses: actions/deploy-pages@v4
 
   publish-dev-package:
+    permissions:
+      actions: read
     uses: ./.github/workflows/release-package.yml
-
     with:
-      nuget-feed-url: ${{ env.NUGET_PACKAGE_FEED_URL }}
+      nuget-feed-url: 'https://pkgs.dev.azure.com/petesramek/_packaging/petesramek-development/nuget/v3/index.json'
       nuget-feed-server: 'AzureArtifacts'
       package-root-folder: ${{ runner.temp }}/${{ env.nuget-packages-directory }}/
     secrets:
