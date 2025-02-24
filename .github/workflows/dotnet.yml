@@ -243,6 +243,7 @@ jobs:
     needs: [pack,variables]
     permissions:
       actions: read
+      contents: write
     with:
       artifact-run-id: ${{ needs.variables.outputs.github-run-id }}
       artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
