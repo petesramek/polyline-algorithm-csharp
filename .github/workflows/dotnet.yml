@@ -54,35 +54,10 @@ jobs:
   versioning:
     name: Versioning with GitVersion
     needs: [variables]
-
     uses: ./.github/workflows/determine-version.yml
-
     with:
       config-file-path: './.gitversion/version.yml'
       run-number: ${{ needs.variables.outputs.github-run-number }}
-
-    # outputs:
-    #   ASSEMBLY_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
-    #   ASSEMBLY_INFORMATIONAL_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}+${{ steps.gitversion.outputs.sha }}
-    #   FILE_VERSION: ${{ steps.gitversion.outputs.assemblySemVer }}.${{ github.run_number }}
-    #   PACKAGE_VERSION: ${{ fromJSON(format('[ "{0}{1}", "{0}" ]', steps.gitversion.outputs.assemblySemVer, steps.gitversion.outputs.preReleaseLabelWithDash))[fromJSON(env.is-release)] }}
-
-    # steps:
-    #   - name: 'Checkout ${{ github.head_ref || github.ref }}'
-    #     uses: actions/checkout@v4
-    #     with:
-    #       fetch-depth: 0
-    #   - name: Install GitVersion ${{ env.git-version }}
-    #     uses: gittools/actions/gitversion/setup@v3.1.11
-    #     with:
-    #       versionSpec: ${{ env.git-version }}
-    #       preferLatestVersion: true
-    #   - name: Determine version with GitVersion ${{ env.git-version }}
-    #     id: gitversion
-    #     uses: gittools/actions/gitversion/execute@v3.1.11
-    #     with:
-    #       useConfigFile: true
-    #       configFilePath: ./.gitversion/version.yml
 
   build:
     name: Build with .NET
@@ -139,13 +114,13 @@ jobs:
 
   pack:
     name: Pack with .NET
-    needs: [build, versioning]
+    needs: [versioning, build]
     runs-on: ubuntu-latest
     env:
-      ASSEMBLY_VERSION: ${{ needs.versioning.outputs.ASSEMBLY_VERSION }}
-      ASSEMBLY_INFORMATIONAL_VERSION: ${{ needs.versioning.outputs.ASSEMBLY_INFORMATIONAL_VERSION }}
-      FILE_VERSION: ${{ needs.versioning.outputs.FILE_VERSION }}
-      PACKAGE_VERSION: ${{ needs.versioning.outputs.PACKAGE_VERSION }}
+      assembly-version: ${{ needs.versioning.outputs.assembly-version }}
+      assembly-informational-version: ${{ needs.versioning.outputs.assembly-informational-version }}
+      file-version: ${{ needs.versioning.outputs.file-version }}
+      package-version: ${{ needs.versioning.outputs.package-version }}
       package-artifact-name: package
     outputs:
         package-artifact-name: ${{ env.package-artifact-name }}
@@ -163,7 +138,7 @@ jobs:
           name: build
       - name: Pack with .NET
         run: |
-          dotnet pack ${{ vars.SRC_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} /p:Platform="${{ env.build-platform }}" /p:PackageVersion=${{ env.PACKAGE_VERSION }} /p:Version=${{ env.ASSEMBLY_VERSION }} /p:AssemblyInformationalVersion=${{ env.ASSEMBLY_INFORMATIONAL_VERSION }} /p:FileVersion=${{ env.FILE_VERSION }} --output ${{ runner.temp }}/${{ env.nuget-packages-directory }}
+          dotnet pack ${{ vars.SRC_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} /p:Platform="${{ env.build-platform }}" /p:PackageVersion=${{ env.package-version }} /p:Version=${{ env.assembly-version }} /p:AssemblyInformationalVersion=${{ env.assembly-informational-version }} /p:FileVersion=${{ env.file-version }} --output ${{ runner.temp }}/${{ env.nuget-packages-directory }}
       - name: Upload Package
         uses: actions/upload-artifact@v4
         with:
