@@ -1,4 +1,4 @@
-name: 'Push NuGet package'
+name: 'Release NuGet package'
 
 on:
   workflow_call:
@@ -29,7 +29,7 @@ on:
 
 jobs:
   release-package:
-    name: Release package with .NET CLI
+    name: Push package to NuGet
     runs-on: ubuntu-latest
 
     env:
@@ -71,5 +71,5 @@ jobs:
         shell: bash
         run: |
           dotnet nuget add source ${{ vars.NUGET_PACKAGE_FEED_URL }} --name nuget-feed --username username --password ${{ secrets.NUGET_PACKAGE_FEED_API_KEY }} --store-password-in-clear-text
-          dotnet nuget push **/*.nupkg --source nuget-feed --api-key ${{ vars.NUGET_PACKAGE_FEED_API_KEY }}
+          dotnet nuget push **/*.nupkg --source nuget-feed --api-key ${{ secrets.NUGET_PACKAGE_FEED_API_KEY }}
         working-directory: ${{ runner.temp }}/${{ env.working-directory }}
