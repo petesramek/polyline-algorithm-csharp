@@ -125,6 +125,7 @@ jobs:
       FILE_VERSION: ${{ needs.versioning.outputs.FILE_VERSION }}
       PACKAGE_VERSION: ${{ needs.versioning.outputs.PACKAGE_VERSION }}
       package-artifact-name: package
+      package-artifact-directory: ${{ runner.temp }}/${{ env.nuget-packages-directory }}
     outputs:
         package-artifact-name: ${{ env.package-artifact-name }}
     steps:
@@ -140,14 +141,14 @@ jobs:
           name: build
       - name: Pack with .NET
         run: |
-          dotnet pack ${{ vars.SRC_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} /p:Platform="${{ env.build-platform }}" /p:PackageVersion=${{ env.PACKAGE_VERSION }} /p:Version=${{ env.ASSEMBLY_VERSION }} /p:AssemblyInformationalVersion=${{ env.ASSEMBLY_INFORMATIONAL_VERSION }} /p:FileVersion=${{ env.FILE_VERSION }} --output ${{ runner.temp }}/${{ env.packages-directory }}
+          dotnet pack ${{ vars.SRC_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} /p:Platform="${{ env.build-platform }}" /p:PackageVersion=${{ env.PACKAGE_VERSION }} /p:Version=${{ env.ASSEMBLY_VERSION }} /p:AssemblyInformationalVersion=${{ env.ASSEMBLY_INFORMATIONAL_VERSION }} /p:FileVersion=${{ env.FILE_VERSION }} --output ${{ env.package-artifact-directory }}
       - name: Upload Package
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.package-artifact-name }}
           path: |
-            ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.nupkg
-            ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.snupkg
+            ${{ env.package-artifact-directory }}/**/*.nupkg
+            ${{ env.package-artifact-directory }}/**/*.snupkg
 
   # benchmark:
   #   if: ${{ github.env.is_release || vars.BENCHMARKDOTNET_RUN_OVERRIDE == 'true' }}
