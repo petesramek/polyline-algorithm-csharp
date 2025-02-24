@@ -240,7 +240,7 @@ jobs:
 
   publish-package:
     name: 'Publish'
-    uses: ./.github/workflows/partial/release-package.yml
+    uses: ./.github/workflows/release-nuget-package.yml
     needs: [pack,variables]
 
     secrets: inherit
