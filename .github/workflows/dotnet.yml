@@ -98,20 +98,22 @@ jobs:
       - uses: ./.github/actions/test
         with:
           test-project-glob-pattern: ${{ vars.TEST_DEFAULT_GLOB_PATTERN }}
-          test-results-directory: '${{ runner.temp }}/test-results/'
+          test-results-directory: '${{ runner.temp }}/${{ env.test-result-directory }}/'
           code-coverage-settings-file: '${{ github.workspace}}/code-coverage-settings.xml'
 
       - uses: ./.github/actions/test-report
         id: test-report
         with:
-          test-result-folder: '${{ runner.temp }}/test-results/'
+          test-result-folder: '${{ runner.temp }}/${{ env.test-result-directory }}/'
+
       - name: Write test report summary
         run: cat ${{ steps.test-report.outputs.test-report-file }} >> $GITHUB_STEP_SUMMARY
 
       - uses: ./.github/actions/code-coverage
         id: code-coverage-report
         with:
-          test-result-folder: '${{ runner.temp }}/test-results/'
+          test-result-folder: '${{ runner.temp }}/${{ env.test-result-directory }}/'
+
       - name: Write code coverage report summary
         run: cat ${{ steps.code-coverage-report.outputs.code-coverage-report-file }} >> $GITHUB_STEP_SUMMARY
 
