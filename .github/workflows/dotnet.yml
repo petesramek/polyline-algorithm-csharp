@@ -80,7 +80,7 @@ jobs:
           assembly-informational-version: ${{ env.assembly-informational-version }}
           file-version: ${{ env.file-version }}
           treat-warnins-as-error: ${{ env.is-release }}
-          build-glob-pattern: ${{ vars.SRC_DEFAULT_GLOB_PATTERN }}
+          search-glob-pattern: ${{ vars.SRC_DEFAULT_GLOB_PATTERN }}
 
   test:
     name: Test with .NET
