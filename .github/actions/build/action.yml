@@ -31,7 +31,8 @@ inputs:
   build-project-glob-pattern:
     description: 'Search pattern for source code. Default: **/*.csproj'
     required: false
-    default: **/*.csproj
+    default: |
+      **/*.csproj
   upload-build-artifacts:
     description: 'Upload build artifacts, Default: ''true'''
     required: false
