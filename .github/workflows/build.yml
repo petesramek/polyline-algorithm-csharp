@@ -17,8 +17,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  is-release: ${{ startsWith(github.ref_name, 'release') }}
-  is-preview: ${{ startsWith(github.ref_name, 'preview') }}
+  is-release: ${{ startsWith(github.ref_name, 'release') || startsWith(github.ref_name, 'preview') }}
   dotnet-sdk-version: '9.x'
   build-configuration: 'Release'
   build-platform: 'Any CPU'
@@ -165,7 +164,7 @@ jobs:
       environment: 'Development'
 
   publish-production-package:
-    if: ${{ needs.global-variables.outputs.is-release || needs.global-variables.outputs.is-preview }}
+    if: ${{ needs.global-variables.outputs.is-release == 'true' }}
     name: 'Publish'
     uses: ./.github/workflows/release-nuget-package.yml
     needs: [global-variables, pack]
