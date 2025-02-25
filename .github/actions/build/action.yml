@@ -17,15 +17,15 @@ inputs:
     required: true
 # Optional
   dotnet_sdk_version:
-    description: '.NET SDK version. Default: 9.x'
+    description: '.NET SDK version. Default: ''9.x'''
     required: false
     default: '9.x'
   build-configuration:
-    description: 'Build configuration. Default: Release'
+    description: 'Build configuration. Default: ''Release'''
     required: false
     default: 'Release'
   build-platform:
-    description: 'Build platform. Deafult: Any CPU'
+    description: 'Build platform. Deafult: ''Any CPU'''
     required: false
     default: 'Any CPU'
   build-project-glob-pattern:
@@ -33,7 +33,7 @@ inputs:
     required: false
     default: **/*.csproj
   upload-build-artifacts:
-    description: 'Upload build artifacts, Default: true'
+    description: 'Upload build artifacts, Default: ''true'''
     required: false
     default: 'true'
   build-artifacts-glob-pattern:
@@ -43,7 +43,7 @@ inputs:
       **/bin/*
       **/obj/*
   build-artifacts-name:
-    description: 'Upload build artifacts, Default: build'
+    description: 'Upload build artifacts, Default: ''build'''
     required: false
     default: 'build'
     
