@@ -77,7 +77,7 @@ jobs:
         shell: bash
         run: echo "assembly-version=${{ steps.gitversion.outputs.AssemblySemFileVer }}.${{ inputs.run-number }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}" >> $GITHUB_ENV
 
-      - name: 'Set assembky informational version'
+      - name: 'Set assembly informational version'
         shell: bash
         run: echo "assembly-informational-version=${{ steps.gitversion.outputs.assemblySemVer }}.${{ inputs.run-number }}+${{ steps.gitversion.outputs.sha }}" >> $GITHUB_ENV
 
