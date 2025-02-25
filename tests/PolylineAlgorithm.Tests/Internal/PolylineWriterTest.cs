@@ -61,7 +61,7 @@ public class PolylineWriterTest {
     [DynamicData(nameof(Valid_Constructor_Parameter))]
     public void Constructor_Valid_Parameter_Ok(int length) {
         // Arrange
-        Memory<char> buffer = new char[length];
+        Span<char> buffer = new char[length];
         bool canWrite = !buffer.IsEmpty;
         int position = 0;
 
@@ -81,7 +81,7 @@ public class PolylineWriterTest {
         // Arrange
         IEnumerable<Coordinate> coordinates = Values.Coordinates.Valid;
         Polyline expected = Polyline.FromString(Values.Polyline.Valid);
-        Memory<char> buffer = new char[coordinates.Count() * 12];
+        Span<char> buffer = new char[coordinates.Count() * Defaults.Polyline.MaxEncodedCoordinateLength];
         PolylineWriter writer = new(buffer);
         bool canWrite = buffer.Length > expected.Length;
         int position = expected.Length;
@@ -106,11 +106,11 @@ public class PolylineWriterTest {
     public void Write_Invalid_Coordinate_Parameter_Ok((double Latitude, double Longitude) value) {
         // Arrange
         Coordinate coordinate = new(value.Latitude, value.Longitude);
-        int bufferSize = 12;
+        int bufferSize = Defaults.Polyline.MaxEncodedCoordinateLength;
 
         // Act
         static void Write(Coordinate coordinate, int bufferSize) {
-            Memory<char> buffer = new char[bufferSize];
+            Span<char> buffer = new char[bufferSize];
             PolylineWriter writer = new(buffer);
             writer.Write(coordinate);
         }
@@ -131,7 +131,7 @@ public class PolylineWriterTest {
 
         // Act
         static void Write(Coordinate coordinate, int bufferSize) {
-            Memory<char> buffer = new char[bufferSize];
+            Span<char> buffer = new char[bufferSize];
             PolylineWriter writer = new(buffer);
 
             writer.Write(coordinate);

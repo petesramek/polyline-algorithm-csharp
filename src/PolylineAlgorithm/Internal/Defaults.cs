@@ -44,6 +44,20 @@ internal static class Defaults {
     }
 
     /// <summary>
+    /// Contains default values related to polyline.
+    /// </summary>
+    public static class Polyline {
+        /// <summary>
+        /// The minimum length of an encoded coordinate.
+        /// </summary>
+        public const int MinEncodedCoordinateLength = 2;
+        /// <summary>
+        /// The maximum length of an encoded coordinate.
+        /// </summary>
+        public const int MaxEncodedCoordinateLength = 12;
+    }
+
+    /// <summary>
     /// Contains default values related to coordinates.
     /// </summary>
     public static class Coordinate {

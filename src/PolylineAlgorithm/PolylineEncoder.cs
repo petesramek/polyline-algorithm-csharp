@@ -8,14 +8,18 @@ namespace PolylineAlgorithm;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Properties;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 /// <summary>
 /// Provides methods to encode a set of coordinates into a polyline string.
-/// </summary>
+/// </summary>\
 public class PolylineEncoder : IPolylineEncoder {
+    private static readonly int _size = sizeof(char);
+    private IMemoryOwner<char>? _pool;
+
     /// <summary>
     /// Encodes a set of coordinates into a polyline string.
     /// </summary>
@@ -28,14 +32,14 @@ public class PolylineEncoder : IPolylineEncoder {
             throw new ArgumentNullException(nameof(coordinates));
         }
 
-        int count = GetCount(in coordinates);
+        int count = GetCount(coordinates);
 
         if (count == 0) {
             throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeEmptyEnumerationMessage, nameof(coordinates));
         }
 
-        int capacity = count * 12;
-        Memory<char> buffer = new char[capacity];
+        int capacity = count * Defaults.Polyline.MaxEncodedCoordinateLength;
+        Span<char> buffer = _size * capacity <= 512_000 ? stackalloc char[capacity] : RentMemory(capacity);
         PolylineWriter writer = new(buffer);
 
         foreach (var coordinate in coordinates) {
@@ -43,18 +47,33 @@ public class PolylineEncoder : IPolylineEncoder {
             writer.Write(coordinate);
         }
 
-        return writer.ToPolyline();
+        var result = writer.ToPolyline();
 
-        /// <summary>
-        /// Gets the count of coordinates in the enumerable.
-        /// </summary>
-        /// <param name="coordinates">The enumerable of coordinates.</param>
-        /// <returns>The count of coordinates.</returns>
-        [ExcludeFromCodeCoverage]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int GetCount(ref readonly IEnumerable<Coordinate> coordinates) => coordinates switch {
-            ICollection<Coordinate> collection => collection.Count,
-            _ => coordinates.Count(),
-        };
+
+
+        return result;
+    }
+
+    /// <summary>
+    /// Gets the count of coordinates in the enumerable.
+    /// </summary>
+    /// <param name="coordinates">The enumerable of coordinates.</param>
+    /// <returns>The count of coordinates.</returns>
+    [ExcludeFromCodeCoverage]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    static int GetCount(IEnumerable<Coordinate> coordinates) => coordinates switch {
+        ICollection<Coordinate> collection => collection.Count,
+        _ => coordinates.Count(),
+    };
+
+
+    private Span<char> RentMemory(int capacity) {
+        _pool = MemoryPool<char>.Shared.Rent(capacity);
+
+        return _pool.Memory.Span;
+    }
+
+    private void ReturnMemory() {
+        _pool?.Dispose();
     }
 }

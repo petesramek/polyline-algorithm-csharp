@@ -7,6 +7,7 @@ namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
 using PolylineAlgorithm;
+using PolylineAlgorithm.Benchmarks.Internal;
 using System.Collections.Generic;
 
 /// <summary>
@@ -14,7 +15,8 @@ using System.Collections.Generic;
 /// </summary>
 [RankColumn]
 public class PolylineEncoderBenchmark {
-    private static readonly Random R = new();
+    [Params(10, 100, 1_000, 10_000, 100_000)]
+    public int N;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     /// <summary>
@@ -38,8 +40,8 @@ public class PolylineEncoderBenchmark {
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        Enumeration = Enumerable.Range(0, 100).Select(i => new Coordinate(R.Next(-90, 90) + R.NextDouble(), R.Next(-180, 180) + R.NextDouble()));
-        List = new List<Coordinate>(Enumeration);
+        Enumeration = ValueProvider.GetCoordinates(N);
+        List = [..Enumeration];
     }
 
     /// <summary>

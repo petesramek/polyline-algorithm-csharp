@@ -7,12 +7,17 @@ namespace PolylineAlgorithm;
 
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Properties;
+using System.Buffers;
+using System.Runtime.InteropServices;
 
 
 /// <summary>
 /// Performs polyline algorithm decoding
 /// </summary>
 public class PolylineDecoder : IPolylineDecoder {
+
+    private static readonly int _size = Marshal.SizeOf<Coordinate>();
+    private IMemoryOwner<Coordinate>? _pool;
 
     /// <inheritdoc />
     /// <exception cref="ArgumentException">Thrown when <paramref name="polyline"/> argument is null -or- empty.</exception>
@@ -24,20 +29,36 @@ public class PolylineDecoder : IPolylineDecoder {
         }
 
         // Initialize local variables
-        int capacity = polyline.Length / 9;
-        var result = new List<Coordinate>(capacity);
+        int capacity = polyline.Length / Defaults.Polyline.MinEncodedCoordinateLength;
+        Span<Coordinate> buffer = _size * capacity <= 512_000 ? stackalloc Coordinate[capacity] : RentMemory(capacity);
 
         PolylineReader reader = new(in polyline);
+        int index = 0;
 
         // Looping through encoded polyline char array
         while (reader.CanRead) {
             var coordinate = reader.Read();
-
+            
             InvalidCoordinateException.ThrowIfNotValid(coordinate);
 
-            result.Add(coordinate);
+            buffer[index] = coordinate;
+            index++;
         }
 
+        var result = buffer[..index].ToArray();
+
+        ReturnMemory();
+
         return result;
+    }
+
+    private Span<Coordinate> RentMemory(int capacity) {
+        _pool = MemoryPool<Coordinate>.Shared.Rent(capacity);
+
+        return _pool.Memory.Span;
+    }
+
+    private void ReturnMemory() {
+        _pool?.Dispose();
     }
 }

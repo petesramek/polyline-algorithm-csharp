@@ -15,13 +15,13 @@ using System.Runtime.InteropServices;
 [StructLayout(LayoutKind.Auto)]
 internal ref struct PolylineWriter {
     private WriterState _state = new();
-    private Memory<char> _buffer;
+    private Span<char> _buffer;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PolylineWriter"/> struct with the specified buffer.
     /// </summary>
     /// <param name="buffer">The buffer to write to.</param>
-    public PolylineWriter(Memory<char> buffer) {
+    public PolylineWriter(Span<char> buffer) {
         _buffer = buffer;
     }
 
@@ -90,7 +90,7 @@ internal ref struct PolylineWriter {
     void WriteChar(char value) {
         InvalidWriterStateException.ThrowIfCannotWrite(CanWrite, Position, _buffer.Length);
 
-        _buffer.Span[Position] = value;
+        _buffer[Position] = value;
         _state.Position += 1;
     }
 
@@ -115,8 +115,8 @@ internal ref struct PolylineWriter {
     /// </summary>
     /// <returns>The <see cref="Polyline"/> instance.</returns>
     public readonly Polyline ToPolyline() {
-        ReadOnlyMemory<char> buffer = _buffer[.._state.Position];
-        var polyline = Polyline.FromMemory(buffer);
+        Span<char> buffer = _buffer[.._state.Position];
+        var polyline = Polyline.FromString(buffer.ToString());
         return polyline;
     }
 
