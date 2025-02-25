@@ -5,7 +5,6 @@
 
 namespace PolylineAlgorithm;
 
-using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Properties;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
