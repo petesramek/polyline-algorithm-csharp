@@ -27,20 +27,24 @@ env:
   nuget-packages-directory: 'nuget-packages'
 
 jobs:
-  variables:
-    name: 'GitHub variables'
+  global-variables:
+    name: 'Global variables'
     runs-on: ubuntu-latest
 
     outputs:
       github-run-id: ${{ github.run_id }}
       github-run-number: ${{ github.run_number }}
+      is-release: ${{ startsWith(github.ref_name, 'release') }}
+      is-preview: ${{ startsWith(github.ref_name, 'preview') }}
 
     steps:
-      - name: 'GitHub variables'
+      - name: 'Global variables'
         id: github
         run: |
-          echo "github.run_id=${{ github.run_id }}"
-          echo "github.run_number=${{ github.run_number }}"
+          echo "github-run-id:${{ github.run_id }}"
+          echo "github-run-number:${{ github.run_number }}"
+          echo "is-release:${{ github.run_id }}"
+          echo "is-preview:${{ github.run_number }}"
 
   versioning:
     name: Versioning with GitVersion
@@ -49,7 +53,7 @@ jobs:
     uses: ./.github/workflows/determine-version.yml
     with:
       config-file-path: './.gitversion/version.yml'
-      run-number: ${{ needs.variables.outputs.github-run-number }}
+      run-number: ${{ needs.global-variables.outputs.github-run-number }}
 
   build:
     name: Build with .NET
@@ -149,26 +153,26 @@ jobs:
   publish-dev-package:
     name: 'Publish'
     uses: ./.github/workflows/release-nuget-package.yml
-    needs: [pack,variables]
+    needs: [variables, pack]
 
     secrets: inherit
 
     with:
-      artifact-run-id: ${{ needs.variables.outputs.github-run-id }}
+      artifact-run-id: ${{ needs.global-variables.outputs.github-run-id }}
       artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
       nuget-feed-server: 'AzureArtifacts'
       environment: 'Development'
 
   publish-production-package:
-    if: ${{ env.is-release || env.is-preview }}
+    if: ${{ needs.global-variables.outputs.is-release || needs.global-variables.outputs.is-preview }}
     name: 'Publish'
     uses: ./.github/workflows/release-nuget-package.yml
-    needs: [pack,variables]
+    needs: [variables, pack]
 
     secrets: inherit
 
     with:
-      artifact-run-id: ${{ needs.variables.outputs.github-run-id }}
+      artifact-run-id: ${{ needs.global-variables.outputs.github-run-id }}
       artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
       nuget-feed-server: 'NuGet'
       environment: 'NuGet'
