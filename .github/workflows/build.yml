@@ -155,6 +155,7 @@ jobs:
     uses: ./.github/workflows/release-nuget-package.yml
     needs: [variables, pack]
 
+
     secrets: inherit
 
     with:
