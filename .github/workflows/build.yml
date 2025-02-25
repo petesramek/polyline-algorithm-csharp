@@ -48,7 +48,7 @@ jobs:
 
   versioning:
     name: Versioning with GitVersion
-    needs: [variables]
+    needs: [global-variables]
 
     uses: ./.github/workflows/determine-version.yml
     with:
@@ -153,7 +153,7 @@ jobs:
   publish-dev-package:
     name: 'Publish'
     uses: ./.github/workflows/release-nuget-package.yml
-    needs: [variables, pack]
+    needs: [global-variables, pack]
 
 
     secrets: inherit
@@ -168,7 +168,7 @@ jobs:
     if: ${{ needs.global-variables.outputs.is-release || needs.global-variables.outputs.is-preview }}
     name: 'Publish'
     uses: ./.github/workflows/release-nuget-package.yml
-    needs: [variables, pack]
+    needs: [global-variables, pack]
 
     secrets: inherit
 
