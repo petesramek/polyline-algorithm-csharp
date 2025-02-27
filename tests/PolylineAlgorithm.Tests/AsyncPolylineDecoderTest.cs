@@ -12,40 +12,56 @@ using PolylineAlgorithm.Tests.Data;
 /// Defines tests for the <see cref="PolylineDecoder"/> type.
 /// </summary>
 [TestClass]
-public class PolylineDecoderTest {
+public class AsyncPolylineDecoderTest {
     /// <summary>
     /// The instance of the <see cref="PolylineDecoder"/> used for testing.
     /// </summary>
-    public PolylineDecoder Decoder = new();
+    public AsyncPolylineDecoder Decoder = new();
 
     /// <summary>
     /// Tests the <see cref="PolylineDecoder.Decode(ref readonly Polyline)"/> method with an empty input, expecting an <see cref="ArgumentException"/>.
     /// </summary>
     [TestMethod]
-    public void Decode_Empty_Input_ThrowsException() {
+    public async Task Decode_Empty_Input_ThrowsException() {
         // Arrange
         Polyline empty = new();
 
         // Act
-        void Execute(Polyline value) => Decoder.Decode(value);
+        async Task<IEnumerable<Coordinate>> Execute(Polyline value) {
+            var result = new List<Coordinate>();
+
+            await foreach (var coordinate in Decoder.DecodeAsync(value)) {
+                result.Add(coordinate);
+            }
+
+            return result;
+        };
 
         // Assert
-        Assert.ThrowsExactly<ArgumentException>(() => Execute(empty));
+        await Assert.ThrowsExactlyAsync<ArgumentException>(async () => await Execute(empty));
     }
 
     /// <summary>
     /// Tests the <see cref="PolylineDecoder.Decode(ref readonly Polyline)"/> method with an invalid input, expecting an <see cref="InvalidCoordinateException"/>.
     /// </summary>
     [TestMethod]
-    public void Decode_Invalid_Input_ThrowsException() {
+    public async Task Decode_Invalid_Input_ThrowsException() {
         // Arrange
-        Polyline value = new(Values.Polyline.Invalid);
+        Polyline invalid = new(Values.Polyline.Invalid);
 
         // Act
-        void Execute(Polyline value) => Decoder.Decode(value);
+        async Task<IEnumerable<Coordinate>> Execute(Polyline value) {
+            var result = new List<Coordinate>();
+
+            await foreach (var coordinate in Decoder.DecodeAsync(value)) {
+                result.Add(coordinate);
+            }
+
+            return result;
+        };
 
         // Assert
-        var exception = Assert.ThrowsExactly<InvalidCoordinateException>(() => Execute(value));
+        await Assert.ThrowsExactlyAsync<InvalidCoordinateException>(async () => await Execute(invalid));
     }
 
     /// <summary>
@@ -53,12 +69,16 @@ public class PolylineDecoderTest {
     /// </summary>
     /// <remarks>Expected result to equal <see cref="Values.Coordinates.Valid"/>.</remarks>
     [TestMethod]
-    public void Decode_Valid_Input_Ok() {
+    public async Task Decode_Valid_Input_Ok() {
         // Arrange
         Polyline value = new(Values.Polyline.Valid);
 
         // Act
-        var result = Decoder.Decode(value);
+        var result = new List<Coordinate>();
+
+        await foreach (var coordinate in Decoder.DecodeAsync(value)) {
+            result.Add(coordinate);
+        }
 
         // Assert
         CollectionAssert.AreEqual(Values.Coordinates.Valid.ToArray(), result.ToArray());

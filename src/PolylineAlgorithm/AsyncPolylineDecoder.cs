@@ -9,35 +9,25 @@ using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Properties;
 using System.Buffers;
-using System.Runtime.InteropServices;
-using static PolylineAlgorithm.Internal.Defaults.Coordinate;
 
 
 /// <summary>
 /// Performs polyline algorithm decoding
 /// </summary>
-public class PolylineDecoder : IPolylineDecoder {
-
-    private static readonly int _size = Marshal.SizeOf<Coordinate>();
-    private IMemoryOwner<Coordinate>? _pool;
-
+public class AsyncPolylineDecoder : IAsyncPolylineDecoder {
     /// <inheritdoc />
     /// <exception cref="ArgumentException">Thrown when <paramref name="polyline"/> argument is null -or- empty.</exception>
     /// <exception cref="InvalidOperationException">Thrown when <paramref name="polyline"/> is not in correct format.</exception>
-    public IEnumerable<Coordinate> Decode( Polyline polyline) {
+    public async IAsyncEnumerable<Coordinate> DecodeAsync(Polyline polyline) {
         // Checking null and at least one character
         if (polyline.IsEmpty) {
             throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeNullEmptyOrWhitespaceMessage, nameof(polyline));
         }
 
-        // Initialize local variables
-        int index = 0;
         int latitude = 0;
         int longitude = 0;
         long position = 0;
         ReadOnlySequence<char> sequence = polyline.AsSequence();
-        long capacity = polyline.Length / Defaults.Polyline.MinEncodedCoordinateLength;
-        Span<Coordinate> buffer = _size * capacity <= 512_000 ? stackalloc Coordinate[(int)capacity] : RentMemory((int)capacity);
 
         while (
             DecodingAlgorithm.DecodeNext(ref latitude, ref position, ref sequence)
@@ -47,19 +37,8 @@ public class PolylineDecoder : IPolylineDecoder {
 
             InvalidCoordinateException.ThrowIfNotValid(coordinate);
 
-            buffer[index++] = coordinate;
+            yield return await new ValueTask<Coordinate>(coordinate)
+                .ConfigureAwait(false);
         }
-
-        return buffer[..index].ToArray();
-    }
-
-    private Span<Coordinate> RentMemory(int capacity) {
-        _pool = MemoryPool<Coordinate>.Shared.Rent(capacity);
-
-        return _pool.Memory.Span;
-    }
-
-    private void ReturnMemory() {
-        _pool?.Dispose();
     }
 }

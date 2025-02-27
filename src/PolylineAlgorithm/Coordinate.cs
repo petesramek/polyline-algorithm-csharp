@@ -5,6 +5,7 @@
 
 namespace PolylineAlgorithm;
 
+using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Validation;
 using System;
 using System.Diagnostics;
@@ -18,6 +19,8 @@ using System.Runtime.InteropServices;
 [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
 [DebuggerDisplay("{ToString()}")]
 public readonly struct Coordinate : IEquatable<Coordinate> {
+    internal static readonly Coordinate Default = new();
+
     /// <summary>
     /// Creates a new <see cref="Coordinate"/> structure with <see cref="Latitude"/> and <see cref="Longitude"/> set to their default values.
     /// </summary>
@@ -68,6 +71,15 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     public void Deconstruct(out double latitude, out double longitude) {
         latitude = Latitude;
         longitude = Longitude;
+    }
+
+    internal void Imprecise(out int latitude, out int longitude) {
+        latitude = Convert.ToInt32(Latitude * Defaults.Algorithm.Precision);
+        longitude = Convert.ToInt32(Longitude * Defaults.Algorithm.Precision);
+    }
+
+    internal static Coordinate FromImprecise(int latitude, int longitude) {
+        return new(latitude / Defaults.Algorithm.Precision, longitude / Defaults.Algorithm.Precision);
     }
 
     #region Overrides

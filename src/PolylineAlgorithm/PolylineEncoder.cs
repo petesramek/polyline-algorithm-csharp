@@ -5,6 +5,8 @@
 
 namespace PolylineAlgorithm;
 
+using PolylineAlgorithm.Abstraction;
+using PolylineAlgorithm.Extensions;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Properties;
 using System;
@@ -40,19 +42,24 @@ public class PolylineEncoder : IPolylineEncoder {
 
         int capacity = count * Defaults.Polyline.MaxEncodedCoordinateLength;
         Span<char> buffer = _size * capacity <= 512_000 ? stackalloc char[capacity] : RentMemory(capacity);
-        PolylineWriter writer = new(buffer);
+        CoordinateDifference diff = new();
+        int index = 0;
 
         foreach (var coordinate in coordinates) {
             InvalidCoordinateException.ThrowIfNotValid(coordinate);
-            writer.Write(coordinate);
+
+            diff.DiffNext(coordinate);
+
+            var next = EncodingAlgorithm.EncodeNext(diff.Latitude, diff.Longitude);
+
+            index = buffer
+                 .Write(in next, ref index);
         }
 
-        var result = writer.ToPolyline();
-
-
-
-        return result;
+        return new Polyline(buffer[..index].ToArray());
     }
+
+
 
     /// <summary>
     /// Gets the count of coordinates in the enumerable.

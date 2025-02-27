@@ -28,7 +28,7 @@ public sealed class InvalidPolylineException : Exception {
     /// </summary>
     /// <param name="position">The position in the polyline where the error occurred.</param>
     /// <exception cref="InvalidPolylineException">Always thrown to indicate a malformed polyline.</exception>
-    internal static void Throw(int position) {
-        throw new InvalidPolylineException(string.Format(ExceptionMessageResource.PolylineStringIsMalformedMessage, position));
+    internal static void Throw(long position) {
+        throw new InvalidPolylineException(string.Format(ExceptionMessageResource.PolylineStringIsMalformedMessage, position.ToString()));
     }
 }

@@ -1,0 +1,32 @@
+﻿namespace PolylineAlgorithm.Extensions;
+
+using PolylineAlgorithm.Abstraction;
+using System;
+using System.Collections.Generic;
+
+public static class PolylineDecoderExtensions
+{
+    public static IEnumerable<Coordinate> Decode(this IPolylineDecoder decoder, string polyline) {
+        if (decoder is null) {
+            throw new ArgumentNullException(nameof(decoder));
+        }
+
+        return decoder.Decode(Polyline.FromString(polyline));  
+    }
+
+    public static IEnumerable<Coordinate> Decode(this IPolylineDecoder decoder, char[] polyline) {
+        if (decoder is null) {
+            throw new ArgumentNullException(nameof(decoder));
+        }
+
+        return decoder.Decode(Polyline.FromCharArray(polyline));
+    }
+
+    public static IEnumerable<Coordinate> Decode(this IPolylineDecoder decoder, Memory<char> polyline) {
+        if (decoder is null) {
+            throw new ArgumentNullException(nameof(decoder));
+        }
+
+        return decoder.Decode(Polyline.FromMemory(polyline));
+    }
+}

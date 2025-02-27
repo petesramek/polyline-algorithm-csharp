@@ -5,7 +5,10 @@
 
 namespace PolylineAlgorithm;
 
+using PolylineAlgorithm.Internal;
 using System;
+using System.Buffers;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
@@ -16,13 +19,17 @@ using System.Runtime.InteropServices;
 [StructLayout(LayoutKind.Auto)]
 [DebuggerDisplay("Value: {ToString()}, IsEmpty: {IsEmpty}, Length: {Length}")]
 public readonly struct Polyline : IEquatable<Polyline> {
-    private readonly ReadOnlyMemory<char> _value;
+    private readonly ReadOnlySequence<char> _value;
+
+    private Polyline(ReadOnlySequence<char> value) {
+        _value = value;
+    }
 
     /// <summary>
     /// Creates a new <see cref="Polyline"/> structure that is empty.
     /// </summary>
     public Polyline() {
-        _value = ReadOnlyMemory<char>.Empty;
+        _value = ReadOnlySequence<char>.Empty;
     }
 
     /// <summary>
@@ -31,7 +38,11 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <param name="value">The string value to initialize the polyline with.</param>
     /// <exception cref="ArgumentNullException">Thrown when the <paramref name="value"/> is null.</exception>
     public Polyline(string value) {
-        _value = value?.AsMemory() ?? throw new ArgumentNullException(nameof(value));
+        if (value is null) {
+            throw new ArgumentNullException(nameof(value));
+        }
+
+        _value = new ReadOnlySequence<char>(value.AsMemory());
     }
 
     /// <summary>
@@ -40,7 +51,11 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <param name="value">The Unicode character array to initialize the polyline with.</param>
     /// <exception cref="ArgumentNullException">Thrown when the <paramref name="value"/> is null.</exception>
     public Polyline(char[] value) {
-        _value = value?.AsMemory() ?? throw new ArgumentNullException(nameof(value));
+        if (value is null) {
+            throw new ArgumentNullException(nameof(value));
+        }
+
+        _value = _value = new ReadOnlySequence<char>(value.AsMemory());
     }
 
     /// <summary>
@@ -48,13 +63,13 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// </summary>
     /// <param name="value">The readonly memory region to initialize the polyline with.</param>
     public Polyline(ReadOnlyMemory<char> value) {
-        _value = value;
+        _value = new ReadOnlySequence<char>(value);
     }
 
     /// <summary>
     /// Gets the span of characters in the polyline.
     /// </summary>
-    internal readonly ReadOnlySpan<char> Span => _value.Span;
+    internal readonly ReadOnlySequence<char> Value => _value;
 
     /// <summary>
     /// Gets a value indicating whether this <see cref="Polyline" /> is empty.
@@ -62,9 +77,9 @@ public readonly struct Polyline : IEquatable<Polyline> {
     public readonly bool IsEmpty => _value.IsEmpty;
 
     /// <summary>
-    /// Gets the number of characters in the current <see cref="Polyline" /> object.
+    /// Gets a value indicating whether this <see cref="Polyline" /> is empty.
     /// </summary>
-    public readonly int Length => _value.Length;
+    public readonly long Length => _value.Length;
 
     /// <summary>
     /// Copies the characters in this instance to a Unicode character array.
@@ -73,16 +88,53 @@ public readonly struct Polyline : IEquatable<Polyline> {
     public char[] ToCharArray() => _value.ToArray();
 
     /// <summary>
-    /// Returns the underlying <see cref="ReadOnlyMemory{T}" /> this instance represents.
+    /// Returns the underlying <see cref="ReadOnlySequence{T}" /> this instance represents.
     /// </summary>
-    /// <returns>The underlying <see cref="ReadOnlyMemory{T}"/>.</returns>
-    public ReadOnlyMemory<char> AsMemory() => _value;
+    /// <returns>The underlying <see cref="ReadOnlySequence{T}"/>.</returns>
+    public ReadOnlySequence<char> AsSequence() => _value;
 
     /// <summary>
     /// Returns a string representation of the value of this instance.
     /// </summary>
     /// <returns>The string value of this <see cref="Polyline"/> object.</returns>
     public override string ToString() => _value.ToString();
+
+    public Polyline Append(Polyline other) {
+        if (other.IsEmpty) {
+            return this;
+        }
+
+        var last = GetSegments(out PolylineSegment initial);
+
+        var end = other.GetSegments(out PolylineSegment continuation);
+
+        last.Append(continuation);
+
+        var sequence = new ReadOnlySequence<char>(initial, 0, end, end.Memory.Length);
+
+        return new Polyline(sequence);
+    }
+
+    private PolylineSegment GetSegments(out PolylineSegment initial) {
+        initial = new PolylineSegment(Value.First);
+
+        if (Value.IsSingleSegment) {
+            return initial;
+        }
+
+        PolylineSegment? current = null;
+
+        foreach (var segment in Value) {
+            if (current is null) {
+                current = initial;
+            } else {
+                current = current.Append(segment);
+            }
+        }
+
+        // Current will never be null in case we return from the method early using Value.IsSingleSegment property check
+        return current!;
+    }
 
     #region Overrides
 
@@ -99,7 +151,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     #region IEquatable<Polyline> implementation
 
     /// <inheritdoc />
-    public bool Equals(Polyline other) => _value.Span.SequenceEqual(other._value.Span);
+    public bool Equals(Polyline other) => Value.Equals(other.Value);
 
     #endregion
 
@@ -148,6 +200,10 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <returns>The <see cref="Polyline"/> value that corresponds to the specified string value.</returns>
     public static Polyline FromString(string polyline) => new(polyline);
 
+    internal void Append(IEnumerable<char> latitude, IEnumerable<char> longitude) {
+        throw new NotImplementedException();
+    }
+
     #endregion
 
     #region Explicit conversions
@@ -165,7 +221,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// </summary>
     /// <param name="polyline">The readonly memory region to convert.</param>
     /// <returns>The converted readonly memory region.</returns>
-    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = $"Provided alternative {nameof(Polyline)}.{nameof(FromMemory)} to follow {nameof(String)}.{nameof(AsMemory)} naming pattern.")]
+    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = $"Provided alternative {nameof(Polyline)}.{nameof(FromMemory)}.")]
     [ExcludeFromCodeCoverage]
     public static explicit operator Polyline(ReadOnlyMemory<char> polyline) => FromMemory(polyline);
 

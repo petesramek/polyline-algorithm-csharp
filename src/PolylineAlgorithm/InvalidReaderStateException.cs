@@ -32,7 +32,7 @@ public sealed class InvalidReaderStateException : Exception {
     /// <exception cref="InvalidReaderStateException">
     /// Thrown when the reader cannot read from the polyline because the polyline is either empty or the reader has reached the end of the polyline.
     /// </exception>
-    internal static void ThrowIfCannotRead(bool canRead, int readerPosition, int polylineLength) {
+    internal static void ThrowIfCannotRead(bool canRead, long readerPosition, long polylineLength) {
         if (canRead) {
             return;
         }
