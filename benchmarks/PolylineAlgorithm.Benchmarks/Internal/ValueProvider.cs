@@ -4,8 +4,8 @@
 
     public static class ValueProvider
     {
-        private static ConcurrentDictionary<int, CoordinatePair> _cache = new();
-        private static PolylineEncoder _encoder = new();
+        private static readonly ConcurrentDictionary<int, CoordinatePair> _cache = new();
+        private static readonly PolylineEncoder _encoder = new();
 
         public static IEnumerable<Coordinate> GetCoordinates(int count) {
             var entry = GetCaheEntry(count);

@@ -20,22 +20,22 @@ internal static class Values {
         /// <summary>
         /// Defines an empty range of coordinates. Equals to decoded <seealso cref="Polyline.Empty"/>.
         /// </summary>
-        public static readonly IEnumerable<Coordinate> Empty = Array.Empty<Coordinate>();
+        public static readonly IEnumerable<Coordinate> Empty = [];
 
         /// <summary>
         /// Defines a range of invalid coordinates. Equals to decoded <seealso cref="Polyline.Invalid"/>.
         /// </summary>
-        public static readonly IEnumerable<Coordinate> Invalid = new List<Coordinate> {
+        public static readonly IEnumerable<Coordinate> Invalid = [
             new(149.47383, 259.06250),
             new(-158.37407, 225.31250),
             new(152.99363, -220.93750),
             new(-144.49024, -274.37500)
-        };
+        ];
 
         /// <summary>
         /// Defines a range of valid coordinates. Equals to decoded <seealso cref="Polyline.Valid"/>.
         /// </summary>
-        public static readonly IEnumerable<Coordinate> Valid = new List<Coordinate> {
+        public static readonly IEnumerable<Coordinate> Valid = [
             new(41.45450,-120.00601),
             new(-8.48144,-86.82596),
             new(39.26923,103.12430),
@@ -135,8 +135,8 @@ internal static class Values {
             new(57.55565,56.49742),
             new(-68.86080,-165.10417),
             new(-77.15836,-19.18719),
-            new(88.82714,74.26587),
-        };
+            new(88.82714,74.26587)
+        ];
     }
 
     /// <summary>

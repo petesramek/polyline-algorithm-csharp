@@ -18,7 +18,7 @@ using System.Diagnostics;
 public class PolylineDecoderBenchmark {
     private readonly Consumer _consumer = new();
 
-    [Params(10, 100, 1_000, 10_000, 100_000)]
+    [Params(1, 10, 100, 1_000, 10_000, 100_000, 1_000_000)]
     public int N;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.

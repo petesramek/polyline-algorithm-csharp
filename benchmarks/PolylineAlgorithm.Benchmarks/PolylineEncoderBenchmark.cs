@@ -6,13 +6,9 @@
 namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
-using Microsoft.Extensions.ObjectPool;
 using PolylineAlgorithm;
-using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Benchmarks.Internal;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 /// <summary>
@@ -20,10 +16,7 @@ using System.Threading.Tasks;
 /// </summary>
 [RankColumn]
 public class PolylineEncoderBenchmark {
-    private static string _dir = "C:\\temp_benchmark";
-    private static StringBuilderPooledObjectPolicy _policy = new();
-
-    [Params(10, 100, 1_000, 10_000, 100_000)]
+    [Params(1, 10, 100, 1_000, 10_000, 100_000, 1_000_000)]
     public int N;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
@@ -55,7 +48,6 @@ public class PolylineEncoderBenchmark {
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        Directory.CreateDirectory(_dir);
         Enumeration = ValueProvider.GetCoordinates(N);
         List = [.. Enumeration];
         AsyncEnumeration = GetAsyncEnumeration(Enumeration!);
@@ -94,10 +86,16 @@ public class PolylineEncoderBenchmark {
     /// </summary>
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
-    public async Task PolylineEncoder_EncodeAsync_String() {
+    public async Task<Polyline> PolylineEncoder_EncodeAsync_String() {
         var result = AsyncEncoder
             .EncodeAsync(AsyncEnumeration!);
 
-        await foreach (var _ in result) { }
+        var polyline = new Polyline();
+
+        await foreach (var item in result.ConfigureAwait(false)) {
+           polyline.Append(item);
+        }
+
+        return polyline;
     }
 }

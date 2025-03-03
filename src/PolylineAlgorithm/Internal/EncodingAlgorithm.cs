@@ -15,7 +15,7 @@ internal static class EncodingAlgorithm
         index = EncodeDifference(ref latitudeDiff, ref index, ref buffer);
         index = EncodeDifference(ref longitudeDiff, ref index, ref buffer);
 
-        return buffer.ToArray();
+        return buffer[..index].ToArray();
     }
 
     // [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -38,7 +38,7 @@ internal static class EncodingAlgorithm
 
     // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int GetRequiredCharCount(int difference) => difference switch {
-        // DO NOT CHANGE THE ORDER. We are skipping inside ranges as those are covered by previous statements.
+        // DO NOT CHANGE THE ORDER. We are skipping inside exclusive ranges as those are covered by previous statements.
         >= -16 and <= +15 => 1,
         >= -512 and <= +511 => 2,
         >= -16384 and <= +16383 => 3,

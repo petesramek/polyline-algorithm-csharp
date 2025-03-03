@@ -9,14 +9,12 @@ internal class PolylineSegment : ReadOnlySequenceSegment<char> {
     }
 
     public PolylineSegment Append(ReadOnlyMemory<char> memory) {
-        var segment = new PolylineSegment(memory, RunningIndex + memory.Length);
-
-        Next = segment;
-
-        return segment;
+        return Append(new PolylineSegment(memory));
     }
 
     public PolylineSegment Append(PolylineSegment next) {
+        next.RunningIndex = RunningIndex + Memory.Length;
+
         Next = next;
 
         return next;

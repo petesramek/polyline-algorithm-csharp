@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Text.RegularExpressions;
 
 /// <summary>
 /// Represents a readonly encoded polyline string.
@@ -97,7 +99,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// Returns a string representation of the value of this instance.
     /// </summary>
     /// <returns>The string value of this <see cref="Polyline"/> object.</returns>
-    public override string ToString() => _value.ToString();
+    public override string ToString() => Value.ToString();
 
     public Polyline Append(Polyline other) {
         if (other.IsEmpty) {
@@ -151,7 +153,42 @@ public readonly struct Polyline : IEquatable<Polyline> {
     #region IEquatable<Polyline> implementation
 
     /// <inheritdoc />
-    public bool Equals(Polyline other) => Value.Equals(other.Value);
+    public bool Equals(Polyline other) {
+        if(IsEmpty && other.IsEmpty) {
+            return true;
+        }
+
+        if(Length != other.Length) {
+            return false;
+        }
+
+        long start = 0;
+        bool result = true;
+        int chunkSize = 256;
+        long max = Math.DivRem(Length, chunkSize, out long remainder) + (remainder > 0 ? 1 : 0);
+        Span<char> @this = stackalloc char[chunkSize];
+        Span<char> that = stackalloc char[chunkSize];
+
+        for (int i = 0; i < max; i++) {
+            start = i * chunkSize;
+
+            if(max - i == 1) {
+                @this.Clear();
+                that.Clear();
+                chunkSize = (int)remainder;
+            }
+
+            Value.Slice(start, chunkSize).CopyTo(@this);
+            other.Value.Slice(start, chunkSize).CopyTo(that);
+
+            if(!@this.SequenceEqual(that)) {
+                result = false;
+                break;
+            }
+        }
+
+        return result;
+    }
 
     #endregion
 
