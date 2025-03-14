@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace PolylineAlgorithm.Internal {
     [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
-    internal struct CoordinateDifference {
+    public struct CoordinateDifference {
         public CoordinateDifference() {
             Coordinate = default;
             Latitude = default;
@@ -14,11 +14,10 @@ namespace PolylineAlgorithm.Internal {
         public int Latitude { get; private set; }
         public int Longitude { get; private set; }
 
-        public override string ToString()
+        public override readonly string ToString()
             => $"Latitude: {Latitude}, Longitude: {Longitude}";
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void DiffNext(Coordinate next) {
+        public void Next(Coordinate next) {
             var current = Exchange(next);
 
             current.Imprecise(out int currentLatitude, out int currentLongitude);

@@ -19,38 +19,50 @@ using static PolylineAlgorithm.Internal.Defaults.Coordinate;
 public class PolylineDecoder : IPolylineDecoder {
 
     private static readonly int _size = Marshal.SizeOf<Coordinate>();
+
     private IMemoryOwner<Coordinate>? _pool;
 
     /// <inheritdoc />
     /// <exception cref="ArgumentException">Thrown when <paramref name="polyline"/> argument is null -or- empty.</exception>
     /// <exception cref="InvalidOperationException">Thrown when <paramref name="polyline"/> is not in correct format.</exception>
-    public IEnumerable<Coordinate> Decode( Polyline polyline) {
+    public IEnumerable<Coordinate> Decode(Polyline polyline) {
         // Checking null and at least one character
         if (polyline.IsEmpty) {
             throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeNullEmptyOrWhitespaceMessage, nameof(polyline));
         }
 
-        // Initialize local variables
         int index = 0;
         int latitude = 0;
         int longitude = 0;
-        long position = 0;
-        ReadOnlySequence<char> sequence = polyline.AsSequence();
+        int position = 0;
         long capacity = polyline.Length / Defaults.Polyline.MinEncodedCoordinateLength;
+        ReadOnlySpan<char> source = polyline.AsMemory().Span;
         Span<Coordinate> buffer = _size * capacity <= 512_000 ? stackalloc Coordinate[(int)capacity] : RentMemory((int)capacity);
 
-        while (
-            DecodingAlgorithm.DecodeNext(ref latitude, ref position, ref sequence)
-            && DecodingAlgorithm.DecodeNext(ref longitude, ref position, ref sequence)
-        ) {
-            Coordinate coordinate = Coordinate.FromImprecise(latitude, longitude);
+        while (true) {
+            if (position >= source.Length) {
+                break;
+            }
 
-            InvalidCoordinateException.ThrowIfNotValid(coordinate);
+            try {
+                position += PolylineEncoding.Default.GetNextValue(source[position..], ref latitude);
+                position += PolylineEncoding.Default.GetNextValue(source[position..], ref longitude);
 
-            buffer[index++] = coordinate;
+                Coordinate coordinate = Coordinate.FromImprecise(latitude, longitude);
+
+                InvalidCoordinateException.ThrowIfNotValid(coordinate);
+
+                buffer[index++] = coordinate;
+            } catch (IndexOutOfRangeException ex) {
+                throw;
+            }
         }
 
-        return buffer[..index].ToArray();
+        IEnumerable<Coordinate> result = buffer[..index].ToArray();
+
+        ReturnMemory();
+
+        return result;
     }
 
     private Span<Coordinate> RentMemory(int capacity) {

@@ -18,7 +18,7 @@ using System.Runtime.InteropServices;
 /// </summary>
 [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
 [DebuggerDisplay("{ToString()}")]
-public readonly struct Coordinate : IEquatable<Coordinate> {
+public struct Coordinate : IEquatable<Coordinate> {
     internal static readonly Coordinate Default = new();
 
     /// <summary>
@@ -42,24 +42,24 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <summary>
     /// Gets the latitude value as a double.
     /// </summary>
-    public readonly double Latitude { get; }
+    public double Latitude { get; set; }
 
     /// <summary>
     /// Gets the longitude value as a double.
     /// </summary>
-    public readonly double Longitude { get; }
+    public double Longitude { get; set; }
 
     /// <summary>
     /// Gets a value indicating whether both the <see cref="Latitude"/> and <see cref="Longitude"/> values are equal to their default values.
     /// </summary>
-    public bool IsDefault
+    public bool IsDefault()
         => Latitude == default
         && Longitude == default;
 
     /// <summary>
     /// Gets a value indicating whether both the <see cref="Latitude"/> and <see cref="Longitude"/> values are within the valid range.
     /// </summary>
-    public bool IsValid
+    public bool IsValid()
         => ICoordinateValidator.Default.Latitude.IsInRange(Latitude)
         && ICoordinateValidator.Default.Longitude.IsInRange(Longitude);
 
@@ -68,12 +68,12 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// </summary>
     /// <param name="latitude">The latitude component.</param>
     /// <param name="longitude">The longitude component.</param>
-    public void Deconstruct(out double latitude, out double longitude) {
+    public readonly void Deconstruct(out double latitude, out double longitude) {
         latitude = Latitude;
         longitude = Longitude;
     }
 
-    internal void Imprecise(out int latitude, out int longitude) {
+    internal readonly void Imprecise(out int latitude, out int longitude) {
         latitude = Convert.ToInt32(Latitude * Defaults.Algorithm.Precision);
         longitude = Convert.ToInt32(Longitude * Defaults.Algorithm.Precision);
     }

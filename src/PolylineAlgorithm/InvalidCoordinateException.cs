@@ -36,7 +36,7 @@ public sealed class InvalidCoordinateException : Exception {
     /// <param name="coordinate">The coordinate to validate.</param>
     /// <exception cref="InvalidCoordinateException">Thrown when the coordinate is invalid.</exception>
     internal static void ThrowIfNotValid(Coordinate coordinate) {
-        if (coordinate.IsValid) {
+        if (coordinate.IsValid()) {
             return;
         }
 

@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 /// Benchmarks for the <see cref="PolylineEncoder"/> class.
 /// </summary>
 [RankColumn]
+[ShortRunJob]
 public class PolylineEncoderBenchmark {
     [Params(1, 10, 100, 1_000, 10_000, 100_000, 1_000_000)]
     public int N;
@@ -41,7 +42,7 @@ public class PolylineEncoderBenchmark {
     /// <summary>
     /// The async polyline encoder instance.
     /// </summary>
-    public AsyncPolylineEncoder AsyncEncoder = new();
+    //public AsyncPolylineEncoder AsyncEncoder = new();
 
     /// <summary>
     /// Sets up the data for the benchmarks.
@@ -49,7 +50,7 @@ public class PolylineEncoderBenchmark {
     [GlobalSetup]
     public void SetupData() {
         Enumeration = ValueProvider.GetCoordinates(N);
-        List = [.. Enumeration];
+        List = [..Enumeration];
         AsyncEnumeration = GetAsyncEnumeration(Enumeration!);
     }
 
@@ -65,7 +66,8 @@ public class PolylineEncoderBenchmark {
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
     public Polyline PolylineEncoder_Encode_List() {
-        var polyline = Encoder.Encode(List!);
+        var polyline = Encoder
+            .Encode(List!);
 
         return polyline;
     }
@@ -76,7 +78,8 @@ public class PolylineEncoderBenchmark {
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
     public Polyline PolylineEncoder_Encode_Enumerator() {
-        var polyline = Encoder.Encode(Enumeration!);
+        var polyline = Encoder
+            .Encode(Enumeration!);
 
         return polyline;
     }
@@ -85,17 +88,12 @@ public class PolylineEncoderBenchmark {
     /// Benchmarks the encoding of an enumeration of coordinates into a polyline.
     /// </summary>
     /// <returns>The encoded polyline.</returns>
-    [Benchmark]
-    public async Task<Polyline> PolylineEncoder_EncodeAsync_String() {
-        var result = AsyncEncoder
-            .EncodeAsync(AsyncEnumeration!);
+    //[Benchmark]
+    //public async Task<Polyline> PolylineEncoder_EncodeAsync_String() {
+    //    var polyline = await AsyncEncoder
+    //        .EncodeAsync(AsyncEnumeration!)
+    //        .ConfigureAwait(false);
 
-        var polyline = new Polyline();
-
-        await foreach (var item in result.ConfigureAwait(false)) {
-           polyline.Append(item);
-        }
-
-        return polyline;
-    }
+    //    return polyline;
+    //}
 }

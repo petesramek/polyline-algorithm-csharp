@@ -9,12 +9,12 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Benchmarks.Internal;
-using System.Diagnostics;
 
 /// <summary>
 /// Benchmarks for the <see cref="PolylineDecoder"/> class.
 /// </summary>
 [RankColumn]
+[ShortRunJob]
 public class PolylineDecoderBenchmark {
     private readonly Consumer _consumer = new();
 
@@ -46,7 +46,7 @@ public class PolylineDecoderBenchmark {
     /// <summary>
     /// The async polyline decoder instance.
     /// </summary>
-    public AsyncPolylineDecoder AsyncDecoder = new();
+    //public AsyncPolylineDecoder AsyncDecoder = new();
 
     /// <summary>
     /// Sets up the data for the benchmarks.
@@ -94,45 +94,45 @@ public class PolylineDecoderBenchmark {
             .Consume(_consumer);
     }
 
-    /// <summary>
-    /// Benchmarks the decoding of a polyline from read-only memory.
-    /// </summary>
-    [Benchmark]
-    public async Task PolylineDecoder_DecodeAsync_FromString() {
-        Polyline polyline = Polyline.FromString(StringValue);
+    ///// <summary>
+    ///// Benchmarks the decoding of a polyline from read-only memory.
+    ///// </summary>
+    //[Benchmark]
+    //public async Task PolylineDecoder_DecodeAsync_FromString() {
+    //    Polyline polyline = Polyline.FromString(StringValue);
 
-        var result = AsyncDecoder
-            .DecodeAsync(polyline)
-            .ConfigureAwait(false);
+    //    var result = AsyncDecoder
+    //        .DecodeAsync(polyline)
+    //        .ConfigureAwait(false);
 
-        await foreach (var _ in result) { }
-    }
+    //    await foreach (var _ in result) { }
+    //}
 
-    /// <summary>
-    /// Benchmarks the decoding of a polyline from read-only memory.
-    /// </summary>
-    [Benchmark]
-    public async Task PolylineDecoder_DecodeAsync_CharArray() {
-        Polyline polyline = Polyline.FromCharArray(CharArray);
+    ///// <summary>
+    ///// Benchmarks the decoding of a polyline from read-only memory.
+    ///// </summary>
+    //[Benchmark]
+    //public async Task PolylineDecoder_DecodeAsync_CharArray() {
+    //    Polyline polyline = Polyline.FromCharArray(CharArray);
 
-        var result = AsyncDecoder
-            .DecodeAsync(polyline)
-            .ConfigureAwait(false);
+    //    var result = AsyncDecoder
+    //        .DecodeAsync(polyline)
+    //        .ConfigureAwait(false);
 
-        await foreach (var _ in result) { }
-    }
+    //    await foreach (var _ in result) { }
+    //}
 
-    /// <summary>
-    /// Benchmarks the decoding of a polyline from read-only memory.
-    /// </summary>
-    [Benchmark]
-    public async Task PolylineDecoder_DecodeAsync_FromMemory() {
-        Polyline polyline = Polyline.FromMemory(Memory);
+    ///// <summary>
+    ///// Benchmarks the decoding of a polyline from read-only memory.
+    ///// </summary>
+    //[Benchmark]
+    //public async Task PolylineDecoder_DecodeAsync_FromMemory() {
+    //    Polyline polyline = Polyline.FromMemory(Memory);
 
-        var result = AsyncDecoder
-            .DecodeAsync(polyline)
-            .ConfigureAwait(false);
+    //    var result = AsyncDecoder
+    //        .DecodeAsync(polyline)
+    //        .ConfigureAwait(false);
 
-        await foreach (var _ in result) { }
-    }
+    //    await foreach (var _ in result) { }
+    //}
 }

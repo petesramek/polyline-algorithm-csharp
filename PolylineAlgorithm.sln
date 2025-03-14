@@ -14,6 +14,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmarks", "benchmarks", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolylineAlgorithm.Benchmarks", "benchmarks\PolylineAlgorithm.Benchmarks\PolylineAlgorithm.Benchmarks.csproj", "{9C7CBAD5-415B-4589-86E1-01C849F9C56C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolylineAlgorithm.IO.Pipelines", "src\PolylineAlgorithm.IO.Pipelines\PolylineAlgorithm.IO.Pipelines.csproj", "{AC2D1BF7-B70C-461A-92FB-2C1E50D6C5FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +36,10 @@ Global
 		{9C7CBAD5-415B-4589-86E1-01C849F9C56C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C7CBAD5-415B-4589-86E1-01C849F9C56C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C7CBAD5-415B-4589-86E1-01C849F9C56C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC2D1BF7-B70C-461A-92FB-2C1E50D6C5FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC2D1BF7-B70C-461A-92FB-2C1E50D6C5FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC2D1BF7-B70C-461A-92FB-2C1E50D6C5FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC2D1BF7-B70C-461A-92FB-2C1E50D6C5FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -40,6 +48,7 @@ Global
 		{882322A6-E758-4662-8D1C-7C555C8FC3F2} = {51C886AF-D610-48A4-9D73-2DEB38742801}
 		{30324A08-AA42-425D-87DA-8F9C6AF60454} = {576FEFFC-B624-40C3-A8AF-4E5233802EA0}
 		{9C7CBAD5-415B-4589-86E1-01C849F9C56C} = {33C03F16-4313-4579-87E6-65892AF21D7D}
+		{AC2D1BF7-B70C-461A-92FB-2C1E50D6C5FB} = {51C886AF-D610-48A4-9D73-2DEB38742801}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {93A268DC-0947-4FBB-B495-DDAD4B013D82}

@@ -6,7 +6,6 @@
 namespace PolylineAlgorithm;
 
 using PolylineAlgorithm.Abstraction;
-using PolylineAlgorithm.Extensions;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Properties;
 using System;
@@ -19,9 +18,6 @@ using System.Runtime.CompilerServices;
 /// Provides methods to encode a set of coordinates into a polyline string.
 /// </summary>\
 public class PolylineEncoder : IPolylineEncoder {
-    private static readonly int _size = sizeof(char);
-    private IMemoryOwner<char>? _pool;
-
     /// <summary>
     /// Encodes a set of coordinates into a polyline string.
     /// </summary>
@@ -40,23 +36,35 @@ public class PolylineEncoder : IPolylineEncoder {
             throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeEmptyEnumerationMessage, nameof(coordinates));
         }
 
-        int capacity = count * Defaults.Polyline.MaxEncodedCoordinateLength;
-        Span<char> buffer = _size * capacity <= 512_000 ? stackalloc char[capacity] : RentMemory(capacity);
+        int size = count * Defaults.Polyline.MaxEncodedCoordinateLength * sizeof(char);
+        //int length = size > 32_000 ? size : 32_000;
+
+        int position = 0;
         CoordinateDifference diff = new();
-        int index = 0;
+        Memory<char> buffer = new char[size];
+        Span<char> temp;
+        //Polyline? result = null;
 
         foreach (var coordinate in coordinates) {
             InvalidCoordinateException.ThrowIfNotValid(coordinate);
 
-            diff.DiffNext(coordinate);
+            diff.Next(coordinate);
 
-            var next = EncodingAlgorithm.EncodeNext(diff.Latitude, diff.Longitude);
+            //if (index + length > buffer.Length) {
+            //    result = result?.Append(buffer[..index].AsMemory()) ?? Polyline.FromCharArray(buffer[..index]);
+            //    index = 0;
+            //}
 
-            index = buffer
-                 .Write(in next, ref index);
+            temp = buffer.Span[position..6];
+
+            position += PolylineEncoding.Default.GetChars(diff.Latitude, ref temp);
+
+            temp = buffer.Span[position..6];
+
+            position += PolylineEncoding.Default.GetChars(diff.Longitude, ref temp);
         }
 
-        return new Polyline(buffer[..index].ToArray());
+        return /*result?.Append(buffer[..position]) ?? */ Polyline.FromMemory(buffer[..position]);
     }
 
 
@@ -72,15 +80,4 @@ public class PolylineEncoder : IPolylineEncoder {
         ICollection<Coordinate> collection => collection.Count,
         _ => coordinates.Count(),
     };
-
-
-    private Span<char> RentMemory(int capacity) {
-        _pool = MemoryPool<char>.Shared.Rent(capacity);
-
-        return _pool.Memory.Span;
-    }
-
-    private void ReturnMemory() {
-        _pool?.Dispose();
-    }
 }

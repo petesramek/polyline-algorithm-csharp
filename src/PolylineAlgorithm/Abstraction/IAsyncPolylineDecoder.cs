@@ -16,5 +16,5 @@ public interface IAsyncPolylineDecoder {
     /// </summary>
     /// <param name="polyline">An encoded polyline to decode.</param>
     /// <returns>A set of coordinates represented by the encoded polyline.</returns>
-    IAsyncEnumerable<Coordinate> DecodeAsync(Polyline polyline);
+    IAsyncEnumerable<Coordinate> DecodeAsync(Polyline polyline, CancellationToken cancellation);
 }

@@ -5,15 +5,11 @@
 
 namespace PolylineAlgorithm;
 
-using PolylineAlgorithm.Internal;
 using System;
-using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.RegularExpressions;
 
 /// <summary>
 /// Represents a readonly encoded polyline string.
@@ -21,17 +17,13 @@ using System.Text.RegularExpressions;
 [StructLayout(LayoutKind.Auto)]
 [DebuggerDisplay("Value: {ToString()}, IsEmpty: {IsEmpty}, Length: {Length}")]
 public readonly struct Polyline : IEquatable<Polyline> {
-    private readonly ReadOnlySequence<char> _value;
-
-    private Polyline(ReadOnlySequence<char> value) {
-        _value = value;
-    }
+    private readonly ReadOnlyMemory<char> _value;
 
     /// <summary>
     /// Creates a new <see cref="Polyline"/> structure that is empty.
     /// </summary>
     public Polyline() {
-        _value = ReadOnlySequence<char>.Empty;
+        _value = ReadOnlyMemory<char>.Empty;
     }
 
     /// <summary>
@@ -44,7 +36,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
             throw new ArgumentNullException(nameof(value));
         }
 
-        _value = new ReadOnlySequence<char>(value.AsMemory());
+        _value = value.AsMemory();
     }
 
     /// <summary>
@@ -57,7 +49,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
             throw new ArgumentNullException(nameof(value));
         }
 
-        _value = _value = new ReadOnlySequence<char>(value.AsMemory());
+        _value = _value = value.AsMemory();
     }
 
     /// <summary>
@@ -65,35 +57,29 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// </summary>
     /// <param name="value">The readonly memory region to initialize the polyline with.</param>
     public Polyline(ReadOnlyMemory<char> value) {
-        _value = new ReadOnlySequence<char>(value);
+        _value = value;
     }
 
     /// <summary>
     /// Gets the span of characters in the polyline.
     /// </summary>
-    internal readonly ReadOnlySequence<char> Value => _value;
+    internal readonly ReadOnlyMemory<char> Value => _value;
 
     /// <summary>
     /// Gets a value indicating whether this <see cref="Polyline" /> is empty.
     /// </summary>
-    public readonly bool IsEmpty => _value.IsEmpty;
+    public readonly bool IsEmpty => Value.IsEmpty;
 
     /// <summary>
     /// Gets a value indicating whether this <see cref="Polyline" /> is empty.
     /// </summary>
-    public readonly long Length => _value.Length;
+    public readonly long Length => Value.Length;
 
     /// <summary>
     /// Copies the characters in this instance to a Unicode character array.
     /// </summary>
     /// <returns>A Unicode character array.</returns>
-    public char[] ToCharArray() => _value.ToArray();
-
-    /// <summary>
-    /// Returns the underlying <see cref="ReadOnlySequence{T}" /> this instance represents.
-    /// </summary>
-    /// <returns>The underlying <see cref="ReadOnlySequence{T}"/>.</returns>
-    public ReadOnlySequence<char> AsSequence() => _value;
+    public char[] ToCharArray() => Value.ToArray();
 
     /// <summary>
     /// Returns a string representation of the value of this instance.
@@ -101,42 +87,42 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <returns>The string value of this <see cref="Polyline"/> object.</returns>
     public override string ToString() => Value.ToString();
 
-    public Polyline Append(Polyline other) {
-        if (other.IsEmpty) {
+    public ReadOnlyMemory<char> AsMemory() => Value;
+
+    public Polyline Append(ReadOnlyMemory<char> value) {
+        if (value.IsEmpty) {
             return this;
         }
 
-        var last = GetSegments(out PolylineSegment initial);
+        Memory<char> temp = new char[Length + value.Length];
 
-        var end = other.GetSegments(out PolylineSegment continuation);
+        Value.CopyTo(temp);
+        value.CopyTo(temp[Value.Length..]);
+        
 
-        last.Append(continuation);
-
-        var sequence = new ReadOnlySequence<char>(initial, 0, end, end.Memory.Length);
-
-        return new Polyline(sequence);
+        return Polyline.FromMemory(temp);
     }
 
-    private PolylineSegment GetSegments(out PolylineSegment initial) {
-        initial = new PolylineSegment(Value.First);
+    //private PolylineSegment GetSegments(out PolylineSegment initial) {
+    //    initial = new PolylineSegment(Value.First);
 
-        if (Value.IsSingleSegment) {
-            return initial;
-        }
+    //    if (Value.IsSingleSegment) {
+    //        return initial;
+    //    }
 
-        PolylineSegment? current = null;
+    //    PolylineSegment? current = null;
 
-        foreach (var segment in Value) {
-            if (current is null) {
-                current = initial;
-            } else {
-                current = current.Append(segment);
-            }
-        }
+    //    foreach (var segment in Value) {
+    //        if (current is null) {
+    //            current = initial;
+    //        } else {
+    //            current = current.Append(segment);
+    //        }
+    //    }
 
-        // Current will never be null in case we return from the method early using Value.IsSingleSegment property check
-        return current!;
-    }
+    //    // Current will never be null in case we return from the method early using Value.IsSingleSegment property check
+    //    return current!;
+    //}
 
     #region Overrides
 
@@ -146,7 +132,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
 
     /// <inheritdoc />
     [ExcludeFromCodeCoverage]
-    public override int GetHashCode() => HashCode.Combine(_value);
+    public override int GetHashCode() => HashCode.Combine(Value);
 
     #endregion
 
@@ -162,32 +148,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
             return false;
         }
 
-        long start = 0;
-        bool result = true;
-        int chunkSize = 256;
-        long max = Math.DivRem(Length, chunkSize, out long remainder) + (remainder > 0 ? 1 : 0);
-        Span<char> @this = stackalloc char[chunkSize];
-        Span<char> that = stackalloc char[chunkSize];
-
-        for (int i = 0; i < max; i++) {
-            start = i * chunkSize;
-
-            if(max - i == 1) {
-                @this.Clear();
-                that.Clear();
-                chunkSize = (int)remainder;
-            }
-
-            Value.Slice(start, chunkSize).CopyTo(@this);
-            other.Value.Slice(start, chunkSize).CopyTo(that);
-
-            if(!@this.SequenceEqual(that)) {
-                result = false;
-                break;
-            }
-        }
-
-        return result;
+        return Value.Span.SequenceEqual(other.Value.Span);
     }
 
     #endregion
