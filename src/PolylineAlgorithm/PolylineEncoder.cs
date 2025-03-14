@@ -55,11 +55,11 @@ public class PolylineEncoder : IPolylineEncoder {
             //    index = 0;
             //}
 
-            temp = buffer.Span[position..6];
+            temp = buffer.Span[position..];
 
             position += PolylineEncoding.Default.GetChars(diff.Latitude, ref temp);
 
-            temp = buffer.Span[position..6];
+            temp = buffer.Span[position..];
 
             position += PolylineEncoding.Default.GetChars(diff.Longitude, ref temp);
         }
