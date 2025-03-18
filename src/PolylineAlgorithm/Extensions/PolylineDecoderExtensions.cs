@@ -21,12 +21,4 @@ public static class PolylineDecoderExtensions
 
         return decoder.Decode(Polyline.FromCharArray(polyline));
     }
-
-    public static IEnumerable<Coordinate> Decode(this IPolylineDecoder decoder, Memory<char> polyline) {
-        if (decoder is null) {
-            throw new ArgumentNullException(nameof(decoder));
-        }
-
-        return decoder.Decode(Polyline.FromMemory(polyline));
-    }
 }

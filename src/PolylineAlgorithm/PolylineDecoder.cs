@@ -9,6 +9,7 @@ using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Properties;
 using System.Buffers;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using static PolylineAlgorithm.Internal.Defaults.Coordinate;
 
@@ -34,37 +35,55 @@ public class PolylineDecoder : IPolylineDecoder {
         int index = 0;
         int latitude = 0;
         int longitude = 0;
-        int position = 0;
         long capacity = polyline.Length / Defaults.Polyline.MinEncodedCoordinateLength;
-        ReadOnlySpan<char> source = polyline.AsMemory().Span;
-        Span<Coordinate> buffer = _size * capacity <= 512_000 ? stackalloc Coordinate[(int)capacity] : RentMemory((int)capacity);
+        SequenceReader<byte> reader = new(polyline.AsSequence());
+        Span<Coordinate> coordinates = _size * capacity <= 32_000 ? stackalloc Coordinate[(int)capacity] : RentMemory((int)capacity);
+        Span<byte> buffer = stackalloc byte[6];
 
         while (true) {
-            if (position >= source.Length) {
+            if (reader.Remaining == 0) {
                 break;
             }
 
-            try {
-                position += PolylineEncoding.Default.GetNextValue(source[position..], ref latitude);
-                position += PolylineEncoding.Default.GetNextValue(source[position..], ref longitude);
+            UpdateBufferSize(ref buffer, reader.Remaining);
 
-                Coordinate coordinate = Coordinate.FromImprecise(latitude, longitude);
-
-                InvalidCoordinateException.ThrowIfNotValid(coordinate);
-
-                buffer[index++] = coordinate;
-            } catch (IndexOutOfRangeException ex) {
-                throw;
+            if (reader.TryCopyTo(buffer)) {
+                int consumed = VarianceEncoding.Default.Decode(buffer, out int variance);
+                reader.Advance(consumed);
+                latitude += variance;
+            } else {
+                throw new InvalidOperationException();
             }
+
+            UpdateBufferSize(ref buffer, reader.Remaining);
+
+            if (reader.TryCopyTo(buffer)) {
+                int consumed = VarianceEncoding.Default.Decode(buffer, out int variance);
+                reader.Advance(consumed);
+                longitude += variance;
+            } else {
+                throw new InvalidOperationException();
+            }
+
+            Coordinate coordinate = new PolylineCoordinate(latitude, longitude);
+
+            InvalidCoordinateException.ThrowIfNotValid(coordinate);
+
+            coordinates[index++] = coordinate;
         }
 
-        IEnumerable<Coordinate> result = buffer[..index].ToArray();
+        IEnumerable<Coordinate> result = coordinates[..index].ToArray();
 
         ReturnMemory();
 
         return result;
-    }
 
+        static void UpdateBufferSize(ref Span<byte> buffer, long size) {
+            if (buffer.Length > size) {
+                buffer = buffer[..Convert.ToInt32(size)];
+            }
+        }
+    }
     private Span<Coordinate> RentMemory(int capacity) {
         _pool = MemoryPool<Coordinate>.Shared.Rent(capacity);
 

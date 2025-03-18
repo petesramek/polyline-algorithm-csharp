@@ -9,6 +9,7 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Benchmarks.Internal;
+using System.Text;
 
 /// <summary>
 /// Benchmarks for the <see cref="PolylineDecoder"/> class.
@@ -32,10 +33,12 @@ public class PolylineDecoderBenchmark {
     /// </summary>
     public char[] CharArray { get; private set; }
 
+    public byte[] ByteArray { get; private set; }
+
     /// <summary>
     /// Gets the read-only memory representing the encoded polyline.
     /// </summary>
-    public ReadOnlyMemory<char> Memory { get; private set; }
+    public ReadOnlyMemory<byte> Memory { get; private set; }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
     /// <summary>
@@ -55,7 +58,8 @@ public class PolylineDecoderBenchmark {
     public void SetupData() {
         StringValue = ValueProvider.GetPolyline(N).ToString();
         CharArray = StringValue.ToCharArray();
-        Memory = StringValue.AsMemory();
+        ByteArray = Encoding.UTF8.GetBytes(StringValue);
+        Memory = Encoding.UTF8.GetBytes(StringValue).AsMemory();
     }
 
     /// <summary>

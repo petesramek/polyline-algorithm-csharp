@@ -2,37 +2,38 @@
 
 using PolylineAlgorithm.Internal;
 
-public class PolylineEncoding
+public class VarianceEncoding
 {
-    public static PolylineEncoding Default { get; } = new PolylineEncoding();
-    private PolylineEncoding() { }
+    public static VarianceEncoding Default { get; } = new VarianceEncoding();
 
-    public int GetChars(int difference, ref Span<char> buffer) {
+    private VarianceEncoding() { }
+
+    public int Encode(int variance, ref Span<byte> buffer) {
         int index = 0;
-        int rem = difference << 1;
+        int rem = variance << 1;
 
-        if (difference < 0) {
+        if (variance < 0) {
             rem = ~rem;
         }
 
         while (rem >= Defaults.Algorithm.Space) {
-            buffer[index++] = Convert.ToChar((Defaults.Algorithm.Space | rem & Defaults.Algorithm.UnitSeparator) + Defaults.Algorithm.QuestionMark);
+            buffer[index++] = Convert.ToByte((Defaults.Algorithm.Space | rem & Defaults.Algorithm.UnitSeparator) + Defaults.Algorithm.QuestionMark);
             rem >>= Defaults.Algorithm.ShiftLength;
         }
 
-        buffer[index++] = Convert.ToChar(rem + Defaults.Algorithm.QuestionMark);
+        buffer[index++] = Convert.ToByte(rem + Defaults.Algorithm.QuestionMark);
 
         return index;
     }
 
-    public int GetNextValue(ReadOnlySpan<char> source, ref int value) {
+    public int Decode(ReadOnlySpan<byte> buffer, out int variance) {
         int position = 0;
         int chunk = 0;
         int sum = 0;
         int shifter = 0;
 
-        while (position < source.Length) {
-            chunk = source[position++] - Defaults.Algorithm.QuestionMark;
+        while (position < buffer.Length) {
+            chunk = buffer[position++] - Defaults.Algorithm.QuestionMark;
             sum |= (chunk & Defaults.Algorithm.UnitSeparator) << shifter;
             shifter += Defaults.Algorithm.ShiftLength;
 
@@ -41,16 +42,16 @@ public class PolylineEncoding
             }
         }
 
-        if (source.Length == position && chunk >= Defaults.Algorithm.Space) {
+        if (buffer.Length == position && chunk >= Defaults.Algorithm.Space) {
             InvalidPolylineException.Throw(position);
         }
 
-        value += (sum & 1) == 1 ? ~(sum >> 1) : sum >> 1;
+        variance = (sum & 1) == 1 ? ~(sum >> 1) : sum >> 1;
 
         return position;
     }
 
-    public int GetCharCount(int difference) => difference switch {
+    public int GetByteCount(int variation) => variation switch {
         // DO NOT CHANGE THE ORDER. We are skipping inside exclusive ranges as those are covered by previous statements.
         >= -16 and <= +15 => 1,
         >= -512 and <= +511 => 2,

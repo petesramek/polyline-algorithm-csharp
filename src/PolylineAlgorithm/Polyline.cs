@@ -6,24 +6,26 @@
 namespace PolylineAlgorithm;
 
 using System;
-using System.Collections.Generic;
+using System.Buffers;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using System.Text;
 
 /// <summary>
 /// Represents a readonly encoded polyline string.
 /// </summary>
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Explicit)]
 [DebuggerDisplay("Value: {ToString()}, IsEmpty: {IsEmpty}, Length: {Length}")]
-public readonly struct Polyline : IEquatable<Polyline> {
-    private readonly ReadOnlyMemory<char> _value;
+public readonly struct Polyline {
+    [FieldOffset(0)]
+    private readonly ReadOnlySequence<byte> _value;
 
     /// <summary>
     /// Creates a new <see cref="Polyline"/> structure that is empty.
     /// </summary>
     public Polyline() {
-        _value = ReadOnlyMemory<char>.Empty;
+        _value = ReadOnlySequence<byte>.Empty;
     }
 
     /// <summary>
@@ -36,7 +38,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
             throw new ArgumentNullException(nameof(value));
         }
 
-        _value = value.AsMemory();
+        _value = new ReadOnlySequence<byte>(Encoding.UTF8.GetBytes(value));
     }
 
     /// <summary>
@@ -49,21 +51,31 @@ public readonly struct Polyline : IEquatable<Polyline> {
             throw new ArgumentNullException(nameof(value));
         }
 
-        _value = _value = value.AsMemory();
+        _value = new ReadOnlySequence<byte>(Encoding.UTF8.GetBytes(value));
     }
 
     /// <summary>
-    /// Creates a new <see cref="Polyline"/> structure that contains the specified readonly memory region.
+    /// Creates a new <see cref="Polyline"/> structure that contains the specified Unicode character array.
     /// </summary>
-    /// <param name="value">The readonly memory region to initialize the polyline with.</param>
-    public Polyline(ReadOnlyMemory<char> value) {
+    /// <param name="value">The Unicode character array to initialize the polyline with.</param>
+    /// <exception cref="ArgumentNullException">Thrown when the <paramref name="value"/> is null.</exception>
+    public Polyline(ReadOnlyMemory<byte> value) {
+        _value = new ReadOnlySequence<byte>(value);
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="Polyline"/> structure that contains the specified Unicode character array.
+    /// </summary>
+    /// <param name="value">The Unicode character array to initialize the polyline with.</param>
+    /// <exception cref="ArgumentNullException">Thrown when the <paramref name="value"/> is null.</exception>
+    public Polyline(ReadOnlySequence<byte> value) {
         _value = value;
     }
 
     /// <summary>
     /// Gets the span of characters in the polyline.
     /// </summary>
-    internal readonly ReadOnlyMemory<char> Value => _value;
+    internal readonly ReadOnlySequence<byte> Value => _value;
 
     /// <summary>
     /// Gets a value indicating whether this <see cref="Polyline" /> is empty.
@@ -75,105 +87,148 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// </summary>
     public readonly long Length => Value.Length;
 
-    /// <summary>
-    /// Copies the characters in this instance to a Unicode character array.
-    /// </summary>
-    /// <returns>A Unicode character array.</returns>
-    public char[] ToCharArray() => Value.ToArray();
 
-    /// <summary>
-    /// Returns a string representation of the value of this instance.
-    /// </summary>
-    /// <returns>The string value of this <see cref="Polyline"/> object.</returns>
-    public override string ToString() => Value.ToString();
-
-    public ReadOnlyMemory<char> AsMemory() => Value;
-
-    public Polyline Append(ReadOnlyMemory<char> value) {
-        if (value.IsEmpty) {
-            return this;
-        }
-
-        Memory<char> temp = new char[Length + value.Length];
-
-        Value.CopyTo(temp);
-        value.CopyTo(temp[Value.Length..]);
-        
-
-        return Polyline.FromMemory(temp);
+    public ReadOnlySequence<byte> AsSequence() {
+        return Value;
     }
 
-    //private PolylineSegment GetSegments(out PolylineSegment initial) {
-    //    initial = new PolylineSegment(Value.First);
-
-    //    if (Value.IsSingleSegment) {
-    //        return initial;
-    //    }
-
-    //    PolylineSegment? current = null;
-
-    //    foreach (var segment in Value) {
-    //        if (current is null) {
-    //            current = initial;
-    //        } else {
-    //            current = current.Append(segment);
-    //        }
-    //    }
-
-    //    // Current will never be null in case we return from the method early using Value.IsSingleSegment property check
-    //    return current!;
-    //}
-
-    #region Overrides
-
-    /// <inheritdoc />
-    [ExcludeFromCodeCoverage]
-    public override bool Equals(object? obj) => obj is Polyline polyline && Equals(polyline);
-
-    /// <inheritdoc />
-    [ExcludeFromCodeCoverage]
-    public override int GetHashCode() => HashCode.Combine(Value);
-
-    #endregion
-
-    #region IEquatable<Polyline> implementation
-
-    /// <inheritdoc />
-    public bool Equals(Polyline other) {
-        if(IsEmpty && other.IsEmpty) {
-            return true;
-        }
-
-        if(Length != other.Length) {
+    public bool SequenceEquals(Polyline other) {
+        if (IsEmpty != other.IsEmpty || Length != other.Length) {
             return false;
         }
 
-        return Value.Span.SequenceEqual(other.Value.Span);
+        if (Value.IsSingleSegment == other.Value.IsSingleSegment) {
+            return Value.FirstSpan.SequenceEqual(other.Value.FirstSpan);
+        }
+
+        Stopwatch sw = new();
+        sw.Start();
+
+        var result1 = ReadByOneEquality(Value, other.Value);
+
+        sw.Stop();
+        var v1 = sw.Elapsed;
+
+        sw.Restart();
+
+        var result2 = TryCopyEquality(Value, other.Value);
+
+        sw.Stop();
+        var v2 = sw.Elapsed;
+
+        sw.Restart();
+
+        var result3 = IsNextEquality(Value, other.Value);
+
+        sw.Stop();
+        var v3 = sw.Elapsed;
+
+        sw.Restart();
+
+        var result4 = NerdBankEquality(Value, other.Value);
+
+        sw.Stop();
+        var v4 = sw.Elapsed;
+
+        return result1 & result2 & result3 & result4;
+
+        static bool ReadByOneEquality(ReadOnlySequence<byte> left, ReadOnlySequence<byte> right) {
+            var @this = new SequenceReader<byte>(left);
+            var that = new SequenceReader<byte>(right);
+
+            while (@this.TryRead(out byte one) && that.TryRead(out byte two) && one == two) {
+                if (@this.Remaining == 0) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        static bool TryCopyEquality(ReadOnlySequence<byte> left, ReadOnlySequence<byte> right) {
+            var @this = new SequenceReader<byte>(left);
+            var that = new SequenceReader<byte>(right);
+
+            Span<byte> buffer = left.Length < 512_000 ? stackalloc byte[(int)left.Length] : stackalloc byte[512_000];
+
+            unsafe {
+                while (true) {
+                    if (@this.TryCopyTo(buffer) || that.IsNext(buffer, true)) {
+                        @this.Advance(buffer.Length);
+
+                        if (@this.Remaining < buffer.Length) {
+                            buffer = buffer[..(int)@this.Remaining];
+                        } else if (@this.Remaining == 0) {
+                            return true;
+                        }
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        static bool IsNextEquality(ReadOnlySequence<byte> left, ReadOnlySequence<byte> right) {
+            var first = new SequenceReader<byte>(left);
+            var second = new SequenceReader<byte>(right);
+
+            while (true) {
+                if (!second.IsNext(first.CurrentSpan)) {
+                    break;
+                }
+
+                first.Advance(first.CurrentSpan.Length);
+                second.Advance(first.CurrentSpan.Length);
+
+                if (first.Remaining == 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        static bool NerdBankEquality(ReadOnlySequence<byte> left, ReadOnlySequence<byte> right) {
+            ReadOnlySequence<byte>.Enumerator aEnumerator = left.GetEnumerator();
+            ReadOnlySequence<byte>.Enumerator bEnumerator = right.GetEnumerator();
+
+            ReadOnlySpan<byte> aCurrent = default;
+            ReadOnlySpan<byte> bCurrent = default;
+
+            while (true) {
+                bool aNext = TryGetNonEmptySpan(ref aEnumerator, ref aCurrent);
+                bool bNext = TryGetNonEmptySpan(ref bEnumerator, ref bCurrent);
+                if (!aNext && !bNext) {
+                    // We've reached the end of both sequences at the same time.
+                    return true;
+                } else if (aNext != bNext) {
+                    // One ran out of bytes before the other.
+                    // We don't anticipate this, because we already checked the lengths.
+                    throw new InvalidOperationException();
+                }
+
+                int commonLength = Math.Min(aCurrent.Length, bCurrent.Length);
+                if (!aCurrent[..commonLength].SequenceEqual(bCurrent[..commonLength])) {
+                    return false;
+                }
+
+                aCurrent = aCurrent.Slice(commonLength);
+                bCurrent = bCurrent.Slice(commonLength);
+            }
+
+            static bool TryGetNonEmptySpan(ref ReadOnlySequence<byte>.Enumerator enumerator, ref ReadOnlySpan<byte> span) {
+                while (span.Length == 0) {
+                    if (!enumerator.MoveNext()) {
+                        return false;
+                    }
+
+                    span = enumerator.Current.Span;
+                }
+
+                return true;
+            }
+        }
+
     }
-
-    #endregion
-
-    #region Equality operators
-
-    /// <summary>
-    /// Indicates whether the values of two specified <see cref="Polyline" /> objects are equal.
-    /// </summary>
-    /// <param name="left">The first object to compare.</param>
-    /// <param name="right">The second object to compare.</param>
-    /// <returns><see langword="true"/> if <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <see langword="false"/>.</returns>
-    [ExcludeFromCodeCoverage]
-    public static bool operator ==(Polyline left, Polyline right) => left.Equals(right);
-
-    /// <summary>
-    /// Indicates whether the values of two specified <see cref="Polyline" /> objects are not equal.
-    /// </summary>
-    /// <param name="left">The first object to compare.</param>
-    /// <param name="right">The second object to compare.</param>
-    /// <returns><see langword="true"/> if <paramref name="left"/> and <paramref name="right"/> are not equal; otherwise, <see langword="false"/>.</returns>
-    [ExcludeFromCodeCoverage]
-    public static bool operator !=(Polyline left, Polyline right) => !(left == right);
-
-    #endregion
 
     #region Factory methods
 
@@ -184,12 +239,13 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <returns>The <see cref="Polyline"/> value that corresponds to the specified Unicode character array.</returns>
     public static Polyline FromCharArray(char[] polyline) => new(polyline);
 
+
     /// <summary>
-    /// Creates an instance of the current type from a readonly memory region.
+    /// Creates an instance of the current type from a Unicode character array.
     /// </summary>
-    /// <param name="polyline">A readonly memory region representing an encoded polyline.</param>
-    /// <returns>The <see cref="Polyline"/> value that corresponds to the specified readonly memory region.</returns>
-    public static Polyline FromMemory(ReadOnlyMemory<char> polyline) => new(polyline);
+    /// <param name="polyline">A Unicode character array representing an encoded polyline.</param>
+    /// <returns>The <see cref="Polyline"/> value that corresponds to the specified Unicode character array.</returns>
+    public static Polyline FromByteArray(byte[] polyline) => new(polyline);
 
     /// <summary>
     /// Creates an instance of the current type from a string.
@@ -198,9 +254,10 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <returns>The <see cref="Polyline"/> value that corresponds to the specified string value.</returns>
     public static Polyline FromString(string polyline) => new(polyline);
 
-    internal void Append(IEnumerable<char> latitude, IEnumerable<char> longitude) {
-        throw new NotImplementedException();
-    }
+
+    public static Polyline FromMemory(ReadOnlyMemory<byte> polyline) => new(polyline);
+
+    public static Polyline FromSequence(ReadOnlySequence<byte> polyline) => new(polyline);
 
     #endregion
 
@@ -212,16 +269,15 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <param name="polyline">The Unicode character array to convert.</param>
     /// <returns>The converted Unicode character array.</returns>
     [ExcludeFromCodeCoverage]
-    public static explicit operator Polyline(char[] polyline) => FromCharArray(polyline);
+    public static explicit operator Polyline(byte[] polyline) => FromByteArray(polyline);
 
     /// <summary>
-    /// Defines an explicit conversion of a readonly memory region to a <see cref="Polyline"/>.
+    /// Defines an explicit conversion of a Unicode character array to a <see cref="Polyline"/>.
     /// </summary>
-    /// <param name="polyline">The readonly memory region to convert.</param>
-    /// <returns>The converted readonly memory region.</returns>
-    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = $"Provided alternative {nameof(Polyline)}.{nameof(FromMemory)}.")]
+    /// <param name="polyline">The Unicode character array to convert.</param>
+    /// <returns>The converted Unicode character array.</returns>
     [ExcludeFromCodeCoverage]
-    public static explicit operator Polyline(ReadOnlyMemory<char> polyline) => FromMemory(polyline);
+    public static explicit operator Polyline(char[] polyline) => FromCharArray(polyline);
 
     /// <summary>
     /// Defines an explicit conversion of a string to a <see cref="Polyline"/>.
@@ -230,6 +286,22 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <returns>The converted string.</returns>
     [ExcludeFromCodeCoverage]
     public static explicit operator Polyline(string polyline) => FromString(polyline);
+
+    /// <summary>
+    /// Defines an explicit conversion of a string to a <see cref="Polyline"/>.
+    /// </summary>
+    /// <param name="polyline">The string to convert.</param>
+    /// <returns>The converted string.</returns>
+    [ExcludeFromCodeCoverage]
+    public static explicit operator Polyline(Memory<byte> polyline) => FromMemory(polyline);
+
+    /// <summary>
+    /// Defines an explicit conversion of a string to a <see cref="Polyline"/>.
+    /// </summary>
+    /// <param name="polyline">The string to convert.</param>
+    /// <returns>The converted string.</returns>
+    [ExcludeFromCodeCoverage]
+    public static explicit operator Polyline(ReadOnlySequence<byte> polyline) => FromSequence(polyline);
 
     #endregion
 }

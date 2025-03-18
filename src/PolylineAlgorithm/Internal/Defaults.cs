@@ -18,7 +18,7 @@ internal static class Defaults {
     /// </summary>
     public static class Algorithm {
         /// <summary>
-        /// The precision used for coordinates.
+        /// The coordinate rounding precision.
         /// </summary>
         public const double Precision = 1E5;
 
