@@ -94,86 +94,28 @@ public readonly struct Polyline : IEquatable<Polyline> {
             return this;
         }
 
-        Memory<char> temp = new char[Length + value.Length];
+        long position = 0;
+        var enumerator = Value.GetEnumerator();
+        var right = new SequenceReader<byte>(other.Value);
 
-        Value.CopyTo(temp);
-        value.CopyTo(temp[Value.Length..]);
-        
+        while (true) {
+            if (!enumerator.MoveNext()) {
+                break;
+            }
 
-        return Polyline.FromMemory(temp);
-    }
+            if (enumerator.Current.IsEmpty) {
+                continue;
+            }
 
-    //private PolylineSegment GetSegments(out PolylineSegment initial) {
-    //    initial = new PolylineSegment(Value.First);
+            if (!right.IsNext(enumerator.Current.Span, true)) {
+                break;
+            }
 
-    //    if (Value.IsSingleSegment) {
-    //        return initial;
-    //    }
-
-    //    PolylineSegment? current = null;
-
-    //    foreach (var segment in Value) {
-    //        if (current is null) {
-    //            current = initial;
-    //        } else {
-    //            current = current.Append(segment);
-    //        }
-    //    }
-
-    //    // Current will never be null in case we return from the method early using Value.IsSingleSegment property check
-    //    return current!;
-    //}
-
-    #region Overrides
-
-    /// <inheritdoc />
-    [ExcludeFromCodeCoverage]
-    public override bool Equals(object? obj) => obj is Polyline polyline && Equals(polyline);
-
-    /// <inheritdoc />
-    [ExcludeFromCodeCoverage]
-    public override int GetHashCode() => HashCode.Combine(Value);
-
-    #endregion
-
-    #region IEquatable<Polyline> implementation
-
-    /// <inheritdoc />
-    public bool Equals(Polyline other) {
-        if(IsEmpty && other.IsEmpty) {
-            return true;
+            position += enumerator.Current.Length;
         }
 
-        if(Length != other.Length) {
-            return false;
-        }
-
-        return Value.Span.SequenceEqual(other.Value.Span);
+        return position == right.Length;
     }
-
-    #endregion
-
-    #region Equality operators
-
-    /// <summary>
-    /// Indicates whether the values of two specified <see cref="Polyline" /> objects are equal.
-    /// </summary>
-    /// <param name="left">The first object to compare.</param>
-    /// <param name="right">The second object to compare.</param>
-    /// <returns><see langword="true"/> if <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <see langword="false"/>.</returns>
-    [ExcludeFromCodeCoverage]
-    public static bool operator ==(Polyline left, Polyline right) => left.Equals(right);
-
-    /// <summary>
-    /// Indicates whether the values of two specified <see cref="Polyline" /> objects are not equal.
-    /// </summary>
-    /// <param name="left">The first object to compare.</param>
-    /// <param name="right">The second object to compare.</param>
-    /// <returns><see langword="true"/> if <paramref name="left"/> and <paramref name="right"/> are not equal; otherwise, <see langword="false"/>.</returns>
-    [ExcludeFromCodeCoverage]
-    public static bool operator !=(Polyline left, Polyline right) => !(left == right);
-
-    #endregion
 
     #region Factory methods
 

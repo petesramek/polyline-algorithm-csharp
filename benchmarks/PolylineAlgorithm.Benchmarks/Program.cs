@@ -5,7 +5,6 @@
 
 namespace PolylineAlgorithm.Benchmarks;
 
-using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Running;
 
 /// <summary>
@@ -21,6 +20,6 @@ internal class Program {
 
         BenchmarkSwitcher
             .FromAssembly(typeof(Program).Assembly)
-            .Run(args, new DebugInProcessConfig());
+            .Run(args,/* new DebugInProcessConfig()*/);
     }
 }
