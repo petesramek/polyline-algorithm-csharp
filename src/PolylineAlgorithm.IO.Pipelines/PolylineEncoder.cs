@@ -34,13 +34,16 @@ public class PolylineEncoder {
             throw new ArgumentNullException(nameof(writer));
         }
 
-        CoordinateDifference diff = new();
+        CoordinateVariance variance;
+        Coordinate current = Coordinate.Default;
 
-        while (await Formatter.TryReadAsync(reader, out Coordinate coordinate, cancellation).ConfigureAwait(false)) {
-            diff.Next(coordinate);
+        while (await Formatter.TryReadAsync(reader, out Coordinate next, cancellation).ConfigureAwait(false)) {
+            variance = CoordinateVariance.Calculate(current, next);
 
-            Process(writer, diff.Latitude, _buffer);
-            Process(writer, diff.Longitude, _buffer);
+            Process(writer, variance.Latitude, _buffer);
+            Process(writer, variance.Longitude, _buffer);
+
+            current = next;
         }
 
         await CompleteAsync(reader, writer).ConfigureAwait(false);

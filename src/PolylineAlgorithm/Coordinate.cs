@@ -5,7 +5,6 @@
 
 namespace PolylineAlgorithm;
 
-using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Validation;
 using System;
 using System.Diagnostics;
@@ -18,8 +17,8 @@ using System.Runtime.InteropServices;
 /// </summary>
 [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
 [DebuggerDisplay("{ToString()}")]
-public struct Coordinate : IEquatable<Coordinate> {
-    internal static readonly Coordinate Default = new();
+public readonly struct Coordinate : IEquatable<Coordinate> {
+    public static readonly Coordinate Default = new();
 
     /// <summary>
     /// Creates a new <see cref="Coordinate"/> structure with <see cref="Latitude"/> and <see cref="Longitude"/> set to their default values.
@@ -42,12 +41,12 @@ public struct Coordinate : IEquatable<Coordinate> {
     /// <summary>
     /// Gets the latitude value as a double.
     /// </summary>
-    public double Latitude { get; set; }
+    public double Latitude { get; }
 
     /// <summary>
     /// Gets the longitude value as a double.
     /// </summary>
-    public double Longitude { get; set; }
+    public double Longitude { get; }
 
     /// <summary>
     /// Gets a value indicating whether both the <see cref="Latitude"/> and <see cref="Longitude"/> values are equal to their default values.
@@ -71,15 +70,6 @@ public struct Coordinate : IEquatable<Coordinate> {
     public readonly void Deconstruct(out double latitude, out double longitude) {
         latitude = Latitude;
         longitude = Longitude;
-    }
-
-    internal readonly void Imprecise(out int latitude, out int longitude) {
-        latitude = Convert.ToInt32(Latitude * Defaults.Algorithm.Precision);
-        longitude = Convert.ToInt32(Longitude * Defaults.Algorithm.Precision);
-    }
-
-    internal static Coordinate FromImprecise(int latitude, int longitude) {
-        return new(latitude / Defaults.Algorithm.Precision, longitude / Defaults.Algorithm.Precision);
     }
 
     #region Overrides

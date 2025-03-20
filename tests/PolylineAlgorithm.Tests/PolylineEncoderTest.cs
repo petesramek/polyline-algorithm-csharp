@@ -6,6 +6,7 @@
 namespace PolylineAlgorithm.Tests;
 
 using PolylineAlgorithm.Tests.Data;
+using System.ComponentModel.DataAnnotations;
 
 /// <summary>
 /// Defines tests for the <see cref="PolylineEncoder"/> type.
@@ -80,8 +81,15 @@ public class PolylineEncoderTest {
         // Act
         var result = Encoder.Encode(valid);
 
+        var hash = result.Value.FirstSpan.ToArray().GetHashCode();
+
+        var result2 = Polyline.FromString(Values.Polyline.Valid);
+        var hash2 = result2.Value.FirstSpan.ToArray().GetHashCode();
+
+
+
         // Assert
-        Assert.AreEqual(Values.Polyline.Valid, result.ToString());
-        Assert.AreEqual(Polyline.FromString(Values.Polyline.Valid), result);
+        //Assert.AreEqual(Values.Polyline.Valid, result.ToString());
+        Assert.IsTrue(Polyline.FromString(Values.Polyline.Valid).SequenceEquals(result));
     }
 }

@@ -17,7 +17,7 @@ using System.Text;
 /// <summary>
 /// Represents a readonly encoded polyline string.
 /// </summary>
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Explicit)]
 [DebuggerDisplay("Value: {ToString()}, IsEmpty: {IsEmpty}, Length: {Length}")]
 public readonly struct Polyline : IEquatable<Polyline> {
     private readonly ReadOnlySequence<char> _value;
@@ -56,7 +56,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     }
 
     /// <summary>
-    /// Creates a new <see cref="Polyline"/> structure that contains the specified readonly memory region.
+    /// Creates a new <see cref="Polyline"/> structure that contains the specified Unicode character array.
     /// </summary>
     /// <param name="value">The readonly memory region to initialize the polyline with.</param>
     public Polyline(ReadOnlyMemory<char> value) {
@@ -178,12 +178,13 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <returns>The <see cref="Polyline"/> value that corresponds to the specified Unicode character array.</returns>
     public static Polyline FromCharArray(char[] polyline) => new(polyline);
 
+
     /// <summary>
-    /// Creates an instance of the current type from a readonly memory region.
+    /// Creates an instance of the current type from a Unicode character array.
     /// </summary>
-    /// <param name="polyline">A readonly memory region representing an encoded polyline.</param>
-    /// <returns>The <see cref="Polyline"/> value that corresponds to the specified readonly memory region.</returns>
-    public static Polyline FromMemory(ReadOnlyMemory<char> polyline) => new(polyline);
+    /// <param name="polyline">A Unicode character array representing an encoded polyline.</param>
+    /// <returns>The <see cref="Polyline"/> value that corresponds to the specified Unicode character array.</returns>
+    public static Polyline FromByteArray(byte[] polyline) => new(polyline);
 
     /// <summary>
     /// Creates an instance of the current type from a string.
@@ -202,16 +203,15 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <param name="polyline">The Unicode character array to convert.</param>
     /// <returns>The converted Unicode character array.</returns>
     [ExcludeFromCodeCoverage]
-    public static explicit operator Polyline(char[] polyline) => FromCharArray(polyline);
+    public static explicit operator Polyline(byte[] polyline) => FromByteArray(polyline);
 
     /// <summary>
-    /// Defines an explicit conversion of a readonly memory region to a <see cref="Polyline"/>.
+    /// Defines an explicit conversion of a Unicode character array to a <see cref="Polyline"/>.
     /// </summary>
-    /// <param name="polyline">The readonly memory region to convert.</param>
-    /// <returns>The converted readonly memory region.</returns>
-    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = $"Provided alternative {nameof(Polyline)}.{nameof(FromMemory)}.")]
+    /// <param name="polyline">The Unicode character array to convert.</param>
+    /// <returns>The converted Unicode character array.</returns>
     [ExcludeFromCodeCoverage]
-    public static explicit operator Polyline(ReadOnlyMemory<char> polyline) => FromMemory(polyline);
+    public static explicit operator Polyline(char[] polyline) => FromCharArray(polyline);
 
     /// <summary>
     /// Defines an explicit conversion of a string to a <see cref="Polyline"/>.
@@ -220,6 +220,22 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <returns>The converted string.</returns>
     [ExcludeFromCodeCoverage]
     public static explicit operator Polyline(string polyline) => FromString(polyline);
+
+    /// <summary>
+    /// Defines an explicit conversion of a string to a <see cref="Polyline"/>.
+    /// </summary>
+    /// <param name="polyline">The string to convert.</param>
+    /// <returns>The converted string.</returns>
+    [ExcludeFromCodeCoverage]
+    public static explicit operator Polyline(Memory<byte> polyline) => FromMemory(polyline);
+
+    /// <summary>
+    /// Defines an explicit conversion of a string to a <see cref="Polyline"/>.
+    /// </summary>
+    /// <param name="polyline">The string to convert.</param>
+    /// <returns>The converted string.</returns>
+    [ExcludeFromCodeCoverage]
+    public static explicit operator Polyline(ReadOnlySequence<byte> polyline) => FromSequence(polyline);
 
     #endregion
 }

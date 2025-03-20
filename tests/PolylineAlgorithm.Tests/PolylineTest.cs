@@ -8,6 +8,7 @@ namespace PolylineAlgorithm.Tests;
 using PolylineAlgorithm.Tests.Data;
 using System;
 using System.Buffers;
+using System.Text;
 
 /// <summary>
 /// Tests for the <see cref="Polyline"/> type.
@@ -148,7 +149,7 @@ public class PolylineTest {
         Polyline result = Polyline.FromString(value);
 
         // Assert
-        Assert.AreEqual(polyline, result);
+        Assert.IsTrue(polyline.SequenceEquals(result));
     }
 
     /// <summary>
@@ -166,7 +167,7 @@ public class PolylineTest {
         Polyline result = Polyline.FromCharArray(array);
 
         // Assert
-        Assert.AreEqual(polyline, result);
+        Assert.IsTrue(polyline.SequenceEquals(result));
     }
 
     /// <summary>
@@ -177,14 +178,14 @@ public class PolylineTest {
     [DynamicData(nameof(StringParameters))]
     public void FromMemory_Equals_New(string value) {
         // Arrange
-        ReadOnlyMemory<char> memory = value.AsMemory();
+        ReadOnlyMemory<byte> memory = Encoding.UTF8.GetBytes(value).AsMemory();
         Polyline polyline = new(value);
 
         // Act
         Polyline result = Polyline.FromMemory(memory);
 
         // Assert
-        Assert.AreEqual(polyline, result);
+        Assert.IsTrue(polyline.SequenceEquals(result));
     }
 
     /// <summary>
