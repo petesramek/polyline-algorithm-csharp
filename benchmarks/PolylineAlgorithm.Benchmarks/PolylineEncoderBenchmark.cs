@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 /// Benchmarks for the <see cref="PolylineEncoder"/> class.
 /// </summary>
 [RankColumn]
-[ShortRunJob]
 public class PolylineEncoderBenchmark {
     [Params(1, 10, 100, 1_000, 10_000, 100_000, 1_000_000)]
     public int N;

@@ -14,7 +14,6 @@ using PolylineAlgorithm.Benchmarks.Internal;
 /// Benchmarks for the <see cref="PolylineDecoder"/> class.
 /// </summary>
 [RankColumn]
-[ShortRunJob]
 public class PolylineDecoderBenchmark {
     private readonly Consumer _consumer = new();
 

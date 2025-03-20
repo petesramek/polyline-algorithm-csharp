@@ -6,10 +6,13 @@
 namespace PolylineAlgorithm;
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Runtime.InteropServices;
+using System.Text;
 
 /// <summary>
 /// Represents a readonly encoded polyline string.
@@ -17,13 +20,13 @@ using System.Runtime.InteropServices;
 [StructLayout(LayoutKind.Auto)]
 [DebuggerDisplay("Value: {ToString()}, IsEmpty: {IsEmpty}, Length: {Length}")]
 public readonly struct Polyline : IEquatable<Polyline> {
-    private readonly ReadOnlyMemory<char> _value;
+    private readonly ReadOnlySequence<char> _value;
 
     /// <summary>
     /// Creates a new <see cref="Polyline"/> structure that is empty.
     /// </summary>
     public Polyline() {
-        _value = ReadOnlyMemory<char>.Empty;
+        _value = ReadOnlySequence<char>.Empty;
     }
 
     /// <summary>
@@ -36,7 +39,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
             throw new ArgumentNullException(nameof(value));
         }
 
-        _value = value.AsMemory();
+        _value = new ReadOnlySequence<char>(value.AsMemory());
     }
 
     /// <summary>
@@ -49,7 +52,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
             throw new ArgumentNullException(nameof(value));
         }
 
-        _value = _value = value.AsMemory();
+        _value = new ReadOnlySequence<char>(value.AsMemory());
     }
 
     /// <summary>
@@ -57,13 +60,13 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// </summary>
     /// <param name="value">The readonly memory region to initialize the polyline with.</param>
     public Polyline(ReadOnlyMemory<char> value) {
-        _value = value;
+        _value = new ReadOnlySequence<char>(value);
     }
 
     /// <summary>
     /// Gets the span of characters in the polyline.
     /// </summary>
-    internal readonly ReadOnlyMemory<char> Value => _value;
+    internal readonly ReadOnlySequence<char> Value => _value;
 
     /// <summary>
     /// Gets a value indicating whether this <see cref="Polyline" /> is empty.
@@ -79,24 +82,57 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// Copies the characters in this instance to a Unicode character array.
     /// </summary>
     /// <returns>A Unicode character array.</returns>
-    public char[] ToCharArray() => Value.ToArray();
+    public char[] CopyTo(char[] destination) {
+        if (destination is null) {
+            throw new ArgumentNullException(nameof(destination));
+        }
 
-    /// <summary>
-    /// Returns a string representation of the value of this instance.
-    /// </summary>
-    /// <returns>The string value of this <see cref="Polyline"/> object.</returns>
-    public override string ToString() => Value.ToString();
+        if(Length != destination.Length) {
+            throw new ArgumentException("", paramName: nameof(destination));
+        }
 
-    public ReadOnlyMemory<char> AsMemory() => Value;
+        _value.CopyTo(destination);
 
-    public Polyline Append(ReadOnlyMemory<char> value) {
-        if (value.IsEmpty) {
-            return this;
+        return destination;
+    }
+
+    public ReadOnlySequence<char> AsSequence() => Value;
+
+    public override string ToString() {
+        if (IsEmpty) {
+            return string.Empty;
+        }
+
+        if (Value.IsSingleSegment) {
+            return Value.FirstSpan.ToString();
+        }
+        
+        var sb = Value.Length <= int.MaxValue ? new StringBuilder(Convert.ToInt32(Value.Length)) : new StringBuilder();
+        var enumerator = Value.GetEnumerator();
+
+        while (true) {
+            if (!enumerator.MoveNext()) {
+                break;
+            }
+
+            if (enumerator.Current.IsEmpty) {
+                continue;
+            }
+
+            sb.Append(enumerator.Current);
+        }
+
+        return sb.ToString();
+    }
+
+    public bool Equals(Polyline other) {
+        if ((IsEmpty != other.IsEmpty) || (Length != other.Length)) {
+            return false;
         }
 
         long position = 0;
         var enumerator = Value.GetEnumerator();
-        var right = new SequenceReader<byte>(other.Value);
+        var right = new SequenceReader<char>(other.Value);
 
         while (true) {
             if (!enumerator.MoveNext()) {
@@ -115,6 +151,22 @@ public readonly struct Polyline : IEquatable<Polyline> {
         }
 
         return position == right.Length;
+    }
+
+    public override bool Equals(object obj) {
+        return obj is Polyline other && Equals(other);
+    }
+
+    public override int GetHashCode() {
+        return Value.GetHashCode();
+    }
+
+    public static bool operator ==(Polyline left, Polyline right) {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Polyline left, Polyline right) {
+        return !(left == right);
     }
 
     #region Factory methods
@@ -139,10 +191,6 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <param name="polyline">A string representing an encoded polyline.</param>
     /// <returns>The <see cref="Polyline"/> value that corresponds to the specified string value.</returns>
     public static Polyline FromString(string polyline) => new(polyline);
-
-    internal void Append(IEnumerable<char> latitude, IEnumerable<char> longitude) {
-        throw new NotImplementedException();
-    }
 
     #endregion
 

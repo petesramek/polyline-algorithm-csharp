@@ -56,6 +56,10 @@ public class PolylineDecoder {
             position = Process(result, ref longitude, ref temp, ref buffer);
             reader.AdvanceTo(position);
 
+            await Formatter
+                .TryWriteAsync(writer, new Coordinate(latitude, longitude), cancellation)
+                .ConfigureAwait(false);
+
             if (result.IsCompleted) {
                 break;
             }
@@ -64,11 +68,11 @@ public class PolylineDecoder {
         await CompleteAsync(reader, writer)
             .ConfigureAwait(false);
 
-        static SequencePosition Process(ReadResult result, ref int latitude, ref Memory<byte> temp, ref Memory<char> buffer) {
+        static SequencePosition Process(ReadResult result, ref int value, ref Memory<byte> temp, ref Memory<char> buffer) {
             result.Buffer.Slice(0, 6).CopyTo(temp.Span);
             Encoding.UTF8.GetChars(temp.Span, buffer.Span);
 
-            long consumed = Decode(buffer.Span, ref latitude);
+            long consumed = PolylineEncoding.Default.GetNextValue(buffer.Span, ref value);
 
             return result.Buffer.GetPosition(consumed);
         }

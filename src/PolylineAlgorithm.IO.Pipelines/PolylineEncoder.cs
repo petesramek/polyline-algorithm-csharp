@@ -6,7 +6,6 @@
 namespace PolylineAlgorithm.IO.Pipelines;
 
 using PolylineAlgorithm.Internal;
-using PolylineAlgorithm.IO.Pipelines.Internal;
 using System;
 using System.IO.Pipelines;
 using System.Text;
@@ -49,7 +48,7 @@ public class PolylineEncoder {
         static void Process(PipeWriter writer, int value, Memory<char> buffer) {
             Span<char> temp = buffer.Span;
 
-            int length = Encode(ref temp, value);
+            int length = PolylineEncoding.Default.GetChars(value, ref temp);
 
             Encoding.UTF8.GetBytes(temp[..length], writer.GetSpan(length));
 
@@ -64,24 +63,6 @@ public class PolylineEncoder {
                 .CompleteAsync()
                 .ConfigureAwait(false);
         }
-    }
-
-    private static int Encode(ref Span<char> buffer, int difference) {
-        int index = 0;
-        int rem = difference << 1;
-
-        if (difference < 0) {
-            rem = ~rem;
-        }
-
-        while (rem >= Defaults.Algorithm.Space) {
-            buffer[index++] = Convert.ToChar((Defaults.Algorithm.Space | rem & Defaults.Algorithm.UnitSeparator) + Defaults.Algorithm.QuestionMark);
-            rem >>= Defaults.Algorithm.ShiftLength;
-        }
-
-        buffer[index++] = Convert.ToChar(rem + Defaults.Algorithm.QuestionMark);
-
-        return index;
     }
 
     public static int GetRequiredCharCount(int difference) => difference switch {

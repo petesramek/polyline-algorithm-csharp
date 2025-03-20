@@ -16,10 +16,10 @@ internal class Program {
     /// </summary>
     /// <param name="args">The command-line arguments.</param>
     static void Main(string[] args) {
-        Directory.Delete("C:\\temp\\benchmark", true);
+        //Directory.Delete("C:\\temp\\benchmark", true);
 
         BenchmarkSwitcher
             .FromAssembly(typeof(Program).Assembly)
-            .Run(args,/* new DebugInProcessConfig()*/);
+            .Run(args/*, new DebugInProcessConfig()*/);
     }
 }

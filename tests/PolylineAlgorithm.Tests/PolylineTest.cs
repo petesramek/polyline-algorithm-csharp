@@ -209,19 +209,20 @@ public class PolylineTest {
     /// Tests the <see cref="Polyline.ToCharArray"/> method.
     /// </summary>
     /// <param name="value">The string value.</param>
-    //[TestMethod]
-    //[DynamicData(nameof(StringParameters))]
-    //public void ToCharArray_Equals_Constructor_Parameter(string value) {
-    //    // Arrange
-    //    Polyline polyline = new(value);
-    //    char[] expected = value.ToCharArray();
+    [TestMethod]
+    [DynamicData(nameof(StringParameters))]
+    public void ToCharArray_Equals_Constructor_Parameter(string value) {
+        // Arrange
+        Polyline polyline = new(value);
+        char[] expected = value.ToCharArray();
+        char[] result = new char[polyline.Length];
 
-    //    // Act
-    //    char[] result = polyline.ToCharArray();
+        // Act
+        polyline.CopyTo(result);
 
-    //    // Assert
-    //    CollectionAssert.AreEqual(expected, result);
-    //}
+        // Assert
+        CollectionAssert.AreEqual(expected, result);
+    }
 
     /// <summary>
     /// Tests the <see cref="Polyline.AsMemory"/> method.
@@ -232,12 +233,12 @@ public class PolylineTest {
     public void AsMemory_Equals_Constructor_Parameter(string value) {
         // Arrange
         Polyline polyline = new(value);
-        ReadOnlySequence<char> expected = new ReadOnlySequence<char>(value.AsMemory());
+        ReadOnlySequence<char> expected = new(value.AsMemory());
 
         // Act
-        ReadOnlySequence<char> result = new(polyline.AsMemory());
+        ReadOnlySequence<char> result = polyline.AsSequence();
 
         // Assert
-        Assert.AreEqual(expected, result);
+        CollectionAssert.AreEquivalent(expected.ToArray(), result.ToArray());
     }
 }
