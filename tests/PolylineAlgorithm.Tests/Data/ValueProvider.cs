@@ -1,8 +1,7 @@
-﻿namespace PolylineAlgorithm.Tests.Internal {
+﻿namespace PolylineAlgorithm.Tests.Data {
     using System.Collections.Concurrent;
 
-    public static class ValueProvider
-    {
+    public static class ValueProvider {
         private static readonly ConcurrentDictionary<int, CoordinatePair> _cache = new();
         private static readonly PolylineEncoder _encoder = new();
 
@@ -25,7 +24,8 @@
 
             var enumeration = Enumerable
                 .Range(0, count)
-                .Select(i => new Coordinate(RandomLatitude(), RandomLongitude()));
+                .Select(i => new Coordinate(RandomLatitude(), RandomLongitude()))
+                .ToList();
 
             entry = _cache.GetOrAdd(count, _ => new CoordinatePair(enumeration, _encoder.Encode(enumeration)));
 
@@ -33,11 +33,11 @@
         }
 
         private static double RandomLongitude() {
-            return Random.Shared.Next(-180, 180) + Random.Shared.NextDouble();
+            return Math.Round(Random.Shared.Next(-180, 180) + Random.Shared.NextDouble(), 5);
         }
 
         private static double RandomLatitude() {
-            return Random.Shared.Next(-90, 90) + Random.Shared.NextDouble();
+            return Math.Round(Random.Shared.Next(-90, 90) + Random.Shared.NextDouble(), 5);
         }
 
         private readonly struct CoordinatePair {

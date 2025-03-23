@@ -1,4 +1,4 @@
-﻿namespace PolylineAlgorithm.Benchmarks.Internal {
+﻿namespace PolylineAlgorithm.Comparison.Benchmarks.Internal {
     using System.Collections.Concurrent;
 
     public static class ValueProvider {

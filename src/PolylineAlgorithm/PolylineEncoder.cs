@@ -9,11 +9,11 @@ using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Properties;
 using System;
-using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
+using static PolylineAlgorithm.Polyline;
 
 /// <summary>
 /// Provides methods to encode a set of coordinates into a polyline string.
@@ -40,48 +40,37 @@ public class PolylineEncoder : IPolylineEncoder {
         int size = count * Defaults.Polyline.MaxEncodedCoordinateLength * sizeof(byte);
 
         CoordinateVariance variance;
-        PolylineCoordinate previous = Coordinate.Default;
+        Coordinate previous = Coordinate.Default;
 
         PolylineBuilder builder = new();
 
-        using var buffer = new Buffer(size);
+        int position = 0;
+        Memory<byte> buffer = new byte[size];
 
-        foreach (PolylineCoordinate current in coordinates) {
+        foreach (Coordinate current in coordinates) {
             InvalidCoordinateException.ThrowIfNotValid(current);
 
-            variance = GetVariance(previous, current);
+            variance = CoordinateVariance.Calculate(previous, current);
 
-            int requiredSize = GetRequiredSize(in variance);
-
-            if (!buffer.HasRemaining(requiredSize)) {
-                builder
-                    .Append(buffer.GetData());
-                buffer
-                    .Reset();
-            }
-
-            EncodeVariance(variance.Latitude, buffer);
-            EncodeVariance(variance.Longitude, buffer);
+            EncodeVariance(variance.Latitude);
+            EncodeVariance(variance.Longitude);
 
             previous = current;
+
+            void EncodeVariance(int variance) {
+                var temp = buffer[position..].Span;
+                position += VarianceEncoding.Default.Encode(variance, ref temp);
+            }
         }
 
         builder
-            .Append(buffer.GetData());
+            .Append(buffer[..position]);
 
         return builder.Build();
 
-        static CoordinateVariance GetVariance(PolylineCoordinate initial, PolylineCoordinate next) => initial - next;
+        static int GetRequiredSize(ref readonly CoordinateVariance variance) => VarianceEncoding.Default.GetCharCount(variance.Latitude) + VarianceEncoding.Default.GetCharCount(variance.Longitude);
 
-        static int GetRequiredSize(ref readonly CoordinateVariance variance) => VarianceEncoding.Default.GetByteCount(variance.Latitude) + VarianceEncoding.Default.GetByteCount(variance.Longitude);
-
-        static void EncodeVariance(int variance, Buffer buffer) {
-            Span<byte> temp = buffer.Span;
-
-            int consumed = VarianceEncoding.Default.Encode(variance, ref temp);
-
-            buffer.Advance(consumed);
-        }
+        
     }
 
 
@@ -97,87 +86,4 @@ public class PolylineEncoder : IPolylineEncoder {
         ICollection<Coordinate> collection => collection.Count,
         _ => coordinates.Count(),
     };
-
-    private class PolylineBuilder {
-        private PolylineSegment? _initial;
-        private PolylineSegment? _last;
-
-        public void Append(Memory<byte> value) {
-            var next = new PolylineSegment(value);
-
-            if (_initial is null) {
-                _initial = next;
-            }
-
-            _last?.Append(next);
-            _last = next;
-        }
-
-        public Polyline Build() {
-            if (_initial is null) {
-                return Polyline.FromSequence(ReadOnlySequence<byte>.Empty);
-            }
-
-
-            return Polyline.FromSequence(new(_initial, 0, _last, _last!.Memory.Length));
-        }
-    }
-
-    private class Buffer : IDisposable {
-        private const int MaxSize = 10;
-        private static readonly ArrayPool<byte> _pool = ArrayPool<byte>.Create(MaxSize, 100);
-        private byte[]? _buffer;
-        private bool _disposed;
-        private int _position;
-
-        public Buffer(int size) {
-            _buffer = _pool.Rent(size < MaxSize ? size : MaxSize);
-        }
-
-        public Span<byte> Span => _buffer!.AsSpan()[_position..];
-
-        public void Advance(int length) {
-            _position += length;
-        }
-
-        public bool HasRemaining(int requiredSize) {
-            if (_disposed) {
-                throw new ObjectDisposedException(nameof(Buffer));
-            }
-
-            return _position + requiredSize <= _buffer!.Length;
-        }
-
-        public byte[] GetData() {
-            if (_disposed) {
-                throw new ObjectDisposedException(nameof(Buffer));
-            }
-
-            return [.._buffer![.._position]];
-        }
-
-        protected virtual void Dispose(bool disposing) {
-            if (!_disposed) {
-                if (disposing) {
-                    _pool.Return(_buffer);
-                }
-
-                _buffer = null;
-                _disposed = true;
-            }
-        }
-
-        public void Dispose() {
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
-
-        internal void Reset() {
-            if (_disposed) {
-                throw new ObjectDisposedException(nameof(Buffer));
-            }
-
-            _position = 0;
-        }
-    }
 }

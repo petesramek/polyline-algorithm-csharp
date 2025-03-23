@@ -19,6 +19,7 @@ using System.Runtime.InteropServices;
 [DebuggerDisplay("{ToString()}")]
 public readonly struct Coordinate : IEquatable<Coordinate> {
     public static readonly Coordinate Default = new();
+    internal static long Size { get; } = Marshal.SizeOf<Coordinate>();
 
     /// <summary>
     /// Creates a new <see cref="Coordinate"/> structure with <see cref="Latitude"/> and <see cref="Longitude"/> set to their default values.

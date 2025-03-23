@@ -2,8 +2,7 @@
 
 namespace PolylineAlgorithm.IO.Pipelines;
 
-public abstract class CoordinateFormatter
-{
+public abstract class CoordinateFormatter {
     public abstract bool TryRead(PipeReader reader, out Coordinate coordinate);
 
     public abstract bool TryWrite(PipeWriter writer, Coordinate coordinate);

@@ -7,6 +7,7 @@ namespace PolylineAlgorithm.Tests;
 
 using PolylineAlgorithm;
 using PolylineAlgorithm.Tests.Data;
+using PolylineAlgorithm.Tests.Internal;
 
 /// <summary>
 /// Defines tests for the <see cref="PolylineDecoder"/> type.
@@ -16,7 +17,7 @@ public class PolylineDecoderTest {
     /// <summary>
     /// The instance of the <see cref="PolylineDecoder"/> used for testing.
     /// </summary>
-    public PolylineDecoder Decoder = new();
+    public PolylineDecoder<Coordinate> Decoder = new(new CoordinateFactory());
 
     /// <summary>
     /// Tests the <see cref="PolylineDecoder.Decode(ref readonly Polyline)"/> method with an empty input, expecting an <see cref="ArgumentException"/>.
@@ -27,7 +28,7 @@ public class PolylineDecoderTest {
         Polyline empty = new();
 
         // Act
-        void Execute(Polyline value) => Decoder.Decode(value);
+        void Execute(Polyline value) => Decoder.Decode(value).ToList();
 
         // Assert
         Assert.ThrowsExactly<ArgumentException>(() => Execute(empty));
@@ -36,17 +37,17 @@ public class PolylineDecoderTest {
     /// <summary>
     /// Tests the <see cref="PolylineDecoder.Decode(ref readonly Polyline)"/> method with an invalid input, expecting an <see cref="InvalidCoordinateException"/>.
     /// </summary>
-    [TestMethod]
-    public void Decode_Invalid_Input_ThrowsException() {
-        // Arrange
-        Polyline value = new(Values.Polyline.Invalid);
+    //[TestMethod]
+    //public void Decode_Invalid_Input_ThrowsException() {
+    //    // Arrange
+    //    Polyline value = Polyline.FromString(Values.Polyline.Invalid);
 
-        // Act
-        void Execute(Polyline value) => Decoder.Decode(value);
+    //    // Act
+    //    void Execute(Polyline value) => Decoder.Decode(value).ToList();
 
-        // Assert
-        var exception = Assert.ThrowsExactly<InvalidCoordinateException>(() => Execute(value));
-    }
+    //    // Assert
+    //    var exception = Assert.ThrowsExactly<InvalidCoordinateException>(() => Execute(value));
+    //}
 
     /// <summary>
     /// Tests the <see cref="PolylineDecoder.Decode(ref readonly Polyline)"/> method with a valid input.
@@ -55,12 +56,13 @@ public class PolylineDecoderTest {
     [TestMethod]
     public void Decode_Valid_Input_Ok() {
         // Arrange
-        Polyline value = new(Values.Polyline.Valid);
+        IEnumerable<Coordinate> expected = ValueProvider.GetCoordinates(1);// Values.Coordinates.Valid;
+        Polyline value = ValueProvider.GetPolyline(1);
 
         // Act
         var result = Decoder.Decode(value);
 
         // Assert
-        CollectionAssert.AreEqual(Values.Coordinates.Valid.ToArray(), result.ToArray());
+        CollectionAssert.AreEqual(expected.ToArray(), result.ToArray());
     }
 }

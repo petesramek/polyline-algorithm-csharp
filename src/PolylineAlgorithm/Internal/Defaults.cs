@@ -47,6 +47,8 @@ internal static class Defaults {
     /// Contains default values related to polyline.
     /// </summary>
     public static class Polyline {
+        public static readonly byte[] Delimiters = [.. Enumerable.Range(0, 32).Select(n => Convert.ToByte(n + Defaults.Algorithm.QuestionMark))];
+
         /// <summary>
         /// The minimum length of an encoded coordinate.
         /// </summary>

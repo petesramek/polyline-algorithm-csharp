@@ -49,7 +49,7 @@ public class PolylineEncoderBenchmark {
     [GlobalSetup]
     public void SetupData() {
         Enumeration = ValueProvider.GetCoordinates(N);
-        List = [..Enumeration];
+        List = [.. Enumeration];
         AsyncEnumeration = GetAsyncEnumeration(Enumeration!);
     }
 

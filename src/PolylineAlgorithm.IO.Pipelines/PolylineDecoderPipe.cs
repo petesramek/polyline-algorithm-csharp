@@ -6,18 +6,16 @@
 namespace PolylineAlgorithm.IO.Pipelines;
 
 using PolylineAlgorithm.Internal;
-using PolylineAlgorithm.IO.Pipelines.Internal;
 using System.Buffers;
 using System.IO.Pipelines;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 
 /// <summary>
 /// Performs polyline algorithm decoding
 /// </summary>
-public class PolylineDecoder {
-    public PolylineDecoder(CoordinateFormatter formatter) {
+public class PolylineDecoderPipe {
+    public PolylineDecoderPipe(CoordinateFormatter formatter) {
         Formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
     }
 
@@ -36,21 +34,21 @@ public class PolylineDecoder {
             throw new ArgumentNullException(nameof(writer));
         }
 
-        int latitude;
-        int longitude;
+        int latitude = 0;
+        int longitude = 0;
 
-        Memory<byte> buffer = new byte[6];
-
-        PolylineCoordinate current = Coordinate.Default;
+        Memory<char> buffer = new char[6];
 
         while (true) {
-            latitude = await ReadAsync(reader, buffer, cancellation)
+            latitude += await ReadAsync(reader, buffer, cancellation)
                 .ConfigureAwait(false);
 
-            longitude = await ReadAsync(reader, buffer, cancellation)
+            longitude += await ReadAsync(reader, buffer, cancellation)
                 .ConfigureAwait(false);
 
-            current += CoordinateVariance.Create(latitude, longitude);
+
+
+            var current = new Coordinate(latitude / Defaults.Algorithm.Precision, longitude / Defaults.Algorithm.Precision);
 
             if (!await Formatter.TryWriteAsync(writer, current, cancellation).ConfigureAwait(false)) {
                 throw new InvalidOperationException();
@@ -73,16 +71,21 @@ public class PolylineDecoder {
                 .ConfigureAwait(false);
         }
 
-        static async Task<int> ReadAsync(PipeReader reader, Memory<byte> buffer, CancellationToken cancellationToken) {
+        static async Task<int> ReadAsync(PipeReader reader, Memory<char> buffer, CancellationToken cancellationToken) {
             var result = await reader
                 .ReadAtLeastAsync(buffer.Length, cancellationToken)
                 .ConfigureAwait(false);
 
-            result.Buffer
-                .CopyTo(buffer.Span);
+            Span<byte> bytes = stackalloc byte[buffer.Length];
+
+            result.Buffer.CopyTo(bytes);
+
+            Encoding.UTF8.GetChars(bytes, buffer.Span);
+
+            ReadOnlyMemory<char> temp = buffer;
 
             int consumed = VarianceEncoding.Default
-                .Decode(buffer.Span, out int value);
+                .Decode(temp, out int value);
 
             var position = result.Buffer.GetPosition(consumed);
 
@@ -91,29 +94,4 @@ public class PolylineDecoder {
             return value;
         }
     }
-
-    //internal static int Decode(ref int value, ref readonly Span<byte> buffer) {
-    //    int position = 0;
-    //    int chunk = 0;
-    //    int sum = 0;
-    //    int shifter = 0;
-
-    //    while (buffer.Length < position) {
-    //        chunk = value - Defaults.Algorithm.QuestionMark;
-    //        sum |= (chunk & Defaults.Algorithm.UnitSeparator) << shifter;
-    //        shifter += Defaults.Algorithm.ShiftLength;
-
-    //        if (chunk < Defaults.Algorithm.Space) {
-    //            break;
-    //        }
-    //    }
-
-    //    if (buffer.Length == position && chunk >= Defaults.Algorithm.Space) {
-    //        //InvalidPolylineException.Throw(reader.Length - reader.Remaining);
-    //    }
-
-    //    value += (sum & 1) == 1 ? ~(sum >> 1) : sum >> 1;
-
-    //    return position;
-    //}
 }

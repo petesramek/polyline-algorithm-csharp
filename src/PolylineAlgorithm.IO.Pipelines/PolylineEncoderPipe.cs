@@ -7,6 +7,7 @@ namespace PolylineAlgorithm.IO.Pipelines;
 
 using PolylineAlgorithm.Internal;
 using System;
+using System.Buffers;
 using System.IO.Pipelines;
 using System.Text;
 
@@ -14,9 +15,10 @@ using System.Text;
 /// <summary>
 /// Performs polyline algorithm decoding
 /// </summary>
-public class PolylineEncoder {
-    private Memory<char> _buffer = new char[6];
-    public PolylineEncoder(CoordinateFormatter formatter) {
+public class PolylineEncoderPipe {
+    private Memory<byte> _buffer = new byte[6];
+
+    public PolylineEncoderPipe(CoordinateFormatter formatter) {
         Formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
     }
 
@@ -43,17 +45,22 @@ public class PolylineEncoder {
             Process(writer, variance.Latitude, _buffer);
             Process(writer, variance.Longitude, _buffer);
 
+            await writer
+                .FlushAsync(cancellation)
+                .ConfigureAwait(false);
+
             current = next;
         }
 
-        await CompleteAsync(reader, writer).ConfigureAwait(false);
+        await CompleteAsync(reader, writer)
+            .ConfigureAwait(false);
 
-        static void Process(PipeWriter writer, int value, Memory<char> buffer) {
-            Span<char> temp = buffer.Span;
+        static void Process(PipeWriter writer, int value, Memory<byte> buffer) {
+            Span<byte> temp = buffer.Span;
 
-            int length = PolylineEncoding.Default.GetChars(value, ref temp);
+            int length = VarianceEncoding.Default.Encode(value, ref temp);
 
-            Encoding.UTF8.GetBytes(temp[..length], writer.GetSpan(length));
+            writer.Write(temp[..length]);
 
             writer.Advance(length);
         }

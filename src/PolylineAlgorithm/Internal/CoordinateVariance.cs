@@ -1,9 +1,7 @@
-﻿namespace PolylineAlgorithm.Internal; 
+﻿namespace PolylineAlgorithm.Internal;
 
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
 public readonly ref struct CoordinateVariance {
@@ -19,9 +17,9 @@ public readonly ref struct CoordinateVariance {
         return new CoordinateVariance(latitude, longitude);
     }
 
-    public static CoordinateVariance Calculate(PolylineCoordinate initial, PolylineCoordinate next) {
-        int latitude = Variance(initial.Latitude, next.Latitude);
-        int longitude = Variance(initial.Longitude, next.Longitude);
+    public static CoordinateVariance Calculate(Coordinate initial, Coordinate next) {
+        int latitude = Variance(Round(initial.Latitude), Round(next.Latitude));
+        int longitude = Variance(Round(initial.Longitude), Round(next.Longitude));
 
         return new CoordinateVariance(latitude, longitude);
     }
@@ -29,7 +27,6 @@ public readonly ref struct CoordinateVariance {
     public override readonly string ToString()
         => $"Variance: {{ Latitude: {Latitude}, Longitude: {Longitude} }}";
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int Variance(int initial, int next) => (initial, next) switch {
         (0, 0) => 0,
         (0, _) => next,
@@ -40,14 +37,5 @@ public readonly ref struct CoordinateVariance {
         ( > 0, > 0) => next - initial,
     };
 
-    public static PolylineCoordinate operator +(PolylineCoordinate coordinate, CoordinateVariance variance) {
-        return Add(coordinate, variance);
-    }
-
-    public static PolylineCoordinate Add(PolylineCoordinate coordinate, CoordinateVariance variance) {
-        var latitude = coordinate.Latitude + variance.Latitude;
-        var longitude = coordinate.Longitude + variance.Longitude;
-
-        return new PolylineCoordinate(latitude, longitude);
-    }
+    private static int Round(double value) => (int)Math.Round(value * Defaults.Algorithm.Precision);
 }

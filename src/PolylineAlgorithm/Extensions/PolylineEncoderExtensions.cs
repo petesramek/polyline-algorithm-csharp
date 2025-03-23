@@ -4,8 +4,7 @@ using PolylineAlgorithm.Abstraction;
 using System;
 using System.Collections.Generic;
 
-public static class PolylineEncoderExtensions
-{
+public static class PolylineEncoderExtensions {
     public static Polyline Encode(this IPolylineEncoder encoder, ICollection<Coordinate> coordinates) {
         if (encoder is null) {
             throw new ArgumentNullException(nameof(encoder));

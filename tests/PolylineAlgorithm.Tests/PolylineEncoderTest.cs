@@ -6,7 +6,7 @@
 namespace PolylineAlgorithm.Tests;
 
 using PolylineAlgorithm.Tests.Data;
-using System.ComponentModel.DataAnnotations;
+using PolylineAlgorithm.Tests.Internal;
 
 /// <summary>
 /// Defines tests for the <see cref="PolylineEncoder"/> type.
@@ -76,20 +76,17 @@ public class PolylineEncoderTest {
     [TestMethod]
     public void Encode_ValidInput_Ok() {
         // Arrange
-        IEnumerable<Coordinate> valid = Values.Coordinates.Valid;
+        IEnumerable<Coordinate> valid = ValueProvider.GetCoordinates(1);// Values.Coordinates.Valid;
+        Polyline expected = ValueProvider.GetPolyline(1);
 
         // Act
         var result = Encoder.Encode(valid);
 
-        var hash = result.Value.FirstSpan.ToArray().GetHashCode();
-
-        var result2 = Polyline.FromString(Values.Polyline.Valid);
-        var hash2 = result2.Value.FirstSpan.ToArray().GetHashCode();
-
-
+        var aha = expected.ToString();
+        var ehe = result.ToString();
 
         // Assert
         //Assert.AreEqual(Values.Polyline.Valid, result.ToString());
-        Assert.IsTrue(Polyline.FromString(Values.Polyline.Valid).SequenceEquals(result));
+        Assert.IsTrue(expected.Equals(result));
     }
 }

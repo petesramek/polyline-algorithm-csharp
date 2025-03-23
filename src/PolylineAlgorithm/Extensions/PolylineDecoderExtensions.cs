@@ -4,21 +4,20 @@ using PolylineAlgorithm.Abstraction;
 using System;
 using System.Collections.Generic;
 
-public static class PolylineDecoderExtensions
-{
-    public static IEnumerable<Coordinate> Decode(this IPolylineDecoder decoder, string polyline) {
+public static class PolylineDecoderExtensions {
+    public static IEnumerable<TCoordinate> Decode<TCoordinate>(this IPolylineDecoder<TCoordinate> decoder, string polyline) {
         if (decoder is null) {
             throw new ArgumentNullException(nameof(decoder));
         }
 
-        return decoder.Decode(Polyline.FromString(polyline));  
+        return decoder.Decode(Polyline.FromString(polyline));
     }
 
-    public static IEnumerable<Coordinate> Decode(this IPolylineDecoder decoder, char[] polyline) {
+    public static IEnumerable<TCoordinate> Decode<TCoordinate>(this IPolylineDecoder<TCoordinate> decoder, byte[] polyline) {
         if (decoder is null) {
             throw new ArgumentNullException(nameof(decoder));
         }
 
-        return decoder.Decode(Polyline.FromCharArray(polyline));
+        return decoder.Decode(Polyline.FromByteArray(polyline));
     }
 }

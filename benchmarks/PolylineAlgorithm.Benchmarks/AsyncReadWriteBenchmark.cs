@@ -6,6 +6,7 @@
 //    using System.Buffers;
 //    using System.Collections.Generic;
 //    using System.IO;
+//    using System.IO.Pipelines;
 //    using System.Text.Json;
 //    using System.Text.Json.Serialization.Metadata;
 
@@ -85,7 +86,7 @@
 //            var polyline = Encoder.Encode(BlockingEnumeration);
 
 //            await writer
-//                .WriteAsync(polyline.AsMemory());
+//                .WriteAsync(polyline.AsSequence());
 //            await writer
 //                    .FlushAsync();
 //        }
@@ -107,7 +108,7 @@
 
 //            using StreamWriter writer = new(file);
 
-//            var reader = new SequenceReader<char>(new(polyline.AsMemory()));
+//            var reader = new SequenceReader<char>(polyline.AsSequence());
 
 //            long index = 0;
 

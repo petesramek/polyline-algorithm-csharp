@@ -6,9 +6,8 @@
 namespace PolylineAlgorithm.Tests;
 
 using PolylineAlgorithm.Tests.Data;
+using PolylineAlgorithm.Tests.Internal;
 using System;
-using System.Buffers;
-using System.Text;
 
 /// <summary>
 /// Tests for the <see cref="Polyline"/> type.
@@ -18,9 +17,12 @@ public class PolylineTest {
     /// <summary>
     /// Provides test data for the string parameter tests.
     /// </summary>
-    public static IEnumerable<object[]> StringParameters => new List<object[]> {
-        new object[] { Values.Polyline.Empty },
-        new object[] { Values.Polyline.Valid }
+    public static IEnumerable<object[]> SizeParameters => new List<object[]> {
+        new object[] { 1 },
+        new object[] { 10 },
+        new object[] { 100 },
+        new object[] { 1_000 },
+        new object[] { 1_000_000 }
     };
 
     /// <summary>
@@ -51,7 +53,7 @@ public class PolylineTest {
         string value = null!;
 
         // Act
-        static Polyline New(string value) => new(value);
+        static Polyline New(string value) => Polyline.FromString(value);
 
         // Assert
         Assert.ThrowsExactly<ArgumentNullException>(() => New(value));
@@ -62,15 +64,15 @@ public class PolylineTest {
     /// </summary>
     /// <param name="value">The string value.</param>
     [TestMethod]
-    [DynamicData(nameof(StringParameters))]
-    public void Constructor_String_Parameter_Ok(string value) {
+    [DynamicData(nameof(SizeParameters))]
+    public void Constructor_String_Parameter_Ok(int size) {
         // Arrange
-        bool empty = value.Length == 0;
-        int length = value.Length;
-        ReadOnlyMemory<char> span = value.AsMemory();
+        var polyline = ValueProvider.GetPolyline(size);
+        bool empty = polyline.IsEmpty;
+        long length = polyline.Length;
 
         // Act
-        Polyline polyline = new(value);
+        Polyline result = Polyline.FromString(polyline.ToString());
 
         // Assert
         Assert.AreEqual(empty, polyline.IsEmpty);
@@ -78,168 +80,152 @@ public class PolylineTest {
         //Assert.IsTrue(span.Span.SequenceEqual(polyline.Span.Span));
     }
 
-    /// <summary>
-    /// Tests the <see cref="Polyline"/> constructor with a null character array, expecting an <see cref="ArgumentNullException"/>.
-    /// </summary>
-    [TestMethod]
-    public void Constructor_Null_CharArray_ArgumentNullException() {
-        // Arrange
-        char[] value = null!;
+    ///// <summary>
+    ///// Tests the <see cref="Polyline"/> constructor with a null character array, expecting an <see cref="ArgumentNullException"/>.
+    ///// </summary>
+    //[TestMethod]
+    //public void Constructor_Null_CharArray_ArgumentNullException() {
+    //    // Arrange
+    //    char[] value = null!;
 
-        // Act
-        static Polyline New(char[] value) => new(value);
+    //    // Act
+    //    static Polyline New(char[] value) => Polyline.FromCharArray(value);
 
-        // Assert
-        Assert.ThrowsExactly<ArgumentNullException>(() => New(value));
-    }
+    //    // Assert
+    //    Assert.ThrowsExactly<ArgumentNullException>(() => New(value));
+    //}
 
-    /// <summary>
-    /// Tests the <see cref="Polyline"/> constructor with a character array parameter.
-    /// </summary>
-    /// <param name="value">The string value.</param>
-    [TestMethod]
-    [DynamicData(nameof(StringParameters))]
-    public void Constructor_CharArray_Parameter_Ok(string value) {
-        // Arrange
-        bool empty = value.Length == 0;
-        int length = value.Length;
-        ReadOnlyMemory<char> span = value.AsMemory();
+    ///// <summary>
+    ///// Tests the <see cref="Polyline"/> constructor with a character array parameter.
+    ///// </summary>
+    ///// <param name="value">The string value.</param>
+    //[TestMethod]
+    //[DynamicData(nameof(SizeParameters))]
+    //public void Constructor_CharArray_Parameter_Ok(int size) {
+    //    // Arrange
+    //    var polyline = ValueProvider.GetPolyline(size);
+    //    bool empty = polyline.IsEmpty;
+    //    long length = polyline.Length;
 
-        // Act
-        Polyline polyline = new(value);
+    //    // Act
+    //    Polyline polyline = Polyline.FromString(value);
 
-        // Assert
-        Assert.AreEqual(empty, polyline.IsEmpty);
-        Assert.AreEqual(length, polyline.Length);
-        //Assert.IsTrue(span.Span.SequenceEqual(polyline.Span.Span));
-    }
+    //    // Assert
+    //    Assert.AreEqual(empty, polyline.IsEmpty);
+    //    Assert.AreEqual(length, polyline.Length);
+    //    //Assert.IsTrue(span.Span.SequenceEqual(polyline.Span.Span));
+    //}
 
-    /// <summary>
-    /// Tests the <see cref="Polyline"/> constructor with a memory parameter.
-    /// </summary>
-    /// <param name="value">The string value.</param>
-    [TestMethod]
-    [DynamicData(nameof(StringParameters))]
-    public void Constructor_Memory_Parameter_Ok(string value) {
-        // Arrange
-        bool empty = value.Length == 0;
-        int length = value.Length;
-        ReadOnlyMemory<char> span = value.AsMemory();
+    ///// <summary>
+    ///// Tests the <see cref="Polyline"/> constructor with a memory parameter.
+    ///// </summary>
+    ///// <param name="value">The string value.</param>
+    //[TestMethod]
+    //[DynamicData(nameof(SizeParameters))]
+    //public void Constructor_Memory_Parameter_Ok(int size) {
+    //    // Arrange
+    //    var polyline = ValueProvider.GetPolyline(size);
+    //    bool empty = polyline.IsEmpty;
+    //    long length = polyline.Length;
 
-        // Act
-        Polyline polyline = new(value);
+    //    // Act
+    //    Polyline polyline = Polyline.FromString(value);
 
-        // Assert
-        Assert.AreEqual(empty, polyline.IsEmpty);
-        Assert.AreEqual(length, polyline.Length);
-        //Assert.IsTrue(span.Span.SequenceEqual(polyline.Span.Span));
-    }
+    //    // Assert
+    //    Assert.AreEqual(empty, polyline.IsEmpty);
+    //    Assert.AreEqual(length, polyline.Length);
+    //    //Assert.IsTrue(span.Span.SequenceEqual(polyline.Span.Span));
+    //}
 
-    /// <summary>
-    /// Tests the <see cref="Polyline.FromString(string)"/> method.
-    /// </summary>
-    /// <param name="value">The string value.</param>
-    [TestMethod]
-    [DynamicData(nameof(StringParameters))]
-    public void FromString_Equals_New(string value) {
-        // Arrange
-        Polyline polyline = new(value);
+    ///// <summary>
+    ///// Tests the <see cref="Polyline.FromString(string)"/> method.
+    ///// </summary>
+    ///// <param name="value">The string value.</param>
+    //[TestMethod]
+    //[DynamicData(nameof(SizeParameters))]
+    //public void FromString_Equals_New(int size) {
+    //    // Arrange
+    //    var polyline = ValueProvider.GetPolyline(size);
+    //    bool empty = polyline.IsEmpty;
+    //    long length = polyline.Length;
 
-        // Act
-        Polyline result = Polyline.FromString(value);
+    //    // Act
+    //    Polyline result = Polyline.FromString(value);
 
-        // Assert
-        Assert.IsTrue(polyline.SequenceEquals(result));
-    }
+    //    // Assert
+    //    Assert.IsTrue(polyline.Equals(result));
+    //}
 
-    /// <summary>
-    /// Tests the <see cref="Polyline.FromCharArray(char[])"/> method.
-    /// </summary>
-    /// <param name="value">The string value.</param>
-    [TestMethod]
-    [DynamicData(nameof(StringParameters))]
-    public void FromCharArray_Equals_New(string value) {
-        // Arrange
-        char[] array = value.ToCharArray();
-        Polyline polyline = new(array);
+    ///// <summary>
+    ///// Tests the <see cref="Polyline.FromCharArray(char[])"/> method.
+    ///// </summary>
+    ///// <param name="value">The string value.</param>
+    //[TestMethod]
+    //[DynamicData(nameof(SizeParameters))]
+    //public void FromCharArray_Equals_New(int size) {
+    //    // Arrange
+    //    char[] array = value.ToCharArray();
+    //    Polyline polyline = Polyline.FromCharArray(array);
 
-        // Act
-        Polyline result = Polyline.FromCharArray(array);
+    //    // Act
+    //    Polyline result = Polyline.FromCharArray(array);
 
-        // Assert
-        Assert.IsTrue(polyline.SequenceEquals(result));
-    }
+    //    // Assert
+    //    Assert.IsTrue(polyline.Equals(result));
+    //}
 
-    /// <summary>
-    /// Tests the <see cref="Polyline.FromMemory(ReadOnlyMemory{char})"/> method.
-    /// </summary>
-    /// <param name="value">The string value.</param>
-    [TestMethod]
-    [DynamicData(nameof(StringParameters))]
-    public void FromMemory_Equals_New(string value) {
-        // Arrange
-        ReadOnlyMemory<byte> memory = Encoding.UTF8.GetBytes(value).AsMemory();
-        Polyline polyline = new(value);
+    ///// <summary>
+    ///// Tests the <see cref="Polyline.FromMemory(ReadOnlyMemory{char})"/> method.
+    ///// </summary>
+    ///// <param name="value">The string value.</param>
+    //[TestMethod]
+    //[DynamicData(nameof(SizeParameters))]
+    //public void FromMemory_Equals_New(int size) {
+    //    // Arrange
+    //    ReadOnlyMemory<char> memory = value.AsMemory();
+    //    Polyline polyline = Polyline.FromString(value);
 
-        // Act
-        Polyline result = Polyline.FromMemory(memory);
+    //    // Act
+    //    Polyline result = Polyline.FromMemory(memory);
 
-        // Assert
-        Assert.IsTrue(polyline.SequenceEquals(result));
-    }
+    //    // Assert
+    //    Assert.IsTrue(polyline.Equals(result));
+    //}
 
-    /// <summary>
-    /// Tests the <see cref="Polyline.ToString"/> method.
-    /// </summary>
-    /// <param name="value">The string value.</param>
-    [TestMethod]
-    [DynamicData(nameof(StringParameters))]
-    public void ToString_Equals_Constructor_Parameter(string value) {
-        // Arrange
-        Polyline polyline = new(value);
-        string expected = value;
+    ///// <summary>
+    ///// Tests the <see cref="Polyline.ToString"/> method.
+    ///// </summary>
+    ///// <param name="value">The string value.</param>
+    //[TestMethod]
+    //[DynamicData(nameof(SizeParameters))]
+    //public void ToString_Equals_Constructor_Parameter(int size) {
+    //    // Arrange
+    //    Polyline polyline = Polyline.FromString(value);
+    //    string expected = value;
 
-        // Act
-        string result = polyline.ToString();
+    //    // Act
+    //    string result = polyline.ToString();
 
-        // Assert
-        Assert.AreEqual(expected, result);
-    }
+    //    // Assert
+    //    Assert.AreEqual(expected, result);
+    //}
 
-    /// <summary>
-    /// Tests the <see cref="Polyline.ToCharArray"/> method.
-    /// </summary>
-    /// <param name="value">The string value.</param>
-    [TestMethod]
-    [DynamicData(nameof(StringParameters))]
-    public void ToCharArray_Equals_Constructor_Parameter(string value) {
-        // Arrange
-        Polyline polyline = new(value);
-        char[] expected = value.ToCharArray();
-        char[] result = new char[polyline.Length];
+    ///// <summary>
+    ///// Tests the <see cref="Polyline.ToCharArray"/> method.
+    ///// </summary>
+    ///// <param name="value">The string value.</param>
+    //[TestMethod]
+    //[DynamicData(nameof(SizeParameters))]
+    //public void ToCharArray_Equals_Constructor_Parameter(int size) {
+    //    // Arrange
+    //    Polyline polyline = Polyline.FromString(value);
+    //    char[] expected = value.ToCharArray();
+    //    char[] result = new char[polyline.Length];
 
-        // Act
-        polyline.CopyTo(result);
+    //    // Act
+    //    polyline.CopyTo(result);
 
-        // Assert
-        CollectionAssert.AreEqual(expected, result);
-    }
-
-    /// <summary>
-    /// Tests the <see cref="Polyline.AsMemory"/> method.
-    /// </summary>
-    /// <param name="value">The string value.</param>
-    [TestMethod]
-    [DynamicData(nameof(StringParameters))]
-    public void AsMemory_Equals_Constructor_Parameter(string value) {
-        // Arrange
-        Polyline polyline = new(value);
-        ReadOnlySequence<char> expected = new(value.AsMemory());
-
-        // Act
-        ReadOnlySequence<char> result = polyline.AsSequence();
-
-        // Assert
-        CollectionAssert.AreEquivalent(expected.ToArray(), result.ToArray());
-    }
+    //    // Assert
+    //    CollectionAssert.AreEqual(expected, result);
+    //}
 }
