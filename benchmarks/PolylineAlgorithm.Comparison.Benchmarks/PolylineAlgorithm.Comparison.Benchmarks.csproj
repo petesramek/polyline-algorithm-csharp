@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
@@ -15,7 +15,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="BenchmarkDotNet" Version="0.13.12" />
+		<PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
 		<PackageReference Include="Cloudikka.PolylineAlgorithm" Version="1.0.0.6-alpha" />
 		<PackageReference Include="PolylineEncoder.Net" Version="1.0.1" />
 		<PackageReference Include="Polyliner.Net" Version="1.0.2" />
