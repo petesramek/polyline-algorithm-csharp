@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolylineAlgorithm.IO.Pipeli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolylineAlgorithm.Comparison.Benchmarks", "benchmarks\PolylineAlgorithm.Comparison.Benchmarks\PolylineAlgorithm.Comparison.Benchmarks.csproj", "{5E66392A-23C5-41BA-A5E7-E3CA097E3C91}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolylineAlgorithm.Abstraction", "src\PolylineAlgorithm.Abstraction\PolylineAlgorithm.Abstraction.csproj", "{2A15894F-3E7D-45E6-983F-FBA7C7B78B3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{5E66392A-23C5-41BA-A5E7-E3CA097E3C91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E66392A-23C5-41BA-A5E7-E3CA097E3C91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E66392A-23C5-41BA-A5E7-E3CA097E3C91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A15894F-3E7D-45E6-983F-FBA7C7B78B3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A15894F-3E7D-45E6-983F-FBA7C7B78B3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A15894F-3E7D-45E6-983F-FBA7C7B78B3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A15894F-3E7D-45E6-983F-FBA7C7B78B3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +62,7 @@ Global
 		{9C7CBAD5-415B-4589-86E1-01C849F9C56C} = {33C03F16-4313-4579-87E6-65892AF21D7D}
 		{AC2D1BF7-B70C-461A-92FB-2C1E50D6C5FB} = {51C886AF-D610-48A4-9D73-2DEB38742801}
 		{5E66392A-23C5-41BA-A5E7-E3CA097E3C91} = {33C03F16-4313-4579-87E6-65892AF21D7D}
+		{2A15894F-3E7D-45E6-983F-FBA7C7B78B3C} = {51C886AF-D610-48A4-9D73-2DEB38742801}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {93A268DC-0947-4FBB-B495-DDAD4B013D82}

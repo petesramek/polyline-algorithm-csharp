@@ -31,12 +31,12 @@ public class PolylineDecoderBenchmark {
     /// <summary>
     /// Gets the character array representing the encoded polyline.
     /// </summary>
-    public byte[] ByteArray { get; private set; }
+    public char[] CharArray { get; private set; }
 
     /// <summary>
     /// Gets the read-only memory representing the encoded polyline.
     /// </summary>
-    public ReadOnlyMemory<byte> Memory { get; private set; }
+    public ReadOnlyMemory<char> Memory { get; private set; }
 
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
@@ -51,8 +51,8 @@ public class PolylineDecoderBenchmark {
     [GlobalSetup]
     public void SetupData() {
         StringValue = ValueProvider.GetPolyline(N).ToString();
-        ByteArray = Encoding.UTF8.GetBytes(StringValue);
-        Memory = ByteArray.AsMemory();
+        CharArray = StringValue.ToArray();
+        Memory = CharArray.AsMemory();
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ public class PolylineDecoderBenchmark {
         Polyline polyline = Polyline.FromString(StringValue);
 
         Decoder
-            .Decode(polyline)
+            .Decode(StringValue)
             .Consume(_consumer);
     }
 
@@ -72,10 +72,10 @@ public class PolylineDecoderBenchmark {
     /// </summary>
     [Benchmark]
     public void PolylineDecoder_Decode_FromCharArray() {
-        Polyline polyline = Polyline.FromByteArray(ByteArray);
+        Polyline polyline = Polyline.FromCharArray(CharArray);
 
         Decoder
-            .Decode(polyline)
+            .Decode(StringValue)
             .Consume(_consumer);
     }
 
@@ -87,7 +87,7 @@ public class PolylineDecoderBenchmark {
         Polyline polyline = Polyline.FromMemory(Memory);
 
         Decoder
-            .Decode(polyline)
+            .Decode(StringValue)
             .Consume(_consumer);
     }
 

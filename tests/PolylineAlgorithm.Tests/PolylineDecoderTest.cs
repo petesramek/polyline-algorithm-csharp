@@ -25,10 +25,10 @@ public class PolylineDecoderTest {
     [TestMethod]
     public void Decode_Empty_Input_ThrowsException() {
         // Arrange
-        Polyline empty = new();
+        string empty = String.Empty;
 
         // Act
-        void Execute(Polyline value) => Decoder.Decode(value).ToList();
+        void Execute(string value) => Decoder.Decode(value).ToList();
 
         // Assert
         Assert.ThrowsExactly<ArgumentException>(() => Execute(empty));
@@ -56,8 +56,8 @@ public class PolylineDecoderTest {
     [TestMethod]
     public void Decode_Valid_Input_Ok() {
         // Arrange
-        IEnumerable<Coordinate> expected = ValueProvider.GetCoordinates(1);// Values.Coordinates.Valid;
-        Polyline value = ValueProvider.GetPolyline(1);
+        IEnumerable<Coordinate> expected = ValueProvider.GetCoordinates(1);
+        string value = ValueProvider.GetPolyline(1).ToString();
 
         // Act
         var result = Decoder.Decode(value);

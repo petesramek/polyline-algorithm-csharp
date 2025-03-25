@@ -6,15 +6,13 @@
 namespace PolylineAlgorithm.Comparison.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
-using Cloudikka.PolylineAlgorithm.Encoding;
+using global::PolylineEncoder.Net.Utility;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Comparison.Benchmarks.Internal;
-using global::PolylineEncoder.Net.Utility;
 using PolylinerNet;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BenchmarkDotNet.Engines;
-using Microsoft.Extensions.Primitives;
+using PolylineEncoding = Cloudikka.PolylineAlgorithm.Encoding.PolylineEncoding;
 
 /// <summary>
 /// Benchmarks for the <see cref="PolylineEncoder"/> class.
@@ -74,17 +72,16 @@ public class PolylineEncoderBenchmark {
     /// Benchmarks the decoding of a polyline from a string.
     /// </summary>
     [Benchmark(Baseline = true)]
-    public string PolylineAlgorithm_Decode() {
+    public Polyline PolylineAlgorithm_Encode() {
         return PolylineAlgorithm
-            .Encode(Enumeration)
-            .ToString();
+            .Encode(Enumeration);
     }
 
     /// <summary>
     /// Benchmarks the decoding of a polyline from a character array.
     /// </summary>
     [Benchmark]
-    public string Cloudikka_Decode() {
+    public string Cloudikka_Encode() {
         return Cloudikka
             .Encode(Enumeration.Select(c => (c.Latitude, c.Longitude)));
     }
@@ -93,16 +90,16 @@ public class PolylineEncoderBenchmark {
     /// Benchmarks the decoding of a polyline from read-only memory.
     /// </summary>
     [Benchmark]
-    public void PolylinerNet_Decode() {
+    public void PolylinerNet_Encode() {
         PolylinerNet
-            .Encode([..Enumeration.Select(c => new PolylinePoint(c.Latitude, c.Longitude))]);
+            .Encode([.. Enumeration.Select(c => new PolylinePoint(c.Latitude, c.Longitude))]);
     }
 
     /// <summary>
     /// Benchmarks the decoding of a polyline from read-only memory.
     /// </summary>
     [Benchmark]
-    public string Polylines_Decode() {
+    public string Polylines_Encode() {
         return Polylines.Polyline
             .EncodePoints(Enumeration.Select(c => new Polylines.PolylineCoordinate { Latitude = c.Latitude, Longitude = c.Longitude }));
     }
@@ -111,7 +108,7 @@ public class PolylineEncoderBenchmark {
     /// Benchmarks the decoding of a polyline from read-only memory.
     /// </summary>
     [Benchmark]
-    public string PolylineUtility_Decode() {
+    public string PolylineUtility_Encode() {
         return PolylineUtility
             .Encode(Enumeration.Select(c => new Tuple<double, double>(c.Latitude, c.Longitude)));
     }

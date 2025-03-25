@@ -68,14 +68,14 @@ public class PolylineTest {
     public void Constructor_String_Parameter_Ok(int size) {
         // Arrange
         var polyline = ValueProvider.GetPolyline(size);
-        bool empty = polyline.IsEmpty;
+        bool empty = polyline.Length == 0;
         long length = polyline.Length;
 
         // Act
         Polyline result = Polyline.FromString(polyline.ToString());
 
         // Assert
-        Assert.AreEqual(empty, polyline.IsEmpty);
+        Assert.AreEqual(empty, polyline.Length == 0);
         Assert.AreEqual(length, polyline.Length);
         //Assert.IsTrue(span.Span.SequenceEqual(polyline.Span.Span));
     }

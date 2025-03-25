@@ -7,12 +7,11 @@ namespace PolylineAlgorithm.Comparison.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
-using Cloudikka.PolylineAlgorithm.Encoding;
 using global::PolylineEncoder.Net.Utility;
 using PolylineAlgorithm;
-using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Comparison.Benchmarks.Internal;
 using PolylinerNet;
+using PolylineEncoding = Cloudikka.PolylineAlgorithm.Encoding.PolylineEncoding;
 
 /// <summary>
 /// Benchmarks for the <see cref="PolylineAlgorithm.PolylineDecoder"/> class.
@@ -63,7 +62,7 @@ public class PolylineDecoderBenchmark {
     [Benchmark(Baseline = true)]
     public void PolylineAlgorithm_Decode() {
         PolylineAlgorithm
-            .Decode(PolylineValue)
+            .Decode(StringValue)
             .Consume(_consumer);
     }
 

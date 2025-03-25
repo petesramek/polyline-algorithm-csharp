@@ -19,27 +19,27 @@ using System.Text;
 [StructLayout(LayoutKind.Auto)]
 [DebuggerDisplay("Value: {ToString()}, IsEmpty: {IsEmpty}, Length: {Length}")]
 public readonly struct Polyline : IEquatable<Polyline> {
-    private readonly ReadOnlySequence<byte> _value;
+    private readonly ReadOnlySequence<char> _value;
 
     /// <summary>
     /// Creates a new <see cref="Polyline"/> structure that is empty.
     /// </summary>
     public Polyline() {
-        _value = ReadOnlySequence<byte>.Empty;
+        _value = ReadOnlySequence<char>.Empty;
     }
 
     /// <summary>
     /// Creates a new <see cref="Polyline"/> structure that contains the specified Unicode character array.
     /// </summary>
     /// <param name="value">The readonly memory region to initialize the polyline with.</param>
-    private Polyline(ReadOnlySequence<byte> value) {
+    private Polyline(ReadOnlySequence<char> value) {
         _value = value;
     }
 
     /// <summary>
     /// Gets the span of characters in the polyline.
     /// </summary>
-    internal readonly ReadOnlySequence<byte> Value => _value;
+    internal readonly ReadOnlySequence<char> Value => _value;
 
     /// <summary>
     /// Gets a value indicating whether this <see cref="Polyline" /> is empty.
@@ -63,7 +63,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
         return count;
     }
 
-    public ReadOnlySequence<byte>.Enumerator GetEnumerator() {
+    public ReadOnlySequence<char>.Enumerator GetEnumerator() {
         return _value.GetEnumerator();
     }
 
@@ -71,7 +71,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// Copies the characters in this instance to a Unicode character array.
     /// </summary>
     /// <returns>A Unicode character array.</returns>
-    public void CopyTo(byte[] destination) {
+    public void CopyTo(char[] destination) {
         if (destination is null) {
             throw new ArgumentNullException(nameof(destination));
         }
@@ -89,7 +89,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
         }
 
         if (Value.IsSingleSegment) {
-            return Encoding.UTF8.GetString(Value.FirstSpan);
+            return Value.FirstSpan.ToString();
         }
 
         var sb = Value.Length <= int.MaxValue ? new StringBuilder(Convert.ToInt32(Value.Length)) : new StringBuilder();
@@ -104,7 +104,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
                 continue;
             }
 
-            sb.Append(Encoding.UTF8.GetString(enumerator.Current.Span));
+            sb.Append(enumerator.Current.Span);
         }
 
         return sb.ToString();
@@ -154,7 +154,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// </summary>
     /// <param name="polyline">A Unicode character array representing an encoded polyline.</param>
     /// <returns>The <see cref="Polyline"/> value that corresponds to the specified Unicode character array.</returns>
-    public static Polyline FromByteArray(byte[] polyline) {
+    public static Polyline FromCharArray(char[] polyline) {
         if (polyline is null) {
             throw new ArgumentNullException(nameof(polyline));
         }
@@ -172,7 +172,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
             throw new ArgumentNullException(nameof(polyline));
         }
 
-        return FromMemory(Encoding.UTF8.GetBytes(polyline));
+        return FromMemory(polyline.AsMemory());
     }
 
     /// <summary>
@@ -180,7 +180,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// </summary>
     /// <param name="polyline">A Unicode character array representing an encoded polyline.</param>
     /// <returns>The <see cref="Polyline"/> value that corresponds to the specified Unicode character array.</returns>
-    public static Polyline FromMemory(ReadOnlyMemory<byte> polyline) {
+    public static Polyline FromMemory(ReadOnlyMemory<char> polyline) {
         if (polyline.IsEmpty) {
             return new();
         }
@@ -193,7 +193,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
         return builder.Build();
     }
 
-    internal static Polyline FromSequence(ReadOnlySequence<byte> value) {
+    internal static Polyline FromSequence(ReadOnlySequence<char> value) {
         return new Polyline(value);
     }
 
@@ -207,7 +207,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <param name="polyline">The Unicode character array to convert.</param>
     /// <returns>The converted Unicode character array.</returns>
     [ExcludeFromCodeCoverage]
-    public static explicit operator Polyline(byte[] polyline) => FromByteArray(polyline);
+    public static explicit operator Polyline(char[] polyline) => FromCharArray(polyline);
 
     /// <summary>
     /// Defines an explicit conversion of a string to a <see cref="Polyline"/>.
@@ -223,7 +223,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <param name="polyline">The string to convert.</param>
     /// <returns>The converted string.</returns>
     [ExcludeFromCodeCoverage]
-    public static explicit operator Polyline(Memory<byte> polyline) => FromMemory(polyline);
+    public static explicit operator Polyline(Memory<char> polyline) => FromMemory(polyline);
 
     #endregion
 
@@ -231,7 +231,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
         private PolylineSegment? _initial;
         private PolylineSegment? _last;
 
-        public void Append(ReadOnlyMemory<byte> value) {
+        public void Append(in ReadOnlyMemory<char> value) {
                 var current = new PolylineSegment(value);
 
                 _initial ??= current;
@@ -242,7 +242,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
 
         public Polyline Build() {
             if (_initial is null) {
-                return FromMemory(ReadOnlyMemory<byte>.Empty);
+                return FromMemory(ReadOnlyMemory<char>.Empty);
             }
 
             return FromSequence(new(_initial, 0, _last, _last!.Memory.Length));

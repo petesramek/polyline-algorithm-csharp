@@ -13,11 +13,11 @@ public static class PolylineDecoderExtensions {
         return decoder.Decode(Polyline.FromString(polyline));
     }
 
-    public static IEnumerable<TCoordinate> Decode<TCoordinate>(this IPolylineDecoder<TCoordinate> decoder, byte[] polyline) {
+    public static IEnumerable<TCoordinate> Decode<TCoordinate>(this IPolylineDecoder<TCoordinate> decoder, char[] polyline) {
         if (decoder is null) {
             throw new ArgumentNullException(nameof(decoder));
         }
 
-        return decoder.Decode(Polyline.FromByteArray(polyline));
+        return decoder.Decode(Polyline.FromCharArray(polyline));
     }
 }

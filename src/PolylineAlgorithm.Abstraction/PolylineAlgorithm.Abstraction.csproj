@@ -31,10 +31,6 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	</PropertyGroup>
-
-	<PropertyGroup>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Title>Polyline Algorithm for .NET</Title>
@@ -51,21 +47,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="Properties\ExceptionMessageResource.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>ExceptionMessageResource.resx</DependentUpon>
-		</Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Update="Properties\ExceptionMessageResource.resx">
-			<Generator>ResXFileCodeGenerator</Generator>
-			<LastGenOutput>ExceptionMessageResource.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-	</ItemGroup>
-
-	<ItemGroup>
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
 			<_Parameter1>PolylineAlgorithm.Tests</_Parameter1>
 		</AssemblyAttribute>
@@ -79,10 +60,6 @@
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\PolylineAlgorithm.Abstraction\PolylineAlgorithm.Abstraction.csproj" />
 	</ItemGroup>
 
 </Project>

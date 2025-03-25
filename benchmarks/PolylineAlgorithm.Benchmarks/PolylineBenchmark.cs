@@ -30,12 +30,12 @@ public class PolylineBenchmark {
     /// <summary>
     /// Gets the character array representing the encoded polyline.
     /// </summary>
-    public byte[] ByteArray { get; private set; }
+    public char[] CharArray { get; private set; }
 
     /// <summary>
     /// Gets the read-only memory representing the encoded polyline.
     /// </summary>
-    public ReadOnlyMemory<byte> Memory { get; private set; }
+    public ReadOnlyMemory<char> Memory { get; private set; }
 
     /// <summary>
     /// Gets the read-only memory representing the encoded polyline.
@@ -52,8 +52,8 @@ public class PolylineBenchmark {
     public void SetupData() {
         Polyline = ValueProvider.GetPolyline(Length);
         StringValue = Polyline.ToString();
-        ByteArray = Encoding.UTF8.GetBytes(StringValue);
-        Memory = ByteArray.AsMemory();
+        CharArray = StringValue.ToArray();
+        Memory = CharArray.AsMemory();
     }
 
     /// <summary>
@@ -75,7 +75,7 @@ public class PolylineBenchmark {
     [Benchmark]
     public Polyline Polyline_FromCharArray() {
         var polyline = Polyline
-            .FromByteArray(ByteArray);
+            .FromCharArray(CharArray);
 
         return polyline;
     }
@@ -123,7 +123,7 @@ public class PolylineBenchmark {
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
     public void Polyline_CopyTo() {
-        var destination = new byte[Polyline.Length];
+        var destination = new char[Polyline.Length];
 
         Polyline
             .CopyTo(destination);

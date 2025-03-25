@@ -13,6 +13,8 @@ using PolylineAlgorithm.Tests.Internal;
 /// </summary>
 [TestClass]
 public class PolylineEncoderTest {
+    public static IEnumerable<object[]> CoordinateCount => [ [1], [10], [100], [1_000], [10_000], [100_000], [1_000_000] ];
+
     /// <summary>
     /// The instance of the <see cref="PolylineEncoder"/> used for testing.
     /// </summary>
@@ -74,19 +76,18 @@ public class PolylineEncoderTest {
     /// </summary>
     /// <remarks>Expected result is that the encoded polyline matches <see cref="Values.Polyline.Valid"/>.</remarks>
     [TestMethod]
-    public void Encode_ValidInput_Ok() {
+    [DynamicData(nameof(CoordinateCount))]
+    public void Encode_ValidInput_Ok(int count) {
         // Arrange
-        IEnumerable<Coordinate> valid = ValueProvider.GetCoordinates(1);// Values.Coordinates.Valid;
-        Polyline expected = ValueProvider.GetPolyline(1);
+        IEnumerable<Coordinate> valid = ValueProvider.GetCoordinates(count);
+        Polyline expected = ValueProvider.GetPolyline(count);
 
         // Act
         var result = Encoder.Encode(valid);
 
-        var aha = expected.ToString();
-        var ehe = result.ToString();
-
         // Assert
-        //Assert.AreEqual(Values.Polyline.Valid, result.ToString());
+        Assert.AreEqual(expected.IsEmpty, result.IsEmpty);
+        Assert.AreEqual(expected.Length, result.Length);
         Assert.IsTrue(expected.Equals(result));
     }
 }

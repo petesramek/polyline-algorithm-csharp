@@ -9,6 +9,7 @@ using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Properties;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
@@ -37,7 +38,7 @@ public class PolylineEncoder : IPolylineEncoder {
             throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeEmptyEnumerationMessage, nameof(coordinates));
         }
 
-        int size = count * Defaults.Polyline.MaxEncodedCoordinateLength * sizeof(byte);
+        int size = count * Defaults.Polyline.MaxEncodedCoordinateLength;
 
         CoordinateVariance variance;
         Coordinate previous = Coordinate.Default;
@@ -45,35 +46,34 @@ public class PolylineEncoder : IPolylineEncoder {
         PolylineBuilder builder = new();
 
         int position = 0;
-        Memory<byte> buffer = new byte[size];
+        Span<char> buffer = size < 32_000 ? new char[size] : new char[32_000];
 
         foreach (Coordinate current in coordinates) {
-            InvalidCoordinateException.ThrowIfNotValid(current);
-
             variance = CoordinateVariance.Calculate(previous, current);
 
-            EncodeVariance(variance.Latitude);
-            EncodeVariance(variance.Longitude);
+            if((position
+                + PolylineEncoding.Default.GetRequiredCharCount(variance.Latitude)
+                + PolylineEncoding.Default.GetRequiredCharCount(variance.Longitude))
+                > buffer.Length) {
+                builder
+                    .Append(buffer[..position].ToArray());
+                position = 0;
+            }
+
+            if (PolylineEncoding.Default.TryWriteValue(variance.Latitude, ref buffer, ref position)
+                && PolylineEncoding.Default.TryWriteValue(variance.Longitude, ref buffer, ref position)
+            ) {
+                throw new InvalidOperationException();
+            }
 
             previous = current;
-
-            void EncodeVariance(int variance) {
-                var temp = buffer[position..].Span;
-                position += VarianceEncoding.Default.Encode(variance, ref temp);
-            }
         }
 
         builder
-            .Append(buffer[..position]);
+            .Append(buffer[..position].ToArray());
 
         return builder.Build();
-
-        static int GetRequiredSize(ref readonly CoordinateVariance variance) => VarianceEncoding.Default.GetCharCount(variance.Latitude) + VarianceEncoding.Default.GetCharCount(variance.Longitude);
-
-        
     }
-
-
 
     /// <summary>
     /// Gets the count of coordinates in the enumerable.

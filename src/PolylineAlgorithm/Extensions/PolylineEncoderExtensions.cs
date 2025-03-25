@@ -21,7 +21,7 @@ public static class PolylineEncoderExtensions {
         return encoder.Encode(coordinates);
     }
 
-    public static Polyline Encode(this IPolylineEncoder encoder, ReadOnlyMemory<char> coordinates) {
+    public static string Encode(this IPolylineEncoder encoder, ReadOnlyMemory<char> coordinates) {
         if (encoder is null) {
             throw new ArgumentNullException(nameof(encoder));
         }

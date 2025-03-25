@@ -2,13 +2,13 @@
 
 using System.Buffers;
 
-internal class PolylineSegment : ReadOnlySequenceSegment<byte> {
-    public PolylineSegment(ReadOnlyMemory<byte> memory, long runningIndex = 0) {
+internal class PolylineSegment : ReadOnlySequenceSegment<char> {
+    public PolylineSegment(ReadOnlyMemory<char> memory, long runningIndex = 0) {
         Memory = memory;
         RunningIndex = runningIndex;
     }
 
-    public void Append(ReadOnlyMemory<byte> memory) {
+    public void Append(ReadOnlyMemory<char> memory) {
         Append(new PolylineSegment(memory));
     }
 
