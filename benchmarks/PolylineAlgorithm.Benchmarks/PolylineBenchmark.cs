@@ -12,7 +12,7 @@ using PolylineAlgorithm.Benchmarks.Internal;
 using System.Text;
 
 /// <summary>
-/// Benchmarks for the <see cref="Polyline"/> struct.
+/// Benchmarks for the <see cref="PolylineValue"/> struct.
 /// </summary>
 [RankColumn]
 public class PolylineBenchmark {
@@ -23,24 +23,24 @@ public class PolylineBenchmark {
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     /// <summary>
+    /// Gets the character array representing the encoded polyline.
+    /// </summary>
+    public char[] CharArrayValue { get; private set; }
+
+    /// <summary>
+    /// Gets the read-only memory representing the encoded polyline.
+    /// </summary>
+    public ReadOnlyMemory<char> MemoryValue { get; private set; }
+
+    /// <summary>
+    /// Gets the read-only memory representing the encoded polyline.
+    /// </summary>
+    public Polyline PolylineValue { get; private set; }
+
+    /// <summary>
     /// Gets the string value representing the encoded polyline.
     /// </summary>
     public string StringValue { get; private set; }
-
-    /// <summary>
-    /// Gets the character array representing the encoded polyline.
-    /// </summary>
-    public char[] CharArray { get; private set; }
-
-    /// <summary>
-    /// Gets the read-only memory representing the encoded polyline.
-    /// </summary>
-    public ReadOnlyMemory<char> Memory { get; private set; }
-
-    /// <summary>
-    /// Gets the read-only memory representing the encoded polyline.
-    /// </summary>
-    public Polyline Polyline { get; private set; }
 
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
@@ -50,10 +50,10 @@ public class PolylineBenchmark {
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        Polyline = ValueProvider.GetPolyline(Length);
-        StringValue = Polyline.ToString();
-        CharArray = StringValue.ToArray();
-        Memory = CharArray.AsMemory();
+        PolylineValue = ValueProvider.GetPolyline(Length);
+        StringValue = PolylineValue.ToString();
+        CharArrayValue = StringValue.ToArray();
+        MemoryValue = CharArrayValue.AsMemory();
     }
 
     /// <summary>
@@ -75,7 +75,7 @@ public class PolylineBenchmark {
     [Benchmark]
     public Polyline Polyline_FromCharArray() {
         var polyline = Polyline
-            .FromCharArray(CharArray);
+            .FromCharArray(CharArrayValue);
 
         return polyline;
     }
@@ -87,7 +87,7 @@ public class PolylineBenchmark {
     [Benchmark]
     public Polyline Polyline_FromMemory() {
         var polyline = Polyline
-            .FromMemory(Memory);
+            .FromMemory(MemoryValue);
 
         return polyline;
     }
@@ -98,23 +98,23 @@ public class PolylineBenchmark {
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
     public string Polyline_ToString() {
-        var stringValue = Polyline
+        var stringValue = PolylineValue
             .ToString();
 
         return stringValue;
     }
 
-    /// <summary>
-    /// Benchmarks the encoding of an enumeration of coordinates into a polyline.
-    /// </summary>
-    /// <returns>The encoded polyline.</returns>
-    [Benchmark]
-    public long Polyline_GetCoordinateCount() {
-        var coordinateCount = Polyline
-            .GetCoordinateCount();
+    ///// <summary>
+    ///// Benchmarks the encoding of an enumeration of coordinates into a polyline.
+    ///// </summary>
+    ///// <returns>The encoded polyline.</returns>
+    //[Benchmark]
+    //public long Polyline_GetCoordinateCount() {
+    //    var coordinateCount = PolylineValue
+    //        .GetCoordinateCount();
 
-        return coordinateCount;
-    }
+    //    return coordinateCount;
+    //}
 
 
     /// <summary>
@@ -123,9 +123,9 @@ public class PolylineBenchmark {
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
     public void Polyline_CopyTo() {
-        var destination = new char[Polyline.Length];
+        var destination = new char[PolylineValue.Length];
 
-        Polyline
+        PolylineValue
             .CopyTo(destination);
 
         destination
@@ -138,8 +138,8 @@ public class PolylineBenchmark {
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
     public bool Polyline_Equals() {
-        var equals = Polyline
-            .Equals(Polyline);
+        var equals = PolylineValue
+            .Equals(PolylineValue);
 
         return equals;
     }

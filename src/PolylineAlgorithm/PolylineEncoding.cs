@@ -36,7 +36,7 @@ public class PolylineEncoding {
     public double Denormalize(int value) => value / Defaults.Algorithm.Precision;
 
     public bool TryWriteValue(in int variance, ref Span<char> buffer, ref int position) {
-        if(buffer.Length > position + GetRequiredCharCount(variance)) {
+        if(buffer.Length < position + GetRequiredCharCount(variance)) {
             return false;
         }
 
@@ -56,7 +56,7 @@ public class PolylineEncoding {
         return true;
     }
 
-    private int Normalize(double value) => (int)(value * Defaults.Algorithm.Precision);
+    public int Normalize(double value) => (int)(value * Defaults.Algorithm.Precision);
 
     public int GetRequiredCharCount(in int variation) => variation switch {
         // DO NOT CHANGE THE ORDER. We are skipping inside exclusive ranges as those are covered by previous statements.

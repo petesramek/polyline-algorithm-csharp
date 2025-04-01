@@ -2,30 +2,28 @@
 
 using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
-public readonly ref struct CoordinateVariance {
+[StructLayout(LayoutKind.Sequential)]
+public struct CoordinateVariance {
+    private (int Latitude, int Longitude) _current = (0, 0);
+
     private CoordinateVariance(int latitude, int longitude) {
         Latitude = latitude;
         Longitude = longitude;
     }
 
-    public int Latitude { get; }
-    public int Longitude { get; }
+    public int Latitude { get; private set; }
 
-    public static CoordinateVariance Create(int latitude, int longitude) {
-        return new CoordinateVariance(latitude, longitude);
+    public int Longitude { get; private set; }
+
+    public void Next(in (int Latitude, int Longitude) next) {
+        Latitude = Variance(_current.Latitude, next.Latitude);
+        Longitude = Variance(_current.Longitude, next.Longitude);
+
+        _current = next;
     }
-
-    public static CoordinateVariance Calculate(Coordinate initial, Coordinate next) {
-        int latitude = Variance(Round(initial.Latitude), Round(next.Latitude));
-        int longitude = Variance(Round(initial.Longitude), Round(next.Longitude));
-
-        return new CoordinateVariance(latitude, longitude);
-    }
-
-    public override readonly string ToString()
-        => $"Variance: {{ Latitude: {Latitude}, Longitude: {Longitude} }}";
 
     private static int Variance(int initial, int next) => (initial, next) switch {
         (0, 0) => 0,
@@ -37,5 +35,6 @@ public readonly ref struct CoordinateVariance {
         ( > 0, > 0) => next - initial,
     };
 
-    private static int Round(double value) => (int)Math.Round(value * Defaults.Algorithm.Precision);
+    public override readonly string ToString()
+        => $"Variance: {{ Latitude: {Latitude}, Longitude: {Longitude} }}";
 }

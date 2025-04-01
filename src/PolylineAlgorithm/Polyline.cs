@@ -51,17 +51,17 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// </summary>
     public readonly long Length => Value.Length;
 
-    public long GetCoordinateCount() {
-        long count = 0;
+    //public long GetCoordinateCount() {
+    //    long count = 0;
 
-        var enumerator = GetEnumerator();
+    //    var enumerator = GetEnumerator();
 
-        while (enumerator.MoveNext()) {
-            count++;
-        }
+    //    while (enumerator.MoveNext()) {
+    //        count++;
+    //    }
 
-        return count;
-    }
+    //    return count;
+    //}
 
     public ReadOnlySequence<char>.Enumerator GetEnumerator() {
         return _value.GetEnumerator();
@@ -115,16 +115,16 @@ public readonly struct Polyline : IEquatable<Polyline> {
             return false;
         }
 
-        var first = GetEnumerator();
-        var second = other.GetEnumerator();
+        var enumerator = GetEnumerator();
+        var reader = new SequenceReader<char>(other.Value);
 
-        while (first.MoveNext()) {
-            if (!second.MoveNext() || !first.Current.Span.SequenceEqual(second.Current.Span)) {
+        while (enumerator.MoveNext()) {
+            if (!reader.IsNext(enumerator.Current.Span, true)) {
                 return false;
             }
         }
 
-        if (second.MoveNext()) {
+        if (reader.Remaining > 0) {
             return false;
         }
 
@@ -185,12 +185,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
             return new();
         }
 
-        var builder = new PolylineBuilder();
-
-        builder
-            .Append(polyline);
-
-        return builder.Build();
+        return FromSequence(new ReadOnlySequence<char>(polyline));
     }
 
     internal static Polyline FromSequence(ReadOnlySequence<char> value) {
@@ -223,21 +218,22 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <param name="polyline">The string to convert.</param>
     /// <returns>The converted string.</returns>
     [ExcludeFromCodeCoverage]
-    public static explicit operator Polyline(Memory<char> polyline) => FromMemory(polyline);
+    public static explicit operator Polyline(ReadOnlyMemory<char> polyline) => FromMemory(polyline);
 
     #endregion
 
+    [StructLayout(LayoutKind.Auto)]
     internal struct PolylineBuilder {
         private PolylineSegment? _initial;
         private PolylineSegment? _last;
 
         public void Append(in ReadOnlyMemory<char> value) {
-                var current = new PolylineSegment(value);
+            var current = new PolylineSegment(value);
 
-                _initial ??= current;
+            _initial ??= current;
 
-                _last?.Append(current);
-                _last = current;
+            _last?.Append(current);
+            _last = current;
         }
 
         public Polyline Build() {
@@ -247,26 +243,5 @@ public readonly struct Polyline : IEquatable<Polyline> {
 
             return FromSequence(new(_initial, 0, _last, _last!.Memory.Length));
         }
-
-        //private long GetCount(ReadOnlyMemory<char> memory) {
-        //    int position = 0;
-        //    int index;
-        //    long count = 0;
-
-        //    while (position < memory.Length) {
-        //        index = memory.Span[position..].IndexOfAny(Defaults.Polyline.Delimiters) + 1;
-        //        index += memory.Span[(position + index)..].IndexOfAny(Defaults.Polyline.Delimiters) + 1;
-
-        //        position += index;
-
-        //        if (position == memory.Length) {
-        //            break;
-        //        }
-
-        //        count++;
-        //    }
-
-        //    return count;
-        //}
     }
 }

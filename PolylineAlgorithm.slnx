@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/benchmarks/">
+    <Project Path="benchmarks/PolylineAlgorithm.Benchmarks/PolylineAlgorithm.Benchmarks.csproj" />
+    <Project Path="benchmarks/PolylineAlgorithm.Comparison.Benchmarks/PolylineAlgorithm.Comparison.Benchmarks.csproj" />
+  </Folder>
+  <Folder Name="/samples/" />
+  <Folder Name="/src/">
+    <Project Path="src/PolylineAlgorithm.Abstraction/PolylineAlgorithm.Abstraction.csproj" />
+    <Project Path="src/PolylineAlgorithm.IO.Pipelines/PolylineAlgorithm.IO.Pipelines.csproj" />
+    <Project Path="src/PolylineAlgorithm/PolylineAlgorithm.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/PolylineAlgorithm.Tests/PolylineAlgorithm.Tests.csproj" />
+  </Folder>
+</Solution>

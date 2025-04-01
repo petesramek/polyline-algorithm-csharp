@@ -36,11 +36,13 @@ public class PolylineEncoderPipe {
             throw new ArgumentNullException(nameof(writer));
         }
 
-        CoordinateVariance variance;
-        Coordinate current = Coordinate.Default;
+        CoordinateVariance variance = new();
 
-        while (await Formatter.TryReadAsync(reader, out Coordinate next, cancellation).ConfigureAwait(false)) {
-            variance = CoordinateVariance.Calculate(current, next);
+        while (await Formatter.TryReadAsync(reader, out Coordinate coordinate, cancellation).ConfigureAwait(false)) {
+            (int Latitude, int Longitude) next = (PolylineEncoding.Default.Normalize(coordinate.Latitude), PolylineEncoding.Default.Normalize(coordinate.Longitude));
+
+            variance
+                .Next(next);
 
             Process(writer, variance.Latitude, _buffer);
             Process(writer, variance.Longitude, _buffer);
@@ -48,8 +50,6 @@ public class PolylineEncoderPipe {
             await writer
                 .FlushAsync(cancellation)
                 .ConfigureAwait(false);
-
-            current = next;
         }
 
         await CompleteAsync(reader, writer)
