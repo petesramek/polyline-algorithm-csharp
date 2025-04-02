@@ -8,7 +8,6 @@
     <Project Path="src/PolylineAlgorithm/PolylineAlgorithm.csproj" />
   </Folder>
   <Folder Name="/tests/">
-    <File Path="tests/Directory.Build.props" />
     <Project Path="tests/PolylineAlgorithm.Tests/PolylineAlgorithm.Tests.csproj" />
   </Folder>
 </Solution>
