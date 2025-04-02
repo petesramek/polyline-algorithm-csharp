@@ -74,7 +74,7 @@ public abstract class PolylineEncoder<TCoordinate> : IPolylineEncoder<TCoordinat
 
         return builder.Build();
 
-        static int GetMaximumLength(int count) => count > 1 ? count * Defaults.Polyline.MaxEncodedCoordinateLength : int.MaxValue;
+        static int GetMaximumLength(int count) => (count > 1 && count < int.MaxValue / Defaults.Polyline.MaxEncodedCoordinateLength) ? count * Defaults.Polyline.MaxEncodedCoordinateLength : 64_000;
 
         static (int Latitude, int Longitude) Normalize((double Latitude, double Longitude) coordinate) =>
                     (PolylineEncoding.Default.Normalize(coordinate.Latitude), PolylineEncoding.Default.Normalize(coordinate.Longitude));
@@ -91,6 +91,8 @@ public abstract class PolylineEncoder<TCoordinate> : IPolylineEncoder<TCoordinat
     [ExcludeFromCodeCoverage]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     static int GetCount(IEnumerable<TCoordinate> coordinates) => coordinates switch {
+        TCoordinate[] array => array.Length,
+        List<TCoordinate> list => list.Count,
         ICollection collection => collection.Count,
         _ => -1
     };
