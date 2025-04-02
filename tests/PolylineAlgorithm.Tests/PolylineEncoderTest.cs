@@ -6,19 +6,18 @@
 namespace PolylineAlgorithm.Tests;
 
 using PolylineAlgorithm.Tests.Data;
-using PolylineAlgorithm.Tests.Internal;
 
 /// <summary>
 /// Defines tests for the <see cref="PolylineEncoder"/> type.
 /// </summary>
 [TestClass]
 public class PolylineEncoderTest {
-    public static IEnumerable<object[]> CoordinateCount => [ [1], [10], [100], [1_000], [10_000], [100_000], [1_000_000] ];
+    public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100], [1_000], [10_000], [100_000], [1_000_000]];
 
     /// <summary>
     /// The instance of the <see cref="PolylineEncoder"/> used for testing.
     /// </summary>
-    public PolylineEncoder Encoder = new();
+    public DefaultPolylineEncoder Encoder = new();
 
     /// <summary>
     /// Tests the <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})"/> method with a null input, expecting an <see cref="ArgumentNullException"/>.
@@ -68,7 +67,7 @@ public class PolylineEncoderTest {
         }
 
         // Assert
-        Assert.ThrowsExactly<InvalidCoordinateException>(() => EncodeInvalidCoordinates());
+        Assert.ThrowsExactly<InvalidOperationException>(() => EncodeInvalidCoordinates());
     }
 
     /// <summary>

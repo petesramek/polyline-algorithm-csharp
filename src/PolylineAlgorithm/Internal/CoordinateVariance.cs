@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
-[StructLayout(LayoutKind.Sequential)]
+[StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
 public struct CoordinateVariance {
     private (int Latitude, int Longitude) _current = (0, 0);
 

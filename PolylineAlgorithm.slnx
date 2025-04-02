@@ -5,11 +5,10 @@
   </Folder>
   <Folder Name="/samples/" />
   <Folder Name="/src/">
-    <Project Path="src/PolylineAlgorithm.Abstraction/PolylineAlgorithm.Abstraction.csproj" />
-    <Project Path="src/PolylineAlgorithm.IO.Pipelines/PolylineAlgorithm.IO.Pipelines.csproj" />
     <Project Path="src/PolylineAlgorithm/PolylineAlgorithm.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <File Path="tests/Directory.Build.props" />
     <Project Path="tests/PolylineAlgorithm.Tests/PolylineAlgorithm.Tests.csproj" />
   </Folder>
 </Solution>

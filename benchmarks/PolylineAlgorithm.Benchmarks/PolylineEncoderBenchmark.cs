@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 /// </summary>
 [RankColumn]
 public class PolylineEncoderBenchmark {
-    [Params(1, 10, 100, 1_000, 10_000, 100_000, 1_000_000)]
+    [Params(1, 10, 100, 250, 500, 1_000, 2_500, 5_000, 7_500, 10_000, 15_000, 20_000, 25_000, 50_000, 75_000, 100_000, 250_000, 500_000, 750_000, 1_000_000)]
     public int N;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
@@ -36,7 +36,7 @@ public class PolylineEncoderBenchmark {
     /// <summary>
     /// The polyline encoder instance.
     /// </summary>
-    public PolylineEncoder Encoder = new();
+    public DefaultPolylineEncoder Encoder = new();
 
     /// <summary>
     /// The async polyline encoder instance.

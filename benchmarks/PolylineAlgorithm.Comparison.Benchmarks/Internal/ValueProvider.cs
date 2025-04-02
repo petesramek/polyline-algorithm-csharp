@@ -3,7 +3,7 @@
 
     public static class ValueProvider {
         private static readonly ConcurrentDictionary<int, CoordinatePair> _cache = new();
-        private static readonly PolylineEncoder _encoder = new();
+        private static readonly DefaultPolylineEncoder _encoder = new();
 
         public static IEnumerable<Coordinate> GetCoordinates(int count) {
             var entry = GetCaheEntry(count);

@@ -35,8 +35,10 @@ public class PolylineEncoding {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double Denormalize(int value) => value / Defaults.Algorithm.Precision;
 
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryWriteValue(in int variance, ref Span<char> buffer, ref int position) {
-        if(buffer.Length < position + GetRequiredCharCount(variance)) {
+        if (buffer.Length < position + GetCharCount(variance)) {
             return false;
         }
 
@@ -56,9 +58,12 @@ public class PolylineEncoding {
         return true;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int Normalize(double value) => (int)(value * Defaults.Algorithm.Precision);
 
-    public int GetRequiredCharCount(in int variation) => variation switch {
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int GetCharCount(in int variation) => variation switch {
         // DO NOT CHANGE THE ORDER. We are skipping inside exclusive ranges as those are covered by previous statements.
         >= -16 and <= +15 => 1,
         >= -512 and <= +511 => 2,

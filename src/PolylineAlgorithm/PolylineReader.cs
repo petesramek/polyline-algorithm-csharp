@@ -2,8 +2,10 @@
 
 using PolylineAlgorithm.Internal;
 using System;
+using System.Runtime.InteropServices;
 using System.Text;
 
+[StructLayout(LayoutKind.Auto)]
 public ref struct PolylineReader {
     private readonly ReadOnlyMemory<byte> _value;
     private double _latitude;

@@ -5,6 +5,8 @@
 
 namespace PolylineAlgorithm.Abstraction;
 
-public interface IPolylineDecoder<TSource, TResult> : IPolylineDecoder {
-    public TResult Decode(TSource value);
+public interface ICoordinateFactory<T> {
+    public T Construct(double latitude, double longitude);
+
+    public (double Latitude, double Longitude) Deconstruct(T coordinate);
 }

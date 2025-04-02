@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 
 public static class PolylineEncoderExtensions {
-    public static Polyline Encode(this IPolylineEncoder encoder, ICollection<Coordinate> coordinates) {
+    public static Polyline Encode<TCoordinate>(this IPolylineEncoder<TCoordinate> encoder, ICollection<TCoordinate> coordinates) {
         if (encoder is null) {
             throw new ArgumentNullException(nameof(encoder));
         }
@@ -13,15 +13,7 @@ public static class PolylineEncoderExtensions {
         return encoder.Encode(coordinates);
     }
 
-    public static Polyline Encode(this IPolylineEncoder encoder, Coordinate[] coordinates) {
-        if (encoder is null) {
-            throw new ArgumentNullException(nameof(encoder));
-        }
-
-        return encoder.Encode(coordinates);
-    }
-
-    public static string Encode(this IPolylineEncoder encoder, ReadOnlyMemory<char> coordinates) {
+    public static Polyline Encode<TCoordinate>(this IPolylineEncoder<TCoordinate> encoder, TCoordinate[] coordinates) {
         if (encoder is null) {
             throw new ArgumentNullException(nameof(encoder));
         }

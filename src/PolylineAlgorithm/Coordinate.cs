@@ -15,8 +15,8 @@ using System.Runtime.InteropServices;
 /// <summary>
 /// Represents a latitude and longitude coordinate pair.
 /// </summary>
-[StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
 [DebuggerDisplay("{ToString()}")]
+[StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
 public readonly struct Coordinate : IEquatable<Coordinate> {
     public static readonly Coordinate Default = new();
     internal static long Size { get; } = Marshal.SizeOf<Coordinate>();

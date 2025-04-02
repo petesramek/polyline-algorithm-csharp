@@ -5,5 +5,5 @@
 
 using PolylineAlgorithm.Tests.Properties;
 
-[assembly: Parallelize(Scope = ExecutionScope.MethodLevel)]
+[assembly: Parallelize(Scope = ExecutionScope.ClassLevel)]
 [assembly: TestCategory(Category.Unit)]

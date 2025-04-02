@@ -6,8 +6,8 @@
 namespace PolylineAlgorithm.Tests;
 
 using PolylineAlgorithm;
+using PolylineAlgorithm.Extensions;
 using PolylineAlgorithm.Tests.Data;
-using PolylineAlgorithm.Tests.Internal;
 
 /// <summary>
 /// Defines tests for the <see cref="PolylineDecoder"/> type.
@@ -17,7 +17,7 @@ public class PolylineDecoderTest {
     /// <summary>
     /// The instance of the <see cref="PolylineDecoder"/> used for testing.
     /// </summary>
-    public PolylineDecoder<Coordinate> Decoder = new(new CoordinateFactory());
+    public DefaultPolylineDecoder Decoder = new();
 
     /// <summary>
     /// Tests the <see cref="PolylineDecoder.Decode(ref readonly Polyline)"/> method with an empty input, expecting an <see cref="ArgumentException"/>.

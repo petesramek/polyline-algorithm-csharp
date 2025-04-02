@@ -3,12 +3,12 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm;
+namespace PolylineAlgorithm.Abstraction;
 
-using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Properties;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
@@ -17,7 +17,7 @@ using static PolylineAlgorithm.Polyline;
 /// <summary>
 /// Provides methods to encode a set of coordinates into a polyline string.
 /// </summary>\
-public class PolylineEncoder : IPolylineEncoder {
+public abstract class PolylineEncoder<TCoordinate> : IPolylineEncoder<TCoordinate> {
     /// <summary>
     /// Encodes a set of coordinates into a polyline string.
     /// </summary>
@@ -25,8 +25,7 @@ public class PolylineEncoder : IPolylineEncoder {
     /// <returns>A <see cref="Polyline"/> representing the encoded coordinates.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the <paramref name="coordinates"/> argument is null.</exception>
     /// <exception cref="ArgumentException">Thrown when the <paramref name="coordinates"/> argument is an empty enumeration.</exception>
-    [MethodImpl(MethodImplOptions.NoInlining)]
-    public Polyline Encode(IEnumerable<Coordinate> coordinates) {
+    public Polyline Encode(IEnumerable<TCoordinate> coordinates) {
         if (coordinates is null) {
             throw new ArgumentNullException(nameof(coordinates));
         }
@@ -46,17 +45,15 @@ public class PolylineEncoder : IPolylineEncoder {
         int position = 0;
         Span<char> buffer = size * sizeof(char) < 64_000 ? stackalloc char[size] : stackalloc char[64_000 / sizeof(char)];
 
-        foreach (Coordinate coordinate in coordinates) {
-            InvalidCoordinateException.ThrowIfNotValid(coordinate);
-
-            (int Latitude, int Longitude) next = GetNormalizedTuple(coordinate);
+        foreach (TCoordinate coordinate in coordinates) {
+            (int Latitude, int Longitude) value = Normalize(Deconstruct(coordinate));
 
             variance
-                .Next(next);
+                .Next(value);
 
-            if ((position
-                + PolylineEncoding.Default.GetRequiredCharCount(variance.Latitude)
-                + PolylineEncoding.Default.GetRequiredCharCount(variance.Longitude))
+            if (position
+                + PolylineEncoding.Default.GetCharCount(variance.Latitude)
+                + PolylineEncoding.Default.GetCharCount(variance.Longitude)
                 > buffer.Length) {
 
                 builder
@@ -77,11 +74,14 @@ public class PolylineEncoder : IPolylineEncoder {
 
         return builder.Build();
 
-        static int GetMaximumLength(int count) => count * Defaults.Polyline.MaxEncodedCoordinateLength;
+        static int GetMaximumLength(int count) => count > 1 ? count * Defaults.Polyline.MaxEncodedCoordinateLength : int.MaxValue;
 
-        static (int Latitude, int Longitude) GetNormalizedTuple(Coordinate coordinate) =>
+        static (int Latitude, int Longitude) Normalize((double Latitude, double Longitude) coordinate) =>
                     (PolylineEncoding.Default.Normalize(coordinate.Latitude), PolylineEncoding.Default.Normalize(coordinate.Longitude));
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    protected abstract (double Latitude, double Longitude) Deconstruct(TCoordinate source);
 
     /// <summary>
     /// Gets the count of coordinates in the enumerable.
@@ -90,8 +90,8 @@ public class PolylineEncoder : IPolylineEncoder {
     /// <returns>The count of coordinates.</returns>
     [ExcludeFromCodeCoverage]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    static int GetCount(IEnumerable<Coordinate> coordinates) => coordinates switch {
-        ICollection<Coordinate> collection => collection.Count,
-        _ => coordinates.Count()
+    static int GetCount(IEnumerable<TCoordinate> coordinates) => coordinates switch {
+        ICollection collection => collection.Count,
+        _ => -1
     };
 }
