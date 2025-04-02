@@ -83,7 +83,7 @@ runs:
       
     - name: 'Test with .NET CLI'
       shell: bash
-      run: dotnet test ${{ inputs.test-project-glob-pattern }} --configuration ${{ inputs.build-configuration }} args ${{ env.CODE_COVERAGE_ARGS }} ${{ env.TRX_LOGGER_ARGS }} --results-directory ${{ inputs.test-results-directory }}
+      run: dotnet test ${{ inputs.test-project-glob-pattern }} --configuration ${{ inputs.build-configuration }} -- ${{ env.CODE_COVERAGE_ARGS }} ${{ env.TRX_LOGGER_ARGS }} --results-directory ${{ inputs.test-results-directory }}
     
     - name: 'Upload test results'
       if: ${{ inputs.upload-test-artifacts == 'true' }}
