@@ -16,7 +16,7 @@ public class PolylineTest {
     /// <summary>
     /// Provides test data for the string parameter tests.
     /// </summary>
-    public static IEnumerable<object[]> SizeParameters => new List<object[]> {
+    public static IEnumerable<object[]> LengthParameters => new List<object[]> {
         new object[] { 1 },
         new object[] { 10 },
         new object[] { 100 },
@@ -63,20 +63,18 @@ public class PolylineTest {
     /// </summary>
     /// <param name="value">The string value.</param>
     [TestMethod]
-    [DynamicData(nameof(SizeParameters))]
-    public void Constructor_String_Parameter_Ok(int size) {
+    [DynamicData(nameof(LengthParameters))]
+    public void Constructor_String_Parameter_Ok(int length) {
         // Arrange
-        var polyline = ValueProvider.GetPolyline(size);
-        bool empty = polyline.Length == 0;
-        long length = polyline.Length;
+        var value = ValueProvider.GetPolyline(length);
 
         // Act
-        Polyline result = Polyline.FromString(polyline.ToString());
+        Polyline result = Polyline.FromString(value.ToString());
 
         // Assert
-        Assert.AreEqual(empty, polyline.Length == 0);
-        Assert.AreEqual(length, polyline.Length);
-        //Assert.IsTrue(span.Span.SequenceEqual(polyline.Span.Span));
+        Assert.AreEqual(value.Length, result.Length);
+        Assert.AreEqual(value.Length == 0, result.IsEmpty);
+        Assert.IsTrue(value.Equals(result));
     }
 
     ///// <summary>

@@ -20,7 +20,7 @@ internal static class Defaults {
         /// <summary>
         /// The coordinate rounding precision.
         /// </summary>
-        public const double Precision = 1E5;
+        public const decimal Precision = 100_000;
 
         /// <summary>
         /// The length of the shift used in the algorithm.

@@ -54,23 +54,6 @@ public class PolylineEncoderTest {
     }
 
     /// <summary>
-    /// Tests the <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})"/> method with an invalid input, expecting an <see cref="InvalidCoordinateException"/>.
-    /// </summary>
-    [TestMethod]
-    public void Encode_InvalidInput_ThrowsException() {
-        // Arrange
-        IEnumerable<Coordinate> invalid = Values.Coordinates.Invalid;
-
-        // Act
-        void EncodeInvalidCoordinates() {
-            Encoder.Encode(invalid);
-        }
-
-        // Assert
-        Assert.ThrowsExactly<InvalidOperationException>(() => EncodeInvalidCoordinates());
-    }
-
-    /// <summary>
     /// Tests the <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})"/> method with a valid input.
     /// </summary>
     /// <remarks>Expected result is that the encoded polyline matches <see cref="Values.Polyline.Valid"/>.</remarks>

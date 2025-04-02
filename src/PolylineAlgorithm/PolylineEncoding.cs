@@ -33,7 +33,7 @@ public class PolylineEncoding {
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double Denormalize(int value) => value / Defaults.Algorithm.Precision;
+    public double Denormalize(int value) => Convert.ToDouble(value / Defaults.Algorithm.Precision);
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -59,7 +59,7 @@ public class PolylineEncoding {
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int Normalize(double value) => (int)(value * Defaults.Algorithm.Precision);
+    public int Normalize(double value) => Convert.ToInt32(Convert.ToDecimal(value) * Defaults.Algorithm.Precision);
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
