@@ -89,27 +89,4 @@ public class PolylineDecoderBenchmark {
             .Decode(StringValue)
             .Consume(_consumer);
     }
-
-    /// <summary>
-    /// Benchmarks the decoding of a polyline from read-only memory.
-    /// </summary>
-    [Benchmark]
-    public void PolylineReader_ReadToEnd_Local() {
-        PolylineReader reader = new(StringValue);
-
-        var result = ReadToEnd(reader);
-
-        result
-            .Consume(_consumer);
-
-        static IEnumerable<Coordinate> ReadToEnd(PolylineReader reader) {
-            var result = new List<Coordinate>();
-
-            while (reader.Read()) {
-                result.Add(new(reader.Latitude, reader.Longitude));
-            }
-
-            return result;
-        }
-    }
 }
