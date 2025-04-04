@@ -53,8 +53,8 @@ public class PolylineDecoderBenchmark {
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        StringValue = ValueProvider.GetPolyline(Count).ToString();
         PolylineValue = ValueProvider.GetPolyline(Count);
+        StringValue = PolylineValue.ToString();
     }
 
     /// <summary>

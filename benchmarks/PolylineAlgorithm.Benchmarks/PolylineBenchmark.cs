@@ -17,8 +17,8 @@ using PolylineAlgorithm.Utility;
 public class PolylineBenchmark {
     private static readonly Consumer consumer = new();
 
-    [Params(1, 10, 100, 250, 500, 1_000, 2_500, 5_000, 7_500, 10_000, 15_000, 20_000, 25_000, 50_000, 75_000, 100_000, 250_000, 500_000, 750_000, 1_000_000)]
-    public int Length;
+    [Params(1, 25, 50, 100, 250, 500, 1_000, 5_000, 10_000, 25_000, 50_000, 100_000, 500_000, 1_000_000)]
+    public int Count;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     /// <summary>
@@ -41,6 +41,13 @@ public class PolylineBenchmark {
     /// </summary>
     public string StringValue { get; private set; }
 
+    /// <summary>
+    /// Gets the read-only memory representing the encoded polyline.
+    /// </summary>
+    public Polyline PolylineNotEqualValue { get; private set; }
+
+    public char[] CopyToDestination { get; private set; }
+
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
 
@@ -49,10 +56,13 @@ public class PolylineBenchmark {
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        PolylineValue = ValueProvider.GetPolyline(Length);
+        PolylineValue = ValueProvider.GetPolyline(Count);
+        PolylineNotEqualValue = ValueProvider.GetPolyline(Count + Random.Shared.Next(1, 101));
         StringValue = PolylineValue.ToString();
-        CharArrayValue = StringValue.ToArray();
+        CharArrayValue = [.. StringValue];
         MemoryValue = CharArrayValue.AsMemory();
+        
+        CopyToDestination = new char[PolylineValue.Length];
     }
 
     /// <summary>
@@ -103,18 +113,6 @@ public class PolylineBenchmark {
         return stringValue;
     }
 
-    ///// <summary>
-    ///// Benchmarks the encoding of an enumeration of coordinates into a polyline.
-    ///// </summary>
-    ///// <returns>The encoded polyline.</returns>
-    //[Benchmark]
-    //public long Polyline_GetCoordinateCount() {
-    //    var coordinateCount = PolylineValue
-    //        .GetCoordinateCount();
-
-    //    return coordinateCount;
-    //}
-
 
     /// <summary>
     /// Benchmarks the encoding of an enumeration of coordinates into a polyline.
@@ -122,12 +120,10 @@ public class PolylineBenchmark {
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
     public void Polyline_CopyTo() {
-        var destination = new char[PolylineValue.Length];
-
         PolylineValue
-            .CopyTo(destination);
+            .CopyTo(CopyToDestination);
 
-        destination
+        CopyToDestination
              .Consume(consumer);
     }
 
@@ -136,9 +132,21 @@ public class PolylineBenchmark {
     /// </summary>
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
-    public bool Polyline_Equals() {
+    public bool Polyline_Equals_SameValue() {
         var equals = PolylineValue
             .Equals(PolylineValue);
+
+        return equals;
+    }
+
+    /// <summary>
+    /// Benchmarks the encoding of an enumeration of coordinates into a polyline.
+    /// </summary>
+    /// <returns>The encoded polyline.</returns>
+    [Benchmark]
+    public bool Polyline_Equals_DifferentValue() {
+        var equals = PolylineValue
+            .Equals(PolylineNotEqualValue);
 
         return equals;
     }

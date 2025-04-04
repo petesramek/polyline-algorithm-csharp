@@ -16,21 +16,19 @@ using System.Threading.Tasks;
 /// </summary>
 [RankColumn]
 public class PolylineEncoderBenchmark {
-    [Params(1, 10, 100, 250, 500, 1_000, 2_500, 5_000, 7_500, 10_000, 15_000, 20_000, 25_000, 50_000, 75_000, 100_000, 250_000, 500_000, 750_000, 1_000_000)]
-    public int N;
+    [Params(1, 25, 50, 100, 250, 500, 1_000, 5_000, 10_000, 25_000, 50_000, 100_000, 500_000, 1_000_000)]
+    public int Count;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     /// <summary>
     /// Gets the enumeration of coordinates to be encoded.
     /// </summary>
-    public static IEnumerable<Coordinate> Enumeration { get; private set; }
+    public IEnumerable<Coordinate> Enumeration { get; private set; }
 
     /// <summary>
     /// Gets the list of coordinates to be encoded.
     /// </summary>
-    public static List<Coordinate> List { get; private set; }
-
-    public static IAsyncEnumerable<Coordinate> AsyncEnumeration { get; private set; }
+    public List<Coordinate> List { get; private set; }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
     /// <summary>
@@ -48,15 +46,8 @@ public class PolylineEncoderBenchmark {
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        Enumeration = ValueProvider.GetCoordinates(N);
+        Enumeration = ValueProvider.GetCoordinates(Count);
         List = [.. Enumeration];
-        AsyncEnumeration = GetAsyncEnumeration(Enumeration!);
-    }
-
-    private async IAsyncEnumerable<Coordinate> GetAsyncEnumeration(IEnumerable<Coordinate> enumerable) {
-        foreach (var item in enumerable) {
-            yield return await new ValueTask<Coordinate>(item);
-        }
     }
 
     /// <summary>
@@ -82,17 +73,4 @@ public class PolylineEncoderBenchmark {
 
         return polyline;
     }
-
-    /// <summary>
-    /// Benchmarks the encoding of an enumeration of coordinates into a polyline.
-    /// </summary>
-    /// <returns>The encoded polyline.</returns>
-    //[Benchmark]
-    //public async Task<Polyline> PolylineEncoder_EncodeAsync_String() {
-    //    var polyline = await AsyncEncoder
-    //        .EncodeAsync(AsyncEnumeration!)
-    //        .ConfigureAwait(false);
-
-    //    return polyline;
-    //}
 }
