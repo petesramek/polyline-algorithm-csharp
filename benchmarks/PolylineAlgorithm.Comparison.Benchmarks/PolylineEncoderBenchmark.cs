@@ -8,7 +8,7 @@ namespace PolylineAlgorithm.Comparison.Benchmarks;
 using BenchmarkDotNet.Attributes;
 using global::PolylineEncoder.Net.Utility;
 using PolylineAlgorithm;
-using PolylineAlgorithm.Comparison.Benchmarks.Internal;
+using PolylineAlgorithm.Utility;
 using PolylinerNet;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -19,21 +19,34 @@ using PolylineEncoding = Cloudikka.PolylineAlgorithm.Encoding.PolylineEncoding;
 /// </summary>
 [RankColumn]
 public class PolylineEncoderBenchmark {
-    [Params(1, 10, 100, 250, 500, 1_000, 2_500, 5_000, 7_500, 10_000, 15_000, 20_000, 25_000, 50_000, 75_000, 100_000, 250_000, 500_000, 750_000, 1_000_000)]
-    public int N;
+    [Params(1, 25, 50, 100, 250, 500, 1_000, 5_000, 10_000, 25_000, 50_000, 100_000, 500_000, 1_000_000)]
+    public int Count;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     /// <summary>
     /// Gets the enumeration of coordinates to be encoded.
     /// </summary>
-    public static IEnumerable<Coordinate> Enumeration { get; private set; }
+    public static IEnumerable<Coordinate> PolylineAlgorithmEnumeration { get; private set; }
 
     /// <summary>
     /// Gets the list of coordinates to be encoded.
     /// </summary>
-    public static List<Coordinate> List { get; private set; }
+    public static List<Coordinate> PolylineAlgorithmList { get; private set; }
 
-    public static IAsyncEnumerable<Coordinate> AsyncEnumeration { get; private set; }
+    /// <summary>
+    /// Gets the enumeration of coordinates to be encoded.
+    /// </summary>
+    public static IEnumerable<(double, double)> CloudikkaEnumeration { get; private set; }
+
+    /// <summary>
+    /// Gets the list of coordinates to be encoded.
+    /// </summary>
+    public List<(double, double)> CloudikkaList { get; private set; }
+    public List<PolylinePoint> PolylinerList { get; private set; }
+    public List<Polylines.PolylineCoordinate> PolylinesList { get; private set; }
+    public List<Tuple<double, double>> PolylineUtilityList { get; private set; }
+
+
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
     /// <summary>
@@ -57,82 +70,73 @@ public class PolylineEncoderBenchmark {
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        Enumeration = ValueProvider.GetCoordinates(N);
-        List = [.. Enumeration];
-        AsyncEnumeration = GetAsyncEnumeration(Enumeration!);
-    }
-
-    private async IAsyncEnumerable<Coordinate> GetAsyncEnumeration(IEnumerable<Coordinate> enumerable) {
-        foreach (var item in enumerable) {
-            yield return await new ValueTask<Coordinate>(item);
-        }
+        PolylineAlgorithmEnumeration = ValueProvider.GetCoordinates(Count);
+        PolylineAlgorithmList = [.. PolylineAlgorithmEnumeration];
+        CloudikkaEnumeration = PolylineAlgorithmEnumeration.Select(c => (c.Latitude, c.Longitude));
+        CloudikkaList = [.. CloudikkaEnumeration];
+        PolylinerList = PolylineAlgorithmEnumeration.Select(c => new PolylinePoint(c.Latitude, c.Longitude)).ToList();
+        PolylinesList = PolylineAlgorithmEnumeration.Select(c => new Polylines.PolylineCoordinate { Latitude = c.Latitude, Longitude = c.Longitude }).ToList();
+        PolylineUtilityList = PolylineAlgorithmEnumeration.Select(c => new Tuple<double, double>(c.Latitude, c.Longitude)).ToList();
     }
 
     /// <summary>
     /// Benchmarks the decoding of a polyline from a string.
     /// </summary>
-    [Benchmark(Baseline = true)]
-    public Polyline PolylineAlgorithm_Encode() {
+    [Benchmark]
+    public Polyline PolylineAlgorithm_Encode_Enumeration() {
         return PolylineAlgorithm
-            .Encode(Enumeration);
+            .Encode(PolylineAlgorithmEnumeration);
+    }
+
+    [Benchmark(Baseline = true)]
+    public Polyline PolylineAlgorithm_Encode_List() {
+        return PolylineAlgorithm
+            .Encode(PolylineAlgorithmList);
     }
 
     /// <summary>
     /// Benchmarks the decoding of a polyline from a character array.
     /// </summary>
     [Benchmark]
-    public string Cloudikka_Encode() {
+    public string Cloudikka_Encode_Enumeration() {
         return Cloudikka
-            .Encode(Enumeration.Select(c => (c.Latitude, c.Longitude)));
+            .Encode(CloudikkaEnumeration);
+    }
+
+    /// <summary>
+    /// Benchmarks the decoding of a polyline from a character array.
+    /// </summary>
+    [Benchmark]
+    public string Cloudikka_Encode_List() {
+        return Cloudikka
+            .Encode(CloudikkaList);
     }
 
     /// <summary>
     /// Benchmarks the decoding of a polyline from read-only memory.
     /// </summary>
     [Benchmark]
-    public void PolylinerNet_Encode() {
-        PolylinerNet
-            .Encode([.. Enumeration.Select(c => new PolylinePoint(c.Latitude, c.Longitude))]);
+    public string PolylinerNet_Encode_List() {
+        return PolylinerNet
+            .Encode(PolylinerList);
     }
+
 
     /// <summary>
     /// Benchmarks the decoding of a polyline from read-only memory.
     /// </summary>
     [Benchmark]
-    public string Polylines_Encode() {
+    public string Polylines_Encode_List() {
         return Polylines.Polyline
-            .EncodePoints(Enumeration.Select(c => new Polylines.PolylineCoordinate { Latitude = c.Latitude, Longitude = c.Longitude }));
+            .EncodePoints(PolylinesList);
     }
 
     /// <summary>
     /// Benchmarks the decoding of a polyline from read-only memory.
     /// </summary>
     [Benchmark]
-    public string PolylineUtility_Encode() {
+    public string PolylineUtility_Encode_List() {
         return PolylineUtility
-            .Encode(Enumeration.Select(c => new Tuple<double, double>(c.Latitude, c.Longitude)));
+            .Encode(PolylineUtilityList);
     }
-
-    /// <summary>
-    /// Benchmarks the decoding of a polyline from read-only memory.
-    /// </summary>
-    //[Benchmark]
-    //public void PolylineReader_ReadToEnd() {
-    //    PolylineReader reader = new(StringValue);
-
-    //    var result = ReadToEnd(ref reader);
-
-    //    result
-    //        .Consume(_consumer);
-
-    //    static IEnumerable<Coordinate> ReadToEnd(ref PolylineReader reader) {
-    //        var result = new List<Coordinate>();
-
-    //        while (reader.Read()) {
-    //            result.Add(new(reader.Latitude, reader.Longitude));
-    //        }
-
-    //        return result;
-    //    }
-    //}
 }

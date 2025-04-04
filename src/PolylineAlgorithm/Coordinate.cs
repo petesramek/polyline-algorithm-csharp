@@ -18,7 +18,7 @@ using System.Runtime.InteropServices;
 [DebuggerDisplay("{ToString()}")]
 [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
 public readonly struct Coordinate : IEquatable<Coordinate> {
-    public static readonly Coordinate Default = new();
+    public static readonly Coordinate Default;
     internal static long Size { get; } = Marshal.SizeOf<Coordinate>();
 
     /// <summary>

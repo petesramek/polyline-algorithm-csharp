@@ -8,7 +8,7 @@ namespace PolylineAlgorithm.Benchmarks;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
 using PolylineAlgorithm;
-using PolylineAlgorithm.Benchmarks.Internal;
+using PolylineAlgorithm.Utility;
 
 /// <summary>
 /// Benchmarks for the <see cref="PolylineValue"/> struct.

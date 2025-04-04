@@ -18,7 +18,7 @@ public struct CoordinateVariance {
 
     public int Longitude { get; private set; }
 
-    public void Next(in (int Latitude, int Longitude) next) {
+    public void Next((int Latitude, int Longitude) next) {
         Latitude = Variance(_current.Latitude, next.Latitude);
         Longitude = Variance(_current.Longitude, next.Longitude);
 

@@ -7,7 +7,7 @@ namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
 using PolylineAlgorithm;
-using PolylineAlgorithm.Benchmarks.Internal;
+using PolylineAlgorithm.Utility;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

@@ -16,9 +16,10 @@ public class PolylineEncoding {
         int chunk = 0;
         int sum = 0;
         int shifter = 0;
+        ReadOnlySpan<char> span = buffer.Span;
 
         while (position < buffer.Length) {
-            chunk = buffer.Span[position++] - Defaults.Algorithm.QuestionMark;
+            chunk = span[position++] - Defaults.Algorithm.QuestionMark;
             sum |= (chunk & Defaults.Algorithm.UnitSeparator) << shifter;
             shifter += Defaults.Algorithm.ShiftLength;
 
@@ -33,11 +34,11 @@ public class PolylineEncoding {
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double Denormalize(int value) => Convert.ToDouble(value / Defaults.Algorithm.Precision);
+    public double Denormalize(int value) => (double)value / Defaults.Algorithm.Precision;
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryWriteValue(in int variance, ref Span<char> buffer, ref int position) {
+    public bool TryWriteValue(int variance, ref Span<char> buffer, ref int position) {
         if (buffer.Length < position + GetCharCount(variance)) {
             return false;
         }
@@ -59,11 +60,10 @@ public class PolylineEncoding {
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int Normalize(double value) => Convert.ToInt32(Convert.ToDecimal(value) * Defaults.Algorithm.Precision);
-
+    public int Normalize(double value) => Convert.ToInt32(value * Defaults.Algorithm.Precision);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int GetCharCount(in int variation) => variation switch {
+    public int GetCharCount(int variance) => variance switch {
         // DO NOT CHANGE THE ORDER. We are skipping inside exclusive ranges as those are covered by previous statements.
         >= -16 and <= +15 => 1,
         >= -512 and <= +511 => 2,

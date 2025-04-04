@@ -10,4 +10,7 @@
   <Folder Name="/tests/">
     <Project Path="tests/PolylineAlgorithm.Tests/PolylineAlgorithm.Tests.csproj" />
   </Folder>
+  <Folder Name="/utilities/" Id="02ea681e-c7d8-13c7-8484-4ac65e1b71e8">
+    <Project Path="utilities/PolylineAlgorithm.Utility/PolylineAlgorithm.Utility.csproj" Id="69392841-91d5-4b8d-acdb-dd56c87b3034" />
+  </Folder>
 </Solution>

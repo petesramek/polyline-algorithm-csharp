@@ -3,11 +3,11 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm;
+namespace PolylineAlgorithm.Abstraction;
 
-using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Properties;
 using System;
+using System.Buffers;
 using System.Runtime.CompilerServices;
 
 
@@ -24,15 +24,17 @@ public abstract class PolylineDecoder<TCoordinate> : IPolylineDecoder<TCoordinat
         }
 
         int consumed = 0;
-
         int latitude = 0;
         int longitude = 0;
 
-        var enumerator = polyline.GetEnumerator();
+        ReadOnlySequence<char>.Enumerator enumerator = polyline.GetEnumerator();
+
+        int position;
+        ReadOnlyMemory<char> buffer = enumerator.Current;
 
         while (enumerator.MoveNext()) {
-            int position = 0;
-            ReadOnlyMemory<char> buffer = enumerator.Current;
+            position = 0;
+            buffer = enumerator.Current;
 
             while (PolylineEncoding.Default.TryReadValue(ref latitude, ref buffer, ref position)
                 && PolylineEncoding.Default.TryReadValue(ref longitude, ref buffer, ref position)

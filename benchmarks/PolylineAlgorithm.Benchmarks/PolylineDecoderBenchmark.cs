@@ -8,8 +8,8 @@ namespace PolylineAlgorithm.Benchmarks;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
 using PolylineAlgorithm;
-using PolylineAlgorithm.Benchmarks.Internal;
 using PolylineAlgorithm.Extensions;
+using PolylineAlgorithm.Utility;
 
 /// <summary>
 /// Benchmarks for the <see cref="PolylineDecoder"/> class.

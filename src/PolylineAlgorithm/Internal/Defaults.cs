@@ -20,7 +20,7 @@ internal static class Defaults {
         /// <summary>
         /// The coordinate rounding precision.
         /// </summary>
-        public const decimal Precision = 100_000;
+        public const int Precision = 100_000;
 
         /// <summary>
         /// The length of the shift used in the algorithm.
@@ -47,7 +47,7 @@ internal static class Defaults {
     /// Contains default values related to polyline.
     /// </summary>
     public static class Polyline {
-        public static readonly byte[] Delimiters = [.. Enumerable.Range(0, 32).Select(n => Convert.ToByte(n + Defaults.Algorithm.QuestionMark))];
+        public static readonly byte[] Delimiters = [.. Enumerable.Range(0, 32).Select(n => (byte)(n + Defaults.Algorithm.QuestionMark))];
 
         /// <summary>
         /// The minimum length of an encoded coordinate.

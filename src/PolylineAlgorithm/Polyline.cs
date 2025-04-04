@@ -92,7 +92,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
             return Value.FirstSpan.ToString();
         }
 
-        var sb = Value.Length <= int.MaxValue ? new StringBuilder(Convert.ToInt32(Value.Length)) : new StringBuilder();
+        var sb = Value.Length <= int.MaxValue ? new StringBuilder((int)(Value.Length)) : new StringBuilder();
         var enumerator = Value.GetEnumerator();
 
         while (true) {
@@ -227,7 +227,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
         private PolylineSegment? _initial;
         private PolylineSegment? _last;
 
-        public void Append(in ReadOnlyMemory<char> value) {
+        public void Append(ReadOnlyMemory<char> value) {
             var current = new PolylineSegment(value);
 
             _initial ??= current;

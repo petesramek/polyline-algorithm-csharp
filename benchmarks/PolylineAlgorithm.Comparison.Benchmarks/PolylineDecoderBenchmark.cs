@@ -9,8 +9,8 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
 using global::PolylineEncoder.Net.Utility;
 using PolylineAlgorithm;
-using PolylineAlgorithm.Comparison.Benchmarks.Internal;
 using PolylineAlgorithm.Extensions;
+using PolylineAlgorithm.Utility;
 using PolylinerNet;
 using PolylineEncoding = Cloudikka.PolylineAlgorithm.Encoding.PolylineEncoding;
 
@@ -21,8 +21,8 @@ using PolylineEncoding = Cloudikka.PolylineAlgorithm.Encoding.PolylineEncoding;
 public class PolylineDecoderBenchmark {
     private readonly Consumer _consumer = new();
 
-    [Params(1, 10, 100, 250, 500, 1_000, 2_500, 5_000, 7_500, 10_000, 15_000, 20_000, 25_000, 50_000, 75_000, 100_000, 250_000, 500_000, 750_000, 1_000_000)]
-    public int N;
+    [Params(1, 25, 50, 100, 250, 500, 1_000, 5_000, 10_000, 25_000, 50_000, 100_000, 500_000, 1_000_000)]
+    public int Count;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     /// <summary>
@@ -53,8 +53,8 @@ public class PolylineDecoderBenchmark {
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        StringValue = ValueProvider.GetPolyline(N).ToString();
-        PolylineValue = ValueProvider.GetPolyline(N);
+        StringValue = ValueProvider.GetPolyline(Count).ToString();
+        PolylineValue = ValueProvider.GetPolyline(Count);
     }
 
     /// <summary>
