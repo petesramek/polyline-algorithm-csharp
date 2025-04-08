@@ -60,7 +60,7 @@ public class PolylineEncoding {
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int Normalize(double value) => Convert.ToInt32(value * Defaults.Algorithm.Precision);
+    public int Normalize(double value) => (int)Math.Truncate(value * Defaults.Algorithm.Precision);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int GetCharCount(int variance) => variance switch {

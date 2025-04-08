@@ -34,7 +34,7 @@ public class PolylineEncoderBenchmark {
     /// <summary>
     /// The polyline encoder instance.
     /// </summary>
-    public DefaultPolylineEncoder Encoder = new();
+    public PolylineEncoder Encoder = new();
 
     /// <summary>
     /// The async polyline encoder instance.

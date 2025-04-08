@@ -7,6 +7,7 @@ namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
 using PolylineAlgorithm;
+using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Utility;
 
 /// <summary>
@@ -44,7 +45,7 @@ public class PolylineBuilderBenchmark {
 
     public char[] CopyToDestination { get; private set; }
 
-    internal Polyline.PolylineBuilder Builder { get; private set; }
+    internal PolylineBuilder Builder { get; private set; }
 
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
@@ -54,7 +55,7 @@ public class PolylineBuilderBenchmark {
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        Builder = new Polyline.PolylineBuilder();
+        Builder = new PolylineBuilder();
 
         var polyline = ValueProvider.GetPolyline(Count);
         StringValue = polyline.ToString();

@@ -2,10 +2,11 @@
 
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
-[StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
+[StructLayout(LayoutKind.Auto)]
 public struct CoordinateVariance {
     private (int Latitude, int Longitude) _current = (0, 0);
 
@@ -18,6 +19,7 @@ public struct CoordinateVariance {
 
     public int Longitude { get; private set; }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Next((int Latitude, int Longitude) next) {
         Latitude = Variance(_current.Latitude, next.Latitude);
         Longitude = Variance(_current.Longitude, next.Longitude);
@@ -25,6 +27,7 @@ public struct CoordinateVariance {
         _current = next;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int Variance(int initial, int next) => (initial, next) switch {
         (0, 0) => 0,
         (0, _) => next,

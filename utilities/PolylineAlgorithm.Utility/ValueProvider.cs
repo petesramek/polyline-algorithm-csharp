@@ -8,7 +8,7 @@ using System.Linq;
 public static class ValueProvider {
     private static readonly Random _random = new(DateTime.Now.Millisecond);
     private static readonly ConcurrentDictionary<int, CoordinatePair> _cache = new();
-    private static readonly DefaultPolylineEncoder _encoder = new();
+    private static readonly PolylineEncoder _encoder = new();
 
     public static IEnumerable<Coordinate> GetCoordinates(int count) {
         var entry = GetCaheEntry(count);

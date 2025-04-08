@@ -18,7 +18,7 @@ public class PolylineEncoderTest {
     /// <summary>
     /// The instance of the <see cref="PolylineEncoder"/> used for testing.
     /// </summary>
-    public DefaultPolylineEncoder Encoder = new();
+    public PolylineEncoder Encoder = new();
 
     /// <summary>
     /// Tests the <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})"/> method with a null input, expecting an <see cref="ArgumentNullException"/>.

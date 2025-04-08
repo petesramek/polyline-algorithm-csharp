@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 
 public static class PolylineDecoderExtensions {
-    public static IEnumerable<TCoordinate> Decode<TCoordinate>(this IPolylineDecoder<TCoordinate> decoder, string polyline) {
+    public static IEnumerable<Coordinate> Decode(this IPolylineDecoder decoder, string polyline) {
         if (decoder is null) {
             throw new ArgumentNullException(nameof(decoder));
         }
@@ -13,7 +13,7 @@ public static class PolylineDecoderExtensions {
         return decoder.Decode(Polyline.FromString(polyline));
     }
 
-    public static IEnumerable<TCoordinate> Decode<TCoordinate>(this IPolylineDecoder<TCoordinate> decoder, char[] polyline) {
+    public static IEnumerable<Coordinate> Decode(this IPolylineDecoder decoder, char[] polyline) {
         if (decoder is null) {
             throw new ArgumentNullException(nameof(decoder));
         }

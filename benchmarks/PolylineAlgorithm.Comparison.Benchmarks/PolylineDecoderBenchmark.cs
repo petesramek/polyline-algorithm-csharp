@@ -40,7 +40,7 @@ public class PolylineDecoderBenchmark {
     /// <summary>
     /// The polyline decoder instance.
     /// </summary>
-    public DefaultPolylineDecoder PolylineAlgorithm = new();
+    public PolylineDecoder PolylineAlgorithm = new();
 
     public PolylineEncoding Cloudikka = new();
 

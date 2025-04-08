@@ -3,8 +3,9 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm.Abstraction;
+namespace PolylineAlgorithm;
 
+using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Properties;
 using System;
 using System.Buffers;
@@ -14,11 +15,11 @@ using System.Runtime.CompilerServices;
 /// <summary>
 /// Performs polyline algorithm decoding
 /// </summary>
-public abstract class PolylineDecoder<TCoordinate> : IPolylineDecoder<TCoordinate> {
+public class PolylineDecoder : IPolylineDecoder {
     /// <inheritdoc />
     /// <exception cref="ArgumentException">Thrown when <paramref name="polyline"/> argument is null -or- empty.</exception>
     /// <exception cref="InvalidOperationException">Thrown when <paramref name="polyline"/> is not in correct format.</exception>
-    public IEnumerable<TCoordinate> Decode(Polyline polyline) {
+    public IEnumerable<Coordinate> Decode(Polyline polyline) {
         if (polyline.IsEmpty) {
             throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeNullEmptyOrWhitespaceMessage, nameof(polyline));
         }
@@ -39,7 +40,7 @@ public abstract class PolylineDecoder<TCoordinate> : IPolylineDecoder<TCoordinat
             while (PolylineEncoding.Default.TryReadValue(ref latitude, ref buffer, ref position)
                 && PolylineEncoding.Default.TryReadValue(ref longitude, ref buffer, ref position)
             ) {
-                yield return Construct(PolylineEncoding.Default.Denormalize(latitude), PolylineEncoding.Default.Denormalize(longitude));
+                yield return new(PolylineEncoding.Default.Denormalize(latitude), PolylineEncoding.Default.Denormalize(longitude));
             }
 
             consumed += position;
@@ -49,7 +50,4 @@ public abstract class PolylineDecoder<TCoordinate> : IPolylineDecoder<TCoordinat
             }
         }
     }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract TCoordinate Construct(double latitude, double longitude);
 }

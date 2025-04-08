@@ -221,27 +221,4 @@ public readonly struct Polyline : IEquatable<Polyline> {
     public static explicit operator Polyline(ReadOnlyMemory<char> polyline) => FromMemory(polyline);
 
     #endregion
-
-    [StructLayout(LayoutKind.Auto)]
-    internal struct PolylineBuilder {
-        private PolylineSegment? _initial;
-        private PolylineSegment? _last;
-
-        public void Append(ReadOnlyMemory<char> value) {
-            var current = new PolylineSegment(value);
-
-            _initial ??= current;
-
-            _last?.Append(current);
-            _last = current;
-        }
-
-        public Polyline Build() {
-            if (_initial is null) {
-                return FromMemory(ReadOnlyMemory<char>.Empty);
-            }
-
-            return FromSequence(new(_initial, 0, _last, _last!.Memory.Length));
-        }
-    }
 }

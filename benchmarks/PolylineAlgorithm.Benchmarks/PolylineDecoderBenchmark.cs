@@ -32,7 +32,7 @@ public class PolylineDecoderBenchmark {
     /// <summary>
     /// The polyline decoder instance.
     /// </summary>
-    public DefaultPolylineDecoder Decoder = new();
+    public PolylineDecoder Decoder = new();
 
     /// <summary>
     /// Sets up the data for the benchmarks.
