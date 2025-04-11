@@ -5,7 +5,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
-public static class ValueProvider {
+internal static class RandomValueProvider {
     private static readonly Random _random = new(DateTime.Now.Millisecond);
     private static readonly ConcurrentDictionary<int, CoordinatePair> _cache = new();
     private static readonly PolylineEncoder _encoder = new();

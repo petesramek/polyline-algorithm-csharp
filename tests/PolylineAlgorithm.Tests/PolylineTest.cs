@@ -67,7 +67,7 @@ public class PolylineTest {
     [DynamicData(nameof(LengthParameters))]
     public void Constructor_String_Parameter_Ok(int length) {
         // Arrange
-        var value = ValueProvider.GetPolyline(length);
+        var value = RandomValueProvider.GetPolyline(length);
 
         // Act
         Polyline result = Polyline.FromString(value.ToString());

@@ -46,7 +46,7 @@ public class PolylineEncoderBenchmark {
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        Enumeration = ValueProvider.GetCoordinates(Count);
+        Enumeration = RandomValueProvider.GetCoordinates(Count);
         List = [.. Enumeration];
     }
 

@@ -56,7 +56,7 @@ public class PolylineEncoderBenchmark {
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        PolylineAlgorithmEnumeration = ValueProvider.GetCoordinates(Count);
+        PolylineAlgorithmEnumeration = RandomValueProvider.GetCoordinates(Count);
         CloudikkaEnumeration = PolylineAlgorithmEnumeration.Select(c => (c.Latitude, c.Longitude));
         PolylinerEnumeration = PolylineAlgorithmEnumeration.Select(c => new PolylinePoint(c.Latitude, c.Longitude));
         PolylinesEnumeration = PolylineAlgorithmEnumeration.Select(c => new Polylines.PolylineCoordinate { Latitude = c.Latitude, Longitude = c.Longitude });

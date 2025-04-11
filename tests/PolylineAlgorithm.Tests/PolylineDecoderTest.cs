@@ -57,8 +57,8 @@ public class PolylineDecoderTest {
     [TestMethod]
     public void Decode_Valid_Input_Ok() {
         // Arrange
-        IEnumerable<Coordinate> expected = ValueProvider.GetCoordinates(1);
-        string value = ValueProvider.GetPolyline(1).ToString();
+        IEnumerable<Coordinate> expected = RandomValueProvider.GetCoordinates(1);
+        string value = RandomValueProvider.GetPolyline(1).ToString();
 
         // Act
         var result = Decoder.Decode(value);

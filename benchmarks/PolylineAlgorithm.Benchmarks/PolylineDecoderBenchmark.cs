@@ -39,7 +39,7 @@ public class PolylineDecoderBenchmark {
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        Polyline = ValueProvider.GetPolyline(Count);
+        Polyline = RandomValueProvider.GetPolyline(Count);
     }
 
     /// <summary>

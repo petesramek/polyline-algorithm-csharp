@@ -12,6 +12,7 @@ using PolylineAlgorithm;
 using PolylineAlgorithm.Utility;
 using PolylinerNet;
 using PolylineEncoding = Cloudikka.PolylineAlgorithm.Encoding.PolylineEncoding;
+using PolylineAlgorithm.Extensions;
 
 /// <summary>
 /// Benchmarks for the <see cref="PolylineAlgorithm.PolylineDecoder"/> class.
@@ -29,10 +30,12 @@ public class PolylineDecoderBenchmark {
     /// </summary>
     public string StringValue { get; private set; }
 
+    public char[] CharArrayValue { get; private set; }
+
     /// <summary>
     /// Gets the character array representing the encoded polyline.
     /// </summary>
-    //public Polyline PolylineValue { get; private set; }
+    public Polyline PolylineValue { get; private set; }
 
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
@@ -52,17 +55,32 @@ public class PolylineDecoderBenchmark {
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        //PolylineValue = ValueProvider.GetPolyline(Count);
-        StringValue = ValueProvider.GetPolyline(Count).ToString();
+        PolylineValue = RandomValueProvider.GetPolyline(Count);
+        StringValue = PolylineValue.ToString();
+        CharArrayValue = StringValue.ToCharArray();
     }
 
     /// <summary>
     /// Benchmarks the decoding of a polyline from a string.
     /// </summary>
     [Benchmark(Baseline = true)]
-    public void PolylineAlgorithm_Decode() {
+    public void PolylineAlgorithm_Decode_String() {
         PolylineAlgorithm
-            .Decode(Polyline.FromString(StringValue))
+            .Decode(StringValue)
+            .Consume(_consumer);
+    }
+
+    [Benchmark]
+    public void PolylineAlgorithm_Decode_CharArray() {
+        PolylineAlgorithm
+            .Decode(CharArrayValue)
+            .Consume(_consumer);
+    }
+
+    [Benchmark]
+    public void PolylineAlgorithm_Decode_Polyline() {
+        PolylineAlgorithm
+            .Decode(PolylineValue)
             .Consume(_consumer);
     }
 

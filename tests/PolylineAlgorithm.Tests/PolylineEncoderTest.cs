@@ -62,8 +62,8 @@ public class PolylineEncoderTest {
     [DynamicData(nameof(CoordinateCount))]
     public void Encode_ValidInput_Ok(int count) {
         // Arrange
-        IEnumerable<Coordinate> valid = ValueProvider.GetCoordinates(count);
-        Polyline expected = ValueProvider.GetPolyline(count);
+        IEnumerable<Coordinate> valid = RandomValueProvider.GetCoordinates(count);
+        Polyline expected = RandomValueProvider.GetPolyline(count);
 
         // Act
         var result = Encoder.Encode(valid);

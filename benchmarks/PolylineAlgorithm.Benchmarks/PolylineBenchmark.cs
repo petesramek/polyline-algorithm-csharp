@@ -56,8 +56,8 @@ public class PolylineBenchmark {
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        PolylineValue = ValueProvider.GetPolyline(Count);
-        PolylineNotEqualValue = ValueProvider.GetPolyline(Count + Random.Shared.Next(1, 101));
+        PolylineValue = RandomValueProvider.GetPolyline(Count);
+        PolylineNotEqualValue = RandomValueProvider.GetPolyline(Count + Random.Shared.Next(1, 101));
         StringValue = PolylineValue.ToString();
         CharArrayValue = [.. StringValue];
         MemoryValue = CharArrayValue.AsMemory();

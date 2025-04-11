@@ -57,7 +57,7 @@ public class PolylineBuilderBenchmark {
     public void SetupData() {
         Builder = new PolylineBuilder();
 
-        var polyline = ValueProvider.GetPolyline(Count);
+        var polyline = RandomValueProvider.GetPolyline(Count);
         StringValue = polyline.ToString();
         CharArrayValue = [.. StringValue];
         MemoryValue = CharArrayValue.AsMemory();

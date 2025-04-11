@@ -9,7 +9,6 @@ using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 /// <summary>
@@ -43,7 +42,7 @@ public class PolylineEncoder : IPolylineEncoder {
         int position = 0;
         int consumed = 0;
         int length = GetMaxLength(count);
-        bool isMultiSegment = count == -1 || count > MaxCount;
+        bool asMultiSegment = count == -1 || count > MaxCount;
         PolylineBuilder builder = new();
         Span<char> buffer = stackalloc char[length];
 
@@ -51,10 +50,10 @@ public class PolylineEncoder : IPolylineEncoder {
 
         while (enumerator.MoveNext()) {
             variance
-                .Next(Normalize(enumerator.Current));
-
-            if (isMultiSegment
-                && buffer.Length - position < 12) {
+                .Next((PolylineEncoding.Default.Normalize(enumerator.Current.Latitude), PolylineEncoding.Default.Normalize(enumerator.Current.Longitude)));
+            
+            if (asMultiSegment
+                && buffer.Length - position < PolylineEncoding.Default.GetCharCount(variance.Latitude) + PolylineEncoding.Default.GetCharCount(variance.Longitude)) {
                 builder
                     .Append(buffer[..position].ToString().AsMemory());
 
@@ -68,18 +67,11 @@ public class PolylineEncoder : IPolylineEncoder {
             }
 
             consumed++;
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            static (int Latitude, int Longitude) Normalize(Coordinate coordinate) {
-                return (PolylineEncoding.Default.Normalize(coordinate.Latitude), PolylineEncoding.Default.Normalize(coordinate.Longitude));
-            }
         }
 
-#pragma warning disable CA1508 // Avoid dead conditional code
         if (consumed == 0) {
             return default;
         }
-#pragma warning restore CA1508 // Avoid dead conditional code
 
         builder
             .Append(buffer[..position].ToString().AsMemory());
@@ -92,18 +84,17 @@ public class PolylineEncoder : IPolylineEncoder {
             > 1 and < MaxCount => count * Defaults.Polyline.MaxEncodedCoordinateLength,
             _ => MaxChars
         };
-    }
 
-    /// <summary>
-    /// Gets the count of coordinates in the enumerable.
-    /// </summary>
-    /// <param name="coordinates">The enumerable of coordinates.</param>
-    /// <returns>The count of coordinates.</returns>
-    [ExcludeFromCodeCoverage]
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    static int GetCount(IEnumerable<Coordinate> coordinates) => coordinates switch {
-        ICollection<Coordinate> collection => collection.Count,
-        IEnumerable<Coordinate> enumerable => enumerable.Count(),
-        _ => -1,
-    };
+        /// <summary>
+        /// Gets the count of coordinates in the enumerable.
+        /// </summary>
+        /// <param name="coordinates">The enumerable of coordinates.</param>
+        /// <returns>The count of coordinates.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static int GetCount(IEnumerable<Coordinate> coordinates) => coordinates switch {
+            ICollection<Coordinate> collection => collection.Count,
+            IEnumerable<Coordinate> enumerable => enumerable.Count(),
+            _ => -1,
+        };
+    }
 }
