@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
 [StructLayout(LayoutKind.Auto)]
-public struct CoordinateVariance {
+internal struct CoordinateVariance {
     private (int Latitude, int Longitude) _current = (0, 0);
 
     private CoordinateVariance(int latitude, int longitude) {
@@ -20,11 +20,11 @@ public struct CoordinateVariance {
     public int Longitude { get; private set; }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Next((int Latitude, int Longitude) next) {
-        Latitude = Variance(_current.Latitude, next.Latitude);
-        Longitude = Variance(_current.Longitude, next.Longitude);
+    public void Next(int latitude, int longitude) {
+        Latitude = Variance(_current.Latitude, latitude);
+        Longitude = Variance(_current.Longitude, longitude);
 
-        _current = next;
+        _current = (latitude, longitude);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

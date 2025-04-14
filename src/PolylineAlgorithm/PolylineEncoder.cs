@@ -50,10 +50,10 @@ public class PolylineEncoder : IPolylineEncoder {
 
         while (enumerator.MoveNext()) {
             variance
-                .Next((PolylineEncoding.Default.Normalize(enumerator.Current.Latitude), PolylineEncoding.Default.Normalize(enumerator.Current.Longitude)));
-            
+                .Next(PolylineEncoding.Default.Normalize(enumerator.Current.Latitude), PolylineEncoding.Default.Normalize(enumerator.Current.Longitude));
+
             if (asMultiSegment
-                && buffer.Length - position < PolylineEncoding.Default.GetCharCount(variance.Latitude) + PolylineEncoding.Default.GetCharCount(variance.Longitude)) {
+                && GetRemainingBufferSize(position, buffer.Length) < GetRequiredLength(variance)) {
                 builder
                     .Append(buffer[..position].ToString().AsMemory());
 
@@ -96,5 +96,11 @@ public class PolylineEncoder : IPolylineEncoder {
             IEnumerable<Coordinate> enumerable => enumerable.Count(),
             _ => -1,
         };
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static int GetRequiredLength(CoordinateVariance variance) => PolylineEncoding.Default.GetCharCount(variance.Latitude) + PolylineEncoding.Default.GetCharCount(variance.Longitude);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static int GetRemainingBufferSize(int position, int length) => length - position;
     }
 }

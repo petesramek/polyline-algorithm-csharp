@@ -9,7 +9,6 @@ using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Properties;
 using System;
 using System.Buffers;
-using System.Runtime.CompilerServices;
 
 
 /// <summary>
@@ -31,21 +30,21 @@ public class PolylineDecoder : IPolylineDecoder {
         ReadOnlySequence<char>.Enumerator enumerator = polyline.GetEnumerator();
 
         int position;
-        ReadOnlyMemory<char> buffer = enumerator.Current;
+        ReadOnlyMemory<char> sequence = enumerator.Current;
 
         while (enumerator.MoveNext()) {
             position = 0;
-            buffer = enumerator.Current;
+            sequence = enumerator.Current;
 
-            while (PolylineEncoding.Default.TryReadValue(ref latitude, ref buffer, ref position)
-                && PolylineEncoding.Default.TryReadValue(ref longitude, ref buffer, ref position)
+            while (PolylineEncoding.Default.TryReadValue(ref latitude, ref sequence, ref position)
+                && PolylineEncoding.Default.TryReadValue(ref longitude, ref sequence, ref position)
             ) {
                 yield return new(PolylineEncoding.Default.Denormalize(latitude), PolylineEncoding.Default.Denormalize(longitude));
             }
 
             consumed += position;
 
-            if (buffer.Length != position) {
+            if (sequence.Length != position) {
                 InvalidPolylineException.Throw(consumed);
             }
         }

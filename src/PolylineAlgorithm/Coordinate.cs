@@ -63,16 +63,6 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
         => ICoordinateValidator.Default.Latitude.IsInRange(Latitude)
         && ICoordinateValidator.Default.Longitude.IsInRange(Longitude);
 
-    /// <summary>
-    /// Deconstructs this instance into its latitude and longitude components.
-    /// </summary>
-    /// <param name="latitude">The latitude component.</param>
-    /// <param name="longitude">The longitude component.</param>
-    public readonly void Deconstruct(out double latitude, out double longitude) {
-        latitude = Latitude;
-        longitude = Longitude;
-    }
-
     #region Overrides
 
     /// <inheritdoc />
