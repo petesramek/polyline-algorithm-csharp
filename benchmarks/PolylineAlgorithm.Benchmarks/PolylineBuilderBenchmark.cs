@@ -16,34 +16,16 @@ using PolylineAlgorithm.Utility;
 [RankColumn]
 public class PolylineBuilderBenchmark {
     [Params(1, 10, 100, 500, 1_000)]
-    public int Count;
+    public int Length;
 
     [Params(1, 5, 10, 50, 100)]
     public int SegmentsCount;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     /// <summary>
-    /// Gets the character array representing the encoded polyline.
-    /// </summary>
-    public char[] CharArrayValue { get; private set; }
-
-    /// <summary>
     /// Gets the read-only memory representing the encoded polyline.
     /// </summary>
-    public ReadOnlyMemory<char> MemoryValue { get; private set; }
-
-
-    /// <summary>
-    /// Gets the string value representing the encoded polyline.
-    /// </summary>
-    public string StringValue { get; private set; }
-
-    /// <summary>
-    /// Gets the read-only memory representing the encoded polyline.
-    /// </summary>
-    public Polyline PolylineNotEqualValue { get; private set; }
-
-    public char[] CopyToDestination { get; private set; }
+    internal ReadOnlyMemory<char> MemoryValue { get; private set; }
 
     internal PolylineBuilder Builder { get; private set; }
 
@@ -56,11 +38,7 @@ public class PolylineBuilderBenchmark {
     [GlobalSetup]
     public void SetupData() {
         Builder = new PolylineBuilder();
-
-        var polyline = RandomValueProvider.GetPolyline(Count);
-        StringValue = polyline.ToString();
-        CharArrayValue = [.. StringValue];
-        MemoryValue = CharArrayValue.AsMemory();
+        MemoryValue = RandomValueProvider.GetPolyline(Length).ToString().AsMemory();
     }
 
     /// <summary>
@@ -69,7 +47,7 @@ public class PolylineBuilderBenchmark {
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
     public Polyline PolylineBuilder_Append_Memory() {
-        for(int i = 0; i < SegmentsCount; i++) {
+        for (int i = 0; i < SegmentsCount; i++) {
             Builder
                 .Append(MemoryValue);
         }
