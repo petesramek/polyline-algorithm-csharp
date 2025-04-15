@@ -106,14 +106,12 @@ public class CoordinateTest {
     [DynamicData(nameof(Constructor_Valid_Parameters))]
     public void Deconstruct_Equals_Parameters(double latitude, double longitude) {
         // Arrange
+        // Act
         Coordinate coordinate = new(latitude, longitude);
 
-        // Act
-        var (Latitude, Longitude) = coordinate;
-
         // Assert
-        Assert.AreEqual(latitude, Latitude);
-        Assert.AreEqual(longitude, Longitude);
+        Assert.AreEqual(latitude, coordinate.Latitude);
+        Assert.AreEqual(longitude, coordinate.Longitude);
     }
 
     /// <summary>
