@@ -31,7 +31,7 @@ public interface ICoordinateValidator {
     /// otherwise, <see langword="false"/>.
     /// </returns>
     bool IsValid(Coordinate coordinate);
-}
+
     /// <summary>
     /// Gets the default coordinate validator instance.
     /// </summary>
