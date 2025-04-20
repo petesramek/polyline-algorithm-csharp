@@ -11,7 +11,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
-/// Represents an error that is caused by a malformed polyline.
+/// Represents an exception that is thrown when a polyline is malformed or invalid.
 /// </summary>
 [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Internal use only.")]
 [DebuggerDisplay($"{nameof(InvalidPolylineException)}: {{ToString()}}")]
@@ -26,7 +26,7 @@ public sealed class InvalidPolylineException : Exception {
     /// <summary>
     /// Throws an <see cref="InvalidPolylineException"/> with a message indicating the position of the error in the polyline.
     /// </summary>
-    /// <param name="position">The position in the polyline where the error occurred.</param>
+    /// <param name="position">The zero-based position in the polyline where the error occurred.</param>
     /// <exception cref="InvalidPolylineException">Always thrown to indicate a malformed polyline.</exception>
     internal static void Throw(long position) {
         throw new InvalidPolylineException(string.Format(ExceptionMessageResource.PolylineStringIsMalformedMessage, position.ToString()));

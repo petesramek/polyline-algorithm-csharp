@@ -5,7 +5,10 @@
 
 namespace PolylineAlgorithm.Validation;
 
-/// <inheritdoc cref="ICoordinateValidator" />
+/// <summary>
+/// Provides functionality to validate geographic coordinates based on specified latitude and longitude ranges.
+/// Implements the <see cref="ICoordinateValidator"/> interface.
+/// </summary>
 public sealed class CoordinateValidator : ICoordinateValidator {
     /// <summary>
     /// Initializes a new instance of the <see cref="CoordinateValidator"/> class with the specified latitude and longitude ranges.
@@ -17,13 +20,24 @@ public sealed class CoordinateValidator : ICoordinateValidator {
         Longitude = longitudeRange;
     }
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Gets the range within which the latitude value is considered valid.
+    /// </summary>
     public CoordinateRange Latitude { get; }
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Gets the range within which the longitude value is considered valid.
+    /// </summary>
     public CoordinateRange Longitude { get; }
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Determines whether the specified coordinate is valid based on the latitude and longitude ranges.
+    /// </summary>
+    /// <param name="coordinate">The <see cref="Coordinate"/> to validate.</param>
+    /// <returns>
+    /// <see langword="true"/> if the <paramref name="coordinate"/> is within the valid latitude and longitude ranges;
+    /// otherwise, <see langword="false"/>.
+    /// </returns>
     public bool IsValid(Coordinate coordinate) {
         return
             Latitude.IsInRange(coordinate.Latitude)

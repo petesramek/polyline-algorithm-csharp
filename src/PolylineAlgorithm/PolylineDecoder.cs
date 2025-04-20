@@ -12,12 +12,17 @@ using System.Buffers;
 
 
 /// <summary>
-/// Performs polyline algorithm decoding
+/// Performs decoding of encoded polyline strings into a sequence of geographic coordinates.
 /// </summary>
 public class PolylineDecoder : IPolylineDecoder {
     /// <inheritdoc />
-    /// <exception cref="ArgumentException">Thrown when <paramref name="polyline"/> argument is null -or- empty.</exception>
-    /// <exception cref="InvalidOperationException">Thrown when <paramref name="polyline"/> is not in correct format.</exception>
+    /// <summary>
+    /// Decodes an encoded polyline into a sequence of <see cref="Coordinate"/> objects.
+    /// </summary>
+    /// <param name="polyline">The encoded polyline to decode.</param>
+    /// <returns>An enumerable sequence of <see cref="Coordinate"/> objects representing the decoded polyline.</returns>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="polyline"/> is null or empty.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when <paramref name="polyline"/> is not in the correct format.</exception>
     public IEnumerable<Coordinate> Decode(Polyline polyline) {
         if (polyline.IsEmpty) {
             throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeNullEmptyOrWhitespaceMessage, nameof(polyline));

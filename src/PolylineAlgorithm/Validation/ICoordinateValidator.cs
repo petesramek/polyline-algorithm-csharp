@@ -8,7 +8,8 @@ namespace PolylineAlgorithm.Validation;
 using PolylineAlgorithm.Internal;
 
 /// <summary>
-/// Provides a mechanism for validating <see cref="Coordinate"/> structure and its values, Latitude and Longitude.
+/// Provides a mechanism for validating geographic coordinates, specifically their latitude and longitude values,
+/// against predefined valid ranges.
 /// </summary>
 public interface ICoordinateValidator {
     /// <summary>
@@ -24,10 +25,13 @@ public interface ICoordinateValidator {
     /// <summary>
     /// Determines whether the specified coordinate is valid based on the latitude and longitude ranges.
     /// </summary>
-    /// <param name="coordinate">The coordinate to validate.</param>
-    /// <returns><see langword="true"/> if the coordinate is within the valid ranges; otherwise, <see langword="false"/>.</returns>
+    /// <param name="coordinate">The <see cref="Coordinate"/> to validate.</param>
+    /// <returns>
+    /// <see langword="true"/> if the <paramref name="coordinate"/> is within the valid latitude and longitude ranges;
+    /// otherwise, <see langword="false"/>.
+    /// </returns>
     bool IsValid(Coordinate coordinate);
-
+}
     /// <summary>
     /// Gets the default coordinate validator instance.
     /// </summary>

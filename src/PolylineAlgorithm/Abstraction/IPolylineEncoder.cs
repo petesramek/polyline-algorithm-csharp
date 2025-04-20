@@ -8,13 +8,15 @@ namespace PolylineAlgorithm.Abstraction;
 using System.Collections.Generic;
 
 /// <summary>
-/// Defines a method to encode a set of coordinates into an encoded polyline.
+/// Defines a contract for encoding a collection of geographic coordinates into an encoded polyline string.
 /// </summary>
 public interface IPolylineEncoder {
     /// <summary>
-    /// Converts a set of coordinates to an encoded polyline.
+    /// Encodes a collection of geographic coordinates into an encoded polyline string.
     /// </summary>
-    /// <param name="coordinates">A set of coordinates to encode.</param>
-    /// <returns>An encoded polyline representing the set of coordinates.</returns>
+    /// <param name="coordinates">A collection of <see cref="Coordinate"/> objects to encode.</param>
+    /// <returns>
+    /// A <see cref="Polyline"/> instance representing the encoded polyline string.
+    /// </returns>
     Polyline Encode(IEnumerable<Coordinate> coordinates);
 }
