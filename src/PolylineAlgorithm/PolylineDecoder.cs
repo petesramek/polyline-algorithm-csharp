@@ -35,7 +35,7 @@ public class PolylineDecoder : IPolylineDecoder {
         ReadOnlySequence<char>.Enumerator enumerator = polyline.GetEnumerator();
 
         int position;
-        ReadOnlyMemory<char> sequence = enumerator.Current;
+        ReadOnlyMemory<char> sequence;
 
         while (enumerator.MoveNext()) {
             position = 0;
