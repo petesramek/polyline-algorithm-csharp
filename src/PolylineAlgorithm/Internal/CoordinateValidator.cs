@@ -3,13 +3,16 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm.Validation;
+namespace PolylineAlgorithm.Internal;
+
+using PolylineAlgorithm;
+using PolylineAlgorithm.Validation;
 
 /// <summary>
 /// Provides functionality to validate geographic coordinates based on specified latitude and longitude ranges.
 /// Implements the <see cref="ICoordinateValidator"/> interface.
 /// </summary>
-public sealed class CoordinateValidator : ICoordinateValidator {
+internal sealed class CoordinateValidator : ICoordinateValidator {
     /// <summary>
     /// Initializes a new instance of the <see cref="CoordinateValidator"/> class with the specified latitude and longitude ranges.
     /// </summary>
@@ -38,9 +41,7 @@ public sealed class CoordinateValidator : ICoordinateValidator {
     /// <see langword="true"/> if the <paramref name="coordinate"/> is within the valid latitude and longitude ranges;
     /// otherwise, <see langword="false"/>.
     /// </returns>
-    public bool IsValid(Coordinate coordinate) {
-        return
-            Latitude.IsInRange(coordinate.Latitude)
+    public bool IsValid(Coordinate coordinate) =>
+        Latitude.IsInRange(coordinate.Latitude)
             && Longitude.IsInRange(coordinate.Longitude);
-    }
 }

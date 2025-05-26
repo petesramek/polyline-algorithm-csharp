@@ -7,6 +7,7 @@ namespace PolylineAlgorithm;
 
 using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal;
+using PolylineAlgorithm.Properties;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -42,7 +43,7 @@ public class PolylineEncoder : IPolylineEncoder {
         int count = GetCount(coordinates);
 
         if (count == 0) {
-            throw new ArgumentException(nameof(coordinates));
+            throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeEmptyEnumerationMessage, nameof(coordinates));
         }
 
         CoordinateVariance variance = new();
@@ -82,7 +83,7 @@ public class PolylineEncoder : IPolylineEncoder {
         }
 
         builder
-            .Append(buffer[..position].ToString().AsMemory());
+            .Append(buffer[..position].ToArray().AsMemory());
 
         return builder.Build();
 

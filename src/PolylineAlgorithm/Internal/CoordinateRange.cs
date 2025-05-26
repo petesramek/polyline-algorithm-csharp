@@ -3,7 +3,7 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm.Validation;
+namespace PolylineAlgorithm.Internal;
 
 using PolylineAlgorithm.Properties;
 using System;
@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 /// </summary>
 [DebuggerDisplay("{ToString()}")]
 [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
-public readonly struct CoordinateRange : IEquatable<CoordinateRange> {
+internal readonly struct CoordinateRange : IEquatable<CoordinateRange> {
     /// <summary>
     /// Initializes a new instance of the <see cref="CoordinateRange"/> struct with <see cref="Min"/>
     /// set to <see cref="double.MinValue"/> and <see cref="Max"/> set to <see cref="double.MaxValue"/>.

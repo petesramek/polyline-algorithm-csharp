@@ -17,9 +17,6 @@ using System.Runtime.InteropServices;
 [DebuggerDisplay("{ToString()}")]
 [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
 public readonly struct Coordinate : IEquatable<Coordinate> {
-    public static readonly Coordinate Default;
-    internal static long Size { get; } = Marshal.SizeOf<Coordinate>();
-
     /// <summary>
     /// Initializes a new instance of the <see cref="Coordinate"/> struct with default values for <see cref="Latitude"/> and <see cref="Longitude"/>.
     /// </summary>
@@ -60,9 +57,7 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// Determines whether the coordinate is valid by checking if both <see cref="Latitude"/> and <see cref="Longitude"/> are within their respective valid ranges.
     /// </summary>
     /// <returns><see langword="true"/> if the coordinate is valid; otherwise, <see langword="false"/>.</returns>
-    public bool IsValid()
-        => ICoordinateValidator.Default.Latitude.IsInRange(Latitude)
-        && ICoordinateValidator.Default.Longitude.IsInRange(Longitude);
+    public bool IsValid() => ICoordinateValidator.Default.IsValid(this);
 
     #region Overrides
 

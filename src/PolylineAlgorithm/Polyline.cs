@@ -89,7 +89,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
             return Value.FirstSpan.ToString();
         }
 
-        var sb = Value.Length <= int.MaxValue ? new StringBuilder((int)(Value.Length)) : new StringBuilder();
+        var sb = Value.Length <= int.MaxValue ? new StringBuilder((int)Value.Length) : new StringBuilder();
         var enumerator = Value.GetEnumerator();
 
         while (true) {

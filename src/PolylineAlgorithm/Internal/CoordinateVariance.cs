@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 /// This struct is used to calculate and store the differences between coordinate values.
 /// </summary>
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential, Pack = 4, Size = 8)]
 internal struct CoordinateVariance {
     private (int Latitude, int Longitude) _current = (0, 0);
 

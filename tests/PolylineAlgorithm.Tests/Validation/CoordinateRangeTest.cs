@@ -5,7 +5,7 @@
 
 namespace PolylineAlgorithm.Tests.Validation;
 
-using PolylineAlgorithm.Validation;
+using PolylineAlgorithm.Internal;
 
 /// <summary>
 /// Tests for the <see cref="CoordinateRange"/> type.

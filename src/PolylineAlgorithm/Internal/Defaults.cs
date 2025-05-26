@@ -4,8 +4,6 @@
 //
 
 namespace PolylineAlgorithm.Internal;
-
-using PolylineAlgorithm.Validation;
 using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
@@ -53,7 +51,7 @@ internal static class Defaults {
         /// An array of delimiters used in the polyline encoding process.
         /// Each delimiter is derived by adding the ASCII value of the question mark ('?') to a range of integers.
         /// </summary>
-        public static readonly byte[] Delimiters = [.. Enumerable.Range(0, 32).Select(n => (byte)(n + Defaults.Algorithm.QuestionMark))];
+        public static readonly byte[] Delimiters = [.. Enumerable.Range(0, 32).Select(n => (byte)(n + Algorithm.QuestionMark))];
 
         /// <summary>
         /// The minimum length of an encoded coordinate in the polyline format.
