@@ -61,7 +61,7 @@ public class PolylineBenchmark {
         StringValue = PolylineValue.ToString();
         CharArrayValue = [.. StringValue];
         MemoryValue = CharArrayValue.AsMemory();
-        
+
         CopyToDestination = new char[PolylineValue.Length];
     }
 

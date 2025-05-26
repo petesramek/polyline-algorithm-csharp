@@ -9,10 +9,10 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
 using global::PolylineEncoder.Net.Utility;
 using PolylineAlgorithm;
+using PolylineAlgorithm.Extensions;
 using PolylineAlgorithm.Utility;
 using PolylinerNet;
 using PolylineEncoding = Cloudikka.PolylineAlgorithm.Encoding.PolylineEncoding;
-using PolylineAlgorithm.Extensions;
 
 /// <summary>
 /// Benchmarks for the <see cref="PolylineAlgorithm.PolylineDecoder"/> class.

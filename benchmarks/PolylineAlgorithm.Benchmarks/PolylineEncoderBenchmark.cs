@@ -9,7 +9,6 @@ using BenchmarkDotNet.Attributes;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Utility;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 /// <summary>
 /// Benchmarks for the <see cref="PolylineEncoder"/> class.

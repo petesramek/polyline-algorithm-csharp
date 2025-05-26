@@ -8,7 +8,6 @@ namespace PolylineAlgorithm.Benchmarks;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
 using PolylineAlgorithm;
-using PolylineAlgorithm.Extensions;
 using PolylineAlgorithm.Utility;
 
 /// <summary>
