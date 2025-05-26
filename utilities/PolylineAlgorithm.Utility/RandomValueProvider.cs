@@ -7,7 +7,7 @@ using System.Linq;
 
 internal static class RandomValueProvider {
     private static readonly Random _random = new(DateTime.Now.Millisecond);
-    private static readonly ConcurrentDictionary<int, CoordinatePair> _cache = new();
+    private static readonly ConcurrentDictionary<int, PolylineCoordinateCollectionPair> _cache = new();
     private static readonly PolylineEncoder _encoder = new();
 
     public static IEnumerable<Coordinate> GetCoordinates(int count) {
@@ -26,7 +26,7 @@ internal static class RandomValueProvider {
         return entry.Polyline;
     }
 
-    private static CoordinatePair GetCaheEntry(int count) {
+    private static PolylineCoordinateCollectionPair GetCaheEntry(int count) {
         if (_cache.TryGetValue(count, out var entry)) {
             return entry;
         }
@@ -36,7 +36,7 @@ internal static class RandomValueProvider {
                             .Select(i => new Coordinate(RandomLatitude(), RandomLongitude()))
                             .ToList();
 
-        entry = _cache.GetOrAdd(count, _ => new CoordinatePair(enumeration, _encoder.Encode(enumeration)));
+        entry = _cache.GetOrAdd(count, _ => new PolylineCoordinateCollectionPair(enumeration, _encoder.Encode(enumeration)));
 
         return entry;
     }
@@ -49,13 +49,8 @@ internal static class RandomValueProvider {
         return Math.Round(_random.Next(-90, 90) + _random.NextDouble(), 5);
     }
 
-    private readonly struct CoordinatePair {
-        public CoordinatePair(IEnumerable<Coordinate> coordinates, Polyline polyline) {
-            Coordinates = coordinates;
-            Polyline = polyline;
-        }
-
-        public IEnumerable<Coordinate> Coordinates { get; }
-        public Polyline Polyline { get; }
+    private readonly struct PolylineCoordinateCollectionPair(IEnumerable<Coordinate> coordinates, Polyline polyline) {
+        public IEnumerable<Coordinate> Coordinates { get; } = coordinates;
+        public Polyline Polyline { get; } = polyline;
     }
 }

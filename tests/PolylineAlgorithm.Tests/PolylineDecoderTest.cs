@@ -57,10 +57,23 @@ public class PolylineDecoderTest {
     /// <remarks>Expected result to equal <see cref="Values.Coordinates.Valid"/>.</remarks>
     [TestMethod]
     [DynamicData(nameof(CoordinateCount))]
-    public void Decode_Valid_Input_Ok(int count) {
+    public void Random_Value_Decode_Valid_Input_Ok(int count) {
         // Arrange
-        IEnumerable<Coordinate> expected = RandomValueProvider.GetCoordinates(1);
-        string value = RandomValueProvider.GetPolyline(1).ToString();
+        IEnumerable<Coordinate> expected = RandomValueProvider.GetCoordinates(count);
+        Polyline value = RandomValueProvider.GetPolyline(count);
+
+        // Act
+        var result = Decoder.Decode(value);
+
+        // Assert
+        CollectionAssert.AreEqual(expected.ToArray(), result.ToArray());
+    }
+
+    [TestMethod]
+    public void Static_Value_Decode_Valid_Input_Ok() {
+        // Arrange
+        IEnumerable<Coordinate> expected = StaticValueProvider.GetCoordinates();
+        Polyline value = StaticValueProvider.GetPolyline();
 
         // Act
         var result = Decoder.Decode(value);
