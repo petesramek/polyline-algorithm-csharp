@@ -54,7 +54,7 @@ public class PolylineEncoding {
     /// <param name="value">The normalized integer value.</param>
     /// <returns>The denormalized double value.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double Denormalize(int value) => Math.Round((double)value / Defaults.Algorithm.Precision, 5);
+    public double Denormalize(int value) => Math.Truncate((double)value) / Defaults.Algorithm.Precision;
 
     /// <summary>
     /// Attempts to write an encoded value to the buffer.
@@ -93,7 +93,7 @@ public class PolylineEncoding {
     /// <param name="value">The double value to normalize.</param>
     /// <returns>The normalized integer value.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int Normalize(double value) => (int)Math.Truncate(value * Defaults.Algorithm.Precision);
+    public int Normalize(double value) => (int)Math.Round(value * Defaults.Algorithm.Precision);
 
     /// <summary>
     /// Calculates the number of characters required to encode a given variance.
