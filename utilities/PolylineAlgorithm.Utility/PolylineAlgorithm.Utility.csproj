@@ -33,6 +33,9 @@
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
 			<_Parameter1>PolylineAlgorithm.Comparison.Benchmarks</_Parameter1>
 		</AssemblyAttribute>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>PolylineAlgorithm.NetTopologySuite.Sample</_Parameter1>
+		</AssemblyAttribute>
 	</ItemGroup>
 
 </Project>
