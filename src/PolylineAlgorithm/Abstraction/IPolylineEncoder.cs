@@ -12,11 +12,13 @@ using System.Collections.Generic;
 /// </summary>
 public interface IPolylineEncoder {
     /// <summary>
-    /// Encodes a collection of geographic coordinates into an encoded polyline string.
+    /// Encodes a sequence of geographic coordinates into an encoded polyline representation.
     /// </summary>
-    /// <param name="coordinates">A collection of <see cref="Coordinate"/> objects to encode.</param>
+    /// <param name="coordinates">
+    /// The collection of <see cref="Coordinate"/> instances to encode into a polyline.
+    /// </param>
     /// <returns>
-    /// A <see cref="Polyline"/> instance representing the encoded polyline string.
+    /// A <see cref="Polyline"/> containing the encoded polyline string that represents the input coordinates.
     /// </returns>
     Polyline Encode(IEnumerable<Coordinate> coordinates);
 }

@@ -1,26 +1,34 @@
-﻿namespace PolylineAlgorithm.Extensions;
+﻿//
+// Copyright © Pete Sramek. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+
+namespace PolylineAlgorithm.Extensions;
 
 using PolylineAlgorithm.Abstraction;
 using System;
 using System.Collections.Generic;
 
 /// <summary>
-/// Provides extension methods for the <see cref="IPolylineEncoder"/> interface to simplify encoding operations.
+/// Provides extension methods for the <see cref="IPolylineEncoder"/> interface to facilitate encoding geographic coordinates into polylines.
 /// </summary>
 public static class PolylineEncoderExtensions {
     /// <summary>
-    /// Encodes a collection of geographic coordinates into an encoded polyline string.
+    /// Encodes a collection of <see cref="Coordinate"/> instances into an encoded polyline.
     /// </summary>
-    /// <typeparam name="Coordinate">The type representing a geographic coordinate.</typeparam>
-    /// <param name="encoder">The <see cref="IPolylineEncoder"/> instance used to encode the coordinates.</param>
-    /// <param name="coordinates">A collection of coordinates to encode.</param>
+    /// <param name="encoder">
+    /// The <see cref="IPolylineEncoder"/> instance used to perform the encoding operation.
+    /// </param>
+    /// <param name="coordinates">
+    /// The collection of <see cref="Coordinate"/> objects to encode.
+    /// </param>
     /// <returns>
-    /// A <see cref="Polyline"/> instance representing the encoded polyline string.
+    /// A <see cref="Polyline"/> representing the encoded polyline string for the provided coordinates.
     /// </returns>
     /// <exception cref="ArgumentNullException">
-    /// Thrown if the <paramref name="encoder"/> is <see langword="null"/>.
+    /// Thrown if <paramref name="encoder"/> is <see langword="null"/>.
     /// </exception>
-    public static Polyline Encode<Coordinate>(this IPolylineEncoder encoder, ICollection<Coordinate> coordinates) {
+    public static Polyline Encode(this IPolylineEncoder encoder, ICollection<Coordinate> coordinates) {
         if (encoder is null) {
             throw new ArgumentNullException(nameof(encoder));
         }
@@ -29,15 +37,19 @@ public static class PolylineEncoderExtensions {
     }
 
     /// <summary>
-    /// Encodes an array of geographic coordinates into an encoded polyline string.
+    /// Encodes an array of <see cref="Coordinate"/> instances into an encoded polyline.
     /// </summary>
-    /// <param name="encoder">The <see cref="IPolylineEncoder"/> instance used to encode the coordinates.</param>
-    /// <param name="coordinates">An array of coordinates to encode.</param>
+    /// <param name="encoder">
+    /// The <see cref="IPolylineEncoder"/> instance used to perform the encoding operation.
+    /// </param>
+    /// <param name="coordinates">
+    /// The array of <see cref="Coordinate"/> objects to encode.
+    /// </param>
     /// <returns>
-    /// A <see cref="Polyline"/> instance representing the encoded polyline string.
+    /// A <see cref="Polyline"/> representing the encoded polyline string for the provided coordinates.
     /// </returns>
     /// <exception cref="ArgumentNullException">
-    /// Thrown if the <paramref name="encoder"/> is <see langword="null"/>.
+    /// Thrown if <paramref name="encoder"/> is <see langword="null"/>.
     /// </exception>
     public static Polyline Encode(this IPolylineEncoder encoder, Coordinate[] coordinates) {
         if (encoder is null) {

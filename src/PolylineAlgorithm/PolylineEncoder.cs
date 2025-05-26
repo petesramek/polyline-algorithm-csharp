@@ -13,8 +13,8 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 /// <summary>
-/// Provides methods to encode a set of geographic coordinates into a polyline string.
-/// This class implements the <see cref="IPolylineEncoder"/> interface.
+/// Provides functionality to encode a collection of geographic coordinates into an encoded polyline string.
+/// Implements the <see cref="IPolylineEncoder"/> interface.
 /// </summary>
 public class PolylineEncoder : IPolylineEncoder {
     private const int MaxByteSize = 64_000;
@@ -22,18 +22,20 @@ public class PolylineEncoder : IPolylineEncoder {
     private const int MaxCount = MaxChars / Defaults.Polyline.MaxEncodedCoordinateLength;
 
     /// <summary>
-    /// Encodes a set of geographic coordinates into a polyline string.
+    /// Encodes a collection of <see cref="Coordinate"/> instances into an encoded <see cref="Polyline"/> string.
     /// </summary>
-    /// <param name="coordinates">The collection of <see cref="Coordinate"/> objects to encode.</param>
+    /// <param name="coordinates">
+    /// The collection of <see cref="Coordinate"/> objects to encode.
+    /// </param>
     /// <returns>
-    /// A <see cref="Polyline"/> representing the encoded coordinates. 
+    /// A <see cref="Polyline"/> representing the encoded coordinates.
     /// Returns <see langword="default"/> if the input collection is empty or null.
     /// </returns>
     /// <exception cref="ArgumentNullException">
-    /// Thrown when the <paramref name="coordinates"/> argument is <see langword="null"/>.
+    /// Thrown when <paramref name="coordinates"/> is <see langword="null"/>.
     /// </exception>
     /// <exception cref="ArgumentException">
-    /// Thrown when the <paramref name="coordinates"/> argument is an empty enumeration.
+    /// Thrown when <paramref name="coordinates"/> is an empty enumeration.
     /// </exception>
     public Polyline Encode(IEnumerable<Coordinate> coordinates) {
         if (coordinates is null) {
@@ -106,7 +108,7 @@ public class PolylineEncoder : IPolylineEncoder {
         /// </summary>
         /// <param name="coordinates">The enumerable of <see cref="Coordinate"/> objects.</param>
         /// <returns>
-        /// The count of coordinates in the collection. 
+        /// The count of coordinates in the collection.
         /// Returns -1 if the collection does not implement <see cref="ICollection{T}"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

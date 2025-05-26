@@ -1,11 +1,16 @@
-﻿namespace PolylineAlgorithm.Internal;
+﻿//
+// Copyright © Pete Sramek. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+
+namespace PolylineAlgorithm.Internal;
 
 using System;
 using System.Runtime.InteropServices;
 
 /// <summary>
-/// Provides functionality to build a polyline from multiple segments of characters.
-/// This struct is used to efficiently construct a <see cref="Polyline"/> instance.
+/// Provides an efficient mechanism for constructing a <see cref="Polyline"/> from multiple character segments.
+/// This struct enables incremental building of a polyline by appending segments and producing a single concatenated result.
 /// </summary>
 [StructLayout(LayoutKind.Auto)]
 internal struct PolylineBuilder {
@@ -13,12 +18,13 @@ internal struct PolylineBuilder {
     private PolylineSegment? _last;
 
     /// <summary>
-    /// Appends a new segment of characters to the polyline being built.
+    /// Appends a segment of characters to the polyline under construction.
     /// </summary>
-    /// <param name="value">The segment of characters to append.</param>
+    /// <param name="value">
+    /// The read-only memory region containing the characters to append as a new segment.
+    /// </param>
     /// <remarks>
-    /// This method creates a new <see cref="PolylineSegment"/> for the provided memory
-    /// and links it to the existing chain of segments.
+    /// A new <see cref="PolylineSegment"/> is created for the provided memory and linked to the existing chain of segments.
     /// </remarks>
     public void Append(ReadOnlyMemory<char> value) {
         var current = new PolylineSegment(value);
@@ -30,11 +36,11 @@ internal struct PolylineBuilder {
     }
 
     /// <summary>
-    /// Builds the final <see cref="Polyline"/> instance from the appended segments.
+    /// Constructs the final <see cref="Polyline"/> instance by concatenating all appended segments.
     /// </summary>
     /// <returns>
-    /// A <see cref="Polyline"/> instance representing the concatenated segments.
-    /// If no segments were appended, an empty <see cref="Polyline"/> is returned.
+    /// A <see cref="Polyline"/> representing the combined character segments.
+    /// If no segments have been appended, returns an empty <see cref="Polyline"/>.
     /// </returns>
     public readonly Polyline Build() {
         if (_initial is null) {

@@ -13,7 +13,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 /// <summary>
-/// Represents a readonly encoded polyline string.
+/// Represents an immutable, read-only encoded polyline string.
+/// Provides methods for creation, inspection, and conversion of polyline data from various character sources.
 /// </summary>
 [StructLayout(LayoutKind.Auto)]
 [DebuggerDisplay("Value: {ToString()}, IsEmpty: {IsEmpty}, Length: {Length}")]
@@ -21,7 +22,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     private readonly ReadOnlySequence<char> _value;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Polyline"/> struct that is empty.
+    /// Initializes a new, empty instance of the <see cref="Polyline"/> struct.
     /// </summary>
     public Polyline() {
         _value = ReadOnlySequence<char>.Empty;
@@ -30,13 +31,13 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <summary>
     /// Initializes a new instance of the <see cref="Polyline"/> struct with the specified character sequence.
     /// </summary>
-    /// <param name="value">The readonly sequence of characters to initialize the polyline with.</param>
+    /// <param name="value">The read-only sequence of characters to initialize the polyline with.</param>
     private Polyline(ReadOnlySequence<char> value) {
         _value = value;
     }
 
     /// <summary>
-    /// Gets the readonly sequence of characters representing the polyline.
+    /// Gets the underlying read-only sequence of characters representing the polyline.
     /// </summary>
     internal readonly ReadOnlySequence<char> Value => _value;
 
@@ -51,7 +52,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     public readonly long Length => Value.Length;
 
     /// <summary>
-    /// Returns an enumerator for iterating through the characters in the polyline.
+    /// Returns an enumerator for iterating through the segments of the polyline's character sequence.
     /// </summary>
     /// <returns>An enumerator for the polyline's character sequence.</returns>
     public ReadOnlySequence<char>.Enumerator GetEnumerator() {
@@ -59,10 +60,10 @@ public readonly struct Polyline : IEquatable<Polyline> {
     }
 
     /// <summary>
-    /// Copies the characters in this instance to the specified destination array.
+    /// Copies the characters of this polyline to the specified destination array.
     /// </summary>
     /// <param name="destination">The destination array to copy the characters to.</param>
-    /// <exception cref="ArgumentNullException">Thrown if <paramref name="destination"/> is null.</exception>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="destination"/> is <c>null</c>.</exception>
     /// <exception cref="ArgumentException">Thrown if the length of <paramref name="destination"/> does not match the polyline's length.</exception>
     public void CopyTo(char[] destination) {
         if (destination is null) {
@@ -79,7 +80,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <summary>
     /// Returns a string representation of the polyline.
     /// </summary>
-    /// <returns>A string containing the characters of the polyline.</returns>
+    /// <returns>A string containing the characters of the polyline, or an empty string if the polyline is empty.</returns>
     public override string ToString() {
         if (IsEmpty) {
             return string.Empty;
@@ -166,7 +167,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// </summary>
     /// <param name="polyline">A Unicode character array representing an encoded polyline.</param>
     /// <returns>The <see cref="Polyline"/> instance corresponding to the specified character array.</returns>
-    /// <exception cref="ArgumentNullException">Thrown if <paramref name="polyline"/> is null.</exception>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="polyline"/> is <c>null</c>.</exception>
     public static Polyline FromCharArray(char[] polyline) {
         if (polyline is null) {
             throw new ArgumentNullException(nameof(polyline));
@@ -180,7 +181,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// </summary>
     /// <param name="polyline">A string representing an encoded polyline.</param>
     /// <returns>The <see cref="Polyline"/> instance corresponding to the specified string.</returns>
-    /// <exception cref="ArgumentNullException">Thrown if <paramref name="polyline"/> is null.</exception>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="polyline"/> is <c>null</c>.</exception>
     public static Polyline FromString(string polyline) {
         if (polyline is null) {
             throw new ArgumentNullException(nameof(polyline));
@@ -190,9 +191,9 @@ public readonly struct Polyline : IEquatable<Polyline> {
     }
 
     /// <summary>
-    /// Creates a <see cref="Polyline"/> from a readonly memory region of characters.
+    /// Creates a <see cref="Polyline"/> from a read-only memory region of characters.
     /// </summary>
-    /// <param name="polyline">A readonly memory region representing an encoded polyline.</param>
+    /// <param name="polyline">A read-only memory region representing an encoded polyline.</param>
     /// <returns>The <see cref="Polyline"/> instance corresponding to the specified memory region.</returns>
     public static Polyline FromMemory(ReadOnlyMemory<char> polyline) {
         if (polyline.IsEmpty) {
@@ -203,9 +204,9 @@ public readonly struct Polyline : IEquatable<Polyline> {
     }
 
     /// <summary>
-    /// Creates a <see cref="Polyline"/> from a readonly sequence of characters.
+    /// Creates a <see cref="Polyline"/> from a read-only sequence of characters.
     /// </summary>
-    /// <param name="value">A readonly sequence of characters representing an encoded polyline.</param>
+    /// <param name="value">A read-only sequence of characters representing an encoded polyline.</param>
     /// <returns>The <see cref="Polyline"/> instance corresponding to the specified sequence.</returns>
     internal static Polyline FromSequence(ReadOnlySequence<char> value) {
         return new Polyline(value);
@@ -216,7 +217,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     #region Explicit conversions
 
     /// <summary>
-    /// Defines an explicit conversion of a Unicode character array to a <see cref="Polyline"/>.
+    /// Defines an explicit conversion from a Unicode character array to a <see cref="Polyline"/>.
     /// </summary>
     /// <param name="polyline">The Unicode character array to convert.</param>
     /// <returns>The converted <see cref="Polyline"/> instance.</returns>
@@ -224,7 +225,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     public static explicit operator Polyline(char[] polyline) => FromCharArray(polyline);
 
     /// <summary>
-    /// Defines an explicit conversion of a string to a <see cref="Polyline"/>.
+    /// Defines an explicit conversion from a string to a <see cref="Polyline"/>.
     /// </summary>
     /// <param name="polyline">The string to convert.</param>
     /// <returns>The converted <see cref="Polyline"/> instance.</returns>
@@ -232,9 +233,9 @@ public readonly struct Polyline : IEquatable<Polyline> {
     public static explicit operator Polyline(string polyline) => FromString(polyline);
 
     /// <summary>
-    /// Defines an explicit conversion of a readonly memory region to a <see cref="Polyline"/>.
+    /// Defines an explicit conversion from a read-only memory region to a <see cref="Polyline"/>.
     /// </summary>
-    /// <param name="polyline">The readonly memory region to convert.</param>
+    /// <param name="polyline">The read-only memory region to convert.</param>
     /// <returns>The converted <see cref="Polyline"/> instance.</returns>
     [ExcludeFromCodeCoverage]
     public static explicit operator Polyline(ReadOnlyMemory<char> polyline) => FromMemory(polyline);

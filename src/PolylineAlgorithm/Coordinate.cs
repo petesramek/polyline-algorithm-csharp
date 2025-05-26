@@ -12,13 +12,13 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.InteropServices;
 /// <summary>
-/// Represents a latitude and longitude coordinate pair.
+/// Represents a geographic coordinate as a pair of latitude and longitude values.
 /// </summary>
 [DebuggerDisplay("{ToString()}")]
 [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
 public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <summary>
-    /// Initializes a new instance of the <see cref="Coordinate"/> struct with default values for <see cref="Latitude"/> and <see cref="Longitude"/>.
+    /// Initializes a new instance of the <see cref="Coordinate"/> struct with default values (0) for <see cref="Latitude"/> and <see cref="Longitude"/>.
     /// </summary>
     public Coordinate() {
         Latitude = default;
@@ -26,37 +26,42 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Coordinate"/> struct with specified latitude and longitude values.
+    /// Initializes a new instance of the <see cref="Coordinate"/> struct with the specified latitude and longitude values.
     /// </summary>
-    /// <param name="latitude">The latitude value, in degrees.</param>
-    /// <param name="longitude">The longitude value, in degrees.</param>
+    /// <param name="latitude">The latitude component, in degrees.</param>
+    /// <param name="longitude">The longitude component, in degrees.</param>
     public Coordinate(double latitude, double longitude) {
         Latitude = latitude;
         Longitude = longitude;
     }
 
     /// <summary>
-    /// Gets the latitude value of the coordinate, in degrees.
+    /// Gets the latitude component of the coordinate, in degrees.
     /// </summary>
     public double Latitude { get; }
 
     /// <summary>
-    /// Gets the longitude value of the coordinate, in degrees.
+    /// Gets the longitude component of the coordinate, in degrees.
     /// </summary>
     public double Longitude { get; }
 
     /// <summary>
-    /// Determines whether the coordinate is the default value (both <see cref="Latitude"/> and <see cref="Longitude"/> are 0).
+    /// Determines whether this coordinate is the default value (both <see cref="Latitude"/> and <see cref="Longitude"/> are 0).
     /// </summary>
-    /// <returns><see langword="true"/> if the coordinate is the default value; otherwise, <see langword="false"/>.</returns>
+    /// <returns>
+    /// <see langword="true"/> if both latitude and longitude are 0; otherwise, <see langword="false"/>.
+    /// </returns>
     public bool IsDefault()
         => Latitude == default
         && Longitude == default;
 
     /// <summary>
-    /// Determines whether the coordinate is valid by checking if both <see cref="Latitude"/> and <see cref="Longitude"/> are within their respective valid ranges.
+    /// Determines whether this coordinate is valid by checking if both <see cref="Latitude"/> and <see cref="Longitude"/>
+    /// are within their respective valid ranges as defined by the default <see cref="ICoordinateValidator"/>.
     /// </summary>
-    /// <returns><see langword="true"/> if the coordinate is valid; otherwise, <see langword="false"/>.</returns>
+    /// <returns>
+    /// <see langword="true"/> if the coordinate is within valid latitude and longitude ranges; otherwise, <see langword="false"/>.
+    /// </returns>
     public bool IsValid() => ICoordinateValidator.Default.IsValid(this);
 
     #region Overrides
@@ -70,9 +75,11 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     public override int GetHashCode() => HashCode.Combine(Latitude, Longitude);
 
     /// <summary>
-    /// Returns a string representation of the coordinate in the format: { Latitude: [double], Longitude: [double] }.
+    /// Returns a string representation of this coordinate in the format: <c>{ Latitude: [double], Longitude: [double] }</c>.
     /// </summary>
-    /// <returns>A string representation of the coordinate.</returns>
+    /// <returns>
+    /// A string representation of the coordinate.
+    /// </returns>
     [ExcludeFromCodeCoverage]
     public override string ToString() {
         return $"{{ {nameof(Latitude)}: {Latitude.ToString("G", CultureInfo.InvariantCulture)}, {nameof(Longitude)}: {Longitude.ToString("G", CultureInfo.InvariantCulture)} }}";
@@ -83,10 +90,12 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     #region IEquatable<Coordinate> implementation
 
     /// <summary>
-    /// Determines whether the current coordinate is equal to another coordinate.
+    /// Indicates whether this coordinate is equal to another <see cref="Coordinate"/> instance.
     /// </summary>
-    /// <param name="other">The coordinate to compare with the current coordinate.</param>
-    /// <returns><see langword="true"/> if the coordinates are equal; otherwise, <see langword="false"/>.</returns>
+    /// <param name="other">The coordinate to compare with this instance.</param>
+    /// <returns>
+    /// <see langword="true"/> if both latitude and longitude are equal; otherwise, <see langword="false"/>.
+    /// </returns>
     public bool Equals(Coordinate other) {
         return Latitude == other.Latitude &&
                Longitude == other.Longitude;
@@ -101,7 +110,9 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// </summary>
     /// <param name="left">The first coordinate to compare.</param>
     /// <param name="right">The second coordinate to compare.</param>
-    /// <returns><see langword="true"/> if the coordinates are equal; otherwise, <see langword="false"/>.</returns>
+    /// <returns>
+    /// <see langword="true"/> if both coordinates are equal; otherwise, <see langword="false"/>.
+    /// </returns>
     [ExcludeFromCodeCoverage]
     public static bool operator ==(Coordinate left, Coordinate right) => left.Equals(right);
 
@@ -110,7 +121,9 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// </summary>
     /// <param name="left">The first coordinate to compare.</param>
     /// <param name="right">The second coordinate to compare.</param>
-    /// <returns><see langword="true"/> if the coordinates are not equal; otherwise, <see langword="false"/>.</returns>
+    /// <returns>
+    /// <see langword="true"/> if the coordinates are not equal; otherwise, <see langword="false"/>.
+    /// </returns>
     [ExcludeFromCodeCoverage]
     public static bool operator !=(Coordinate left, Coordinate right) => !(left == right);
 

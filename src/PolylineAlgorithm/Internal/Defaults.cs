@@ -8,22 +8,21 @@ using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
 /// Provides default values and constants used throughout the Polyline Algorithm.
-/// This class contains nested static classes for organizing defaults related to the algorithm,
-/// polyline encoding, and geographic coordinates.
+/// Organizes defaults for algorithm parameters, polyline encoding, and geographic coordinates into nested static classes.
 /// </summary>
 [ExcludeFromCodeCoverage]
 internal static class Defaults {
     /// <summary>
-    /// Contains default values and constants related to the polyline encoding algorithm.
+    /// Contains default values and constants specific to the polyline encoding algorithm.
     /// </summary>
     public static class Algorithm {
         /// <summary>
-        /// The coordinate rounding precision used in the polyline encoding algorithm.
+        /// The precision factor used to round coordinate values during polyline encoding.
         /// </summary>
         public const int Precision = 100_000;
 
         /// <summary>
-        /// The bit shift length used in the polyline encoding algorithm.
+        /// The number of bits to shift during polyline encoding.
         /// </summary>
         public const byte ShiftLength = 5;
 
@@ -48,18 +47,17 @@ internal static class Defaults {
     /// </summary>
     public static class Polyline {
         /// <summary>
-        /// An array of delimiters used in the polyline encoding process.
-        /// Each delimiter is derived by adding the ASCII value of the question mark ('?') to a range of integers.
+        /// An array of delimiter byte values used in polyline encoding, derived by adding the ASCII value of the question mark ('?') to a range of integers.
         /// </summary>
         public static readonly byte[] Delimiters = [.. Enumerable.Range(0, 32).Select(n => (byte)(n + Algorithm.QuestionMark))];
 
         /// <summary>
-        /// The minimum length of an encoded coordinate in the polyline format.
+        /// The minimum number of characters required to represent an encoded coordinate.
         /// </summary>
         public const int MinEncodedCoordinateLength = 2;
 
         /// <summary>
-        /// The maximum length of an encoded coordinate in the polyline format.
+        /// The maximum number of characters allowed to represent an encoded coordinate.
         /// </summary>
         public const int MaxEncodedCoordinateLength = 12;
     }
@@ -69,46 +67,46 @@ internal static class Defaults {
     /// </summary>
     public static class Coordinate {
         /// <summary>
-        /// Contains default values related to latitude.
+        /// Provides default values for latitude.
         /// </summary>
         public static class Latitude {
             /// <summary>
-            /// The minimum valid value for latitude, in degrees.
+            /// The minimum valid latitude value, in degrees.
             /// </summary>
             public const sbyte Min = -Max;
 
             /// <summary>
-            /// The maximum valid value for latitude, in degrees.
+            /// The maximum valid latitude value, in degrees.
             /// </summary>
             public const byte Max = 90;
         }
 
         /// <summary>
-        /// Contains default values related to longitude.
+        /// Provides default values for longitude.
         /// </summary>
         public static class Longitude {
             /// <summary>
-            /// The minimum valid value for longitude, in degrees.
+            /// The minimum valid longitude value, in degrees.
             /// </summary>
             public const short Min = -Max;
 
             /// <summary>
-            /// The maximum valid value for longitude, in degrees.
+            /// The maximum valid longitude value, in degrees.
             /// </summary>
             public const byte Max = 180;
         }
 
         /// <summary>
-        /// Contains default ranges for validating latitude and longitude values.
+        /// Provides default coordinate ranges for validating latitude and longitude values.
         /// </summary>
         public static class Range {
             /// <summary>
-            /// The default validation range for latitude values.
+            /// The default valid range for latitude values.
             /// </summary>
             public static readonly CoordinateRange Latitude = new(Coordinate.Latitude.Min, Coordinate.Latitude.Max);
 
             /// <summary>
-            /// The default validation range for longitude values.
+            /// The default valid range for longitude values.
             /// </summary>
             public static readonly CoordinateRange Longitude = new(Coordinate.Longitude.Min, Coordinate.Longitude.Max);
         }

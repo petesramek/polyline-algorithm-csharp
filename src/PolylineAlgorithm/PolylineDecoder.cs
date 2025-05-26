@@ -10,19 +10,26 @@ using PolylineAlgorithm.Properties;
 using System;
 using System.Buffers;
 
-
 /// <summary>
-/// Performs decoding of encoded polyline strings into a sequence of geographic coordinates.
+/// Decodes encoded polyline strings into sequences of geographic coordinates.
+/// Implements the <see cref="IPolylineDecoder"/> interface.
 /// </summary>
 public class PolylineDecoder : IPolylineDecoder {
-    /// <inheritdoc />
     /// <summary>
-    /// Decodes an encoded polyline into a sequence of <see cref="Coordinate"/> objects.
+    /// Decodes an encoded <see cref="Polyline"/> into a sequence of <see cref="Coordinate"/> instances.
     /// </summary>
-    /// <param name="polyline">The encoded polyline to decode.</param>
-    /// <returns>An enumerable sequence of <see cref="Coordinate"/> objects representing the decoded polyline.</returns>
-    /// <exception cref="ArgumentException">Thrown when <paramref name="polyline"/> is null or empty.</exception>
-    /// <exception cref="InvalidOperationException">Thrown when <paramref name="polyline"/> is not in the correct format.</exception>
+    /// <param name="polyline">
+    /// The <see cref="Polyline"/> instance containing the encoded polyline string to decode.
+    /// </param>
+    /// <returns>
+    /// An <see cref="IEnumerable{T}"/> of <see cref="Coordinate"/> representing the decoded latitude and longitude pairs.
+    /// </returns>
+    /// <exception cref="ArgumentException">
+    /// Thrown when <paramref name="polyline"/> is empty.
+    /// </exception>
+    /// <exception cref="InvalidPolylineException">
+    /// Thrown when the polyline format is invalid or malformed at a specific position.
+    /// </exception>
     public IEnumerable<Coordinate> Decode(Polyline polyline) {
         if (polyline.IsEmpty) {
             throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeNullEmptyOrWhitespaceMessage, nameof(polyline));

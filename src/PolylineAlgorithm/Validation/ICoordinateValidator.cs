@@ -8,26 +8,17 @@ namespace PolylineAlgorithm.Validation;
 using PolylineAlgorithm.Internal;
 
 /// <summary>
-/// Provides a mechanism for validating geographic coordinates, specifically their latitude and longitude values,
+/// Defines a contract for validating geographic coordinates by checking their latitude and longitude values
 /// against predefined valid ranges.
 /// </summary>
 public interface ICoordinateValidator {
-    ///// <summary>
-    ///// Gets the range within which the latitude value is considered valid.
-    ///// </summary>
-    //CoordinateRange Latitude { get; }
-
-    ///// <summary>
-    ///// Gets the range within which the longitude value is considered valid.
-    ///// </summary>
-    //CoordinateRange Longitude { get; }
-
     /// <summary>
-    /// Determines whether the specified coordinate is valid based on the latitude and longitude ranges.
+    /// Determines whether the specified <see cref="Coordinate"/> is valid by verifying that its latitude and longitude
+    /// are within the allowed ranges.
     /// </summary>
     /// <param name="coordinate">The <see cref="Coordinate"/> to validate.</param>
     /// <returns>
-    /// <see langword="true"/> if the <paramref name="coordinate"/> is within the valid latitude and longitude ranges;
+    /// <see langword="true"/> if both the latitude and longitude of <paramref name="coordinate"/> are within their respective valid ranges;
     /// otherwise, <see langword="false"/>.
     /// </returns>
     bool IsValid(Coordinate coordinate);
@@ -35,7 +26,7 @@ public interface ICoordinateValidator {
     static void SetDefault(ICoordinateValidator validator) => Default = validator ?? throw new ArgumentNullException(nameof(validator));
 
     /// <summary>
-    /// Gets the default coordinate validator instance.
+    /// Gets the default <see cref="ICoordinateValidator"/> instance used for coordinate validation.
     /// </summary>
     internal static ICoordinateValidator Default { get; private set; } = new CoordinateValidator(Defaults.Coordinate.Range.Latitude, Defaults.Coordinate.Range.Longitude);
 }

@@ -1,4 +1,9 @@
-﻿namespace PolylineAlgorithm.Internal;
+﻿//
+// Copyright © Pete Sramek. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+
+namespace PolylineAlgorithm.Internal;
 
 using System;
 using System.Diagnostics;
@@ -6,8 +11,8 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 /// <summary>
-/// Represents the variance between consecutive geographic coordinates (latitude and longitude).
-/// This struct is used to calculate and store the differences between coordinate values.
+/// Represents the difference (variance) in latitude and longitude between consecutive geographic coordinates.
+/// This struct is used to compute and store the change in coordinate values as integer deltas.
 /// </summary>
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
 [StructLayout(LayoutKind.Sequential, Pack = 4, Size = 8)]
@@ -15,27 +20,27 @@ internal struct CoordinateVariance {
     private (int Latitude, int Longitude) _current = (0, 0);
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="CoordinateVariance"/> struct with the specified latitude and longitude values.
+    /// Initializes a new instance of the <see cref="CoordinateVariance"/> struct with the specified latitude and longitude deltas.
     /// </summary>
-    /// <param name="latitude">The initial latitude value.</param>
-    /// <param name="longitude">The initial longitude value.</param>
+    /// <param name="latitude">The initial latitude delta.</param>
+    /// <param name="longitude">The initial longitude delta.</param>
     private CoordinateVariance(int latitude, int longitude) {
         Latitude = latitude;
         Longitude = longitude;
     }
 
     /// <summary>
-    /// Gets the variance in latitude between the current and previous coordinates.
+    /// Gets the current variance in latitude between the most recent and previous coordinate.
     /// </summary>
     public int Latitude { get; private set; }
 
     /// <summary>
-    /// Gets the variance in longitude between the current and previous coordinates.
+    /// Gets the current variance in longitude between the most recent and previous coordinate.
     /// </summary>
     public int Longitude { get; private set; }
 
     /// <summary>
-    /// Updates the variance based on the next set of latitude and longitude values.
+    /// Updates the variance values based on the next latitude and longitude, and sets the current coordinate.
     /// </summary>
     /// <param name="latitude">The next latitude value.</param>
     /// <param name="longitude">The next longitude value.</param>
@@ -48,11 +53,11 @@ internal struct CoordinateVariance {
     }
 
     /// <summary>
-    /// Calculates the variance between two coordinate values.
+    /// Calculates the variance (delta) between two coordinate values.
     /// </summary>
-    /// <param name="initial">The initial coordinate value.</param>
+    /// <param name="initial">The previous coordinate value.</param>
     /// <param name="next">The next coordinate value.</param>
-    /// <returns>The calculated variance between the two values.</returns>
+    /// <returns>The computed variance between <paramref name="initial"/> and <paramref name="next"/>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int Variance(int initial, int next) => (initial, next) switch {
         (0, 0) => 0,
@@ -65,9 +70,11 @@ internal struct CoordinateVariance {
     };
 
     /// <summary>
-    /// Returns a string representation of the coordinate variance.
+    /// Returns a string representation of the current coordinate variance.
     /// </summary>
-    /// <returns>A string in the format: Variance: { Latitude: [int], Longitude: [int] }.</returns>
+    /// <returns>
+    /// A string in the format <c>Variance: { Latitude: [int], Longitude: [int] }</c> representing the current deltas.
+    /// </returns>
     public override readonly string ToString()
         => $"Variance: {{ Latitude: {Latitude}, Longitude: {Longitude} }}";
 }

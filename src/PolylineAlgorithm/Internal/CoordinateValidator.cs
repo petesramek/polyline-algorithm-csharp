@@ -9,39 +9,44 @@ using PolylineAlgorithm;
 using PolylineAlgorithm.Validation;
 
 /// <summary>
-/// Provides functionality to validate geographic coordinates based on specified latitude and longitude ranges.
+/// Validates geographic coordinates by checking if their latitude and longitude values fall within specified valid ranges.
 /// Implements the <see cref="ICoordinateValidator"/> interface.
 /// </summary>
 internal sealed class CoordinateValidator : ICoordinateValidator {
     /// <summary>
-    /// Initializes a new instance of the <see cref="CoordinateValidator"/> class with the specified latitude and longitude ranges.
+    /// Initializes a new instance of the <see cref="CoordinateValidator"/> class using the provided latitude and longitude ranges.
     /// </summary>
-    /// <param name="latitudeRange">The range within which the latitude value is considered valid.</param>
-    /// <param name="longitudeRange">The range within which the longitude value is considered valid.</param>
+    /// <param name="latitudeRange">
+    /// The <see cref="CoordinateRange"/> that defines the valid range for latitude values.
+    /// </param>
+    /// <param name="longitudeRange">
+    /// The <see cref="CoordinateRange"/> that defines the valid range for longitude values.
+    /// </param>
     public CoordinateValidator(CoordinateRange latitudeRange, CoordinateRange longitudeRange) {
-        Latitude = latitudeRange;
-        Longitude = longitudeRange;
+        LatitudeRange = latitudeRange;
+        LongitudeRange = longitudeRange;
     }
 
     /// <summary>
-    /// Gets the range within which the latitude value is considered valid.
+    /// Gets the <see cref="CoordinateRange"/> that defines the valid range for latitude values.
     /// </summary>
-    public CoordinateRange Latitude { get; }
+    public CoordinateRange LatitudeRange { get; }
 
     /// <summary>
-    /// Gets the range within which the longitude value is considered valid.
+    /// Gets the <see cref="CoordinateRange"/> that defines the valid range for longitude values.
     /// </summary>
-    public CoordinateRange Longitude { get; }
+    public CoordinateRange LongitudeRange { get; }
 
     /// <summary>
-    /// Determines whether the specified coordinate is valid based on the latitude and longitude ranges.
+    /// Determines whether the specified <see cref="Coordinate"/> is valid by checking if its latitude and longitude
+    /// are within the configured valid ranges.
     /// </summary>
     /// <param name="coordinate">The <see cref="Coordinate"/> to validate.</param>
     /// <returns>
-    /// <see langword="true"/> if the <paramref name="coordinate"/> is within the valid latitude and longitude ranges;
+    /// <see langword="true"/> if both the latitude and longitude of <paramref name="coordinate"/> are within their respective valid ranges;
     /// otherwise, <see langword="false"/>.
     /// </returns>
     public bool IsValid(Coordinate coordinate) =>
-        Latitude.IsInRange(coordinate.Latitude)
-            && Longitude.IsInRange(coordinate.Longitude);
+        LatitudeRange.IsInRange(coordinate.Latitude)
+            && LongitudeRange.IsInRange(coordinate.Longitude);
 }
