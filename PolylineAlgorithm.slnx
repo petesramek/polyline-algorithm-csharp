@@ -3,6 +3,9 @@
     <Project Path="benchmarks/PolylineAlgorithm.Benchmarks/PolylineAlgorithm.Benchmarks.csproj" />
     <Project Path="benchmarks/PolylineAlgorithm.Comparison.Benchmarks/PolylineAlgorithm.Comparison.Benchmarks.csproj" />
   </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/PolylineAlgorithm.NetTopologySuite.Sample/PolylineAlgorithm.NetTopologySuite.Sample.csproj" Id="27a8fc47-0a3c-49c7-af5e-530514827785" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/PolylineAlgorithm.Abstraction/PolylineAlgorithm.Abstraction.csproj" Id="a39b8ed4-13da-4ef7-b144-68f0c281474f" />
     <Project Path="src/PolylineAlgorithm/PolylineAlgorithm.csproj" />
