@@ -3,7 +3,7 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm.Internal;
+namespace PolylineAlgorithm.Abstraction.Internal;
 
 using System;
 using System.Diagnostics;

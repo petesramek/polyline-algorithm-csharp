@@ -5,6 +5,8 @@
 
 namespace PolylineAlgorithm.Tests;
 
+using PolylineAlgorithm.Abstraction;
+
 /// <summary>
 /// Defines tests for the <see cref="InvalidPolylineException"/> type.
 /// </summary>

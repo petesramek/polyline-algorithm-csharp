@@ -28,7 +28,7 @@ public static class PolylineEncoderExtensions {
     /// <exception cref="ArgumentNullException">
     /// Thrown if <paramref name="encoder"/> is <see langword="null"/>.
     /// </exception>
-    public static Polyline Encode(this IPolylineEncoder encoder, ICollection<Coordinate> coordinates) {
+    public static Polyline Encode(this IPolylineEncoder<IEnumerable<Coordinate>, Polyline> encoder, ICollection<Coordinate> coordinates) {
         if (encoder is null) {
             throw new ArgumentNullException(nameof(encoder));
         }
@@ -51,7 +51,7 @@ public static class PolylineEncoderExtensions {
     /// <exception cref="ArgumentNullException">
     /// Thrown if <paramref name="encoder"/> is <see langword="null"/>.
     /// </exception>
-    public static Polyline Encode(this IPolylineEncoder encoder, Coordinate[] coordinates) {
+    public static Polyline Encode(this IPolylineEncoder<IEnumerable<Coordinate>, Polyline> encoder, Coordinate[] coordinates) {
         if (encoder is null) {
             throw new ArgumentNullException(nameof(encoder));
         }

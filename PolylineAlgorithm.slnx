@@ -4,6 +4,7 @@
     <Project Path="benchmarks/PolylineAlgorithm.Comparison.Benchmarks/PolylineAlgorithm.Comparison.Benchmarks.csproj" />
   </Folder>
   <Folder Name="/src/">
+    <Project Path="src/PolylineAlgorithm.Abstraction/PolylineAlgorithm.Abstraction.csproj" Id="a39b8ed4-13da-4ef7-b144-68f0c281474f" />
     <Project Path="src/PolylineAlgorithm/PolylineAlgorithm.csproj" />
   </Folder>
   <Folder Name="/tests/">

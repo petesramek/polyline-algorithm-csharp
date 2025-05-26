@@ -6,59 +6,24 @@
 namespace PolylineAlgorithm;
 
 using PolylineAlgorithm.Abstraction;
+using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Properties;
 using System;
 using System.Buffers;
+using System.Runtime.CompilerServices;
 
 /// <summary>
 /// Decodes encoded polyline strings into sequences of geographic coordinates.
 /// Implements the <see cref="IPolylineDecoder"/> interface.
 /// </summary>
-public class PolylineDecoder : IPolylineDecoder {
-    /// <summary>
-    /// Decodes an encoded <see cref="Polyline"/> into a sequence of <see cref="Coordinate"/> instances.
-    /// </summary>
-    /// <param name="polyline">
-    /// The <see cref="Polyline"/> instance containing the encoded polyline string to decode.
-    /// </param>
-    /// <returns>
-    /// An <see cref="IEnumerable{T}"/> of <see cref="Coordinate"/> representing the decoded latitude and longitude pairs.
-    /// </returns>
-    /// <exception cref="ArgumentException">
-    /// Thrown when <paramref name="polyline"/> is empty.
-    /// </exception>
-    /// <exception cref="InvalidPolylineException">
-    /// Thrown when the polyline format is invalid or malformed at a specific position.
-    /// </exception>
-    public IEnumerable<Coordinate> Decode(Polyline polyline) {
-        if (polyline.IsEmpty) {
-            throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeNullEmptyOrWhitespaceMessage, nameof(polyline));
-        }
+public sealed class PolylineDecoder : PolylineDecoder<Coordinate, Polyline> {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    protected override Coordinate CreateCoordinate(double latitude, double longitude) {
+        return new Coordinate(latitude, longitude);
+    }
 
-        int consumed = 0;
-        int latitude = 0;
-        int longitude = 0;
-
-        ReadOnlySequence<char>.Enumerator enumerator = polyline.GetEnumerator();
-
-        int position;
-        ReadOnlyMemory<char> sequence;
-
-        while (enumerator.MoveNext()) {
-            position = 0;
-            sequence = enumerator.Current;
-
-            while (PolylineEncoding.Default.TryReadValue(ref latitude, ref sequence, ref position)
-                && PolylineEncoding.Default.TryReadValue(ref longitude, ref sequence, ref position)
-            ) {
-                yield return new(PolylineEncoding.Default.Denormalize(latitude), PolylineEncoding.Default.Denormalize(longitude));
-            }
-
-            consumed += position;
-
-            if (sequence.Length != position) {
-                InvalidPolylineException.Throw(consumed);
-            }
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    protected override ReadOnlySequence<char> GetReadOnlySequence(Polyline polyline) {
+        return polyline.Value;
     }
 }

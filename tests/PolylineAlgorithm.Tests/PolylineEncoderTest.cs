@@ -5,6 +5,7 @@
 
 namespace PolylineAlgorithm.Tests;
 
+using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Utility;
 
 /// <summary>

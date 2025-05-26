@@ -3,9 +3,10 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm.Internal;
+namespace PolylineAlgorithm.Abstraction.Internal;
 
 using System;
+using System.Buffers;
 using System.Runtime.InteropServices;
 
 /// <summary>
@@ -42,11 +43,11 @@ internal struct PolylineBuilder {
     /// A <see cref="Polyline"/> representing the combined character segments.
     /// If no segments have been appended, returns an empty <see cref="Polyline"/>.
     /// </returns>
-    public readonly Polyline Build() {
+    public readonly ReadOnlySequence<char> Build() {
         if (_initial is null) {
-            return Polyline.FromMemory(ReadOnlyMemory<char>.Empty);
+            return new();
         }
 
-        return Polyline.FromSequence(new(_initial, 0, _last, _last!.Memory.Length));
+        return new(_initial, 0, _last, _last!.Memory.Length);
     }
 }

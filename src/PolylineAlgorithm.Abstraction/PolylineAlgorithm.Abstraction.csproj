@@ -33,7 +33,7 @@
 	<PropertyGroup>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Title>PolylineAlgorithm for .NET</Title>
+		<Title>PolylineAlgorithm.Abstraction for .NET</Title>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>google;polyline;algorithm;maps;encoding;</PackageTags>
 		<Copyright>© 2025, Pete Sramek.</Copyright>
@@ -44,26 +44,6 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
-	</ItemGroup>
-
-	<ItemGroup>
-		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-			<_Parameter1>PolylineAlgorithm.Tests</_Parameter1>
-		</AssemblyAttribute>
-		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-			<_Parameter1>PolylineAlgorithm.Benchmarks</_Parameter1>
-		</AssemblyAttribute>
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Include="..\..\README.md">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\PolylineAlgorithm.Abstraction\PolylineAlgorithm.Abstraction.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -79,6 +59,15 @@
 	    <LastGenOutput>ExceptionMessageResource.Designer.cs</LastGenOutput>
 	    <Generator>ResXFileCodeGenerator</Generator>
 	  </EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>PolylineAlgorithm.Tests</_Parameter1>
+		</AssemblyAttribute>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>PolylineAlgorithm.Benchmarks</_Parameter1>
+		</AssemblyAttribute>
 	</ItemGroup>
 
 </Project>

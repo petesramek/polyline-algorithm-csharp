@@ -7,8 +7,10 @@ namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
 using PolylineAlgorithm;
+using PolylineAlgorithm.Abstraction.Internal;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Utility;
+using System.Buffers;
 
 /// <summary>
 /// Benchmarks for the <see cref="PolylineValue"/> struct.
@@ -46,7 +48,7 @@ public class PolylineBuilderBenchmark {
     /// </summary>
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
-    public Polyline PolylineBuilder_Append_Memory() {
+    public ReadOnlySequence<char> PolylineBuilder_Append_Memory() {
         for (int i = 0; i < SegmentsCount; i++) {
             Builder
                 .Append(MemoryValue);
