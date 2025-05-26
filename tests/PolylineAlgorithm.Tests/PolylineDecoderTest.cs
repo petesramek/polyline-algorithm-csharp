@@ -7,7 +7,6 @@ namespace PolylineAlgorithm.Tests;
 
 using PolylineAlgorithm;
 using PolylineAlgorithm.Extensions;
-using PolylineAlgorithm.Tests.Data;
 using PolylineAlgorithm.Utility;
 
 /// <summary>

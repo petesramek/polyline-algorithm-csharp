@@ -5,8 +5,6 @@
 
 namespace PolylineAlgorithm.Tests;
 
-using PolylineAlgorithm.Tests.Data;
-
 /// <summary>
 /// Defines tests for the <see cref="InvalidPolylineException"/> type.
 /// </summary>
@@ -18,7 +16,7 @@ public class InvalidPolylineExceptionTest {
     [TestMethod]
     public void Throw_Method_Invalid_Coordinate_Parameter_PolylineMalformedException_Throw() {
         // Arrange
-        var position = Values.MalformedPolylineException.Position;
+        var position = Random.Shared.Next();
 
         // Act
         static void ThrowAt(int position) => InvalidPolylineException.Throw(position);

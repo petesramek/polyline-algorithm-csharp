@@ -5,7 +5,6 @@
 
 namespace PolylineAlgorithm.Tests;
 
-using PolylineAlgorithm.Tests.Data;
 using PolylineAlgorithm.Utility;
 
 /// <summary>
@@ -43,7 +42,7 @@ public class PolylineEncoderTest {
     [TestMethod]
     public void Encode_EmptyInput_ThrowsException() {
         // Arrange
-        IEnumerable<Coordinate> empty = Values.Coordinates.Empty;
+        IEnumerable<Coordinate> empty = [];
 
         // Act
         void EncodeEmptyCoordinates() {
