@@ -42,7 +42,7 @@ public class PolylineEncoder : IPolylineEncoder {
         int count = GetCount(coordinates);
 
         if (count == 0) {
-            return default;
+            throw new ArgumentException(nameof(coordinates));
         }
 
         CoordinateVariance variance = new();

@@ -21,10 +21,11 @@ public class InvalidPolylineExceptionTest {
         var position = Values.MalformedPolylineException.Position;
 
         // Act
-        static void Throw(int position) => InvalidPolylineException.Throw(position);
+        static void ThrowAt(int position) => InvalidPolylineException.Throw(position);
 
         // Assert
-        var exception = Assert.ThrowsExactly<InvalidPolylineException>(() => Throw(position));
+        var exception = Assert.ThrowsExactly<InvalidPolylineException>(() => ThrowAt(position));
+
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 }

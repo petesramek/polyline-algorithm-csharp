@@ -15,6 +15,8 @@ using PolylineAlgorithm.Utility;
 /// </summary>
 [TestClass]
 public class PolylineDecoderTest {
+    public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100], [1_000], [10_000], [100_000], [1_000_000]];
+    
     /// <summary>
     /// The instance of the <see cref="PolylineDecoder"/> used for testing.
     /// </summary>
@@ -55,7 +57,8 @@ public class PolylineDecoderTest {
     /// </summary>
     /// <remarks>Expected result to equal <see cref="Values.Coordinates.Valid"/>.</remarks>
     [TestMethod]
-    public void Decode_Valid_Input_Ok() {
+    [DynamicData(nameof(CoordinateCount))]
+    public void Decode_Valid_Input_Ok(int count) {
         // Arrange
         IEnumerable<Coordinate> expected = RandomValueProvider.GetCoordinates(1);
         string value = RandomValueProvider.GetPolyline(1).ToString();

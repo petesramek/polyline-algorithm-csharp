@@ -173,49 +173,4 @@ internal static class Values {
         /// </summary>
         public static readonly int Position = _random.Next();
     }
-
-    /// <summary>
-    /// Defines default values and objects used for testing invalid coordinate exceptions.
-    /// </summary>
-    public static class InvalidCoordinateException {
-        /// <summary>
-        /// Gets a valid coordinate for testing invalid coordinate exceptions.
-        /// </summary>
-        public static readonly Coordinate Valid = new(_random.NextDouble(), _random.NextDouble());
-
-        /// <summary>
-        /// Gets an invalid coordinate for testing invalid coordinate exceptions.
-        /// </summary>
-        public static readonly Coordinate Invalid = new(double.MinValue, double.MaxValue);
-    }
-
-    /// <summary>
-    /// Defines default values and objects used for testing invalid reader state exceptions.
-    /// </summary>
-    public static class InvalidReaderStateException {
-        /// <summary>
-        /// Gets a random position value for testing invalid reader state exceptions.
-        /// </summary>
-        public static readonly int Position = _random.Next();
-
-        /// <summary>
-        /// Gets a random length value for testing invalid reader state exceptions.
-        /// </summary>
-        public static readonly int Length = Position;
-    }
-
-    /// <summary>
-    /// Defines default values and objects used for testing invalid writer state exceptions.
-    /// </summary>
-    public static class InvalidWriterStateException {
-        /// <summary>
-        /// Gets a random position value for testing invalid writer state exceptions.
-        /// </summary>
-        public static readonly int Position = _random.Next();
-
-        /// <summary>
-        /// Gets a random length value for testing invalid writer state exceptions.
-        /// </summary>
-        public static readonly int Length = Position;
-    }
 }

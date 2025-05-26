@@ -18,13 +18,13 @@ public class CoordinateValidatorTest {
     /// <summary>
     /// Provides test data for the <see cref="IsValid_Valid_Parameters_Ok"/> method.
     /// </summary>
-    public static IEnumerable<object[]> IsValid_Method_Parameters => new List<object[]> {
-        new object[] { 0, 0, true },
-        new object[] { _latitude.Min, _longitude.Max, true },
-        new object[] { _latitude.Min - 1, _longitude.Max, false },
-        new object[] { _latitude.Min, _longitude.Max + 1, false },
-        new object[] { _latitude.Min - 1, _longitude.Max + 1, false }
-    };
+    public static IEnumerable<object[]> IsValid_Method_Parameters => [
+        [0, 0, true],
+        [_latitude.Min, _longitude.Max, true],
+        [_latitude.Min - 1, _longitude.Max, false],
+        [_latitude.Min, _longitude.Max + 1, false],
+        [_latitude.Min - 1, _longitude.Max + 1, false]
+    ];
 
     /// <summary>
     /// Tests the <see cref="CoordinateValidator.IsValid(Coordinate)"/> method with valid parameters.

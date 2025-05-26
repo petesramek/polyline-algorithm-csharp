@@ -40,19 +40,19 @@ public class PolylineEncoderTest {
     /// <summary>
     /// Tests the <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})"/> method with an empty input, expecting an <see cref="ArgumentException"/>.
     /// </summary>
-    //[TestMethod]
-    //public void Encode_EmptyInput_ThrowsException() {
-    //    // Arrange
-    //    IEnumerable<Coordinate> empty = Values.Coordinates.Empty;
+    [TestMethod]
+    public void Encode_EmptyInput_ThrowsException() {
+        // Arrange
+        IEnumerable<Coordinate> empty = Values.Coordinates.Empty;
 
-    //    // Act
-    //    void EncodeEmptyCoordinates() {
-    //        Encoder.Encode(empty);
-    //    }
+        // Act
+        void EncodeEmptyCoordinates() {
+            Encoder.Encode(empty);
+        }
 
-    //    // Assert
-    //    Assert.ThrowsExactly<ArgumentException>(() => EncodeEmptyCoordinates());
-    //}
+        // Assert
+        Assert.ThrowsExactly<ArgumentException>(() => EncodeEmptyCoordinates());
+    }
 
     /// <summary>
     /// Tests the <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})"/> method with a valid input.

@@ -54,7 +54,7 @@ public class PolylineEncoding {
     /// <param name="value">The normalized integer value.</param>
     /// <returns>The denormalized double value.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double Denormalize(int value) => (double)value / Defaults.Algorithm.Precision;
+    public double Denormalize(int value) => Math.Round((double)value / Defaults.Algorithm.Precision, 5);
 
     /// <summary>
     /// Attempts to write an encoded value to the buffer.

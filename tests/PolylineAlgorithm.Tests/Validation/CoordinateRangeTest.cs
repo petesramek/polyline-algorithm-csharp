@@ -15,10 +15,10 @@ public class CoordinateRangeTest {
     /// <summary>
     /// Provides test data for the <see cref="Constructor_Valid_Parameters_Ok"/> method.
     /// </summary>
-    public static IEnumerable<object[]> Constructor_Valid_Parameters => new List<object[]> {
-        new object[] { -90, 90 },
-        new object[] { -180, 180 },
-    };
+    public static IEnumerable<object[]> Constructor_Valid_Parameters => [
+        [-90, 90],
+        [-180, 180],
+    ];
 
     /// <summary>
     /// Tests the parameterless constructor of the <see cref="CoordinateRange"/> class.
