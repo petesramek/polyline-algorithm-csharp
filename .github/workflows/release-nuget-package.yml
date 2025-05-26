@@ -71,5 +71,5 @@ jobs:
         shell: bash
         run: |
           dotnet nuget add source ${{ vars.NUGET_PACKAGE_FEED_URL }} --name nuget-feed --username username --password ${{ secrets.NUGET_PACKAGE_FEED_API_KEY }} --store-password-in-clear-text
-          dotnet nuget push **/*.nupkg --source nuget-feed --api-key ${{ secrets.NUGET_PACKAGE_FEED_API_KEY }}
+          dotnet nuget push **/*.nupkg --source nuget-feed --api-key ${{ secrets.NUGET_PACKAGE_FEED_API_KEY }} --skip-duplicate
         working-directory: ${{ runner.temp }}/${{ env.working-directory }}
