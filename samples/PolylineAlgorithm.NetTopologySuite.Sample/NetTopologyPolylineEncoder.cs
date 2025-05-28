@@ -2,17 +2,18 @@
 
 using global::NetTopologySuite.Geometries;
 using PolylineAlgorithm.Abstraction;
-using System;
 using System.Buffers;
 using System.Text;
 
 internal class NetTopologyPolylineEncoder : PolylineEncoder<Point, string> {
+    public override PolylineEncodingOptions<Point> Options { get; } = PolylineEncodingOptions<Point>.Default;
+
     protected override string CreatePolyline(ReadOnlySequence<char> sequence) {
-        if(sequence.IsEmpty) {
+        if (sequence.IsEmpty) {
             return string.Empty;
         }
 
-        if(sequence.IsSingleSegment) {
+        if (sequence.IsSingleSegment) {
             return sequence.FirstSpan.ToString();
         }
 

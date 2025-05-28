@@ -10,14 +10,14 @@ using System;
 using System.Collections.Generic;
 
 /// <summary>
-/// Provides extension methods for the <see cref="IPolylineEncoder"/> interface to facilitate encoding geographic coordinates into polylines.
+/// Provides extension methods for the <see cref="IPolylineEncoder{TCoordinate, TPolyline}"/> interface to facilitate encoding geographic coordinates into polylines.
 /// </summary>
 public static class PolylineEncoderExtensions {
     /// <summary>
     /// Encodes a collection of <see cref="Coordinate"/> instances into an encoded polyline.
     /// </summary>
     /// <param name="encoder">
-    /// The <see cref="IPolylineEncoder"/> instance used to perform the encoding operation.
+    /// The <see cref="IPolylineEncoder{TCoordinate, TPolyline}"/> instance used to perform the encoding operation.
     /// </param>
     /// <param name="coordinates">
     /// The collection of <see cref="Coordinate"/> objects to encode.
@@ -28,7 +28,7 @@ public static class PolylineEncoderExtensions {
     /// <exception cref="ArgumentNullException">
     /// Thrown if <paramref name="encoder"/> is <see langword="null"/>.
     /// </exception>
-    public static Polyline Encode(this IPolylineEncoder<IEnumerable<Coordinate>, Polyline> encoder, ICollection<Coordinate> coordinates) {
+    public static Polyline Encode(this IPolylineEncoder<Coordinate, Polyline> encoder, ICollection<Coordinate> coordinates) {
         if (encoder is null) {
             throw new ArgumentNullException(nameof(encoder));
         }
@@ -51,7 +51,7 @@ public static class PolylineEncoderExtensions {
     /// <exception cref="ArgumentNullException">
     /// Thrown if <paramref name="encoder"/> is <see langword="null"/>.
     /// </exception>
-    public static Polyline Encode(this IPolylineEncoder<IEnumerable<Coordinate>, Polyline> encoder, Coordinate[] coordinates) {
+    public static Polyline Encode(this IPolylineEncoder<Coordinate, Polyline> encoder, Coordinate[] coordinates) {
         if (encoder is null) {
             throw new ArgumentNullException(nameof(encoder));
         }

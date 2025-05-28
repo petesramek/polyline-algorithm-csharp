@@ -37,7 +37,7 @@ public class CoordinateValidatorTest {
     public void IsValid_Valid_Parameters_Ok(double latitude, double longitude, bool expected) {
         // Arrange
         Coordinate coordinate = new(latitude, longitude);
-        CoordinateValidator validator = new(_latitude, _longitude);
+        CoordinateValidator validator = new();
 
         // Act
         bool result = validator.IsValid(coordinate);

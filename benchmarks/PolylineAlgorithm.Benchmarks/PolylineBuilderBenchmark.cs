@@ -6,9 +6,7 @@
 namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
-using PolylineAlgorithm;
 using PolylineAlgorithm.Abstraction.Internal;
-using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Utility;
 using System.Buffers;
 

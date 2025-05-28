@@ -47,7 +47,6 @@ public class CoordinateTest {
         Coordinate result = new();
 
         // Assert
-        Assert.AreEqual(valid, result.IsValid());
         Assert.AreEqual(@default, result.IsDefault());
         Assert.AreEqual(latitude, result.Latitude);
         Assert.AreEqual(longitude, result.Longitude);
@@ -69,7 +68,6 @@ public class CoordinateTest {
         Coordinate result = new(latitude, longitude);
 
         // Assert
-        Assert.AreEqual(valid, result.IsValid());
         Assert.AreEqual(@default, result.IsDefault());
         Assert.AreEqual(latitude, result.Latitude);
         Assert.AreEqual(longitude, result.Longitude);
@@ -91,7 +89,6 @@ public class CoordinateTest {
         Coordinate result = new(latitude, longitude);
 
         // Assert
-        Assert.AreEqual(valid, result.IsValid());
         Assert.AreEqual(@default, result.IsDefault());
         Assert.AreEqual(latitude, result.Latitude);
         Assert.AreEqual(longitude, result.Longitude);

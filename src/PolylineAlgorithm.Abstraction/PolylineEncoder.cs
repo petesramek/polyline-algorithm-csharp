@@ -12,25 +12,25 @@ using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 /// <summary>
 /// Provides functionality to encode a collection of geographic coordinates into an encoded polyline string.
-/// Implements the <see cref="IPolylineEncoder"/> interface.
+/// Implements the <see cref="IPolylineEncoder{TCoordinate, TPolyline}"/> interface.
 /// </summary>
 public abstract class PolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder<TCoordinate, TPolyline> {
-    private const int MaxByteSize = 64_000;
-    private const int MaxChars = MaxByteSize / sizeof(char);
-    private const int MaxCount = MaxChars / Defaults.Polyline.MaxEncodedCoordinateLength;
+    /// <summary>
+    /// Gets the encoding options used by this polyline encoder.
+    /// </summary>
+    public abstract PolylineEncodingOptions<TCoordinate> Options { get; }
 
     /// <summary>
-    /// Encodes a collection of <see cref="Coordinate"/> instances into an encoded <see cref="Polyline"/> string.
+    /// Encodes a collection of <typeparamref name="TCoordinate"/> instances into an encoded <typeparamref name="TPolyline"/> string.
     /// </summary>
     /// <param name="coordinates">
-    /// The collection of <see cref="Coordinate"/> objects to encode.
+    /// The collection of <typeparamref name="TCoordinate"/> objects to encode.
     /// </param>
     /// <returns>
-    /// A <see cref="Polyline"/> representing the encoded coordinates.
+    /// An instance of <typeparamref name="TPolyline"/> representing the encoded coordinates.
     /// Returns <see langword="default"/> if the input collection is empty or null.
     /// </returns>
     /// <exception cref="ArgumentNullException">
@@ -54,9 +54,12 @@ public abstract class PolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder
 
         int position = 0;
         int consumed = 0;
-        int length = GetMaxLength(count);
-        bool asMultiSegment = count == -1 || count > MaxCount;
-        PolylineBuilder builder = new();
+        int length = count * Defaults.Polyline.MaxEncodedCoordinateLength;
+
+        if (length > Options.GetMaxCharCount()) {
+            length = Options.GetMaxCharCount();
+        }
+
         Span<char> buffer = stackalloc char[length];
 
         using var enumerator = coordinates.GetEnumerator();
@@ -65,12 +68,8 @@ public abstract class PolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder
             variance
                 .Next(PolylineEncoding.Default.Normalize(GetLatitude(enumerator.Current)), PolylineEncoding.Default.Normalize(GetLongitude(enumerator.Current)));
 
-            if (asMultiSegment
-                && GetRemainingBufferSize(position, buffer.Length) < GetRequiredLength(variance)) {
-                builder
-                    .Append(buffer[..position].ToString().AsMemory());
-
-                position = 0;
+            if (GetRemainingBufferSize(position, buffer.Length) < GetRequiredLength(variance)) {
+                throw new InternalBufferOverflowException();
             }
 
             if (!PolylineEncoding.Default.TryWriteValue(variance.Latitude, ref buffer, ref position)
@@ -82,64 +81,49 @@ public abstract class PolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder
             consumed++;
         }
 
-        builder
-            .Append(buffer[..position].ToArray().AsMemory());
+        return CreatePolyline(new(buffer[..position].ToString().AsMemory()));
 
-        return CreatePolyline(builder.Build());
-
-        /// <summary>
-        /// Calculates the maximum length of the encoded polyline string based on the number of coordinates.
-        /// </summary>
-        /// <param name="count">The number of coordinates to encode.</param>
-        /// <returns>
-        /// The maximum length of the encoded polyline string in characters.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int GetMaxLength(int count) => count switch {
-            1 => 12,
-            > 1 and < MaxCount => count * Defaults.Polyline.MaxEncodedCoordinateLength,
-            _ => MaxChars
-        };
-
-        /// <summary>
-        /// Gets the count of coordinates in the enumerable.
-        /// </summary>
-        /// <param name="coordinates">The enumerable of <see cref="Coordinate"/> objects.</param>
-        /// <returns>
-        /// The count of coordinates in the collection.
-        /// Returns -1 if the collection does not implement <see cref="ICollection{T}"/>.
-        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static int GetCount(IEnumerable coordinates) => coordinates switch {
             ICollection collection => collection.Count,
             _ => -1,
         };
 
-        /// <summary>
-        /// Calculates the required buffer length to encode the current coordinate variance.
-        /// </summary>
-        /// <param name="variance">The <see cref="CoordinateVariance"/> representing the difference between coordinates.</param>
-        /// <returns>The required buffer length in characters.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static int GetRequiredLength(CoordinateVariance variance) =>
             PolylineEncoding.Default.GetCharCount(variance.Latitude) + PolylineEncoding.Default.GetCharCount(variance.Longitude);
 
-        /// <summary>
-        /// Calculates the remaining buffer size available for encoding.
-        /// </summary>
-        /// <param name="position">The current position in the buffer.</param>
-        /// <param name="length">The total length of the buffer.</param>
-        /// <returns>The remaining buffer size in characters.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static int GetRemainingBufferSize(int position, int length) => length - position;
     }
 
+    /// <summary>
+    /// Creates a polyline instance from the provided read-only sequence of characters.
+    /// </summary>
+    /// <param name="polyline">A <see cref="ReadOnlySequence{T}"/> containing the encoded polyline characters.</param>
+    /// <returns>
+    /// An instance of <typeparamref name="TPolyline"/> representing the encoded polyline.
+    /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected abstract TPolyline CreatePolyline(ReadOnlySequence<char> readOnlySequence);
+    protected abstract TPolyline CreatePolyline(ReadOnlySequence<char> polyline);
 
+    /// <summary>
+    /// Extracts the longitude value from the specified coordinate.
+    /// </summary>
+    /// <param name="current">The coordinate from which to extract the longitude.</param>
+    /// <returns>
+    /// The longitude value as a <see cref="double"/>.
+    /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected abstract double GetLongitude(TCoordinate? current);
 
+    /// <summary>
+    /// Extracts the latitude value from the specified coordinate.
+    /// </summary>
+    /// <param name="current">The coordinate from which to extract the latitude.</param>
+    /// <returns>
+    /// The latitude value as a <see cref="double"/>.
+    /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected abstract double GetLatitude(TCoordinate? current);
 }

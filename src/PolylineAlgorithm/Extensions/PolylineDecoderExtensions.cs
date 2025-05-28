@@ -10,14 +10,14 @@ using System;
 using System.Collections.Generic;
 
 /// <summary>
-/// Provides extension methods for the <see cref="IPolylineDecoder"/> interface to facilitate decoding encoded polylines.
+/// Provides extension methods for the <see cref="IPolylineDecoder{TCoordinate, TPolyline}"/> interface to facilitate decoding encoded polylines.
 /// </summary>
 public static class PolylineDecoderExtensions {
     /// <summary>
     /// Decodes an encoded polyline string into a sequence of geographic coordinates.
     /// </summary>
     /// <param name="decoder">
-    /// The <see cref="IPolylineDecoder"/> instance used to perform the decoding operation.
+    /// The <see cref="IPolylineDecoder{TCoordinate, TPolyline}"/> instance used to perform the decoding operation.
     /// </param>
     /// <param name="polyline">
     /// The encoded polyline string to decode.
@@ -40,7 +40,7 @@ public static class PolylineDecoderExtensions {
     /// Decodes an encoded polyline represented as a character array into a sequence of geographic coordinates.
     /// </summary>
     /// <param name="decoder">
-    /// The <see cref="IPolylineDecoder"/> instance used to perform the decoding operation.
+    /// The <see cref="IPolylineDecoder{TCoordinate, TPolyline}"/> instance used to perform the decoding operation.
     /// </param>
     /// <param name="polyline">
     /// The encoded polyline as a character array to decode.

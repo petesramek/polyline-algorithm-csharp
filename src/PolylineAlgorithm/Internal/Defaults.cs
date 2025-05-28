@@ -17,11 +17,6 @@ internal static class Defaults {
     /// </summary>
     public static class Polyline {
         /// <summary>
-        /// An array of delimiter byte values used in polyline encoding, derived by adding the ASCII value of the question mark ('?') to a range of integers.
-        /// </summary>
-        public static readonly byte[] Delimiters = [.. Enumerable.Range(0, 32).Select(n => (byte)(n + '?'))];
-
-        /// <summary>
         /// The minimum number of characters required to represent an encoded coordinate.
         /// </summary>
         public const int MinEncodedCoordinateLength = 2;
@@ -64,21 +59,6 @@ internal static class Defaults {
             /// The maximum valid longitude value, in degrees.
             /// </summary>
             public const byte Max = 180;
-        }
-
-        /// <summary>
-        /// Provides default coordinate ranges for validating latitude and longitude values.
-        /// </summary>
-        public static class Range {
-            /// <summary>
-            /// The default valid range for latitude values.
-            /// </summary>
-            public static readonly CoordinateRange Latitude = new(Coordinate.Latitude.Min, Coordinate.Latitude.Max);
-
-            /// <summary>
-            /// The default valid range for longitude values.
-            /// </summary>
-            public static readonly CoordinateRange Longitude = new(Coordinate.Longitude.Min, Coordinate.Longitude.Max);
         }
     }
 }

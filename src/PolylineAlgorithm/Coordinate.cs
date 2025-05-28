@@ -5,7 +5,7 @@
 
 namespace PolylineAlgorithm;
 
-using PolylineAlgorithm.Validation;
+using PolylineAlgorithm.Internal;
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -17,6 +17,9 @@ using System.Runtime.InteropServices;
 [DebuggerDisplay("{ToString()}")]
 [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
 public readonly struct Coordinate : IEquatable<Coordinate> {
+    private static readonly CoordinateRange _latitudeRange = new(-90, 90);
+    private static readonly CoordinateRange _longitudeRange = new(-180, 180);
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Coordinate"/> struct with default values (0) for <see cref="Latitude"/> and <see cref="Longitude"/>.
     /// </summary>
@@ -28,9 +31,21 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <summary>
     /// Initializes a new instance of the <see cref="Coordinate"/> struct with the specified latitude and longitude values.
     /// </summary>
-    /// <param name="latitude">The latitude component, in degrees.</param>
-    /// <param name="longitude">The longitude component, in degrees.</param>
+    /// <param name="latitude">The latitude component, in degrees. Must be between -90 and 90, inclusive.</param>
+    /// <param name="longitude">The longitude component, in degrees. Must be between -180 and 180, inclusive.</param>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when <paramref name="latitude"/> is less than -90 or greater than 90,
+    /// or when <paramref name="longitude"/> is less than -180 or greater than 180.
+    /// </exception>
     public Coordinate(double latitude, double longitude) {
+        if(!_latitudeRange.IsInRange(latitude)) {
+            throw new ArgumentOutOfRangeException(nameof(latitude), ""); // TODO: add message
+        }
+
+        if (!_longitudeRange.IsInRange(longitude)) {
+            throw new ArgumentOutOfRangeException(nameof(longitude), ""); // TODO: add message
+        }
+
         Latitude = latitude;
         Longitude = longitude;
     }
@@ -54,15 +69,6 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     public bool IsDefault()
         => Latitude == default
         && Longitude == default;
-
-    /// <summary>
-    /// Determines whether this coordinate is valid by checking if both <see cref="Latitude"/> and <see cref="Longitude"/>
-    /// are within their respective valid ranges as defined by the default <see cref="ICoordinateValidator"/>.
-    /// </summary>
-    /// <returns>
-    /// <see langword="true"/> if the coordinate is within valid latitude and longitude ranges; otherwise, <see langword="false"/>.
-    /// </returns>
-    public bool IsValid() => ICoordinateValidator.Default.IsValid(this);
 
     #region Overrides
 

@@ -15,10 +15,10 @@ public interface IPolylineEncoder<TCoordinate, TPolyline> {
     /// Encodes a sequence of geographic coordinates into an encoded polyline representation.
     /// </summary>
     /// <param name="coordinates">
-    /// The collection of <see cref="Coordinate"/> instances to encode into a polyline.
+    /// The collection of <typeparamref name="TCoordinate"/> instances to encode into a polyline.
     /// </param>
     /// <returns>
-    /// A <see cref="Polyline"/> containing the encoded polyline string that represents the input coordinates.
+    /// A <typeparamref name="TPolyline"/> containing the encoded polyline string that represents the input coordinates.
     /// </returns>
     TPolyline Encode(IEnumerable<TCoordinate> coordinates);
 }

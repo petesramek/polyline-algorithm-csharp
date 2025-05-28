@@ -15,10 +15,10 @@ public interface IPolylineDecoder<TCoordinate, TPolyline> {
     /// Decodes the specified encoded polyline into a sequence of geographic coordinates.
     /// </summary>
     /// <param name="polyline">
-    /// The <see cref="Polyline"/> instance containing the encoded polyline string to decode.
+    /// The <typeparamref name="TPolyline"/> instance containing the encoded polyline string to decode.
     /// </param>
     /// <returns>
-    /// An <see cref="IEnumerable{T}"/> of <see cref="Coordinate"/> representing the decoded latitude and longitude pairs.
+    /// An <see cref="IEnumerable{T}"/> of <typeparamref name="TCoordinate"/> representing the decoded latitude and longitude pairs.
     /// </returns>
-    IEnumerable<TCoordinate> Decode(TPolyline coordinates);
+    IEnumerable<TCoordinate> Decode(TPolyline polyline);
 }

@@ -9,14 +9,14 @@ using System.Buffers;
 
 /// <summary>
 /// Represents a segment of a polyline as part of a linked list of character memory segments.
-/// Inherits from <see cref="ReadOnlySequenceSegment{char}"/> to enable efficient manipulation and traversal of polyline data.
+/// Inherits from <see cref="ReadOnlySequenceSegment{T}"/> to enable efficient manipulation and traversal of polyline data.
 /// </summary>
 internal class PolylineSegment : ReadOnlySequenceSegment<char> {
     /// <summary>
     /// Initializes a new instance of the <see cref="PolylineSegment"/> class with the specified memory segment and optional running index.
     /// </summary>
     /// <param name="memory">
-    /// The <see cref="ReadOnlyMemory{char}"/> segment to associate with this polyline segment.
+    /// The <see cref="ReadOnlyMemory{T}"/> segment to associate with this polyline segment.
     /// </param>
     /// <param name="runningIndex">
     /// The cumulative index of this segment within the polyline sequence. Defaults to 0.
@@ -30,7 +30,7 @@ internal class PolylineSegment : ReadOnlySequenceSegment<char> {
     /// Appends a new memory segment to the end of the current polyline segment chain.
     /// </summary>
     /// <param name="memory">
-    /// The <see cref="ReadOnlyMemory{char}"/> segment to append as a new <see cref="PolylineSegment"/>.
+    /// The <see cref="ReadOnlyMemory{T}"/> segment to append as a new <see cref="PolylineSegment"/>.
     /// </param>
     public void Append(ReadOnlyMemory<char> memory) {
         Append(new PolylineSegment(memory));

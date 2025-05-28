@@ -15,7 +15,7 @@ using PolylineAlgorithm.Utility;
 [TestClass]
 public class PolylineDecoderTest {
     public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100], [1_000], [10_000], [100_000], [1_000_000]];
-    
+
     /// <summary>
     /// The instance of the <see cref="PolylineDecoder"/> used for testing.
     /// </summary>

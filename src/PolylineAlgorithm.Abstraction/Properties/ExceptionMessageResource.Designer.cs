@@ -70,15 +70,6 @@ namespace PolylineAlgorithm.Abstraction.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Argument cannot be null -or- empty -or- whitespace..
-        /// </summary>
-        internal static string ArgumentCannotBeNullEmptyOrWhitespaceMessage {
-            get {
-                return ResourceManager.GetString("ArgumentCannotBeNullEmptyOrWhitespaceMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Argument {0} cannot be greater or equal than {1}..
         /// </summary>
         internal static string ArgumentMinCannotBeGreaterOfEqualThanMaxArgumentMessageFormat {
@@ -106,20 +97,11 @@ namespace PolylineAlgorithm.Abstraction.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot write to an empty polyline buffer..
+        ///   Looks up a localized string similar to Argument cannot be shorten than 2 characters. Actual length: {0}..
         /// </summary>
-        internal static string PolylineBufferIsEmptyMessage {
+        internal static string PolylineCannotBeShorterThanExceptionMessage {
             get {
-                return ResourceManager.GetString("PolylineBufferIsEmptyMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot read an empty polyline..
-        /// </summary>
-        internal static string PolylineStringIsEmptyMessage {
-            get {
-                return ResourceManager.GetString("PolylineStringIsEmptyMessage", resourceCulture);
+                return ResourceManager.GetString("PolylineCannotBeShorterThanExceptionMessage", resourceCulture);
             }
         }
         
@@ -129,24 +111,6 @@ namespace PolylineAlgorithm.Abstraction.Properties {
         internal static string PolylineStringIsMalformedMessage {
             get {
                 return ResourceManager.GetString("PolylineStringIsMalformedMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to read polyline at position {0}. Polyline length is {1}. Capacity of the buffer is {1}..
-        /// </summary>
-        internal static string UnableToReadPolylineAtPositionMessageFormat {
-            get {
-                return ResourceManager.GetString("UnableToReadPolylineAtPositionMessageFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to write polyline buffer at position {0}. Polyline buffer length is {1}..
-        /// </summary>
-        internal static string UnableToWritePolylineBufferAtPositionMessageFormat {
-            get {
-                return ResourceManager.GetString("UnableToWritePolylineBufferAtPositionMessageFormat", resourceCulture);
             }
         }
     }

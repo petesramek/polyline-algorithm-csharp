@@ -10,7 +10,7 @@ using System.Buffers;
 using System.Runtime.InteropServices;
 
 /// <summary>
-/// Provides an efficient mechanism for constructing a <see cref="Polyline"/> from multiple character segments.
+/// Provides an efficient mechanism for constructing a <see cref="ReadOnlySequence{T}"/> from multiple character segments.
 /// This struct enables incremental building of a polyline by appending segments and producing a single concatenated result.
 /// </summary>
 [StructLayout(LayoutKind.Auto)]
@@ -37,13 +37,13 @@ internal struct PolylineBuilder {
     }
 
     /// <summary>
-    /// Constructs the final <see cref="Polyline"/> instance by concatenating all appended segments.
+    /// Constructs a <see cref="ReadOnlySequence{T}"/> representing the concatenation of all appended character segments.
     /// </summary>
     /// <returns>
-    /// A <see cref="Polyline"/> representing the combined character segments.
-    /// If no segments have been appended, returns an empty <see cref="Polyline"/>.
+    /// A <see cref="ReadOnlySequence{T}"/> containing all segments appended to this builder, or an empty sequence if no segments were added.
     /// </returns>
-    public readonly ReadOnlySequence<char> Build() {
+    public readonly ReadOnlySequence<char> Build()
+    {
         if (_initial is null) {
             return new();
         }
