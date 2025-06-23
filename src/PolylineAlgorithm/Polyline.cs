@@ -93,15 +93,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
         var sb = Value.Length <= int.MaxValue ? new StringBuilder((int)Value.Length) : new StringBuilder();
         var enumerator = Value.GetEnumerator();
 
-        while (true) {
-            if (!enumerator.MoveNext()) {
-                break;
-            }
-
-            if (enumerator.Current.IsEmpty) {
-                continue;
-            }
-
+        while (enumerator.MoveNext() && !enumerator.Current.IsEmpty) {
             sb.Append(enumerator.Current.Span);
         }
 
@@ -116,6 +108,10 @@ public readonly struct Polyline : IEquatable<Polyline> {
     public bool Equals(Polyline other) {
         if ((IsEmpty != other.IsEmpty) || (Length != other.Length)) {
             return false;
+        }
+
+        if (Value.IsSingleSegment && other.Value.IsSingleSegment) {
+            return Value.FirstSpan.SequenceEqual(other.Value.FirstSpan);
         }
 
         var enumerator = GetEnumerator();
