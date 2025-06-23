@@ -19,30 +19,9 @@ using System.Runtime.CompilerServices;
 /// </summary>
 public abstract class PolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder<TCoordinate, TPolyline> {
     /// <summary>
-    /// Initializes a new instance of the <see cref="PolylineEncoder{TCoordinate, TPolyline}"/> class
-    /// using the default <see cref="PolylineEncodingOptions{TCoordinate}"/>.
-    /// </summary>
-    public PolylineEncoder()
-        : this(new PolylineEncodingOptions<TCoordinate>()) { }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PolylineEncoder{TCoordinate, TPolyline}"/> class
-    /// with the specified <see cref="PolylineEncodingOptions{TCoordinate}"/>.
-    /// </summary>
-    /// <param name="options">
-    /// The <see cref="PolylineEncodingOptions{TCoordinate}"/> to use for encoding operations.
-    /// </param>
-    /// <exception cref="ArgumentNullException">
-    /// Thrown when <paramref name="options"/> is <see langword="null"/>.
-    /// </exception>
-    public PolylineEncoder(PolylineEncodingOptions<TCoordinate> options) {
-        Options = options ?? throw new ArgumentNullException(nameof(options));
-    }
-
-    /// <summary>
     /// Gets the encoding options used by this polyline encoder.
     /// </summary>
-    public PolylineEncodingOptions<TCoordinate> Options { get; }
+    public abstract PolylineEncodingOptions<TCoordinate> Options { get; }
 
     /// <summary>
     /// Encodes a collection of <typeparamref name="TCoordinate"/> instances into an encoded <typeparamref name="TPolyline"/> string.
