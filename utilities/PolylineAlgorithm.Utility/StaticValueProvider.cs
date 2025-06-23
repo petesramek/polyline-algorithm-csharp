@@ -1,9 +1,24 @@
-﻿namespace PolylineAlgorithm.Utility;
+﻿//
+// Copyright © Pete Sramek. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+
+namespace PolylineAlgorithm.Utility;
 
 using System.Collections.Generic;
 
+/// <summary>
+/// Provides static, predefined coordinate and polyline values for use in tests and benchmarks.
+/// </summary>
 internal static class StaticValueProvider {
+    /// <summary>
+    /// A predefined polyline instance representing a fixed encoded polyline string.
+    /// </summary>
     private static readonly Polyline _polyline = Polyline.FromString("???_gsia@_cidP??~fsia@?~fsia@~bidP?~bidP??_gsia@");
+
+    /// <summary>
+    /// A predefined collection of <see cref="Coordinate"/> instances representing a closed path around the globe.
+    /// </summary>
     private static readonly IEnumerable<Coordinate> _coordinates = [
         new (0, 0),
         new (0, 180),
@@ -15,10 +30,18 @@ internal static class StaticValueProvider {
         new (-90, 0)
     ];
 
+    /// <summary>
+    /// Gets the predefined collection of <see cref="Coordinate"/> instances.
+    /// </summary>
+    /// <returns>An <see cref="IEnumerable{Coordinate}"/> containing the static coordinates.</returns>
     public static IEnumerable<Coordinate> GetCoordinates() {
         return _coordinates;
     }
 
+    /// <summary>
+    /// Gets the predefined <see cref="Polyline"/> instance.
+    /// </summary>
+    /// <returns>The static <see cref="Polyline"/> value.</returns>
     public static Polyline GetPolyline() {
         return _polyline;
     }
