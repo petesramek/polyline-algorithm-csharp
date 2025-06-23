@@ -17,9 +17,6 @@ using System.Runtime.InteropServices;
 [DebuggerDisplay("{ToString()}")]
 [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
 public readonly struct Coordinate : IEquatable<Coordinate> {
-    private static readonly CoordinateRange _latitudeRange = new(-90, 90);
-    private static readonly CoordinateRange _longitudeRange = new(-180, 180);
-
     /// <summary>
     /// Initializes a new instance of the <see cref="Coordinate"/> struct with default values (0) for <see cref="Latitude"/> and <see cref="Longitude"/>.
     /// </summary>
@@ -38,14 +35,6 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// or when <paramref name="longitude"/> is less than -180 or greater than 180.
     /// </exception>
     public Coordinate(double latitude, double longitude) {
-        if(!_latitudeRange.IsInRange(latitude)) {
-            throw new ArgumentOutOfRangeException(nameof(latitude), ""); // TODO: add message
-        }
-
-        if (!_longitudeRange.IsInRange(longitude)) {
-            throw new ArgumentOutOfRangeException(nameof(longitude), ""); // TODO: add message
-        }
-
         Latitude = latitude;
         Longitude = longitude;
     }
