@@ -28,6 +28,9 @@ public sealed class PolylineEncoder : PolylineEncoder<Coordinate, Polyline> {
         Options = options ?? throw new ArgumentNullException(nameof(options));
     }
 
+    /// <summary>
+    /// Gets the encoding options used by this polyline encoder.
+    /// </summary>
     public override PolylineEncodingOptions<Coordinate> Options { get; }
 
     /// <summary>

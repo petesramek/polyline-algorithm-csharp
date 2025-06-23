@@ -13,9 +13,26 @@ using System.Runtime.CompilerServices;
 /// Decodes encoded polyline strings into sequences of geographic coordinates.
 /// Implements the <see cref="IPolylineDecoder{TCoordinate, TPolyline}"/> interface.
 /// </summary>
-public sealed class PolylineDecoder : PolylineDecoder<Coordinate, Polyline>
-{
-    public override PolylineEncodingOptions<Coordinate> Options { get; } = new PolylineEncodingOptions<Coordinate>();
+public sealed class PolylineDecoder : PolylineDecoder<Coordinate, Polyline> {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PolylineDecoder"/> class with default encoding options.
+    /// </summary>
+    public PolylineDecoder()
+        : this(new()) { }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PolylineDecoder"/> class with the specified encoding options.
+    /// </summary>
+    /// <param name="options">The encoding options to use for decoding polylines.</param>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="options"/> is <c>null</c>.</exception>
+    public PolylineDecoder(PolylineEncodingOptions<Coordinate> options) {
+        Options = options ?? throw new ArgumentNullException(nameof(options));
+    }
+
+    /// <summary>
+    /// Gets the encoding options used by this polyline decoder.
+    /// </summary>
+    public override PolylineEncodingOptions<Coordinate> Options { get; }
 
     /// <summary>
     /// Creates a <see cref="Coordinate"/> instance from the given latitude and longitude.
@@ -24,8 +41,7 @@ public sealed class PolylineDecoder : PolylineDecoder<Coordinate, Polyline>
     /// <param name="longitude">The longitude of the coordinate.</param>
     /// <returns>A <see cref="Coordinate"/> instance.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected override Coordinate CreateCoordinate(double latitude, double longitude)
-    {
+    protected override Coordinate CreateCoordinate(double latitude, double longitude) {
         return new Coordinate(latitude, longitude);
     }
 
@@ -35,8 +51,7 @@ public sealed class PolylineDecoder : PolylineDecoder<Coordinate, Polyline>
     /// <param name="polyline">The polyline to extract the sequence from.</param>
     /// <returns>A <see cref="ReadOnlySequence{Task }"/> representing the polyline.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected override ReadOnlySequence<char> GetReadOnlySequence(Polyline polyline)
-    {
+    protected override ReadOnlySequence<char> GetReadOnlySequence(Polyline polyline) {
         return polyline.Value;
     }
 }
