@@ -60,16 +60,16 @@ public abstract class PolylineDecoder<TCoordinate, TPolyline> : IPolylineDecoder
             position = 0;
             sequence = enumerator.Current;
 
-            while (PolylineEncoding.Default.TryReadValue(ref latitude, ref sequence, ref position)
-                && PolylineEncoding.Default.TryReadValue(ref longitude, ref sequence, ref position)
+            while (PolylineEncoding.TryReadValue(ref latitude, ref sequence, ref position)
+                && PolylineEncoding.TryReadValue(ref longitude, ref sequence, ref position)
             ) {
-                coordinate = (PolylineEncoding.Default.Denormalize(latitude), PolylineEncoding.Default.Denormalize(longitude));
+                coordinate = (PolylineEncoding.Denormalize(latitude), PolylineEncoding.Denormalize(longitude));
 
                 if(!Options.Validator.IsValidLatitude(coordinate.Latitude) && !Options.Validator.IsValidLongitude(coordinate.Longitude)) {
                     throw new Exception();
                 }
 
-                yield return CreateCoordinate(PolylineEncoding.Default.Denormalize(latitude), PolylineEncoding.Default.Denormalize(longitude));
+                yield return CreateCoordinate(PolylineEncoding.Denormalize(latitude), PolylineEncoding.Denormalize(longitude));
             }
 
             consumed += position;

@@ -6,7 +6,7 @@ using System.Buffers;
 using System.Text;
 
 internal class NetTopologyPolylineEncoder : PolylineEncoder<Point, string> {
-    public override PolylineEncodingOptions<Point> Options { get; } = PolylineEncodingOptions<Point>.Default;
+    public override PolylineEncodingOptions<Point> Options { get; } = new PolylineEncodingOptions<Point>();
 
     protected override string CreatePolyline(ReadOnlySequence<char> sequence) {
         if (sequence.IsEmpty) {

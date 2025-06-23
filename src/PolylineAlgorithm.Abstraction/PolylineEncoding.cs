@@ -13,12 +13,7 @@ using System.Runtime.CompilerServices;
 /// Provides methods for encoding and decoding geographic coordinates to and from polyline strings.
 /// Supports normalization, denormalization, and efficient value encoding/decoding for polyline algorithms.
 /// </summary>
-public class PolylineEncoding {
-    /// <summary>
-    /// Gets the default singleton instance of the <see cref="PolylineEncoding"/> class.
-    /// </summary>
-    public static readonly PolylineEncoding Default = new();
-
+public static class PolylineEncoding {
     /// <summary>
     /// Attempts to read an encoded value from the specified buffer and update the provided variance.
     /// </summary>
@@ -35,7 +30,7 @@ public class PolylineEncoding {
     /// <see langword="true"/> if a value was successfully read; otherwise, <see langword="false"/>.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryReadValue(ref int variance, ref ReadOnlyMemory<char> buffer, ref int position) {
+    public static bool TryReadValue(ref int variance, ref ReadOnlyMemory<char> buffer, ref int position) {
         if (position == buffer.Length) {
             return false;
         }
@@ -70,7 +65,7 @@ public class PolylineEncoding {
     /// The denormalized double value.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double Denormalize(int value) => Math.Truncate((double)value) / Defaults.Algorithm.Precision;
+    public static double Denormalize(int value) => Math.Truncate((double)value) / Defaults.Algorithm.Precision;
 
     /// <summary>
     /// Attempts to write an encoded value to the specified buffer.
@@ -88,7 +83,7 @@ public class PolylineEncoding {
     /// <see langword="true"/> if the value was successfully written; otherwise, <see langword="false"/>.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryWriteValue(int variance, ref Span<char> buffer, ref int position) {
+    public static bool TryWriteValue(int variance, ref Span<char> buffer, ref int position) {
         if (buffer.Length < position + GetCharCount(variance)) {
             return false;
         }
@@ -119,7 +114,7 @@ public class PolylineEncoding {
     /// The normalized integer value.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int Normalize(double value) => (int)Math.Round(value * Defaults.Algorithm.Precision);
+    public static int Normalize(double value) => (int)Math.Round(value * Defaults.Algorithm.Precision);
 
     /// <summary>
     /// Calculates the number of characters required to encode a given variance value.
@@ -131,7 +126,7 @@ public class PolylineEncoding {
     /// The number of characters required to encode the variance.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int GetCharCount(int variance) => variance switch {
+    public static int GetCharCount(int variance) => variance switch {
         // DO NOT CHANGE THE ORDER. We are skipping inside exclusive ranges as those are covered by previous statements.
         >= -16 and <= +15 => 1,
         >= -512 and <= +511 => 2,

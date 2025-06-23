@@ -34,7 +34,7 @@ public sealed class InvalidPolylineException : Exception {
     /// <exception cref="InvalidPolylineException">
     /// Always thrown to indicate that the polyline is malformed at the specified position.
     /// </exception>
-    internal static void Throw(long position) {
+    public static void Throw(long position) {
         throw new InvalidPolylineException(string.Format(ExceptionMessageResource.PolylineStringIsMalformedMessage, position.ToString()));
     }
 }

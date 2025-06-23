@@ -15,7 +15,7 @@ using System.Runtime.CompilerServices;
 /// </summary>
 public sealed class PolylineDecoder : PolylineDecoder<Coordinate, Polyline>
 {
-    public override PolylineEncodingOptions<Coordinate> Options { get; } = PolylineEncodingOptions<Coordinate>.Default;
+    public override PolylineEncodingOptions<Coordinate> Options { get; } = new PolylineEncodingOptions<Coordinate>();
 
     /// <summary>
     /// Creates a <see cref="Coordinate"/> instance from the given latitude and longitude.

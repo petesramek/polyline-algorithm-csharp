@@ -66,14 +66,14 @@ public abstract class PolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder
 
         while (enumerator.MoveNext()) {
             variance
-                .Next(PolylineEncoding.Default.Normalize(GetLatitude(enumerator.Current)), PolylineEncoding.Default.Normalize(GetLongitude(enumerator.Current)));
+                .Next(PolylineEncoding.Normalize(GetLatitude(enumerator.Current)), PolylineEncoding.Normalize(GetLongitude(enumerator.Current)));
 
             if (GetRemainingBufferSize(position, buffer.Length) < GetRequiredLength(variance)) {
                 throw new InternalBufferOverflowException();
             }
 
-            if (!PolylineEncoding.Default.TryWriteValue(variance.Latitude, ref buffer, ref position)
-                || !PolylineEncoding.Default.TryWriteValue(variance.Longitude, ref buffer, ref position)
+            if (!PolylineEncoding.TryWriteValue(variance.Latitude, ref buffer, ref position)
+                || !PolylineEncoding.TryWriteValue(variance.Longitude, ref buffer, ref position)
             ) {
                 throw new InvalidOperationException();
             }
@@ -91,7 +91,7 @@ public abstract class PolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static int GetRequiredLength(CoordinateVariance variance) =>
-            PolylineEncoding.Default.GetCharCount(variance.Latitude) + PolylineEncoding.Default.GetCharCount(variance.Longitude);
+            PolylineEncoding.GetCharCount(variance.Latitude) + PolylineEncoding.GetCharCount(variance.Longitude);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static int GetRemainingBufferSize(int position, int length) => length - position;

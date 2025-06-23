@@ -38,7 +38,6 @@ public class CoordinateTest {
     [TestMethod]
     public void Constructor_Parameterless_Ok() {
         // Arrange
-        bool valid = true;
         bool @default = true;
         double latitude = 0d;
         double longitude = 0d;
@@ -61,7 +60,6 @@ public class CoordinateTest {
     [DynamicData(nameof(Constructor_Valid_Parameters))]
     public void Constructor_Valid_Parameters_Ok(double latitude, double longitude) {
         // Arrange
-        bool valid = true;
         bool @default = false;
 
         // Act
@@ -82,7 +80,6 @@ public class CoordinateTest {
     [DynamicData(nameof(Constructor_Invalid_Parameters))]
     public void Constructor_Invalid_Parameters_Ok(double latitude, double longitude) {
         // Arrange
-        bool valid = false;
         bool @default = false;
 
         // Act

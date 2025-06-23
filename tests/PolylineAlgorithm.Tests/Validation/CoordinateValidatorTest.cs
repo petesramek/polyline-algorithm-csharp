@@ -6,6 +6,7 @@
 namespace PolylineAlgorithm.Tests.Validation;
 
 using PolylineAlgorithm.Internal;
+using PolylineAlgorithm.Validation;
 
 /// <summary>
 /// Tests for the <see cref="CoordinateValidator"/> type.
@@ -37,7 +38,7 @@ public class CoordinateValidatorTest {
     public void IsValid_Valid_Parameters_Ok(double latitude, double longitude, bool expected) {
         // Arrange
         Coordinate coordinate = new(latitude, longitude);
-        CoordinateValidator validator = new();
+        CoordinateValidator validator = new(_latitude, _longitude);
 
         // Act
         bool result = validator.IsValid(coordinate);

@@ -6,7 +6,7 @@ using System;
 using System.Buffers;
 
 internal class NetTopologyPolylineDecoder : PolylineDecoder<Point, string> {
-    public override PolylineEncodingOptions<Point> Options { get; } = PolylineEncodingOptions<Point>.Default;
+    public override PolylineEncodingOptions<Point> Options { get; } = new PolylineEncodingOptions<Point>();
 
     protected override Point CreateCoordinate(double latitude, double longitude) {
         return new Point(latitude, longitude);
