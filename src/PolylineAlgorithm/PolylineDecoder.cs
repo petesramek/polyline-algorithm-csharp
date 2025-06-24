@@ -42,6 +42,14 @@ public sealed class PolylineDecoder : PolylineDecoder<Coordinate, Polyline> {
     /// <returns>A <see cref="Coordinate"/> instance.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected override Coordinate CreateCoordinate(double latitude, double longitude) {
+        if (!Options.Validator.IsValidLatitude(latitude)) {
+            throw new ArgumentOutOfRangeException(nameof(latitude), latitude, "Latitude must be between -90 and 90 degrees.");
+        }
+
+        if (!Options.Validator.IsValidLongitude(longitude)) {
+            throw new ArgumentOutOfRangeException(nameof(longitude), longitude, "Longitude must be between -180 and 180 degrees.");
+        }
+
         return new Coordinate(latitude, longitude);
     }
 
