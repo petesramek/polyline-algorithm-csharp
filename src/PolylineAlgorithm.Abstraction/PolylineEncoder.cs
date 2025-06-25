@@ -56,8 +56,8 @@ public abstract class PolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder
         int consumed = 0;
         int length = count * Defaults.Polyline.MaxEncodedCoordinateLength;
 
-        if (length > Options.MaxCharCount) {
-            length = Options.MaxCharCount;
+        if (length > Options.BufferSize / sizeof(char)) {
+            length = Options.BufferSize / sizeof(char);
         }
 
         Span<char> buffer = stackalloc char[length];

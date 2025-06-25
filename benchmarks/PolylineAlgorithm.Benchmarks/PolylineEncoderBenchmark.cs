@@ -15,7 +15,7 @@ using System.Collections.Generic;
 /// </summary>
 [RankColumn]
 public class PolylineEncoderBenchmark {
-    [Params(1, 25, 50, 100, 250, 500, 1_000, 5_000, 10_000, 25_000, 50_000, 100_000, 500_000, 1_000_000)]
+    [Params(1, 25, 50, 100, 250, 500, 1_000)]
     public int Count;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
@@ -34,11 +34,6 @@ public class PolylineEncoderBenchmark {
     /// The polyline encoder instance.
     /// </summary>
     public PolylineEncoder Encoder = new();
-
-    /// <summary>
-    /// The async polyline encoder instance.
-    /// </summary>
-    //public AsyncPolylineEncoder AsyncEncoder = new();
 
     /// <summary>
     /// Sets up the data for the benchmarks.

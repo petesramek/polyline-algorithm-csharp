@@ -5,7 +5,10 @@
 
 namespace PolylineAlgorithm.Benchmarks;
 
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Engines;
 using BenchmarkDotNet.Running;
+using Microsoft.CodeAnalysis;
 
 /// <summary>
 /// The main entry point for the benchmark application.
@@ -16,10 +19,8 @@ internal class Program {
     /// </summary>
     /// <param name="args">The command-line arguments.</param>
     static void Main(string[] args) {
-        //Directory.Delete("C:\\temp\\benchmark", true);
-
         BenchmarkSwitcher
             .FromAssembly(typeof(Program).Assembly)
-            .Run(args/*, new DebugInProcessConfig()*/);
+            .Run(args, new DebugInProcessConfig());
     }
 }
