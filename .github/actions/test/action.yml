@@ -14,10 +14,11 @@ inputs:
     required: false
     default: 'Release'
   test-project-glob-pattern:
-    description: 'Search pattern for test projects. Default: **/*Tests.csproj'
+    description: 'Search pattern for test projects. Default: **/*.sln, **/*.slnx'
     required: false
     default: |
-      **/*Tests.csproj
+      **/*.sln
+      **/*.slnx
   use-trf-logger:
     description: 'Use TRX logger. Default: true'
     required: false

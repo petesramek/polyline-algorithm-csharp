@@ -74,7 +74,6 @@ jobs:
           assembly-informational-version: ${{ env.assembly-informational-version }}
           file-version: ${{ env.file-version }}
           treat-warnins-as-error: ${{ env.is-release }}
-          search-glob-pattern: ${{ vars.SRC_DEFAULT_GLOB_PATTERN }}
 
   test:
     name: Test with .NET
@@ -91,7 +90,6 @@ jobs:
 
       - uses: ./.github/actions/test
         with:
-          test-project-glob-pattern: ${{ vars.TEST_DEFAULT_GLOB_PATTERN }}
           test-results-directory: '${{ runner.temp }}/${{ env.test-result-directory }}/'
           code-coverage-settings-file: '${{ github.workspace}}/code-coverage-settings.xml'
 

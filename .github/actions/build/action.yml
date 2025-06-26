@@ -29,10 +29,11 @@ inputs:
     required: false
     default: 'Any CPU'
   search-glob-pattern:
-    description: 'Search pattern for source code. Default: **/*.sln'
+    description: 'Search pattern for source code. Default: **/*.sln, **/*.slnx'
     required: false
     default: |
       **/*.sln
+      **/*.slnx
   upload-build-artifacts:
     description: 'Upload build artifacts, Default: ''true'''
     required: false
