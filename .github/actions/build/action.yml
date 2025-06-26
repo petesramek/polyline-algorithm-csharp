@@ -29,10 +29,10 @@ inputs:
     required: false
     default: 'Any CPU'
   search-glob-pattern:
-    description: 'Search pattern for source code. Default: **/*.csproj'
+    description: 'Search pattern for source code. Default: **/*.sln'
     required: false
     default: |
-      **/*.csproj
+      **/*.sln
   upload-build-artifacts:
     description: 'Upload build artifacts, Default: ''true'''
     required: false
