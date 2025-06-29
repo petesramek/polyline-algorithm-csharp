@@ -70,6 +70,7 @@ jobs:
 
       - uses: ./.github/actions/build
         with:
+          project-path: '**/PolylineAlgorithm.csproj'
           assembly-version: ${{ env.assembly-version }}
           assembly-informational-version: ${{ env.assembly-informational-version }}
           file-version: ${{ env.file-version }}
@@ -90,6 +91,7 @@ jobs:
 
       - uses: ./.github/actions/test
         with:
+          project-path: '**/PolylineAlgorithm.Tests.csproj'
           test-results-directory: '${{ runner.temp }}/${{ env.test-result-directory }}/'
           code-coverage-settings-file: '${{ github.workspace}}/code-coverage-settings.xml'
 

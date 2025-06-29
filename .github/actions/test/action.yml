@@ -13,12 +13,9 @@ inputs:
     description: 'Build configuration. Default: Release'
     required: false
     default: 'Release'
-  test-project-glob-pattern:
-    description: 'Search pattern for test projects. Default: **/*.sln, **/*.slnx'
-    required: false
-    default: |
-      **/*.sln
-      **/*.slnx
+  project-path:
+    description: 'Search pattern for test projects.'
+    required: true
   use-trf-logger:
     description: 'Use TRX logger. Default: true'
     required: false

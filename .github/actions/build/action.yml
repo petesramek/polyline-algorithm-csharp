@@ -28,12 +28,9 @@ inputs:
     description: 'Build platform. Deafult: ''Any CPU'''
     required: false
     default: 'Any CPU'
-  search-glob-pattern:
-    description: 'Search pattern for source code. Default: **/*.sln, **/*.slnx'
-    required: false
-    default: |
-      **/*.sln
-      **/*.slnx
+  project-path:
+    description: 'Search pattern for source code.'
+    required: true
   upload-build-artifacts:
     description: 'Upload build artifacts, Default: ''true'''
     required: false
