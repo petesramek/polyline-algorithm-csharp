@@ -6,9 +6,7 @@
 namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Configs;
-using BenchmarkDotNet.Engines;
 using BenchmarkDotNet.Running;
-using Microsoft.CodeAnalysis;
 
 /// <summary>
 /// The main entry point for the benchmark application.

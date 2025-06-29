@@ -5,12 +5,12 @@
 
 namespace PolylineAlgorithm;
 
-using PolylineAlgorithm.Internal;
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.InteropServices;
+
 /// <summary>
 /// Represents a geographic coordinate as a pair of latitude and longitude values.
 /// </summary>
@@ -35,6 +35,14 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// or when <paramref name="longitude"/> is less than -180 or greater than 180.
     /// </exception>
     public Coordinate(double latitude, double longitude) {
+        if (latitude < -90 || latitude > 90) {
+            throw new ArgumentOutOfRangeException(nameof(latitude), "Latitude must be between -90 and 90.");
+        }
+
+        if (longitude < -180 || longitude > 180) {
+            throw new ArgumentOutOfRangeException(nameof(longitude), "Longitude must be between -180 and 180.");
+        }
+
         Latitude = latitude;
         Longitude = longitude;
     }

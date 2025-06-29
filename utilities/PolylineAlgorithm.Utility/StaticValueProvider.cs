@@ -14,12 +14,12 @@ internal static class StaticValueProvider {
     /// <summary>
     /// A predefined polyline instance representing a fixed encoded polyline string.
     /// </summary>
-    private static readonly Polyline _polyline = Polyline.FromString("???_gsia@_cidP??~fsia@?~fsia@~bidP?~bidP??_gsia@");
+    private static readonly string _polyline = "???_gsia@_cidP??~fsia@?~fsia@~bidP?~bidP??_gsia@";
 
     /// <summary>
     /// A predefined collection of <see cref="Coordinate"/> instances representing a closed path around the globe.
     /// </summary>
-    private static readonly IEnumerable<Coordinate> _coordinates = [
+    private static readonly IEnumerable<(double Latitude, double Longitude)> _coordinates = [
         new (0, 0),
         new (0, 180),
         new (90, 180),
@@ -34,7 +34,7 @@ internal static class StaticValueProvider {
     /// Gets the predefined collection of <see cref="Coordinate"/> instances.
     /// </summary>
     /// <returns>An <see cref="IEnumerable{Coordinate}"/> containing the static coordinates.</returns>
-    public static IEnumerable<Coordinate> GetCoordinates() {
+    public static IEnumerable<(double Latitude, double Longitude)> GetCoordinates() {
         return _coordinates;
     }
 
@@ -42,7 +42,7 @@ internal static class StaticValueProvider {
     /// Gets the predefined <see cref="Polyline"/> instance.
     /// </summary>
     /// <returns>The static <see cref="Polyline"/> value.</returns>
-    public static Polyline GetPolyline() {
+    public static string GetPolyline() {
         return _polyline;
     }
 }

@@ -28,7 +28,7 @@ public static class PolylineDecoderExtensions {
     /// <exception cref="ArgumentNullException">
     /// Thrown if <paramref name="decoder"/> is <see langword="null"/>.
     /// </exception>
-    public static IEnumerable<Coordinate> Decode(this IPolylineDecoder<Coordinate, Polyline> decoder, string polyline) {
+    public static IEnumerable<Coordinate> Decode(this IPolylineDecoder<Polyline, Coordinate> decoder, string polyline) {
         if (decoder is null) {
             throw new ArgumentNullException(nameof(decoder));
         }
@@ -51,7 +51,7 @@ public static class PolylineDecoderExtensions {
     /// <exception cref="ArgumentNullException">
     /// Thrown if <paramref name="decoder"/> is <see langword="null"/>.
     /// </exception>
-    public static IEnumerable<Coordinate> Decode(this IPolylineDecoder<Coordinate, Polyline> decoder, char[] polyline) {
+    public static IEnumerable<Coordinate> Decode(this IPolylineDecoder<Polyline, Coordinate> decoder, char[] polyline) {
         if (decoder is null) {
             throw new ArgumentNullException(nameof(decoder));
         }

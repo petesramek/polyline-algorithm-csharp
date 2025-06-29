@@ -16,13 +16,12 @@ public class PolylineTest {
     /// <summary>
     /// Provides test data for the string parameter tests.
     /// </summary>
-    public static IEnumerable<object[]> LengthParameters => new List<object[]> {
-        new object[] { 1 },
-        new object[] { 10 },
-        new object[] { 100 },
-        new object[] { 1_000 },
-        new object[] { 1_000_000 }
-    };
+    public static IEnumerable<object[]> LengthParameters => [
+        [1],
+        [10],
+        [100],
+        [1_000]
+    ];
 
     /// <summary>
     /// Tests the parameterless constructor of the <see cref="Polyline"/> class.
@@ -30,17 +29,15 @@ public class PolylineTest {
     [TestMethod]
     public void Constructor_Parameterless_Ok() {
         // Arrange
-        bool empty = true;
-        int length = 0;
-        ReadOnlyMemory<char> span = ReadOnlyMemory<char>.Empty;
+        int expectedLength = 0;
 
         // Act
         Polyline polyline = new();
 
         // Assert
-        Assert.AreEqual(empty, polyline.IsEmpty);
-        Assert.AreEqual(length, polyline.Length);
-        //Assert.IsTrue(span.Span.SequenceEqual(polyline.Span.Span));
+        Assert.AreEqual(expectedLength, polyline.Length);
+        Assert.IsTrue(polyline.IsEmpty);
+        Assert.IsTrue(polyline.Value.IsEmpty);
     }
 
     /// <summary>
@@ -69,12 +66,12 @@ public class PolylineTest {
         var value = RandomValueProvider.GetPolyline(length);
 
         // Act
-        Polyline result = Polyline.FromString(value.ToString());
+        Polyline result = Polyline.FromString(value);
 
         // Assert
         Assert.AreEqual(value.Length, result.Length);
         Assert.AreEqual(value.Length == 0, result.IsEmpty);
-        Assert.IsTrue(value.Equals(result));
+        Assert.AreEqual(value, result.ToString());
     }
 
     ///// <summary>

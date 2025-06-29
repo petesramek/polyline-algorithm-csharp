@@ -5,7 +5,9 @@
 
 namespace PolylineAlgorithm.Utility;
 
+using PolylineAlgorithm.Abstraction;
 using System;
+using System.Buffers;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +27,7 @@ internal static class RandomValueProvider {
     /// </summary>
     /// <param name="count">The number of coordinates to generate.</param>
     /// <returns>An enumerable collection of random <see cref="Coordinate"/> objects.</returns>
-    public static IEnumerable<Coordinate> GetCoordinates(int count) {
+    public static IEnumerable<(double Latitude, double Longitude)> GetCoordinates(int count) {
         var entry = GetCaheEntry(count);
 
         using var enumerator = entry.Coordinates.GetEnumerator();
@@ -41,7 +43,7 @@ internal static class RandomValueProvider {
     /// </summary>
     /// <param name="count">The number of coordinates to generate and encode.</param>
     /// <returns>A <see cref="Polyline"/> representing the encoded polyline.</returns>
-    public static Polyline GetPolyline(int count) {
+    public static string GetPolyline(int count) {
         var entry = GetCaheEntry(count);
 
         return entry.Polyline;
@@ -61,7 +63,7 @@ internal static class RandomValueProvider {
 
         var enumeration = Enumerable
                             .Range(0, count)
-                            .Select(i => new Coordinate(RandomLatitude(), RandomLongitude()))
+                            .Select(i => (RandomLatitude(), RandomLongitude()))
                             .ToList();
 
         entry = _cache.GetOrAdd(count, _ => new PolylineCoordinateCollectionPair(enumeration, _encoder.Encode(enumeration)));
@@ -90,15 +92,30 @@ internal static class RandomValueProvider {
     /// </summary>
     /// <param name="coordinates">The collection of coordinates.</param>
     /// <param name="polyline">The encoded polyline.</param>
-    private readonly struct PolylineCoordinateCollectionPair(IEnumerable<Coordinate> coordinates, Polyline polyline) {
+    private readonly struct PolylineCoordinateCollectionPair(IEnumerable<(double Latitude, double Longitude)> coordinates, string polyline) {
         /// <summary>
         /// Gets the collection of coordinates.
         /// </summary>
-        public IEnumerable<Coordinate> Coordinates { get; } = coordinates;
+        public IEnumerable<(double Latitude, double Longitude)> Coordinates { get; } = coordinates;
 
         /// <summary>
         /// Gets the encoded polyline.
         /// </summary>
-        public Polyline Polyline { get; } = polyline;
+        public string Polyline { get; } = polyline;
+    }
+
+    private class PolylineEncoder : PolylineEncoder<(double Latitude, double Longitude), string> {
+
+        protected override string CreatePolyline(ReadOnlyMemory<char> polyline) {
+            return polyline.ToString();
+        }
+
+        protected override double GetLatitude((double Latitude, double Longitude) current) {
+            return current.Latitude;
+        }
+
+        protected override double GetLongitude((double Latitude, double Longitude) current) {
+            return current.Longitude;
+        }
     }
 }

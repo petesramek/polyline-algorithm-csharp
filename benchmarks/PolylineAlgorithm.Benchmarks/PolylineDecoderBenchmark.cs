@@ -31,14 +31,14 @@ public class PolylineDecoderBenchmark {
     /// <summary>
     /// The polyline decoder instance.
     /// </summary>
-    public PolylineDecoder Decoder = new();
+    public CoordinateDecoder Decoder = new();
 
     /// <summary>
     /// Sets up the data for the benchmarks.
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        Polyline = RandomValueProvider.GetPolyline(Count);
+        Polyline = Polyline.FromString(RandomValueProvider.GetPolyline(Count));
     }
 
     /// <summary>

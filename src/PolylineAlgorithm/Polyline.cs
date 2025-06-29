@@ -19,27 +19,27 @@ using System.Text;
 [StructLayout(LayoutKind.Auto)]
 [DebuggerDisplay("Value: {ToString()}, IsEmpty: {IsEmpty}, Length: {Length}")]
 public readonly struct Polyline : IEquatable<Polyline> {
-    private readonly ReadOnlySequence<char> _value;
+    private readonly ReadOnlyMemory<char> _value;
 
     /// <summary>
     /// Initializes a new, empty instance of the <see cref="Polyline"/> struct.
     /// </summary>
     public Polyline() {
-        _value = ReadOnlySequence<char>.Empty;
+        _value = ReadOnlyMemory<char>.Empty;
     }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Polyline"/> struct with the specified character sequence.
     /// </summary>
     /// <param name="value">The read-only sequence of characters to initialize the polyline with.</param>
-    private Polyline(ReadOnlySequence<char> value) {
+    private Polyline(ReadOnlyMemory<char> value) {
         _value = value;
     }
 
     /// <summary>
     /// Gets the underlying read-only sequence of characters representing the polyline.
     /// </summary>
-    internal readonly ReadOnlySequence<char> Value => _value;
+    internal readonly ReadOnlyMemory<char> Value => _value;
 
     /// <summary>
     /// Gets a value indicating whether this <see cref="Polyline"/> is empty.
@@ -50,14 +50,6 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// Gets the length of the polyline in characters.
     /// </summary>
     public readonly long Length => Value.Length;
-
-    /// <summary>
-    /// Returns an enumerator for iterating through the segments of the polyline's character sequence.
-    /// </summary>
-    /// <returns>An enumerator for the polyline's character sequence.</returns>
-    public ReadOnlySequence<char>.Enumerator GetEnumerator() {
-        return _value.GetEnumerator();
-    }
 
     /// <summary>
     /// Copies the characters of this polyline to the specified destination array.
@@ -86,18 +78,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
             return string.Empty;
         }
 
-        if (Value.IsSingleSegment) {
-            return Value.FirstSpan.ToString();
-        }
-
-        var sb = Value.Length <= int.MaxValue ? new StringBuilder((int)Value.Length) : new StringBuilder();
-        var enumerator = Value.GetEnumerator();
-
-        while (enumerator.MoveNext() && !enumerator.Current.IsEmpty) {
-            sb.Append(enumerator.Current.Span);
-        }
-
-        return sb.ToString();
+        return Value.ToString() ?? string.Empty;
     }
 
     /// <summary>
@@ -110,20 +91,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
             return false;
         }
 
-        if (Value.IsSingleSegment && other.Value.IsSingleSegment) {
-            return Value.FirstSpan.SequenceEqual(other.Value.FirstSpan);
-        }
-
-        var enumerator = GetEnumerator();
-        var reader = new SequenceReader<char>(other.Value);
-
-        while (enumerator.MoveNext()) {
-            if (!reader.IsNext(enumerator.Current.Span, true)) {
-                return false;
-            }
-        }
-
-        return reader.Remaining == 0;
+        return Value.Span.SequenceEqual(other.Value.Span);
     }
 
     /// <inheritdoc />
@@ -196,16 +164,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
             return new();
         }
 
-        return FromSequence(new ReadOnlySequence<char>(polyline));
-    }
-
-    /// <summary>
-    /// Creates a <see cref="Polyline"/> from a read-only sequence of characters.
-    /// </summary>
-    /// <param name="value">A read-only sequence of characters representing an encoded polyline.</param>
-    /// <returns>The <see cref="Polyline"/> instance corresponding to the specified sequence.</returns>
-    internal static Polyline FromSequence(ReadOnlySequence<char> value) {
-        return new Polyline(value);
+        return new Polyline(polyline);
     }
 
     #endregion

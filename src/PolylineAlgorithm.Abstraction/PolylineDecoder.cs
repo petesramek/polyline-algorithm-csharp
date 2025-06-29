@@ -14,11 +14,18 @@ using System.Buffers;
 /// Decodes encoded polyline strings into sequences of geographic coordinates.
 /// Implements the <see cref="IPolylineDecoder{TCoordinate, TPolyline}"/> interface.
 /// </summary>
-public abstract class PolylineDecoder<TCoordinate, TPolyline> : IPolylineDecoder<TCoordinate, TPolyline> {
+public abstract class PolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder<TPolyline, TCoordinate> {
+    public PolylineDecoder()
+        : this(new PolylineEncodingOptions()) { }
+
+    public PolylineDecoder(PolylineEncodingOptions options) {
+        Options = options ?? throw new ArgumentNullException(nameof(options));
+    }
+
     /// <summary>
     /// Gets the encoding options used by this polyline encoder.
     /// </summary>
-    public abstract PolylineEncodingOptions<TCoordinate> Options { get; }
+    public PolylineEncodingOptions Options { get; }
 
     /// <summary>
     /// Decodes an encoded <typeparamref name="TPolyline"/> into a sequence of <typeparamref name="TCoordinate"/> instances.
@@ -40,43 +47,28 @@ public abstract class PolylineDecoder<TCoordinate, TPolyline> : IPolylineDecoder
             throw new ArgumentNullException(nameof(polyline));
         }
 
-        ReadOnlySequence<char> source = GetReadOnlySequence(polyline);
+        ReadOnlyMemory<char> sequence = GetReadOnlyMemory(polyline);
 
-        if (source.Length < Defaults.Polyline.MinEncodedCoordinateLength) {
-            throw new ArgumentException(string.Format(ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage, source.Length), nameof(polyline));
+        if (sequence.Length < Defaults.Polyline.MinEncodedCoordinateLength) {
+            throw new ArgumentException(string.Format(ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage, sequence.Length), nameof(polyline));
         }
 
-        ReadOnlySequence<char>.Enumerator enumerator = source.GetEnumerator();
-
-        int consumed = 0;
+        int position = 0;
         int latitude = 0;
         int longitude = 0;
-        (double Latitude, double Longitude) coordinate;
 
-        int position;
-        ReadOnlyMemory<char> sequence;
+        while (true) {
+            if(sequence.Length == position) {
+                break; // End of the polyline string
+            }
 
-        while (enumerator.MoveNext()) {
-            position = 0;
-            sequence = enumerator.Current;
-
-            while (PolylineEncoding.TryReadValue(ref latitude, ref sequence, ref position)
-                && PolylineEncoding.TryReadValue(ref longitude, ref sequence, ref position)
+            if(!PolylineEncoding.TryReadValue(ref latitude, ref sequence, ref position)
+                || !PolylineEncoding.TryReadValue(ref longitude, ref sequence, ref position)
             ) {
-                coordinate = (PolylineEncoding.Denormalize(latitude), PolylineEncoding.Denormalize(longitude));
-
-                if(!Options.Validator.IsValidLatitude(coordinate.Latitude) && !Options.Validator.IsValidLongitude(coordinate.Longitude)) {
-                    throw new Exception();
-                }
-
-                yield return CreateCoordinate(PolylineEncoding.Denormalize(latitude), PolylineEncoding.Denormalize(longitude));
+                InvalidPolylineException.Throw(position);
             }
 
-            consumed += position;
-
-            if (sequence.Length != position) {
-                InvalidPolylineException.Throw(consumed);
-            }
+            yield return CreateCoordinate(PolylineEncoding.Denormalize(latitude), PolylineEncoding.Denormalize(longitude));
         }
     }
 
@@ -89,7 +81,7 @@ public abstract class PolylineDecoder<TCoordinate, TPolyline> : IPolylineDecoder
     /// <returns>
     /// A <see cref="ReadOnlySequence{T}"/> representing the encoded polyline data.
     /// </returns>
-    protected abstract ReadOnlySequence<char> GetReadOnlySequence(TPolyline? polyline);
+    protected abstract ReadOnlyMemory<char> GetReadOnlyMemory(TPolyline? polyline);
 
     /// <summary>
     /// Creates a coordinate instance from the given latitude and longitude values.

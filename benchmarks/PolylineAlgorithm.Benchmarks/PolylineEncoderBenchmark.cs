@@ -33,14 +33,14 @@ public class PolylineEncoderBenchmark {
     /// <summary>
     /// The polyline encoder instance.
     /// </summary>
-    public PolylineEncoder Encoder = new();
+    public CoordinateEncoder Encoder = new();
 
     /// <summary>
     /// Sets up the data for the benchmarks.
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        Enumeration = RandomValueProvider.GetCoordinates(Count);
+        Enumeration = RandomValueProvider.GetCoordinates(Count).Select(c => new Coordinate(c.Latitude, c.Longitude));
         List = [.. Enumeration];
     }
 

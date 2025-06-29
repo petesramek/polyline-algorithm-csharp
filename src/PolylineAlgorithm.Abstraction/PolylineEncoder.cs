@@ -18,10 +18,17 @@ using System.Runtime.CompilerServices;
 /// Implements the <see cref="IPolylineEncoder{TCoordinate, TPolyline}"/> interface.
 /// </summary>
 public abstract class PolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder<TCoordinate, TPolyline> {
+    public PolylineEncoder()
+        : this(new PolylineEncodingOptions()) { }
+
+    public PolylineEncoder(PolylineEncodingOptions options) {
+        Options = options ?? throw new ArgumentNullException(nameof(options));
+    }
+
     /// <summary>
     /// Gets the encoding options used by this polyline encoder.
     /// </summary>
-    public abstract PolylineEncodingOptions<TCoordinate> Options { get; }
+    public PolylineEncodingOptions Options { get; }
 
     /// <summary>
     /// Encodes a collection of <typeparamref name="TCoordinate"/> instances into an encoded <typeparamref name="TPolyline"/> string.
@@ -54,11 +61,7 @@ public abstract class PolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder
 
         int position = 0;
         int consumed = 0;
-        int length = count * Defaults.Polyline.MaxEncodedCoordinateLength;
-
-        if (length > Options.BufferSize / sizeof(char)) {
-            length = Options.BufferSize / sizeof(char);
-        }
+        int length = GetBufferLength(count);
 
         Span<char> buffer = stackalloc char[length];
 
@@ -81,12 +84,12 @@ public abstract class PolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder
             consumed++;
         }
 
-        return CreatePolyline(new(buffer[..position].ToString().AsMemory()));
+        return CreatePolyline(buffer[..position].ToString().AsMemory());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int GetCount(IEnumerable coordinates) => coordinates switch {
+        static int GetCount(IEnumerable<TCoordinate> coordinates) => coordinates switch {
             ICollection collection => collection.Count,
-            _ => -1,
+            _ => coordinates.Count(),
         };
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -95,6 +98,17 @@ public abstract class PolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static int GetRemainingBufferSize(int position, int length) => length - position;
+
+        int GetBufferLength(int count) {
+            int maxBufferLength = Options.BufferSize / sizeof(char);
+            int? requestedBufferLength = count * Defaults.Polyline.MaxEncodedCoordinateLength;
+
+            if (requestedBufferLength is null || requestedBufferLength > maxBufferLength) {
+                return maxBufferLength;
+            }
+
+            return requestedBufferLength.Value;
+        }
     }
 
     /// <summary>
@@ -105,7 +119,7 @@ public abstract class PolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder
     /// An instance of <typeparamref name="TPolyline"/> representing the encoded polyline.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected abstract TPolyline CreatePolyline(ReadOnlySequence<char> polyline);
+    protected abstract TPolyline CreatePolyline(ReadOnlyMemory<char> polyline);
 
     /// <summary>
     /// Extracts the longitude value from the specified coordinate.

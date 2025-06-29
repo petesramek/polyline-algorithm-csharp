@@ -3,20 +3,17 @@
 using global::NetTopologySuite.Geometries;
 using PolylineAlgorithm.Abstraction;
 using System;
-using System.Buffers;
 
-internal class NetTopologyPolylineDecoder : PolylineDecoder<Point, string> {
-    public override PolylineEncodingOptions<Point> Options { get; } = new PolylineEncodingOptions<Point>();
-
+internal class NetTopologyPolylineDecoder : PolylineDecoder<string, Point> {
     protected override Point CreateCoordinate(double latitude, double longitude) {
         return new Point(latitude, longitude);
     }
 
-    protected override ReadOnlySequence<char> GetReadOnlySequence(string? polyline) {
+    protected override ReadOnlyMemory<char> GetReadOnlyMemory(string? polyline) {
         if (string.IsNullOrWhiteSpace(polyline)) {
             throw new ArgumentException("Value cannot be null, empty or whitespace.", nameof(polyline));
         }
 
-        return new(polyline.AsMemory());
+        return polyline.AsMemory();
     }
 }

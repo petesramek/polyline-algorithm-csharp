@@ -6,7 +6,6 @@
 namespace PolylineAlgorithm.Tests;
 
 using PolylineAlgorithm;
-using PolylineAlgorithm.Extensions;
 using PolylineAlgorithm.Utility;
 
 /// <summary>
@@ -19,7 +18,7 @@ public class PolylineDecoderTest {
     /// <summary>
     /// The instance of the <see cref="PolylineDecoder"/> used for testing.
     /// </summary>
-    public PolylineDecoder Decoder = new();
+    public CoordinateDecoder Decoder = new();
 
     /// <summary>
     /// Tests the <see cref="PolylineDecoder.Decode(ref readonly Polyline)"/> method with an empty input, expecting an <see cref="ArgumentException"/>.
@@ -30,7 +29,7 @@ public class PolylineDecoderTest {
         string empty = String.Empty;
 
         // Act
-        void Execute(string value) => Decoder.Decode(value).ToList();
+        void Execute(string value) => Decoder.Decode(Polyline.FromString(value)).ToList();
 
         // Assert
         Assert.ThrowsExactly<ArgumentException>(() => Execute(empty));
@@ -42,13 +41,13 @@ public class PolylineDecoderTest {
     //[TestMethod]
     //public void Decode_Invalid_Input_ThrowsException() {
     //    // Arrange
-    //    Polyline value = Polyline.FromString(Values.Polyline.Invalid);
+    //    Polyline value = Polyline.FromString(StaticValueProvider.GetPolyline());
 
     //    // Act
     //    void Execute(Polyline value) => Decoder.Decode(value).ToList();
 
     //    // Assert
-    //    var exception = Assert.ThrowsExactly<InvalidCoordinateException>(() => Execute(value));
+    //    var exception = Assert.ThrowsExactly<InvalidPolylineException>(() => Execute(value));
     //}
 
     /// <summary>
@@ -59,8 +58,8 @@ public class PolylineDecoderTest {
     [DynamicData(nameof(CoordinateCount))]
     public void Random_Value_Decode_Valid_Input_Ok(int count) {
         // Arrange
-        IEnumerable<Coordinate> expected = RandomValueProvider.GetCoordinates(count);
-        Polyline value = RandomValueProvider.GetPolyline(count);
+        IEnumerable<Coordinate> expected = RandomValueProvider.GetCoordinates(count).Select(c => new Coordinate(c.Latitude, c.Longitude));
+        Polyline value = Polyline.FromString(RandomValueProvider.GetPolyline(count));
 
         // Act
         var result = Decoder.Decode(value);
@@ -72,11 +71,11 @@ public class PolylineDecoderTest {
     [TestMethod]
     public void Static_Value_Decode_Valid_Input_Ok() {
         // Arrange
-        IEnumerable<Coordinate> expected = StaticValueProvider.GetCoordinates();
-        Polyline value = StaticValueProvider.GetPolyline();
+        IEnumerable<Coordinate> expected = StaticValueProvider.GetCoordinates().Select(c => new Coordinate(c.Latitude, c.Longitude));
+        string value = StaticValueProvider.GetPolyline();
 
         // Act
-        var result = Decoder.Decode(value);
+        var result = Decoder.Decode(Polyline.FromString(value));
 
         // Assert
         CollectionAssert.AreEqual(expected.ToArray(), result.ToArray());
