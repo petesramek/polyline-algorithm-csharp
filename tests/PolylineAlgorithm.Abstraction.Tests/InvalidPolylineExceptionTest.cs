@@ -19,13 +19,11 @@ public class InvalidPolylineExceptionTest {
     public void Throw_Method_Invalid_Coordinate_Parameter_PolylineMalformedException_Throw() {
         // Arrange
         var position = Random.Shared.Next();
-
-        // Act
         static void ThrowAt(int position) => InvalidPolylineException.Throw(position);
 
-        // Assert
+        // Act && Assert
         var exception = Assert.ThrowsExactly<InvalidPolylineException>(() => ThrowAt(position));
-
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
+        Assert.IsTrue(exception.Message.Contains(position.ToString()));
     }
 }
