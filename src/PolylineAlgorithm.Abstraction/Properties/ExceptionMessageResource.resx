@@ -135,4 +135,10 @@
   <data name="PolylineCannotBeShorterThanExceptionMessage" xml:space="preserve">
     <value>Argument cannot be shorten than 2 characters. Actual length: {0}.</value>
   </data>
+  <data name="ArgumentValueMustBeFiniteNumber" xml:space="preserve">
+    <value>Value must be a finite number.</value>
+  </data>
+  <data name="ArgumentIsOutOfRangeForSpecifiedType" xml:space="preserve">
+    <value>Value is out of range for the specified type {0}.</value>
+  </data>
 </root>

@@ -70,11 +70,29 @@ namespace PolylineAlgorithm.Abstraction.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Value is out of range for the specified type {0}..
+        /// </summary>
+        internal static string ArgumentIsOutOfRangeForSpecifiedType {
+            get {
+                return ResourceManager.GetString("ArgumentIsOutOfRangeForSpecifiedType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Argument {0} cannot be greater or equal than {1}..
         /// </summary>
         internal static string ArgumentMinCannotBeGreaterOfEqualThanMaxArgumentMessageFormat {
             get {
                 return ResourceManager.GetString("ArgumentMinCannotBeGreaterOfEqualThanMaxArgumentMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value must be a finite number..
+        /// </summary>
+        internal static string ArgumentValueMustBeFiniteNumber {
+            get {
+                return ResourceManager.GetString("ArgumentValueMustBeFiniteNumber", resourceCulture);
             }
         }
         
