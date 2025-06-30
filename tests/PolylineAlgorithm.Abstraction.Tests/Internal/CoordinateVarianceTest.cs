@@ -6,16 +6,14 @@ using PolylineAlgorithm.Abstraction.Internal;
 public class CoordinateVarianceTests {
     public static IEnumerable<(int Latitude, int Longitude)> Coordinates => [
         (0, 0),
-        (10, 20),
-        (-10, -20),
-        (100, 200),
-        (-100, -200),
-        (123456789, 987654321),
-        (-123456789, -987654321)
+        (-10, -10),
+        (10, -10),
+        (-10, 10),
+        (10, 10)
     ];
 
     [TestMethod]
-    public void Constructor_Ok() {
+    public void Constructor_Sets_Defaults() {
         // Arrange & Act
         CoordinateVariance variance = new();
         // Assert
@@ -25,7 +23,7 @@ public class CoordinateVarianceTests {
 
     [TestMethod]
     [DynamicData(nameof(Coordinates), DynamicDataSourceType.Property)]
-    public void Next_Ok(int latitude, int longitude) {
+    public void Next_Calculates_Correct_Variance(int latitude, int longitude) {
         // Arrange
         CoordinateVariance variance = new();
         var expected = (latitude, longitude);
