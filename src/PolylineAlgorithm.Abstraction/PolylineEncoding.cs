@@ -6,6 +6,7 @@
 namespace PolylineAlgorithm.Abstraction;
 
 using PolylineAlgorithm.Abstraction.Internal;
+using PolylineAlgorithm.Abstraction.Properties;
 using System;
 using System.Runtime.CompilerServices;
 
@@ -70,7 +71,7 @@ public static class PolylineEncoding {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static double Denormalize(int value, ValueType type) {
         if (!ValidateNormalizedValue(value, type)) {
-            throw new ArgumentOutOfRangeException(nameof(value), value, "Value is out of range for the specified type.");
+            throw new ArgumentOutOfRangeException(nameof(value), value, string.Format(ExceptionMessageResource.ArgumentIsOutOfRangeForSpecifiedType, type.ToString().ToLowerInvariant()));
         }
 
         if (value == 0) {
@@ -164,11 +165,11 @@ public static class PolylineEncoding {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Normalize(double value, ValueType type) {
         if (double.IsNaN(value) || double.IsInfinity(value)) {
-            throw new ArgumentOutOfRangeException(nameof(value), "Value must be a finite number.");
+            throw new ArgumentOutOfRangeException(nameof(value), ExceptionMessageResource.ArgumentValueMustBeFiniteNumber);
         }
 
         if (!ValidateDenormalizedValue(value, type)) {
-            throw new ArgumentOutOfRangeException(nameof(value), value, "Value is out of range for the specified type.");
+            throw new ArgumentOutOfRangeException(nameof(value), value, string.Format(ExceptionMessageResource.ArgumentIsOutOfRangeForSpecifiedType, type.ToString().ToLowerInvariant()));
         }
 
         if (value == 0.0) {
