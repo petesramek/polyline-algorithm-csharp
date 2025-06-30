@@ -6,6 +6,8 @@ using System.Collections.Generic;
 
 [TestClass]
 public class PolylineEncodingTests {
+    #region Dynamic Data Properties
+
     public static IEnumerable<(int variance, string polyline)> VariancePolylinePairs => [
         (0,"?"),
         (1,"A"),
@@ -71,9 +73,37 @@ public class PolylineEncodingTests {
         (int.MaxValue,PolylineEncoding.ValueType.Longitude),
     ];
 
+    public static IEnumerable<(int variance, int charCount)> VarianceCharCountPairs => [
+        (0, 1),
+        (15, 1),
+        (-16, 1),
+        (16, 2),
+        (-17,2),
+        (511,2),
+        (-512,2),
+        (512,3),
+        (-513,3),
+        (16383,3),
+        (-16384,3),
+        (16384,4),
+        (-16385,4),
+        (524287,4),
+        (-524288,4),
+        (524288,5),
+        (-524289,5),
+        (16777215,5),
+        (-16777216,5),
+        (16777216,6),
+        (-16777217,6),
+        (int.MaxValue,6),
+        (int.MinValue,6),
+    ];
+
+    #endregion
+
     [TestMethod]
     [DynamicData(nameof(DenormalizedNormalizedPairs), DynamicDataSourceType.Property)]
-    public void Normalize_Ok(double denormalized, int expected, PolylineEncoding.ValueType type) {
+    public void Normalize_Equals_Expected(double denormalized, int expected, PolylineEncoding.ValueType type) {
         // Arrange & Act
         int result = PolylineEncoding.Normalize(denormalized, type);
 
@@ -84,7 +114,7 @@ public class PolylineEncodingTests {
 
     [TestMethod]
     [DynamicData(nameof(DenormalizedNormalizedPairs), DynamicDataSourceType.Property)]
-    public void Denormalize_Ok(double expected, int normalized, PolylineEncoding.ValueType type) {
+    public void Denormalize_Equals_Expected(double expected, int normalized, PolylineEncoding.ValueType type) {
         // Arrange & Act
         double result = PolylineEncoding.Denormalize(normalized, type);
 
@@ -94,7 +124,7 @@ public class PolylineEncodingTests {
 
     [TestMethod]
     [DynamicData(nameof(VariancePolylinePairs), DynamicDataSourceType.Property)]
-    public void TryWriteValue_Ok(int variance, string expected) {
+    public void TryWriteValue_StaticBuffer_Returns_True_Equals_Expected(int variance, string expected) {
         // Arrange
         int position = 0;
         Span<char> buffer = stackalloc char[6];
@@ -106,6 +136,40 @@ public class PolylineEncodingTests {
         Assert.IsTrue(result);
         Assert.AreEqual(expected.Length, position);
         Assert.AreEqual(expected, buffer[..position].ToString());
+    }
+
+
+    [TestMethod]
+    [DynamicData(nameof(VariancePolylinePairs), DynamicDataSourceType.Property)]
+    public void TryWriteValue_DynamicBuffer_Returns_True_Equals_Expected(int variance, string expected) {
+        // Arrange
+        int position = 0;
+        int required = PolylineEncoding.GetCharCount(variance);
+        Span<char> buffer = stackalloc char[required];
+
+        // Act
+        bool result = PolylineEncoding.TryWriteValue(variance, ref buffer, ref position);
+
+        // Assert
+        Assert.IsTrue(result);
+        Assert.AreEqual(required, position);
+        Assert.AreEqual(expected.Length, position);
+        Assert.AreEqual(expected, buffer[..position].ToString());
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(VariancePolylinePairs), DynamicDataSourceType.Property)]
+    public void TryWriteValue_BufferTooSmall_Returns_False(int variance, string _) {
+        // Arrange
+        int position = 0;
+        int required = PolylineEncoding.GetCharCount(variance);
+        Span<char> buffer = stackalloc char[required - 1];
+
+        // Act
+        bool result = PolylineEncoding.TryWriteValue(variance, ref buffer, ref position);
+
+        // Assert
+        Assert.IsFalse(result);
     }
 
     [TestMethod]
@@ -126,38 +190,7 @@ public class PolylineEncodingTests {
     }
 
     [TestMethod]
-    [DynamicData(nameof(VariancePolylinePairs), DynamicDataSourceType.Property)]
-    public void TryWriteValue_BufferExactlyRightSize_Ok(int variance, string _) {
-        // Arrange
-        int position = 0;
-        int required = PolylineEncoding.GetCharCount(variance);
-        Span<char> buffer = stackalloc char[required];
-
-        // Act
-        bool result = PolylineEncoding.TryWriteValue(variance, ref buffer, ref position);
-
-        // Assert
-        Assert.IsTrue(result);
-        Assert.AreEqual(required, position);
-    }
-
-    [TestMethod]
-    [DynamicData(nameof(VariancePolylinePairs), DynamicDataSourceType.Property)]
-    public void TryWriteValue_BufferTooSmall_ReturnsFalse(int variance, string _) {
-        // Arrange
-        int position = 0;
-        int required = PolylineEncoding.GetCharCount(variance);
-        Span<char> buffer = stackalloc char[required - 1];
-
-        // Act
-        bool result = PolylineEncoding.TryWriteValue(variance, ref buffer, ref position);
-
-        // Assert
-        Assert.IsFalse(result);
-    }
-
-    [TestMethod]
-    public void TryReadValue_EmptyBuffer_ReturnsFalse() {
+    public void TryReadValue_EmptyBuffer_Returns_False() {
         // Arrange
         int variance = 0;
         int position = 0;
@@ -171,7 +204,7 @@ public class PolylineEncodingTests {
     }
 
     [TestMethod]
-    public void TryReadValue_MalformedBuffer_ReturnsFalseAndDoesNotChangeVariance() {
+    public void TryReadValue_MalformedBuffer_Returns_False() {
         //Arrange
         int position = 0;
         int variance = 42;
@@ -193,9 +226,10 @@ public class PolylineEncodingTests {
     public void Normalize_Throws_ArgumentOutOfRangeException(double value, PolylineEncoding.ValueType type) {
         // Arrange
         static int Normalize(double value, PolylineEncoding.ValueType type) => PolylineEncoding.Normalize(value, type);
-       
+
         // Act & Assert
-        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => Normalize(value, type));
+        var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => Normalize(value, type));
+        Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 
     [TestMethod]
@@ -205,33 +239,17 @@ public class PolylineEncodingTests {
         static double Denormalize(int value, PolylineEncoding.ValueType type) => PolylineEncoding.Denormalize(value, type);
 
         // Act & Assert
-        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => Denormalize(value, type));
+        var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => Denormalize(value, type));
+        Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 
     [TestMethod]
-    public void GetCharCount_Covers_All_Cases() {
-        Assert.AreEqual(1, PolylineEncoding.GetCharCount(0));
-        Assert.AreEqual(1, PolylineEncoding.GetCharCount(15));
-        Assert.AreEqual(1, PolylineEncoding.GetCharCount(-16));
-        Assert.AreEqual(2, PolylineEncoding.GetCharCount(16));
-        Assert.AreEqual(2, PolylineEncoding.GetCharCount(-17));
-        Assert.AreEqual(2, PolylineEncoding.GetCharCount(511));
-        Assert.AreEqual(2, PolylineEncoding.GetCharCount(-512));
-        Assert.AreEqual(3, PolylineEncoding.GetCharCount(512));
-        Assert.AreEqual(3, PolylineEncoding.GetCharCount(-513));
-        Assert.AreEqual(3, PolylineEncoding.GetCharCount(16383));
-        Assert.AreEqual(3, PolylineEncoding.GetCharCount(-16384));
-        Assert.AreEqual(4, PolylineEncoding.GetCharCount(16384));
-        Assert.AreEqual(4, PolylineEncoding.GetCharCount(-16385));
-        Assert.AreEqual(4, PolylineEncoding.GetCharCount(524287));
-        Assert.AreEqual(4, PolylineEncoding.GetCharCount(-524288));
-        Assert.AreEqual(5, PolylineEncoding.GetCharCount(524288));
-        Assert.AreEqual(5, PolylineEncoding.GetCharCount(-524289));
-        Assert.AreEqual(5, PolylineEncoding.GetCharCount(16777215));
-        Assert.AreEqual(5, PolylineEncoding.GetCharCount(-16777216));
-        Assert.AreEqual(6, PolylineEncoding.GetCharCount(16777216));
-        Assert.AreEqual(6, PolylineEncoding.GetCharCount(-16777217));
-        Assert.AreEqual(6, PolylineEncoding.GetCharCount(int.MaxValue));
-        Assert.AreEqual(6, PolylineEncoding.GetCharCount(int.MinValue));
+    [DynamicData(nameof(VarianceCharCountPairs), DynamicDataSourceType.Property)]
+    public void GetCharCount_Equals_Expected(int variance, int expected) {
+        // Arrange & Act
+        var charCount = PolylineEncoding.GetCharCount(variance);
+
+        // Assert
+        Assert.AreEqual(expected, charCount);
     }
 }
