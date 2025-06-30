@@ -42,6 +42,66 @@ internal static class Defaults {
         public const byte UnitSeparator = 31;
     }
 
+    public static class Coordinate {
+        /// <summary>
+        /// Provides constants representing latitude values, including the default, minimum, and maximum valid values.
+        /// </summary>
+        /// <remarks>Latitude values are measured in degrees and represent the angular distance north or
+        /// south of the equator. The <see cref="Default"/> constant represents the equator, while <see cref="Min"/> and
+        /// <see cref="Max"/>  define the valid range of latitude values, corresponding to the poles.</remarks>
+        public static class Latitude {
+            /// <summary>
+            /// The default value for latitude, representing the equator.
+            /// </summary>
+            public const double Default = 0.0;
+            /// <summary>
+            /// The minimum valid latitude value.
+            /// </summary>
+            public const double Min = -90.0;
+            /// <summary>
+            /// The maximum valid latitude value.
+            /// </summary>
+            public const double Max = 90.0;
+
+            public static class Normalized {
+                /// <summary>
+                /// The minimum normalized latitude value.
+                /// </summary>
+                public const int Min = (int)(Latitude.Min * Algorithm.Precision);
+                /// <summary>
+                /// The maximum normalized latitude value.
+                /// </summary>
+                public const int Max = (int)(Latitude.Max * Algorithm.Precision);
+            }
+        }
+
+        public static class Longitude {
+            /// <summary>
+            /// The default value for longitude, representing the equator.
+            /// </summary>
+            public const double Default = 0.0;
+            /// <summary>
+            /// The minimum valid longitude value.
+            /// </summary>
+            public const double Min = -180.0;
+            /// <summary>
+            /// The maximum valid longitude value.
+            /// </summary>
+            public const double Max = 180.0;
+
+            public static class Normalized {
+                /// <summary>
+                /// The minimum normalized latitude value.
+                /// </summary>
+                public const int Min = (int)(Longitude.Min * Algorithm.Precision);
+                /// <summary>
+                /// The maximum normalized latitude value.
+                /// </summary>
+                public const int Max = (int)(Longitude.Max * Algorithm.Precision);
+            }
+        }
+    }
+
     /// <summary>
     /// Contains default values and constants related to polyline encoding.
     /// </summary>
