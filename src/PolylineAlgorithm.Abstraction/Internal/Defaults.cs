@@ -53,15 +53,15 @@ internal static class Defaults {
             /// <summary>
             /// The default value for latitude, representing the equator.
             /// </summary>
-            public const double Default = 0.0;
+            public const double Default = 0.00000;
             /// <summary>
             /// The minimum valid latitude value.
             /// </summary>
-            public const double Min = -90.0;
+            public const double Min = -90.00000;
             /// <summary>
             /// The maximum valid latitude value.
             /// </summary>
-            public const double Max = 90.0;
+            public const double Max = 90.00000;
 
             public static class Normalized {
                 /// <summary>
@@ -79,15 +79,15 @@ internal static class Defaults {
             /// <summary>
             /// The default value for longitude, representing the equator.
             /// </summary>
-            public const double Default = 0.0;
+            public const double Default = 0.00000;
             /// <summary>
             /// The minimum valid longitude value.
             /// </summary>
-            public const double Min = -180.0;
+            public const double Min = -180.00000;
             /// <summary>
             /// The maximum valid longitude value.
             /// </summary>
-            public const double Max = 180.0;
+            public const double Max = 180.00000;
 
             public static class Normalized {
                 /// <summary>
