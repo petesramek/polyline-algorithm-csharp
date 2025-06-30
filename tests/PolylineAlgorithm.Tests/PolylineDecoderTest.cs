@@ -24,12 +24,12 @@ public class PolylineDecoderTest {
     /// Tests the <see cref="PolylineDecoder.Decode(ref readonly Polyline)"/> method with an empty input, expecting an <see cref="ArgumentException"/>.
     /// </summary>
     [TestMethod]
-    public void Decode_Empty_Input_ThrowsException() {
+    public void Decode_Default_Polyline_Throws_ArgumentException() {
         // Arrange
-        string empty = String.Empty;
+        Polyline empty = new();
 
         // Act
-        void Execute(string value) => Decoder.Decode(Polyline.FromString(value)).ToList();
+        void Execute(Polyline value) => Decoder.Decode(value).ToList();
 
         // Assert
         Assert.ThrowsExactly<ArgumentException>(() => Execute(empty));

@@ -5,6 +5,9 @@
 
 namespace PolylineAlgorithm.Abstraction;
 
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+
 /// <summary>
 /// Options for configuring polyline encoding.
 /// </summary>
@@ -16,4 +19,8 @@ public sealed class PolylineEncodingOptions {
     public int BufferSize { get; internal set; } = 64_000;
 
     public int MaxLength => BufferSize / sizeof(char);
+
+    public ILoggerFactory LoggerFactory { get; internal set; } = NullLoggerFactory.Instance;
+
+    public ILogger UseLoggerFor<T>() => LoggerFactory.CreateLogger<T>();
 }

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 
 [TestClass]
-public class PolylineEncodingTests {
+public class PolylineEncodingTest {
     #region Dynamic Data Properties
 
     public static IEnumerable<(int variance, string polyline)> VariancePolylinePairs => [

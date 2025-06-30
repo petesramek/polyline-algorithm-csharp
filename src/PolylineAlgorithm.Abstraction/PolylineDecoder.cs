@@ -50,6 +50,10 @@ public abstract class PolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder
         ReadOnlyMemory<char> sequence = GetReadOnlyMemory(polyline);
 
         if (sequence.Length < Defaults.Polyline.MinEncodedCoordinateLength) {
+            Options
+                .UseLoggerFor<PolylineDecoder<TPolyline, TCoordinate>>()
+                .LogPolylineCannotBeShorterThanError(nameof(sequence), sequence.Length, Defaults.Polyline.MinEncodedCoordinateLength);
+
             throw new ArgumentException(string.Format(ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage, sequence.Length), nameof(polyline));
         }
 
