@@ -68,7 +68,7 @@ public abstract class PolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder
                 InvalidPolylineException.Throw(position);
             }
 
-            yield return CreateCoordinate(PolylineEncoding.Denormalize(latitude), PolylineEncoding.Denormalize(longitude));
+            yield return CreateCoordinate(PolylineEncoding.Denormalize(latitude, PolylineEncoding.ValueType.Latitude), PolylineEncoding.Denormalize(longitude, PolylineEncoding.ValueType.Longitude));
         }
     }
 

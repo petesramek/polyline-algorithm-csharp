@@ -69,7 +69,7 @@ public abstract class PolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder
 
         while (enumerator.MoveNext()) {
             variance
-                .Next(PolylineEncoding.Normalize(GetLatitude(enumerator.Current)), PolylineEncoding.Normalize(GetLongitude(enumerator.Current)));
+                .Next(PolylineEncoding.Normalize(GetLatitude(enumerator.Current), PolylineEncoding.ValueType.Latitude), PolylineEncoding.Normalize(GetLongitude(enumerator.Current), PolylineEncoding.ValueType.Longitude));
 
             if (GetRemainingBufferSize(position, buffer.Length) < GetRequiredLength(variance)) {
                 throw new InternalBufferOverflowException();
