@@ -22,13 +22,13 @@ internal static class StaticValueProvider {
         /// </summary>
         private static readonly IEnumerable<(double Latitude, double Longitude)> _coordinates = [
             new (0, 0),
-        new (0, 180),
-        new (90, 180),
-        new (90, 0),
-        new (90, -180),
-        new (0, -180),
-        new (-90, -180),
-        new (-90, 0)
+            new (0, 180),
+            new (90, 180),
+            new (90, 0),
+            new (90, -180),
+            new (0, -180),
+            new (-90, -180),
+            new (-90, 0)
         ];
 
         /// <summary>
@@ -52,5 +52,23 @@ internal static class StaticValueProvider {
         //public static string GetMalformedPolyline() {
         //    return ((char)(127)).ToString();
         //}
+
+        public static IEnumerable<(double, double)> GetNotANumberAndInfinityCoordinates() {
+            yield return (double.NaN, 0);
+            yield return (0, double.NaN);
+            yield return (double.PositiveInfinity, 0);
+            yield return (0, double.PositiveInfinity);
+            yield return (double.NegativeInfinity, 0);
+            yield return (0, double.NegativeInfinity);
+        }
+
+        public static IEnumerable<(double, double)> GetMinAndMaxCoordinates() {
+            yield return (double.MinValue, 0);
+            yield return (0, double.MinValue);
+            yield return (double.MaxValue, 0);
+            yield return (0, double.MaxValue);
+            yield return (double.MinValue, double.MinValue);
+            yield return (double.MaxValue, double.MaxValue);
+        }
     }
 }
