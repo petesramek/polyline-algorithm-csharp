@@ -1,6 +1,7 @@
 ﻿namespace PolylineAlgorithm.Abstraction.Tests.Internal;
 
 using PolylineAlgorithm.Abstraction.Internal;
+using static PolylineAlgorithm.Abstraction.Internal.Defaults.Coordinate;
 
 [TestClass]
 public class CoordinateVarianceTests {
@@ -10,6 +11,27 @@ public class CoordinateVarianceTests {
         (10, -10),
         (-10, 10),
         (10, 10)
+    ];
+
+    public static IEnumerable<((int Latitude, int Longitude) Initial, (int Latitude, int Longitude) Next, (int Latitude, int Longitude) Result)> Variances => [
+        ((10, 10), (-20, -20), (-30, -30)),
+        ((-10, -10), (20, 20), (30, 30)),
+        ((0, 10), (10, -10), (10, -20)),
+        ((0, -10), (10, 10), (10, 20)),
+        ((10, 0), (10, -10), (0, -10)),
+        ((-10, 0), (10, 10), (20, 10)),
+        ((10, -10), (-10, 10), (-20, 20)),
+        ((-10, 10), (10, 10), (20, 0)),
+        ((10, 10), (10, 0), (0, -10)),
+        ((-10, -10), (-10, 0), (0, 10)),
+        ((10, 10), (0, 0), (-10, -10)),
+        ((-10, -10), (0, 0), (10, 10)),
+        ((10, -10), (0, 0), (-10, 10)),
+        ((-10, 10), (0, 0), (10, -10)),
+        ((0, 10), (0, 0), (0, -10)),
+        ((0, -10), (0, 0), (0, 10)),
+        ((10, 0), (0, 0), (-10, 0)),
+        ((-10, 0), (0, 0), (10, 0))
     ];
 
     [TestMethod]
@@ -23,7 +45,7 @@ public class CoordinateVarianceTests {
 
     [TestMethod]
     [DynamicData(nameof(Coordinates), DynamicDataSourceType.Property)]
-    public void Next_Calculates_Correct_Variance(int latitude, int longitude) {
+    public void Next_Calculates_Correct_Variance_From_Default_Variance(int latitude, int longitude) {
         // Arrange
         CoordinateVariance variance = new();
         var expected = (latitude, longitude);
@@ -34,5 +56,20 @@ public class CoordinateVarianceTests {
         // Assert
         Assert.AreEqual(expected.latitude, variance.Latitude);
         Assert.AreEqual(expected.longitude, variance.Longitude);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(Variances), DynamicDataSourceType.Property)]
+    public void Next_Calculates_Correct_Variance_From_Previous_Variance((int Latitude, int Longitude) initial, (int Latitude, int Longitude) next, (int Latitude, int Longitude) expected) {
+        // Arrange
+        CoordinateVariance variance = new();
+        variance.Next(initial.Latitude, initial.Longitude);
+
+        // Act
+        variance.Next(next.Latitude, next.Longitude);
+
+        // Assert
+        Assert.AreEqual(expected.Latitude, variance.Latitude);
+        Assert.AreEqual(expected.Longitude, variance.Longitude);
     }
 }
