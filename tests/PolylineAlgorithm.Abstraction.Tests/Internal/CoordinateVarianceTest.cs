@@ -75,7 +75,7 @@ public class CoordinateVarianceTests {
 
     [TestMethod]
     [DynamicData(nameof(Coordinates), DynamicDataSourceType.Property)]
-    public void ToString_Retruns_Value_Containing_Variance(int latitude, int longitude) {
+    public void ToString_Returns_Value_Containing_Variance(int latitude, int longitude) {
         // Arrange
         CoordinateVariance variance = new();
         variance.Next(latitude, longitude);
