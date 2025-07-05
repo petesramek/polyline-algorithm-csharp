@@ -57,7 +57,7 @@ public class PolylineEncoderTest {
     /// <remarks>Expected result is that the encoded polyline matches <see cref="Values.Polyline.Valid"/>.</remarks>
     [TestMethod]
     [DynamicData(nameof(CoordinateCount))]
-    public void Random_Value_Encode_ValidInput_Ok(int count) {
+    public void Encode_RandomValue_ValidInput_Ok(int count) {
         // Arrange
         IEnumerable<Coordinate> valid = RandomValueProvider.GetCoordinates(count).Select(c => new Coordinate(c.Latitude, c.Longitude));
         Polyline expected = Polyline.FromString(RandomValueProvider.GetPolyline(count));
@@ -76,7 +76,7 @@ public class PolylineEncoderTest {
     /// </summary>
     /// <remarks>Expected result is that the encoded polyline matches <see cref="Values.Polyline.Valid"/>.</remarks>
     [TestMethod]
-    public void Static_Value_Encode_ValidInput_Ok() {
+    public void Encode_StaticValue_ValidInput_Ok() {
         // Arrange
         IEnumerable<Coordinate> valid = StaticValueProvider.GetCoordinates().Select(c => new Coordinate(c.Latitude, c.Longitude));
         Polyline expected = Polyline.FromString(StaticValueProvider.GetPolyline());

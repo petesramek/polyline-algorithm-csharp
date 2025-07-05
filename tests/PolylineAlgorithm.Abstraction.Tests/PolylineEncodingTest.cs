@@ -227,8 +227,10 @@ public class PolylineEncodingTest {
         // Arrange
         static int Normalize(double value, PolylineEncoding.ValueType type) => PolylineEncoding.Normalize(value, type);
 
-        // Act & Assert
+        // Act
         var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => Normalize(value, type));
+
+        // Assert
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 
@@ -238,8 +240,10 @@ public class PolylineEncodingTest {
         // Arrange
         static double Denormalize(int value, PolylineEncoding.ValueType type) => PolylineEncoding.Denormalize(value, type);
 
-        // Act & Assert
+        // Act
         var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => Denormalize(value, type));
+
+        // Assert
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 

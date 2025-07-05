@@ -21,8 +21,10 @@ public class InvalidPolylineExceptionTest {
         var position = Random.Shared.Next();
         static void ThrowAt(int position) => InvalidPolylineException.Throw(position);
 
-        // Act && Assert
+        // Act
         var exception = Assert.ThrowsExactly<InvalidPolylineException>(() => ThrowAt(position));
+
+        // Assert
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
         Assert.IsTrue(exception.Message.Contains(position.ToString()));
     }
