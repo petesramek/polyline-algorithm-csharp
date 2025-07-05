@@ -5,7 +5,6 @@
 
 namespace PolylineAlgorithm.Abstraction;
 
-using Microsoft.Extensions.Logging;
 using PolylineAlgorithm.Abstraction.Internal;
 using PolylineAlgorithm.Abstraction.Properties;
 using System;
@@ -86,6 +85,7 @@ public abstract class PolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder
             if (!PolylineEncoding.TryWriteValue(variance.Latitude, ref buffer, ref position)
                 || !PolylineEncoding.TryWriteValue(variance.Longitude, ref buffer, ref position)
             ) {
+                // This shouldn't happen, but if it does, log the error and throw an exception.
                 Options
                     .UseLoggerFor<PolylineEncoder<TCoordinate, TPolyline>>().LogCannotWriteValueToBufferError(position);
                 throw new InvalidOperationException();
