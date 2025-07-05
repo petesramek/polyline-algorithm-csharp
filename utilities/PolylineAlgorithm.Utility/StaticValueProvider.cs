@@ -11,16 +11,17 @@ using System.Collections.Generic;
 /// Provides static, predefined coordinate and polyline values for use in tests and benchmarks.
 /// </summary>
 internal static class StaticValueProvider {
-    /// <summary>
-    /// A predefined polyline instance representing a fixed encoded polyline string.
-    /// </summary>
-    private static readonly string _polyline = "???_gsia@_cidP??~fsia@?~fsia@~bidP?~bidP??_gsia@";
+    internal static class Valid {
+        /// <summary>
+        /// A predefined polyline instance representing a fixed encoded polyline string.
+        /// </summary>
+        private static readonly string _polyline = "???_gsia@_cidP??~fsia@?~fsia@~bidP?~bidP??_gsia@";
 
-    /// <summary>
-    /// A predefined collection of <see cref="Coordinate"/> instances representing a closed path around the globe.
-    /// </summary>
-    private static readonly IEnumerable<(double Latitude, double Longitude)> _coordinates = [
-        new (0, 0),
+        /// <summary>
+        /// A predefined collection of <see cref="Coordinate"/> instances representing a closed path around the globe.
+        /// </summary>
+        private static readonly IEnumerable<(double Latitude, double Longitude)> _coordinates = [
+            new (0, 0),
         new (0, 180),
         new (90, 180),
         new (90, 0),
@@ -28,21 +29,28 @@ internal static class StaticValueProvider {
         new (0, -180),
         new (-90, -180),
         new (-90, 0)
-    ];
+        ];
 
-    /// <summary>
-    /// Gets the predefined collection of <see cref="Coordinate"/> instances.
-    /// </summary>
-    /// <returns>An <see cref="IEnumerable{Coordinate}"/> containing the static coordinates.</returns>
-    public static IEnumerable<(double Latitude, double Longitude)> GetCoordinates() {
-        return _coordinates;
+        /// <summary>
+        /// Gets the predefined collection of <see cref="Coordinate"/> instances.
+        /// </summary>
+        /// <returns>An <see cref="IEnumerable{Coordinate}"/> containing the static coordinates.</returns>
+        public static IEnumerable<(double Latitude, double Longitude)> GetCoordinates() {
+            return _coordinates;
+        }
+
+        /// <summary>
+        /// Gets the predefined <see cref="Polyline"/> instance.
+        /// </summary>
+        /// <returns>The static <see cref="Polyline"/> value.</returns>
+        public static string GetPolyline() {
+            return _polyline;
+        }
     }
 
-    /// <summary>
-    /// Gets the predefined <see cref="Polyline"/> instance.
-    /// </summary>
-    /// <returns>The static <see cref="Polyline"/> value.</returns>
-    public static string GetPolyline() {
-        return _polyline;
+    internal static class Invalid {
+        //public static string GetMalformedPolyline() {
+        //    return ((char)(127)).ToString();
+        //}
     }
 }

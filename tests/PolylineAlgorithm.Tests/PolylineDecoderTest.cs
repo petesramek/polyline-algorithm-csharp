@@ -71,8 +71,8 @@ public class PolylineDecoderTest {
     [TestMethod]
     public void Static_Value_Decode_Valid_Input_Ok() {
         // Arrange
-        IEnumerable<Coordinate> expected = StaticValueProvider.GetCoordinates().Select(c => new Coordinate(c.Latitude, c.Longitude));
-        string value = StaticValueProvider.GetPolyline();
+        IEnumerable<Coordinate> expected = StaticValueProvider.Valid.GetCoordinates().Select(c => new Coordinate(c.Latitude, c.Longitude));
+        string value = StaticValueProvider.Valid.GetPolyline();
 
         // Act
         var result = Decoder.Decode(Polyline.FromString(value));

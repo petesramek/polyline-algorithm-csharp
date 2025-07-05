@@ -78,8 +78,8 @@ public class PolylineEncoderTest {
     [TestMethod]
     public void Encode_StaticValue_ValidInput_Ok() {
         // Arrange
-        IEnumerable<Coordinate> valid = StaticValueProvider.GetCoordinates().Select(c => new Coordinate(c.Latitude, c.Longitude));
-        Polyline expected = Polyline.FromString(StaticValueProvider.GetPolyline());
+        IEnumerable<Coordinate> valid = StaticValueProvider.Valid.GetCoordinates().Select(c => new Coordinate(c.Latitude, c.Longitude));
+        Polyline expected = Polyline.FromString(StaticValueProvider.Valid.GetPolyline());
 
         // Act
         var result = Encoder.Encode(valid);
