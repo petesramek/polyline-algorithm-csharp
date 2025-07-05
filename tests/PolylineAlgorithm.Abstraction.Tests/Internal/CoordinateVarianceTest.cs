@@ -72,4 +72,19 @@ public class CoordinateVarianceTests {
         Assert.AreEqual(expected.Latitude, variance.Latitude);
         Assert.AreEqual(expected.Longitude, variance.Longitude);
     }
+
+    [TestMethod]
+    [DynamicData(nameof(Coordinates), DynamicDataSourceType.Property)]
+    public void ToString_Retruns_Value_Containing_Variance(int latitude, int longitude) {
+        // Arrange
+        CoordinateVariance variance = new();
+        variance.Next(latitude, longitude);
+
+        // Act
+        string result = variance.ToString();
+
+        // Assert
+        StringAssert.Contains(result, $"Latitude: {latitude}");
+        StringAssert.Contains(result, $"Longitude: {longitude}");
+    }
 }
