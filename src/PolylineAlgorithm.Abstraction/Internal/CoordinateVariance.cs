@@ -17,16 +17,13 @@ using System.Runtime.InteropServices;
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
 [StructLayout(LayoutKind.Sequential, Pack = 4, Size = 8)]
 internal struct CoordinateVariance {
-    private (int Latitude, int Longitude) _current = (0, 0);
+    private (int Latitude, int Longitude) _current;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="CoordinateVariance"/> struct with the specified latitude and longitude deltas.
+    /// Initializes a new instance of the <see cref="CoordinateVariance"/> struct with the default latitude and longitude deltas.
     /// </summary>
-    /// <param name="latitude">The initial latitude delta.</param>
-    /// <param name="longitude">The initial longitude delta.</param>
-    private CoordinateVariance(int latitude, int longitude) {
-        Latitude = latitude;
-        Longitude = longitude;
+    public CoordinateVariance() {
+        _current = (0, 0);
     }
 
     /// <summary>
