@@ -14,6 +14,7 @@ public class PolylineEncoderTest {
     public void Constructor_Parameterless_Ok() {
         // Arrange && Act
         var encoder = new PolylineEncoder();
+
         // Assert
         Assert.IsNotNull(encoder);
         Assert.IsNotNull(encoder.Options);
@@ -23,8 +24,10 @@ public class PolylineEncoderTest {
     public void Constructor_ValidOptions_Ok() {
         // Arrange
         var options = new PolylineEncodingOptions();
+
         // Act
         var encoder = new PolylineEncoder(options);
+
         // Assert
         Assert.IsNotNull(encoder);
         Assert.AreSame(options, encoder.Options);
