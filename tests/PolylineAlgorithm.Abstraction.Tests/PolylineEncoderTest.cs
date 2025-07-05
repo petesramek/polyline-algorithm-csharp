@@ -10,6 +10,11 @@ public class PolylineEncoderTest {
 
     public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100], [1_000]];
 
+    public static IEnumerable<(double, double)> NotANumberAndInfinityCoordinates => StaticValueProvider.Invalid.GetNotANumberAndInfinityCoordinates() ;
+
+    public static IEnumerable<(double, double)> MinAndMaxCoordinates => StaticValueProvider.Invalid.GetMinAndMaxCoordinates();
+
+
     [TestMethod]
     public void Constructor_Parameterless_Ok() {
         // Arrange && Act
@@ -67,6 +72,30 @@ public class PolylineEncoderTest {
 
         // Act
         var exception = Assert.ThrowsExactly<InternalBufferOverflowException>(() => _encoder.Encode(coordinates));
+
+        // Assert
+        Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(NotANumberAndInfinityCoordinates))]
+    public void Encode_NotANumberAndInfinityCoordinate_Throws_ArgumentOutOfRangeException((double, double) coordinate) {
+        // Arrange
+        
+        // Act
+        var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => _encoder.Encode([coordinate]));
+
+        // Assert
+        Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(MinAndMaxCoordinates))]
+    public void Encode_MinAndMaxCoordinate_Throws_ArgumentOutOfRangeException((double, double) coordinate) {
+        // Arrange
+
+        // Act
+        var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => _encoder.Encode([coordinate]));
 
         // Assert
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
