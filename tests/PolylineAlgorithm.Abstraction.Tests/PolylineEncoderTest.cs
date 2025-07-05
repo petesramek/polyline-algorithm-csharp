@@ -11,6 +11,26 @@ public class PolylineEncoderTest {
     public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100], [1_000]];
 
     [TestMethod]
+    public void Constructor_Parameterless_Ok() {
+        // Arrange && Act
+        var encoder = new PolylineEncoder();
+        // Assert
+        Assert.IsNotNull(encoder);
+        Assert.IsNotNull(encoder.Options);
+    }
+
+    [TestMethod]
+    public void Constructor_ValidOptions_Ok() {
+        // Arrange
+        var options = new PolylineEncodingOptions();
+        // Act
+        var encoder = new PolylineEncoder(options);
+        // Assert
+        Assert.IsNotNull(encoder);
+        Assert.AreSame(options, encoder.Options);
+    }
+
+    [TestMethod]
     public void Encode_NullCoordinates_Throws_ArgumentException() {
         // Arrange
         void Encode() => _encoder.Encode(null!);
@@ -67,7 +87,10 @@ public class PolylineEncoderTest {
 
     public class PolylineEncoder : PolylineEncoder<(double Latitude, double Longitude), string> {
         public PolylineEncoder()
-            : base(new()) { }
+            : base() { }
+
+        public PolylineEncoder(PolylineEncodingOptions options)
+            : base(options) { }
 
         protected override string CreatePolyline(ReadOnlyMemory<char> polyline) => polyline.ToString();
         protected override double GetLatitude((double Latitude, double Longitude) coordinate) => coordinate.Latitude;
