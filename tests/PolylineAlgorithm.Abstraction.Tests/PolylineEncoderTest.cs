@@ -60,6 +60,19 @@ public class PolylineEncoderTest {
     }
 
     [TestMethod]
+    public void Encode_BufferTooSmall_Throws_InternalBufferOverflowException() {
+        // Arrange
+        PolylineEncoder _encoder = new PolylineEncoder(new PolylineEncodingOptions { BufferSize = 12});
+        IEnumerable<(double Latitude, double Longitude)> coordinates = RandomValueProvider.GetCoordinates(2);
+
+        // Act
+        var exception = Assert.ThrowsExactly<InternalBufferOverflowException>(() => _encoder.Encode(coordinates));
+
+        // Assert
+        Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
+    }
+
+    [TestMethod]
     [DynamicData(nameof(CoordinateCount))]
     public void Encode_RandomValue_ValidInput_Ok(int count) {
         // Arrange
@@ -77,8 +90,8 @@ public class PolylineEncoderTest {
     [TestMethod]
     public void Encode_StaticValue_ValidInput_Ok() {
         // Arrange
-        IEnumerable<(double Latitude, double Longitude)> coordinates = StaticValueProvider.GetCoordinates();
-        string expected = StaticValueProvider.GetPolyline();
+        IEnumerable<(double Latitude, double Longitude)> coordinates = StaticValueProvider.Valid.GetCoordinates();
+        string expected = StaticValueProvider.Valid.GetPolyline();
 
         // Act
         var result = _encoder.Encode(coordinates);
