@@ -261,4 +261,21 @@ public class PolylineTest {
         // Assert
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
+
+    [TestMethod]
+    public void Equality_Operators_OK() {
+        // Arrange
+        Polyline first = Polyline.FromString(nameof(first));
+        Polyline equal = Polyline.FromString(nameof(first));
+        Polyline notEqual = Polyline.FromString(nameof(notEqual));
+
+        // Act && Assert
+        Assert.IsTrue(first == equal);
+        Assert.IsTrue(first != notEqual);
+        Assert.IsTrue(first.Equals(equal));
+
+        Assert.IsFalse(first != equal);
+        Assert.IsFalse(first == notEqual);
+        Assert.IsFalse(first.Equals(notEqual));
+    }
 }
