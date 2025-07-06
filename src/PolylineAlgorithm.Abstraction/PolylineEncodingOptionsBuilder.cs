@@ -12,6 +12,8 @@ public class PolylineEncodingOptionsBuilder : IPolylineEncodingOptionsBuilder {
     private int _bufferSize = 64_000;
     private ILoggerFactory _loggerFactory = NullLoggerFactory.Instance;
 
+    private PolylineEncodingOptionsBuilder() { }
+
     /// <summary>
     /// Creates a new <see cref="IPolylineEncodingOptionsBuilder"/> instance for the specified coordinate type.
     /// </summary>
@@ -26,7 +28,8 @@ public class PolylineEncodingOptionsBuilder : IPolylineEncodingOptionsBuilder {
     /// <returns>A configured <see cref="PolylineEncodingOptions"/> instance.</returns>
     PolylineEncodingOptions IPolylineEncodingOptionsBuilder.Build() {
         return new PolylineEncodingOptions {
-            BufferSize = _bufferSize
+            BufferSize = _bufferSize,
+            LoggerFactory = _loggerFactory
         };
     }
 
@@ -52,6 +55,5 @@ public class PolylineEncodingOptionsBuilder : IPolylineEncodingOptionsBuilder {
         _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory), "Logger factory cannot be null.");
 
         return this;
-
     }
 }
