@@ -47,7 +47,7 @@ public class PolylineTest {
     public void FromString_Null_String_ArgumentNullException() {
         // Arrange
         string value = null!;
-        static Polyline New(char[] value) => Polyline.FromString(value);
+        static Polyline New(string value) => Polyline.FromString(value);
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentNullException>(() => New(value));
