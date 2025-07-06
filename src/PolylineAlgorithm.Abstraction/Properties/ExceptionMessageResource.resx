@@ -141,4 +141,7 @@
   <data name="ArgumentIsOutOfRangeForSpecifiedType" xml:space="preserve">
     <value>Value is out of range for the specified type {0}.</value>
   </data>
+  <data name="ArgumentCannotBeNullEmptyOrWhiteSpaceMessage" xml:space="preserve">
+    <value>Argument cannot be null -or- empty -or- white space.</value>
+  </data>
 </root>

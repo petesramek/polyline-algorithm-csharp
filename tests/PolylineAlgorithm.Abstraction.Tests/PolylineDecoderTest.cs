@@ -1,6 +1,7 @@
 ﻿namespace PolylineAlgorithm.Abstraction.Tests;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PolylineAlgorithm.Abstraction.Properties;
 using PolylineAlgorithm.Utility;
 using System;
 
@@ -14,6 +15,7 @@ public class PolylineDecoderTest {
 
     public static IEnumerable<(double, double)> MinAndMaxCoordinates => StaticValueProvider.Invalid.GetMinAndMaxCoordinates();
 
+    public static IEnumerable<object[]> InvalidPolylines => StaticValueProvider.Invalid.GetInvalidPolylines().Select<string, object[]>(p => [p]);
 
     [TestMethod]
     public void Constructor_Parameterless_Ok() {
@@ -39,52 +41,65 @@ public class PolylineDecoderTest {
     }
 
     [TestMethod]
-    public void Encode_NullPolyline_Throws_ArgumentException() {
+    public void Decode_NullPolyline_Throws_ArgumentException() {
         // Arrange
-        void Encode() => _decoder.Decode(null!);
+        void Decode() => _decoder.Decode(null!).ToList();
 
         // Act
-        var exception = Assert.ThrowsExactly<ArgumentNullException>(Encode);
+        var exception = Assert.ThrowsExactly<ArgumentNullException>(Decode);
 
         // Assert
-        Assert.AreEqual("coordinates", exception.ParamName);
+        Assert.AreEqual("polyline", exception.ParamName);
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 
     [TestMethod]
-    public void Encode_EmptyPolyline_Throws_ArgumentException() {
+    public void Decode_EmptyPolyline_Throws_ArgumentException() {
         // Arrange
-        void Encode() => _decoder.Decode(string.Empty);
+        void Decode() => _decoder.Decode(string.Empty).ToList();
 
         // Act
-        var exception = Assert.ThrowsExactly<ArgumentException>(Encode);
+        var exception = Assert.ThrowsExactly<ArgumentException>(Decode);
 
         // Assert
-        Assert.AreEqual("coordinates", exception.ParamName);
+        Assert.AreEqual("polyline", exception.ParamName);
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 
     [TestMethod]
-    public void Encode_WhitespacePolyline_Throws_ArgumentException() {
+    public void Decode_WhitespacePolyline_Throws_ArgumentException() {
         // Arrange
-        void Encode() => _decoder.Decode(string.Empty);
+        void Decode() => _decoder.Decode(" ").ToList();
 
         // Act
-        var exception = Assert.ThrowsExactly<ArgumentException>(Encode);
+        var exception = Assert.ThrowsExactly<ArgumentException>(Decode);
 
         // Assert
-        Assert.AreEqual("coordinates", exception.ParamName);
+        Assert.AreEqual("polyline", exception.ParamName);
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 
     [TestMethod]
-    public void Encode_BufferTooSmall_Throws_InternalBufferOverflowException() {
+    [DynamicData(nameof(InvalidPolylines), DynamicDataSourceType.Property)]
+    public void Decode_InvalidPolyline_Throws_InvalidPolylineException(string polyline) {
         // Arrange
-        PolylineDecoder decoder = new PolylineDecoder(new PolylineEncodingOptions { BufferSize = 12});
-         string polyline = RandomValueProvider.GetPolyline(2);
+        void Decode() => _decoder.Decode(polyline).ToList();
 
         // Act
-        var exception = Assert.ThrowsExactly<InternalBufferOverflowException>(() => decoder.Decode(polyline));
+        var exception = Assert.ThrowsExactly<InvalidPolylineException>(Decode);
+
+        // Assert
+        Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
+    }
+
+
+    [TestMethod]
+    public void Decode_ShortPolyline_Throws_InvalidPolylineException() {
+        // Arrange
+        void Decode() => _decoder.Decode("?").ToList();
+
+        // Act
+        var exception = Assert.ThrowsExactly<ArgumentException>(Decode);
 
         // Assert
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
@@ -92,11 +107,11 @@ public class PolylineDecoderTest {
 
     //[TestMethod]
     //[DynamicData(nameof(NotANumberAndInfinityCoordinates))]
-    //public void Encode_NotANumberAndInfinityCoordinate_Throws_ArgumentOutOfRangeException((double, double) coordinate) {
+    //public void Decode_NotANumberAndInfinityCoordinate_Throws_ArgumentOutOfRangeException((double, double) coordinate) {
     //    // Arrange
-        
+    //    void Decode() => _decoder.Decode([coordinate])
     //    // Act
-    //    var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => _decoder.Encode([coordinate]));
+    //    var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(Decode);
 
     //    // Assert
     //    Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
@@ -104,11 +119,11 @@ public class PolylineDecoderTest {
 
     //[TestMethod]
     //[DynamicData(nameof(MinAndMaxCoordinates))]
-    //public void Encode_MinAndMaxCoordinate_Throws_ArgumentOutOfRangeException((double, double) coordinate) {
+    //public void Decode_MinAndMaxCoordinate_Throws_ArgumentOutOfRangeException((double, double) coordinate) {
     //    // Arrange
 
     //    // Act
-    //    var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => _decoder.Encode([coordinate]));
+    //    var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => _decoder.Decode([coordinate]));
 
     //    // Assert
     //    Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
@@ -116,13 +131,13 @@ public class PolylineDecoderTest {
 
     //[TestMethod]
     //[DynamicData(nameof(CoordinateCount))]
-    //public void Encode_RandomValue_ValidInput_Ok(int count) {
+    //public void Decode_RandomValue_ValidInput_Ok(int count) {
     //    // Arrange
     //    IEnumerable<(double Latitude, double Longitude)> coordinates = RandomValueProvider.GetCoordinates(count);
     //    string expected = RandomValueProvider.GetPolyline(count);
 
     //    // Act
-    //    var result = _decoder.Encode(coordinates);
+    //    var result = _decoder.Decode(coordinates);
 
     //    // Assert
     //    Assert.AreEqual(expected.Length, result.Length);
@@ -130,13 +145,13 @@ public class PolylineDecoderTest {
     //}
 
     //[TestMethod]
-    //public void Encode_StaticValue_ValidInput_Ok() {
+    //public void Decode_StaticValue_ValidInput_Ok() {
     //    // Arrange
     //    IEnumerable<(double Latitude, double Longitude)> coordinates = StaticValueProvider.Valid.GetCoordinates();
     //    string expected = StaticValueProvider.Valid.GetPolyline();
 
     //    // Act
-    //    var result = _decoder.Encode(coordinates);
+    //    var result = _decoder.Decode(coordinates);
 
     //    // Assert
     //    Assert.AreEqual(expected.Length, result.Length);
@@ -155,8 +170,8 @@ public class PolylineDecoderTest {
         }
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(string? polyline) {
-            if(string.IsNullOrWhiteSpace(polyline)) {
-                throw new ArgumentException();
+            if (string.IsNullOrWhiteSpace(polyline)) {
+                throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeNullEmptyOrWhiteSpaceMessage, nameof(polyline));
             }
 
             return polyline.AsMemory();

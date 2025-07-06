@@ -70,6 +70,15 @@ namespace PolylineAlgorithm.Abstraction.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Argument cannot be null -or- empty -or- white space..
+        /// </summary>
+        internal static string ArgumentCannotBeNullEmptyOrWhiteSpaceMessage {
+            get {
+                return ResourceManager.GetString("ArgumentCannotBeNullEmptyOrWhiteSpaceMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value is out of range for the specified type {0}..
         /// </summary>
         internal static string ArgumentIsOutOfRangeForSpecifiedType {

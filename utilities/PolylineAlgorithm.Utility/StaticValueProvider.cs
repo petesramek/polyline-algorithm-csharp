@@ -49,17 +49,23 @@ internal static class StaticValueProvider {
     }
 
     internal static class Invalid {
-        //public static string GetMalformedPolyline() {
-        //    return ((char)(127)).ToString();
-        //}
+        public static IEnumerable<string> GetInvalidPolylines() {
+            yield return "??␡";
+            yield return "???";
+            yield return "_gsia";
+            yield return "??_gsia@_cid";
+        }
 
         public static IEnumerable<(double, double)> GetNotANumberAndInfinityCoordinates() {
             yield return (double.NaN, 0);
             yield return (0, double.NaN);
+            yield return (double.NaN, double.NaN);
             yield return (double.PositiveInfinity, 0);
             yield return (0, double.PositiveInfinity);
+            yield return (double.PositiveInfinity, double.PositiveInfinity);
             yield return (double.NegativeInfinity, 0);
             yield return (0, double.NegativeInfinity);
+            yield return (double.NegativeInfinity, double.NegativeInfinity);
         }
 
         public static IEnumerable<(double, double)> GetMinAndMaxCoordinates() {
