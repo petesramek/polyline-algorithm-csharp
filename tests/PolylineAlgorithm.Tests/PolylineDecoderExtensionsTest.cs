@@ -12,6 +12,45 @@ public class PolylineDecoderExtensionsTest {
     public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100], [1_000]];
 
     [TestMethod]
+    public void Decode_Null_Decoder_Null_String_Throws_ArgumentNullException() {
+        // Arrange
+        void Decode() => PolylineDecoderExtensions.Decode(null!, string.Empty).ToList();
+
+        // Act
+        var exception = Assert.ThrowsExactly<ArgumentNullException>(Decode);
+
+        // Assert
+        Assert.AreEqual("decoder", exception.ParamName);
+        Assert.IsTrue(exception.Message.Contains("Value cannot be null.", StringComparison.Ordinal));
+    }
+
+    [TestMethod]
+    public void Decode_Null_Decoder_Null_CharArray_Throws_ArgumentNullException() {
+        // Arrange
+        void Decode() => PolylineDecoderExtensions.Decode(null!, []).ToList();
+
+        // Act
+        var exception = Assert.ThrowsExactly<ArgumentNullException>(Decode);
+
+        // Assert
+        Assert.AreEqual("decoder", exception.ParamName);
+        Assert.IsTrue(exception.Message.Contains("Value cannot be null.", StringComparison.Ordinal));
+    }
+
+    [TestMethod]
+    public void Decode_Null_Decoder_Empty_Memory_Throws_ArgumentNullException() {
+        // Arrange
+        void Decode() => PolylineDecoderExtensions.Decode(null!, Memory<char>.Empty).ToList();
+
+        // Act
+        var exception = Assert.ThrowsExactly<ArgumentNullException>(Decode);
+
+        // Assert
+        Assert.AreEqual("decoder", exception.ParamName);
+        Assert.IsTrue(exception.Message.Contains("Value cannot be null.", StringComparison.Ordinal));
+    }
+
+    [TestMethod]
     [DynamicData(nameof(CoordinateCount), DynamicDataSourceType.Property)]
     public void Decode_String_Returns_Expected_Coordinates(int count) {
         // Arrange
