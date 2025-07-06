@@ -58,4 +58,12 @@ public static class PolylineDecoderExtensions {
 
         return decoder.Decode(Polyline.FromCharArray(polyline));
     }
+
+    public static IEnumerable<Coordinate> Decode(this IPolylineDecoder<Polyline, Coordinate> decoder, ReadOnlyMemory<char> polyline) {
+        if (decoder is null) {
+            throw new ArgumentNullException(nameof(decoder));
+        }
+
+        return decoder.Decode(Polyline.FromMemory(polyline));
+    }
 }
