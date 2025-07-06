@@ -117,6 +117,24 @@ public class PolylineTest {
     }
 
     /// <summary>
+    /// Tests the <see cref="Polyline.ToString"/> method.
+    /// </summary>
+    /// <param name="value">The string value.</param>
+    [TestMethod]
+    [DynamicData(nameof(LengthParameters))]
+    public void ToString_Returns_Empty_String(int size) {
+        // Arrange
+        Polyline polyline = new Polyline();
+        string expected = string.Empty;
+
+        // Act
+        string result = polyline.ToString();
+
+        // Assert
+        Assert.AreEqual(expected, result);
+    }
+
+    /// <summary>
     /// Tests the <see cref="Polyline.ToCharArray"/> method.
     /// </summary>
     /// <param name="value">The string value.</param>
