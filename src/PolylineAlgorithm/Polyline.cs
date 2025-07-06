@@ -176,7 +176,6 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// </summary>
     /// <param name="polyline">The Unicode character array to convert.</param>
     /// <returns>The converted <see cref="Polyline"/> instance.</returns>
-    [ExcludeFromCodeCoverage]
     public static explicit operator Polyline(char[] polyline) => FromCharArray(polyline);
 
     /// <summary>
@@ -184,7 +183,6 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// </summary>
     /// <param name="polyline">The string to convert.</param>
     /// <returns>The converted <see cref="Polyline"/> instance.</returns>
-    [ExcludeFromCodeCoverage]
     public static explicit operator Polyline(string polyline) => FromString(polyline);
 
     /// <summary>
@@ -192,7 +190,6 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// </summary>
     /// <param name="polyline">The read-only memory region to convert.</param>
     /// <returns>The converted <see cref="Polyline"/> instance.</returns>
-    [ExcludeFromCodeCoverage]
 #pragma warning disable CA2225 // Operator overloads have named alternates
     public static explicit operator Polyline(ReadOnlyMemory<char> polyline) => FromMemory(polyline);
 #pragma warning restore CA2225 // Operator overloads have named alternates
