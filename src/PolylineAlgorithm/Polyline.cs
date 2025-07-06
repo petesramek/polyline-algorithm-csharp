@@ -169,30 +169,30 @@ public readonly struct Polyline : IEquatable<Polyline> {
 
     #endregion
 
-    #region Explicit conversions
+//    #region Explicit conversions
 
-    /// <summary>
-    /// Defines an explicit conversion from a Unicode character array to a <see cref="Polyline"/>.
-    /// </summary>
-    /// <param name="polyline">The Unicode character array to convert.</param>
-    /// <returns>The converted <see cref="Polyline"/> instance.</returns>
-    public static explicit operator Polyline(char[] polyline) => FromCharArray(polyline);
+//    /// <summary>
+//    /// Defines an explicit conversion from a Unicode character array to a <see cref="Polyline"/>.
+//    /// </summary>
+//    /// <param name="polyline">The Unicode character array to convert.</param>
+//    /// <returns>The converted <see cref="Polyline"/> instance.</returns>
+//    public static explicit operator Polyline(char[] polyline) => FromCharArray(polyline);
 
-    /// <summary>
-    /// Defines an explicit conversion from a string to a <see cref="Polyline"/>.
-    /// </summary>
-    /// <param name="polyline">The string to convert.</param>
-    /// <returns>The converted <see cref="Polyline"/> instance.</returns>
-    public static explicit operator Polyline(string polyline) => FromString(polyline);
+//    /// <summary>
+//    /// Defines an explicit conversion from a string to a <see cref="Polyline"/>.
+//    /// </summary>
+//    /// <param name="polyline">The string to convert.</param>
+//    /// <returns>The converted <see cref="Polyline"/> instance.</returns>
+//    public static explicit operator Polyline(string polyline) => FromString(polyline);
 
-    /// <summary>
-    /// Defines an explicit conversion from a read-only memory region to a <see cref="Polyline"/>.
-    /// </summary>
-    /// <param name="polyline">The read-only memory region to convert.</param>
-    /// <returns>The converted <see cref="Polyline"/> instance.</returns>
-#pragma warning disable CA2225 // Operator overloads have named alternates
-    public static explicit operator Polyline(ReadOnlyMemory<char> polyline) => FromMemory(polyline);
-#pragma warning restore CA2225 // Operator overloads have named alternates
+//    /// <summary>
+//    /// Defines an explicit conversion from a read-only memory region to a <see cref="Polyline"/>.
+//    /// </summary>
+//    /// <param name="polyline">The read-only memory region to convert.</param>
+//    /// <returns>The converted <see cref="Polyline"/> instance.</returns>
+//#pragma warning disable CA2225 // Operator overloads have named alternates
+//    public static explicit operator Polyline(ReadOnlyMemory<char> polyline) => FromMemory(polyline);
+//#pragma warning restore CA2225 // Operator overloads have named alternates
 
-    #endregion
+//    #endregion
 }
