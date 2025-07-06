@@ -44,6 +44,43 @@ public class PolylineTest {
     /// Tests the <see cref="Polyline"/> constructor with a null character array, expecting an <see cref="ArgumentNullException"/>.
     /// </summary>
     [TestMethod]
+    public void FromString_Null_String_ArgumentNullException() {
+        // Arrange
+        string value = null!;
+        static Polyline New(char[] value) => Polyline.FromString(value);
+
+        // Act
+        var exception = Assert.ThrowsExactly<ArgumentNullException>(() => New(value));
+
+        // Assert
+
+    }
+
+    /// <summary>
+    /// Tests the <see cref="Polyline"/> constructor with a character array parameter.
+    /// </summary>
+    /// <param name="value">The string value.</param>
+    [TestMethod]
+    [DynamicData(nameof(LengthParameters))]
+    public void FromString_String_Parameter_Ok(int size) {
+        // Arrange
+        var polyline = RandomValueProvider.GetPolyline(size);
+        bool isEmpty = polyline.Length == 0;
+        long length = polyline.Length;
+
+        // Act
+        Polyline result = Polyline.FromString(polyline);
+
+        // Assert
+        Assert.AreEqual(isEmpty, result.IsEmpty);
+        Assert.AreEqual(length, result.Length);
+        Assert.AreEqual(new string(polyline), result.ToString());
+    }
+
+    /// <summary>
+    /// Tests the <see cref="Polyline"/> constructor with a null character array, expecting an <see cref="ArgumentNullException"/>.
+    /// </summary>
+    [TestMethod]
     public void FromCharArray_Null_CharArray_ArgumentNullException() {
         // Arrange
         char[] value = null!;
@@ -75,6 +112,27 @@ public class PolylineTest {
         Assert.AreEqual(isEmpty, result.IsEmpty);
         Assert.AreEqual(length, result.Length);
         Assert.AreEqual(new string(polyline), result.ToString());
+    }
+
+    /// <summary>
+    /// Tests the <see cref="Polyline"/> constructor with a memory parameter.
+    /// </summary>
+    /// <param name="value">The string value.</param>
+    [TestMethod]
+    [DynamicData(nameof(LengthParameters))]
+    public void FromMemory_Empty_Memory_Parameter_Ok(int size) {
+        // Arrange
+        var polyline = ReadOnlyMemory<char>.Empty;
+        bool isEmpty = polyline.Length == 0;
+        long length = polyline.Length;
+
+        // Act
+        Polyline result = Polyline.FromMemory(polyline);
+
+        // Assert
+        Assert.AreEqual(isEmpty, result.IsEmpty);
+        Assert.AreEqual(length, result.Length);
+        Assert.AreEqual(polyline.ToString(), result.ToString());
     }
 
     /// <summary>
