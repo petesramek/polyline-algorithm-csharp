@@ -105,58 +105,32 @@ public class PolylineDecoderTest {
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 
-    //[TestMethod]
-    //[DynamicData(nameof(NotANumberAndInfinityCoordinates))]
-    //public void Decode_NotANumberAndInfinityCoordinate_Throws_ArgumentOutOfRangeException((double, double) coordinate) {
-    //    // Arrange
-    //    void Decode() => _decoder.Decode([coordinate])
-    //    // Act
-    //    var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(Decode);
+    [TestMethod]
+    [DynamicData(nameof(CoordinateCount))]
+    public void Encode_RandomValue_ValidInput_Ok(int count) {
+        // Arrange
+        string polyline = RandomValueProvider.GetPolyline(count);
+        IEnumerable<(double Latitude, double Longitude)> expected = RandomValueProvider.GetCoordinates(count);
 
-    //    // Assert
-    //    Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
-    //}
+        // Act
+        var result = _decoder.Decode(polyline);
 
-    //[TestMethod]
-    //[DynamicData(nameof(MinAndMaxCoordinates))]
-    //public void Decode_MinAndMaxCoordinate_Throws_ArgumentOutOfRangeException((double, double) coordinate) {
-    //    // Arrange
+        // Assert
+        CollectionAssert.AreEqual(expected.ToArray(), result.ToArray());
+    }
 
-    //    // Act
-    //    var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => _decoder.Decode([coordinate]));
+    [TestMethod]
+    public void Decode_StaticValue_ValidInput_Ok() {
+        // Arrange
+        string polyline = StaticValueProvider.Valid.GetPolyline();
+        IEnumerable<(double Latitude, double Longitude)> expected = StaticValueProvider.Valid.GetCoordinates();
 
-    //    // Assert
-    //    Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
-    //}
+        // Act
+        var result = _decoder.Decode(polyline);
 
-    //[TestMethod]
-    //[DynamicData(nameof(CoordinateCount))]
-    //public void Decode_RandomValue_ValidInput_Ok(int count) {
-    //    // Arrange
-    //    IEnumerable<(double Latitude, double Longitude)> coordinates = RandomValueProvider.GetCoordinates(count);
-    //    string expected = RandomValueProvider.GetPolyline(count);
-
-    //    // Act
-    //    var result = _decoder.Decode(coordinates);
-
-    //    // Assert
-    //    Assert.AreEqual(expected.Length, result.Length);
-    //    Assert.IsTrue(expected.Equals(result));
-    //}
-
-    //[TestMethod]
-    //public void Decode_StaticValue_ValidInput_Ok() {
-    //    // Arrange
-    //    IEnumerable<(double Latitude, double Longitude)> coordinates = StaticValueProvider.Valid.GetCoordinates();
-    //    string expected = StaticValueProvider.Valid.GetPolyline();
-
-    //    // Act
-    //    var result = _decoder.Decode(coordinates);
-
-    //    // Assert
-    //    Assert.AreEqual(expected.Length, result.Length);
-    //    Assert.IsTrue(expected.Equals(result));
-    //}
+        // Assert
+        CollectionAssert.AreEqual(expected.ToArray(), result.ToArray());
+    }
 
     public class PolylineDecoder : PolylineDecoder<string, (double Latitude, double Longitude)> {
         public PolylineDecoder()
