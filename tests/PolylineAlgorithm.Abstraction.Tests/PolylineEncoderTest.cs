@@ -130,7 +130,7 @@ public class PolylineEncoderTest {
         Assert.IsTrue(expected.Equals(result));
     }
 
-    public class PolylineEncoder : PolylineEncoder<(double Latitude, double Longitude), string> {
+    public class PolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
         public PolylineEncoder()
             : base() { }
 

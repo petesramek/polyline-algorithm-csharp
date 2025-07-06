@@ -31,7 +31,7 @@ public class PolylineDecoderBenchmark {
     /// <summary>
     /// The polyline decoder instance.
     /// </summary>
-    public CoordinateDecoder Decoder = new();
+    public PolylineDecoder Decoder = new();
 
     /// <summary>
     /// Sets up the data for the benchmarks.

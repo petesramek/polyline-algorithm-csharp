@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 /// <summary>
 /// Performs decoding of encoded polyline strings into a sequence of geographic coordinates.
 /// </summary>
-public sealed class CoordinateDecoder : PolylineDecoder<Polyline, Coordinate> {
+public sealed class PolylineDecoder : AbstractPolylineDecoder<Polyline, Coordinate> {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected override Coordinate CreateCoordinate(double latitude, double longitude) {
         return new(latitude, longitude);

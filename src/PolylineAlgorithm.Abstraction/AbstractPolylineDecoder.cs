@@ -14,11 +14,11 @@ using System.Buffers;
 /// Decodes encoded polyline strings into sequences of geographic coordinates.
 /// Implements the <see cref="IPolylineDecoder{TCoordinate, TPolyline}"/> interface.
 /// </summary>
-public abstract class PolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder<TPolyline, TCoordinate> {
-    public PolylineDecoder()
+public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder<TPolyline, TCoordinate> {
+    public AbstractPolylineDecoder()
         : this(new PolylineEncodingOptions()) { }
 
-    public PolylineDecoder(PolylineEncodingOptions options) {
+    public AbstractPolylineDecoder(PolylineEncodingOptions options) {
         Options = options ?? throw new ArgumentNullException(nameof(options));
     }
 
@@ -51,7 +51,7 @@ public abstract class PolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder
 
         if (sequence.Length < Defaults.Polyline.MinEncodedCoordinateLength) {
             Options
-                .UseLoggerFor<PolylineDecoder<TPolyline, TCoordinate>>()
+                .UseLoggerFor<AbstractPolylineDecoder<TPolyline, TCoordinate>>()
                 .LogPolylineCannotBeShorterThanError(nameof(sequence), sequence.Length, Defaults.Polyline.MinEncodedCoordinateLength);
 
             throw new ArgumentException(string.Format(ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage, sequence.Length), nameof(polyline));

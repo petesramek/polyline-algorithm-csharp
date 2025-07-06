@@ -13,7 +13,7 @@ using System.Runtime.CompilerServices;
 /// Provides methods to encode a set of geographic coordinates into a polyline string.
 /// This class implements the <see cref="IPolylineEncoder"/> interface.
 /// </summary>
-public sealed class CoordinateEncoder : PolylineEncoder<Coordinate, Polyline> {
+public sealed class PolylineEncoder : AbstractPolylineEncoder<Coordinate, Polyline> {
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected override double GetLatitude(Coordinate coordinate) {

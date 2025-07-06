@@ -132,7 +132,7 @@ public class PolylineDecoderTest {
         CollectionAssert.AreEqual(expected.ToArray(), result.ToArray());
     }
 
-    public class PolylineDecoder : PolylineDecoder<string, (double Latitude, double Longitude)> {
+    public class PolylineDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
         public PolylineDecoder()
             : base() { }
 

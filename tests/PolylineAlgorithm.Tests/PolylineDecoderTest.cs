@@ -18,7 +18,7 @@ public class PolylineDecoderTest {
     /// <summary>
     /// The instance of the <see cref="PolylineDecoder"/> used for testing.
     /// </summary>
-    public CoordinateDecoder Decoder = new();
+    public PolylineDecoder Decoder = new();
 
     /// <summary>
     /// Tests the <see cref="PolylineDecoder.Decode(ref readonly Polyline)"/> method with an empty input, expecting an <see cref="ArgumentException"/>.

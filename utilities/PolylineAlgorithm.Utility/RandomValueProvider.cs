@@ -104,7 +104,7 @@ internal static class RandomValueProvider {
         public string Polyline { get; } = polyline;
     }
 
-    private class PolylineEncoder : PolylineEncoder<(double Latitude, double Longitude), string> {
+    private class PolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
 
         protected override string CreatePolyline(ReadOnlyMemory<char> polyline) {
             return polyline.ToString();

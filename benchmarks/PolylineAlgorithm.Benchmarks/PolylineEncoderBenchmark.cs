@@ -33,7 +33,7 @@ public class PolylineEncoderBenchmark {
     /// <summary>
     /// The polyline encoder instance.
     /// </summary>
-    public CoordinateEncoder Encoder = new();
+    public PolylineEncoder Encoder = new();
 
     /// <summary>
     /// Sets up the data for the benchmarks.

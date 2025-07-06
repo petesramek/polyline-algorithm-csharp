@@ -5,7 +5,7 @@ using PolylineAlgorithm.Abstraction;
 using System.Buffers;
 using System.Text;
 
-internal class NetTopologyPolylineEncoder : PolylineEncoder<Point, string> {
+internal class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point, string> {
 
     protected override string CreatePolyline(ReadOnlyMemory<char> polyline) {
         if (polyline.IsEmpty) {

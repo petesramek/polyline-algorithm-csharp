@@ -17,7 +17,7 @@ public class PolylineEncoderTest {
     /// <summary>
     /// The instance of the <see cref="PolylineEncoder"/> used for testing.
     /// </summary>
-    public CoordinateEncoder Encoder = new();
+    public PolylineEncoder Encoder = new();
 
     /// <summary>
     /// Tests the <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})"/> method with a null input, expecting an <see cref="ArgumentNullException"/>.
@@ -102,8 +102,8 @@ public class PolylineEncoderTest {
             new(0, 0)
         };
 
-        var encoder = new CoordinateEncoder();
-        var decoder = new CoordinateDecoder();
+        var encoder = new PolylineEncoder();
+        var decoder = new PolylineDecoder();
 
         var polyline = encoder.Encode(coordinates);
         var decoded = decoder.Decode(polyline).ToList();
