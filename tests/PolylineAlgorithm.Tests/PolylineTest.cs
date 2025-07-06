@@ -74,152 +74,152 @@ public class PolylineTest {
         Assert.AreEqual(value, result.ToString());
     }
 
-    ///// <summary>
-    ///// Tests the <see cref="Polyline"/> constructor with a null character array, expecting an <see cref="ArgumentNullException"/>.
-    ///// </summary>
-    //[TestMethod]
-    //public void Constructor_Null_CharArray_ArgumentNullException() {
-    //    // Arrange
-    //    char[] value = null!;
+    /// <summary>
+    /// Tests the <see cref="Polyline"/> constructor with a null character array, expecting an <see cref="ArgumentNullException"/>.
+    /// </summary>
+    [TestMethod]
+    public void FromCharArray_Null_CharArray_ArgumentNullException() {
+        // Arrange
+        char[] value = null!;
 
-    //    // Act
-    //    static Polyline New(char[] value) => Polyline.FromCharArray(value);
+        // Act
+        static Polyline New(char[] value) => Polyline.FromCharArray(value);
 
-    //    // Assert
-    //    Assert.ThrowsExactly<ArgumentNullException>(() => New(value));
-    //}
+        // Assert
+        Assert.ThrowsExactly<ArgumentNullException>(() => New(value));
+    }
 
-    ///// <summary>
-    ///// Tests the <see cref="Polyline"/> constructor with a character array parameter.
-    ///// </summary>
-    ///// <param name="value">The string value.</param>
-    //[TestMethod]
-    //[DynamicData(nameof(SizeParameters))]
-    //public void Constructor_CharArray_Parameter_Ok(int size) {
-    //    // Arrange
-    //    var polyline = ValueProvider.GetPolyline(size);
-    //    bool empty = polyline.IsEmpty;
-    //    long length = polyline.Length;
+    /// <summary>
+    /// Tests the <see cref="Polyline"/> constructor with a character array parameter.
+    /// </summary>
+    /// <param name="value">The string value.</param>
+    [TestMethod]
+    [DynamicData(nameof(LengthParameters))]
+    public void FromCharArray_CharArray_Parameter_Ok(int size) {
+        // Arrange
+        var polyline = RandomValueProvider.GetPolyline(size).ToCharArray();
+        bool isEmpty = polyline.Length == 0;
+        long length = polyline.Length;
 
-    //    // Act
-    //    Polyline polyline = Polyline.FromString(value);
+        // Act
+        Polyline result = Polyline.FromCharArray(polyline);
 
-    //    // Assert
-    //    Assert.AreEqual(empty, polyline.IsEmpty);
-    //    Assert.AreEqual(length, polyline.Length);
-    //    //Assert.IsTrue(span.Span.SequenceEqual(polyline.Span.Span));
-    //}
+        // Assert
+        Assert.AreEqual(isEmpty, result.IsEmpty);
+        Assert.AreEqual(length, result.Length);
+        Assert.AreEqual(new string(polyline), result.ToString());
+    }
 
-    ///// <summary>
-    ///// Tests the <see cref="Polyline"/> constructor with a memory parameter.
-    ///// </summary>
-    ///// <param name="value">The string value.</param>
-    //[TestMethod]
-    //[DynamicData(nameof(SizeParameters))]
-    //public void Constructor_Memory_Parameter_Ok(int size) {
-    //    // Arrange
-    //    var polyline = ValueProvider.GetPolyline(size);
-    //    bool empty = polyline.IsEmpty;
-    //    long length = polyline.Length;
+    /// <summary>
+    /// Tests the <see cref="Polyline"/> constructor with a memory parameter.
+    /// </summary>
+    /// <param name="value">The string value.</param>
+    [TestMethod]
+    [DynamicData(nameof(LengthParameters))]
+    public void FromMemory_Memory_Parameter_Ok(int size) {
+        // Arrange
+        var polyline = RandomValueProvider.GetPolyline(size).AsMemory();
+        bool isEmpty = polyline.Length == 0;
+        long length = polyline.Length;
 
-    //    // Act
-    //    Polyline polyline = Polyline.FromString(value);
+        // Act
+        Polyline result = Polyline.FromMemory(polyline);
 
-    //    // Assert
-    //    Assert.AreEqual(empty, polyline.IsEmpty);
-    //    Assert.AreEqual(length, polyline.Length);
-    //    //Assert.IsTrue(span.Span.SequenceEqual(polyline.Span.Span));
-    //}
+        // Assert
+        Assert.AreEqual(isEmpty, result.IsEmpty);
+        Assert.AreEqual(length, result.Length);
+        Assert.AreEqual(polyline.ToString(), result.ToString());
+    }
 
-    ///// <summary>
-    ///// Tests the <see cref="Polyline.FromString(string)"/> method.
-    ///// </summary>
-    ///// <param name="value">The string value.</param>
-    //[TestMethod]
-    //[DynamicData(nameof(SizeParameters))]
-    //public void FromString_Equals_New(int size) {
-    //    // Arrange
-    //    var polyline = ValueProvider.GetPolyline(size);
-    //    bool empty = polyline.IsEmpty;
-    //    long length = polyline.Length;
+    /// <summary>
+    /// Tests the <see cref="Polyline.FromString(string)"/> method.
+    /// </summary>
+    /// <param name="value">The string value.</param>
+    [TestMethod]
+    [DynamicData(nameof(LengthParameters))]
+    public void FromString_Equals_New(int size) {
+        // Arrange
+        var polyline = RandomValueProvider.GetPolyline(size);
+        bool isEmpty = polyline.Length == 0;
+        long length = polyline.Length;
 
-    //    // Act
-    //    Polyline result = Polyline.FromString(value);
+        // Act
+        Polyline result = Polyline.FromString(polyline);
 
-    //    // Assert
-    //    Assert.IsTrue(polyline.Equals(result));
-    //}
+        // Assert
+        Assert.AreEqual(polyline, result.ToString());
+    }
 
-    ///// <summary>
-    ///// Tests the <see cref="Polyline.FromCharArray(char[])"/> method.
-    ///// </summary>
-    ///// <param name="value">The string value.</param>
-    //[TestMethod]
-    //[DynamicData(nameof(SizeParameters))]
-    //public void FromCharArray_Equals_New(int size) {
-    //    // Arrange
-    //    char[] array = value.ToCharArray();
-    //    Polyline polyline = Polyline.FromCharArray(array);
+    /// <summary>
+    /// Tests the <see cref="Polyline.FromCharArray(char[])"/> method.
+    /// </summary>
+    /// <param name="value">The string value.</param>
+    [TestMethod]
+    [DynamicData(nameof(LengthParameters))]
+    public void FromCharArray_Equals_New(int size) {
+        // Arrange
+        char[] array = RandomValueProvider.GetPolyline(size).ToCharArray();
+        Polyline polyline = Polyline.FromCharArray(array);
 
-    //    // Act
-    //    Polyline result = Polyline.FromCharArray(array);
+        // Act
+        Polyline result = Polyline.FromCharArray(array);
 
-    //    // Assert
-    //    Assert.IsTrue(polyline.Equals(result));
-    //}
+        // Assert
+        Assert.IsTrue(polyline.Equals(result));
+    }
 
-    ///// <summary>
-    ///// Tests the <see cref="Polyline.FromMemory(ReadOnlyMemory{char})"/> method.
-    ///// </summary>
-    ///// <param name="value">The string value.</param>
-    //[TestMethod]
-    //[DynamicData(nameof(SizeParameters))]
-    //public void FromMemory_Equals_New(int size) {
-    //    // Arrange
-    //    ReadOnlyMemory<char> memory = value.AsMemory();
-    //    Polyline polyline = Polyline.FromString(value);
+    /// <summary>
+    /// Tests the <see cref="Polyline.FromMemory(ReadOnlyMemory{char})"/> method.
+    /// </summary>
+    /// <param name="value">The string value.</param>
+    [TestMethod]
+    [DynamicData(nameof(LengthParameters))]
+    public void FromMemory_Equals_New(int size) {
+        // Arrange
+        ReadOnlyMemory<char> memory = RandomValueProvider.GetPolyline(size).AsMemory();
+        Polyline polyline = Polyline.FromMemory(memory);
 
-    //    // Act
-    //    Polyline result = Polyline.FromMemory(memory);
+        // Act
+        Polyline result = Polyline.FromMemory(memory);
 
-    //    // Assert
-    //    Assert.IsTrue(polyline.Equals(result));
-    //}
+        // Assert
+        Assert.IsTrue(polyline.Equals(result));
+    }
 
-    ///// <summary>
-    ///// Tests the <see cref="Polyline.ToString"/> method.
-    ///// </summary>
-    ///// <param name="value">The string value.</param>
-    //[TestMethod]
-    //[DynamicData(nameof(SizeParameters))]
-    //public void ToString_Equals_Constructor_Parameter(int size) {
-    //    // Arrange
-    //    Polyline polyline = Polyline.FromString(value);
-    //    string expected = value;
+    /// <summary>
+    /// Tests the <see cref="Polyline.ToString"/> method.
+    /// </summary>
+    /// <param name="value">The string value.</param>
+    [TestMethod]
+    [DynamicData(nameof(LengthParameters))]
+    public void ToString_Equals_Constructor_Parameter(int size) {
+        // Arrange
+        Polyline polyline = Polyline.FromString(RandomValueProvider.GetPolyline(size));
+        string expected = RandomValueProvider.GetPolyline(size);
 
-    //    // Act
-    //    string result = polyline.ToString();
+        // Act
+        string result = polyline.ToString();
 
-    //    // Assert
-    //    Assert.AreEqual(expected, result);
-    //}
+        // Assert
+        Assert.AreEqual(expected, result);
+    }
 
-    ///// <summary>
-    ///// Tests the <see cref="Polyline.ToCharArray"/> method.
-    ///// </summary>
-    ///// <param name="value">The string value.</param>
-    //[TestMethod]
-    //[DynamicData(nameof(SizeParameters))]
-    //public void ToCharArray_Equals_Constructor_Parameter(int size) {
-    //    // Arrange
-    //    Polyline polyline = Polyline.FromString(value);
-    //    char[] expected = value.ToCharArray();
-    //    char[] result = new char[polyline.Length];
+    /// <summary>
+    /// Tests the <see cref="Polyline.ToCharArray"/> method.
+    /// </summary>
+    /// <param name="value">The string value.</param>
+    [TestMethod]
+    [DynamicData(nameof(LengthParameters))]
+    public void ToCharArray_Equals_Constructor_Parameter(int size) {
+        // Arrange
+        Polyline polyline = Polyline.FromString(RandomValueProvider.GetPolyline(size));
+        char[] expected = RandomValueProvider.GetPolyline(size).ToCharArray();
+        char[] result = new char[polyline.Length];
 
-    //    // Act
-    //    polyline.CopyTo(result);
+        // Act
+        polyline.CopyTo(result);
 
-    //    // Assert
-    //    CollectionAssert.AreEqual(expected, result);
-    //}
+        // Assert
+        CollectionAssert.AreEqual(expected, result);
+    }
 }
