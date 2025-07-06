@@ -212,4 +212,16 @@ public class PolylineTest {
         Assert.IsFalse(polyline.Equals((object)notEqual));
         Assert.IsFalse(polyline.Equals(typeNotEqual));
     }
+
+    [TestMethod]
+    public void GetHasCode_Correct_Results() {
+        // Arrange
+        Polyline polyline = Polyline.FromString(nameof(polyline));
+        Polyline equal = Polyline.FromString(nameof(polyline));
+        Polyline notEqual = Polyline.FromString(nameof(notEqual));
+
+        // Act && Assert
+        Assert.AreEqual(polyline.GetHashCode(), equal.GetHashCode());
+        Assert.AreNotEqual(polyline.GetHashCode(), notEqual.GetHashCode());
+    }
 }
