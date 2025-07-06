@@ -81,12 +81,13 @@ public class PolylineTest {
     public void FromCharArray_Null_CharArray_ArgumentNullException() {
         // Arrange
         char[] value = null!;
-
-        // Act
         static Polyline New(char[] value) => Polyline.FromCharArray(value);
 
+        // Act
+        var exception = Assert.ThrowsExactly<ArgumentNullException>(() => New(value));
+
         // Assert
-        Assert.ThrowsExactly<ArgumentNullException>(() => New(value));
+
     }
 
     /// <summary>
@@ -210,7 +211,7 @@ public class PolylineTest {
     /// <param name="value">The string value.</param>
     [TestMethod]
     [DynamicData(nameof(LengthParameters))]
-    public void ToCharArray_Equals_Constructor_Parameter(int size) {
+    public void CopyTo_Equals_Expected_Value(int size) {
         // Arrange
         Polyline polyline = Polyline.FromString(RandomValueProvider.GetPolyline(size));
         char[] expected = RandomValueProvider.GetPolyline(size).ToCharArray();
@@ -221,5 +222,43 @@ public class PolylineTest {
 
         // Assert
         CollectionAssert.AreEqual(expected, result);
+    }
+
+    /// <summary>
+    /// Tests the <see cref="Polyline.ToCharArray"/> method.
+    /// </summary>
+    /// <param name="value">The string value.</param>
+    [TestMethod]
+    [DynamicData(nameof(LengthParameters))]
+    public void CopyTo_Smaller_Array_Destination_Parameter_Throws_ArgumentException(int size) {
+        // Arrange
+        Polyline polyline = Polyline.FromString(RandomValueProvider.GetPolyline(size));
+        char[] destination = new char[polyline.Length - 1];
+        void CopyTo() => polyline.CopyTo(destination);
+
+        // Act
+       var exception = Assert.ThrowsExactly<ArgumentException>(CopyTo);
+
+        // Assert
+        Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
+    }
+
+    /// <summary>
+    /// Tests the <see cref="Polyline.ToCharArray"/> method.
+    /// </summary>
+    /// <param name="value">The string value.</param>
+    [TestMethod]
+    [DynamicData(nameof(LengthParameters))]
+    public void CopyTo_Null_Destination_Parameter_Throws_ArgumentNullException(int size) {
+        // Arrange
+        Polyline polyline = Polyline.FromString(RandomValueProvider.GetPolyline(size));
+        char[] destination = null!;
+        void CopyTo() => polyline.CopyTo(destination);
+
+        // Act
+        var exception = Assert.ThrowsExactly<ArgumentNullException>(CopyTo);
+
+        // Assert
+        Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 }
