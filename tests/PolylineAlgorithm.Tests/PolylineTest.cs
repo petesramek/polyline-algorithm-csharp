@@ -179,8 +179,7 @@ public class PolylineTest {
     /// </summary>
     /// <param name="value">The string value.</param>
     [TestMethod]
-    [DynamicData(nameof(LengthParameters))]
-    public void ToString_Returns_Empty_String(int size) {
+    public void ToString_Returns_Empty_String() {
         // Arrange
         Polyline polyline = new Polyline();
         string expected = string.Empty;
