@@ -33,6 +33,21 @@ public class PolylineOptionsBuilderTest {
     }
 
     [TestMethod]
+    public void WithBufferSize_Small_BufferSize_Parameter_Returns_Throws_ArgumentOutOfRangeException() {
+        // Arrange
+        void WithSmallBufferSize() => PolylineEncodingOptionsBuilder.Create()
+            .WithBufferSize(11);
+
+        // Act
+        var exception = Assert.ThrowsException<ArgumentOutOfRangeException>(WithSmallBufferSize);
+
+        // Assert
+        Assert.IsNotNull(exception);
+        Assert.AreEqual("maxBufferSize", exception.ParamName);
+        Assert.IsTrue(exception.Message.Contains("Buffer size must be greater than 11."));
+    }
+
+    [TestMethod]
     public void Build_Returns_Instance_With_Expected_Buffer_Size() {
         // Arrange
         var builder = PolylineEncodingOptionsBuilder.Create();
@@ -63,5 +78,20 @@ public class PolylineOptionsBuilderTest {
         // Assert
         Assert.IsNotNull(options);
         Assert.AreEqual(expected, options.LoggerFactory);
+    }
+
+    [TestMethod]
+    public void WithLoggerFactory_Null_Parameter_Returns_Throws_ArgumentNullException() {
+        // Arrange
+        void WithNullLoggerFactory() => PolylineEncodingOptionsBuilder.Create()
+            .WithLoggerFactory(null!);
+
+        // Act
+        var exception = Assert.ThrowsException<ArgumentNullException>(WithNullLoggerFactory);
+
+        // Assert
+        Assert.IsNotNull(exception);
+        Assert.AreEqual("loggerFactory", exception.ParamName);
+        Assert.IsTrue(exception.Message.Contains("Logger factory cannot be null."));
     }
 }

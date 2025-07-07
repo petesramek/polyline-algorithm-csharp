@@ -95,7 +95,7 @@ public static class PolylineEncoding {
     /// <param name="type">The type of value to validate, such as <see cref="ValueType.Latitude"/> or <see cref="ValueType.Longitude"/>.</param>
     /// <returns><see langword="true"/> if the normalized value is within the valid range for the specified value type;
     /// otherwise, <see langword="false"/>.</returns>
-    public static bool ValidateNormalizedValue(int value, ValueType type) => (type, value) switch {
+    private static bool ValidateNormalizedValue(int value, ValueType type) => (type, value) switch {
         (ValueType.Latitude, int normalized) when normalized >= Defaults.Coordinate.Latitude.Normalized.Min && normalized <= Defaults.Coordinate.Latitude.Normalized.Max => true,
         (ValueType.Longitude, int normalized) when normalized >= Defaults.Coordinate.Longitude.Normalized.Min && normalized <= Defaults.Coordinate.Longitude.Normalized.Max => true,
         _ => false,
@@ -111,7 +111,7 @@ public static class PolylineEncoding {
     /// <param name="type">The type of value to validate, such as latitude or longitude.</param>
     /// <returns><see langword="true"/> if the <paramref name="value"/> is within the valid range for the specified <paramref
     /// name="type"/>; otherwise, <see langword="false"/>.</returns>
-    public static bool ValidateDenormalizedValue(double value, ValueType type) => (type, value) switch {
+    private static bool ValidateDenormalizedValue(double value, ValueType type) => (type, value) switch {
         (ValueType.Latitude, double denormalized) when denormalized >= Defaults.Coordinate.Latitude.Min && denormalized <= Defaults.Coordinate.Latitude.Max => true,
         (ValueType.Longitude, double denormalized) when denormalized >= Defaults.Coordinate.Longitude.Min && denormalized <= Defaults.Coordinate.Longitude.Max => true,
         _ => false,

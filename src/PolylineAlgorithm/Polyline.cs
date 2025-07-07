@@ -75,7 +75,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
             return string.Empty;
         }
 
-        return Value.ToString() ?? string.Empty;
+        return Value.ToString();
     }
 
     /// <summary>

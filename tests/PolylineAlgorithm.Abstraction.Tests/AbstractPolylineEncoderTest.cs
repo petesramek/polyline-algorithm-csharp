@@ -5,7 +5,7 @@ using PolylineAlgorithm.Utility;
 using System;
 
 [TestClass]
-public class PolylineEncoderTest {
+public class AbstractPolylineEncoderTest {
     private static readonly PolylineEncoder _encoder = new PolylineEncoder();
 
     public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100], [1_000]];
@@ -36,6 +36,20 @@ public class PolylineEncoderTest {
         // Assert
         Assert.IsNotNull(encoder);
         Assert.AreSame(options, encoder.Options);
+    }
+
+
+    [TestMethod]
+    public void Constructor_Null_Options_Throws_ArgumentNullException() {
+        // Arrange
+        void New() => new PolylineEncoder(null!);
+
+        // Act
+        var exception = Assert.ThrowsExactly<ArgumentNullException>(New);
+
+        // Assert
+        Assert.AreEqual("options", exception.ParamName);
+        Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 
     [TestMethod]

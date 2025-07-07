@@ -254,6 +254,7 @@ public class PolylineTest {
         Polyline polyline = Polyline.FromString(nameof(polyline));
         Polyline equal = Polyline.FromString(nameof(polyline));
         Polyline notEqual = Polyline.FromString(nameof(notEqual));
+        Polyline empty = new Polyline();
         string typeNotEqual = "not a polyline";
 
         // Act && Assert
@@ -266,6 +267,8 @@ public class PolylineTest {
         Assert.IsTrue(polyline.Equals(equal));
         Assert.IsTrue(polyline.Equals((object)equal));
 
+        Assert.IsFalse(polyline.Equals(empty));
+        Assert.IsFalse(polyline.Equals(notEqual));
         Assert.IsFalse(polyline.Equals((object)notEqual));
         Assert.IsFalse(polyline.Equals(typeNotEqual));
     }
