@@ -150,4 +150,17 @@ public class PolylineBenchmark {
 
         return equals;
     }
+
+
+    /// <summary>
+    /// Benchmarks the encoding of an enumeration of coordinates into a polyline.
+    /// </summary>
+    /// <returns>The encoded polyline.</returns>
+    [Benchmark]
+    public bool Polyline_Equals_DifferentType() {
+        var equals = PolylineValue
+            .Equals(StringValue);
+
+        return equals;
+    }
 }

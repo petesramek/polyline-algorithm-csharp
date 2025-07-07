@@ -1,4 +1,9 @@
-﻿namespace PolylineAlgorithm.Abstraction.Tests;
+﻿//
+// Copyright © Pete Sramek. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+
+namespace PolylineAlgorithm.Abstraction.Tests;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -42,7 +47,7 @@ public class PolylineEncodingOptionsTest {
         var options = new PolylineEncodingOptions();
 
         // Act
-        var logger = options.UseLoggerFor<PolylineEncodingOptionsTest>();
+        var logger = options.GetLoggerFor<PolylineEncodingOptionsTest>();
 
         // Assert
         Assert.IsInstanceOfType<ILogger>(logger);

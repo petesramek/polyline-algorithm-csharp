@@ -49,7 +49,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     public TPolyline Encode(IEnumerable<TCoordinate> coordinates) {
         if (coordinates is null) {
             Options
-                .UseLoggerFor<AbstractPolylineEncoder<TCoordinate, TPolyline>>().LogNullArgumentError(nameof(coordinates));
+                .GetLoggerFor<AbstractPolylineEncoder<TCoordinate, TPolyline>>().LogNullArgumentError(nameof(coordinates));
             throw new ArgumentNullException(nameof(coordinates));
         }
 
@@ -57,7 +57,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
         if (count == 0) {
             Options
-                .UseLoggerFor<AbstractPolylineEncoder<TCoordinate, TPolyline>>().LogEmptyArgumentError(nameof(coordinates));
+                .GetLoggerFor<AbstractPolylineEncoder<TCoordinate, TPolyline>>().LogEmptyArgumentError(nameof(coordinates));
 
             throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeEmptyEnumerationMessage, nameof(coordinates));
         }
@@ -78,7 +78,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
             if (GetRemainingBufferSize(position, buffer.Length) < GetRequiredLength(variance)) {
                 Options
-                    .UseLoggerFor<AbstractPolylineEncoder<TCoordinate, TPolyline>>().LogInternalBufferOverflowError(position, buffer.Length, GetRequiredLength(variance));
+                    .GetLoggerFor<AbstractPolylineEncoder<TCoordinate, TPolyline>>().LogInternalBufferOverflowError(position, buffer.Length, GetRequiredLength(variance));
                 throw new InternalBufferOverflowException();
             }
 
@@ -87,7 +87,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
             ) {
                 // This shouldn't happen, but if it does, log the error and throw an exception.
                 Options
-                    .UseLoggerFor<AbstractPolylineEncoder<TCoordinate, TPolyline>>().LogCannotWriteValueToBufferError(position, consumed);
+                    .GetLoggerFor<AbstractPolylineEncoder<TCoordinate, TPolyline>>().LogCannotWriteValueToBufferError(position, consumed);
                 throw new InvalidOperationException();
             }
 
@@ -116,7 +116,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
             if (requestedBufferLength > maxBufferLength) {
                 Options
-                   .UseLoggerFor<AbstractPolylineEncoder<TCoordinate, TPolyline>>().LogRequestedBufferSizeExceedsMaxBufferLengthWarning(requestedBufferLength, maxBufferLength);
+                   .GetLoggerFor<AbstractPolylineEncoder<TCoordinate, TPolyline>>().LogRequestedBufferSizeExceedsMaxBufferLengthWarning(requestedBufferLength, maxBufferLength);
 
                 return maxBufferLength;
             }

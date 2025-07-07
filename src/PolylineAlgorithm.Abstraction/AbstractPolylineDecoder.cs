@@ -51,7 +51,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
 
         if (sequence.Length < Defaults.Polyline.MinEncodedCoordinateLength) {
             Options
-                .UseLoggerFor<AbstractPolylineDecoder<TPolyline, TCoordinate>>()
+                .GetLoggerFor<AbstractPolylineDecoder<TPolyline, TCoordinate>>()
                 .LogPolylineCannotBeShorterThanError(nameof(sequence), sequence.Length, Defaults.Polyline.MinEncodedCoordinateLength);
 
             throw new ArgumentException(string.Format(ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage, sequence.Length), nameof(polyline));
@@ -69,6 +69,10 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
             if(!PolylineEncoding.TryReadValue(ref latitude, ref sequence, ref position)
                 || !PolylineEncoding.TryReadValue(ref longitude, ref sequence, ref position)
             ) {
+                Options
+                    .GetLoggerFor<AbstractPolylineDecoder<TPolyline, TCoordinate>>()
+                    .LogInvalidPolylineError(position);
+
                 InvalidPolylineException.Throw(position);
             }
 

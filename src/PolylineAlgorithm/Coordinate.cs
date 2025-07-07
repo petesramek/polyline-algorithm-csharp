@@ -70,11 +70,9 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     #region Overrides
 
     /// <inheritdoc />
-    [ExcludeFromCodeCoverage]
     public override bool Equals(object? obj) => obj is Coordinate coordinate && Equals(coordinate);
 
     /// <inheritdoc />
-    [ExcludeFromCodeCoverage]
     public override int GetHashCode() => HashCode.Combine(Latitude, Longitude);
 
     /// <summary>
@@ -83,7 +81,6 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <returns>
     /// A string representation of the coordinate.
     /// </returns>
-    [ExcludeFromCodeCoverage]
     public override string ToString() {
         return $"{{ {nameof(Latitude)}: {Latitude.ToString("G", CultureInfo.InvariantCulture)}, {nameof(Longitude)}: {Longitude.ToString("G", CultureInfo.InvariantCulture)} }}";
     }
@@ -116,7 +113,6 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <returns>
     /// <see langword="true"/> if both coordinates are equal; otherwise, <see langword="false"/>.
     /// </returns>
-    [ExcludeFromCodeCoverage]
     public static bool operator ==(Coordinate left, Coordinate right) => left.Equals(right);
 
     /// <summary>
@@ -127,7 +123,6 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <returns>
     /// <see langword="true"/> if the coordinates are not equal; otherwise, <see langword="false"/>.
     /// </returns>
-    [ExcludeFromCodeCoverage]
     public static bool operator !=(Coordinate left, Coordinate right) => !(left == right);
 
     #endregion

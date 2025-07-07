@@ -1,4 +1,9 @@
-﻿namespace PolylineAlgorithm.Abstraction.Tests.Internal;
+﻿//
+// Copyright © Pete Sramek. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+
+namespace PolylineAlgorithm.Abstraction.Tests.Internal;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Testing;
@@ -129,6 +134,24 @@ public class LoggingTest {
         Assert.AreEqual(LogLevel.Warning, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual(
             $"Requested buffer size of {requestedBufferLength} exceeds maximum allowed buffer length of {maxBufferLength}.",
+            _loggerProvider.Collector.LatestRecord.Message);
+    }
+
+    [TestMethod]
+    public void ILogger_LogInvalidPolylineError_Ok() {
+        // Arrange
+        int position = 5;
+
+        // Act
+        _loggerFactory
+            .CreateLogger<LoggingTest>()
+            .LogInvalidPolylineError(position);
+
+        // Assert
+        Assert.AreEqual(7, _loggerProvider.Collector.LatestRecord.Id);
+        Assert.AreEqual(LogLevel.Error, _loggerProvider.Collector.LatestRecord.Level);
+        Assert.AreEqual(
+            $"Polyline is invalid. Current position is {position}.",
             _loggerProvider.Collector.LatestRecord.Message);
     }
 }

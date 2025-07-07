@@ -22,5 +22,5 @@ public sealed class PolylineEncodingOptions {
 
     public ILoggerFactory LoggerFactory { get; internal set; } = NullLoggerFactory.Instance;
 
-    public ILogger UseLoggerFor<T>() => LoggerFactory.CreateLogger<T>();
+    public ILogger GetLoggerFor<T>() => LoggerFactory.CreateLogger<T>();
 }

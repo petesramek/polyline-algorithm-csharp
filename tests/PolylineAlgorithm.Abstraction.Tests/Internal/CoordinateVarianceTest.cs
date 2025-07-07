@@ -1,7 +1,11 @@
-﻿namespace PolylineAlgorithm.Abstraction.Tests.Internal;
+﻿//
+// Copyright © Pete Sramek. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+
+namespace PolylineAlgorithm.Abstraction.Tests.Internal;
 
 using PolylineAlgorithm.Abstraction.Internal;
-using static PolylineAlgorithm.Abstraction.Internal.Defaults.Coordinate;
 
 [TestClass]
 public class CoordinateVarianceTests {

@@ -1,4 +1,9 @@
-﻿namespace PolylineAlgorithm.Abstraction.Internal;
+﻿//
+// Copyright © Pete Sramek. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+
+namespace PolylineAlgorithm.Abstraction.Internal;
 
 using Microsoft.Extensions.Logging;
 
@@ -20,4 +25,7 @@ internal static partial class Logging {
 
     [LoggerMessage(6, LogLevel.Warning, "Requested buffer size of {requestedBufferLength} exceeds maximum allowed buffer length of {maxBufferLength}.")]
     internal static partial void LogRequestedBufferSizeExceedsMaxBufferLengthWarning(this ILogger logger, int requestedBufferLength, int maxBufferLength);
+
+    [LoggerMessage(7, LogLevel.Error, "Polyline is invalid. Current position is {position}.")]
+    internal static partial void LogInvalidPolylineError(this ILogger logger, int position);
 }
