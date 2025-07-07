@@ -82,8 +82,8 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
                 throw new InternalBufferOverflowException();
             }
 
-            if (PolylineEncoding.TryWriteValue(variance.Latitude, ref buffer, ref position)
-                || PolylineEncoding.TryWriteValue(variance.Longitude, ref buffer, ref position)
+            if (!PolylineEncoding.TryWriteValue(variance.Latitude, ref buffer, ref position)
+                || !PolylineEncoding.TryWriteValue(variance.Longitude, ref buffer, ref position)
             ) {
                 // This shouldn't happen, but if it does, log the error and throw an exception.
                 Options
