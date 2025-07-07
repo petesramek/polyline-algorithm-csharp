@@ -8,7 +8,6 @@ namespace PolylineAlgorithm.Abstraction.Tests;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging.Testing;
-using static PolylineAlgorithm.Abstraction.Tests.AbstractPolylineEncoderTest;
 
 [TestClass]
 public class PolylineEncodingOptionsTest {
@@ -31,8 +30,8 @@ public class PolylineEncodingOptionsTest {
 
         // Act
         var options = new PolylineEncodingOptions() {
-             BufferSize = bufferSize,
-             LoggerFactory = loggerFactory
+            BufferSize = bufferSize,
+            LoggerFactory = loggerFactory
         };
 
         // Assert

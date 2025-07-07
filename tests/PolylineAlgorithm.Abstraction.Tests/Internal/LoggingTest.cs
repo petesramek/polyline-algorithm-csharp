@@ -117,7 +117,7 @@ public class LoggingTest {
             _loggerProvider.Collector.LatestRecord.Message);
     }
 
-    
+
     [TestMethod]
     public void ILogger_LogRequestedBufferSizeExceedsMaxBufferLengthWarning_Ok() {
         // Arrange

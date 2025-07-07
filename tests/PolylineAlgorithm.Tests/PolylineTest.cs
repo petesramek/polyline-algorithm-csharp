@@ -223,7 +223,7 @@ public class PolylineTest {
         void CopyTo() => polyline.CopyTo(destination);
 
         // Act
-       var exception = Assert.ThrowsExactly<ArgumentException>(CopyTo);
+        var exception = Assert.ThrowsExactly<ArgumentException>(CopyTo);
 
         // Assert
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));

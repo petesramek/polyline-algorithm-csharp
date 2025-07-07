@@ -62,11 +62,11 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
         int longitude = 0;
 
         while (true) {
-            if(sequence.Length == position) {
+            if (sequence.Length == position) {
                 break; // End of the polyline string
             }
 
-            if(!PolylineEncoding.TryReadValue(ref latitude, ref sequence, ref position)
+            if (!PolylineEncoding.TryReadValue(ref latitude, ref sequence, ref position)
                 || !PolylineEncoding.TryReadValue(ref longitude, ref sequence, ref position)
             ) {
                 Options

@@ -6,7 +6,6 @@
 namespace PolylineAlgorithm;
 
 using PolylineAlgorithm.Abstraction;
-using System.Buffers;
 using System.Runtime.CompilerServices;
 
 /// <summary>

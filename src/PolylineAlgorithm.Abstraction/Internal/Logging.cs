@@ -16,7 +16,7 @@ internal static partial class Logging {
 
     [LoggerMessage(3, LogLevel.Error, "Internal buffer has {bufferLength} length. At position {position} is required additional {requiredSpace} length.")]
     internal static partial void LogInternalBufferOverflowError(this ILogger logger, int position, int bufferLength, int requiredSpace);
-    
+
     [LoggerMessage(4, LogLevel.Error, "Cannot write to internal buffer at position {position}. Current coordinate index is {coordinateIndex}.")]
     internal static partial void LogCannotWriteValueToBufferError(this ILogger logger, int position, int coordinateIndex);
 

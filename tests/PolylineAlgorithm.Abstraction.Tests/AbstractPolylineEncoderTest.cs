@@ -15,7 +15,7 @@ public class AbstractPolylineEncoderTest {
 
     public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100], [1_000]];
 
-    public static IEnumerable<(double, double)> NotANumberAndInfinityCoordinates => StaticValueProvider.Invalid.GetNotANumberAndInfinityCoordinates() ;
+    public static IEnumerable<(double, double)> NotANumberAndInfinityCoordinates => StaticValueProvider.Invalid.GetNotANumberAndInfinityCoordinates();
 
     public static IEnumerable<(double, double)> MinAndMaxCoordinates => StaticValueProvider.Invalid.GetMinAndMaxCoordinates();
 
@@ -86,7 +86,7 @@ public class AbstractPolylineEncoderTest {
     [TestMethod]
     public void Encode_BufferTooSmall_Throws_InternalBufferOverflowException() {
         // Arrange
-        PolylineEncoder _encoder = new PolylineEncoder(new PolylineEncodingOptions { BufferSize = 12});
+        PolylineEncoder _encoder = new PolylineEncoder(new PolylineEncodingOptions { BufferSize = 12 });
         IEnumerable<(double Latitude, double Longitude)> coordinates = RandomValueProvider.GetCoordinates(2);
 
         // Act
@@ -100,7 +100,7 @@ public class AbstractPolylineEncoderTest {
     [DynamicData(nameof(NotANumberAndInfinityCoordinates))]
     public void Encode_NotANumberAndInfinityCoordinate_Throws_ArgumentOutOfRangeException((double, double) coordinate) {
         // Arrange
-        
+
         // Act
         var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => _encoder.Encode([coordinate]));
 

@@ -16,7 +16,7 @@ public class AbstractPolylineDecoderTest {
 
     public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100], [1_000]];
 
-    public static IEnumerable<(double, double)> NotANumberAndInfinityCoordinates => StaticValueProvider.Invalid.GetNotANumberAndInfinityCoordinates() ;
+    public static IEnumerable<(double, double)> NotANumberAndInfinityCoordinates => StaticValueProvider.Invalid.GetNotANumberAndInfinityCoordinates();
 
     public static IEnumerable<(double, double)> MinAndMaxCoordinates => StaticValueProvider.Invalid.GetMinAndMaxCoordinates();
 

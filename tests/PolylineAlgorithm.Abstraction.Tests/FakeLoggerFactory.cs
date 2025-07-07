@@ -29,7 +29,7 @@ internal class FakeLoggerFactory : ILoggerFactory {
     protected virtual void Dispose(bool disposing) {
         if (!_isDisposed) {
             if (disposing) {
-               
+
             }
 
             _isDisposed = true;
