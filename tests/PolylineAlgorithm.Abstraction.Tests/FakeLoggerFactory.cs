@@ -7,7 +7,7 @@ internal class FakeLoggerFactory : ILoggerFactory {
     private bool _isDisposed;
 
     public FakeLoggerFactory(FakeLoggerProvider loggerProvider) {
-        Provider = new FakeLoggerProvider();
+        Provider = loggerProvider;
     }
 
     public ILoggerProvider Provider { get; private set; }
