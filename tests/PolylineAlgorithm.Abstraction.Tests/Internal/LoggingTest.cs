@@ -73,16 +73,19 @@ public class LoggingTest {
     public void ILogger_LogCannotWriteValueToBufferError_Ok() {
         // Arrange
         int position = 5;
+        int index = 1;
 
         // Act
         _loggerFactory
             .CreateLogger<LoggingTest>()
-            .LogCannotWriteValueToBufferError(position);
+            .LogCannotWriteValueToBufferError(position, index);
 
         // Assert
         Assert.AreEqual(4, _loggerProvider.Collector.LatestRecord.Id);
         Assert.AreEqual(LogLevel.Error, _loggerProvider.Collector.LatestRecord.Level);
-        Assert.AreEqual($"Cannot write to internal buffer at position {position}.", _loggerProvider.Collector.LatestRecord.Message);
+        Assert.AreEqual(
+            $"Cannot write to internal buffer at position {position}. Current coordinate index is {index}.",
+            _loggerProvider.Collector.LatestRecord.Message);
     }
 
     [TestMethod]
