@@ -116,7 +116,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
             if (requestedBufferLength > maxBufferLength) {
                 Options
-                   .UseLoggerFor<AbstractPolylineEncoder<TCoordinate, TPolyline>>().LogRequestedBufferSizeExceedsMaxBufferLength(requestedBufferLength, maxBufferLength);
+                   .UseLoggerFor<AbstractPolylineEncoder<TCoordinate, TPolyline>>().LogRequestedBufferSizeExceedsMaxBufferLengthWarning(requestedBufferLength, maxBufferLength);
 
                 return maxBufferLength;
             }
