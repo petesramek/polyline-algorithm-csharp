@@ -14,7 +14,7 @@ using System.Collections.Generic;
 /// Benchmarks for the <see cref="PolylineEncoder"/> class.
 /// </summary>
 [RankColumn]
-[SimpleJob]
+[ShortRunJob]
 public class PolylineEncoderBenchmark {
     [Params(1, 25, 50, 100, 250, 500, 1_000)]
     public int Count;
