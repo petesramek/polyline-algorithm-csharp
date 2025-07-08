@@ -215,7 +215,7 @@ jobs:
     # needs: [publish-production-package]
     needs: [versioning, build]
     env:
-      assembly-version: ${{ needs.versioning.outputs.assembly-version }}
+      friendly-version: ${{ needs.versioning.outputs.friendly-version }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -230,14 +230,14 @@ jobs:
       - run: dotnet tool update -g docfx
       - run: docfx ./docfx/api-reference.json
       - run: |
-          mkdir -p ./docs/${{ env.assembly-version }}
-          cp -r ./docs/temp/ ./docs/${{ env.assembly-version }}
+          mkdir -p ./docs/${{ env.friendly-version }}
+          cp -r ./docs/temp/ ./docs/${{ env.friendly-version }}/
       - run: |
           git checkout docs
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-          git add -- ./docs/${{ env.assembly-version }}
-          git commit -m'added ./docs/${{ env.assembly-version }}' -- ./docs/${{ env.assembly-version }}
+          git add -- ./docs/${{ env.friendly-version }}/
+          git commit -m'added ./docs/${{ env.friendly-version }}/' -- ./docs/${{ env.friendly-version }}/
           git push --force origin docs
       # - name: Upload artifact
       #   uses: actions/upload-pages-artifact@v3

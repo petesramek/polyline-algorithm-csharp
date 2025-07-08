@@ -29,6 +29,9 @@ on:
         required: false
         default: ''
     outputs:
+      friendly-version:
+        description: "The friedly version."
+        value: ${{ jobs.version.outputs.friendly-version }}
       assembly-version:
         description: "The assembly version."
         value: ${{ jobs.version.outputs.assembly-version }}
@@ -72,10 +75,14 @@ jobs:
         with:
           useConfigFile: true
           configFilePath: ${{ inputs.config-file-path }}
+          
+      - name: 'Set friendly version'
+        shell: bash
+        run: echo "friendly-version=${{ steps.gitversion.outputs.assemblySemVer }}" >> $GITHUB_ENV
 
       - name: 'Set assembly version'
         shell: bash
-        run: echo "assembly-version=${{ steps.gitversion.outputs.AssemblySemFileVer }}.${{ inputs.run-number }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}" >> $GITHUB_ENV
+        run: echo "assembly-version=${{ steps.gitversion.outputs.assemblySemVer }}.${{ inputs.run-number }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}" >> $GITHUB_ENV
 
       - name: 'Set assembly informational version'
         shell: bash
