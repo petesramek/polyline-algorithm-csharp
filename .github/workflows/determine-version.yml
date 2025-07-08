@@ -51,6 +51,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
+      friendly-version: ${{ env.friendly-version }}
       assembly-version: ${{ env.assembly-version }}
       assembly-informational-version: ${{ env.assembly-informational-version }}
       file-version: ${{ env.file-version }}
