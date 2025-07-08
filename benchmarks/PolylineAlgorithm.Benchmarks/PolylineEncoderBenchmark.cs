@@ -16,7 +16,7 @@ using System.Collections.Generic;
 [RankColumn]
 [ShortRunJob]
 public class PolylineEncoderBenchmark {
-    [Params(1, 25, 50, 100, 250, 500, 1_000)]
+    [Params(1, 100, 1_000)]
     public int Count;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
