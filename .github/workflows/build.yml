@@ -212,7 +212,8 @@ jobs:
   publish-docs:
     # if: ${{ github.env.is_release && !github.env.is_preview }}
     name: Docs with docfx
-    # needs: [publish-production-package]  
+    # needs: [publish-production-package]
+    needs: [build, global-variables]
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
