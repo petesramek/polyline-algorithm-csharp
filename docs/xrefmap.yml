@@ -1,0 +1,1075 @@
+### YamlMime:XRefMap
+sorted: true
+references:
+- uid: PolylineAlgorithm
+  name: PolylineAlgorithm
+  href: api-reference/PolylineAlgorithm.html
+  commentId: N:PolylineAlgorithm
+  fullName: PolylineAlgorithm
+  nameWithType: PolylineAlgorithm
+- uid: PolylineAlgorithm.Abstraction
+  name: PolylineAlgorithm.Abstraction
+  href: api-reference/PolylineAlgorithm.Abstraction.html
+  commentId: N:PolylineAlgorithm.Abstraction
+  fullName: PolylineAlgorithm.Abstraction
+  nameWithType: PolylineAlgorithm.Abstraction
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
+  name: AbstractPolylineDecoder<TPolyline, TCoordinate>
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html
+  commentId: T:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
+  name.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate)
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate)
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate)
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor
+  name: AbstractPolylineDecoder()
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2__ctor
+  commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor
+  name.vb: New()
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.AbstractPolylineDecoder()
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).New()
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.AbstractPolylineDecoder()
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).New()
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor(PolylineAlgorithm.Abstraction.PolylineEncodingOptions)
+  name: AbstractPolylineDecoder(PolylineEncodingOptions)
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2__ctor_PolylineAlgorithm_Abstraction_PolylineEncodingOptions_
+  commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor(PolylineAlgorithm.Abstraction.PolylineEncodingOptions)
+  name.vb: New(PolylineEncodingOptions)
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.AbstractPolylineDecoder(PolylineAlgorithm.Abstraction.PolylineEncodingOptions)
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).New(PolylineAlgorithm.Abstraction.PolylineEncodingOptions)
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.AbstractPolylineDecoder(PolylineEncodingOptions)
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).New(PolylineEncodingOptions)
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor*
+  name: AbstractPolylineDecoder
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2__ctor_
+  commentId: Overload:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.AbstractPolylineDecoder
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).New
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.AbstractPolylineDecoder
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).New
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.CreateCoordinate(System.Double,System.Double)
+  name: CreateCoordinate(double, double)
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_CreateCoordinate_System_Double_System_Double_
+  commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.CreateCoordinate(System.Double,System.Double)
+  name.vb: CreateCoordinate(Double, Double)
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.CreateCoordinate(double, double)
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).CreateCoordinate(Double, Double)
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.CreateCoordinate(double, double)
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).CreateCoordinate(Double, Double)
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.CreateCoordinate*
+  name: CreateCoordinate
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_CreateCoordinate_
+  commentId: Overload:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.CreateCoordinate
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.CreateCoordinate
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).CreateCoordinate
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.CreateCoordinate
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).CreateCoordinate
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Decode(`0)
+  name: Decode(TPolyline)
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_Decode__0_
+  commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Decode(`0)
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.Decode(TPolyline)
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).Decode(TPolyline)
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.Decode(TPolyline)
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).Decode(TPolyline)
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Decode*
+  name: Decode
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_Decode_
+  commentId: Overload:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Decode
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.Decode
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).Decode
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.Decode
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).Decode
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.GetReadOnlyMemory(`0)
+  name: GetReadOnlyMemory(TPolyline?)
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_GetReadOnlyMemory__0_
+  commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.GetReadOnlyMemory(`0)
+  name.vb: GetReadOnlyMemory(TPolyline)
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.GetReadOnlyMemory(TPolyline?)
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).GetReadOnlyMemory(TPolyline)
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.GetReadOnlyMemory(TPolyline?)
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).GetReadOnlyMemory(TPolyline)
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.GetReadOnlyMemory*
+  name: GetReadOnlyMemory
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_GetReadOnlyMemory_
+  commentId: Overload:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.GetReadOnlyMemory
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.GetReadOnlyMemory
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).GetReadOnlyMemory
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.GetReadOnlyMemory
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).GetReadOnlyMemory
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Options
+  name: Options
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_Options
+  commentId: P:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Options
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.Options
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).Options
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.Options
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).Options
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Options*
+  name: Options
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_Options_
+  commentId: Overload:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Options
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.Options
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).Options
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.Options
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).Options
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2
+  name: AbstractPolylineEncoder<TCoordinate, TPolyline>
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html
+  commentId: T:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2
+  name.vb: AbstractPolylineEncoder(Of TCoordinate, TPolyline)
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder(Of TCoordinate, TPolyline)
+  nameWithType: AbstractPolylineEncoder<TCoordinate, TPolyline>
+  nameWithType.vb: AbstractPolylineEncoder(Of TCoordinate, TPolyline)
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor
+  name: AbstractPolylineEncoder()
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2__ctor
+  commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor
+  name.vb: New()
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.AbstractPolylineEncoder()
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder(Of TCoordinate, TPolyline).New()
+  nameWithType: AbstractPolylineEncoder<TCoordinate, TPolyline>.AbstractPolylineEncoder()
+  nameWithType.vb: AbstractPolylineEncoder(Of TCoordinate, TPolyline).New()
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor(PolylineAlgorithm.Abstraction.PolylineEncodingOptions)
+  name: AbstractPolylineEncoder(PolylineEncodingOptions)
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2__ctor_PolylineAlgorithm_Abstraction_PolylineEncodingOptions_
+  commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor(PolylineAlgorithm.Abstraction.PolylineEncodingOptions)
+  name.vb: New(PolylineEncodingOptions)
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.AbstractPolylineEncoder(PolylineAlgorithm.Abstraction.PolylineEncodingOptions)
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder(Of TCoordinate, TPolyline).New(PolylineAlgorithm.Abstraction.PolylineEncodingOptions)
+  nameWithType: AbstractPolylineEncoder<TCoordinate, TPolyline>.AbstractPolylineEncoder(PolylineEncodingOptions)
+  nameWithType.vb: AbstractPolylineEncoder(Of TCoordinate, TPolyline).New(PolylineEncodingOptions)
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor*
+  name: AbstractPolylineEncoder
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2__ctor_
+  commentId: Overload:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.AbstractPolylineEncoder
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder(Of TCoordinate, TPolyline).New
+  nameWithType: AbstractPolylineEncoder<TCoordinate, TPolyline>.AbstractPolylineEncoder
+  nameWithType.vb: AbstractPolylineEncoder(Of TCoordinate, TPolyline).New
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.CreatePolyline(System.ReadOnlyMemory{System.Char})
+  name: CreatePolyline(ReadOnlyMemory<char>)
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_CreatePolyline_System_ReadOnlyMemory_System_Char__
+  commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.CreatePolyline(System.ReadOnlyMemory{System.Char})
+  name.vb: CreatePolyline(ReadOnlyMemory(Of Char))
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.CreatePolyline(System.ReadOnlyMemory<char>)
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder(Of TCoordinate, TPolyline).CreatePolyline(System.ReadOnlyMemory(Of Char))
+  nameWithType: AbstractPolylineEncoder<TCoordinate, TPolyline>.CreatePolyline(ReadOnlyMemory<char>)
+  nameWithType.vb: AbstractPolylineEncoder(Of TCoordinate, TPolyline).CreatePolyline(ReadOnlyMemory(Of Char))
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.CreatePolyline*
+  name: CreatePolyline
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_CreatePolyline_
+  commentId: Overload:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.CreatePolyline
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.CreatePolyline
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder(Of TCoordinate, TPolyline).CreatePolyline
+  nameWithType: AbstractPolylineEncoder<TCoordinate, TPolyline>.CreatePolyline
+  nameWithType.vb: AbstractPolylineEncoder(Of TCoordinate, TPolyline).CreatePolyline
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Encode(System.Collections.Generic.IEnumerable{`0})
+  name: Encode(IEnumerable<TCoordinate>)
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_Encode_System_Collections_Generic_IEnumerable__0__
+  commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Encode(System.Collections.Generic.IEnumerable{`0})
+  name.vb: Encode(IEnumerable(Of TCoordinate))
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.Encode(System.Collections.Generic.IEnumerable<TCoordinate>)
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder(Of TCoordinate, TPolyline).Encode(System.Collections.Generic.IEnumerable(Of TCoordinate))
+  nameWithType: AbstractPolylineEncoder<TCoordinate, TPolyline>.Encode(IEnumerable<TCoordinate>)
+  nameWithType.vb: AbstractPolylineEncoder(Of TCoordinate, TPolyline).Encode(IEnumerable(Of TCoordinate))
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Encode*
+  name: Encode
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_Encode_
+  commentId: Overload:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Encode
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.Encode
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder(Of TCoordinate, TPolyline).Encode
+  nameWithType: AbstractPolylineEncoder<TCoordinate, TPolyline>.Encode
+  nameWithType.vb: AbstractPolylineEncoder(Of TCoordinate, TPolyline).Encode
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLatitude(`0)
+  name: GetLatitude(TCoordinate?)
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_GetLatitude__0_
+  commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLatitude(`0)
+  name.vb: GetLatitude(TCoordinate)
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.GetLatitude(TCoordinate?)
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder(Of TCoordinate, TPolyline).GetLatitude(TCoordinate)
+  nameWithType: AbstractPolylineEncoder<TCoordinate, TPolyline>.GetLatitude(TCoordinate?)
+  nameWithType.vb: AbstractPolylineEncoder(Of TCoordinate, TPolyline).GetLatitude(TCoordinate)
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLatitude*
+  name: GetLatitude
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_GetLatitude_
+  commentId: Overload:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLatitude
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.GetLatitude
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder(Of TCoordinate, TPolyline).GetLatitude
+  nameWithType: AbstractPolylineEncoder<TCoordinate, TPolyline>.GetLatitude
+  nameWithType.vb: AbstractPolylineEncoder(Of TCoordinate, TPolyline).GetLatitude
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLongitude(`0)
+  name: GetLongitude(TCoordinate?)
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_GetLongitude__0_
+  commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLongitude(`0)
+  name.vb: GetLongitude(TCoordinate)
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.GetLongitude(TCoordinate?)
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder(Of TCoordinate, TPolyline).GetLongitude(TCoordinate)
+  nameWithType: AbstractPolylineEncoder<TCoordinate, TPolyline>.GetLongitude(TCoordinate?)
+  nameWithType.vb: AbstractPolylineEncoder(Of TCoordinate, TPolyline).GetLongitude(TCoordinate)
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLongitude*
+  name: GetLongitude
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_GetLongitude_
+  commentId: Overload:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLongitude
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.GetLongitude
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder(Of TCoordinate, TPolyline).GetLongitude
+  nameWithType: AbstractPolylineEncoder<TCoordinate, TPolyline>.GetLongitude
+  nameWithType.vb: AbstractPolylineEncoder(Of TCoordinate, TPolyline).GetLongitude
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Options
+  name: Options
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_Options
+  commentId: P:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Options
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.Options
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder(Of TCoordinate, TPolyline).Options
+  nameWithType: AbstractPolylineEncoder<TCoordinate, TPolyline>.Options
+  nameWithType.vb: AbstractPolylineEncoder(Of TCoordinate, TPolyline).Options
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Options*
+  name: Options
+  href: api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_Options_
+  commentId: Overload:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Options
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.Options
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder(Of TCoordinate, TPolyline).Options
+  nameWithType: AbstractPolylineEncoder<TCoordinate, TPolyline>.Options
+  nameWithType.vb: AbstractPolylineEncoder(Of TCoordinate, TPolyline).Options
+- uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2
+  name: IPolylineDecoder<TPolyline, TCoordinate>
+  href: api-reference/PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html
+  commentId: T:PolylineAlgorithm.Abstraction.IPolylineDecoder`2
+  name.vb: IPolylineDecoder(Of TPolyline, TCoordinate)
+  fullName: PolylineAlgorithm.Abstraction.IPolylineDecoder<TPolyline, TCoordinate>
+  fullName.vb: PolylineAlgorithm.Abstraction.IPolylineDecoder(Of TPolyline, TCoordinate)
+  nameWithType: IPolylineDecoder<TPolyline, TCoordinate>
+  nameWithType.vb: IPolylineDecoder(Of TPolyline, TCoordinate)
+- uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2.Decode(`0)
+  name: Decode(TPolyline)
+  href: api-reference/PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_IPolylineDecoder_2_Decode__0_
+  commentId: M:PolylineAlgorithm.Abstraction.IPolylineDecoder`2.Decode(`0)
+  fullName: PolylineAlgorithm.Abstraction.IPolylineDecoder<TPolyline, TCoordinate>.Decode(TPolyline)
+  fullName.vb: PolylineAlgorithm.Abstraction.IPolylineDecoder(Of TPolyline, TCoordinate).Decode(TPolyline)
+  nameWithType: IPolylineDecoder<TPolyline, TCoordinate>.Decode(TPolyline)
+  nameWithType.vb: IPolylineDecoder(Of TPolyline, TCoordinate).Decode(TPolyline)
+- uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2.Decode*
+  name: Decode
+  href: api-reference/PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_IPolylineDecoder_2_Decode_
+  commentId: Overload:PolylineAlgorithm.Abstraction.IPolylineDecoder`2.Decode
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.IPolylineDecoder<TPolyline, TCoordinate>.Decode
+  fullName.vb: PolylineAlgorithm.Abstraction.IPolylineDecoder(Of TPolyline, TCoordinate).Decode
+  nameWithType: IPolylineDecoder<TPolyline, TCoordinate>.Decode
+  nameWithType.vb: IPolylineDecoder(Of TPolyline, TCoordinate).Decode
+- uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2
+  name: IPolylineEncoder<TCoordinate, TPolyline>
+  href: api-reference/PolylineAlgorithm.Abstraction.IPolylineEncoder-2.html
+  commentId: T:PolylineAlgorithm.Abstraction.IPolylineEncoder`2
+  name.vb: IPolylineEncoder(Of TCoordinate, TPolyline)
+  fullName: PolylineAlgorithm.Abstraction.IPolylineEncoder<TCoordinate, TPolyline>
+  fullName.vb: PolylineAlgorithm.Abstraction.IPolylineEncoder(Of TCoordinate, TPolyline)
+  nameWithType: IPolylineEncoder<TCoordinate, TPolyline>
+  nameWithType.vb: IPolylineEncoder(Of TCoordinate, TPolyline)
+- uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2.Encode(System.Collections.Generic.IEnumerable{`0})
+  name: Encode(IEnumerable<TCoordinate>)
+  href: api-reference/PolylineAlgorithm.Abstraction.IPolylineEncoder-2.html#PolylineAlgorithm_Abstraction_IPolylineEncoder_2_Encode_System_Collections_Generic_IEnumerable__0__
+  commentId: M:PolylineAlgorithm.Abstraction.IPolylineEncoder`2.Encode(System.Collections.Generic.IEnumerable{`0})
+  name.vb: Encode(IEnumerable(Of TCoordinate))
+  fullName: PolylineAlgorithm.Abstraction.IPolylineEncoder<TCoordinate, TPolyline>.Encode(System.Collections.Generic.IEnumerable<TCoordinate>)
+  fullName.vb: PolylineAlgorithm.Abstraction.IPolylineEncoder(Of TCoordinate, TPolyline).Encode(System.Collections.Generic.IEnumerable(Of TCoordinate))
+  nameWithType: IPolylineEncoder<TCoordinate, TPolyline>.Encode(IEnumerable<TCoordinate>)
+  nameWithType.vb: IPolylineEncoder(Of TCoordinate, TPolyline).Encode(IEnumerable(Of TCoordinate))
+- uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2.Encode*
+  name: Encode
+  href: api-reference/PolylineAlgorithm.Abstraction.IPolylineEncoder-2.html#PolylineAlgorithm_Abstraction_IPolylineEncoder_2_Encode_
+  commentId: Overload:PolylineAlgorithm.Abstraction.IPolylineEncoder`2.Encode
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.IPolylineEncoder<TCoordinate, TPolyline>.Encode
+  fullName.vb: PolylineAlgorithm.Abstraction.IPolylineEncoder(Of TCoordinate, TPolyline).Encode
+  nameWithType: IPolylineEncoder<TCoordinate, TPolyline>.Encode
+  nameWithType.vb: IPolylineEncoder(Of TCoordinate, TPolyline).Encode
+- uid: PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder
+  name: IPolylineEncodingOptionsBuilder
+  href: api-reference/PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.html
+  commentId: T:PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder
+  fullName: PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder
+  nameWithType: IPolylineEncodingOptionsBuilder
+- uid: PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.Build
+  name: Build()
+  href: api-reference/PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.html#PolylineAlgorithm_Abstraction_IPolylineEncodingOptionsBuilder_Build
+  commentId: M:PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.Build
+  fullName: PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.Build()
+  nameWithType: IPolylineEncodingOptionsBuilder.Build()
+- uid: PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.Build*
+  name: Build
+  href: api-reference/PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.html#PolylineAlgorithm_Abstraction_IPolylineEncodingOptionsBuilder_Build_
+  commentId: Overload:PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.Build
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.Build
+  nameWithType: IPolylineEncodingOptionsBuilder.Build
+- uid: PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.WithBufferSize(System.Int32)
+  name: WithBufferSize(int)
+  href: api-reference/PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.html#PolylineAlgorithm_Abstraction_IPolylineEncodingOptionsBuilder_WithBufferSize_System_Int32_
+  commentId: M:PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.WithBufferSize(System.Int32)
+  name.vb: WithBufferSize(Integer)
+  fullName: PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.WithBufferSize(int)
+  fullName.vb: PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.WithBufferSize(Integer)
+  nameWithType: IPolylineEncodingOptionsBuilder.WithBufferSize(int)
+  nameWithType.vb: IPolylineEncodingOptionsBuilder.WithBufferSize(Integer)
+- uid: PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.WithBufferSize*
+  name: WithBufferSize
+  href: api-reference/PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.html#PolylineAlgorithm_Abstraction_IPolylineEncodingOptionsBuilder_WithBufferSize_
+  commentId: Overload:PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.WithBufferSize
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.WithBufferSize
+  nameWithType: IPolylineEncodingOptionsBuilder.WithBufferSize
+- uid: PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.WithLoggerFactory(Microsoft.Extensions.Logging.ILoggerFactory)
+  name: WithLoggerFactory(ILoggerFactory)
+  href: api-reference/PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.html#PolylineAlgorithm_Abstraction_IPolylineEncodingOptionsBuilder_WithLoggerFactory_Microsoft_Extensions_Logging_ILoggerFactory_
+  commentId: M:PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.WithLoggerFactory(Microsoft.Extensions.Logging.ILoggerFactory)
+  fullName: PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.WithLoggerFactory(Microsoft.Extensions.Logging.ILoggerFactory)
+  nameWithType: IPolylineEncodingOptionsBuilder.WithLoggerFactory(ILoggerFactory)
+- uid: PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.WithLoggerFactory*
+  name: WithLoggerFactory
+  href: api-reference/PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.html#PolylineAlgorithm_Abstraction_IPolylineEncodingOptionsBuilder_WithLoggerFactory_
+  commentId: Overload:PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.WithLoggerFactory
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.WithLoggerFactory
+  nameWithType: IPolylineEncodingOptionsBuilder.WithLoggerFactory
+- uid: PolylineAlgorithm.Abstraction.InvalidPolylineException
+  name: InvalidPolylineException
+  href: api-reference/PolylineAlgorithm.Abstraction.InvalidPolylineException.html
+  commentId: T:PolylineAlgorithm.Abstraction.InvalidPolylineException
+  fullName: PolylineAlgorithm.Abstraction.InvalidPolylineException
+  nameWithType: InvalidPolylineException
+- uid: PolylineAlgorithm.Abstraction.InvalidPolylineException.Throw(System.Int64)
+  name: Throw(long)
+  href: api-reference/PolylineAlgorithm.Abstraction.InvalidPolylineException.html#PolylineAlgorithm_Abstraction_InvalidPolylineException_Throw_System_Int64_
+  commentId: M:PolylineAlgorithm.Abstraction.InvalidPolylineException.Throw(System.Int64)
+  name.vb: Throw(Long)
+  fullName: PolylineAlgorithm.Abstraction.InvalidPolylineException.Throw(long)
+  fullName.vb: PolylineAlgorithm.Abstraction.InvalidPolylineException.Throw(Long)
+  nameWithType: InvalidPolylineException.Throw(long)
+  nameWithType.vb: InvalidPolylineException.Throw(Long)
+- uid: PolylineAlgorithm.Abstraction.InvalidPolylineException.Throw*
+  name: Throw
+  href: api-reference/PolylineAlgorithm.Abstraction.InvalidPolylineException.html#PolylineAlgorithm_Abstraction_InvalidPolylineException_Throw_
+  commentId: Overload:PolylineAlgorithm.Abstraction.InvalidPolylineException.Throw
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.InvalidPolylineException.Throw
+  nameWithType: InvalidPolylineException.Throw
+- uid: PolylineAlgorithm.Abstraction.PolylineEncoding
+  name: PolylineEncoding
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncoding.html
+  commentId: T:PolylineAlgorithm.Abstraction.PolylineEncoding
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncoding
+  nameWithType: PolylineEncoding
+- uid: PolylineAlgorithm.Abstraction.PolylineEncoding.Denormalize(System.Int32,PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType)
+  name: Denormalize(int, ValueType)
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncoding.html#PolylineAlgorithm_Abstraction_PolylineEncoding_Denormalize_System_Int32_PolylineAlgorithm_Abstraction_PolylineEncoding_ValueType_
+  commentId: M:PolylineAlgorithm.Abstraction.PolylineEncoding.Denormalize(System.Int32,PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType)
+  name.vb: Denormalize(Integer, ValueType)
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncoding.Denormalize(int, PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType)
+  fullName.vb: PolylineAlgorithm.Abstraction.PolylineEncoding.Denormalize(Integer, PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType)
+  nameWithType: PolylineEncoding.Denormalize(int, PolylineEncoding.ValueType)
+  nameWithType.vb: PolylineEncoding.Denormalize(Integer, PolylineEncoding.ValueType)
+- uid: PolylineAlgorithm.Abstraction.PolylineEncoding.Denormalize*
+  name: Denormalize
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncoding.html#PolylineAlgorithm_Abstraction_PolylineEncoding_Denormalize_
+  commentId: Overload:PolylineAlgorithm.Abstraction.PolylineEncoding.Denormalize
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncoding.Denormalize
+  nameWithType: PolylineEncoding.Denormalize
+- uid: PolylineAlgorithm.Abstraction.PolylineEncoding.GetCharCount(System.Int32)
+  name: GetCharCount(int)
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncoding.html#PolylineAlgorithm_Abstraction_PolylineEncoding_GetCharCount_System_Int32_
+  commentId: M:PolylineAlgorithm.Abstraction.PolylineEncoding.GetCharCount(System.Int32)
+  name.vb: GetCharCount(Integer)
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncoding.GetCharCount(int)
+  fullName.vb: PolylineAlgorithm.Abstraction.PolylineEncoding.GetCharCount(Integer)
+  nameWithType: PolylineEncoding.GetCharCount(int)
+  nameWithType.vb: PolylineEncoding.GetCharCount(Integer)
+- uid: PolylineAlgorithm.Abstraction.PolylineEncoding.GetCharCount*
+  name: GetCharCount
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncoding.html#PolylineAlgorithm_Abstraction_PolylineEncoding_GetCharCount_
+  commentId: Overload:PolylineAlgorithm.Abstraction.PolylineEncoding.GetCharCount
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncoding.GetCharCount
+  nameWithType: PolylineEncoding.GetCharCount
+- uid: PolylineAlgorithm.Abstraction.PolylineEncoding.Normalize(System.Double,PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType)
+  name: Normalize(double, ValueType)
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncoding.html#PolylineAlgorithm_Abstraction_PolylineEncoding_Normalize_System_Double_PolylineAlgorithm_Abstraction_PolylineEncoding_ValueType_
+  commentId: M:PolylineAlgorithm.Abstraction.PolylineEncoding.Normalize(System.Double,PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType)
+  name.vb: Normalize(Double, ValueType)
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncoding.Normalize(double, PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType)
+  fullName.vb: PolylineAlgorithm.Abstraction.PolylineEncoding.Normalize(Double, PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType)
+  nameWithType: PolylineEncoding.Normalize(double, PolylineEncoding.ValueType)
+  nameWithType.vb: PolylineEncoding.Normalize(Double, PolylineEncoding.ValueType)
+- uid: PolylineAlgorithm.Abstraction.PolylineEncoding.Normalize*
+  name: Normalize
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncoding.html#PolylineAlgorithm_Abstraction_PolylineEncoding_Normalize_
+  commentId: Overload:PolylineAlgorithm.Abstraction.PolylineEncoding.Normalize
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncoding.Normalize
+  nameWithType: PolylineEncoding.Normalize
+- uid: PolylineAlgorithm.Abstraction.PolylineEncoding.TryReadValue(System.Int32@,System.ReadOnlyMemory{System.Char}@,System.Int32@)
+  name: TryReadValue(ref int, ref ReadOnlyMemory<char>, ref int)
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncoding.html#PolylineAlgorithm_Abstraction_PolylineEncoding_TryReadValue_System_Int32__System_ReadOnlyMemory_System_Char___System_Int32__
+  commentId: M:PolylineAlgorithm.Abstraction.PolylineEncoding.TryReadValue(System.Int32@,System.ReadOnlyMemory{System.Char}@,System.Int32@)
+  name.vb: TryReadValue(Integer, ReadOnlyMemory(Of Char), Integer)
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncoding.TryReadValue(ref int, ref System.ReadOnlyMemory<char>, ref int)
+  fullName.vb: PolylineAlgorithm.Abstraction.PolylineEncoding.TryReadValue(Integer, System.ReadOnlyMemory(Of Char), Integer)
+  nameWithType: PolylineEncoding.TryReadValue(ref int, ref ReadOnlyMemory<char>, ref int)
+  nameWithType.vb: PolylineEncoding.TryReadValue(Integer, ReadOnlyMemory(Of Char), Integer)
+- uid: PolylineAlgorithm.Abstraction.PolylineEncoding.TryReadValue*
+  name: TryReadValue
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncoding.html#PolylineAlgorithm_Abstraction_PolylineEncoding_TryReadValue_
+  commentId: Overload:PolylineAlgorithm.Abstraction.PolylineEncoding.TryReadValue
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncoding.TryReadValue
+  nameWithType: PolylineEncoding.TryReadValue
+- uid: PolylineAlgorithm.Abstraction.PolylineEncoding.TryWriteValue(System.Int32,System.Span{System.Char}@,System.Int32@)
+  name: TryWriteValue(int, ref Span<char>, ref int)
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncoding.html#PolylineAlgorithm_Abstraction_PolylineEncoding_TryWriteValue_System_Int32_System_Span_System_Char___System_Int32__
+  commentId: M:PolylineAlgorithm.Abstraction.PolylineEncoding.TryWriteValue(System.Int32,System.Span{System.Char}@,System.Int32@)
+  name.vb: TryWriteValue(Integer, Span(Of Char), Integer)
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncoding.TryWriteValue(int, ref System.Span<char>, ref int)
+  fullName.vb: PolylineAlgorithm.Abstraction.PolylineEncoding.TryWriteValue(Integer, System.Span(Of Char), Integer)
+  nameWithType: PolylineEncoding.TryWriteValue(int, ref Span<char>, ref int)
+  nameWithType.vb: PolylineEncoding.TryWriteValue(Integer, Span(Of Char), Integer)
+- uid: PolylineAlgorithm.Abstraction.PolylineEncoding.TryWriteValue*
+  name: TryWriteValue
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncoding.html#PolylineAlgorithm_Abstraction_PolylineEncoding_TryWriteValue_
+  commentId: Overload:PolylineAlgorithm.Abstraction.PolylineEncoding.TryWriteValue
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncoding.TryWriteValue
+  nameWithType: PolylineEncoding.TryWriteValue
+- uid: PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType
+  name: PolylineEncoding.ValueType
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType.html
+  commentId: T:PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType
+  nameWithType: PolylineEncoding.ValueType
+- uid: PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType.Latitude
+  name: Latitude
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType.html#PolylineAlgorithm_Abstraction_PolylineEncoding_ValueType_Latitude
+  commentId: F:PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType.Latitude
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType.Latitude
+  nameWithType: PolylineEncoding.ValueType.Latitude
+- uid: PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType.Longitude
+  name: Longitude
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType.html#PolylineAlgorithm_Abstraction_PolylineEncoding_ValueType_Longitude
+  commentId: F:PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType.Longitude
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType.Longitude
+  nameWithType: PolylineEncoding.ValueType.Longitude
+- uid: PolylineAlgorithm.Abstraction.PolylineEncodingOptions
+  name: PolylineEncodingOptions
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncodingOptions.html
+  commentId: T:PolylineAlgorithm.Abstraction.PolylineEncodingOptions
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncodingOptions
+  nameWithType: PolylineEncodingOptions
+- uid: PolylineAlgorithm.Abstraction.PolylineEncodingOptions.BufferSize
+  name: BufferSize
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncodingOptions.html#PolylineAlgorithm_Abstraction_PolylineEncodingOptions_BufferSize
+  commentId: P:PolylineAlgorithm.Abstraction.PolylineEncodingOptions.BufferSize
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncodingOptions.BufferSize
+  nameWithType: PolylineEncodingOptions.BufferSize
+- uid: PolylineAlgorithm.Abstraction.PolylineEncodingOptions.BufferSize*
+  name: BufferSize
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncodingOptions.html#PolylineAlgorithm_Abstraction_PolylineEncodingOptions_BufferSize_
+  commentId: Overload:PolylineAlgorithm.Abstraction.PolylineEncodingOptions.BufferSize
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncodingOptions.BufferSize
+  nameWithType: PolylineEncodingOptions.BufferSize
+- uid: PolylineAlgorithm.Abstraction.PolylineEncodingOptions.GetLoggerFor*
+  name: GetLoggerFor
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncodingOptions.html#PolylineAlgorithm_Abstraction_PolylineEncodingOptions_GetLoggerFor_
+  commentId: Overload:PolylineAlgorithm.Abstraction.PolylineEncodingOptions.GetLoggerFor
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncodingOptions.GetLoggerFor
+  nameWithType: PolylineEncodingOptions.GetLoggerFor
+- uid: PolylineAlgorithm.Abstraction.PolylineEncodingOptions.GetLoggerFor``1
+  name: GetLoggerFor<T>()
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncodingOptions.html#PolylineAlgorithm_Abstraction_PolylineEncodingOptions_GetLoggerFor__1
+  commentId: M:PolylineAlgorithm.Abstraction.PolylineEncodingOptions.GetLoggerFor``1
+  name.vb: GetLoggerFor(Of T)()
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncodingOptions.GetLoggerFor<T>()
+  fullName.vb: PolylineAlgorithm.Abstraction.PolylineEncodingOptions.GetLoggerFor(Of T)()
+  nameWithType: PolylineEncodingOptions.GetLoggerFor<T>()
+  nameWithType.vb: PolylineEncodingOptions.GetLoggerFor(Of T)()
+- uid: PolylineAlgorithm.Abstraction.PolylineEncodingOptions.LoggerFactory
+  name: LoggerFactory
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncodingOptions.html#PolylineAlgorithm_Abstraction_PolylineEncodingOptions_LoggerFactory
+  commentId: P:PolylineAlgorithm.Abstraction.PolylineEncodingOptions.LoggerFactory
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncodingOptions.LoggerFactory
+  nameWithType: PolylineEncodingOptions.LoggerFactory
+- uid: PolylineAlgorithm.Abstraction.PolylineEncodingOptions.LoggerFactory*
+  name: LoggerFactory
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncodingOptions.html#PolylineAlgorithm_Abstraction_PolylineEncodingOptions_LoggerFactory_
+  commentId: Overload:PolylineAlgorithm.Abstraction.PolylineEncodingOptions.LoggerFactory
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncodingOptions.LoggerFactory
+  nameWithType: PolylineEncodingOptions.LoggerFactory
+- uid: PolylineAlgorithm.Abstraction.PolylineEncodingOptions.MaxLength
+  name: MaxLength
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncodingOptions.html#PolylineAlgorithm_Abstraction_PolylineEncodingOptions_MaxLength
+  commentId: P:PolylineAlgorithm.Abstraction.PolylineEncodingOptions.MaxLength
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncodingOptions.MaxLength
+  nameWithType: PolylineEncodingOptions.MaxLength
+- uid: PolylineAlgorithm.Abstraction.PolylineEncodingOptions.MaxLength*
+  name: MaxLength
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncodingOptions.html#PolylineAlgorithm_Abstraction_PolylineEncodingOptions_MaxLength_
+  commentId: Overload:PolylineAlgorithm.Abstraction.PolylineEncodingOptions.MaxLength
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncodingOptions.MaxLength
+  nameWithType: PolylineEncodingOptions.MaxLength
+- uid: PolylineAlgorithm.Abstraction.PolylineEncodingOptionsBuilder
+  name: PolylineEncodingOptionsBuilder
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncodingOptionsBuilder.html
+  commentId: T:PolylineAlgorithm.Abstraction.PolylineEncodingOptionsBuilder
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncodingOptionsBuilder
+  nameWithType: PolylineEncodingOptionsBuilder
+- uid: PolylineAlgorithm.Abstraction.PolylineEncodingOptionsBuilder.Create
+  name: Create()
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncodingOptionsBuilder.html#PolylineAlgorithm_Abstraction_PolylineEncodingOptionsBuilder_Create
+  commentId: M:PolylineAlgorithm.Abstraction.PolylineEncodingOptionsBuilder.Create
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncodingOptionsBuilder.Create()
+  nameWithType: PolylineEncodingOptionsBuilder.Create()
+- uid: PolylineAlgorithm.Abstraction.PolylineEncodingOptionsBuilder.Create*
+  name: Create
+  href: api-reference/PolylineAlgorithm.Abstraction.PolylineEncodingOptionsBuilder.html#PolylineAlgorithm_Abstraction_PolylineEncodingOptionsBuilder_Create_
+  commentId: Overload:PolylineAlgorithm.Abstraction.PolylineEncodingOptionsBuilder.Create
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Abstraction.PolylineEncodingOptionsBuilder.Create
+  nameWithType: PolylineEncodingOptionsBuilder.Create
+- uid: PolylineAlgorithm.Coordinate
+  name: Coordinate
+  href: api-reference/PolylineAlgorithm.Coordinate.html
+  commentId: T:PolylineAlgorithm.Coordinate
+  fullName: PolylineAlgorithm.Coordinate
+  nameWithType: Coordinate
+- uid: PolylineAlgorithm.Coordinate.#ctor
+  name: Coordinate()
+  href: api-reference/PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate__ctor
+  commentId: M:PolylineAlgorithm.Coordinate.#ctor
+  name.vb: New()
+  fullName: PolylineAlgorithm.Coordinate.Coordinate()
+  fullName.vb: PolylineAlgorithm.Coordinate.New()
+  nameWithType: Coordinate.Coordinate()
+  nameWithType.vb: Coordinate.New()
+- uid: PolylineAlgorithm.Coordinate.#ctor(System.Double,System.Double)
+  name: Coordinate(double, double)
+  href: api-reference/PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate__ctor_System_Double_System_Double_
+  commentId: M:PolylineAlgorithm.Coordinate.#ctor(System.Double,System.Double)
+  name.vb: New(Double, Double)
+  fullName: PolylineAlgorithm.Coordinate.Coordinate(double, double)
+  fullName.vb: PolylineAlgorithm.Coordinate.New(Double, Double)
+  nameWithType: Coordinate.Coordinate(double, double)
+  nameWithType.vb: Coordinate.New(Double, Double)
+- uid: PolylineAlgorithm.Coordinate.#ctor*
+  name: Coordinate
+  href: api-reference/PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate__ctor_
+  commentId: Overload:PolylineAlgorithm.Coordinate.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: PolylineAlgorithm.Coordinate.Coordinate
+  fullName.vb: PolylineAlgorithm.Coordinate.New
+  nameWithType: Coordinate.Coordinate
+  nameWithType.vb: Coordinate.New
+- uid: PolylineAlgorithm.Coordinate.Equals(PolylineAlgorithm.Coordinate)
+  name: Equals(Coordinate)
+  href: api-reference/PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_Equals_PolylineAlgorithm_Coordinate_
+  commentId: M:PolylineAlgorithm.Coordinate.Equals(PolylineAlgorithm.Coordinate)
+  fullName: PolylineAlgorithm.Coordinate.Equals(PolylineAlgorithm.Coordinate)
+  nameWithType: Coordinate.Equals(Coordinate)
+- uid: PolylineAlgorithm.Coordinate.Equals(System.Object)
+  name: Equals(object?)
+  href: api-reference/PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_Equals_System_Object_
+  commentId: M:PolylineAlgorithm.Coordinate.Equals(System.Object)
+  name.vb: Equals(Object)
+  fullName: PolylineAlgorithm.Coordinate.Equals(object?)
+  fullName.vb: PolylineAlgorithm.Coordinate.Equals(Object)
+  nameWithType: Coordinate.Equals(object?)
+  nameWithType.vb: Coordinate.Equals(Object)
+- uid: PolylineAlgorithm.Coordinate.Equals*
+  name: Equals
+  href: api-reference/PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_Equals_
+  commentId: Overload:PolylineAlgorithm.Coordinate.Equals
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Coordinate.Equals
+  nameWithType: Coordinate.Equals
+- uid: PolylineAlgorithm.Coordinate.GetHashCode
+  name: GetHashCode()
+  href: api-reference/PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_GetHashCode
+  commentId: M:PolylineAlgorithm.Coordinate.GetHashCode
+  fullName: PolylineAlgorithm.Coordinate.GetHashCode()
+  nameWithType: Coordinate.GetHashCode()
+- uid: PolylineAlgorithm.Coordinate.GetHashCode*
+  name: GetHashCode
+  href: api-reference/PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_GetHashCode_
+  commentId: Overload:PolylineAlgorithm.Coordinate.GetHashCode
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Coordinate.GetHashCode
+  nameWithType: Coordinate.GetHashCode
+- uid: PolylineAlgorithm.Coordinate.IsDefault
+  name: IsDefault()
+  href: api-reference/PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_IsDefault
+  commentId: M:PolylineAlgorithm.Coordinate.IsDefault
+  fullName: PolylineAlgorithm.Coordinate.IsDefault()
+  nameWithType: Coordinate.IsDefault()
+- uid: PolylineAlgorithm.Coordinate.IsDefault*
+  name: IsDefault
+  href: api-reference/PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_IsDefault_
+  commentId: Overload:PolylineAlgorithm.Coordinate.IsDefault
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Coordinate.IsDefault
+  nameWithType: Coordinate.IsDefault
+- uid: PolylineAlgorithm.Coordinate.Latitude
+  name: Latitude
+  href: api-reference/PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_Latitude
+  commentId: P:PolylineAlgorithm.Coordinate.Latitude
+  fullName: PolylineAlgorithm.Coordinate.Latitude
+  nameWithType: Coordinate.Latitude
+- uid: PolylineAlgorithm.Coordinate.Latitude*
+  name: Latitude
+  href: api-reference/PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_Latitude_
+  commentId: Overload:PolylineAlgorithm.Coordinate.Latitude
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Coordinate.Latitude
+  nameWithType: Coordinate.Latitude
+- uid: PolylineAlgorithm.Coordinate.Longitude
+  name: Longitude
+  href: api-reference/PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_Longitude
+  commentId: P:PolylineAlgorithm.Coordinate.Longitude
+  fullName: PolylineAlgorithm.Coordinate.Longitude
+  nameWithType: Coordinate.Longitude
+- uid: PolylineAlgorithm.Coordinate.Longitude*
+  name: Longitude
+  href: api-reference/PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_Longitude_
+  commentId: Overload:PolylineAlgorithm.Coordinate.Longitude
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Coordinate.Longitude
+  nameWithType: Coordinate.Longitude
+- uid: PolylineAlgorithm.Coordinate.ToString
+  name: ToString()
+  href: api-reference/PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_ToString
+  commentId: M:PolylineAlgorithm.Coordinate.ToString
+  fullName: PolylineAlgorithm.Coordinate.ToString()
+  nameWithType: Coordinate.ToString()
+- uid: PolylineAlgorithm.Coordinate.ToString*
+  name: ToString
+  href: api-reference/PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_ToString_
+  commentId: Overload:PolylineAlgorithm.Coordinate.ToString
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Coordinate.ToString
+  nameWithType: Coordinate.ToString
+- uid: PolylineAlgorithm.Coordinate.op_Equality(PolylineAlgorithm.Coordinate,PolylineAlgorithm.Coordinate)
+  name: operator ==(Coordinate, Coordinate)
+  href: api-reference/PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_op_Equality_PolylineAlgorithm_Coordinate_PolylineAlgorithm_Coordinate_
+  commentId: M:PolylineAlgorithm.Coordinate.op_Equality(PolylineAlgorithm.Coordinate,PolylineAlgorithm.Coordinate)
+  name.vb: =(Coordinate, Coordinate)
+  fullName: PolylineAlgorithm.Coordinate.operator ==(PolylineAlgorithm.Coordinate, PolylineAlgorithm.Coordinate)
+  fullName.vb: PolylineAlgorithm.Coordinate.=(PolylineAlgorithm.Coordinate, PolylineAlgorithm.Coordinate)
+  nameWithType: Coordinate.operator ==(Coordinate, Coordinate)
+  nameWithType.vb: Coordinate.=(Coordinate, Coordinate)
+- uid: PolylineAlgorithm.Coordinate.op_Equality*
+  name: operator ==
+  href: api-reference/PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_op_Equality_
+  commentId: Overload:PolylineAlgorithm.Coordinate.op_Equality
+  isSpec: "True"
+  name.vb: =
+  fullName: PolylineAlgorithm.Coordinate.operator ==
+  fullName.vb: PolylineAlgorithm.Coordinate.=
+  nameWithType: Coordinate.operator ==
+  nameWithType.vb: Coordinate.=
+- uid: PolylineAlgorithm.Coordinate.op_Inequality(PolylineAlgorithm.Coordinate,PolylineAlgorithm.Coordinate)
+  name: operator !=(Coordinate, Coordinate)
+  href: api-reference/PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_op_Inequality_PolylineAlgorithm_Coordinate_PolylineAlgorithm_Coordinate_
+  commentId: M:PolylineAlgorithm.Coordinate.op_Inequality(PolylineAlgorithm.Coordinate,PolylineAlgorithm.Coordinate)
+  name.vb: <>(Coordinate, Coordinate)
+  fullName: PolylineAlgorithm.Coordinate.operator !=(PolylineAlgorithm.Coordinate, PolylineAlgorithm.Coordinate)
+  fullName.vb: PolylineAlgorithm.Coordinate.<>(PolylineAlgorithm.Coordinate, PolylineAlgorithm.Coordinate)
+  nameWithType: Coordinate.operator !=(Coordinate, Coordinate)
+  nameWithType.vb: Coordinate.<>(Coordinate, Coordinate)
+- uid: PolylineAlgorithm.Coordinate.op_Inequality*
+  name: operator !=
+  href: api-reference/PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_op_Inequality_
+  commentId: Overload:PolylineAlgorithm.Coordinate.op_Inequality
+  isSpec: "True"
+  name.vb: <>
+  fullName: PolylineAlgorithm.Coordinate.operator !=
+  fullName.vb: PolylineAlgorithm.Coordinate.<>
+  nameWithType: Coordinate.operator !=
+  nameWithType.vb: Coordinate.<>
+- uid: PolylineAlgorithm.Extensions
+  name: PolylineAlgorithm.Extensions
+  href: api-reference/PolylineAlgorithm.Extensions.html
+  commentId: N:PolylineAlgorithm.Extensions
+  fullName: PolylineAlgorithm.Extensions
+  nameWithType: PolylineAlgorithm.Extensions
+- uid: PolylineAlgorithm.Extensions.PolylineDecoderExtensions
+  name: PolylineDecoderExtensions
+  href: api-reference/PolylineAlgorithm.Extensions.PolylineDecoderExtensions.html
+  commentId: T:PolylineAlgorithm.Extensions.PolylineDecoderExtensions
+  fullName: PolylineAlgorithm.Extensions.PolylineDecoderExtensions
+  nameWithType: PolylineDecoderExtensions
+- uid: PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode(PolylineAlgorithm.Abstraction.IPolylineDecoder{PolylineAlgorithm.Polyline,PolylineAlgorithm.Coordinate},System.Char[])
+  name: Decode(IPolylineDecoder<Polyline, Coordinate>, char[])
+  href: api-reference/PolylineAlgorithm.Extensions.PolylineDecoderExtensions.html#PolylineAlgorithm_Extensions_PolylineDecoderExtensions_Decode_PolylineAlgorithm_Abstraction_IPolylineDecoder_PolylineAlgorithm_Polyline_PolylineAlgorithm_Coordinate__System_Char___
+  commentId: M:PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode(PolylineAlgorithm.Abstraction.IPolylineDecoder{PolylineAlgorithm.Polyline,PolylineAlgorithm.Coordinate},System.Char[])
+  name.vb: Decode(IPolylineDecoder(Of Polyline, Coordinate), Char())
+  fullName: PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode(PolylineAlgorithm.Abstraction.IPolylineDecoder<PolylineAlgorithm.Polyline, PolylineAlgorithm.Coordinate>, char[])
+  fullName.vb: PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode(PolylineAlgorithm.Abstraction.IPolylineDecoder(Of PolylineAlgorithm.Polyline, PolylineAlgorithm.Coordinate), Char())
+  nameWithType: PolylineDecoderExtensions.Decode(IPolylineDecoder<Polyline, Coordinate>, char[])
+  nameWithType.vb: PolylineDecoderExtensions.Decode(IPolylineDecoder(Of Polyline, Coordinate), Char())
+- uid: PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode(PolylineAlgorithm.Abstraction.IPolylineDecoder{PolylineAlgorithm.Polyline,PolylineAlgorithm.Coordinate},System.ReadOnlyMemory{System.Char})
+  name: Decode(IPolylineDecoder<Polyline, Coordinate>, ReadOnlyMemory<char>)
+  href: api-reference/PolylineAlgorithm.Extensions.PolylineDecoderExtensions.html#PolylineAlgorithm_Extensions_PolylineDecoderExtensions_Decode_PolylineAlgorithm_Abstraction_IPolylineDecoder_PolylineAlgorithm_Polyline_PolylineAlgorithm_Coordinate__System_ReadOnlyMemory_System_Char__
+  commentId: M:PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode(PolylineAlgorithm.Abstraction.IPolylineDecoder{PolylineAlgorithm.Polyline,PolylineAlgorithm.Coordinate},System.ReadOnlyMemory{System.Char})
+  name.vb: Decode(IPolylineDecoder(Of Polyline, Coordinate), ReadOnlyMemory(Of Char))
+  fullName: PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode(PolylineAlgorithm.Abstraction.IPolylineDecoder<PolylineAlgorithm.Polyline, PolylineAlgorithm.Coordinate>, System.ReadOnlyMemory<char>)
+  fullName.vb: PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode(PolylineAlgorithm.Abstraction.IPolylineDecoder(Of PolylineAlgorithm.Polyline, PolylineAlgorithm.Coordinate), System.ReadOnlyMemory(Of Char))
+  nameWithType: PolylineDecoderExtensions.Decode(IPolylineDecoder<Polyline, Coordinate>, ReadOnlyMemory<char>)
+  nameWithType.vb: PolylineDecoderExtensions.Decode(IPolylineDecoder(Of Polyline, Coordinate), ReadOnlyMemory(Of Char))
+- uid: PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode(PolylineAlgorithm.Abstraction.IPolylineDecoder{PolylineAlgorithm.Polyline,PolylineAlgorithm.Coordinate},System.String)
+  name: Decode(IPolylineDecoder<Polyline, Coordinate>, string)
+  href: api-reference/PolylineAlgorithm.Extensions.PolylineDecoderExtensions.html#PolylineAlgorithm_Extensions_PolylineDecoderExtensions_Decode_PolylineAlgorithm_Abstraction_IPolylineDecoder_PolylineAlgorithm_Polyline_PolylineAlgorithm_Coordinate__System_String_
+  commentId: M:PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode(PolylineAlgorithm.Abstraction.IPolylineDecoder{PolylineAlgorithm.Polyline,PolylineAlgorithm.Coordinate},System.String)
+  name.vb: Decode(IPolylineDecoder(Of Polyline, Coordinate), String)
+  fullName: PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode(PolylineAlgorithm.Abstraction.IPolylineDecoder<PolylineAlgorithm.Polyline, PolylineAlgorithm.Coordinate>, string)
+  fullName.vb: PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode(PolylineAlgorithm.Abstraction.IPolylineDecoder(Of PolylineAlgorithm.Polyline, PolylineAlgorithm.Coordinate), String)
+  nameWithType: PolylineDecoderExtensions.Decode(IPolylineDecoder<Polyline, Coordinate>, string)
+  nameWithType.vb: PolylineDecoderExtensions.Decode(IPolylineDecoder(Of Polyline, Coordinate), String)
+- uid: PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode*
+  name: Decode
+  href: api-reference/PolylineAlgorithm.Extensions.PolylineDecoderExtensions.html#PolylineAlgorithm_Extensions_PolylineDecoderExtensions_Decode_
+  commentId: Overload:PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode
+  nameWithType: PolylineDecoderExtensions.Decode
+- uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions
+  name: PolylineEncoderExtensions
+  href: api-reference/PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html
+  commentId: T:PolylineAlgorithm.Extensions.PolylineEncoderExtensions
+  fullName: PolylineAlgorithm.Extensions.PolylineEncoderExtensions
+  nameWithType: PolylineEncoderExtensions
+- uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode(PolylineAlgorithm.Abstraction.IPolylineEncoder{PolylineAlgorithm.Coordinate,PolylineAlgorithm.Polyline},PolylineAlgorithm.Coordinate[])
+  name: Encode(IPolylineEncoder<Coordinate, Polyline>, Coordinate[])
+  href: api-reference/PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode_PolylineAlgorithm_Abstraction_IPolylineEncoder_PolylineAlgorithm_Coordinate_PolylineAlgorithm_Polyline__PolylineAlgorithm_Coordinate___
+  commentId: M:PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode(PolylineAlgorithm.Abstraction.IPolylineEncoder{PolylineAlgorithm.Coordinate,PolylineAlgorithm.Polyline},PolylineAlgorithm.Coordinate[])
+  name.vb: Encode(IPolylineEncoder(Of Coordinate, Polyline), Coordinate())
+  fullName: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode(PolylineAlgorithm.Abstraction.IPolylineEncoder<PolylineAlgorithm.Coordinate, PolylineAlgorithm.Polyline>, PolylineAlgorithm.Coordinate[])
+  fullName.vb: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode(PolylineAlgorithm.Abstraction.IPolylineEncoder(Of PolylineAlgorithm.Coordinate, PolylineAlgorithm.Polyline), PolylineAlgorithm.Coordinate())
+  nameWithType: PolylineEncoderExtensions.Encode(IPolylineEncoder<Coordinate, Polyline>, Coordinate[])
+  nameWithType.vb: PolylineEncoderExtensions.Encode(IPolylineEncoder(Of Coordinate, Polyline), Coordinate())
+- uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode(PolylineAlgorithm.Abstraction.IPolylineEncoder{PolylineAlgorithm.Coordinate,PolylineAlgorithm.Polyline},System.Collections.Generic.ICollection{PolylineAlgorithm.Coordinate})
+  name: Encode(IPolylineEncoder<Coordinate, Polyline>, ICollection<Coordinate>)
+  href: api-reference/PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode_PolylineAlgorithm_Abstraction_IPolylineEncoder_PolylineAlgorithm_Coordinate_PolylineAlgorithm_Polyline__System_Collections_Generic_ICollection_PolylineAlgorithm_Coordinate__
+  commentId: M:PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode(PolylineAlgorithm.Abstraction.IPolylineEncoder{PolylineAlgorithm.Coordinate,PolylineAlgorithm.Polyline},System.Collections.Generic.ICollection{PolylineAlgorithm.Coordinate})
+  name.vb: Encode(IPolylineEncoder(Of Coordinate, Polyline), ICollection(Of Coordinate))
+  fullName: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode(PolylineAlgorithm.Abstraction.IPolylineEncoder<PolylineAlgorithm.Coordinate, PolylineAlgorithm.Polyline>, System.Collections.Generic.ICollection<PolylineAlgorithm.Coordinate>)
+  fullName.vb: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode(PolylineAlgorithm.Abstraction.IPolylineEncoder(Of PolylineAlgorithm.Coordinate, PolylineAlgorithm.Polyline), System.Collections.Generic.ICollection(Of PolylineAlgorithm.Coordinate))
+  nameWithType: PolylineEncoderExtensions.Encode(IPolylineEncoder<Coordinate, Polyline>, ICollection<Coordinate>)
+  nameWithType.vb: PolylineEncoderExtensions.Encode(IPolylineEncoder(Of Coordinate, Polyline), ICollection(Of Coordinate))
+- uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode*
+  name: Encode
+  href: api-reference/PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode_
+  commentId: Overload:PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode
+  nameWithType: PolylineEncoderExtensions.Encode
+- uid: PolylineAlgorithm.Polyline
+  name: Polyline
+  href: api-reference/PolylineAlgorithm.Polyline.html
+  commentId: T:PolylineAlgorithm.Polyline
+  fullName: PolylineAlgorithm.Polyline
+  nameWithType: Polyline
+- uid: PolylineAlgorithm.Polyline.#ctor
+  name: Polyline()
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline__ctor
+  commentId: M:PolylineAlgorithm.Polyline.#ctor
+  name.vb: New()
+  fullName: PolylineAlgorithm.Polyline.Polyline()
+  fullName.vb: PolylineAlgorithm.Polyline.New()
+  nameWithType: Polyline.Polyline()
+  nameWithType.vb: Polyline.New()
+- uid: PolylineAlgorithm.Polyline.#ctor*
+  name: Polyline
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline__ctor_
+  commentId: Overload:PolylineAlgorithm.Polyline.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: PolylineAlgorithm.Polyline.Polyline
+  fullName.vb: PolylineAlgorithm.Polyline.New
+  nameWithType: Polyline.Polyline
+  nameWithType.vb: Polyline.New
+- uid: PolylineAlgorithm.Polyline.CopyTo(System.Char[])
+  name: CopyTo(char[])
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_CopyTo_System_Char___
+  commentId: M:PolylineAlgorithm.Polyline.CopyTo(System.Char[])
+  name.vb: CopyTo(Char())
+  fullName: PolylineAlgorithm.Polyline.CopyTo(char[])
+  fullName.vb: PolylineAlgorithm.Polyline.CopyTo(Char())
+  nameWithType: Polyline.CopyTo(char[])
+  nameWithType.vb: Polyline.CopyTo(Char())
+- uid: PolylineAlgorithm.Polyline.CopyTo*
+  name: CopyTo
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_CopyTo_
+  commentId: Overload:PolylineAlgorithm.Polyline.CopyTo
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Polyline.CopyTo
+  nameWithType: Polyline.CopyTo
+- uid: PolylineAlgorithm.Polyline.Equals(PolylineAlgorithm.Polyline)
+  name: Equals(Polyline)
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_Equals_PolylineAlgorithm_Polyline_
+  commentId: M:PolylineAlgorithm.Polyline.Equals(PolylineAlgorithm.Polyline)
+  fullName: PolylineAlgorithm.Polyline.Equals(PolylineAlgorithm.Polyline)
+  nameWithType: Polyline.Equals(Polyline)
+- uid: PolylineAlgorithm.Polyline.Equals(System.Object)
+  name: Equals(object)
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_Equals_System_Object_
+  commentId: M:PolylineAlgorithm.Polyline.Equals(System.Object)
+  name.vb: Equals(Object)
+  fullName: PolylineAlgorithm.Polyline.Equals(object)
+  fullName.vb: PolylineAlgorithm.Polyline.Equals(Object)
+  nameWithType: Polyline.Equals(object)
+  nameWithType.vb: Polyline.Equals(Object)
+- uid: PolylineAlgorithm.Polyline.Equals*
+  name: Equals
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_Equals_
+  commentId: Overload:PolylineAlgorithm.Polyline.Equals
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Polyline.Equals
+  nameWithType: Polyline.Equals
+- uid: PolylineAlgorithm.Polyline.FromCharArray(System.Char[])
+  name: FromCharArray(char[])
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_FromCharArray_System_Char___
+  commentId: M:PolylineAlgorithm.Polyline.FromCharArray(System.Char[])
+  name.vb: FromCharArray(Char())
+  fullName: PolylineAlgorithm.Polyline.FromCharArray(char[])
+  fullName.vb: PolylineAlgorithm.Polyline.FromCharArray(Char())
+  nameWithType: Polyline.FromCharArray(char[])
+  nameWithType.vb: Polyline.FromCharArray(Char())
+- uid: PolylineAlgorithm.Polyline.FromCharArray*
+  name: FromCharArray
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_FromCharArray_
+  commentId: Overload:PolylineAlgorithm.Polyline.FromCharArray
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Polyline.FromCharArray
+  nameWithType: Polyline.FromCharArray
+- uid: PolylineAlgorithm.Polyline.FromMemory(System.ReadOnlyMemory{System.Char})
+  name: FromMemory(ReadOnlyMemory<char>)
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_FromMemory_System_ReadOnlyMemory_System_Char__
+  commentId: M:PolylineAlgorithm.Polyline.FromMemory(System.ReadOnlyMemory{System.Char})
+  name.vb: FromMemory(ReadOnlyMemory(Of Char))
+  fullName: PolylineAlgorithm.Polyline.FromMemory(System.ReadOnlyMemory<char>)
+  fullName.vb: PolylineAlgorithm.Polyline.FromMemory(System.ReadOnlyMemory(Of Char))
+  nameWithType: Polyline.FromMemory(ReadOnlyMemory<char>)
+  nameWithType.vb: Polyline.FromMemory(ReadOnlyMemory(Of Char))
+- uid: PolylineAlgorithm.Polyline.FromMemory*
+  name: FromMemory
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_FromMemory_
+  commentId: Overload:PolylineAlgorithm.Polyline.FromMemory
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Polyline.FromMemory
+  nameWithType: Polyline.FromMemory
+- uid: PolylineAlgorithm.Polyline.FromString(System.String)
+  name: FromString(string)
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_FromString_System_String_
+  commentId: M:PolylineAlgorithm.Polyline.FromString(System.String)
+  name.vb: FromString(String)
+  fullName: PolylineAlgorithm.Polyline.FromString(string)
+  fullName.vb: PolylineAlgorithm.Polyline.FromString(String)
+  nameWithType: Polyline.FromString(string)
+  nameWithType.vb: Polyline.FromString(String)
+- uid: PolylineAlgorithm.Polyline.FromString*
+  name: FromString
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_FromString_
+  commentId: Overload:PolylineAlgorithm.Polyline.FromString
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Polyline.FromString
+  nameWithType: Polyline.FromString
+- uid: PolylineAlgorithm.Polyline.GetHashCode
+  name: GetHashCode()
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_GetHashCode
+  commentId: M:PolylineAlgorithm.Polyline.GetHashCode
+  fullName: PolylineAlgorithm.Polyline.GetHashCode()
+  nameWithType: Polyline.GetHashCode()
+- uid: PolylineAlgorithm.Polyline.GetHashCode*
+  name: GetHashCode
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_GetHashCode_
+  commentId: Overload:PolylineAlgorithm.Polyline.GetHashCode
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Polyline.GetHashCode
+  nameWithType: Polyline.GetHashCode
+- uid: PolylineAlgorithm.Polyline.IsEmpty
+  name: IsEmpty
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_IsEmpty
+  commentId: P:PolylineAlgorithm.Polyline.IsEmpty
+  fullName: PolylineAlgorithm.Polyline.IsEmpty
+  nameWithType: Polyline.IsEmpty
+- uid: PolylineAlgorithm.Polyline.IsEmpty*
+  name: IsEmpty
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_IsEmpty_
+  commentId: Overload:PolylineAlgorithm.Polyline.IsEmpty
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Polyline.IsEmpty
+  nameWithType: Polyline.IsEmpty
+- uid: PolylineAlgorithm.Polyline.Length
+  name: Length
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_Length
+  commentId: P:PolylineAlgorithm.Polyline.Length
+  fullName: PolylineAlgorithm.Polyline.Length
+  nameWithType: Polyline.Length
+- uid: PolylineAlgorithm.Polyline.Length*
+  name: Length
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_Length_
+  commentId: Overload:PolylineAlgorithm.Polyline.Length
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Polyline.Length
+  nameWithType: Polyline.Length
+- uid: PolylineAlgorithm.Polyline.ToString
+  name: ToString()
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_ToString
+  commentId: M:PolylineAlgorithm.Polyline.ToString
+  fullName: PolylineAlgorithm.Polyline.ToString()
+  nameWithType: Polyline.ToString()
+- uid: PolylineAlgorithm.Polyline.ToString*
+  name: ToString
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_ToString_
+  commentId: Overload:PolylineAlgorithm.Polyline.ToString
+  isSpec: "True"
+  fullName: PolylineAlgorithm.Polyline.ToString
+  nameWithType: Polyline.ToString
+- uid: PolylineAlgorithm.Polyline.op_Equality(PolylineAlgorithm.Polyline,PolylineAlgorithm.Polyline)
+  name: operator ==(Polyline, Polyline)
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_op_Equality_PolylineAlgorithm_Polyline_PolylineAlgorithm_Polyline_
+  commentId: M:PolylineAlgorithm.Polyline.op_Equality(PolylineAlgorithm.Polyline,PolylineAlgorithm.Polyline)
+  name.vb: =(Polyline, Polyline)
+  fullName: PolylineAlgorithm.Polyline.operator ==(PolylineAlgorithm.Polyline, PolylineAlgorithm.Polyline)
+  fullName.vb: PolylineAlgorithm.Polyline.=(PolylineAlgorithm.Polyline, PolylineAlgorithm.Polyline)
+  nameWithType: Polyline.operator ==(Polyline, Polyline)
+  nameWithType.vb: Polyline.=(Polyline, Polyline)
+- uid: PolylineAlgorithm.Polyline.op_Equality*
+  name: operator ==
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_op_Equality_
+  commentId: Overload:PolylineAlgorithm.Polyline.op_Equality
+  isSpec: "True"
+  name.vb: =
+  fullName: PolylineAlgorithm.Polyline.operator ==
+  fullName.vb: PolylineAlgorithm.Polyline.=
+  nameWithType: Polyline.operator ==
+  nameWithType.vb: Polyline.=
+- uid: PolylineAlgorithm.Polyline.op_Inequality(PolylineAlgorithm.Polyline,PolylineAlgorithm.Polyline)
+  name: operator !=(Polyline, Polyline)
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_op_Inequality_PolylineAlgorithm_Polyline_PolylineAlgorithm_Polyline_
+  commentId: M:PolylineAlgorithm.Polyline.op_Inequality(PolylineAlgorithm.Polyline,PolylineAlgorithm.Polyline)
+  name.vb: <>(Polyline, Polyline)
+  fullName: PolylineAlgorithm.Polyline.operator !=(PolylineAlgorithm.Polyline, PolylineAlgorithm.Polyline)
+  fullName.vb: PolylineAlgorithm.Polyline.<>(PolylineAlgorithm.Polyline, PolylineAlgorithm.Polyline)
+  nameWithType: Polyline.operator !=(Polyline, Polyline)
+  nameWithType.vb: Polyline.<>(Polyline, Polyline)
+- uid: PolylineAlgorithm.Polyline.op_Inequality*
+  name: operator !=
+  href: api-reference/PolylineAlgorithm.Polyline.html#PolylineAlgorithm_Polyline_op_Inequality_
+  commentId: Overload:PolylineAlgorithm.Polyline.op_Inequality
+  isSpec: "True"
+  name.vb: <>
+  fullName: PolylineAlgorithm.Polyline.operator !=
+  fullName.vb: PolylineAlgorithm.Polyline.<>
+  nameWithType: Polyline.operator !=
+  nameWithType.vb: Polyline.<>
+- uid: PolylineAlgorithm.PolylineDecoder
+  name: PolylineDecoder
+  href: api-reference/PolylineAlgorithm.PolylineDecoder.html
+  commentId: T:PolylineAlgorithm.PolylineDecoder
+  fullName: PolylineAlgorithm.PolylineDecoder
+  nameWithType: PolylineDecoder
+- uid: PolylineAlgorithm.PolylineDecoder.CreateCoordinate(System.Double,System.Double)
+  name: CreateCoordinate(double, double)
+  href: api-reference/PolylineAlgorithm.PolylineDecoder.html#PolylineAlgorithm_PolylineDecoder_CreateCoordinate_System_Double_System_Double_
+  commentId: M:PolylineAlgorithm.PolylineDecoder.CreateCoordinate(System.Double,System.Double)
+  name.vb: CreateCoordinate(Double, Double)
+  fullName: PolylineAlgorithm.PolylineDecoder.CreateCoordinate(double, double)
+  fullName.vb: PolylineAlgorithm.PolylineDecoder.CreateCoordinate(Double, Double)
+  nameWithType: PolylineDecoder.CreateCoordinate(double, double)
+  nameWithType.vb: PolylineDecoder.CreateCoordinate(Double, Double)
+- uid: PolylineAlgorithm.PolylineDecoder.CreateCoordinate*
+  name: CreateCoordinate
+  href: api-reference/PolylineAlgorithm.PolylineDecoder.html#PolylineAlgorithm_PolylineDecoder_CreateCoordinate_
+  commentId: Overload:PolylineAlgorithm.PolylineDecoder.CreateCoordinate
+  isSpec: "True"
+  fullName: PolylineAlgorithm.PolylineDecoder.CreateCoordinate
+  nameWithType: PolylineDecoder.CreateCoordinate
+- uid: PolylineAlgorithm.PolylineDecoder.GetReadOnlyMemory(PolylineAlgorithm.Polyline)
+  name: GetReadOnlyMemory(Polyline)
+  href: api-reference/PolylineAlgorithm.PolylineDecoder.html#PolylineAlgorithm_PolylineDecoder_GetReadOnlyMemory_PolylineAlgorithm_Polyline_
+  commentId: M:PolylineAlgorithm.PolylineDecoder.GetReadOnlyMemory(PolylineAlgorithm.Polyline)
+  fullName: PolylineAlgorithm.PolylineDecoder.GetReadOnlyMemory(PolylineAlgorithm.Polyline)
+  nameWithType: PolylineDecoder.GetReadOnlyMemory(Polyline)
+- uid: PolylineAlgorithm.PolylineDecoder.GetReadOnlyMemory*
+  name: GetReadOnlyMemory
+  href: api-reference/PolylineAlgorithm.PolylineDecoder.html#PolylineAlgorithm_PolylineDecoder_GetReadOnlyMemory_
+  commentId: Overload:PolylineAlgorithm.PolylineDecoder.GetReadOnlyMemory
+  isSpec: "True"
+  fullName: PolylineAlgorithm.PolylineDecoder.GetReadOnlyMemory
+  nameWithType: PolylineDecoder.GetReadOnlyMemory
+- uid: PolylineAlgorithm.PolylineEncoder
+  name: PolylineEncoder
+  href: api-reference/PolylineAlgorithm.PolylineEncoder.html
+  commentId: T:PolylineAlgorithm.PolylineEncoder
+  fullName: PolylineAlgorithm.PolylineEncoder
+  nameWithType: PolylineEncoder
+- uid: PolylineAlgorithm.PolylineEncoder.CreatePolyline(System.ReadOnlyMemory{System.Char})
+  name: CreatePolyline(ReadOnlyMemory<char>)
+  href: api-reference/PolylineAlgorithm.PolylineEncoder.html#PolylineAlgorithm_PolylineEncoder_CreatePolyline_System_ReadOnlyMemory_System_Char__
+  commentId: M:PolylineAlgorithm.PolylineEncoder.CreatePolyline(System.ReadOnlyMemory{System.Char})
+  name.vb: CreatePolyline(ReadOnlyMemory(Of Char))
+  fullName: PolylineAlgorithm.PolylineEncoder.CreatePolyline(System.ReadOnlyMemory<char>)
+  fullName.vb: PolylineAlgorithm.PolylineEncoder.CreatePolyline(System.ReadOnlyMemory(Of Char))
+  nameWithType: PolylineEncoder.CreatePolyline(ReadOnlyMemory<char>)
+  nameWithType.vb: PolylineEncoder.CreatePolyline(ReadOnlyMemory(Of Char))
+- uid: PolylineAlgorithm.PolylineEncoder.CreatePolyline*
+  name: CreatePolyline
+  href: api-reference/PolylineAlgorithm.PolylineEncoder.html#PolylineAlgorithm_PolylineEncoder_CreatePolyline_
+  commentId: Overload:PolylineAlgorithm.PolylineEncoder.CreatePolyline
+  isSpec: "True"
+  fullName: PolylineAlgorithm.PolylineEncoder.CreatePolyline
+  nameWithType: PolylineEncoder.CreatePolyline
+- uid: PolylineAlgorithm.PolylineEncoder.GetLatitude(PolylineAlgorithm.Coordinate)
+  name: GetLatitude(Coordinate)
+  href: api-reference/PolylineAlgorithm.PolylineEncoder.html#PolylineAlgorithm_PolylineEncoder_GetLatitude_PolylineAlgorithm_Coordinate_
+  commentId: M:PolylineAlgorithm.PolylineEncoder.GetLatitude(PolylineAlgorithm.Coordinate)
+  fullName: PolylineAlgorithm.PolylineEncoder.GetLatitude(PolylineAlgorithm.Coordinate)
+  nameWithType: PolylineEncoder.GetLatitude(Coordinate)
+- uid: PolylineAlgorithm.PolylineEncoder.GetLatitude*
+  name: GetLatitude
+  href: api-reference/PolylineAlgorithm.PolylineEncoder.html#PolylineAlgorithm_PolylineEncoder_GetLatitude_
+  commentId: Overload:PolylineAlgorithm.PolylineEncoder.GetLatitude
+  isSpec: "True"
+  fullName: PolylineAlgorithm.PolylineEncoder.GetLatitude
+  nameWithType: PolylineEncoder.GetLatitude
+- uid: PolylineAlgorithm.PolylineEncoder.GetLongitude(PolylineAlgorithm.Coordinate)
+  name: GetLongitude(Coordinate)
+  href: api-reference/PolylineAlgorithm.PolylineEncoder.html#PolylineAlgorithm_PolylineEncoder_GetLongitude_PolylineAlgorithm_Coordinate_
+  commentId: M:PolylineAlgorithm.PolylineEncoder.GetLongitude(PolylineAlgorithm.Coordinate)
+  fullName: PolylineAlgorithm.PolylineEncoder.GetLongitude(PolylineAlgorithm.Coordinate)
+  nameWithType: PolylineEncoder.GetLongitude(Coordinate)
+- uid: PolylineAlgorithm.PolylineEncoder.GetLongitude*
+  name: GetLongitude
+  href: api-reference/PolylineAlgorithm.PolylineEncoder.html#PolylineAlgorithm_PolylineEncoder_GetLongitude_
+  commentId: Overload:PolylineAlgorithm.PolylineEncoder.GetLongitude
+  isSpec: "True"
+  fullName: PolylineAlgorithm.PolylineEncoder.GetLongitude
+  nameWithType: PolylineEncoder.GetLongitude

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class PolylineEncoding | Polyline Algorithm for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class PolylineEncoding | Polyline Algorithm for .NET ">
+      
+      <meta name="description" content="Provides methods for encoding and decoding polyline data, as well as utilities for normalizing and denormalizing geographic coordinate values.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/sramekpete/polyline-algorithm-csharp/new/develop/1.0/apiSpec/new?filename=PolylineAlgorithm_Abstraction_PolylineEncoding.md&amp;value=---%0Auid%3A%20PolylineAlgorithm.Abstraction.PolylineEncoding%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../media/polyline-algorithm-50x46.png" alt=" Polyline Algorithm for .NET">
+             Polyline Algorithm for .NET
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="PolylineAlgorithm.Abstraction.PolylineEncoding">
+
+
+
+  <h1 id="PolylineAlgorithm_Abstraction_PolylineEncoding" data-uid="PolylineAlgorithm.Abstraction.PolylineEncoding" class="text-break">
+Class PolylineEncoding  <a class="header-action link-secondary" title="View source" href="https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm.Abstraction/PolylineEncoding.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="PolylineAlgorithm.html">PolylineAlgorithm</a>.<a class="xref" href="PolylineAlgorithm.Abstraction.html">Abstraction</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>PolylineAlgorithm.Abstraction.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Provides methods for encoding and decoding polyline data, as well as utilities for normalizing and denormalizing
+geographic coordinate values.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class PolylineEncoding</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">PolylineEncoding</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+  <h2 id="PolylineAlgorithm_Abstraction_PolylineEncoding_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>The <a class="xref" href="PolylineAlgorithm.Abstraction.PolylineEncoding.html">PolylineEncoding</a> class includes functionality for working with encoded polyline
+data, such as reading and writing encoded values, as well as methods for normalizing and denormalizing geographic
+coordinates. It also provides validation utilities to ensure values conform to expected ranges for latitude and
+longitude.</p>
+</div>
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="PolylineAlgorithm_Abstraction_PolylineEncoding_Denormalize_" data-uid="PolylineAlgorithm.Abstraction.PolylineEncoding.Denormalize*"></a>
+
+  <h3 id="PolylineAlgorithm_Abstraction_PolylineEncoding_Denormalize_System_Int32_PolylineAlgorithm_Abstraction_PolylineEncoding_ValueType_" data-uid="PolylineAlgorithm.Abstraction.PolylineEncoding.Denormalize(System.Int32,PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType)">
+  Denormalize(int, ValueType)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm.Abstraction/PolylineEncoding.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts a normalized integer value to its denormalized double representation based on the specified type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static double Denormalize(int value, PolylineEncoding.ValueType type)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The normalized integer value to be denormalized. Must be within the valid range for the specified <code class="paramref">type</code>.</p>
+</dd>
+    <dt><code>type</code> <a class="xref" href="PolylineAlgorithm.Abstraction.PolylineEncoding.html">PolylineEncoding</a>.<a class="xref" href="PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType.html">ValueType</a></dt>
+    <dd><p>The type that defines the valid range for <code class="paramref">value</code>.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The denormalized double representation of the input value. Returns <code>0.0</code> if <code class="paramref">value</code> is <code>0</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="PolylineAlgorithm_Abstraction_PolylineEncoding_Denormalize_System_Int32_PolylineAlgorithm_Abstraction_PolylineEncoding_ValueType__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The denormalization process divides the input value by a predefined precision factor to
+produce the resulting double. Ensure that <code class="paramref">value</code> is validated against the specified <code class="paramref">type</code> before calling this method.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>Thrown if <code class="paramref">value</code> is outside the valid range for the specified <code class="paramref">type</code>.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="PolylineAlgorithm_Abstraction_PolylineEncoding_GetCharCount_" data-uid="PolylineAlgorithm.Abstraction.PolylineEncoding.GetCharCount*"></a>
+
+  <h3 id="PolylineAlgorithm_Abstraction_PolylineEncoding_GetCharCount_System_Int32_" data-uid="PolylineAlgorithm.Abstraction.PolylineEncoding.GetCharCount(System.Int32)">
+  GetCharCount(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm.Abstraction/PolylineEncoding.cs/#L193"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines the number of characters required to represent the specified integer value within predefined
+variance ranges.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int GetCharCount(int variance)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>variance</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The integer value for which the character count is calculated. Must be within the range  of a 32-bit signed
+integer.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The number of characters required to represent the <code class="paramref">variance</code> value,  based on its magnitude.
+Returns a value between 1 and 6 inclusive.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="PolylineAlgorithm_Abstraction_PolylineEncoding_GetCharCount_System_Int32__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The method uses predefined ranges to efficiently determine the character count.  Smaller
+values require fewer characters, while larger values require more.  This method is optimized for performance
+using a switch expression.</p>
+</div>
+
+
+
+
+  <a id="PolylineAlgorithm_Abstraction_PolylineEncoding_Normalize_" data-uid="PolylineAlgorithm.Abstraction.PolylineEncoding.Normalize*"></a>
+
+  <h3 id="PolylineAlgorithm_Abstraction_PolylineEncoding_Normalize_System_Double_PolylineAlgorithm_Abstraction_PolylineEncoding_ValueType_" data-uid="PolylineAlgorithm.Abstraction.PolylineEncoding.Normalize(System.Double,PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType)">
+  Normalize(double, ValueType)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm.Abstraction/PolylineEncoding.cs/#L165"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Normalizes a given numeric value based on the specified type and precision settings.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int Normalize(double value, PolylineEncoding.ValueType type)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The numeric value to normalize. Must be a finite number.</p>
+</dd>
+    <dt><code>type</code> <a class="xref" href="PolylineAlgorithm.Abstraction.PolylineEncoding.html">PolylineEncoding</a>.<a class="xref" href="PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType.html">ValueType</a></dt>
+    <dd><p>The type against which the value is validated. Determines the acceptable range for the value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>An integer representing the normalized value. Returns <code>0</code> if the input value is <code>0.0</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="PolylineAlgorithm_Abstraction_PolylineEncoding_Normalize_System_Double_PolylineAlgorithm_Abstraction_PolylineEncoding_ValueType__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method validates the input value to ensure it is finite and within the acceptable range
+for the specified type. If the value is valid, it applies a normalization algorithm using a predefined precision
+factor.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>Thrown if <code class="paramref">value</code> is not a finite number or is outside the valid range for the specified
+<code class="paramref">type</code>.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="PolylineAlgorithm_Abstraction_PolylineEncoding_TryReadValue_" data-uid="PolylineAlgorithm.Abstraction.PolylineEncoding.TryReadValue*"></a>
+
+  <h3 id="PolylineAlgorithm_Abstraction_PolylineEncoding_TryReadValue_System_Int32__System_ReadOnlyMemory_System_Char___System_Int32__" data-uid="PolylineAlgorithm.Abstraction.PolylineEncoding.TryReadValue(System.Int32@,System.ReadOnlyMemory{System.Char}@,System.Int32@)">
+  TryReadValue(ref int, ref ReadOnlyMemory&lt;char&gt;, ref int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm.Abstraction/PolylineEncoding.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attempts to read a value from the specified buffer and updates the variance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryReadValue(ref int variance, ref ReadOnlyMemory&lt;char&gt; buffer, ref int position)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>variance</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A reference to the integer that will be updated based on the value read from the buffer.</p>
+</dd>
+    <dt><code>buffer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlymemory-1">ReadOnlyMemory</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
+    <dd><p>A reference to the read-only memory buffer containing the data to be processed.</p>
+</dd>
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A reference to the current position within the buffer. The position is incremented as the method reads data.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if a value was successfully read and the end of the buffer was not reached; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="PolylineAlgorithm_Abstraction_PolylineEncoding_TryReadValue_System_Int32__System_ReadOnlyMemory_System_Char___System_Int32___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method processes the buffer starting at the specified position and attempts to decode a value.
+The decoded value is used to update the <code class="paramref">variance</code> parameter. The method stops reading when a
+termination condition is met or the end of the buffer is reached.</p>
+</div>
+
+
+
+
+  <a id="PolylineAlgorithm_Abstraction_PolylineEncoding_TryWriteValue_" data-uid="PolylineAlgorithm.Abstraction.PolylineEncoding.TryWriteValue*"></a>
+
+  <h3 id="PolylineAlgorithm_Abstraction_PolylineEncoding_TryWriteValue_System_Int32_System_Span_System_Char___System_Int32__" data-uid="PolylineAlgorithm.Abstraction.PolylineEncoding.TryWriteValue(System.Int32,System.Span{System.Char}@,System.Int32@)">
+  TryWriteValue(int, ref Span&lt;char&gt;, ref int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm.Abstraction/PolylineEncoding.cs/#L132"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attempts to write a value derived from the specified <code class="paramref">variance</code> into the provided <code class="paramref">buffer</code> at the given <code class="paramref">position</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryWriteValue(int variance, ref Span&lt;char&gt; buffer, ref int position)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>variance</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The integer value used to calculate the output to be written into the buffer.</p>
+</dd>
+    <dt><code>buffer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.span-1">Span</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
+    <dd><p>A reference to the span of characters where the value will be written.</p>
+</dd>
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A reference to the current position in the buffer where writing begins. This value is updated to reflect the new
+position after writing.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the value was successfully written to the buffer; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="PolylineAlgorithm_Abstraction_PolylineEncoding_TryWriteValue_System_Int32_System_Span_System_Char___System_Int32___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method performs bounds checking to ensure that the buffer has sufficient space to
+accommodate the calculated value. If the buffer does not have enough space, the method returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> without modifying the buffer or position.</p>
+</div>
+
+
+
+
+
+</article>
+
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

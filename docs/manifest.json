@@ -1,0 +1,412 @@
+{
+  "sitemap": {
+    "baseUrl": "https://petesramek.github.io/polyline-algorithm-csharp/",
+    "changefreq": "monthly",
+    "priority": 0.1
+  },
+  "source_base_path": "/home/runner/work/polyline-algorithm-csharp/polyline-algorithm-csharp/docfx",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>",
+      "Summary": "<p sourcefile=\"api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.yml\" sourcestartlinenumber=\"1\">Decodes encoded polyline strings into sequences of geographic coordinates.\nImplements the <xref href=\"PolylineAlgorithm.Abstraction.IPolylineDecoder%602\" data-throw-if-not-resolved=\"false\"></xref> interface.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>",
+      "Summary": "<p sourcefile=\"api-reference/PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.yml\" sourcestartlinenumber=\"1\">Provides functionality to encode a collection of geographic coordinates into an encoded polyline string.\nImplements the <xref href=\"PolylineAlgorithm.Abstraction.IPolylineEncoder%602\" data-throw-if-not-resolved=\"false\"></xref> interface.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api-reference/PolylineAlgorithm.Abstraction.IPolylineDecoder-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api-reference/PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PolylineAlgorithm.Abstraction.IPolylineDecoder<TPolyline, TCoordinate>",
+      "Summary": "<p sourcefile=\"api-reference/PolylineAlgorithm.Abstraction.IPolylineDecoder-2.yml\" sourcestartlinenumber=\"1\">Defines a contract for decoding an encoded polyline into a collection of geographic coordinates.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api-reference/PolylineAlgorithm.Abstraction.IPolylineEncoder-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api-reference/PolylineAlgorithm.Abstraction.IPolylineEncoder-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PolylineAlgorithm.Abstraction.IPolylineEncoder<TCoordinate, TPolyline>",
+      "Summary": "<p sourcefile=\"api-reference/PolylineAlgorithm.Abstraction.IPolylineEncoder-2.yml\" sourcestartlinenumber=\"1\">Defines a contract for encoding a collection of geographic coordinates into an encoded polyline string.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api-reference/PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api-reference/PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PolylineAlgorithm.Abstraction.IPolylineEncodingOptionsBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api-reference/PolylineAlgorithm.Abstraction.InvalidPolylineException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api-reference/PolylineAlgorithm.Abstraction.InvalidPolylineException.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PolylineAlgorithm.Abstraction.InvalidPolylineException",
+      "Summary": "<p sourcefile=\"api-reference/PolylineAlgorithm.Abstraction.InvalidPolylineException.yml\" sourcestartlinenumber=\"1\">Exception thrown when a polyline is determined to be malformed or invalid during processing.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api-reference/PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api-reference/PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType",
+      "Summary": "<p sourcefile=\"api-reference/PolylineAlgorithm.Abstraction.PolylineEncoding.ValueType.yml\" sourcestartlinenumber=\"1\">Represents the type of a geographic coordinate value.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api-reference/PolylineAlgorithm.Abstraction.PolylineEncoding.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api-reference/PolylineAlgorithm.Abstraction.PolylineEncoding.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PolylineAlgorithm.Abstraction.PolylineEncoding",
+      "Summary": "<p sourcefile=\"api-reference/PolylineAlgorithm.Abstraction.PolylineEncoding.yml\" sourcestartlinenumber=\"1\">Provides methods for encoding and decoding polyline data, as well as utilities for normalizing and denormalizing\ngeographic coordinate values.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api-reference/PolylineAlgorithm.Abstraction.PolylineEncodingOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api-reference/PolylineAlgorithm.Abstraction.PolylineEncodingOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PolylineAlgorithm.Abstraction.PolylineEncodingOptions",
+      "Summary": "<p sourcefile=\"api-reference/PolylineAlgorithm.Abstraction.PolylineEncodingOptions.yml\" sourcestartlinenumber=\"1\">Options for configuring polyline encoding.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api-reference/PolylineAlgorithm.Abstraction.PolylineEncodingOptionsBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api-reference/PolylineAlgorithm.Abstraction.PolylineEncodingOptionsBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PolylineAlgorithm.Abstraction.PolylineEncodingOptionsBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api-reference/PolylineAlgorithm.Abstraction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api-reference/PolylineAlgorithm.Abstraction.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PolylineAlgorithm.Abstraction",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api-reference/PolylineAlgorithm.Coordinate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api-reference/PolylineAlgorithm.Coordinate.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PolylineAlgorithm.Coordinate",
+      "Summary": "<p sourcefile=\"api-reference/PolylineAlgorithm.Coordinate.yml\" sourcestartlinenumber=\"1\">Represents a geographic coordinate as a pair of latitude and longitude values.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api-reference/PolylineAlgorithm.Extensions.PolylineDecoderExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api-reference/PolylineAlgorithm.Extensions.PolylineDecoderExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PolylineAlgorithm.Extensions.PolylineDecoderExtensions",
+      "Summary": "<p sourcefile=\"api-reference/PolylineAlgorithm.Extensions.PolylineDecoderExtensions.yml\" sourcestartlinenumber=\"1\">Provides extension methods for the <xref href=\"PolylineAlgorithm.Abstraction.IPolylineDecoder%602\" data-throw-if-not-resolved=\"false\"></xref> interface to facilitate decoding encoded polylines.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api-reference/PolylineAlgorithm.Extensions.PolylineEncoderExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api-reference/PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PolylineAlgorithm.Extensions.PolylineEncoderExtensions",
+      "Summary": "<p sourcefile=\"api-reference/PolylineAlgorithm.Extensions.PolylineEncoderExtensions.yml\" sourcestartlinenumber=\"1\">Provides extension methods for the <xref href=\"PolylineAlgorithm.Abstraction.IPolylineEncoder%602\" data-throw-if-not-resolved=\"false\"></xref> interface to facilitate encoding geographic coordinates into polylines.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api-reference/PolylineAlgorithm.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api-reference/PolylineAlgorithm.Extensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PolylineAlgorithm.Extensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api-reference/PolylineAlgorithm.Polyline.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api-reference/PolylineAlgorithm.Polyline.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PolylineAlgorithm.Polyline",
+      "Summary": "<p sourcefile=\"api-reference/PolylineAlgorithm.Polyline.yml\" sourcestartlinenumber=\"1\">Represents an immutable, read-only encoded polyline string.\nProvides methods for creation, inspection, and conversion of polyline data from various character sources.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api-reference/PolylineAlgorithm.PolylineDecoder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api-reference/PolylineAlgorithm.PolylineDecoder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PolylineAlgorithm.PolylineDecoder",
+      "Summary": "<p sourcefile=\"api-reference/PolylineAlgorithm.PolylineDecoder.yml\" sourcestartlinenumber=\"1\">Performs decoding of encoded polyline strings into a sequence of geographic coordinates.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api-reference/PolylineAlgorithm.PolylineEncoder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api-reference/PolylineAlgorithm.PolylineEncoder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PolylineAlgorithm.PolylineEncoder",
+      "Summary": "<p sourcefile=\"api-reference/PolylineAlgorithm.PolylineEncoder.yml\" sourcestartlinenumber=\"1\">Provides methods to encode a set of geographic coordinates into a polyline string.\nThis class implements the IPolylineEncoder interface.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api-reference/PolylineAlgorithm.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api-reference/PolylineAlgorithm.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PolylineAlgorithm",
+      "Summary": null
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api-reference/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api-reference/toc.html"
+        },
+        ".json": {
+          "relative_path": "api-reference/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "benchmarks/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "benchmarks/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "benchmarks/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "benchmarks/toc.html"
+        },
+        ".json": {
+          "relative_path": "benchmarks/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "favicon.ico",
+      "output": {
+        "resource": {
+          "relative_path": "favicon.ico"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "guide/getting-started.md",
+      "output": {
+        ".html": {
+          "relative_path": "guide/getting-started.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "guide/introduction.md",
+      "output": {
+        ".html": {
+          "relative_path": "guide/introduction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "guide/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "guide/toc.html"
+        },
+        ".json": {
+          "relative_path": "guide/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/polyline-algorithm-50x46.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/polyline-algorithm-50x46.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/polyline-algorithm.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/polyline-algorithm.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
