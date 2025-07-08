@@ -233,7 +233,8 @@ jobs:
           mkdir -p ./docs/${{ env.friendly-version }}
           mv ./docs/temp ./docs/${{ env.friendly-version }}
       - run: |
-          git checkout origin/docs
+          git fetch origin
+          git checkout -b docs origin/docs
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git add -- ./docs/${{ env.friendly-version }}
