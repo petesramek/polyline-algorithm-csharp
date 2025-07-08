@@ -12,6 +12,7 @@ permissions:
   actions: read
   pages: write
   id-token: write
+  contents: write
 
 concurrency: 
   group: build-${{ github.head_ref || github.ref }}      
