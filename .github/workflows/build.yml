@@ -236,10 +236,10 @@ jobs:
           git add -- ./docs/${ env.assembly-version }
           git commit -m'added ./docs/${ env.assembly-version }' -- ./docs/${ env.assembly-version }
           git push --force origin docs
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './docs'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      # - name: Upload artifact
+      #   uses: actions/upload-pages-artifact@v3
+      #   with:
+      #     path: './docs'
+      # - name: Deploy to GitHub Pages
+      #   id: deployment
+      #   uses: actions/deploy-pages@v4
