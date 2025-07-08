@@ -1,0 +1,24 @@
+{
+  "ShowEmptyProjects": false,
+  "SelectedGroups": [
+    "C:\\Projects\\GitHub\\sramekpete\\polyline-algorithm-csharp\\src\\PolylineAlgorithm.Abstraction\\Properties\\ExceptionMessageResource.resx",
+    "C:\\Projects\\GitHub\\sramekpete\\polyline-algorithm-csharp\\src\\PolylineAlgorithm\\Properties\\ExceptionMessageResource.resx"
+  ],
+  "ExpandedProjects": [
+    "C:\\Projects\\GitHub\\sramekpete\\polyline-algorithm-csharp\\src\\PolylineAlgorithm.Abstraction\\PolylineAlgorithm.Abstraction.csproj",
+    "C:\\Projects\\GitHub\\sramekpete\\polyline-algorithm-csharp\\src\\PolylineAlgorithm\\PolylineAlgorithm.csproj"
+  ],
+  "EnableSpellChecker": true,
+  "ColumnOrder": [
+    "name",
+    "type",
+    "neutral-value",
+    "neutral-comment",
+    "file-path",
+    "file-name"
+  ],
+  "VisibleColumnKeys": [
+    "name",
+    "neutral-value"
+  ]
+}
