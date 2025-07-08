@@ -174,45 +174,45 @@ jobs:
       nuget-feed-server: 'NuGet'
       environment: 'NuGet'
 
-  benchmark:
-    if: ${{ github.env.is_release || vars.BENCHMARKDOTNET_RUN_OVERRIDE == 'true' }}
-    name: Benchmark with .NET CLI on ${{ matrix.os }}
-    needs: [build]
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v4
-      - name: Install .NET SDK
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: |
-            8.x
-            9.x
-      - name: Download Build
-        uses: actions/download-artifact@v4
-        with:
-          name: build
-      - name: Benchmark
-        working-directory: ${{ vars.BENCHMARKDOTNET_WORKING_DIRECTORY }}
-        run: dotnet run --configuration ${{ env.build-configuration }} /p:Platform=${{ env.build-platform }} --framework ${{ vars.DEFAULT_BUILD_FRAMEWORK }} --runtimes ${{ vars.BENCHMARKDOTNET_RUNTIMES }} --filter ${{ vars.BENCHMARKDOTNET_FILTER }} --artifacts ${{ runner.temp }}/benchmarks/ --exporters GitHub --memory --iterationTime 100 --join
-      - name: Upload Benchmark Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: benchmark-${{ matrix.os }}
-          path: |
-            ${{ runner.temp }}/benchmarks/**/*-report-github.md
-      - name: Write Benchmark Summary 
-        shell: bash
-        run: cat **/*-report-github.md > $GITHUB_STEP_SUMMARY
-        working-directory: ${{ runner.temp }}/benchmarks/
+  # benchmark:
+  #   if: ${{ github.env.is_release || vars.BENCHMARKDOTNET_RUN_OVERRIDE == 'true' }}
+  #   name: Benchmark with .NET CLI on ${{ matrix.os }}
+  #   needs: [build]
+  #   strategy:
+  #     matrix:
+  #       os: [ubuntu-latest, windows-latest, macos-latest]
+  #   runs-on: ${{ matrix.os }}
+  #   steps:
+  #     - name: 'Checkout ${{ github.head_ref || github.ref }}'
+  #       uses: actions/checkout@v4
+  #     - name: Install .NET SDK
+  #       uses: actions/setup-dotnet@v4
+  #       with:
+  #         dotnet-version: |
+  #           8.x
+  #           9.x
+  #     - name: Download Build
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: build
+  #     - name: Benchmark
+  #       working-directory: ${{ vars.BENCHMARKDOTNET_WORKING_DIRECTORY }}
+  #       run: dotnet run --configuration ${{ env.build-configuration }} /p:Platform=${{ env.build-platform }} --framework ${{ vars.DEFAULT_BUILD_FRAMEWORK }} --runtimes ${{ vars.BENCHMARKDOTNET_RUNTIMES }} --filter ${{ vars.BENCHMARKDOTNET_FILTER }} --artifacts ${{ runner.temp }}/benchmarks/ --exporters GitHub --memory --iterationTime 100 --join
+  #     - name: Upload Benchmark Results
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: benchmark-${{ matrix.os }}
+  #         path: |
+  #           ${{ runner.temp }}/benchmarks/**/*-report-github.md
+  #     - name: Write Benchmark Summary 
+  #       shell: bash
+  #       run: cat **/*-report-github.md > $GITHUB_STEP_SUMMARY
+  #       working-directory: ${{ runner.temp }}/benchmarks/
 
   publish-docs:
     # if: ${{ github.env.is_release && !github.env.is_preview }}
     name: Docs with docfx
-    needs: [benchmark, test]  
+    # needs: [publish-production-package]  
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -224,28 +224,18 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.dotnet-sdk-version }}
-      - name: Download Benchmarks
-        uses: actions/download-artifact@v4
-        with:
-          pattern: benchmark-*
-          path: ${{ runner.temp }}/benchmarks/
-          merge-multiple: false
-      - run: |
-          echo -e '\n## Windows' >> ${{ github.workspace}}/docfx/benchmarks/index.md
-          cat benchmark-windows-latest/**/*.md >> ${{ github.workspace}}/docfx/benchmarks/index.md
-          echo -e '\n## Linux' >> ${{ github.workspace}}/docfx/benchmarks/index.md
-          cat benchmark-ubuntu-latest/**/*.md >> ${{ github.workspace}}/docfx/benchmarks/index.md
-          echo -e '\n## macOS' >> ${{ github.workspace}}/docfx/benchmarks/index.md
-          cat benchmark-macos-latest/**/*.md >> ${{ github.workspace}}/docfx/benchmarks/index.md
-        working-directory: ${{ runner.temp }}/benchmarks/
       - run: dotnet tool update -g docfx
-      - run: docfx ./docfx/docfx.json
+      - run: docfx ./docfx/api-reference.json
       - run: |
+          mkdir -p ./docs/${ env.assembly-version }
+          cp -r ./docs/ ./docs/${ env.assembly-version }
+      - run: |
+          git checkout docs
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-          git add -- ./docs
-          git commit -m'updated docs:${{ env.assembly-version }}' -- ./docs
-          git push --force origin ${{ github.head_ref || github.ref }}
+          git add -- ./docs/${ env.assembly-version }
+          git commit -m'added ./docs/${ env.assembly-version }' -- ./docs/${ env.assembly-version }
+          git push --force origin docs
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
