@@ -213,7 +213,9 @@ jobs:
     # if: ${{ github.env.is_release && !github.env.is_preview }}
     name: Docs with docfx
     # needs: [publish-production-package]
-    needs: [build, global-variables]
+    needs: [versioning, build]
+    env:
+      assembly-version: ${{ needs.versioning.outputs.assembly-version }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -229,7 +231,7 @@ jobs:
       - run: docfx ./docfx/api-reference.json
       - run: |
           mkdir -p ./docs/${{ env.assembly-version }}
-          cp -r ./docs/temp ./docs/${{ env.assembly-version }}
+          cp -r ./docs/temp/ ./docs/${{ env.assembly-version }}
       - run: |
           git checkout docs
           git config --global user.email "action@github.com"
