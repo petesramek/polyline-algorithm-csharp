@@ -22,7 +22,7 @@
         ]
       }
     ],
-    "output": "../docs",
+    "output": "../docs/temp",
     "template": [
       "default",
       "modern"
