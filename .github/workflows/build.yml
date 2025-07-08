@@ -236,8 +236,8 @@ jobs:
           git checkout docs
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-          git add -- ./docs/${{ env.friendly-version }}/
-          git commit -m'added ./docs/${{ env.friendly-version }}/' -- ./docs/${{ env.friendly-version }}/
+          git add -- ./docs/${{ env.friendly-version }}
+          git commit -m'added ./docs/${{ env.friendly-version }}' -- ./docs/${{ env.friendly-version }}
           git push --force origin docs
       # - name: Upload artifact
       #   uses: actions/upload-pages-artifact@v3
