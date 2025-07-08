@@ -14,6 +14,7 @@ using PolylineAlgorithm.Utility;
 /// Benchmarks for the <see cref="PolylineValue"/> struct.
 /// </summary>
 [RankColumn]
+[SimpleJob]
 public class PolylineBenchmark {
     private static readonly Consumer consumer = new();
 
