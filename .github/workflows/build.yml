@@ -239,6 +239,9 @@ jobs:
         working-directory: ${{ runner.temp }}/benchmarks/
       - run: dotnet tool update -g docfx
       - run: docfx ./docfx/docfx.json
+      - run: |
+          git add -- ./docs
+          git commit -m'updated docs:${{ env.assembly-version }}' -- ./docs
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
