@@ -44,8 +44,8 @@ jobs:
         run: |
           echo "github-run-id:${{ github.run_id }}"
           echo "github-run-number:${{ github.run_number }}"
-          echo "is-release:${{ github.run_id }}"
-          echo "is-preview:${{ github.run_number }}"
+          echo "is-release:${{ is-release }}"
+          echo "is-preview:${{ is-preview }}"
 
   versioning:
     name: Versioning with GitVersion
