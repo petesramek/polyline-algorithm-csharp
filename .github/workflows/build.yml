@@ -228,7 +228,7 @@ jobs:
       - run: docfx ./docfx/api-reference.json
       - run: |
           mkdir -p ./docs/${{ env.assembly-version }}
-          cp -r ./docs/ ./docs/${{ env.assembly-version }}
+          cp -r ./docs/api-reference ./docs/${{ env.assembly-version }}
       - run: |
           git checkout docs
           git config --global user.email "action@github.com"
