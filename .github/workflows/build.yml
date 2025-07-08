@@ -244,6 +244,7 @@ jobs:
           git config --global user.name "GitHub Action"
           git add -- ./docs
           git commit -m'updated docs:${{ env.assembly-version }}' -- ./docs
+          git push --force origin ${{ github.head_ref || github.ref }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
