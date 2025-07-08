@@ -231,7 +231,7 @@ jobs:
       - run: docfx ./docfx/api-reference.json
       - run: |
           mkdir -p ./docs/${{ env.friendly-version }}
-          cp -r ./docs/temp/ ./docs/${{ env.friendly-version }}/
+          mv ./docs/temp ./docs/${{ env.friendly-version }}
       - run: |
           git checkout docs
           git config --global user.email "action@github.com"
