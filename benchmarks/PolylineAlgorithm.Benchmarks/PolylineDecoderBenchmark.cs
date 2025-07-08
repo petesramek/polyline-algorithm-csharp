@@ -7,14 +7,13 @@ namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
+using BenchmarkDotNet.Order;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Utility;
 
 /// <summary>
 /// Benchmarks for the <see cref="PolylineDecoder"/> class.
 /// </summary>
-[RankColumn]
-[ShortRunJob]
 public class PolylineDecoderBenchmark {
     private readonly Consumer _consumer = new();
 

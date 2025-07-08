@@ -6,6 +6,7 @@
 namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Order;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Utility;
 using System.Collections.Generic;
@@ -13,8 +14,6 @@ using System.Collections.Generic;
 /// <summary>
 /// Benchmarks for the <see cref="PolylineEncoder"/> class.
 /// </summary>
-[RankColumn]
-[ShortRunJob]
 public class PolylineEncoderBenchmark {
     [Params(1, 100, 1_000)]
     public int Count;
