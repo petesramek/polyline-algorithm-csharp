@@ -6,7 +6,6 @@
 namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Order;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Utility;
 using System.Collections.Generic;

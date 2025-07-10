@@ -5,7 +5,6 @@
 
 namespace PolylineAlgorithm.Benchmarks;
 
-using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Running;
 
 /// <summary>

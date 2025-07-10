@@ -7,7 +7,6 @@ namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
-using BenchmarkDotNet.Order;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Utility;
 

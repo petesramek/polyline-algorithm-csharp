@@ -91,7 +91,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
         int latitude = 0;
         int longitude = 0;
 
-        
+
         while (true) {
             // Check if we have reached the end of the sequence
             if (sequence.Length == position) {

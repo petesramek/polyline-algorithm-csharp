@@ -7,7 +7,6 @@ namespace PolylineAlgorithm.Abstraction.Tests.Internal;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Testing;
-using PolylineAlgorithm.Abstraction.Internal;
 
 [TestClass]
 public class LoggingTest {
