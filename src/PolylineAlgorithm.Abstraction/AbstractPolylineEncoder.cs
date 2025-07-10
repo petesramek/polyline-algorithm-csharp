@@ -17,10 +17,23 @@ using System.Runtime.CompilerServices;
 /// Provides functionality to encode a collection of geographic coordinates into an encoded polyline string.
 /// Implements the <see cref="IPolylineEncoder{TCoordinate, TPolyline}"/> interface.
 /// </summary>
+/// <remarks>
+/// This abstract class serves as a base for specific polyline encoders, allowing customization of the encoding process.
+/// </remarks>
 public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder<TCoordinate, TPolyline> {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AbstractPolylineEncoder{TCoordinate, TPolyline}"/> class with default encoding options.
+    /// </summary>
     public AbstractPolylineEncoder()
         : this(new PolylineEncodingOptions()) { }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AbstractPolylineEncoder{TCoordinate, TPolyline}"/> class with the specified encoding options.
+    /// </summary>
+    /// <param name="options">
+    /// The <see cref="PolylineEncodingOptions"/> to use for encoding operations.
+    /// </param>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="options"/> is <see langword="null" /></exception>
     public AbstractPolylineEncoder(PolylineEncodingOptions options) {
         Options = options ?? throw new ArgumentNullException(nameof(options));
     }
@@ -128,7 +141,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// <summary>
     /// Creates a polyline instance from the provided read-only sequence of characters.
     /// </summary>
-    /// <param name="polyline">A <see cref="ReadOnlySequence{T}"/> containing the encoded polyline characters.</param>
+    /// <param name="polyline">A <see cref="ReadOnlyMemory{T}"/> containing the encoded polyline characters.</param>
     /// <returns>
     /// An instance of <typeparamref name="TPolyline"/> representing the encoded polyline.
     /// </returns>

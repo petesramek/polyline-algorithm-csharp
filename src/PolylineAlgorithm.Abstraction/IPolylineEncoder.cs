@@ -8,7 +8,7 @@ namespace PolylineAlgorithm.Abstraction;
 using System.Collections.Generic;
 
 /// <summary>
-/// Defines a contract for encoding a collection of geographic coordinates into an encoded polyline string.
+/// Defines a contract for encoding a sequence of geographic coordinates into an encoded polyline string.
 /// </summary>
 public interface IPolylineEncoder<TCoordinate, TPolyline> {
     /// <summary>

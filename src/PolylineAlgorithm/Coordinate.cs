@@ -13,6 +13,11 @@ using System.Runtime.InteropServices;
 /// <summary>
 /// Represents a geographic coordinate as a pair of latitude and longitude values.
 /// </summary>
+/// <remarks>
+/// This struct is designed to be immutable and lightweight, providing a simple way to represent
+/// geographic coordinates in degrees. It includes validation for latitude and longitude ranges
+/// and provides methods for equality comparison and string representation.
+/// </remarks>
 [DebuggerDisplay("{ToString()}")]
 [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
 public readonly struct Coordinate : IEquatable<Coordinate> {
@@ -27,8 +32,12 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <summary>
     /// Initializes a new instance of the <see cref="Coordinate"/> struct with the specified latitude and longitude values.
     /// </summary>
-    /// <param name="latitude">The latitude component, in degrees. Must be between -90 and 90, inclusive.</param>
-    /// <param name="longitude">The longitude component, in degrees. Must be between -180 and 180, inclusive.</param>
+    /// <param name="latitude">
+    /// The latitude component of the coordinate, in degrees. Must be between -90 and 90.
+    /// </param>
+    /// <param name="longitude">
+    /// The longitude component of the coordinate, in degrees. Must be between -180 and 180.
+    /// </param>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown when <paramref name="latitude"/> is less than -90 or greater than 90,
     /// or when <paramref name="longitude"/> is less than -180 or greater than 180.

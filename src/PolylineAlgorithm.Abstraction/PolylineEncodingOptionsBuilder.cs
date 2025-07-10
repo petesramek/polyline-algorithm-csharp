@@ -17,7 +17,9 @@ public class PolylineEncodingOptionsBuilder : IPolylineEncodingOptionsBuilder {
     /// <summary>
     /// Creates a new <see cref="IPolylineEncodingOptionsBuilder"/> instance for the specified coordinate type.
     /// </summary>
-    /// <returns>An <see cref="IPolylineEncodingOptionsBuilder"/> instance for configuring polyline encoding options.</returns>
+    /// <returns>
+    /// An <see cref="IPolylineEncodingOptionsBuilder"/> instance for configuring polyline encoding options.
+    /// </returns>
     public static IPolylineEncodingOptionsBuilder Create() {
         return new PolylineEncodingOptionsBuilder();
     }
@@ -25,7 +27,9 @@ public class PolylineEncodingOptionsBuilder : IPolylineEncodingOptionsBuilder {
     /// <summary>
     /// Builds a new <see cref="PolylineEncodingOptions"/> instance using the configured options.
     /// </summary>
-    /// <returns>A configured <see cref="PolylineEncodingOptions"/> instance.</returns>
+    /// <returns>
+    /// A configured <see cref="PolylineEncodingOptions"/> instance.
+    /// </returns>
     PolylineEncodingOptions IPolylineEncodingOptionsBuilder.Build() {
         return new PolylineEncodingOptions {
             BufferSize = _bufferSize,
@@ -36,9 +40,13 @@ public class PolylineEncodingOptionsBuilder : IPolylineEncodingOptionsBuilder {
     /// <summary>
     /// Sets the buffer size for encoding operations.
     /// </summary>
-    /// <param name="maxBufferSize">The maximum buffer size. Must be greater than 11.</param>
-    /// <returns>The current builder instance.</returns>
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="maxBufferSize"/> is less than or equal to 11.</exception>
+    /// <param name="maxBufferSize">
+    /// The maximum buffer size. Must be greater than 11.
+    /// </param>
+    /// <returns>
+    /// The current builder instance.
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="maxBufferSize"/> is less than or equal to 11.</exception>
     IPolylineEncodingOptionsBuilder IPolylineEncodingOptionsBuilder.WithBufferSize(int maxBufferSize) {
         _bufferSize = maxBufferSize > 11 ? maxBufferSize : throw new ArgumentOutOfRangeException(nameof(maxBufferSize), "Buffer size must be greater than 11.");
 
@@ -48,9 +56,15 @@ public class PolylineEncodingOptionsBuilder : IPolylineEncodingOptionsBuilder {
     /// <summary>
     /// Sets the logger factory for logging during encoding operations.
     /// </summary>
-    /// <param name="loggerFactory">The instance of a logger factory.</param>
-    /// <returns>The current builder instance.</returns>
-    /// <exception cref="ArgumentNullException">Thrown if <paramref name="loggerFactory"/> is <see langword="null"/></exception>
+    /// <param name="loggerFactory">
+    /// The instance of a logger factory.
+    /// </param>
+    /// <returns>
+    /// The current builder instance.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when <paramref name="loggerFactory"/> is <see langword="null"/>.
+    /// </exception>
     IPolylineEncodingOptionsBuilder IPolylineEncodingOptionsBuilder.WithLoggerFactory(ILoggerFactory loggerFactory) {
         _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory), "Logger factory cannot be null.");
 

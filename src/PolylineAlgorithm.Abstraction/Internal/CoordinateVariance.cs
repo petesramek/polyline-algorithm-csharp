@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 /// This struct is used to compute and store the change in coordinate values as integer deltas.
 /// </summary>
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
-[StructLayout(LayoutKind.Sequential, Pack = 4, Size = 8)]
+[StructLayout(LayoutKind.Sequential, Pack = 4, Size = 16)]
 internal struct CoordinateVariance {
     private (int Latitude, int Longitude) _current;
 
@@ -70,8 +70,8 @@ internal struct CoordinateVariance {
     /// Returns a string representation of the current coordinate variance.
     /// </summary>
     /// <returns>
-    /// A string in the format <c>Variance: { Latitude: [int], Longitude: [int] }</c> representing the current deltas.
+    /// A string in the format <c>{ Coordinate:  { Latitude: [int], Longitude: [int] }, Variance: { Latitude: [int], Longitude: [int] } }</c> representing the current coordinate and deltas to previous coordinate.
     /// </returns>
     public override readonly string ToString()
-        => $"Variance: {{ Latitude: {Latitude}, Longitude: {Longitude} }}";
+        => $"{{ Coordinate:  {{ Latitude: {Latitude}, Longitude: {Longitude} }}, Variance: {{ Latitude: {Latitude}, Longitude: {Longitude} }} }}";
 }

@@ -13,6 +13,9 @@ using System.Diagnostics.CodeAnalysis;
 /// <summary>
 /// Exception thrown when a polyline is determined to be malformed or invalid during processing.
 /// </summary>
+/// <remarks>
+/// This exception is used internally to indicate that a polyline string does not conform to the expected format or contains errors.
+/// </remarks>
 [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Internal use only.")]
 [DebuggerDisplay($"{nameof(InvalidPolylineException)}: {{ToString()}}")]
 public sealed class InvalidPolylineException : Exception {
