@@ -239,7 +239,7 @@ jobs:
           git config --global user.name "GitHub Action"
       - run: git add -- ./docs/${{ env.friendly-version }}
       - id: check-diff 
-        run: git diff-index --quiet --cached HEAD --
+        run: git diff --exit-code ./docs/
       - run: |
           echo "Check diff exit code: $?"
           echo "Check diff outcome: ${{ steps.check-diff.outcome }}"
