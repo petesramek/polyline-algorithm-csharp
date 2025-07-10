@@ -112,7 +112,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         int GetBufferLength(int count) {
             int maxBufferLength = Options.BufferSize / sizeof(char);
-            int requestedBufferLength = count * Defaults.Polyline.MaxEncodedCoordinateLength;
+            int requestedBufferLength = count * Defaults.Polyline.Block.Length.Max;
 
             if (requestedBufferLength > maxBufferLength) {
                 Options

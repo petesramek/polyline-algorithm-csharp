@@ -49,10 +49,10 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
 
         ReadOnlyMemory<char> sequence = GetReadOnlyMemory(polyline);
 
-        if (sequence.Length < Defaults.Polyline.MinEncodedCoordinateLength) {
+        if (sequence.Length < Defaults.Polyline.Block.Length.Min) {
             Options
                 .GetLoggerFor<AbstractPolylineDecoder<TPolyline, TCoordinate>>()
-                .LogPolylineCannotBeShorterThanError(nameof(sequence), sequence.Length, Defaults.Polyline.MinEncodedCoordinateLength);
+                .LogPolylineCannotBeShorterThanError(nameof(sequence), sequence.Length, Defaults.Polyline.Block.Length.Min);
 
             throw new ArgumentException(string.Format(ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage, sequence.Length), nameof(polyline));
         }
