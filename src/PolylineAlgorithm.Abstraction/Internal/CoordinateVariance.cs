@@ -52,6 +52,9 @@ internal struct CoordinateVariance {
     /// <summary>
     /// Calculates the variance (delta) between two coordinate values.
     /// </summary>
+    /// <remarks>
+    /// This method computes the difference between two integer coordinate values, handling cases where the values may be positive or negative.
+    /// </remarks>
     /// <param name="initial">The previous coordinate value.</param>
     /// <param name="next">The next coordinate value.</param>
     /// <returns>The computed variance between <paramref name="initial"/> and <paramref name="next"/>.</returns>

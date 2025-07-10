@@ -40,20 +40,24 @@ public static class PolylineEncoding {
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool TryReadValue(ref int variance, ref ReadOnlyMemory<char> buffer, ref int position) {
+        // Validate that the position is within the bounds of the buffer.
         if (position == buffer.Length) {
             return false;
         }
 
+        // Initialize variables for reading the value.
         int chunk = 0;
         int sum = 0;
         int shifter = 0;
         ReadOnlySpan<char> span = buffer.Span;
 
+        // Read characters from the buffer until a termination condition is met or the end of the buffer is reached.
         while (position < buffer.Length) {
             chunk = span[position++] - Defaults.Algorithm.QuestionMark;
             sum |= (chunk & Defaults.Algorithm.UnitSeparator) << shifter;
             shifter += Defaults.Algorithm.ShiftLength;
 
+            // If the chunk is less than the space character, it indicates the end of the value.
             if (chunk < Defaults.Algorithm.Space) {
                 break;
             }
@@ -61,6 +65,7 @@ public static class PolylineEncoding {
 
         variance += (sum & 1) == 1 ? ~(sum >> 1) : sum >> 1;
 
+        // If the end of the buffer was reached without reading a complete value, return false.
         return chunk < Defaults.Algorithm.Space;
     }
 
@@ -86,10 +91,12 @@ public static class PolylineEncoding {
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static double Denormalize(int value, ValueType type) {
+        // Validate that the value is finite and within the acceptable range for the specified type.
         if (!ValidateNormalizedValue(value, type)) {
             throw new ArgumentOutOfRangeException(nameof(value), value, string.Format(ExceptionMessageResource.ArgumentIsOutOfRangeForSpecifiedType, type.ToString().ToLowerInvariant()));
         }
 
+        // Return fast if the value is zero, return 0.0 as the denormalized value.
         if (value == 0) {
             return 0.0;
         }
@@ -173,21 +180,25 @@ public static class PolylineEncoding {
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool TryWriteValue(int variance, ref Span<char> buffer, ref int position) {
+        // Validate that the position and required space for write is within the bounds of the buffer.
         if (buffer.Length < position + GetCharCount(variance)) {
             return false;
         }
 
         int rem = variance << 1;
 
+        // If the variance is negative, we need to invert the bits to get the correct representation.
         if (variance < 0) {
             rem = ~rem;
         }
 
+        // Write the value to the buffer in a way that encodes it using the specified algorithm.
         while (rem >= Defaults.Algorithm.Space) {
             buffer[position++] = (char)((Defaults.Algorithm.Space | rem & Defaults.Algorithm.UnitSeparator) + Defaults.Algorithm.QuestionMark);
             rem >>= Defaults.Algorithm.ShiftLength;
         }
 
+        // Write the final character, which is less than the space character.
         buffer[position++] = (char)(rem + Defaults.Algorithm.QuestionMark);
 
         return true;
@@ -216,14 +227,17 @@ public static class PolylineEncoding {
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Normalize(double value, ValueType type) {
+        // Validate that the value is finite and not NaN or Infinity.
         if (double.IsNaN(value) || double.IsInfinity(value)) {
             throw new ArgumentOutOfRangeException(nameof(value), ExceptionMessageResource.ArgumentValueMustBeFiniteNumber);
         }
 
+        // Validate that the value is within the acceptable range for the specified type.
         if (!ValidateDenormalizedValue(value, type)) {
             throw new ArgumentOutOfRangeException(nameof(value), value, string.Format(ExceptionMessageResource.ArgumentIsOutOfRangeForSpecifiedType, type.ToString().ToLowerInvariant()));
         }
 
+        // Fast return if the value is zero, return 0 as the normalized value.
         if (value == 0.0) {
             return 0;
         }
@@ -268,7 +282,13 @@ public static class PolylineEncoding {
     /// position.
     /// </remarks>
     public enum ValueType {
+        /// <summary>
+        /// Represents a latitude value.
+        /// </summary>
         Latitude,
+        /// <summary>
+        /// Represents a longitude value.
+        /// </summary>
         Longitude
     }
 }
