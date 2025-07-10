@@ -46,9 +46,6 @@ internal static class Defaults {
         /// <summary>
         /// Provides constants representing latitude values, including the default, minimum, and maximum valid values.
         /// </summary>
-        /// <remarks>Latitude values are measured in degrees and represent the angular distance north or
-        /// south of the equator. The <see cref="Default"/> constant represents the equator, while <see cref="Min"/> and
-        /// <see cref="Max"/>  define the valid range of latitude values, corresponding to the poles.</remarks>
         public static class Latitude {
             /// <summary>
             /// The default value for latitude, representing the equator.
@@ -63,6 +60,9 @@ internal static class Defaults {
             /// </summary>
             public const double Max = 90.00000;
 
+            /// <summary>
+            /// Contains constants related to normalized latitude values.
+            /// </summary>
             public static class Normalized {
                 /// <summary>
                 /// The minimum normalized latitude value.
@@ -75,6 +75,9 @@ internal static class Defaults {
             }
         }
 
+        /// <summary>
+        /// Provides constants representing longitude values, including the default, minimum, and maximum valid values.
+        /// </summary>
         public static class Longitude {
             /// <summary>
             /// The default value for longitude, representing the equator.
@@ -89,6 +92,9 @@ internal static class Defaults {
             /// </summary>
             public const double Max = 180.00000;
 
+            /// <summary>
+            /// Contains constants related to normalized longitude values.
+            /// </summary>
             public static class Normalized {
                 /// <summary>
                 /// The minimum normalized latitude value.
@@ -103,22 +109,32 @@ internal static class Defaults {
     }
 
     /// <summary>
-    /// Contains default values and constants related to polyline encoding.
+    /// Contains default values and constants related to polyline.
     /// </summary>
     public static class Polyline {
         /// <summary>
-        /// An array of delimiter byte values used in polyline encoding, derived by adding the ASCII value of the question mark ('?') to a range of integers.
+        /// Contains constants related to the polyline blocks.
         /// </summary>
-        public static readonly byte[] Delimiters = [.. Enumerable.Range(0, 32).Select(n => (byte)(n + Algorithm.QuestionMark))];
+        public static class Block {
+            /// <summary>
+            /// An array of delimiter byte values used in polyline encoding, derived by adding the ASCII value of the question mark ('?') to a range of integers.
+            /// </summary>
+            public static readonly byte[] Delimiters = [.. Enumerable.Range(0, 32).Select(n => (byte)(n + Algorithm.QuestionMark))];
 
-        /// <summary>
-        /// The minimum number of characters required to represent an encoded coordinate.
-        /// </summary>
-        public const int MinEncodedCoordinateLength = 2;
+            /// <summary>
+            /// Contains constants related to the length of encoded coordinates in polyline encoding.
+            /// </summary>
+            public static class Length {
+                /// <summary>
+                /// The minimum number of characters required to represent an encoded coordinate.
+                /// </summary>
+                public const int Min = 2;
 
-        /// <summary>
-        /// The maximum number of characters allowed to represent an encoded coordinate.
-        /// </summary>
-        public const int MaxEncodedCoordinateLength = 12;
+                /// <summary>
+                /// The maximum number of characters allowed to represent an encoded coordinate.
+                /// </summary>
+                public const int Max = 12;
+            }
+        }
     }
 }
