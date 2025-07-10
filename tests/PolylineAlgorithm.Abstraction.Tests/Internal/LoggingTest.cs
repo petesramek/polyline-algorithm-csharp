@@ -31,7 +31,7 @@ public class LoggingTest {
         // Assert
         Assert.AreEqual(1, _loggerProvider.Collector.LatestRecord.Id);
         Assert.AreEqual(LogLevel.Warning, _loggerProvider.Collector.LatestRecord.Level);
-        Assert.AreEqual($"Argument {value ?? "(null)"} cannot be null.", _loggerProvider.Collector.LatestRecord.Message);
+        Assert.AreEqual($"Argument {value ?? "(null)"} is null.", _loggerProvider.Collector.LatestRecord.Message);
     }
 
     [TestMethod]
@@ -51,7 +51,7 @@ public class LoggingTest {
         // Assert
         Assert.AreEqual(2, _loggerProvider.Collector.LatestRecord.Id);
         Assert.AreEqual(LogLevel.Warning, _loggerProvider.Collector.LatestRecord.Level);
-        Assert.AreEqual($"Argument {value ?? "(null)"} cannot be empty.", _loggerProvider.Collector.LatestRecord.Message);
+        Assert.AreEqual($"Argument {value ?? "(null)"} is empty.", _loggerProvider.Collector.LatestRecord.Message);
     }
 
     [TestMethod]
@@ -70,7 +70,7 @@ public class LoggingTest {
         Assert.AreEqual(3, _loggerProvider.Collector.LatestRecord.Id);
         Assert.AreEqual(LogLevel.Warning, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual(
-            $"Internal buffer has {bufferLength} length. At position {position} is required additional {requiredSpace} length.",
+            $"Internal buffer has size of {bufferLength}. At position {position} is required additional {requiredSpace} space.",
             _loggerProvider.Collector.LatestRecord.Message);
     }
 
@@ -89,7 +89,7 @@ public class LoggingTest {
         Assert.AreEqual(4, _loggerProvider.Collector.LatestRecord.Id);
         Assert.AreEqual(LogLevel.Warning, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual(
-            $"Cannot write to internal buffer at position {position}. Current coordinate index is {index}.",
+            $"Cannot write to internal buffer at position {position}. Current coordinate is at index {index}.",
             _loggerProvider.Collector.LatestRecord.Message);
     }
 
@@ -151,7 +151,7 @@ public class LoggingTest {
         Assert.AreEqual(7, _loggerProvider.Collector.LatestRecord.Id);
         Assert.AreEqual(LogLevel.Warning, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual(
-            $"Polyline is invalid. Current position is {position}.",
+            $"Polyline is invalid or malformed at position {position}.",
             _loggerProvider.Collector.LatestRecord.Message);
     }
 }
