@@ -232,7 +232,6 @@ jobs:
       - run: |
           mkdir -p ./docs/${{ env.friendly-version }}
           mv ./docs/temp/** ./docs/${{ env.friendly-version }}
-          git 
       - run: git fetch origin
       - run:  git checkout -b docs origin/docs
       - run: git config --global user.email "action@github.com"
