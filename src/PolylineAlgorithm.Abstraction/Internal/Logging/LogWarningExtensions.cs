@@ -3,13 +3,13 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm.Abstraction.Internal;
+namespace PolylineAlgorithm.Abstraction.Internal.Logging;
 
 using Microsoft.Extensions.Logging;
 
 internal static partial class LogWarningExtensions {
     private const LogLevel LOG_LEVEL = LogLevel.Warning;
-    private const int EVENT_ID_BASE = (int)LogLevel.Warning * 100;
+    private const int EVENT_ID_BASE = (int)LOG_LEVEL * LoggingDefaults.LogLevelMultiplier;
 
     [LoggerMessage(EVENT_ID_BASE + 1, LOG_LEVEL, "Argument {argumentName} is null.")]
     internal static partial void LogNullArgumentWarning(this ILogger logger, string argumentName);
