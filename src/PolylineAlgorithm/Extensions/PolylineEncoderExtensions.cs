@@ -20,13 +20,13 @@ public static class PolylineEncoderExtensions {
     /// The <see cref="IPolylineEncoder{TCoordinate, TPolyline}"/> instance used to perform the encoding operation.
     /// </param>
     /// <param name="coordinates">
-    /// The collection of <see cref="Coordinate"/> objects to encode.
+    /// The sequence of <see cref="Coordinate"/> objects to encode.
     /// </param>
     /// <returns>
     /// A <see cref="Polyline"/> representing the encoded polyline string for the provided coordinates.
     /// </returns>
     /// <exception cref="ArgumentNullException">
-    /// Thrown if <paramref name="encoder"/> is <see langword="null"/>.
+    /// Thrown when <paramref name="encoder"/> is <see langword="null"/>.
     /// </exception>
     public static Polyline Encode(this IPolylineEncoder<Coordinate, Polyline> encoder, ICollection<Coordinate> coordinates) {
         if (encoder is null) {
@@ -40,7 +40,7 @@ public static class PolylineEncoderExtensions {
     /// Encodes an array of <see cref="Coordinate"/> instances into an encoded polyline.
     /// </summary>
     /// <param name="encoder">
-    /// The <see cref="IPolylineEncoder"/> instance used to perform the encoding operation.
+    /// The <see cref="IPolylineEncoder{TCoordinate, TPolyline}"/> instance used to perform the encoding operation.
     /// </param>
     /// <param name="coordinates">
     /// The array of <see cref="Coordinate"/> objects to encode.
@@ -49,7 +49,7 @@ public static class PolylineEncoderExtensions {
     /// A <see cref="Polyline"/> representing the encoded polyline string for the provided coordinates.
     /// </returns>
     /// <exception cref="ArgumentNullException">
-    /// Thrown if <paramref name="encoder"/> is <see langword="null"/>.
+    /// Thrown when <paramref name="encoder"/> is <see langword="null"/>.
     /// </exception>
     public static Polyline Encode(this IPolylineEncoder<Coordinate, Polyline> encoder, Coordinate[] coordinates) {
         if (encoder is null) {

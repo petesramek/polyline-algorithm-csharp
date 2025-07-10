@@ -8,20 +8,15 @@ namespace PolylineAlgorithm;
 using PolylineAlgorithm.Abstraction;
 using System.Runtime.CompilerServices;
 
-/// <summary>
-/// Performs decoding of encoded polyline strings into a sequence of geographic coordinates.
-/// </summary>
+/// <inheritdoc cref="AbstractPolylineDecoder{TPolyline, TCoordinate}{TCoordinate, TPolyline}" />
 public sealed class PolylineDecoder : AbstractPolylineDecoder<Polyline, Coordinate> {
+    /// <inheritdoc />
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected override Coordinate CreateCoordinate(double latitude, double longitude) {
         return new(latitude, longitude);
     }
 
-    /// <summary>
-    /// Converts the provided polyline instance into a <see cref="ReadOnlyMemory{Char}"/> for decoding.
-    /// </summary>
-    /// <param name="polyline"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     protected override ReadOnlyMemory<char> GetReadOnlyMemory(Polyline polyline) {
         return polyline.Value;
     }

@@ -52,8 +52,8 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// Copies the characters of this polyline to the specified destination array.
     /// </summary>
     /// <param name="destination">The destination array to copy the characters to.</param>
-    /// <exception cref="ArgumentNullException">Thrown if <paramref name="destination"/> is <c>null</c>.</exception>
-    /// <exception cref="ArgumentException">Thrown if the length of <paramref name="destination"/> does not match the polyline's length.</exception>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="destination"/> is <c>null</c>.</exception>
+    /// <exception cref="ArgumentException">Thrown when the length of <paramref name="destination"/> does not match the polyline's length.</exception>
     public void CopyTo(char[] destination) {
         if (destination is null) {
             throw new ArgumentNullException(nameof(destination));
@@ -128,7 +128,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// </summary>
     /// <param name="polyline">A Unicode character array representing an encoded polyline.</param>
     /// <returns>The <see cref="Polyline"/> instance corresponding to the specified character array.</returns>
-    /// <exception cref="ArgumentNullException">Thrown if <paramref name="polyline"/> is <c>null</c>.</exception>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="polyline"/> is <c>null</c>.</exception>
     public static Polyline FromCharArray(char[] polyline) {
         if (polyline is null) {
             throw new ArgumentNullException(nameof(polyline));
@@ -142,7 +142,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// </summary>
     /// <param name="polyline">A string representing an encoded polyline.</param>
     /// <returns>The <see cref="Polyline"/> instance corresponding to the specified string.</returns>
-    /// <exception cref="ArgumentNullException">Thrown if <paramref name="polyline"/> is <c>null</c>.</exception>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="polyline"/> is <c>null</c>.</exception>
     public static Polyline FromString(string polyline) {
         if (polyline is null) {
             throw new ArgumentNullException(nameof(polyline));

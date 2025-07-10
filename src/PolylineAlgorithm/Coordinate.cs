@@ -88,13 +88,7 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
 
     #region IEquatable<Coordinate> implementation
 
-    /// <summary>
-    /// Indicates whether this coordinate is equal to another <see cref="Coordinate"/> instance.
-    /// </summary>
-    /// <param name="other">The coordinate to compare with this instance.</param>
-    /// <returns>
-    /// <see langword="true"/> if both latitude and longitude are equal; otherwise, <see langword="false"/>.
-    /// </returns>
+    /// <inheritdoc />
     public bool Equals(Coordinate other) {
         return Latitude == other.Latitude &&
                Longitude == other.Longitude;

@@ -8,22 +8,29 @@ namespace PolylineAlgorithm;
 using PolylineAlgorithm.Abstraction;
 using System.Runtime.CompilerServices;
 
-/// <summary>
-/// Provides methods to encode a set of geographic coordinates into a polyline string.
-/// This class implements the <see cref="IPolylineEncoder"/> interface.
-/// </summary>
+/// <inheritdoc cref="AbstractPolylineEncoder{TCoordinate, TPolyline}" />
 public sealed class PolylineEncoder : AbstractPolylineEncoder<Coordinate, Polyline> {
+    /// <inheritdoc />
+    public PolylineEncoder()
+        : base() { }
 
+    /// <inheritdoc />
+    public PolylineEncoder(PolylineEncodingOptions options)
+        : base(options) { }
+
+    /// <inheritdoc />
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected override double GetLatitude(Coordinate coordinate) {
         return coordinate.Latitude;
     }
 
+    /// <inheritdoc />
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected override double GetLongitude(Coordinate coordinate) {
         return coordinate.Longitude;
     }
 
+    /// <inheritdoc />
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected override Polyline CreatePolyline(ReadOnlyMemory<char> polyline) {
         return Polyline.FromMemory(polyline);
