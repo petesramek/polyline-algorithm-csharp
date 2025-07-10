@@ -232,14 +232,14 @@ jobs:
       - run: |
           mkdir -p ./docs/${{ env.friendly-version }}
           mv ./docs/temp/** ./docs/${{ env.friendly-version }}
-      - run: |
-          git fetch origin
-          git checkout -b docs origin/docs
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
-          git add -- ./docs/${{ env.friendly-version }}
-          git commit -m'added ./docs/${{ env.friendly-version }}' -- ./docs/${{ env.friendly-version }}
-          git push
+          git 
+      - run: git fetch origin
+      - run:  git checkout -b docs origin/docs
+      - run: git config --global user.email "action@github.com"
+      - run: git config --global user.name "GitHub Action"
+      - run: git add -- ./docs/${{ env.friendly-version }}
+      - run: git commit -m'added ./docs/${{ env.friendly-version }}' -- ./docs/${{ env.friendly-version }}
+      - run: git push
       # - name: Upload artifact
       #   uses: actions/upload-pages-artifact@v3
       #   with:
