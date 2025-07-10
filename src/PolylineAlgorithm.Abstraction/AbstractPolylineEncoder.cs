@@ -5,12 +5,14 @@
 
 namespace PolylineAlgorithm.Abstraction;
 
+using Microsoft.Extensions.Logging;
 using PolylineAlgorithm.Abstraction.Internal;
 using PolylineAlgorithm.Abstraction.Properties;
 using System;
 using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 /// <summary>
@@ -60,17 +62,33 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// Thrown when <paramref name="coordinates"/> is an empty enumeration.
     /// </exception>
     public TPolyline Encode(IEnumerable<TCoordinate> coordinates) {
+        var logger = Options
+            .LoggerFactory
+            .CreateLogger<AbstractPolylineDecoder<TPolyline, TCoordinate>>();
+
+        logger
+            .LogOperationStartedInfo(nameof(Encode));
+
+        Debug.Assert(coordinates is not null, "Coordinates cannot be null.");
+
         if (coordinates is null) {
-            Options
-                .GetLoggerFor<AbstractPolylineEncoder<TCoordinate, TPolyline>>().LogNullArgumentWarning(nameof(coordinates));
+            logger
+                .LogNullArgumentWarning(nameof(coordinates));
+            logger
+                .LogOperationFailedInfo(nameof(Encode));
+
             throw new ArgumentNullException(nameof(coordinates));
         }
 
         int count = GetCount(coordinates);
 
-        if (count == 0) {
-            Options
-                .GetLoggerFor<AbstractPolylineEncoder<TCoordinate, TPolyline>>().LogEmptyArgumentWarning(nameof(coordinates));
+        Debug.Assert(count >= 0, "Count must be non-negative.");
+
+        if (count < 1) {
+            logger
+                .LogEmptyArgumentWarning(nameof(coordinates));
+            logger
+                .LogOperationFailedInfo(nameof(Encode));
 
             throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeEmptyEnumerationMessage, nameof(coordinates));
         }
@@ -90,8 +108,12 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
                 .Next(PolylineEncoding.Normalize(GetLatitude(enumerator.Current), PolylineEncoding.ValueType.Latitude), PolylineEncoding.Normalize(GetLongitude(enumerator.Current), PolylineEncoding.ValueType.Longitude));
 
             if (GetRemainingBufferSize(position, buffer.Length) < GetRequiredLength(variance)) {
-                Options
-                    .GetLoggerFor<AbstractPolylineEncoder<TCoordinate, TPolyline>>().LogInternalBufferOverflowWarning(position, buffer.Length, GetRequiredLength(variance));
+                logger
+                    .LogInternalBufferOverflowWarning(position, buffer.Length, GetRequiredLength(variance));
+                logger
+                    .LogOperationFailedInfo(nameof(Encode));
+
+
                 throw new InternalBufferOverflowException();
             }
 
@@ -99,13 +121,19 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
                 || !PolylineEncoding.TryWriteValue(variance.Longitude, ref buffer, ref position)
             ) {
                 // This shouldn't happen, but if it does, log the error and throw an exception.
-                Options
-                    .GetLoggerFor<AbstractPolylineEncoder<TCoordinate, TPolyline>>().LogCannotWriteValueToBufferWarning(position, consumed);
+                logger
+                    .LogCannotWriteValueToBufferWarning(position, consumed);
+                logger
+                    .LogOperationFailedInfo(nameof(Encode));
+
                 throw new InvalidOperationException();
             }
 
             consumed++;
         }
+
+        logger
+            .LogOperationFinishedInfo(nameof(Encode));
 
         return CreatePolyline(buffer[..position].ToString().AsMemory());
 
@@ -120,18 +148,29 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
             PolylineEncoding.GetCharCount(variance.Latitude) + PolylineEncoding.GetCharCount(variance.Longitude);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int GetRemainingBufferSize(int position, int length) => length - position;
+        static int GetRemainingBufferSize(int position, int length) {
+            Debug.Assert(length > 0, "Buffer length must be greater than zero.");
+            Debug.Assert(position >= 0, "Position must be non-negative.");
+            Debug.Assert(position < length, "Position must be less than buffer length.");
+            Debug.Assert(length - position >= 0, "Remaining length must be non-negative.");
+
+            return length - position;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         int GetBufferLength(int count) {
-            int maxBufferLength = Options.BufferSize / sizeof(char);
+            Debug.Assert(count > 0, "Count must be greater than zero.");
+
             int requestedBufferLength = count * Defaults.Polyline.Block.Length.Max;
 
-            if (requestedBufferLength > maxBufferLength) {
-                Options
-                   .GetLoggerFor<AbstractPolylineEncoder<TCoordinate, TPolyline>>().LogRequestedBufferSizeExceedsMaxBufferLengthWarning(requestedBufferLength, maxBufferLength);
+            Debug.Assert(Options.MaxLength > 0, "Max buffer length must be greater than zero.");
+            Debug.Assert(requestedBufferLength > 0, "Requested buffer length must be greater than zero.");
 
-                return maxBufferLength;
+            if (requestedBufferLength > Options.MaxLength) {
+                logger
+                    .LogRequestedBufferSizeExceedsMaxBufferLengthWarning(requestedBufferLength, Options.MaxLength);
+
+                return Options.MaxLength;
             }
 
             return requestedBufferLength;

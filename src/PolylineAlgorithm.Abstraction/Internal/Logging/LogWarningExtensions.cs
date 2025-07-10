@@ -7,25 +7,28 @@ namespace PolylineAlgorithm.Abstraction.Internal;
 
 using Microsoft.Extensions.Logging;
 
-internal static partial class Logging {
-    [LoggerMessage(1, LogLevel.Warning, "Argument {argumentName} is null.")]
+internal static partial class LogWarningExtensions {
+    private const LogLevel LOG_LEVEL = LogLevel.Warning;
+    private const int EVENT_ID_BASE = (int)LogLevel.Warning * 100;
+
+    [LoggerMessage(EVENT_ID_BASE + 1, LOG_LEVEL, "Argument {argumentName} is null.")]
     internal static partial void LogNullArgumentWarning(this ILogger logger, string argumentName);
 
-    [LoggerMessage(2, LogLevel.Warning, "Argument {argumentName} is empty.")]
+    [LoggerMessage(EVENT_ID_BASE + 2, LOG_LEVEL, "Argument {argumentName} is empty.")]
     internal static partial void LogEmptyArgumentWarning(this ILogger logger, string argumentName);
 
-    [LoggerMessage(3, LogLevel.Warning, "Internal buffer has size of {bufferLength}. At position {position} is required additional {requiredSpace} space.")]
+    [LoggerMessage(EVENT_ID_BASE + 3, LOG_LEVEL, "Internal buffer has size of {bufferLength}. At position {position} is required additional {requiredSpace} space.")]
     internal static partial void LogInternalBufferOverflowWarning(this ILogger logger, int position, int bufferLength, int requiredSpace);
 
-    [LoggerMessage(4, LogLevel.Warning, "Cannot write to internal buffer at position {position}. Current coordinate is at index {coordinateIndex}.")]
+    [LoggerMessage(EVENT_ID_BASE + 4, LOG_LEVEL, "Cannot write to internal buffer at position {position}. Current coordinate is at index {coordinateIndex}.")]
     internal static partial void LogCannotWriteValueToBufferWarning(this ILogger logger, int position, int coordinateIndex);
 
-    [LoggerMessage(5, LogLevel.Warning, "Argument {argumentName} is too short. Minimal length is {minimumLength}. Actual length is {actualLength}.")]
+    [LoggerMessage(EVENT_ID_BASE + 5, LOG_LEVEL, "Argument {argumentName} is too short. Minimal length is {minimumLength}. Actual length is {actualLength}.")]
     internal static partial void LogPolylineCannotBeShorterThanWarning(this ILogger logger, string argumentName, int actualLength, int minimumLength);
 
-    [LoggerMessage(6, LogLevel.Warning, "Requested buffer size of {requestedBufferLength} exceeds maximum allowed buffer length of {maxBufferLength}.")]
+    [LoggerMessage(EVENT_ID_BASE + 6, LOG_LEVEL, "Requested buffer size of {requestedBufferLength} exceeds maximum allowed buffer length of {maxBufferLength}.")]
     internal static partial void LogRequestedBufferSizeExceedsMaxBufferLengthWarning(this ILogger logger, int requestedBufferLength, int maxBufferLength);
 
-    [LoggerMessage(7, LogLevel.Warning, "Polyline is invalid or malformed at position {position}.")]
+    [LoggerMessage(EVENT_ID_BASE + 7, LOG_LEVEL, "Polyline is invalid or malformed at position {position}.")]
     internal static partial void LogInvalidPolylineWarning(this ILogger logger, int position);
 }

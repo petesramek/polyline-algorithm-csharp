@@ -5,6 +5,7 @@
 
 namespace PolylineAlgorithm.Abstraction;
 
+using Microsoft.Extensions.Logging;
 using PolylineAlgorithm.Abstraction.Internal;
 using PolylineAlgorithm.Abstraction.Properties;
 using System;
@@ -60,16 +61,27 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     /// Thrown when the polyline format is invalid or malformed at a specific position.
     /// </exception>
     public IEnumerable<TCoordinate> Decode(TPolyline polyline) {
+        var logger = Options
+            .LoggerFactory
+            .CreateLogger<AbstractPolylineDecoder<TPolyline, TCoordinate>>();
+
+        logger.
+            LogOperationStartedInfo(nameof(Decode));
+
         if (polyline is null) {
+            logger
+                .LogNullArgumentWarning(nameof(polyline));
+
             throw new ArgumentNullException(nameof(polyline));
         }
 
         ReadOnlyMemory<char> sequence = GetReadOnlyMemory(polyline);
 
         if (sequence.Length < Defaults.Polyline.Block.Length.Min) {
-            Options
-                .GetLoggerFor<AbstractPolylineDecoder<TPolyline, TCoordinate>>()
+            logger
                 .LogPolylineCannotBeShorterThanWarning(nameof(sequence), sequence.Length, Defaults.Polyline.Block.Length.Min);
+            logger.
+                LogOperationFailedInfo(nameof(Decode));
 
             throw new ArgumentException(string.Format(ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage, sequence.Length), nameof(polyline));
         }
@@ -89,15 +101,19 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
             if (!PolylineEncoding.TryReadValue(ref latitude, ref sequence, ref position)
                 || !PolylineEncoding.TryReadValue(ref longitude, ref sequence, ref position)
             ) {
-                Options
-                    .GetLoggerFor<AbstractPolylineDecoder<TPolyline, TCoordinate>>()
+                logger
                     .LogInvalidPolylineWarning(position);
+                logger.
+                    LogOperationFailedInfo(nameof(Decode));
 
                 InvalidPolylineException.Throw(position);
             }
 
             yield return CreateCoordinate(PolylineEncoding.Denormalize(latitude, PolylineEncoding.ValueType.Latitude), PolylineEncoding.Denormalize(longitude, PolylineEncoding.ValueType.Longitude));
         }
+
+        logger
+            .LogOperationFinishedInfo(nameof(Decode));
     }
 
     /// <summary>
