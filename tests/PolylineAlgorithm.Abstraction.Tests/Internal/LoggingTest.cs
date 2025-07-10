@@ -19,18 +19,18 @@ public class LoggingTest {
     [DataRow("")]
     [DataRow(" ")]
     [DataRow("argumentName")]
-    public void ILogger_LogNullArgumentError_Ok(string value) {
+    public void ILogger_LogNullArgumentWarning_Ok(string value) {
         // Arrange
         string argumentName = value;
 
         // Act
         _loggerFactory
             .CreateLogger<LoggingTest>()
-            .LogNullArgumentError(argumentName);
+            .LogNullArgumentWarning(argumentName);
 
         // Assert
         Assert.AreEqual(1, _loggerProvider.Collector.LatestRecord.Id);
-        Assert.AreEqual(LogLevel.Error, _loggerProvider.Collector.LatestRecord.Level);
+        Assert.AreEqual(LogLevel.Warning, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual($"Argument {value ?? "(null)"} cannot be null.", _loggerProvider.Collector.LatestRecord.Message);
     }
 
@@ -39,23 +39,23 @@ public class LoggingTest {
     [DataRow("")]
     [DataRow(" ")]
     [DataRow("argumentName")]
-    public void ILogger_LogEmptyArgumentError_Ok(string value) {
+    public void ILogger_LogEmptyArgumentWarning_Ok(string value) {
         // Arrange
         string argumentName = value;
 
         // Act
         _loggerFactory
             .CreateLogger<LoggingTest>()
-            .LogEmptyArgumentError(argumentName);
+            .LogEmptyArgumentWarning(argumentName);
 
         // Assert
         Assert.AreEqual(2, _loggerProvider.Collector.LatestRecord.Id);
-        Assert.AreEqual(LogLevel.Error, _loggerProvider.Collector.LatestRecord.Level);
+        Assert.AreEqual(LogLevel.Warning, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual($"Argument {value ?? "(null)"} cannot be empty.", _loggerProvider.Collector.LatestRecord.Message);
     }
 
     [TestMethod]
-    public void ILogger_LogInternalBufferOverflowError_Ok() {
+    public void ILogger_LogInternalBufferOverflowWarning_Ok() {
         // Arrange
         int position = 5;
         int bufferLength = 10;
@@ -64,18 +64,18 @@ public class LoggingTest {
         // Act
         _loggerFactory
             .CreateLogger<LoggingTest>()
-            .LogInternalBufferOverflowError(position, bufferLength, requiredSpace);
+            .LogInternalBufferOverflowWarning(position, bufferLength, requiredSpace);
 
         // Assert
         Assert.AreEqual(3, _loggerProvider.Collector.LatestRecord.Id);
-        Assert.AreEqual(LogLevel.Error, _loggerProvider.Collector.LatestRecord.Level);
+        Assert.AreEqual(LogLevel.Warning, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual(
             $"Internal buffer has {bufferLength} length. At position {position} is required additional {requiredSpace} length.",
             _loggerProvider.Collector.LatestRecord.Message);
     }
 
     [TestMethod]
-    public void ILogger_LogCannotWriteValueToBufferError_Ok() {
+    public void ILogger_LogCannotWriteValueToBufferWarning_Ok() {
         // Arrange
         int position = 5;
         int index = 1;
@@ -83,11 +83,11 @@ public class LoggingTest {
         // Act
         _loggerFactory
             .CreateLogger<LoggingTest>()
-            .LogCannotWriteValueToBufferError(position, index);
+            .LogCannotWriteValueToBufferWarning(position, index);
 
         // Assert
         Assert.AreEqual(4, _loggerProvider.Collector.LatestRecord.Id);
-        Assert.AreEqual(LogLevel.Error, _loggerProvider.Collector.LatestRecord.Level);
+        Assert.AreEqual(LogLevel.Warning, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual(
             $"Cannot write to internal buffer at position {position}. Current coordinate index is {index}.",
             _loggerProvider.Collector.LatestRecord.Message);
@@ -98,7 +98,7 @@ public class LoggingTest {
     [DataRow("")]
     [DataRow(" ")]
     [DataRow("argumentName")]
-    public void ILogger_LogPolylineCannotBeShorterThanError_Ok(string value) {
+    public void ILogger_LogPolylineCannotBeShorterThanWarning_Ok(string value) {
         // Arrange
         string argumentName = value;
         int actualLength = 10;
@@ -107,11 +107,11 @@ public class LoggingTest {
         // Act
         _loggerFactory
             .CreateLogger<LoggingTest>()
-            .LogPolylineCannotBeShorterThanError(argumentName, actualLength, minimumLength);
+            .LogPolylineCannotBeShorterThanWarning(argumentName, actualLength, minimumLength);
 
         // Assert
         Assert.AreEqual(5, _loggerProvider.Collector.LatestRecord.Id);
-        Assert.AreEqual(LogLevel.Error, _loggerProvider.Collector.LatestRecord.Level);
+        Assert.AreEqual(LogLevel.Warning, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual(
             $"Argument {value} is too short. Minimal length is {minimumLength}. Actual length is {actualLength}.",
             _loggerProvider.Collector.LatestRecord.Message);
@@ -138,18 +138,18 @@ public class LoggingTest {
     }
 
     [TestMethod]
-    public void ILogger_LogInvalidPolylineError_Ok() {
+    public void ILogger_LogInvalidPolylineWarning_Ok() {
         // Arrange
         int position = 5;
 
         // Act
         _loggerFactory
             .CreateLogger<LoggingTest>()
-            .LogInvalidPolylineError(position);
+            .LogInvalidPolylineWarning(position);
 
         // Assert
         Assert.AreEqual(7, _loggerProvider.Collector.LatestRecord.Id);
-        Assert.AreEqual(LogLevel.Error, _loggerProvider.Collector.LatestRecord.Level);
+        Assert.AreEqual(LogLevel.Warning, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual(
             $"Polyline is invalid. Current position is {position}.",
             _loggerProvider.Collector.LatestRecord.Message);
