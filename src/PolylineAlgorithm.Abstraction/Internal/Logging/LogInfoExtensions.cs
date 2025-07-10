@@ -3,10 +3,9 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm.Abstraction.Internal;
+namespace PolylineAlgorithm.Abstraction.Internal.Logging;
 
 using Microsoft.Extensions.Logging;
-using PolylineAlgorithm.Abstraction.Internal.Logging;
 
 internal static partial class LogInfoExtensions {
     private const LogLevel LOG_LEVEL = LogLevel.Information;

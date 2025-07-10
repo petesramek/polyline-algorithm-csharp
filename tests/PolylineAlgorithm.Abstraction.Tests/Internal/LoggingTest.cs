@@ -7,11 +7,78 @@ namespace PolylineAlgorithm.Abstraction.Tests.Internal;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Testing;
+using PolylineAlgorithm.Abstraction.Internal.Logging;
 
 [TestClass]
 public class LoggingTest {
-    static FakeLoggerProvider _loggerProvider = new FakeLoggerProvider();
-    static ILoggerFactory _loggerFactory = new FakeLoggerFactory(_loggerProvider);
+    private static readonly FakeLoggerProvider _loggerProvider = new();
+    private static readonly ILoggerFactory _loggerFactory = new FakeLoggerFactory(_loggerProvider);
+
+    [TestMethod]
+    [DataRow(null)]
+    [DataRow("")]
+    [DataRow(" ")]
+    [DataRow("operationName")]
+    public void ILogger_LogOperationStartedInfo_Ok(string value) {
+        // Arrange
+        string operationName = value;
+
+        // Act
+        _loggerFactory
+            .CreateLogger<LoggingTest>()
+            .LogOperationStartedInfo(operationName);
+
+        // Assert
+        Assert.AreEqual(new EventId(201, nameof(LogInfoExtensions.LogOperationStartedInfo)), _loggerProvider.Collector.LatestRecord.Id);
+        Assert.AreEqual(LogLevel.Information, _loggerProvider.Collector.LatestRecord.Level);
+        Assert.AreEqual(
+            $"Operation {value} has started.",
+            _loggerProvider.Collector.LatestRecord.Message);
+    }
+
+    [TestMethod]
+    [DataRow(null)]
+    [DataRow("")]
+    [DataRow(" ")]
+    [DataRow("operationName")]
+    public void ILogger_LogOperationFailedInfo_Ok(string value) {
+        // Arrange
+        string operationName = value;
+
+        // Act
+        _loggerFactory
+            .CreateLogger<LoggingTest>()
+            .LogOperationFailedInfo(operationName);
+
+        // Assert
+        Assert.AreEqual(new EventId(202, nameof(LogInfoExtensions.LogOperationFailedInfo)), _loggerProvider.Collector.LatestRecord.Id);
+        Assert.AreEqual(LogLevel.Information, _loggerProvider.Collector.LatestRecord.Level);
+        Assert.AreEqual(
+            $"Operation {value} has failed.",
+            _loggerProvider.Collector.LatestRecord.Message);
+    }
+
+    [TestMethod]
+    [DataRow(null)]
+    [DataRow("")]
+    [DataRow(" ")]
+    [DataRow("operationName")]
+    public void ILogger_LogOperationFinishedInfo_Ok(string value) {
+        // Arrange
+        string operationName = value;
+
+        // Act
+        _loggerFactory
+            .CreateLogger<LoggingTest>()
+            .LogOperationFinishedInfo(operationName);
+
+        // Assert
+        Assert.AreEqual(new EventId(203, nameof(LogInfoExtensions.LogOperationFinishedInfo)), _loggerProvider.Collector.LatestRecord.Id);
+        Assert.AreEqual(LogLevel.Information, _loggerProvider.Collector.LatestRecord.Level);
+        Assert.AreEqual(
+            $"Operation {value} has finished.",
+            _loggerProvider.Collector.LatestRecord.Message);
+    }
 
     [TestMethod]
     [DataRow(null)]
@@ -28,7 +95,7 @@ public class LoggingTest {
             .LogNullArgumentWarning(argumentName);
 
         // Assert
-        Assert.AreEqual(1, _loggerProvider.Collector.LatestRecord.Id);
+        Assert.AreEqual(new EventId(301, nameof(LogWarningExtensions.LogNullArgumentWarning)), _loggerProvider.Collector.LatestRecord.Id);
         Assert.AreEqual(LogLevel.Warning, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual($"Argument {value ?? "(null)"} is null.", _loggerProvider.Collector.LatestRecord.Message);
     }
@@ -48,7 +115,7 @@ public class LoggingTest {
             .LogEmptyArgumentWarning(argumentName);
 
         // Assert
-        Assert.AreEqual(2, _loggerProvider.Collector.LatestRecord.Id);
+        Assert.AreEqual(new EventId(302, nameof(LogWarningExtensions.LogEmptyArgumentWarning)), _loggerProvider.Collector.LatestRecord.Id);
         Assert.AreEqual(LogLevel.Warning, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual($"Argument {value ?? "(null)"} is empty.", _loggerProvider.Collector.LatestRecord.Message);
     }
@@ -66,7 +133,7 @@ public class LoggingTest {
             .LogInternalBufferOverflowWarning(position, bufferLength, requiredSpace);
 
         // Assert
-        Assert.AreEqual(3, _loggerProvider.Collector.LatestRecord.Id);
+        Assert.AreEqual(new EventId(303, nameof(LogWarningExtensions.LogInternalBufferOverflowWarning)), _loggerProvider.Collector.LatestRecord.Id);
         Assert.AreEqual(LogLevel.Warning, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual(
             $"Internal buffer has size of {bufferLength}. At position {position} is required additional {requiredSpace} space.",
@@ -85,7 +152,7 @@ public class LoggingTest {
             .LogCannotWriteValueToBufferWarning(position, index);
 
         // Assert
-        Assert.AreEqual(4, _loggerProvider.Collector.LatestRecord.Id);
+        Assert.AreEqual(new EventId(304, nameof(LogWarningExtensions.LogCannotWriteValueToBufferWarning)), _loggerProvider.Collector.LatestRecord.Id);
         Assert.AreEqual(LogLevel.Warning, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual(
             $"Cannot write to internal buffer at position {position}. Current coordinate is at index {index}.",
@@ -109,7 +176,7 @@ public class LoggingTest {
             .LogPolylineCannotBeShorterThanWarning(argumentName, actualLength, minimumLength);
 
         // Assert
-        Assert.AreEqual(5, _loggerProvider.Collector.LatestRecord.Id);
+        Assert.AreEqual(new EventId(305, nameof(LogWarningExtensions.LogPolylineCannotBeShorterThanWarning)), _loggerProvider.Collector.LatestRecord.Id);
         Assert.AreEqual(LogLevel.Warning, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual(
             $"Argument {value} is too short. Minimal length is {minimumLength}. Actual length is {actualLength}.",
@@ -129,7 +196,7 @@ public class LoggingTest {
             .LogRequestedBufferSizeExceedsMaxBufferLengthWarning(requestedBufferLength, maxBufferLength);
 
         // Assert
-        Assert.AreEqual(6, _loggerProvider.Collector.LatestRecord.Id);
+        Assert.AreEqual(new EventId(306, nameof(LogWarningExtensions.LogRequestedBufferSizeExceedsMaxBufferLengthWarning)), _loggerProvider.Collector.LatestRecord.Id);
         Assert.AreEqual(LogLevel.Warning, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual(
             $"Requested buffer size of {requestedBufferLength} exceeds maximum allowed buffer length of {maxBufferLength}.",
@@ -147,7 +214,7 @@ public class LoggingTest {
             .LogInvalidPolylineWarning(position);
 
         // Assert
-        Assert.AreEqual(7, _loggerProvider.Collector.LatestRecord.Id);
+        Assert.AreEqual(new EventId(307, nameof(LogWarningExtensions.LogInvalidPolylineWarning)), _loggerProvider.Collector.LatestRecord.Id);
         Assert.AreEqual(LogLevel.Warning, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual(
             $"Polyline is invalid or malformed at position {position}.",
