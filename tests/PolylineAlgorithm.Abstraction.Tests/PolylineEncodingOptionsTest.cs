@@ -39,16 +39,4 @@ public class PolylineEncodingOptionsTest {
         Assert.AreEqual(bufferSize / sizeof(char), options.MaxLength);
         Assert.IsInstanceOfType<FakeLoggerFactory>(options.LoggerFactory);
     }
-
-    [TestMethod]
-    public void UseLogger_Returns_Instance() {
-        // Arrange
-        var options = new PolylineEncodingOptions();
-
-        // Act
-        var logger = options.GetLoggerFor<PolylineEncodingOptionsTest>();
-
-        // Assert
-        Assert.IsInstanceOfType<ILogger>(logger);
-    }
 }

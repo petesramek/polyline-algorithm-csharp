@@ -38,15 +38,4 @@ public sealed class PolylineEncodingOptions {
     /// The default logger factory is <see cref="NullLoggerFactory"/>, which does not log any messages.
     /// </remarks>
     public ILoggerFactory LoggerFactory { get; internal set; } = NullLoggerFactory.Instance;
-
-    /// <summary>
-    /// Gets or sets the precision for encoding coordinates.
-    /// </summary>
-    /// <typeparam name="T">
-    /// The type for which to get the logger.
-    /// </typeparam>
-    /// <returns>
-    /// A logger instance for the specified type.
-    /// </returns>
-    public ILogger GetLoggerFor<T>() => LoggerFactory.CreateLogger<T>();
 }
