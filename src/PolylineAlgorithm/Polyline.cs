@@ -21,19 +21,19 @@ using System.Runtime.InteropServices;
 public readonly struct Polyline : IEquatable<Polyline> {
     private readonly ReadOnlyMemory<char> _value;
 
-    ///// <summary>
-    ///// Initializes a new instance of the <see cref="Polyline"/> struct with the specified character sequence.
-    ///// </summary>
-    ///// <param name="value">
-    ///// A read-only span of characters representing an encoded polyline.
-    ///// </param>
-    //public Polyline(ReadOnlySpan<char> value) {
-    //    if (value.IsEmpty) {
-    //        _value = ReadOnlyMemory<char>.Empty;
-    //    } else {
-    //        _value = new ReadOnlyMemory<char>(value.ToArray());
-    //    }
-    //}
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Polyline"/> struct with the specified character sequence.
+    /// </summary>
+    /// <param name="value">
+    /// A read-only span of characters representing an encoded polyline.
+    /// </param>
+    public Polyline(ReadOnlySpan<char> value) {
+        if (value.IsEmpty) {
+            _value = ReadOnlyMemory<char>.Empty;
+        } else {
+            _value = new ReadOnlyMemory<char>(value.ToArray());
+        }
+    }
 
     /// <summary>
     /// Initializes a new, empty instance of the <see cref="Polyline"/> struct.
