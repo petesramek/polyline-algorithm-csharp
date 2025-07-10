@@ -9,6 +9,7 @@ using PolylineAlgorithm.Abstraction.Properties;
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 /// <summary>
 /// Exception thrown when a polyline is determined to be malformed or invalid during processing.
@@ -38,6 +39,8 @@ public sealed class InvalidPolylineException : Exception {
     /// Always thrown to indicate that the polyline is malformed at the specified position.
     /// </exception>
     public static void Throw(long position) {
+        Debug.Assert(position >= 0, "Position must be a non-negative value.");
+
         throw new InvalidPolylineException(string.Format(ExceptionMessageResource.PolylineStringIsMalformedMessage, position.ToString()));
     }
 }

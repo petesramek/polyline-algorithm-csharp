@@ -8,6 +8,7 @@ namespace PolylineAlgorithm.Extensions;
 using PolylineAlgorithm.Abstraction;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 /// <summary>
 /// Provides extension methods for the <see cref="IPolylineEncoder{TCoordinate, TPolyline}"/> interface to facilitate encoding geographic coordinates into polylines.
@@ -29,6 +30,8 @@ public static class PolylineEncoderExtensions {
     /// Thrown when <paramref name="encoder"/> is <see langword="null"/>.
     /// </exception>
     public static Polyline Encode(this IPolylineEncoder<Coordinate, Polyline> encoder, ICollection<Coordinate> coordinates) {
+        Debug.Assert(encoder is not null, "Encoder cannot be null.");
+
         if (encoder is null) {
             throw new ArgumentNullException(nameof(encoder));
         }
@@ -52,6 +55,8 @@ public static class PolylineEncoderExtensions {
     /// Thrown when <paramref name="encoder"/> is <see langword="null"/>.
     /// </exception>
     public static Polyline Encode(this IPolylineEncoder<Coordinate, Polyline> encoder, Coordinate[] coordinates) {
+        Debug.Assert(encoder is not null, "Encoder cannot be null.");
+
         if (encoder is null) {
             throw new ArgumentNullException(nameof(encoder));
         }

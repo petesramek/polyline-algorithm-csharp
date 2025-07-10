@@ -8,6 +8,7 @@ namespace PolylineAlgorithm.Extensions;
 using PolylineAlgorithm.Abstraction;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 /// <summary>
 /// Provides extension methods for the <see cref="IPolylineDecoder{TPolyline, TCoordinate}"/> interface to facilitate decoding encoded polylines.
@@ -29,6 +30,8 @@ public static class PolylineDecoderExtensions {
     /// Thrown when <paramref name="decoder"/> is <see langword="null"/>.
     /// </exception>
     public static IEnumerable<Coordinate> Decode(this IPolylineDecoder<Polyline, Coordinate> decoder, string polyline) {
+        Debug.Assert(decoder is not null, "Decoder cannot be null.");
+
         if (decoder is null) {
             throw new ArgumentNullException(nameof(decoder));
         }
@@ -52,6 +55,8 @@ public static class PolylineDecoderExtensions {
     /// Thrown when <paramref name="decoder"/> is <see langword="null"/>.
     /// </exception>
     public static IEnumerable<Coordinate> Decode(this IPolylineDecoder<Polyline, Coordinate> decoder, char[] polyline) {
+        Debug.Assert(decoder is not null, "Decoder cannot be null.");
+
         if (decoder is null) {
             throw new ArgumentNullException(nameof(decoder));
         }
@@ -60,6 +65,8 @@ public static class PolylineDecoderExtensions {
     }
 
     public static IEnumerable<Coordinate> Decode(this IPolylineDecoder<Polyline, Coordinate> decoder, ReadOnlyMemory<char> polyline) {
+        Debug.Assert(decoder is not null, "Decoder cannot be null.");
+
         if (decoder is null) {
             throw new ArgumentNullException(nameof(decoder));
         }
