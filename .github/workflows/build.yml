@@ -240,10 +240,8 @@ jobs:
       - run: git add -- ./docs/${{ env.friendly-version }}
       - id: check-diff 
         run: |
-          exit `git diff --exit-code -- ./docs/ | cut -f1`
-      - run: |
-          echo "Check diff exit code: $?"
-          echo "Check diff outcome: ${{ steps.check-diff.outcome }}"
+          git diff --exit-code -- ./docs/
+          echo $?
       - if: steps.check-diff.outcome == 'failure'
         run: |
           git commit -m'added ./docs/${{ env.friendly-version }}' -- ./docs/${{ env.friendly-version }}
