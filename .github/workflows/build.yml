@@ -241,7 +241,7 @@ jobs:
       - id: check-diff 
         run: |
           set +e
-          git diff --exit-code ./docs/
+          git diff --exit-code -- ./docs/
           exitcode="$?"
           exit "$exitcode"
       - run: |
