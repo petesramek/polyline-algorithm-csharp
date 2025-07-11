@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 /// This struct is designed to be lightweight and efficient, allowing for quick comparisons and memory-safe operations.
 /// </remarks>
 [StructLayout(LayoutKind.Auto)]
-[DebuggerDisplay("Value: {ToString()}, IsEmpty: {IsEmpty}, Length: {Length}")]
+[DebuggerDisplay("Value: {ToDebugString()}, IsEmpty: {IsEmpty}, Length: {Length}")]
 public readonly struct Polyline : IEquatable<Polyline> {
     private readonly ReadOnlyMemory<char> _value;
 
@@ -103,6 +103,20 @@ public readonly struct Polyline : IEquatable<Polyline> {
         }
 
         return Value.ToString();
+    }
+
+    /// <summary>
+    /// Returns a debug-friendly string representation of the polyline.
+    /// </summary>
+    /// <returns>
+    /// A string that includes the polyline value, truncated if necessary, for debugging purposes.
+    /// </returns>
+    private string ToDebugString() {
+        if (IsEmpty) {
+            return string.Empty;
+        }
+
+        return Value.Length <= 32 ? $"\"{Value}\"" : $"\"{Value[..10]}...{Value[^10..]}\"";
     }
 
     /// <inheritdoc />
