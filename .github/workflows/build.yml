@@ -240,7 +240,7 @@ jobs:
       - run: git add -- ./docs/${{ env.friendly-version }}
       - id: check-diff 
         run: |
-          set -e
+          set +e
           git diff --exit-code ./docs/
       - run: |
           echo "Check diff exit code: $?"
