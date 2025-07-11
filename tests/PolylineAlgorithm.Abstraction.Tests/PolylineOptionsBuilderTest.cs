@@ -32,8 +32,8 @@ public class PolylineOptionsBuilderTest {
 
         // Assert
         Assert.IsNotNull(options);
-        Assert.AreEqual(bufferSize, options.BufferSize);
-        Assert.AreEqual(bufferSize / sizeof(char), options.MaxLength);
+        Assert.AreEqual(bufferSize, options.BufferSizeInBytes);
+        Assert.AreEqual(bufferSize / sizeof(char), options.MaxBufferLength);
         Assert.AreEqual(loggerFactory, options.LoggerFactory);
     }
 
@@ -65,8 +65,8 @@ public class PolylineOptionsBuilderTest {
 
         // Assert
         Assert.IsNotNull(options);
-        Assert.AreEqual(expected, options.BufferSize);
-        Assert.AreEqual(expected / sizeof(char), options.MaxLength);
+        Assert.AreEqual(expected, options.BufferSizeInBytes);
+        Assert.AreEqual(expected / sizeof(char), options.MaxBufferLength);
     }
 
     [TestMethod]

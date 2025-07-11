@@ -32,7 +32,7 @@ public class PolylineEncodingOptionsBuilder : IPolylineEncodingOptionsBuilder {
     /// </returns>
     PolylineEncodingOptions IPolylineEncodingOptionsBuilder.Build() {
         return new PolylineEncodingOptions {
-            BufferSize = _bufferSize,
+            BufferSizeInBytes = _bufferSize,
             LoggerFactory = _loggerFactory
         };
     }
