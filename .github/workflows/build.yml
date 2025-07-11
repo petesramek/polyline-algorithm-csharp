@@ -243,6 +243,7 @@ jobs:
           set +e
           git diff --exit-code -- ./docs/
           exitcode="$?"
+          echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
           exit "$exitcode"
       - run: |
           echo "Check diff exit code: $?"
