@@ -242,6 +242,8 @@ jobs:
         run: |
           set +e
           git diff --exit-code ./docs/
+          exitcode="$?"
+          exit "$exitcode"
       - run: |
           echo "Check diff exit code: $?"
           echo "Check diff outcome: ${{ steps.check-diff.outcome }}"
