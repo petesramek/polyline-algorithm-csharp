@@ -240,15 +240,11 @@ jobs:
       - run: git add -- ./docs/${{ env.friendly-version }}
       - id: check-diff 
         run: |
-          set +e
-          git diff --exit-code -- ./docs/
-          exitcode="$?"
-          echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
-          exit "$exitcode"
+          exit `git diff --exit-code -- ./docs/ | cut -f1`
       - run: |
           echo "Check diff exit code: $?"
           echo "Check diff outcome: ${{ steps.check-diff.outcome }}"
-      - if: steps.check-diff.outcome == '1'
+      - if: steps.check-diff.outcome == 'failure'
         run: |
           git commit -m'added ./docs/${{ env.friendly-version }}' -- ./docs/${{ env.friendly-version }}
           git push
