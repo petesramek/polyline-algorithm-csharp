@@ -240,8 +240,9 @@ jobs:
           git add -- ./docs/${{ env.friendly-version }}/
       - run: |
           git diff --staged --quiet -- ./docs/${{ env.friendly-version }}/
+        continue-on-error: true
         id: check-diff
-      - if: ${{ failure() && steps.check-diff.conclusion == 'failure' }}
+      - if: ${{ steps.check-diff.conclusion == 'failure' }}
         run: |
           git commit -m'added docs at ./docs/${{ env.friendly-version }}' -- ./docs/${{ env.friendly-version }}
           git push
