@@ -63,3 +63,4 @@ runs:
         git stash pop
         git commit -m'${{ inputs.commit-message }}' -- ${{ inputs.working-directory }}
         git push
+        git chechout ${{ github.head_ref || github.ref }}
