@@ -243,10 +243,10 @@ jobs:
         run: |
           if [[ -n "$(git diff --exit-code -- ./docs/)" ]]; then
             echo "Documentation changes detected."
-            echo "::set-output name=docs_updated::true"
+            echo "docs_updated=true"  >> $GITHUB_OUTPUT
           else
             echo "No documentation changes detected."
-            echo "::set-output name=docs_updated::false"
+            echo "docs_updated=false"  >> $GITHUB_OUTPUT
           fi
       - if: steps.check_changes.outputs.docs_updated == 'true'
         run: |
