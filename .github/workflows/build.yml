@@ -248,6 +248,9 @@ jobs:
             echo "No documentation changes detected."
             echo "docs-updated=false" >> $GITHUB_OUTPUT
           fi
+      - run: |
+          echo "Friendly version: ${{ env.friendly-version }}"
+          echo "Docs updated: ${{ steps.check-diff.outputs.docs-updated }}"
       - if: steps.check-diff.outputs.docs-updated == 'true'
         run: |
           git commit -m'added docs at ./docs/${{ env.friendly-version }}' -- ./docs/${{ env.friendly-version }}
