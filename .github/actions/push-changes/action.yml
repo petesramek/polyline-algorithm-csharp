@@ -60,7 +60,7 @@ runs:
       if: ${{ steps.check-diff.outcome == 'failure' }}
       shell: bash
       run: |
-        git checkout -b ${{ inputs.target-branch }}
+        git reset --hard
         git stash pop
         git commit -m'${{ inputs.commit-message }}' -- ${{ inputs.working-directory }}
         git push
