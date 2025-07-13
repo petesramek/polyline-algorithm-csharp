@@ -45,7 +45,7 @@ runs:
     - name: Check for changes in ${{ inputs.working-directory }}
       shell: bash
       run: |
-        git diff ${{ github.head_ref || github.ref }} refs/heads/${{ inputs.target-branch }} --staged --quiet -- ${{ inputs.working-directory }}
+        git diff ${{ github.head_ref || github.ref }}..origin/${{ inputs.target-branch }} --staged --quiet -- ${{ inputs.working-directory }}
       continue-on-error: true
       id: check-diff
     - name: Push changes to ${{ inputs.target-branch }}, if exists
