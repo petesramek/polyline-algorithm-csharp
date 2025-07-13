@@ -162,18 +162,6 @@ jobs:
       nuget-feed-server: 'AzureArtifacts'
       environment: 'Development'
 
-  publish-production-package:
-    if: ${{ needs.global-variables.outputs.is-release == 'true' }}
-    name: 'Publish'
-    uses: ./.github/workflows/release-nuget-package.yml
-    needs: [global-variables, pack]
-    secrets: inherit
-    with:
-      artifact-run-id: ${{ needs.global-variables.outputs.github-run-id }}
-      artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
-      nuget-feed-server: 'NuGet'
-      environment: 'NuGet'
-
   # benchmark:
   #   if: ${{ github.env.is_release || vars.BENCHMARKDOTNET_RUN_OVERRIDE == 'true' }}
   #   name: Benchmark with .NET CLI on ${{ matrix.os }}
@@ -232,20 +220,12 @@ jobs:
       - run: |
           mkdir -p ./docs/${{ env.friendly-version }}
           mv ./docs/temp/** ./docs/${{ env.friendly-version }}/
-      - run: |
-          git fetch origin
-          git checkout -b docs origin/docs
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-          git add -- ./docs/${{ env.friendly-version }}/
-      - run: |
-          git diff --staged --quiet -- ./docs/${{ env.friendly-version }}/
-        continue-on-error: true
-        id: check-diff
-      - if: ${{ steps.check-diff.outcome == 'failure' }}
-        run: |
-          git commit -m'added docs at ./docs/${{ env.friendly-version }}' -- ./docs/${{ env.friendly-version }}
-          git push
+      - name: Push to docs branch
+        uses: ./.github/actions/push-changes
+        with:
+          working-directory: './docs/${{ env.friendly-version }}/'
+          target-branch: 'docs'
+          commit-message: 'Update docs for version ${{ env.friendly-version }}'
       # - name: Upload artifact
       #   uses: actions/upload-pages-artifact@v3
       #   with:
