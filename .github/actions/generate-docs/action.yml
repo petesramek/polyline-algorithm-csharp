@@ -43,7 +43,7 @@ runs:
       run: mv ${{ inputs.staging-directory }} ${{ inputs.target-directory }}
       shell: bash
     - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ inputs.artifact-name }}
-        path: './docs'
+        path: ${{ inputs.target-directory }}
