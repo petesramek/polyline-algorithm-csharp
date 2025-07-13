@@ -26,6 +26,7 @@ runs:
         git fetch origin
         git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }} --force
         git stash pop
+        git add -- .
     - name: Check for changes in ${{ inputs.working-directory }}
       shell: bash
       run: |
