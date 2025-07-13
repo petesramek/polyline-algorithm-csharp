@@ -239,28 +239,10 @@ jobs:
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           git add -- ./docs/${{ env.friendly-version }}/
       - run: |
-          git diff --staged --quiet
-      - name: Check for Changes
-        id: check-diff
+          git diff --staged --quiet -- ./docs/${{ env.friendly-version }}/
+        continue-on-error: true
+      - if: failure()
         run: |
-          set +e
-          set -x
-          set -o pipefail
-          if [[ -n "$(git diff --staged --quiet)" ]]; then
-            echo "Documentation changes detected."
-            echo "docs-updated=true" >> $GITHUB_OUTPUT
-          else
-            echo "No documentation changes detected."
-            echo "docs-updated=false" >> $GITHUB_OUTPUT
-          fi
-      - run: |
-          echo "Friendly version: ${{ env.friendly-version }}"
-          echo "Docs updated: ${{ steps.check-diff.outputs.docs-updated }}"
-      - if: steps.check-diff.outputs.docs-updated == 'true'
-        run: |
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-          git add -- ./docs/${{ env.friendly-version }}/
           git commit -m'added docs at ./docs/${{ env.friendly-version }}' -- ./docs/${{ env.friendly-version }}
           git push
       # - name: Upload artifact
