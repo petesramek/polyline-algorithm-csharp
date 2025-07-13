@@ -241,7 +241,7 @@ jobs:
       - name: Check for Changes
         id: check-diff
         run: |
-          if [[ -n "$(git diff --exit-code -- ./docs/)" ]]; then
+          if [[ -n "$(git diff --exit-code)" ]]; then
             echo "Documentation changes detected."
             echo "docs-updated=true" >> $GITHUB_OUTPUT
           else
