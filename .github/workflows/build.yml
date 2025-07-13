@@ -237,6 +237,7 @@ jobs:
           git checkout -b docs origin/docs
       - run: |
           set +e
+          set -x
           git diff --patch --stat
           git diff --exit-code
       - name: Check for Changes
