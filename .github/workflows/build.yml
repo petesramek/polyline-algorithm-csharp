@@ -240,7 +240,7 @@ jobs:
           set -x
           set -o pipefail
           git diff --patch --stat
-          git diff --exit-code
+          git diff
       - name: Check for Changes
         id: check-diff
         run: |
