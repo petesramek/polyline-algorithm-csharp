@@ -241,7 +241,7 @@ jobs:
       - run: |
           git diff --staged --quiet -- ./docs/${{ env.friendly-version }}/
         continue-on-error: true
-      - if: failure()
+      - if: ${{ failure() }}
         run: |
           git commit -m'added docs at ./docs/${{ env.friendly-version }}' -- ./docs/${{ env.friendly-version }}
           git push
