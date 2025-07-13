@@ -26,20 +26,24 @@ runs:
         git fetch origin
         git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }} --force
         git stash pop
+      working-directory: ${{ inputs.working-directory }}
     - name: Check for changes in ${{ inputs.working-directory }}
       shell: bash
       run: |
         git diff --staged --quiet -- .
       continue-on-error: true
       id: check-diff
+      working-directory: ${{ inputs.working-directory }}
     - name: Push changes to ${{ inputs.target-branch }}, if exists
       if: ${{ steps.check-diff.outcome == 'success' }}
       shell: bash
       run: |
         echo "No changes to commit in ${{ inputs.working-directory }}"
+      working-directory: ${{ inputs.working-directory }}
     - name: Push changes to ${{ inputs.target-branch }}, if exists
       if: ${{ steps.check-diff.outcome == 'failure' }}
       shell: bash
       run: |
         git commit -m'${{ inputs.commit-message }}' -- ${{ inputs.working-directory }}
         git push
+      working-directory: ${{ inputs.working-directory }}
