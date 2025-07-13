@@ -3,6 +3,9 @@ author: 'Pete Sramek'
 description: 'Push changes to a specified branch in the repository.'
 inputs:
   # Required
+  artifact-name:
+    description: 'Name of the artifact to download before pushing changes.'
+    required: true
   working-directory:
     description: 'The working directory where the changes will be pushed from.'
     required: true
@@ -27,6 +30,10 @@ runs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.dotnet-sdk-version }}
+    - name: Download a single artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name }}
     - name: Add changes from ${{ inputs.working-directory }}
       shell: bash
       run: |

@@ -3,6 +3,9 @@ author: 'Pete Sramek'
 description: 'Generate documentation using docfx'
 inputs:
 # Required
+  artifact-name:
+    description: 'Name of the artifact to upload after generating documentation'
+    required: true
   docfx-json-manifest:
     description: 'Path to the docfx JSON manifest file'
     required: true
@@ -39,9 +42,8 @@ runs:
     - name: 'Move files from staging to target directory'
       run: mv ${{ inputs.staging-directory }} ${{ inputs.target-directory }}
       shell: bash
-    - name: 'Push documentation to docs branch'
-      uses: ./.github/actions/push-changes
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
       with:
-        working-directory: ${{ inputs.target-directory }}
-        target-branch: 'docs'
-        commit-message: 'Update docs'      
+        name: ${{ inputs.artifact-name }}
+        path: './docs'     
