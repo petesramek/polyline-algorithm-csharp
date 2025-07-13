@@ -64,4 +64,7 @@ runs:
         git stash pop
         git commit -m'${{ inputs.commit-message }}' -- ${{ inputs.working-directory }}
         git push
+    - name: Reset branch to ${{ github.head_ref || github.ref }}
+      shell: bash
+      run: |
         git checkout ${{ github.head_ref || github.ref }}
