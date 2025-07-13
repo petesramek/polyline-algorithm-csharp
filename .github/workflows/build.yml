@@ -235,6 +235,9 @@ jobs:
       - run: |
           git fetch origin
           git checkout -b docs origin/docs
+      - run: |
+          git diff --patch --stat
+          git diff --exit-code
       - name: Check for Changes
         id: check-diff
         run: |
