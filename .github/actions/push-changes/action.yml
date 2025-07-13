@@ -59,7 +59,7 @@ runs:
       run: |
         git stash push -- ${{ inputs.working-directory }}
         git fetch origin
-        git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }} --force
+        git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }}
         git stash pop
         git commit -m'${{ inputs.commit-message }}' -- ${{ inputs.working-directory }}
         git push
