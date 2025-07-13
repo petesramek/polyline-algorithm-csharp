@@ -234,7 +234,7 @@ jobs:
           mv ./docs/temp/** ./docs/${{ env.friendly-version }}/
       - run: |
           git fetch origin
-          git checkout -b docs origin/docs --force
+          git checkout -b docs origin/docs
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
       - run: git add -- ./docs/${{ env.friendly-version }}/
