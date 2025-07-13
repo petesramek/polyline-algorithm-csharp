@@ -246,7 +246,7 @@ jobs:
           set +e
           set -x
           set -o pipefail
-          if [[ -n "$(git diff --staged --exit-code)" ]]; then
+          if [[ -n "$(git diff --staged --quiet)" ]]; then
             echo "Documentation changes detected."
             echo "docs-updated=true" >> $GITHUB_OUTPUT
           else
