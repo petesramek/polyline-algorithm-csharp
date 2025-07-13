@@ -235,9 +235,6 @@ jobs:
       - run: |
           git fetch origin
           git checkout -b docs origin/docs
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-      - run: git add -- ./docs/${{ env.friendly-version }}/
       - name: Check for Changes
         id: check-diff
         run: |
@@ -253,6 +250,9 @@ jobs:
           echo "Docs updated: ${{ steps.check-diff.outputs.docs-updated }}"
       - if: steps.check-diff.outputs.docs-updated == 'true'
         run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git add -- ./docs/${{ env.friendly-version }}/
           git commit -m'added docs at ./docs/${{ env.friendly-version }}' -- ./docs/${{ env.friendly-version }}
           git push
       # - name: Upload artifact
