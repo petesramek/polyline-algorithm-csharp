@@ -25,7 +25,7 @@ runs:
         git stash push --staged
         git fetch origin
         git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }} --force
-        git stash pop --index
+        git stash pop
     - name: Check for changes in ${{ inputs.working-directory }}
       shell: bash
       run: |
