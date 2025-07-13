@@ -40,10 +40,6 @@ runs:
         git config --global user.name "${{ github.actor }}"
         git config --global user.email "${{ github.actor }}@users.noreply.github.com"
         git add --  ${{ inputs.working-directory }}
-        git stash push -- ${{ inputs.working-directory }}
-        git fetch origin
-        git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }} --force
-        git stash pop
     - name: Check for changes in ${{ inputs.working-directory }}
       shell: bash
       run: |
@@ -59,5 +55,9 @@ runs:
       if: ${{ steps.check-diff.outcome == 'failure' }}
       shell: bash
       run: |
+        git stash push -- ${{ inputs.working-directory }}
+        git fetch origin
+        git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }} --force
+        git stash pop
         git commit -m'${{ inputs.commit-message }}' -- ${{ inputs.working-directory }}
         git push
