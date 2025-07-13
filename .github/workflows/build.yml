@@ -235,16 +235,22 @@ jobs:
       - run: |
           git fetch origin
           git checkout -b docs origin/docs --force
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
       - run: git add -- ./docs/${{ env.friendly-version }}
-      - id: check-diff 
+      - name: Check for Changes
+        id: check-diff
         run: |
-          git diff --exit-code -- ./docs/
-          echo $?
-      - if: steps.check-diff.outcome == 'failure'
+          if [[ -n "$(git diff --exit-code -- ./docs/)" ]]; then
+            echo "Documentation changes detected."
+            echo "::set-output name=docs_updated::true"
+          else
+            echo "No documentation changes detected."
+            echo "::set-output name=docs_updated::false"
+          fi
+      - if: steps.check_changes.outputs.docs_updated == 'true'
         run: |
-          git commit -m'added ./docs/${{ env.friendly-version }}' -- ./docs/${{ env.friendly-version }}
+          git commit -m'added docs at ./docs/${{ env.friendly-version }}' -- ./docs/${{ env.friendly-version }}
           git push
       # - name: Upload artifact
       #   uses: actions/upload-pages-artifact@v3
