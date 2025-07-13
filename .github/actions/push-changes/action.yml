@@ -20,6 +20,7 @@ runs:
       shell: bash
       run: |
         git fetch origin
+        git merge origin/${{ inputs.target-branch }} --no-commit
         git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }}
         git config --global user.name "${{ github.actor }}"
         git config --global user.email "${{ github.actor }}@users.noreply.github.com"
