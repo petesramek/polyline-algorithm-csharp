@@ -237,7 +237,7 @@ jobs:
           git checkout -b docs origin/docs --force
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-      - run: git add -- ./docs/${{ env.friendly-version }}
+      - run: git add -- ./docs/${{ env.friendly-version }}/
       - name: Check for Changes
         id: check-diff
         run: |
