@@ -238,6 +238,7 @@ jobs:
       - run: |
           set +e
           set -x
+          set -o pipefail
           git diff --patch --stat
           git diff --exit-code
       - name: Check for Changes
