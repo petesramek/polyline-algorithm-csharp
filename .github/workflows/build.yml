@@ -243,12 +243,12 @@ jobs:
         run: |
           if [[ -n "$(git diff --exit-code -- ./docs/)" ]]; then
             echo "Documentation changes detected."
-            echo "docs_updated=true" >> $GITHUB_OUTPUT
+            echo "docs-updated=true" >> $GITHUB_OUTPUT
           else
             echo "No documentation changes detected."
-            echo "docs_updated=false" >> $GITHUB_OUTPUT
+            echo "docs-updated=false" >> $GITHUB_OUTPUT
           fi
-      - if: steps.check_changes.outputs.docs_updated == 'true'
+      - if: steps.check-diff.outputs.docs-updated == 'true'
         run: |
           git commit -m'added docs at ./docs/${{ env.friendly-version }}' -- ./docs/${{ env.friendly-version }}
           git push
