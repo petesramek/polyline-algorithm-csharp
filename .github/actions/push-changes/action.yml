@@ -12,10 +12,21 @@ inputs:
   commit-message:
     description: 'The commit message to use when pushing changes.'
     required: true
+# Optional
+  dotnet_sdk_version:
+    description: '.NET SDK version. Default: 9.x'
+    required: false
+    default: '9.x'
 
 runs:  
   using: "composite"
-  steps:    
+  steps:
+    - name: 'Checkout ${{ github.head_ref || github.ref }}'
+      uses: actions/checkout@v4
+    - name: Dotnet Setup
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.dotnet-sdk-version }}
     - name: Add changes from ${{ inputs.working-directory }}
       shell: bash
       run: |
