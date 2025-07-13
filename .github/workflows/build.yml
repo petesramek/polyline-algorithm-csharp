@@ -197,7 +197,7 @@ jobs:
   #       working-directory: ${{ runner.temp }}/benchmarks/
 
   publish-docs:
-    if: ${{ needs.global-variables.outputs.is-release && !needs.global-variables.outputs.is-preview }}
+    # if: ${{ needs.global-variables.outputs.is-release && !needs.global-variables.outputs.is-preview }}
     name: Docs with docfx
     needs: [global-variables, versioning, build]
     env:
@@ -209,18 +209,13 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v4
-      - name: Dotnet Setup
-        uses: actions/setup-dotnet@v4
+      - name: 'Generate documentation'
+        uses: ./.github/actions/generate-docs
         with:
-          dotnet-version: ${{ env.dotnet-sdk-version }}
-      - run: dotnet tool update -g docfx
-      - run: docfx ./docfx/api-reference.json
-      - run: |
-          mkdir -p ./docs/${{ env.friendly-version }}
-          mv ./docs/temp/** ./docs/${{ env.friendly-version }}/
-      - name: Push to docs branch
+          docfx-json-manifest: './docfx/api-reference.json'
+          staging-directory: './docs/temp/**'
+          target-directory: './docs/${{ env.friendly-version }}/'
+      - name: 'Push documentation to docs branch'
         uses: ./.github/actions/push-changes
         with:
           working-directory: './docs/${{ env.friendly-version }}/'
