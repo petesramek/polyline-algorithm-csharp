@@ -21,8 +21,7 @@ runs:
       run: |
         git config --global user.name "${{ github.actor }}"
         git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-        git add -- .
-        git stash push --staged
+        git stash push -- .
         git fetch origin
         git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }} --force
         git stash pop
