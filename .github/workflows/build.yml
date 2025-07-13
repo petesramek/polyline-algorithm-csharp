@@ -217,12 +217,12 @@ jobs:
           docfx-json-manifest: './docfx/api-reference.json'
           staging-directory: './docs/temp/**'
           target-directory: './docs/${{ env.friendly-version }}/'
-      - name: 'Push documentation to docs branch'
-        uses: ./.github/actions/push-changes
-        with:
-          working-directory: './docs/${{ env.friendly-version }}/'
-          target-branch: 'docs'
-          commit-message: 'Update docs for version ${{ env.friendly-version }}'
+      # - name: 'Push documentation to docs branch'
+      #   uses: ./.github/actions/push-changes
+      #   with:
+      #     working-directory: './docs/${{ env.friendly-version }}/'
+      #     target-branch: 'docs'
+      #     commit-message: 'Update docs for version ${{ env.friendly-version }}'
       # - name: Upload artifact
       #   uses: actions/upload-pages-artifact@v3
       #   with:

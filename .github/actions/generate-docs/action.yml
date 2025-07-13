@@ -39,3 +39,9 @@ runs:
     - name: 'Move files from staging to target directory'
       run: mv ${{ inputs.staging-directory }} ${{ inputs.target-directory }}
       shell: bash
+    - name: 'Push documentation to docs branch'
+      uses: ./.github/actions/push-changes
+      with:
+        working-directory: ${{ inputs.target-directory }}
+        target-branch: 'docs'
+        commit-message: 'Update docs'      
