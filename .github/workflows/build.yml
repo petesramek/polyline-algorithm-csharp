@@ -19,7 +19,6 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  is-release: ${{ startsWith(github.ref_name, 'release') || startsWith(github.ref_name, 'preview') }}
   dotnet-sdk-version: '9.x'
   build-configuration: 'Release'
   build-platform: 'Any CPU'
@@ -58,7 +57,7 @@ jobs:
 
   build:
     name: Build with .NET
-    needs: [versioning]
+    needs: [global-variables, versioning]
     runs-on: ubuntu-latest
 
     env:
@@ -76,7 +75,7 @@ jobs:
           assembly-version: ${{ env.assembly-version }}
           assembly-informational-version: ${{ env.assembly-informational-version }}
           file-version: ${{ env.file-version }}
-          treat-warnins-as-error: ${{ env.is-release }}
+          treat-warnins-as-error: ${{ needs.global-variables.outputs.is-release }}
 
   test:
     name: Test with .NET
@@ -198,12 +197,13 @@ jobs:
   #       working-directory: ${{ runner.temp }}/benchmarks/
 
   publish-docs:
-    # if: ${{ github.env.is_release && !github.env.is_preview }}
+    if: ${{ needs.global-variables.outputs.is-release && !needs.global-variables.outputs.is-preview }}
     name: Docs with docfx
-    # needs: [publish-production-package]
-    needs: [versioning, build]
+    needs: [global-variables, versioning, build]
     env:
       friendly-version: ${{ needs.versioning.outputs.friendly-version }}
+      is-release: ${{ needs.global-variables.outputs.is-release }}
+      is-preview: ${{ needs.global-variables.outputs.is-preview }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
