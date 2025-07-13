@@ -239,14 +239,14 @@ jobs:
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           git add -- ./docs/${{ env.friendly-version }}/
       - run: |
-          
+          git diff --staged --quiet
       - name: Check for Changes
         id: check-diff
         run: |
-          # set +e
-          # set -x
-          # set -o pipefail
-          if [[ -n "$(git diff --staged --quiet)" ]]; then
+          set +e
+          set -x
+          set -o pipefail
+          if [[ -n "$(git diff --staged --exit-code)" ]]; then
             echo "Documentation changes detected."
             echo "docs-updated=true" >> $GITHUB_OUTPUT
           else
