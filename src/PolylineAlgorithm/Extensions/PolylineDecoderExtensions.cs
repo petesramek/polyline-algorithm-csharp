@@ -30,8 +30,6 @@ public static class PolylineDecoderExtensions {
     /// Thrown when <paramref name="decoder"/> is <see langword="null"/>.
     /// </exception>
     public static IEnumerable<Coordinate> Decode(this IPolylineDecoder<Polyline, Coordinate> decoder, string polyline) {
-        Debug.Assert(decoder is not null, "Decoder cannot be null.");
-
         if (decoder is null) {
             throw new ArgumentNullException(nameof(decoder));
         }
@@ -55,8 +53,6 @@ public static class PolylineDecoderExtensions {
     /// Thrown when <paramref name="decoder"/> is <see langword="null"/>.
     /// </exception>
     public static IEnumerable<Coordinate> Decode(this IPolylineDecoder<Polyline, Coordinate> decoder, char[] polyline) {
-        Debug.Assert(decoder is not null, "Decoder cannot be null.");
-
         if (decoder is null) {
             throw new ArgumentNullException(nameof(decoder));
         }
@@ -64,9 +60,22 @@ public static class PolylineDecoderExtensions {
         return decoder.Decode(Polyline.FromCharArray(polyline));
     }
 
+    /// <summary>
+    /// Decodes an encoded polyline represented as a read-only memory of characters into a sequence of geographic coordinates.
+    /// </summary>
+    /// <param name="decoder">
+    /// The <see cref="IPolylineDecoder{TPolyline, TCoordinate}"/> instance used to perform the decoding operation.
+    /// </param>
+    /// <param name="polyline">
+    /// The encoded polyline as a read-only memory of characters to decode.
+    /// </param>
+    /// <returns>
+    /// An <see cref="IEnumerable{Coordinate}"/> containing the decoded latitude and longitude pairs.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when <paramref name="decoder"/> is <see langword="null"/>.
+    /// </exception>
     public static IEnumerable<Coordinate> Decode(this IPolylineDecoder<Polyline, Coordinate> decoder, ReadOnlyMemory<char> polyline) {
-        Debug.Assert(decoder is not null, "Decoder cannot be null.");
-
         if (decoder is null) {
             throw new ArgumentNullException(nameof(decoder));
         }
