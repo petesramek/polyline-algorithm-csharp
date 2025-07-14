@@ -9,7 +9,7 @@ using global::NetTopologySuite.Geometries;
 using PolylineAlgorithm.Abstraction;
 using System;
 
-internal class NetTopologyPolylineDecoder : AbstractPolylineDecoder<string, Point> {
+internal sealed class NetTopologyPolylineDecoder : AbstractPolylineDecoder<string, Point> {
     protected override Point CreateCoordinate(double latitude, double longitude) {
         return new Point(latitude, longitude);
     }

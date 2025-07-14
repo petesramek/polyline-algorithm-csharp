@@ -7,7 +7,7 @@ namespace PolylineAlgorithm.NetTopologySuite.Sample;
 
 using global::NetTopologySuite.Geometries;
 
-internal class Program {
+internal sealed class Program {
     private static readonly NetTopologyPolylineDecoder _decoder = new();
     private static readonly NetTopologyPolylineEncoder _encoder = new();
 

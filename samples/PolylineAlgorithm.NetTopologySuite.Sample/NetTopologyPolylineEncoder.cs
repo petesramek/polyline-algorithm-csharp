@@ -8,7 +8,7 @@ namespace PolylineAlgorithm.NetTopologySuite.Sample;
 using global::NetTopologySuite.Geometries;
 using PolylineAlgorithm.Abstraction;
 
-internal class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point, string> {
+internal sealed class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point, string> {
 
     protected override string CreatePolyline(ReadOnlyMemory<char> polyline) {
         if (polyline.IsEmpty) {
