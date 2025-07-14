@@ -26,7 +26,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// <summary>
     /// Initializes a new instance of the <see cref="AbstractPolylineEncoder{TCoordinate, TPolyline}"/> class with default encoding options.
     /// </summary>
-    public AbstractPolylineEncoder()
+    protected AbstractPolylineEncoder()
         : this(new PolylineEncodingOptions()) { }
 
     /// <summary>
@@ -36,7 +36,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// The <see cref="PolylineEncodingOptions"/> to use for encoding operations.
     /// </param>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="options"/> is <see langword="null" /></exception>
-    public AbstractPolylineEncoder(PolylineEncodingOptions options) {
+    protected AbstractPolylineEncoder(PolylineEncodingOptions options) {
         Options = options ?? throw new ArgumentNullException(nameof(options));
     }
 
