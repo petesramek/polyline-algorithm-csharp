@@ -92,7 +92,7 @@ public static class PolylineEncoding {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static double Denormalize(int value, CoordinateValueType type) {
         // Validate that the type is not None, as it does not represent a valid coordinate value type.
-        if (type == CoordinateValueType.None || type == CoordinateValueType.Latitude || type == CoordinateValueType.Longitude) {
+        if (type == CoordinateValueType.None) {
             throw new ArgumentOutOfRangeException(nameof(type), string.Format(ExceptionMessageResource.ArgumentCannotBeCoordinateCoordinateValueTypeErrorFormat, type.ToString()));
         }
         
