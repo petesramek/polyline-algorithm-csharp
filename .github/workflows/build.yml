@@ -197,7 +197,7 @@ jobs:
   #       working-directory: ${{ runner.temp }}/benchmarks/
 
   publish-docs:
-    # if: ${{ needs.global-variables.outputs.is-release && !needs.global-variables.outputs.is-preview }}
+    if: ${{ needs.global-variables.outputs.is-release && !needs.global-variables.outputs.is-preview }}
     name: Docs with docfx
     needs: [global-variables, versioning, build]
     env:
