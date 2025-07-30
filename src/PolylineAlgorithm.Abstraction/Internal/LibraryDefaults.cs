@@ -11,7 +11,7 @@ using System.Diagnostics.CodeAnalysis;
 /// Organizes defaults for algorithm parameters, polyline encoding, and geographic coordinates into nested static classes.
 /// </summary>
 [ExcludeFromCodeCoverage]
-internal static class Defaults {
+internal static class LibraryDefaults {
     /// <summary>
     /// Contains default values and constants specific to the polyline encoding algorithm.
     /// </summary>
