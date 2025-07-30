@@ -22,7 +22,7 @@ Package Manager Console: `Install-Package PolylineAlgorithm.Abstraction`
 In the majority of cases you would like to inherit `AbstractPolylineDecoder<TPolyline, TCoordinate>` and `AbstractPolylineEncoder<TCoordinate, TPolyline>` classes and implement abstract methods that are mainly responsible for extracting data from your coordinate and polyline types and creating new instances of them.
 
 In some cases you may want to implement your own decoder and encoder from scratch.
-In that case you can use `PolylineEncoding` static class that offers static methods for encoding and decoding polylines segments.
+In that case you can use `PolylineEncoding` static class that offers static methods for encoding and decoding polyline segments.
 
 ## Documentation
 
