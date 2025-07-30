@@ -91,6 +91,11 @@ public static class PolylineEncoding {
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static double Denormalize(int value, CoordinateValueType type) {
+        // Validate that the type is not None, as it does not represent a valid coordinate value type.
+        if (type == CoordinateValueType.None || type == CoordinateValueType.Latitude || type == CoordinateValueType.Longitude) {
+            throw new ArgumentOutOfRangeException(nameof(type), string.Format(ExceptionMessageResource.ArgumentCannotBeCoordinateCoordinateValueTypeErrorFormat, type.ToString()));
+        }
+        
         // Validate that the value is finite and within the acceptable range for the specified type.
         if (!ValidateValue(value, type)) {
             throw new ArgumentOutOfRangeException(nameof(value), value, string.Format(ExceptionMessageResource.ArgumentIsOutOfRangeForSpecifiedType, type.ToString().ToLowerInvariant()));
@@ -176,7 +181,7 @@ public static class PolylineEncoding {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Normalize(double value, CoordinateValueType type) {
         // Validate that the type is not None, as it does not represent a valid coordinate value type.
-        if (type == CoordinateValueType.None || type == CoordinateValueType.Latitude || type == CoordinateValueType.Longitude) {
+        if (type == CoordinateValueType.None) {
             throw new ArgumentOutOfRangeException(nameof(type), string.Format(ExceptionMessageResource.ArgumentCannotBeCoordinateCoordinateValueTypeErrorFormat, type.ToString()));
         }
 
