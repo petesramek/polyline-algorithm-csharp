@@ -144,4 +144,7 @@
   <data name="ArgumentCannotBeNullEmptyOrWhiteSpaceMessage" xml:space="preserve">
     <value>Argument cannot be null -or- empty -or- white space.</value>
   </data>
+  <data name="ArgumentCannotBeCoordinateCoordinateValueTypeErrorFormat" xml:space="preserve">
+    <value>Argument cannot be CoordinateValueType.{0}.</value>
+  </data>
 </root>

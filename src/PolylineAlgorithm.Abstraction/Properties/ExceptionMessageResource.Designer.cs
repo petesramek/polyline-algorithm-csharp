@@ -61,6 +61,15 @@ namespace PolylineAlgorithm.Abstraction.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Argument cannot be CoordinateValueType.{0}..
+        /// </summary>
+        internal static string ArgumentCannotBeCoordinateCoordinateValueTypeErrorFormat {
+            get {
+                return ResourceManager.GetString("ArgumentCannotBeCoordinateCoordinateValueTypeErrorFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Argument cannot be an empty enumeration..
         /// </summary>
         internal static string ArgumentCannotBeEmptyEnumerationMessage {
