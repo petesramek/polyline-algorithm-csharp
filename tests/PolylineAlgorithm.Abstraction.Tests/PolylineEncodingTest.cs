@@ -35,47 +35,47 @@ public class PolylineEncodingTest {
         (-16777215,"|~~~^")
     ];
 
-    public static IEnumerable<(double denormalized, int normalized, PolylineEncoding.ValueType)> DenormalizedNormalizedPairs => [
-        (0,0, PolylineEncoding.ValueType.Latitude),
-        (0,0, PolylineEncoding.ValueType.Longitude),
-        (1.23456,123456, PolylineEncoding.ValueType.Latitude),
-        (-1.23456,-123456, PolylineEncoding.ValueType.Latitude),
-        (1.23456,123456, PolylineEncoding.ValueType.Longitude),
-        (-1.23456,-123456, PolylineEncoding.ValueType.Longitude),
-        (90,9000000, PolylineEncoding.ValueType.Latitude),
-        (-90,-9000000, PolylineEncoding.ValueType.Latitude),
-        (90,9000000, PolylineEncoding.ValueType.Longitude),
-        (-90,-9000000, PolylineEncoding.ValueType.Longitude),
-        (180,18000000, PolylineEncoding.ValueType.Longitude),
-        (-180,-18000000, PolylineEncoding.ValueType.Longitude)
+    public static IEnumerable<(double denormalized, int normalized, CoordinateValueType)> DenormalizedNormalizedPairs => [
+        (0,0, CoordinateValueType.Latitude),
+        (0,0, CoordinateValueType.Longitude),
+        (1.23456,123456, CoordinateValueType.Latitude),
+        (-1.23456,-123456, CoordinateValueType.Latitude),
+        (1.23456,123456, CoordinateValueType.Longitude),
+        (-1.23456,-123456, CoordinateValueType.Longitude),
+        (90,9000000, CoordinateValueType.Latitude),
+        (-90,-9000000, CoordinateValueType.Latitude),
+        (90,9000000, CoordinateValueType.Longitude),
+        (-90,-9000000, CoordinateValueType.Longitude),
+        (180,18000000, CoordinateValueType.Longitude),
+        (-180,-18000000, CoordinateValueType.Longitude)
     ];
 
-    public static IEnumerable<(double denormalized, PolylineEncoding.ValueType)> DenormalizedOutOfRangeValues => [
-        (90.00001,PolylineEncoding.ValueType.Latitude),
-        (-90.00001,PolylineEncoding.ValueType.Latitude),
-        (180.00001,PolylineEncoding.ValueType.Longitude),
-        (-180.00001,PolylineEncoding.ValueType.Longitude),
-        (double.NaN,PolylineEncoding.ValueType.Latitude),
-        (double.NaN,PolylineEncoding.ValueType.Longitude),
-        (double.MinValue,PolylineEncoding.ValueType.Latitude),
-        (double.MaxValue,PolylineEncoding.ValueType.Latitude),
-        (double.MinValue,PolylineEncoding.ValueType.Longitude),
-        (double.MaxValue,PolylineEncoding.ValueType.Longitude),
-        (double.NegativeInfinity,PolylineEncoding.ValueType.Latitude),
-        (double.PositiveInfinity,PolylineEncoding.ValueType.Latitude),
-        (double.NegativeInfinity,PolylineEncoding.ValueType.Longitude),
-        (double.PositiveInfinity,PolylineEncoding.ValueType.Longitude),
+    public static IEnumerable<(double denormalized, CoordinateValueType)> DenormalizedOutOfRangeValues => [
+        (90.00001,CoordinateValueType.Latitude),
+        (-90.00001,CoordinateValueType.Latitude),
+        (180.00001,CoordinateValueType.Longitude),
+        (-180.00001,CoordinateValueType.Longitude),
+        (double.NaN,CoordinateValueType.Latitude),
+        (double.NaN,CoordinateValueType.Longitude),
+        (double.MinValue,CoordinateValueType.Latitude),
+        (double.MaxValue,CoordinateValueType.Latitude),
+        (double.MinValue,CoordinateValueType.Longitude),
+        (double.MaxValue,CoordinateValueType.Longitude),
+        (double.NegativeInfinity,CoordinateValueType.Latitude),
+        (double.PositiveInfinity,CoordinateValueType.Latitude),
+        (double.NegativeInfinity,CoordinateValueType.Longitude),
+        (double.PositiveInfinity,CoordinateValueType.Longitude),
     ];
 
-    public static IEnumerable<(int normalized, PolylineEncoding.ValueType)> NormalizedOutOfRangeValues => [
-        (9000001,PolylineEncoding.ValueType.Latitude),
-        (-9000001,PolylineEncoding.ValueType.Latitude),
-        (18000001,PolylineEncoding.ValueType.Longitude),
-        (-18000001,PolylineEncoding.ValueType.Longitude),
-        (int.MinValue,PolylineEncoding.ValueType.Latitude),
-        (int.MaxValue,PolylineEncoding.ValueType.Latitude),
-        (int.MinValue,PolylineEncoding.ValueType.Longitude),
-        (int.MaxValue,PolylineEncoding.ValueType.Longitude),
+    public static IEnumerable<(int normalized, CoordinateValueType)> NormalizedOutOfRangeValues => [
+        (9000001,CoordinateValueType.Latitude),
+        (-9000001,CoordinateValueType.Latitude),
+        (18000001,CoordinateValueType.Longitude),
+        (-18000001,CoordinateValueType.Longitude),
+        (int.MinValue,CoordinateValueType.Latitude),
+        (int.MaxValue,CoordinateValueType.Latitude),
+        (int.MinValue,CoordinateValueType.Longitude),
+        (int.MaxValue,CoordinateValueType.Longitude),
     ];
 
     public static IEnumerable<(int variance, int charCount)> VarianceCharCountPairs => [
@@ -108,7 +108,7 @@ public class PolylineEncodingTest {
 
     [TestMethod]
     [DynamicData(nameof(DenormalizedNormalizedPairs), DynamicDataSourceType.Property)]
-    public void Normalize_Equals_Expected(double denormalized, int expected, PolylineEncoding.ValueType type) {
+    public void Normalize_Equals_Expected(double denormalized, int expected, CoordinateValueType type) {
         // Arrange & Act
         int result = PolylineEncoding.Normalize(denormalized, type);
 
@@ -119,7 +119,7 @@ public class PolylineEncodingTest {
 
     [TestMethod]
     [DynamicData(nameof(DenormalizedNormalizedPairs), DynamicDataSourceType.Property)]
-    public void Denormalize_Equals_Expected(double expected, int normalized, PolylineEncoding.ValueType type) {
+    public void Denormalize_Equals_Expected(double expected, int normalized, CoordinateValueType type) {
         // Arrange & Act
         double result = PolylineEncoding.Denormalize(normalized, type);
 
@@ -228,9 +228,9 @@ public class PolylineEncodingTest {
 
     [TestMethod]
     [DynamicData(nameof(DenormalizedOutOfRangeValues), DynamicDataSourceType.Property)]
-    public void Normalize_Throws_ArgumentOutOfRangeException(double value, PolylineEncoding.ValueType type) {
+    public void Normalize_Throws_ArgumentOutOfRangeException(double value, CoordinateValueType type) {
         // Arrange
-        static int Normalize(double value, PolylineEncoding.ValueType type) => PolylineEncoding.Normalize(value, type);
+        static int Normalize(double value, CoordinateValueType type) => PolylineEncoding.Normalize(value, type);
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => Normalize(value, type));
@@ -241,9 +241,9 @@ public class PolylineEncodingTest {
 
     [TestMethod]
     [DynamicData(nameof(NormalizedOutOfRangeValues), DynamicDataSourceType.Property)]
-    public void Denormalize_Throws_ArgumentOutOfRangeException(int value, PolylineEncoding.ValueType type) {
+    public void Denormalize_Throws_ArgumentOutOfRangeException(int value, CoordinateValueType type) {
         // Arrange
-        static double Denormalize(int value, PolylineEncoding.ValueType type) => PolylineEncoding.Denormalize(value, type);
+        static double Denormalize(int value, CoordinateValueType type) => PolylineEncoding.Denormalize(value, type);
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => Denormalize(value, type));
