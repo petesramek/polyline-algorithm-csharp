@@ -19,10 +19,10 @@ on:
         required: false
         default: '9.0.x'
       gitversion-version:
-        description: 'Version of GitVersion to use. Default: ''6.0.x''.'
+        description: 'Version of GitVersion to use. Default: ''6.1.x''.'
         required: false
         type: string
-        default: '6.0.x'
+        default: '6.1.x'
       prerelease-tag:
         description: 'The prerelease tag to use. Default: ''''.'
         type: string
@@ -65,16 +65,15 @@ jobs:
           fetch-depth: 0
 
       - name: 'Setup GitVersion ${{ env.git-version }}'
-        uses: gittools/actions/gitversion/setup@v3.2.1
+        uses: gittools/actions/gitversion/setup@v4.0.1
         with:
           versionSpec: ${{ inputs.gitversion-version }}
           preferLatestVersion: true
 
       - name: 'Determine version'
         id: gitversion
-        uses: gittools/actions/gitversion/execute@v3.2.1
+        uses: gittools/actions/gitversion/execute@v4.0.1
         with:
-          useConfigFile: true
           configFilePath: ${{ inputs.config-file-path }}
           
       - name: 'Set friendly version'
