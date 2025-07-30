@@ -11,11 +11,11 @@ using System;
 using System.Runtime.CompilerServices;
 
 /// <summary>
-/// Provides methods for encoding and decoding polyline data, as well as utilities for normalizing and denormalizing
+/// Provides methods for encoding and decoding polyline data, as well as utilities for normalizing and de-normalizing
 /// geographic coordinate values.
 /// </summary>
 /// <remarks>The <see cref="PolylineEncoding"/> class includes functionality for working with encoded polyline
-/// data, such as reading and writing encoded values, as well as methods for normalizing and denormalizing geographic
+/// data, such as reading and writing encoded values, as well as methods for normalizing and de-normalizing geographic
 /// coordinates. It also provides validation utilities to ensure values conform to expected ranges for latitude and
 /// longitude.</remarks>
 public static class PolylineEncoding {
@@ -53,12 +53,12 @@ public static class PolylineEncoding {
 
         // Read characters from the buffer until a termination condition is met or the end of the buffer is reached.
         while (position < buffer.Length) {
-            chunk = span[position++] - Defaults.Algorithm.QuestionMark;
-            sum |= (chunk & Defaults.Algorithm.UnitSeparator) << shifter;
-            shifter += Defaults.Algorithm.ShiftLength;
+            chunk = span[position++] - LibraryDefaults.Algorithm.QuestionMark;
+            sum |= (chunk & LibraryDefaults.Algorithm.UnitSeparator) << shifter;
+            shifter += LibraryDefaults.Algorithm.ShiftLength;
 
             // If the chunk is less than the space character, it indicates the end of the value.
-            if (chunk < Defaults.Algorithm.Space) {
+            if (chunk < LibraryDefaults.Algorithm.Space) {
                 break;
             }
         }
@@ -66,7 +66,7 @@ public static class PolylineEncoding {
         variance += (sum & 1) == 1 ? ~(sum >> 1) : sum >> 1;
 
         // If the end of the buffer was reached without reading a complete value, return false.
-        return chunk < Defaults.Algorithm.Space;
+        return chunk < LibraryDefaults.Algorithm.Space;
     }
 
     /// <summary>
@@ -90,9 +90,9 @@ public static class PolylineEncoding {
     /// Thrown when <paramref name="value"/> is outside the valid range for the specified <paramref name="type"/>.
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double Denormalize(int value, ValueType type) {
+    public static double Denormalize(int value, CoordinateValueType type) {
         // Validate that the value is finite and within the acceptable range for the specified type.
-        if (!ValidateNormalizedValue(value, type)) {
+        if (!ValidateValue(value, type)) {
             throw new ArgumentOutOfRangeException(nameof(value), value, string.Format(ExceptionMessageResource.ArgumentIsOutOfRangeForSpecifiedType, type.ToString().ToLowerInvariant()));
         }
 
@@ -101,60 +101,8 @@ public static class PolylineEncoding {
             return 0.0;
         }
 
-        return Math.Truncate((double)value) / Defaults.Algorithm.Precision;
+        return Math.Truncate((double)value) / LibraryDefaults.Algorithm.Precision;
     }
-
-    /// <summary>
-    /// Validates whether the specified normalized value falls within the acceptable range for the given value type.
-    /// </summary>
-    /// <remarks>
-    /// The valid range for normalized values depends on the specified <paramref name="type"/>: <list
-    /// type="bullet"> <item> <description> For <see cref="ValueType.Latitude"/>, the value must be between
-    /// <c>Defaults.Coordinate.Latitude.Normalized.Min</c> and <c>Defaults.Coordinate.Latitude.Normalized.Max</c>,
-    /// inclusive. </description> </item> <item> <description> For <see cref="ValueType.Longitude"/>, the value must be
-    /// between <c>Defaults.Coordinate.Longitude.Normalized.Min</c> and
-    /// <c>Defaults.Coordinate.Longitude.Normalized.Max</c>, inclusive. </description> </item> </list> Any other
-    /// <paramref name="type"/> will result in the method returning <see langword="false"/>.
-    /// </remarks>
-    /// <param name="value">
-    /// The normalized value to validate. Must be an integer.
-    /// </param>
-    /// <param name="type">
-    /// The type of value to validate, such as <see cref="ValueType.Latitude"/> or <see cref="ValueType.Longitude"/>.
-    /// </param>
-    /// <returns>
-    /// <see langword="true"/> if the normalized value is within the valid range for the specified value type;
-    /// otherwise, <see langword="false"/>.
-    /// </returns>
-    private static bool ValidateNormalizedValue(int value, ValueType type) => (type, value) switch {
-        (ValueType.Latitude, int normalized) when normalized >= Defaults.Coordinate.Latitude.Normalized.Min && normalized <= Defaults.Coordinate.Latitude.Normalized.Max => true,
-        (ValueType.Longitude, int normalized) when normalized >= Defaults.Coordinate.Longitude.Normalized.Min && normalized <= Defaults.Coordinate.Longitude.Normalized.Max => true,
-        _ => false,
-    };
-
-    /// <summary>
-    /// Validates whether the specified denormalized value falls within the acceptable range for the given value type.
-    /// </summary>
-    /// <remarks>
-    /// The valid ranges for latitude and longitude are defined by <see
-    /// cref="Defaults.Coordinate.Latitude.Min"/>, <see cref="Defaults.Coordinate.Latitude.Max"/>, <see
-    /// cref="Defaults.Coordinate.Longitude.Min"/>, and <see cref="Defaults.Coordinate.Longitude.Max"/>.
-    /// </remarks>
-    /// <param name="value">
-    /// The denormalized value to validate.
-    /// </param>
-    /// <param name="type">
-    /// The type of value to validate, such as latitude or longitude.
-    /// </param>
-    /// <returns>
-    /// <see langword="true"/> if the <paramref name="value"/> is within the valid range for the specified <paramref
-    /// name="type"/>; otherwise, <see langword="false"/>.
-    /// </returns>
-    private static bool ValidateDenormalizedValue(double value, ValueType type) => (type, value) switch {
-        (ValueType.Latitude, double denormalized) when denormalized >= Defaults.Coordinate.Latitude.Min && denormalized <= Defaults.Coordinate.Latitude.Max => true,
-        (ValueType.Longitude, double denormalized) when denormalized >= Defaults.Coordinate.Longitude.Min && denormalized <= Defaults.Coordinate.Longitude.Max => true,
-        _ => false,
-    };
 
     /// <summary>
     /// Attempts to write a value derived from the specified <paramref name="variance"/> into the provided <paramref
@@ -193,13 +141,13 @@ public static class PolylineEncoding {
         }
 
         // Write the value to the buffer in a way that encodes it using the specified algorithm.
-        while (rem >= Defaults.Algorithm.Space) {
-            buffer[position++] = (char)((Defaults.Algorithm.Space | rem & Defaults.Algorithm.UnitSeparator) + Defaults.Algorithm.QuestionMark);
-            rem >>= Defaults.Algorithm.ShiftLength;
+        while (rem >= LibraryDefaults.Algorithm.Space) {
+            buffer[position++] = (char)((LibraryDefaults.Algorithm.Space | rem & LibraryDefaults.Algorithm.UnitSeparator) + LibraryDefaults.Algorithm.QuestionMark);
+            rem >>= LibraryDefaults.Algorithm.ShiftLength;
         }
 
         // Write the final character, which is less than the space character.
-        buffer[position++] = (char)(rem + Defaults.Algorithm.QuestionMark);
+        buffer[position++] = (char)(rem + LibraryDefaults.Algorithm.QuestionMark);
 
         return true;
     }
@@ -226,14 +174,19 @@ public static class PolylineEncoding {
     /// <paramref name="type"/>.
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int Normalize(double value, ValueType type) {
+    public static int Normalize(double value, CoordinateValueType type) {
+        // Validate that the type is not None, as it does not represent a valid coordinate value type.
+        if (type == CoordinateValueType.None || type == CoordinateValueType.Latitude || type == CoordinateValueType.Longitude) {
+            throw new ArgumentOutOfRangeException(nameof(type), string.Format(ExceptionMessageResource.ArgumentCannotBeCoordinateCoordinateValueTypeErrorFormat, type.ToString()));
+        }
+
         // Validate that the value is finite and not NaN or Infinity.
         if (double.IsNaN(value) || double.IsInfinity(value)) {
             throw new ArgumentOutOfRangeException(nameof(value), ExceptionMessageResource.ArgumentValueMustBeFiniteNumber);
         }
 
         // Validate that the value is within the acceptable range for the specified type.
-        if (!ValidateDenormalizedValue(value, type)) {
+        if (!ValidateValue(value, type)) {
             throw new ArgumentOutOfRangeException(nameof(value), value, string.Format(ExceptionMessageResource.ArgumentIsOutOfRangeForSpecifiedType, type.ToString().ToLowerInvariant()));
         }
 
@@ -242,7 +195,7 @@ public static class PolylineEncoding {
             return 0;
         }
 
-        return (int)Math.Round(value * Defaults.Algorithm.Precision);
+        return (int)Math.Round(value * LibraryDefaults.Algorithm.Precision);
     }
 
     /// <summary>
@@ -274,21 +227,23 @@ public static class PolylineEncoding {
     };
 
     /// <summary>
-    /// Represents the type of a geographic coordinate value.
+    /// Validates whether the specified denormalized value falls within the acceptable range for the given value type.
     /// </summary>
-    /// <remarks>
-    /// This enumeration is used to specify whether a coordinate value represents latitude or
-    /// longitude. Latitude values indicate the north-south position, while longitude values indicate the east-west
-    /// position.
-    /// </remarks>
-    public enum ValueType {
-        /// <summary>
-        /// Represents a latitude value.
-        /// </summary>
-        Latitude,
-        /// <summary>
-        /// Represents a longitude value.
-        /// </summary>
-        Longitude
-    }
+    /// <param name="value">
+    /// The denormalized value to validate.
+    /// </param>
+    /// <param name="type">
+    /// The type of value to validate, such as latitude or longitude.
+    /// </param>
+    /// <returns>
+    /// <see langword="true"/> if the <paramref name="value"/> is within the valid range for the specified <paramref
+    /// name="type"/>; otherwise, <see langword="false"/>.
+    /// </returns>
+    private static bool ValidateValue<T>(T value, CoordinateValueType type) => (type, value) switch {
+        (CoordinateValueType.Latitude, int normalized) when normalized >= LibraryDefaults.Coordinate.Latitude.Normalized.Min && normalized <= LibraryDefaults.Coordinate.Latitude.Normalized.Max => true,
+        (CoordinateValueType.Longitude, int normalized) when normalized >= LibraryDefaults.Coordinate.Longitude.Normalized.Min && normalized <= LibraryDefaults.Coordinate.Longitude.Normalized.Max => true,
+        (CoordinateValueType.Latitude, double denormalized) when denormalized >= LibraryDefaults.Coordinate.Latitude.Min && denormalized <= LibraryDefaults.Coordinate.Latitude.Max => true,
+        (CoordinateValueType.Longitude, double denormalized) when denormalized >= LibraryDefaults.Coordinate.Longitude.Min && denormalized <= LibraryDefaults.Coordinate.Longitude.Max => true,
+        _ => false,
+    };
 }
