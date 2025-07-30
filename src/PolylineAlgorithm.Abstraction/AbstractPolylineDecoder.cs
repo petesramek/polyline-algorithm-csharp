@@ -78,9 +78,9 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
 
         ReadOnlyMemory<char> sequence = GetReadOnlyMemory(polyline);
 
-        if (sequence.Length < Defaults.Polyline.Block.Length.Min) {
+        if (sequence.Length < LibraryDefaults.Polyline.Block.Length.Min) {
             logger
-                .LogPolylineCannotBeShorterThanWarning(nameof(sequence), sequence.Length, Defaults.Polyline.Block.Length.Min);
+                .LogPolylineCannotBeShorterThanWarning(nameof(sequence), sequence.Length, LibraryDefaults.Polyline.Block.Length.Min);
             logger.
                 LogOperationFailedInfo(nameof(Decode));
 
@@ -110,7 +110,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
                 InvalidPolylineException.Throw(position);
             }
 
-            yield return CreateCoordinate(PolylineEncoding.Denormalize(latitude, PolylineEncoding.ValueType.Latitude), PolylineEncoding.Denormalize(longitude, PolylineEncoding.ValueType.Longitude));
+            yield return CreateCoordinate(PolylineEncoding.Denormalize(latitude, CoordinateValueType.Latitude), PolylineEncoding.Denormalize(longitude, CoordinateValueType.Longitude));
         }
 
         logger
