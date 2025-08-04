@@ -26,10 +26,16 @@ public class CoordinateTest {
     /// Provides test data for the <see cref="Constructor_Invalid_Parameters_Ok"/> method.
     /// </summary>
     public static IEnumerable<object[]> Constructor_Invalid_Parameters => [
-        [double.MaxValue, double.MaxValue],
-        [double.MinValue, double.MinValue],
-        [double.MaxValue, double.MinValue],
-        [double.MinValue, double.MaxValue],
+        [double.MinValue, 0],
+        [double.MaxValue, 0],
+        [double.NaN, 0],
+        [double.PositiveInfinity, 0],
+        [double.NegativeInfinity, 0],
+        [0, double.MinValue],
+        [0, double.MaxValue],
+        [0, double.NaN],
+        [0, double.PositiveInfinity],
+        [0, double.NegativeInfinity]
     ];
 
     /// <summary>
