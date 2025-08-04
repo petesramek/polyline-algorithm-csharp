@@ -71,27 +71,13 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
         Debug.Assert(coordinates is not null, "Coordinates cannot be null.");
 
-        if (coordinates is null) {
-            logger
-                .LogNullArgumentWarning(nameof(coordinates));
-            logger
-                .LogOperationFailedInfo(nameof(Encode));
-
-            throw new ArgumentNullException(nameof(coordinates));
-        }
+        ValidateNullCoordinates(coordinates, logger);
 
         int count = GetCount(coordinates);
 
         Debug.Assert(count >= 0, "Count must be non-negative.");
 
-        if (count < 1) {
-            logger
-                .LogEmptyArgumentWarning(nameof(coordinates));
-            logger
-                .LogOperationFailedInfo(nameof(Encode));
-
-            throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeEmptyEnumerationMessage, nameof(coordinates));
-        }
+        ValidateEmptyCoordinates(logger, count);
 
         CoordinateVariance variance = new();
 
@@ -105,17 +91,12 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
         while (enumerator.MoveNext()) {
             variance
-                .Next(PolylineEncoding.Normalize(GetLatitude(enumerator.Current), CoordinateValueType.Latitude), PolylineEncoding.Normalize(GetLongitude(enumerator.Current), CoordinateValueType.Longitude));
+                .Next(
+                    PolylineEncoding.Normalize(GetLatitude(enumerator.Current), CoordinateValueType.Latitude),
+                    PolylineEncoding.Normalize(GetLongitude(enumerator.Current), CoordinateValueType.Longitude)
+                );
 
-            if (GetRemainingBufferSize(position, buffer.Length) < GetRequiredLength(variance)) {
-                logger
-                    .LogInternalBufferOverflowWarning(position, buffer.Length, GetRequiredLength(variance));
-                logger
-                    .LogOperationFailedInfo(nameof(Encode));
-
-
-                throw new InternalBufferOverflowException();
-            }
+            ValidateBuffer(logger, variance, position, buffer);
 
             if (!PolylineEncoding.TryWriteValue(variance.Latitude, ref buffer, ref position)
                 || !PolylineEncoding.TryWriteValue(variance.Longitude, ref buffer, ref position)
@@ -174,6 +155,41 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
             }
 
             return requestedBufferLength;
+        }
+
+        static void ValidateNullCoordinates(IEnumerable<TCoordinate> coordinates, ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> logger) {
+            if (coordinates is null) {
+                logger
+                    .LogNullArgumentWarning(nameof(coordinates));
+                logger
+                    .LogOperationFailedInfo(nameof(Encode));
+
+                throw new ArgumentNullException(nameof(coordinates));
+            }
+        }
+
+        static void ValidateEmptyCoordinates(ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> logger, int count) {
+            if (count < 1) {
+                logger
+                    .LogEmptyArgumentWarning(nameof(coordinates));
+                logger
+                    .LogOperationFailedInfo(nameof(Encode));
+
+                throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeEmptyEnumerationMessage, nameof(coordinates));
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static void ValidateBuffer(ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> logger, CoordinateVariance variance, int position, Span<char> buffer) {
+            if (GetRemainingBufferSize(position, buffer.Length) < GetRequiredLength(variance)) {
+                logger
+                    .LogInternalBufferOverflowWarning(position, buffer.Length, GetRequiredLength(variance));
+                logger
+                    .LogOperationFailedInfo(nameof(Encode));
+
+
+                throw new InternalBufferOverflowException();
+            }
         }
     }
 
