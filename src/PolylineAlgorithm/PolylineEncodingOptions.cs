@@ -15,7 +15,7 @@ using System.Diagnostics;
 /// <remarks>
 /// This class allows you to set options such as buffer size and logger factory for encoding operations.
 /// </remarks>
-[DebuggerDisplay("BufferSize: {BufferSize}, MaxBufferLength: {MaxBufferLength}, LoggerFactoryType: {LoggerFactory.GetType().Name}")]
+[DebuggerDisplay("BufferSizeInBytes: {BufferSizeInBytes}, MaxBufferLength: {MaxBufferLength}, LoggerFactoryType: {LoggerFactory.GetType().Name}")]
 public sealed class PolylineEncodingOptions {
     /// <summary>
     /// Gets the maximum buffer size for encoding operations.

@@ -5,6 +5,7 @@
 
 namespace PolylineAlgorithm;
 
+using PolylineAlgorithm.Properties;
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -44,11 +45,11 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// </exception>
     public Coordinate(double latitude, double longitude) {
         if (latitude < -90 || latitude > 90 || double.IsNaN(latitude) || double.IsInfinity(latitude)) {
-            throw new ArgumentOutOfRangeException(nameof(latitude), "Latitude must be between -90 and 90.");
+            throw new ArgumentOutOfRangeException(nameof(latitude), string.Format(ExceptionMessageResource.CoordinateValueMustBeBetweenValuesMessageFormat, "Latitude", -90, 90));
         }
 
         if (longitude < -180 || longitude > 180 || double.IsNaN(longitude) || double.IsInfinity(longitude)) {
-            throw new ArgumentOutOfRangeException(nameof(longitude), "Longitude must be between -180 and 180.");
+            throw new ArgumentOutOfRangeException(nameof(longitude), string.Format(ExceptionMessageResource.CoordinateValueMustBeBetweenValuesMessageFormat, "Longitude", -180, 180));
         }
 
         Latitude = latitude;

@@ -164,10 +164,6 @@ public class AbstractPolylineDecoderTest {
         }
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(string? polyline) {
-            if (string.IsNullOrWhiteSpace(polyline)) {
-                throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeNullEmptyOrWhiteSpaceMessage, nameof(polyline));
-            }
-
             return polyline.AsMemory();
         }
     }

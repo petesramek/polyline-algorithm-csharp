@@ -92,12 +92,12 @@ public static class PolylineEncoding {
     public static double Denormalize(int value, CoordinateValueType type) {
         // Validate that the type is not None, as it does not represent a valid coordinate value type.
         if (type == CoordinateValueType.None) {
-            throw new ArgumentOutOfRangeException(nameof(type), string.Format(ExceptionMessageResource.ArgumentCannotBeCoordinateCoordinateValueTypeErrorFormat, type.ToString()));
+            throw new ArgumentOutOfRangeException(nameof(type), string.Format(ExceptionMessageResource.ArgumentCannotBeCoordinateValueTypeMessageFormat, type.ToString()));
         }
 
         // Validate that the value is finite and within the acceptable range for the specified type.
         if (!ValidateValue(value, type)) {
-            throw new ArgumentOutOfRangeException(nameof(value), value, string.Format(ExceptionMessageResource.ArgumentIsOutOfRangeForSpecifiedType, type.ToString().ToLowerInvariant()));
+            throw new ArgumentOutOfRangeException(nameof(value), value, string.Format(ExceptionMessageResource.ArgumentOutOfRangeForSpecifiedCoordinateValueTypeMessageFormat, type.ToString().ToLowerInvariant()));
         }
 
         // Return fast if the value is zero, return 0.0 as the denormalized value.
@@ -181,7 +181,7 @@ public static class PolylineEncoding {
     public static int Normalize(double value, CoordinateValueType type) {
         // Validate that the type is not None, as it does not represent a valid coordinate value type.
         if (type == CoordinateValueType.None) {
-            throw new ArgumentOutOfRangeException(nameof(type), string.Format(ExceptionMessageResource.ArgumentCannotBeCoordinateCoordinateValueTypeErrorFormat, type.ToString()));
+            throw new ArgumentOutOfRangeException(nameof(type), string.Format(ExceptionMessageResource.ArgumentCannotBeCoordinateValueTypeMessageFormat, type.ToString()));
         }
 
         // Validate that the value is finite and not NaN or Infinity.
@@ -191,7 +191,7 @@ public static class PolylineEncoding {
 
         // Validate that the value is within the acceptable range for the specified type.
         if (!ValidateValue(value, type)) {
-            throw new ArgumentOutOfRangeException(nameof(value), value, string.Format(ExceptionMessageResource.ArgumentIsOutOfRangeForSpecifiedType, type.ToString().ToLowerInvariant()));
+            throw new ArgumentOutOfRangeException(nameof(value), value, string.Format(ExceptionMessageResource.ArgumentOutOfRangeForSpecifiedCoordinateValueTypeMessageFormat, type.ToString().ToLowerInvariant()));
         }
 
         // Fast return if the value is zero, return 0 as the normalized value.

@@ -5,6 +5,7 @@
 
 namespace PolylineAlgorithm;
 
+using PolylineAlgorithm.Properties;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -70,8 +71,8 @@ public readonly struct Polyline : IEquatable<Polyline> {
             throw new ArgumentNullException(nameof(destination));
         }
 
-        if (Length != destination.Length) {
-            throw new ArgumentException("Destination array length must match the polyline's length.", nameof(destination));
+        if (destination.Length < Length) {
+            throw new ArgumentException(ExceptionMessageResource.DestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthMessage, nameof(destination));
         }
 
         _value.CopyTo(destination);

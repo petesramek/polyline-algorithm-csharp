@@ -63,9 +63,9 @@ namespace PolylineAlgorithm.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Argument cannot be CoordinateValueType.{0}..
         /// </summary>
-        internal static string ArgumentCannotBeCoordinateCoordinateValueTypeErrorFormat {
+        internal static string ArgumentCannotBeCoordinateValueTypeMessageFormat {
             get {
-                return ResourceManager.GetString("ArgumentCannotBeCoordinateCoordinateValueTypeErrorFormat", resourceCulture);
+                return ResourceManager.GetString("ArgumentCannotBeCoordinateValueTypeMessageFormat", resourceCulture);
             }
         }
         
@@ -79,29 +79,11 @@ namespace PolylineAlgorithm.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Argument cannot be null -or- empty -or- white space..
-        /// </summary>
-        internal static string ArgumentCannotBeNullEmptyOrWhiteSpaceMessage {
-            get {
-                return ResourceManager.GetString("ArgumentCannotBeNullEmptyOrWhiteSpaceMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Value is out of range for the specified type {0}..
         /// </summary>
-        internal static string ArgumentIsOutOfRangeForSpecifiedType {
+        internal static string ArgumentOutOfRangeForSpecifiedCoordinateValueTypeMessageFormat {
             get {
-                return ResourceManager.GetString("ArgumentIsOutOfRangeForSpecifiedType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Argument {0} cannot be greater or equal than {1}..
-        /// </summary>
-        internal static string ArgumentMinCannotBeGreaterOfEqualThanMaxArgumentMessageFormat {
-            get {
-                return ResourceManager.GetString("ArgumentMinCannotBeGreaterOfEqualThanMaxArgumentMessageFormat", resourceCulture);
+                return ResourceManager.GetString("ArgumentOutOfRangeForSpecifiedCoordinateValueTypeMessageFormat", resourceCulture);
             }
         }
         
@@ -115,20 +97,29 @@ namespace PolylineAlgorithm.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Latitude {0} or longitude {1} is not valid. Latitude must be in range between -90 and +90. Longitude must be in range between -180 and +180..
+        ///   Looks up a localized string similar to Buffer size must be greater than {0}..
         /// </summary>
-        internal static string CoordinateIsOutOfRangeMessageFormat {
+        internal static string BufferSizeMustBeGreaterThanMessageFormat {
             get {
-                return ResourceManager.GetString("CoordinateIsOutOfRangeMessageFormat", resourceCulture);
+                return ResourceManager.GetString("BufferSizeMustBeGreaterThanMessageFormat", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to One or more coordinates are invalid. Check InnerExceptions property for details..
+        ///   Looks up a localized string similar to {0} must be between {1} and {2}..
         /// </summary>
-        internal static string CoordinatesAreInvalidErrorMessage {
+        internal static string CoordinateValueMustBeBetweenValuesMessageFormat {
             get {
-                return ResourceManager.GetString("CoordinatesAreInvalidErrorMessage", resourceCulture);
+                return ResourceManager.GetString("CoordinateValueMustBeBetweenValuesMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination array length must be greater than the polyline length..
+        /// </summary>
+        internal static string DestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthMessage {
+            get {
+                return ResourceManager.GetString("DestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthMessage", resourceCulture);
             }
         }
         

@@ -7,6 +7,7 @@ namespace PolylineAlgorithm;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using PolylineAlgorithm.Properties;
 
 /// <summary>
 /// Provides a builder for configuring options for polyline encoding operations.
@@ -51,7 +52,7 @@ public class PolylineEncodingOptionsBuilder {
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="maxBufferSize"/> is less than or equal to 11.</exception>
     public PolylineEncodingOptionsBuilder WithBufferSize(int maxBufferSize) {
-        _bufferSize = maxBufferSize > 11 ? maxBufferSize : throw new ArgumentOutOfRangeException(nameof(maxBufferSize), "Buffer size must be greater than 11.");
+        _bufferSize = maxBufferSize > 11 ? maxBufferSize : throw new ArgumentOutOfRangeException(nameof(maxBufferSize), string.Format(ExceptionMessageResource.BufferSizeMustBeGreaterThanMessageFormat, 11));
 
         return this;
     }
@@ -69,7 +70,7 @@ public class PolylineEncodingOptionsBuilder {
     /// Thrown when <paramref name="loggerFactory"/> is <see langword="null"/>.
     /// </exception>
     public PolylineEncodingOptionsBuilder WithLoggerFactory(ILoggerFactory loggerFactory) {
-        _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory), "Logger factory cannot be null.");
+        _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
 
         return this;
     }
