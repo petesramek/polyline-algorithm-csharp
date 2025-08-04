@@ -33,7 +33,7 @@ public class PolylineEncodingOptionsBuilder {
     /// <returns>
     /// A configured <see cref="PolylineEncodingOptions"/> instance.
     /// </returns>
-   public PolylineEncodingOptions Build() {
+    public PolylineEncodingOptions Build() {
         return new PolylineEncodingOptions {
             BufferSizeInBytes = _bufferSize,
             LoggerFactory = _loggerFactory

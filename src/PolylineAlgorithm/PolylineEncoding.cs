@@ -4,8 +4,8 @@
 //
 
 namespace PolylineAlgorithm;
-using PolylineAlgorithm.Properties;
 using PolylineAlgorithm.Internal;
+using PolylineAlgorithm.Properties;
 using System;
 using System.Runtime.CompilerServices;
 
@@ -94,7 +94,7 @@ public static class PolylineEncoding {
         if (type == CoordinateValueType.None) {
             throw new ArgumentOutOfRangeException(nameof(type), string.Format(ExceptionMessageResource.ArgumentCannotBeCoordinateCoordinateValueTypeErrorFormat, type.ToString()));
         }
-        
+
         // Validate that the value is finite and within the acceptable range for the specified type.
         if (!ValidateValue(value, type)) {
             throw new ArgumentOutOfRangeException(nameof(value), value, string.Format(ExceptionMessageResource.ArgumentIsOutOfRangeForSpecifiedType, type.ToString().ToLowerInvariant()));

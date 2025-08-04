@@ -6,11 +6,11 @@
 namespace PolylineAlgorithm.Abstraction;
 
 using Microsoft.Extensions.Logging;
-using PolylineAlgorithm.Internal.Logging;
+using PolylineAlgorithm;
 using PolylineAlgorithm.Internal;
+using PolylineAlgorithm.Internal.Logging;
 using PolylineAlgorithm.Properties;
 using System;
-using PolylineAlgorithm;
 
 /// <summary>
 /// Decodes encoded polyline strings into sequences of geographic coordinates.

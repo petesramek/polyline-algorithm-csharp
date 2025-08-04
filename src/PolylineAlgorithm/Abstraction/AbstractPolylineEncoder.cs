@@ -6,15 +6,15 @@
 namespace PolylineAlgorithm.Abstraction;
 
 using Microsoft.Extensions.Logging;
+using PolylineAlgorithm;
+using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Internal.Logging;
 using PolylineAlgorithm.Properties;
-using PolylineAlgorithm.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using PolylineAlgorithm;
 
 /// <summary>
 /// Provides functionality to encode a collection of geographic coordinates into an encoded polyline string.
