@@ -69,28 +69,15 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
         logger.
             LogOperationStartedInfo(nameof(Decode));
 
-        if (polyline is null) {
-            logger
-                .LogNullArgumentWarning(nameof(polyline));
-
-            throw new ArgumentNullException(nameof(polyline));
-        }
+        ValidatePolyline(polyline, logger);
 
         ReadOnlyMemory<char> sequence = GetReadOnlyMemory(polyline);
 
-        if (sequence.Length < Defaults.Polyline.Block.Length.Min) {
-            logger
-                .LogPolylineCannotBeShorterThanWarning(nameof(sequence), sequence.Length, Defaults.Polyline.Block.Length.Min);
-            logger.
-                LogOperationFailedInfo(nameof(Decode));
-
-            throw new ArgumentException(string.Format(ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage, sequence.Length), nameof(polyline));
-        }
+        ValidateSequence(logger, sequence);
 
         int position = 0;
         int latitude = 0;
         int longitude = 0;
-
 
         while (true) {
             // Check if we have reached the end of the sequence
@@ -115,6 +102,26 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
 
         logger
             .LogOperationFinishedInfo(nameof(Decode));
+
+        static void ValidateSequence(ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> logger, ReadOnlyMemory<char> sequence) {
+            if (sequence.Length < Defaults.Polyline.Block.Length.Min) {
+                logger
+                    .LogPolylineCannotBeShorterThanWarning(nameof(sequence), sequence.Length, Defaults.Polyline.Block.Length.Min);
+                logger.
+                    LogOperationFailedInfo(nameof(Decode));
+
+                throw new ArgumentException(string.Format(ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage, sequence.Length), nameof(polyline));
+            }
+        }
+
+        static void ValidatePolyline(TPolyline polyline, ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> logger) {
+            if (polyline is null) {
+                logger
+                    .LogNullArgumentWarning(nameof(polyline));
+
+                throw new ArgumentNullException(nameof(polyline));
+            }
+        }
     }
 
     /// <summary>
