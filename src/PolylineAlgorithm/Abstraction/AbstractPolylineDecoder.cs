@@ -3,13 +3,14 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm;
+namespace PolylineAlgorithm.Abstraction;
 
 using Microsoft.Extensions.Logging;
 using PolylineAlgorithm.Internal.Logging;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Properties;
 using System;
+using PolylineAlgorithm;
 
 /// <summary>
 /// Decodes encoded polyline strings into sequences of geographic coordinates.

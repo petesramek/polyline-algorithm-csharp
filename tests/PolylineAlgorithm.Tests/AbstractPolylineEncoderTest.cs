@@ -7,6 +7,7 @@ namespace PolylineAlgorithm.Tests;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PolylineAlgorithm;
+using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Utility;
 using System;
 

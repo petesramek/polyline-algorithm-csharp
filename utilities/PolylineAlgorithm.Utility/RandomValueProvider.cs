@@ -6,6 +6,7 @@
 namespace PolylineAlgorithm.Utility;
 
 using PolylineAlgorithm;
+using PolylineAlgorithm.Abstraction;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

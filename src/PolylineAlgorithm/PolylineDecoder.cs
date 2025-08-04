@@ -4,6 +4,8 @@
 //
 
 namespace PolylineAlgorithm;
+
+using PolylineAlgorithm.Abstraction;
 using System.Runtime.CompilerServices;
 
 /// <inheritdoc cref="AbstractPolylineDecoder{TPolyline, TCoordinate}" />

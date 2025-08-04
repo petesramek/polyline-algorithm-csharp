@@ -6,7 +6,7 @@
 namespace PolylineAlgorithm.NetTopologySuite.Sample;
 
 using global::NetTopologySuite.Geometries;
-using PolylineAlgorithm;
+using PolylineAlgorithm.Abstraction;
 using System;
 
 internal sealed class NetTopologyPolylineDecoder : AbstractPolylineDecoder<string, Point> {
