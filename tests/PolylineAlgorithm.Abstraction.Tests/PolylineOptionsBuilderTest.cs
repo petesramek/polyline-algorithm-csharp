@@ -23,7 +23,7 @@ public class PolylineOptionsBuilderTest {
     public void Build_Returns_Instance_With_Default_Values() {
         // Arrange
         var builder = PolylineEncodingOptionsBuilder.Create();
-        var bufferSize = 2_048;
+        var bufferSize = 64_000;
         var loggerFactory = NullLoggerFactory.Instance;
 
         // Act

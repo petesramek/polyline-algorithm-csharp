@@ -21,9 +21,9 @@ public sealed class PolylineEncodingOptions {
     /// Gets the maximum buffer size for encoding operations.
     /// </summary>
     /// <remarks>
-    /// The default buffer size is 2,048 bytes (2 KB). This can be adjusted based on the expected size of the polyline data.
+    /// The default buffer size is 64,000 bytes (64 KB). This can be adjusted based on the expected size of the polyline data.
     /// </remarks>
-    public int BufferSizeInBytes { get; internal set; } = 2_048;
+    public int BufferSizeInBytes { get; internal set; } = 64_000;
 
     /// <summary>
     /// Gets or sets the precision for encoding coordinates.

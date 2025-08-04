@@ -16,8 +16,8 @@ public class PolylineEncodingOptionsTest {
         var options = new PolylineEncodingOptions();
 
         // Assert
-        Assert.AreEqual(2_048, options.BufferSizeInBytes);
-        Assert.AreEqual(2_048 / sizeof(char), options.MaxBufferLength);
+        Assert.AreEqual(64_000, options.BufferSizeInBytes);
+        Assert.AreEqual(64_000 / sizeof(char), options.MaxBufferLength);
         Assert.IsInstanceOfType<NullLoggerFactory>(options.LoggerFactory);
     }
 
