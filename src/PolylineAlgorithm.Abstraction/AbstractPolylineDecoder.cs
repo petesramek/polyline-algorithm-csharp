@@ -78,9 +78,9 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
 
         ReadOnlyMemory<char> sequence = GetReadOnlyMemory(polyline);
 
-        if (sequence.Length < LibraryDefaults.Polyline.Block.Length.Min) {
+        if (sequence.Length < Defaults.Polyline.Block.Length.Min) {
             logger
-                .LogPolylineCannotBeShorterThanWarning(nameof(sequence), sequence.Length, LibraryDefaults.Polyline.Block.Length.Min);
+                .LogPolylineCannotBeShorterThanWarning(nameof(sequence), sequence.Length, Defaults.Polyline.Block.Length.Min);
             logger.
                 LogOperationFailedInfo(nameof(Decode));
 

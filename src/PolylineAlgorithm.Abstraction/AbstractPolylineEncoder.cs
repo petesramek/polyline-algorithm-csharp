@@ -161,7 +161,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
         int GetBufferLength(int count) {
             Debug.Assert(count > 0, "Count must be greater than zero.");
 
-            int requestedBufferLength = count * LibraryDefaults.Polyline.Block.Length.Max;
+            int requestedBufferLength = count * Defaults.Polyline.Block.Length.Max;
 
             Debug.Assert(Options.MaxBufferLength > 0, "Max buffer length must be greater than zero.");
             Debug.Assert(requestedBufferLength > 0, "Requested buffer length must be greater than zero.");

@@ -53,12 +53,12 @@ public static class PolylineEncoding {
 
         // Read characters from the buffer until a termination condition is met or the end of the buffer is reached.
         while (position < buffer.Length) {
-            chunk = span[position++] - LibraryDefaults.Algorithm.QuestionMark;
-            sum |= (chunk & LibraryDefaults.Algorithm.UnitSeparator) << shifter;
-            shifter += LibraryDefaults.Algorithm.ShiftLength;
+            chunk = span[position++] - Defaults.Algorithm.QuestionMark;
+            sum |= (chunk & Defaults.Algorithm.UnitSeparator) << shifter;
+            shifter += Defaults.Algorithm.ShiftLength;
 
             // If the chunk is less than the space character, it indicates the end of the value.
-            if (chunk < LibraryDefaults.Algorithm.Space) {
+            if (chunk < Defaults.Algorithm.Space) {
                 break;
             }
         }
@@ -66,7 +66,7 @@ public static class PolylineEncoding {
         variance += (sum & 1) == 1 ? ~(sum >> 1) : sum >> 1;
 
         // If the end of the buffer was reached without reading a complete value, return false.
-        return chunk < LibraryDefaults.Algorithm.Space;
+        return chunk < Defaults.Algorithm.Space;
     }
 
     /// <summary>
@@ -106,7 +106,7 @@ public static class PolylineEncoding {
             return 0.0;
         }
 
-        return Math.Truncate((double)value) / LibraryDefaults.Algorithm.Precision;
+        return Math.Truncate((double)value) / Defaults.Algorithm.Precision;
     }
 
     /// <summary>
@@ -146,13 +146,13 @@ public static class PolylineEncoding {
         }
 
         // Write the value to the buffer in a way that encodes it using the specified algorithm.
-        while (rem >= LibraryDefaults.Algorithm.Space) {
-            buffer[position++] = (char)((LibraryDefaults.Algorithm.Space | rem & LibraryDefaults.Algorithm.UnitSeparator) + LibraryDefaults.Algorithm.QuestionMark);
-            rem >>= LibraryDefaults.Algorithm.ShiftLength;
+        while (rem >= Defaults.Algorithm.Space) {
+            buffer[position++] = (char)((Defaults.Algorithm.Space | rem & Defaults.Algorithm.UnitSeparator) + Defaults.Algorithm.QuestionMark);
+            rem >>= Defaults.Algorithm.ShiftLength;
         }
 
         // Write the final character, which is less than the space character.
-        buffer[position++] = (char)(rem + LibraryDefaults.Algorithm.QuestionMark);
+        buffer[position++] = (char)(rem + Defaults.Algorithm.QuestionMark);
 
         return true;
     }
@@ -200,7 +200,7 @@ public static class PolylineEncoding {
             return 0;
         }
 
-        return (int)Math.Round(value * LibraryDefaults.Algorithm.Precision);
+        return (int)Math.Round(value * Defaults.Algorithm.Precision);
     }
 
     /// <summary>
@@ -245,10 +245,10 @@ public static class PolylineEncoding {
     /// name="type"/>; otherwise, <see langword="false"/>.
     /// </returns>
     private static bool ValidateValue<T>(T value, CoordinateValueType type) => (type, value) switch {
-        (CoordinateValueType.Latitude, int normalized) when normalized >= LibraryDefaults.Coordinate.Latitude.Normalized.Min && normalized <= LibraryDefaults.Coordinate.Latitude.Normalized.Max => true,
-        (CoordinateValueType.Longitude, int normalized) when normalized >= LibraryDefaults.Coordinate.Longitude.Normalized.Min && normalized <= LibraryDefaults.Coordinate.Longitude.Normalized.Max => true,
-        (CoordinateValueType.Latitude, double denormalized) when denormalized >= LibraryDefaults.Coordinate.Latitude.Min && denormalized <= LibraryDefaults.Coordinate.Latitude.Max => true,
-        (CoordinateValueType.Longitude, double denormalized) when denormalized >= LibraryDefaults.Coordinate.Longitude.Min && denormalized <= LibraryDefaults.Coordinate.Longitude.Max => true,
+        (CoordinateValueType.Latitude, int normalized) when normalized >= Defaults.Coordinate.Latitude.Normalized.Min && normalized <= Defaults.Coordinate.Latitude.Normalized.Max => true,
+        (CoordinateValueType.Longitude, int normalized) when normalized >= Defaults.Coordinate.Longitude.Normalized.Min && normalized <= Defaults.Coordinate.Longitude.Normalized.Max => true,
+        (CoordinateValueType.Latitude, double denormalized) when denormalized >= Defaults.Coordinate.Latitude.Min && denormalized <= Defaults.Coordinate.Latitude.Max => true,
+        (CoordinateValueType.Longitude, double denormalized) when denormalized >= Defaults.Coordinate.Longitude.Min && denormalized <= Defaults.Coordinate.Longitude.Max => true,
         _ => false,
     };
 }
