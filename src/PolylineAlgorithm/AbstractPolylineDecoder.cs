@@ -3,12 +3,12 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm.Abstraction;
+namespace PolylineAlgorithm;
 
 using Microsoft.Extensions.Logging;
-using PolylineAlgorithm.Abstraction.Internal;
-using PolylineAlgorithm.Abstraction.Internal.Logging;
-using PolylineAlgorithm.Abstraction.Properties;
+using PolylineAlgorithm.Internal.Logging;
+using PolylineAlgorithm.Internal;
+using PolylineAlgorithm.Properties;
 using System;
 
 /// <summary>

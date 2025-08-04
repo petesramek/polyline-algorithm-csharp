@@ -26,7 +26,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\PolylineAlgorithm.Abstraction\PolylineAlgorithm.Abstraction.csproj" />
+	  <ProjectReference Include="..\..\src\PolylineAlgorithm\PolylineAlgorithm.csproj" />
 	</ItemGroup>
 
 </Project>

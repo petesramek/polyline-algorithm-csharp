@@ -1,4 +1,4 @@
-﻿namespace PolylineAlgorithm.Abstraction.Internal.Logging;
+﻿namespace PolylineAlgorithm.Internal.Logging;
 using System.Diagnostics.CodeAnalysis;
 
 [ExcludeFromCodeCoverage]

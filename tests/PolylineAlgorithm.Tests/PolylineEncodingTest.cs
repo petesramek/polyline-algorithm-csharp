@@ -3,9 +3,10 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm.Abstraction.Tests;
+namespace PolylineAlgorithm.Tests;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PolylineAlgorithm;
 using System;
 using System.Collections.Generic;
 
@@ -215,7 +216,7 @@ public class PolylineEncodingTest {
         int variance = 42;
         int expected = variance;
         // Buffer with a char that will never finish a value (simulate incomplete encoding)
-        char[] chars = [(char)(127)]; // 127 - 63 = 64, which is >= 32, so loop never breaks
+        char[] chars = [(char)127]; // 127 - 63 = 64, which is >= 32, so loop never breaks
         ReadOnlyMemory<char> buffer = chars.AsMemory();
 
         // Act

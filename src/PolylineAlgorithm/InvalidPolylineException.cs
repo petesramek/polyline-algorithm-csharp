@@ -3,9 +3,9 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm.Abstraction;
+namespace PolylineAlgorithm;
 
-using PolylineAlgorithm.Abstraction.Properties;
+using PolylineAlgorithm.Properties;
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;

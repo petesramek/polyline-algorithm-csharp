@@ -3,10 +3,13 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm.Abstraction.Tests;
+using PolylineAlgorithm.Tests;
+
+namespace PolylineAlgorithm.Tests;
 
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging.Testing;
+using PolylineAlgorithm;
 
 [TestClass]
 public class PolylineOptionsBuilderTest {

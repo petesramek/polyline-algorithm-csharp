@@ -3,11 +3,12 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm.Abstraction.Tests.Internal;
+namespace PolylineAlgorithm.Tests.Internal;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Testing;
-using PolylineAlgorithm.Abstraction.Internal.Logging;
+using PolylineAlgorithm.Internal.Logging;
+using PolylineAlgorithm.Tests;
 
 [TestClass]
 public class LoggingTest {

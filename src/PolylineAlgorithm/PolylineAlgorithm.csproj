@@ -44,6 +44,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -53,10 +54,6 @@
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
 			<_Parameter1>PolylineAlgorithm.Benchmarks</_Parameter1>
 		</AssemblyAttribute>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\PolylineAlgorithm.Abstraction\PolylineAlgorithm.Abstraction.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

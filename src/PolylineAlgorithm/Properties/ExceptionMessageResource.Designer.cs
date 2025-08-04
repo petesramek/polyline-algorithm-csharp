@@ -61,6 +61,15 @@ namespace PolylineAlgorithm.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Argument cannot be CoordinateValueType.{0}..
+        /// </summary>
+        internal static string ArgumentCannotBeCoordinateCoordinateValueTypeErrorFormat {
+            get {
+                return ResourceManager.GetString("ArgumentCannotBeCoordinateCoordinateValueTypeErrorFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Argument cannot be an empty enumeration..
         /// </summary>
         internal static string ArgumentCannotBeEmptyEnumerationMessage {
@@ -70,11 +79,20 @@ namespace PolylineAlgorithm.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Argument cannot be null -or- empty -or- whitespace..
+        ///   Looks up a localized string similar to Argument cannot be null -or- empty -or- white space..
         /// </summary>
-        internal static string ArgumentCannotBeNullEmptyOrWhitespaceMessage {
+        internal static string ArgumentCannotBeNullEmptyOrWhiteSpaceMessage {
             get {
-                return ResourceManager.GetString("ArgumentCannotBeNullEmptyOrWhitespaceMessage", resourceCulture);
+                return ResourceManager.GetString("ArgumentCannotBeNullEmptyOrWhiteSpaceMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value is out of range for the specified type {0}..
+        /// </summary>
+        internal static string ArgumentIsOutOfRangeForSpecifiedType {
+            get {
+                return ResourceManager.GetString("ArgumentIsOutOfRangeForSpecifiedType", resourceCulture);
             }
         }
         
@@ -84,6 +102,15 @@ namespace PolylineAlgorithm.Properties {
         internal static string ArgumentMinCannotBeGreaterOfEqualThanMaxArgumentMessageFormat {
             get {
                 return ResourceManager.GetString("ArgumentMinCannotBeGreaterOfEqualThanMaxArgumentMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value must be a finite number..
+        /// </summary>
+        internal static string ArgumentValueMustBeFiniteNumber {
+            get {
+                return ResourceManager.GetString("ArgumentValueMustBeFiniteNumber", resourceCulture);
             }
         }
         
@@ -106,20 +133,11 @@ namespace PolylineAlgorithm.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot write to an empty polyline buffer..
+        ///   Looks up a localized string similar to Argument cannot be shorten than 2 characters. Actual length: {0}..
         /// </summary>
-        internal static string PolylineBufferIsEmptyMessage {
+        internal static string PolylineCannotBeShorterThanExceptionMessage {
             get {
-                return ResourceManager.GetString("PolylineBufferIsEmptyMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot read an empty polyline..
-        /// </summary>
-        internal static string PolylineStringIsEmptyMessage {
-            get {
-                return ResourceManager.GetString("PolylineStringIsEmptyMessage", resourceCulture);
+                return ResourceManager.GetString("PolylineCannotBeShorterThanExceptionMessage", resourceCulture);
             }
         }
         
@@ -129,24 +147,6 @@ namespace PolylineAlgorithm.Properties {
         internal static string PolylineStringIsMalformedMessage {
             get {
                 return ResourceManager.GetString("PolylineStringIsMalformedMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to read polyline at position {0}. Polyline length is {1}. Capacity of the buffer is {1}..
-        /// </summary>
-        internal static string UnableToReadPolylineAtPositionMessageFormat {
-            get {
-                return ResourceManager.GetString("UnableToReadPolylineAtPositionMessageFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to write polyline buffer at position {0}. Polyline buffer length is {1}..
-        /// </summary>
-        internal static string UnableToWritePolylineBufferAtPositionMessageFormat {
-            get {
-                return ResourceManager.GetString("UnableToWritePolylineBufferAtPositionMessageFormat", resourceCulture);
             }
         }
     }

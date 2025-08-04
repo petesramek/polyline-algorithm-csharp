@@ -3,9 +3,9 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm.Abstraction.Tests;
+namespace PolylineAlgorithm.Tests;
 
-using PolylineAlgorithm.Abstraction;
+using PolylineAlgorithm;
 
 /// <summary>
 /// Defines tests for the <see cref="InvalidPolylineException"/> type.

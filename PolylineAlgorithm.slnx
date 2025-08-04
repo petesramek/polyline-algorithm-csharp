@@ -6,11 +6,9 @@
     <Project Path="samples/PolylineAlgorithm.NetTopologySuite.Sample/PolylineAlgorithm.NetTopologySuite.Sample.csproj" Id="27a8fc47-0a3c-49c7-af5e-530514827785" />
   </Folder>
   <Folder Name="/src/">
-    <Project Path="src/PolylineAlgorithm.Abstraction/PolylineAlgorithm.Abstraction.csproj" Id="a39b8ed4-13da-4ef7-b144-68f0c281474f" />
     <Project Path="src/PolylineAlgorithm/PolylineAlgorithm.csproj" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="tests/PolylineAlgorithm.Abstraction.Tests/PolylineAlgorithm.Abstraction.Tests.csproj" Id="8df45c12-7ca3-4be5-8928-4bc22c641700" />
     <Project Path="tests/PolylineAlgorithm.Tests/PolylineAlgorithm.Tests.csproj" />
   </Folder>
   <Folder Name="/utilities/" Id="02ea681e-c7d8-13c7-8484-4ac65e1b71e8">

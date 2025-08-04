@@ -1,4 +1,4 @@
-﻿namespace PolylineAlgorithm.Abstraction;
+﻿namespace PolylineAlgorithm;
 
 /// <summary>
 /// Represents the type of a geographic coordinate value.

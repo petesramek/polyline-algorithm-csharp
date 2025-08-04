@@ -3,9 +3,10 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm.Abstraction.Tests;
+namespace PolylineAlgorithm.Tests;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PolylineAlgorithm;
 using PolylineAlgorithm.Utility;
 using System;
 
