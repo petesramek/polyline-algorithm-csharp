@@ -33,7 +33,7 @@ public class PolylineOptionsBuilderTest {
 
         // Assert
         Assert.IsNotNull(options);
-        Assert.AreEqual(bufferSize, options.BufferSizeInBytes);
+        Assert.AreEqual(bufferSize, options.MaxBufferSize);
         Assert.AreEqual(bufferSize / sizeof(char), options.MaxBufferLength);
         Assert.AreEqual(loggerFactory, options.LoggerFactory);
     }
@@ -42,10 +42,10 @@ public class PolylineOptionsBuilderTest {
     public void WithBufferSize_Small_BufferSize_Parameter_Returns_Throws_ArgumentOutOfRangeException() {
         // Arrange
         void WithSmallBufferSize() => PolylineEncodingOptionsBuilder.Create()
-            .WithBufferSize(11);
+            .WithMaxBufferSize(11);
 
         // Act
-        var exception = Assert.ThrowsException<ArgumentOutOfRangeException>(WithSmallBufferSize);
+        var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(WithSmallBufferSize);
 
         // Assert
         Assert.IsNotNull(exception);
@@ -61,12 +61,12 @@ public class PolylineOptionsBuilderTest {
 
         // Act
         var options = builder
-            .WithBufferSize(expected)
+            .WithMaxBufferSize(expected)
             .Build();
 
         // Assert
         Assert.IsNotNull(options);
-        Assert.AreEqual(expected, options.BufferSizeInBytes);
+        Assert.AreEqual(expected, options.MaxBufferSize);
         Assert.AreEqual(expected / sizeof(char), options.MaxBufferLength);
     }
 
@@ -93,7 +93,7 @@ public class PolylineOptionsBuilderTest {
             .WithLoggerFactory(null!);
 
         // Act
-        var exception = Assert.ThrowsException<ArgumentNullException>(WithNullLoggerFactory);
+        var exception = Assert.ThrowsExactly<ArgumentNullException>(WithNullLoggerFactory);
 
         // Assert
         Assert.IsNotNull(exception);

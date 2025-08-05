@@ -4,11 +4,6 @@ root = true
 # C# files
 [*.cs]
 
-# File header
-
-file_header_template = \nCopyright © Pete Sramek. All rights reserved.\nLicensed under the MIT License. See LICENSE file in the project root for full license information.\n
-dotnet_diagnostic.IDE0073.severity = warning
-
 #### Core EditorConfig Options ####
 
 # Indentation and spacing
@@ -139,6 +134,7 @@ csharp_prefer_simple_default_expression = true
 csharp_style_deconstructed_variable_declaration = true
 csharp_style_implicit_object_creation_when_type_is_apparent = true
 csharp_style_inlined_variable_declaration = true
+csharp_style_prefer_implicitly_typed_lambda_expression = true
 csharp_style_prefer_index_operator = true
 csharp_style_prefer_local_over_anonymous_function = false
 csharp_style_prefer_null_check_over_type_check = true
@@ -219,6 +215,10 @@ dotnet_naming_rule.types_should_be_pascal_case.severity = suggestion
 dotnet_naming_rule.types_should_be_pascal_case.symbols = types
 dotnet_naming_rule.types_should_be_pascal_case.style = pascal_case
 
+dotnet_naming_rule.private_or_internal_const_field_should_be_pascal_case.severity = suggestion
+dotnet_naming_rule.private_or_internal_const_field_should_be_pascal_case.symbols = private_or_internal_const_field
+dotnet_naming_rule.private_or_internal_const_field_should_be_pascal_case.style = pascal_case
+
 dotnet_naming_rule.private_or_internal_field_should_be_underscore_camel_case.severity = suggestion
 dotnet_naming_rule.private_or_internal_field_should_be_underscore_camel_case.symbols = private_or_internal_field
 dotnet_naming_rule.private_or_internal_field_should_be_underscore_camel_case.style = underscore_camel_case
@@ -241,9 +241,13 @@ dotnet_naming_symbols.types.applicable_kinds = class, struct, interface, enum
 dotnet_naming_symbols.types.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
 dotnet_naming_symbols.types.required_modifiers = 
 
-dotnet_naming_symbols.non_field_members.applicable_kinds = property, event, method
+dotnet_naming_symbols.non_field_members.applicable_kinds = property, method, event
 dotnet_naming_symbols.non_field_members.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
 dotnet_naming_symbols.non_field_members.required_modifiers = 
+
+dotnet_naming_symbols.private_or_internal_const_field.applicable_kinds = field
+dotnet_naming_symbols.private_or_internal_const_field.applicable_accessibilities = internal, private, protected_internal, private_protected
+dotnet_naming_symbols.private_or_internal_const_field.required_modifiers = const
 
 # Naming styles
 

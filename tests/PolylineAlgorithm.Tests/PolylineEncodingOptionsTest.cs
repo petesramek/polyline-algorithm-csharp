@@ -16,7 +16,7 @@ public class PolylineEncodingOptionsTest {
         var options = new PolylineEncodingOptions();
 
         // Assert
-        Assert.AreEqual(64_000, options.BufferSizeInBytes);
+        Assert.AreEqual(64_000, options.MaxBufferSize);
         Assert.AreEqual(64_000 / sizeof(char), options.MaxBufferLength);
         Assert.IsInstanceOfType<NullLoggerFactory>(options.LoggerFactory);
     }
@@ -29,12 +29,12 @@ public class PolylineEncodingOptionsTest {
 
         // Act
         var options = new PolylineEncodingOptions() {
-            BufferSizeInBytes = bufferSize,
+            MaxBufferSize = bufferSize,
             LoggerFactory = loggerFactory
         };
 
         // Assert
-        Assert.AreEqual(bufferSize, options.BufferSizeInBytes);
+        Assert.AreEqual(bufferSize, options.MaxBufferSize);
         Assert.AreEqual(bufferSize / sizeof(char), options.MaxBufferLength);
         Assert.IsInstanceOfType<FakeLoggerFactory>(options.LoggerFactory);
     }

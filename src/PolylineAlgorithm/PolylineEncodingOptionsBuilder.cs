@@ -36,7 +36,7 @@ public class PolylineEncodingOptionsBuilder {
     /// </returns>
     public PolylineEncodingOptions Build() {
         return new PolylineEncodingOptions {
-            BufferSizeInBytes = _bufferSize,
+            MaxBufferSize = _bufferSize,
             LoggerFactory = _loggerFactory
         };
     }
@@ -44,15 +44,15 @@ public class PolylineEncodingOptionsBuilder {
     /// <summary>
     /// Sets the buffer size for encoding operations.
     /// </summary>
-    /// <param name="maxBufferSize">
+    /// <param name="bufferSize">
     /// The maximum buffer size. Must be greater than 11.
     /// </param>
     /// <returns>
     /// The current builder instance.
     /// </returns>
-    /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="maxBufferSize"/> is less than or equal to 11.</exception>
-    public PolylineEncodingOptionsBuilder WithBufferSize(int maxBufferSize) {
-        _bufferSize = maxBufferSize > 11 ? maxBufferSize : throw new ArgumentOutOfRangeException(nameof(maxBufferSize), string.Format(ExceptionMessageResource.BufferSizeMustBeGreaterThanMessageFormat, 11));
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="bufferSize"/> is less than or equal to 11.</exception>
+    public PolylineEncodingOptionsBuilder WithMaxBufferSize(int bufferSize) {
+        _bufferSize = bufferSize > 11 ? bufferSize : throw new ArgumentOutOfRangeException(nameof(bufferSize), string.Format(ExceptionMessageResource.BufferSizeMustBeGreaterThanMessageFormat, 11));
 
         return this;
     }

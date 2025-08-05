@@ -88,7 +88,7 @@ public class AbstractPolylineEncoderTest {
     [TestMethod]
     public void Encode_BufferTooSmall_Throws_InternalBufferOverflowException() {
         // Arrange
-        PolylineEncoder _encoder = new PolylineEncoder(new PolylineEncodingOptions { BufferSizeInBytes = 12 });
+        PolylineEncoder _encoder = new PolylineEncoder(new PolylineEncodingOptions { MaxBufferSize = 12 });
         IEnumerable<(double Latitude, double Longitude)> coordinates = RandomValueProvider.GetCoordinates(2);
 
         // Act

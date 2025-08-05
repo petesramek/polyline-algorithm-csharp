@@ -19,7 +19,6 @@ public sealed class PolylineDecoder : AbstractPolylineDecoder<Polyline, Coordina
         : base(options) { }
 
     /// <inheritdoc />
-    
     protected override Coordinate CreateCoordinate(double latitude, double longitude) {
         return new(latitude, longitude);
     }

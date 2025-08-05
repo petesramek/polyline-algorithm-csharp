@@ -207,7 +207,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// The longitude value as a <see cref="double"/>.
     /// </returns>
     
-    protected abstract double GetLongitude(TCoordinate? current);
+    protected abstract double GetLongitude(TCoordinate current);
 
     /// <summary>
     /// Extracts the latitude value from the specified coordinate.
@@ -217,6 +217,6 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// The latitude value as a <see cref="double"/>.
     /// </returns>
     
-    protected abstract double GetLatitude(TCoordinate? current);
+    protected abstract double GetLatitude(TCoordinate current);
 }
 
