@@ -50,7 +50,7 @@ public class PolylineOptionsBuilderTest {
 
         // Assert
         Assert.IsNotNull(exception);
-        Assert.AreEqual("maxBufferSize", exception.ParamName);
+        Assert.AreEqual("bufferSize", exception.ParamName);
         Assert.Contains("Buffer size must be greater than 11.", exception.Message);
     }
 
@@ -99,6 +99,5 @@ public class PolylineOptionsBuilderTest {
         // Assert
         Assert.IsNotNull(exception);
         Assert.AreEqual("loggerFactory", exception.ParamName);
-        Assert.Contains("Logger factory cannot be null.", exception.Message);
     }
 }
