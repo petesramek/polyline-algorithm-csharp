@@ -12,14 +12,16 @@ using System.Linq;
 
 [TestClass]
 public class PolylineDecoderExtensionsTest {
-    private readonly PolylineDecoder decoder = new PolylineDecoder();
+    private readonly PolylineDecoder _decoder = new();
 
     public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100], [1_000]];
 
     [TestMethod]
     public void Decode_Null_Decoder_Null_String_Throws_ArgumentNullException() {
         // Arrange
-        void Decode() => PolylineDecoderExtensions.Decode(null!, string.Empty).ToList();
+#pragma warning disable IDE0305 // Simplify collection initialization
+        static void Decode() => PolylineDecoderExtensions.Decode(null!, string.Empty).ToList();
+#pragma warning restore IDE0305 // Simplify collection initialization
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentNullException>(Decode);
@@ -32,7 +34,9 @@ public class PolylineDecoderExtensionsTest {
     [TestMethod]
     public void Decode_Null_Decoder_Null_CharArray_Throws_ArgumentNullException() {
         // Arrange
-        void Decode() => PolylineDecoderExtensions.Decode(null!, []).ToList();
+#pragma warning disable IDE0305 // Simplify collection initialization
+        static void Decode() => PolylineDecoderExtensions.Decode(null!, []).ToList();
+#pragma warning restore IDE0305 // Simplify collection initialization
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentNullException>(Decode);
@@ -45,7 +49,9 @@ public class PolylineDecoderExtensionsTest {
     [TestMethod]
     public void Decode_Null_Decoder_Empty_Memory_Throws_ArgumentNullException() {
         // Arrange
-        void Decode() => PolylineDecoderExtensions.Decode(null!, Memory<char>.Empty).ToList();
+#pragma warning disable IDE0305 // Simplify collection initialization
+        static void Decode() => PolylineDecoderExtensions.Decode(null!, Memory<char>.Empty).ToList();
+#pragma warning restore IDE0305 // Simplify collection initialization
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentNullException>(Decode);
@@ -65,7 +71,7 @@ public class PolylineDecoderExtensionsTest {
             .ToList();
 
         // Act
-        var result = PolylineDecoderExtensions.Decode(decoder, polyline).ToList();
+        var result = PolylineDecoderExtensions.Decode(_decoder, polyline).ToList();
 
         // Assert
         CollectionAssert.AreEqual(expected, result);
@@ -81,7 +87,7 @@ public class PolylineDecoderExtensionsTest {
             .ToList();
 
         // Act
-        var result = PolylineDecoderExtensions.Decode(decoder, polyline).ToList();
+        var result = PolylineDecoderExtensions.Decode(_decoder, polyline).ToList();
 
         // Assert
         CollectionAssert.AreEqual(expected, result);
@@ -97,7 +103,7 @@ public class PolylineDecoderExtensionsTest {
             .ToList();
 
         // Act
-        var result = PolylineDecoderExtensions.Decode(decoder, polyline).ToList();
+        var result = PolylineDecoderExtensions.Decode(_decoder, polyline).ToList();
 
         // Assert
         CollectionAssert.AreEqual(expected, result);

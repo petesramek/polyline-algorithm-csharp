@@ -3,20 +3,18 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm.Tests;
+namespace PolylineAlgorithm.Tests.Fakes;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Testing;
 
 internal class FakeLoggerFactory : ILoggerFactory {
     private bool _isDisposed;
-
     public FakeLoggerFactory(FakeLoggerProvider loggerProvider) {
-        Provider = loggerProvider;
+        Provider = loggerProvider ?? throw new ArgumentNullException(nameof(loggerProvider));
     }
 
     public ILoggerProvider Provider { get; private set; }
-
 
     public void AddProvider(ILoggerProvider provider) {
         Provider = provider;

@@ -7,6 +7,7 @@ namespace PolylineAlgorithm.Tests;
 
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging.Testing;
+using PolylineAlgorithm.Tests.Fakes;
 
 [TestClass]
 public class PolylineEncodingOptionsTest {

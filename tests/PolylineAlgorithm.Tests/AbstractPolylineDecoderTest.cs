@@ -13,7 +13,7 @@ using System;
 
 [TestClass]
 public class AbstractPolylineDecoderTest {
-    private static readonly PolylineDecoder _decoder = new PolylineDecoder();
+    private static readonly PolylineDecoder _decoder = new();
 
     public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100], [1_000]];
 
@@ -49,7 +49,7 @@ public class AbstractPolylineDecoderTest {
     [TestMethod]
     public void Constructor_Null_Options_Throws_ArgumentNullException() {
         // Arrange
-        void New() => new PolylineDecoder(null!);
+        static void New() => new PolylineDecoder(null!);
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentNullException>(New);
@@ -62,7 +62,9 @@ public class AbstractPolylineDecoderTest {
     [TestMethod]
     public void Decode_NullPolyline_Throws_ArgumentException() {
         // Arrange
-        void Decode() => _decoder.Decode(null!).ToList();
+#pragma warning disable IDE0305 // Simplify collection initialization
+        static void Decode() => _decoder.Decode(null!).ToList();
+#pragma warning restore IDE0305 // Simplify collection initialization
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentNullException>(Decode);
@@ -75,7 +77,9 @@ public class AbstractPolylineDecoderTest {
     [TestMethod]
     public void Decode_EmptyPolyline_Throws_ArgumentException() {
         // Arrange
-        void Decode() => _decoder.Decode(string.Empty).ToList();
+#pragma warning disable IDE0305 // Simplify collection initialization
+        static void Decode() => _decoder.Decode(string.Empty).ToList();
+#pragma warning restore IDE0305 // Simplify collection initialization
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentException>(Decode);
@@ -88,7 +92,9 @@ public class AbstractPolylineDecoderTest {
     [TestMethod]
     public void Decode_WhitespacePolyline_Throws_ArgumentException() {
         // Arrange
-        void Decode() => _decoder.Decode(" ").ToList();
+#pragma warning disable IDE0305 // Simplify collection initialization
+        static void Decode() => _decoder.Decode(" ").ToList();
+#pragma warning restore IDE0305 // Simplify collection initialization
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentException>(Decode);
@@ -102,7 +108,9 @@ public class AbstractPolylineDecoderTest {
     [DynamicData(nameof(InvalidPolylines), DynamicDataSourceType.Property)]
     public void Decode_InvalidPolyline_Throws_InvalidPolylineException(string polyline) {
         // Arrange
+#pragma warning disable IDE0305 // Simplify collection initialization
         void Decode() => _decoder.Decode(polyline).ToList();
+#pragma warning restore IDE0305 // Simplify collection initialization
 
         // Act
         var exception = Assert.ThrowsExactly<InvalidPolylineException>(Decode);
@@ -115,7 +123,9 @@ public class AbstractPolylineDecoderTest {
     [TestMethod]
     public void Decode_ShortPolyline_Throws_InvalidPolylineException() {
         // Arrange
-        void Decode() => _decoder.Decode("?").ToList();
+#pragma warning disable IDE0305 // Simplify collection initialization
+        static void Decode() => _decoder.Decode("?").ToList();
+#pragma warning restore IDE0305 // Simplify collection initialization
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentException>(Decode);

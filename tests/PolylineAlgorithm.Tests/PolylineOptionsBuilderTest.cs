@@ -8,6 +8,7 @@ namespace PolylineAlgorithm.Tests;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging.Testing;
 using PolylineAlgorithm;
+using PolylineAlgorithm.Tests.Fakes;
 
 [TestClass]
 public class PolylineOptionsBuilderTest {
@@ -41,7 +42,7 @@ public class PolylineOptionsBuilderTest {
     [TestMethod]
     public void WithBufferSize_Small_BufferSize_Parameter_Returns_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        void WithSmallBufferSize() => PolylineEncodingOptionsBuilder.Create()
+        static void WithSmallBufferSize() => PolylineEncodingOptionsBuilder.Create()
             .WithMaxBufferSize(11);
 
         // Act
@@ -50,7 +51,7 @@ public class PolylineOptionsBuilderTest {
         // Assert
         Assert.IsNotNull(exception);
         Assert.AreEqual("maxBufferSize", exception.ParamName);
-        Assert.IsTrue(exception.Message.Contains("Buffer size must be greater than 11."));
+        Assert.Contains("Buffer size must be greater than 11.", exception.Message);
     }
 
     [TestMethod]
@@ -89,7 +90,7 @@ public class PolylineOptionsBuilderTest {
     [TestMethod]
     public void WithLoggerFactory_Null_Parameter_Returns_Throws_ArgumentNullException() {
         // Arrange
-        void WithNullLoggerFactory() => PolylineEncodingOptionsBuilder.Create()
+        static void WithNullLoggerFactory() => PolylineEncodingOptionsBuilder.Create()
             .WithLoggerFactory(null!);
 
         // Act
@@ -98,6 +99,6 @@ public class PolylineOptionsBuilderTest {
         // Assert
         Assert.IsNotNull(exception);
         Assert.AreEqual("loggerFactory", exception.ParamName);
-        Assert.IsTrue(exception.Message.Contains("Logger factory cannot be null."));
+        Assert.Contains("Logger factory cannot be null.", exception.Message);
     }
 }

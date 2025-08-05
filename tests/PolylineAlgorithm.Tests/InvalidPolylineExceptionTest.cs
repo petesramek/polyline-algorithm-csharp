@@ -26,6 +26,6 @@ public class InvalidPolylineExceptionTest {
 
         // Assert
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
-        Assert.IsTrue(exception.Message.Contains(position.ToString()));
+        Assert.Contains(position.ToString(), exception.Message);
     }
 }

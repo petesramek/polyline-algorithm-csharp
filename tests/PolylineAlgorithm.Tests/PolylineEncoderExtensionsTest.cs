@@ -12,14 +12,14 @@ using System.Linq;
 
 [TestClass]
 public class PolylineEncoderExtensionsTest {
-    private readonly PolylineEncoder Encoder = new PolylineEncoder();
+    private readonly PolylineEncoder _encoder = new();
 
     public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100], [1_000]];
 
     [TestMethod]
     public void Encode_Null_Encoder_Empty_List_Throws_ArgumentNullException() {
         // Arrange
-        void Encode() => PolylineEncoderExtensions.Encode(null!, new List<Coordinate>());
+        static void Encode() => PolylineEncoderExtensions.Encode(null!, new List<Coordinate>());
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentNullException>(Encode);
@@ -32,7 +32,7 @@ public class PolylineEncoderExtensionsTest {
     [TestMethod]
     public void Encode_Null_Encoder_Null_CharArray_Throws_ArgumentNullException() {
         // Arrange
-        void Encode() => PolylineEncoderExtensions.Encode(null!, new Coordinate[0]);
+        static void Encode() => PolylineEncoderExtensions.Encode(null!, []);
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentNullException>(Encode);
@@ -52,7 +52,7 @@ public class PolylineEncoderExtensionsTest {
         var expected = RandomValueProvider.GetPolyline(count);
 
         // Act
-        var result = PolylineEncoderExtensions.Encode(Encoder, coordinates);
+        var result = PolylineEncoderExtensions.Encode(_encoder, coordinates);
 
         // Assert
         Assert.AreEqual(expected, result.ToString());
@@ -68,7 +68,7 @@ public class PolylineEncoderExtensionsTest {
         var expected = RandomValueProvider.GetPolyline(count);
 
         // Act
-        var result = PolylineEncoderExtensions.Encode(Encoder, coordinates);
+        var result = PolylineEncoderExtensions.Encode(_encoder, coordinates);
 
         // Assert
         Assert.AreEqual(expected, result.ToString());

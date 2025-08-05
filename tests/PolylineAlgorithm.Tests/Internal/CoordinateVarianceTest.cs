@@ -88,7 +88,7 @@ public class CoordinateVarianceTests {
         string result = variance.ToString();
 
         // Assert
-        StringAssert.Contains(result, $"Latitude: {latitude}");
-        StringAssert.Contains(result, $"Longitude: {longitude}");
+        Assert.Contains($"Latitude: {latitude}", result);
+        Assert.Contains($"Longitude: {longitude}", result);
     }
 }

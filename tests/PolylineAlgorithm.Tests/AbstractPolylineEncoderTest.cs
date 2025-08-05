@@ -13,7 +13,7 @@ using System;
 
 [TestClass]
 public class AbstractPolylineEncoderTest {
-    private static readonly PolylineEncoder _encoder = new PolylineEncoder();
+    private static readonly PolylineEncoder _encoder = new();
 
     public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100], [1_000]];
 
@@ -49,7 +49,7 @@ public class AbstractPolylineEncoderTest {
     [TestMethod]
     public void Constructor_Null_Options_Throws_ArgumentNullException() {
         // Arrange
-        void New() => new PolylineEncoder(null!);
+        static void New() => new PolylineEncoder(null!);
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentNullException>(New);
@@ -62,7 +62,7 @@ public class AbstractPolylineEncoderTest {
     [TestMethod]
     public void Encode_NullCoordinates_Throws_ArgumentException() {
         // Arrange
-        void Encode() => _encoder.Encode(null!);
+        static void Encode() => _encoder.Encode(null!);
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentNullException>(Encode);
@@ -75,7 +75,7 @@ public class AbstractPolylineEncoderTest {
     [TestMethod]
     public void Encode_EmptyCoordinates_Throws_ArgumentException() {
         // Arrange
-        void Encode() => _encoder.Encode(Array.Empty<(double Latitude, double Longitude)>());
+        static void Encode() => _encoder.Encode([]);
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentException>(Encode);
@@ -88,7 +88,7 @@ public class AbstractPolylineEncoderTest {
     [TestMethod]
     public void Encode_BufferTooSmall_Throws_InternalBufferOverflowException() {
         // Arrange
-        PolylineEncoder _encoder = new PolylineEncoder(new PolylineEncodingOptions { MaxBufferSize = 12 });
+        PolylineEncoder _encoder = new(new PolylineEncodingOptions { MaxBufferSize = 12 });
         IEnumerable<(double Latitude, double Longitude)> coordinates = RandomValueProvider.GetCoordinates(2);
 
         // Act

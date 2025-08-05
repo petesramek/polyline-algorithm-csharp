@@ -118,11 +118,6 @@ internal static class Defaults {
         /// </summary>
         internal static class Block {
             /// <summary>
-            /// An array of delimiter byte values used in polyline encoding, derived by adding the ASCII value of the question mark ('?') to a range of integers.
-            /// </summary>
-            internal static readonly byte[] Delimiters = [.. Enumerable.Range(0, 32).Select(n => (byte)(n + Algorithm.QuestionMark))];
-
-            /// <summary>
             /// Contains constants related to the length of encoded coordinates in polyline encoding.
             /// </summary>
             internal static class Length {

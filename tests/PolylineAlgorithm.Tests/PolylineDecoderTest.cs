@@ -29,7 +29,9 @@ public class PolylineDecoderTest {
         Polyline empty = new();
 
         // Act
+#pragma warning disable IDE0305 // Simplify collection initialization
         void Execute(Polyline value) => Decoder.Decode(value).ToList();
+#pragma warning restore IDE0305 // Simplify collection initialization
 
         // Assert
         Assert.ThrowsExactly<ArgumentException>(() => Execute(empty));

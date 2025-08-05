@@ -181,7 +181,7 @@ public class PolylineTest {
     [TestMethod]
     public void ToString_Returns_Empty_String() {
         // Arrange
-        Polyline polyline = new Polyline();
+        Polyline polyline = new();
         string expected = string.Empty;
 
         // Act
@@ -254,7 +254,7 @@ public class PolylineTest {
         Polyline polyline = Polyline.FromString(nameof(polyline));
         Polyline equal = Polyline.FromString(nameof(polyline));
         Polyline notEqual = Polyline.FromString(nameof(notEqual));
-        Polyline empty = new Polyline();
+        Polyline empty = new();
         string typeNotEqual = "not a polyline";
 
         // Act && Assert

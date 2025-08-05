@@ -231,8 +231,8 @@ public class CoordinateTest {
     [TestMethod]
     public void ToString_Format_Ok() {
         var c = new Coordinate(12.34, 56.78);
-        StringAssert.Contains(c.ToString(), "Latitude: 12.34");
-        StringAssert.Contains(c.ToString(), "Longitude: 56.78");
+        Assert.Contains("Latitude: 12.34", c.ToString());
+        Assert.Contains("Longitude: 56.78", c.ToString());
     }
 
     /// <summary>
