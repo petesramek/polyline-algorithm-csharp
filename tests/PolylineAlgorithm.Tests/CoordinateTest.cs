@@ -66,12 +66,12 @@ public class CoordinateTest {
     [DynamicData(nameof(Constructor_Valid_Parameters))]
     public void Constructor_Valid_Parameters_Ok(double latitude, double longitude) {
         // Arrange & Act
-        Coordinate result = new(latitude, longitude);
+        Coordinate coordinate = new(latitude, longitude);
 
         // Assert
-        Assert.IsFalse(result.IsDefault());
-        Assert.AreEqual(latitude, result.Latitude);
-        Assert.AreEqual(longitude, result.Longitude);
+        Assert.IsFalse(coordinate.IsDefault());
+        Assert.AreEqual(latitude, coordinate.Latitude);
+        Assert.AreEqual(longitude, coordinate.Longitude);
     }
 
     /// <summary>
@@ -119,11 +119,8 @@ public class CoordinateTest {
         Coordinate @this = new(latitude, longitude);
         Coordinate other = new(latitude, longitude);
 
-        // Act
-        bool result = @this.Equals(other);
-
-        // Assert
-        Assert.IsTrue(result);
+        // Act & Assert
+        Assert.IsTrue(@this.Equals(other));
     }
 
     /// <summary>
@@ -138,11 +135,8 @@ public class CoordinateTest {
         Coordinate @this = new(latitude, longitude);
         Coordinate other = new(0, 0);
 
-        // Act
-        bool result = @this.Equals(other);
-
-        // Assert
-        Assert.IsFalse(result);
+        // Act & Assert
+        Assert.IsFalse(@this.Equals(other));
     }
 
     /// <summary>
@@ -151,8 +145,8 @@ public class CoordinateTest {
     [TestMethod]
     public void Constructor_Latitude_OutOfRange_Throws() {
         // Arrange & Act
-        void OverMaxLatitude() => new Coordinate(91, 0);
-        void UnderMinLatitude() => new Coordinate(-91, 0);
+        static void OverMaxLatitude() => new Coordinate(91, 0);
+        static void UnderMinLatitude() => new Coordinate(-91, 0);
 
         // Assert
         Assert.ThrowsExactly<ArgumentOutOfRangeException>(UnderMinLatitude);
@@ -165,9 +159,8 @@ public class CoordinateTest {
     [TestMethod]
     public void Constructor_Longitude_OutOfRange_Throws() {
         // Arrange & Act
-        void UnderMinLongitude() => new Coordinate(0, -181);
-        void OverMaxLongitude() => new Coordinate(0, 181);
-
+        static void UnderMinLongitude() => new Coordinate(0, -181);
+        static void OverMaxLongitude() => new Coordinate(0, 181);
 
         // Assert
         Assert.ThrowsExactly<ArgumentOutOfRangeException>(UnderMinLongitude);
@@ -181,19 +174,19 @@ public class CoordinateTest {
     public void Constructor_Boundary_Values_Ok() {
         // Arrange
         const int MinLatitude = -90;
-        const int MaxLatitude = 90;
         const int MinLongitude = -180;
+        const int MaxLatitude = 90;
         const int MaxLongitude = 180;
 
         // Act
-        var coordinate1 = new Coordinate(MaxLatitude, MaxLongitude);
-        var coordinate2 = new Coordinate(MinLatitude, MinLongitude);
+        Coordinate min = new(MinLatitude, MinLongitude);
+        Coordinate max = new(MaxLatitude, MaxLongitude);
 
         // Assert
-        Assert.AreEqual(MaxLatitude, coordinate1.Latitude);
-        Assert.AreEqual(MaxLongitude, coordinate1.Longitude);
-        Assert.AreEqual(MinLatitude, coordinate2.Latitude);
-        Assert.AreEqual(-MaxLongitude, coordinate2.Longitude);
+        Assert.AreEqual(MinLatitude, min.Latitude);
+        Assert.AreEqual(-MaxLongitude, min.Longitude);
+        Assert.AreEqual(MaxLatitude, max.Latitude);
+        Assert.AreEqual(MaxLongitude, max.Longitude);
     }
 
     /// <summary>
@@ -202,7 +195,7 @@ public class CoordinateTest {
     [TestMethod]
     public void Equals_Object_True_And_False() {
         // Arrange
-        var coordinate = new Coordinate(10, 20);
+        Coordinate coordinate = new(10, 20);
         object equalCoordinate = new Coordinate(10, 20);
         object notEqualCoordinate = new Coordinate(0, 0);
         object notCoordinate = "not a coordinate";
@@ -220,9 +213,12 @@ public class CoordinateTest {
     /// </summary>
     [TestMethod]
     public void GetHashCode_Equal_For_Equal_Coordinates() {
-        var coordinate1 = new Coordinate(10, 20);
-        var coordinate2 = new Coordinate(10, 20);
-        Assert.AreEqual(coordinate1.GetHashCode(), coordinate2.GetHashCode());
+        // Arrange
+        Coordinate first = new(10, 20);
+        Coordinate second = new(10, 20);
+
+        // Act & Assert
+        Assert.AreEqual(first.GetHashCode(), second.GetHashCode());
     }
 
     /// <summary>
@@ -230,9 +226,12 @@ public class CoordinateTest {
     /// </summary>
     [TestMethod]
     public void ToString_Format_Ok() {
-        var c = new Coordinate(12.34, 56.78);
-        Assert.Contains("Latitude: 12.34", c.ToString());
-        Assert.Contains("Longitude: 56.78", c.ToString());
+        /// Arrange
+        var coordinate = new Coordinate(12.34, 56.78);
+
+        // Act & Assert
+        Assert.Contains("Latitude: 12.34", coordinate.ToString());
+        Assert.Contains("Longitude: 56.78", coordinate.ToString());
     }
 
     /// <summary>
@@ -240,10 +239,12 @@ public class CoordinateTest {
     /// </summary>
     [TestMethod]
     public void Equality_Operators_Ok() {
-        var coordinate = new Coordinate(10, 20);
-        var equalCoordinate = new Coordinate(10, 20);
-        var notEqualCoordinate = new Coordinate(0, 0);
+        // Arrange
+        Coordinate coordinate = new(10, 20);
+        Coordinate equalCoordinate = new(10, 20);
+        Coordinate notEqualCoordinate = new(0, 0);
 
+        // Act & Assert
         Assert.IsTrue(coordinate == equalCoordinate);
         Assert.IsFalse(coordinate != equalCoordinate);
         Assert.IsTrue(coordinate != notEqualCoordinate);
