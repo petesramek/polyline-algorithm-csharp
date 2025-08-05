@@ -19,7 +19,7 @@ public sealed class PolylineDecoder : AbstractPolylineDecoder<Polyline, Coordina
         : base(options) { }
 
     /// <inheritdoc />
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    
     protected override Coordinate CreateCoordinate(double latitude, double longitude) {
         return new(latitude, longitude);
     }

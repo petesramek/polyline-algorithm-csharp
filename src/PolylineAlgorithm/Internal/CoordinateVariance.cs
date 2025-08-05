@@ -41,7 +41,7 @@ internal struct CoordinateVariance {
     /// </summary>
     /// <param name="latitude">The next latitude value.</param>
     /// <param name="longitude">The next longitude value.</param>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    
     public void Next(int latitude, int longitude) {
         Latitude = Variance(_current.Latitude, latitude);
         Longitude = Variance(_current.Longitude, longitude);
@@ -58,7 +58,7 @@ internal struct CoordinateVariance {
     /// <param name="initial">The previous coordinate value.</param>
     /// <param name="next">The next coordinate value.</param>
     /// <returns>The computed variance between <paramref name="initial"/> and <paramref name="next"/>.</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    
     private static int Variance(int initial, int next) => (initial, next) switch {
         (0, 0) => 0,
         (0, _) => next,

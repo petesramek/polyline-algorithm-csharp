@@ -19,19 +19,19 @@ public sealed class PolylineEncoder : AbstractPolylineEncoder<Coordinate, Polyli
         : base(options) { }
 
     /// <inheritdoc />
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    
     protected override double GetLatitude(Coordinate coordinate) {
         return coordinate.Latitude;
     }
 
     /// <inheritdoc />
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    
     protected override double GetLongitude(Coordinate coordinate) {
         return coordinate.Longitude;
     }
 
     /// <inheritdoc />
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    
     protected override Polyline CreatePolyline(ReadOnlyMemory<char> polyline) {
         return Polyline.FromMemory(polyline);
     }
