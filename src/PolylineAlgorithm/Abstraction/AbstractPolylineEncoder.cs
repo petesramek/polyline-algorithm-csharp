@@ -84,7 +84,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
         int position = 0;
         int consumed = 0;
-        int length = GetBufferLength(count);
+        int length = GetMaxBufferLength(count);
 
         Span<char> buffer = stackalloc char[length];
 
