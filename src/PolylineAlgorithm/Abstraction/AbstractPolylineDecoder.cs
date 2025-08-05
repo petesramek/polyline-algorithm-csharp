@@ -135,7 +135,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     /// <returns>
     /// A <see cref="ReadOnlyMemory{T}"/> representing the encoded polyline data.
     /// </returns>
-    protected abstract ReadOnlyMemory<char> GetReadOnlyMemory([NotNull]TPolyline polyline);
+    protected abstract ReadOnlyMemory<char> GetReadOnlyMemory(TPolyline polyline);
 
     /// <summary>
     /// Creates a coordinate instance from the given latitude and longitude values.
