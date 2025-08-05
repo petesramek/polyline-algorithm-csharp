@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 internal static partial class LogInfoExtensions {
     private const LogLevel LOG_LEVEL = LogLevel.Information;
-    private const int EVENT_ID_BASE = (int)LOG_LEVEL * LoggingDefaults.LogLevelMultiplier;
+    private const int EVENT_ID_BASE = (int)LOG_LEVEL * Defaults.Logging.LogLevelMultiplier;
 
     [LoggerMessage(EVENT_ID_BASE + 1, LOG_LEVEL, "Operation {operationName} has started.")]
     internal static partial void LogOperationStartedInfo(this ILogger logger, string operationName);

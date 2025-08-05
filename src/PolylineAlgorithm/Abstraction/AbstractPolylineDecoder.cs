@@ -71,11 +71,11 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
         logger.
             LogOperationStartedInfo(nameof(Decode));
 
-        ValidatePolyline(polyline, logger);
+        ValidateNullPolyline(polyline, logger);
 
         ReadOnlyMemory<char> sequence = GetReadOnlyMemory(polyline);
 
-        ValidateSequence(logger, sequence);
+        ValidateEmptySequence(logger, sequence);
 
         int position = 0;
         int latitude = 0;
@@ -105,7 +105,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
         logger
             .LogOperationFinishedInfo(nameof(Decode));
 
-        static void ValidateSequence(ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> logger, ReadOnlyMemory<char> sequence) {
+        static void ValidateEmptySequence(ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> logger, ReadOnlyMemory<char> sequence) {
             if (sequence.Length < Defaults.Polyline.Block.Length.Min) {
                 logger
                     .LogPolylineCannotBeShorterThanWarning(nameof(sequence), sequence.Length, Defaults.Polyline.Block.Length.Min);
@@ -116,7 +116,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
             }
         }
 
-        static void ValidatePolyline(TPolyline polyline, ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> logger) {
+        static void ValidateNullPolyline(TPolyline polyline, ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> logger) {
             if (polyline is null) {
                 logger
                     .LogNullArgumentWarning(nameof(polyline));
@@ -135,7 +135,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     /// <returns>
     /// A <see cref="ReadOnlyMemory{T}"/> representing the encoded polyline data.
     /// </returns>
-    protected abstract ReadOnlyMemory<char> GetReadOnlyMemory(TPolyline polyline);
+    protected abstract ReadOnlyMemory<char> GetReadOnlyMemory([NotNull]TPolyline polyline);
 
     /// <summary>
     /// Creates a coordinate instance from the given latitude and longitude values.

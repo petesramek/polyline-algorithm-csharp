@@ -7,7 +7,6 @@ namespace PolylineAlgorithm.Internal;
 
 using System;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 /// <summary>
@@ -23,7 +22,7 @@ internal struct CoordinateVariance {
     /// Initializes a new instance of the <see cref="CoordinateVariance"/> struct with the default latitude and longitude deltas.
     /// </summary>
     public CoordinateVariance() {
-        _current = (0, 0);
+        _current =(default, default);
     }
 
     /// <summary>
@@ -37,16 +36,17 @@ internal struct CoordinateVariance {
     public int Longitude { get; private set; }
 
     /// <summary>
-    /// Updates the variance values based on the next latitude and longitude, and sets the current coordinate.
+    /// Updates the variance values based on the next latitude and longitude, and sets the current coordinate as next variance baseline.
     /// </summary>
     /// <param name="latitude">The next latitude value.</param>
     /// <param name="longitude">The next longitude value.</param>
-    
+
     public void Next(int latitude, int longitude) {
         Latitude = Variance(_current.Latitude, latitude);
         Longitude = Variance(_current.Longitude, longitude);
 
-        _current = (latitude, longitude);
+        _current.Latitude = latitude;
+        _current.Longitude = longitude;
     }
 
     /// <summary>
@@ -58,7 +58,7 @@ internal struct CoordinateVariance {
     /// <param name="initial">The previous coordinate value.</param>
     /// <param name="next">The next coordinate value.</param>
     /// <returns>The computed variance between <paramref name="initial"/> and <paramref name="next"/>.</returns>
-    
+
     private static int Variance(int initial, int next) => (initial, next) switch {
         (0, 0) => 0,
         (0, _) => next,

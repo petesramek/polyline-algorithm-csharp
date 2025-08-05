@@ -115,6 +115,15 @@ namespace PolylineAlgorithm.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Encoded values couldn&apos;t be written to the buffer. Please, report a bug on GitHub with reproducible sample. Thank you, Pete..
+        /// </summary>
+        internal static string CouldNotWriteEncodedValueToTheBuffer {
+            get {
+                return ResourceManager.GetString("CouldNotWriteEncodedValueToTheBuffer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Destination array length must be greater than the polyline length..
         /// </summary>
         internal static string DestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthMessage {

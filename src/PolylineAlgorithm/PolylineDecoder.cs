@@ -6,7 +6,6 @@
 namespace PolylineAlgorithm;
 
 using PolylineAlgorithm.Abstraction;
-using System.Runtime.CompilerServices;
 
 /// <inheritdoc cref="AbstractPolylineDecoder{TPolyline, TCoordinate}" />
 public sealed class PolylineDecoder : AbstractPolylineDecoder<Polyline, Coordinate> {

@@ -7,7 +7,6 @@ namespace PolylineAlgorithm;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Properties;
 using System;
-using System.Runtime.CompilerServices;
 
 /// <summary>
 /// Provides methods for encoding and decoding polyline data, as well as utilities for normalizing and de-normalizing
@@ -37,7 +36,7 @@ public static class PolylineEncoding {
     /// <see langword="true"/> if a value was successfully read and the end of the buffer was not reached; otherwise, <see
     /// langword="false"/>.
     /// </returns>
-    
+
     public static bool TryReadValue(ref int variance, ref ReadOnlyMemory<char> buffer, ref int position) {
         // Validate that the position is within the bounds of the buffer.
         if (position == buffer.Length) {
@@ -88,7 +87,7 @@ public static class PolylineEncoding {
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown when <paramref name="value"/> is outside the valid range for the specified <paramref name="type"/>.
     /// </exception>
-    
+
     public static double Denormalize(int value, CoordinateValueType type) {
         // Validate that the type is not None, as it does not represent a valid coordinate value type.
         if (type == CoordinateValueType.None) {
@@ -130,7 +129,7 @@ public static class PolylineEncoding {
     /// <returns>
     /// <see langword="true"/> if the value was successfully written to the buffer; otherwise, <see langword="false"/>.
     /// </returns>
-    
+
     public static bool TryWriteValue(int variance, ref Span<char> buffer, ref int position) {
         // Validate that the position and required space for write is within the bounds of the buffer.
         if (buffer.Length < position + GetCharCount(variance)) {
@@ -177,7 +176,7 @@ public static class PolylineEncoding {
     /// Thrown when <paramref name="value"/> is not a finite number or is outside the valid range for the specified
     /// <paramref name="type"/>.
     /// </exception>
-    
+
     public static int Normalize(double value, CoordinateValueType type) {
         // Validate that the type is not None, as it does not represent a valid coordinate value type.
         if (type == CoordinateValueType.None) {
@@ -219,7 +218,7 @@ public static class PolylineEncoding {
     /// The number of characters required to represent the <paramref name="variance"/> value,  based on its magnitude.
     /// Returns a value between 1 and 6 inclusive.
     /// </returns>
-    
+
     public static int GetCharCount(int variance) => variance switch {
         // DO NOT CHANGE THE ORDER. We are skipping inside exclusive ranges as those are covered by previous statements.
         >= -16 and <= +15 => 1,

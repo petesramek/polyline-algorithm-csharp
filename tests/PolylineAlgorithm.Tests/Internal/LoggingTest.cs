@@ -8,7 +8,6 @@ namespace PolylineAlgorithm.Tests.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Testing;
 using PolylineAlgorithm.Internal.Logging;
-using PolylineAlgorithm.Tests;
 using PolylineAlgorithm.Tests.Fakes;
 
 [TestClass]

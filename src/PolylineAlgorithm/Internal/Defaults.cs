@@ -14,6 +14,15 @@ using System.Diagnostics.CodeAnalysis;
 [ExcludeFromCodeCoverage]
 internal static class Defaults {
     /// <summary>
+    /// Contains default values and constants specific to the polyline encoding logging.
+    /// </summary>
+    internal static class Logging {
+        /// <summary>
+        /// Log level multiplier used to distinguish event identification for each log level
+        /// </summary>
+        internal const int LogLevelMultiplier = 100;
+    }
+    /// <summary>
     /// Contains default values and constants specific to the polyline encoding algorithm.
     /// </summary>
     internal static class Algorithm {

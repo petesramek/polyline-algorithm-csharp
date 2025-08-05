@@ -14,7 +14,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 /// <summary>
 /// Provides functionality to encode a collection of geographic coordinates into an encoded polyline string.
@@ -108,7 +107,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
                 logger
                     .LogOperationFailedInfo(nameof(Encode));
 
-                throw new InvalidOperationException();
+                throw new InvalidOperationException(ExceptionMessageResource.CouldNotWriteEncodedValueToTheBuffer);
             }
 
             consumed++;
@@ -196,7 +195,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// <returns>
     /// An instance of <typeparamref name="TPolyline"/> representing the encoded polyline.
     /// </returns>
-    
+
     protected abstract TPolyline CreatePolyline(ReadOnlyMemory<char> polyline);
 
     /// <summary>
@@ -206,7 +205,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// <returns>
     /// The longitude value as a <see cref="double"/>.
     /// </returns>
-    
+
     protected abstract double GetLongitude(TCoordinate current);
 
     /// <summary>
@@ -216,7 +215,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// <returns>
     /// The latitude value as a <see cref="double"/>.
     /// </returns>
-    
+
     protected abstract double GetLatitude(TCoordinate current);
 }
 
