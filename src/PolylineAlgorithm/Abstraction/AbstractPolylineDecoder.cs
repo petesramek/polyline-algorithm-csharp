@@ -105,6 +105,16 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
         logger
             .LogOperationFinishedInfo(nameof(Decode));
 
+
+        static void ValidateNullPolyline(TPolyline polyline, ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> logger) {
+            if (polyline is null) {
+                logger
+                    .LogNullArgumentWarning(nameof(polyline));
+
+                throw new ArgumentNullException(nameof(polyline));
+            }
+        }
+
         static void ValidateEmptySequence(ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> logger, ReadOnlyMemory<char> sequence) {
             if (sequence.Length < Defaults.Polyline.Block.Length.Min) {
                 logger
@@ -113,15 +123,6 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
                     LogOperationFailedInfo(nameof(Decode));
 
                 throw new ArgumentException(string.Format(ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage, sequence.Length), nameof(polyline));
-            }
-        }
-
-        static void ValidateNullPolyline(TPolyline polyline, ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> logger) {
-            if (polyline is null) {
-                logger
-                    .LogNullArgumentWarning(nameof(polyline));
-
-                throw new ArgumentNullException(nameof(polyline));
             }
         }
     }
