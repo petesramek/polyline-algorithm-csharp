@@ -1,0 +1,58 @@
+{
+  "$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json",
+  "build": {
+    "xref": [
+      "https://learn.microsoft.com/en-us/dotnet/.xrefmap.json"
+    ],
+    "content": [
+      {
+        "files": [
+          "index.md",
+          "toc.yml",
+          "guide/*.{md,yml}"
+        ],
+        "exclude": [
+          "_docs/**"
+        ]
+      },
+      {
+        "dest": "",
+        "files": [ "*.yml" ],
+        "group": "v1.0",
+        "src": "v1.0",
+        "rootTocPath": "~/toc.html"
+      },
+      {
+        "dest": "",
+        "files": [ "*.yml" ],
+        "group": "v1.1",
+        "src": "v1.1",
+        "rootTocPath": "~/toc.html"
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "media/**"
+        ]
+      }
+    ],
+    "groups": {
+      "v1.0": { "dest": "v1.0" },
+      "v1.1": { "dest": "v1.1" }
+    },
+    "output": "_docs",
+    "template": [
+      "default",
+      "modern",
+      "templates/polyline"
+    ],
+    "maxParallelism": 1,
+    "globalMetadata": {
+      "_appName": "PolylineAlgorithm for .NET",
+      "_appTitle": "PolylineAlgorithm for .NET",
+      "_enableSearch": true,
+      "pdf": false
+    }
+  }
+}

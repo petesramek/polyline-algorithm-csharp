@@ -1,0 +1,10 @@
+### YamlMime:TableOfContent
+- name: Guide
+  href: guide/
+- name: Reference
+  dropdown: true
+  items:
+  - name: v1.0
+    href: v1.0/PolylineAlgorithm.html
+  - name: v1.1
+    href: v1.1/PolylineAlgorithm.html
