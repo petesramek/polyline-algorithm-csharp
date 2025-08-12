@@ -65,14 +65,14 @@ jobs:
           fetch-depth: 0
 
       - name: 'Setup GitVersion ${{ env.git-version }}'
-        uses: gittools/actions/gitversion/setup@v4.0.1
+        uses: gittools/actions/gitversion/setup@v4.1.0
         with:
           versionSpec: ${{ inputs.gitversion-version }}
           preferLatestVersion: true
 
       - name: 'Determine version'
         id: gitversion
-        uses: gittools/actions/gitversion/execute@v4.0.1
+        uses: gittools/actions/gitversion/execute@v4.1.0
         with:
           configFilePath: ${{ inputs.config-file-path }}
           
