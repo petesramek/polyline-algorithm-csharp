@@ -220,7 +220,7 @@ jobs:
       - name: 'Push documentation to ${{ github.head_ref || github.ref }} branch'
         uses: ./.github/actions/push-changes
         with:
-          working-directory: './api-reference/${{ env.friendly-version }}/'
+          working-directory: './api-reference/'
           target-branch: ${{ github.head_ref || github.ref }}
           commit-message: 'Update docs for version ${{ env.friendly-version }}'
       - name: 'Generate assembly metadata'
