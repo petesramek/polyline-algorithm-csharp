@@ -44,8 +44,7 @@
     "output": "_docs",
     "template": [
       "default",
-      "modern",
-      "templates/polyline"
+      "modern"
     ],
     "maxParallelism": 1,
     "globalMetadata": {
