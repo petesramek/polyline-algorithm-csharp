@@ -1,0 +1,929 @@
+### YamlMime:ManagedReference
+items:
+- uid: PolylineAlgorithm.Coordinate
+  commentId: T:PolylineAlgorithm.Coordinate
+  id: Coordinate
+  parent: PolylineAlgorithm
+  children:
+  - PolylineAlgorithm.Coordinate.#ctor
+  - PolylineAlgorithm.Coordinate.#ctor(System.Double,System.Double)
+  - PolylineAlgorithm.Coordinate.Equals(PolylineAlgorithm.Coordinate)
+  - PolylineAlgorithm.Coordinate.Equals(System.Object)
+  - PolylineAlgorithm.Coordinate.GetHashCode
+  - PolylineAlgorithm.Coordinate.IsDefault
+  - PolylineAlgorithm.Coordinate.Latitude
+  - PolylineAlgorithm.Coordinate.Longitude
+  - PolylineAlgorithm.Coordinate.ToString
+  - PolylineAlgorithm.Coordinate.op_Equality(PolylineAlgorithm.Coordinate,PolylineAlgorithm.Coordinate)
+  - PolylineAlgorithm.Coordinate.op_Inequality(PolylineAlgorithm.Coordinate,PolylineAlgorithm.Coordinate)
+  langs:
+  - csharp
+  - vb
+  name: Coordinate
+  nameWithType: Coordinate
+  fullName: PolylineAlgorithm.Coordinate
+  type: Struct
+  source:
+    remote:
+      path: src/PolylineAlgorithm/Coordinate.cs
+      branch: develop/1.0
+      repo: https://github.com/sramekpete/polyline-algorithm-csharp
+    id: Coordinate
+    path: ../src/PolylineAlgorithm/Coordinate.cs
+    startLine: 21
+  assemblies:
+  - PolylineAlgorithm
+  namespace: PolylineAlgorithm
+  summary: Represents a geographic coordinate as a pair of latitude and longitude values.
+  remarks: >-
+    This struct is designed to be immutable and lightweight, providing a simple way to represent
+
+    geographic coordinates in degrees. It includes validation for latitude and longitude ranges
+
+    and provides methods for equality comparison and string representation.
+  example: []
+  syntax:
+    content: 'public readonly struct Coordinate : IEquatable<Coordinate>'
+    content.vb: Public Structure Coordinate Implements IEquatable(Of Coordinate)
+  implements:
+  - System.IEquatable{PolylineAlgorithm.Coordinate}
+  inheritedMembers:
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: PolylineAlgorithm.Coordinate.#ctor
+  commentId: M:PolylineAlgorithm.Coordinate.#ctor
+  id: '#ctor'
+  parent: PolylineAlgorithm.Coordinate
+  langs:
+  - csharp
+  - vb
+  name: Coordinate()
+  nameWithType: Coordinate.Coordinate()
+  fullName: PolylineAlgorithm.Coordinate.Coordinate()
+  type: Constructor
+  source:
+    remote:
+      path: src/PolylineAlgorithm/Coordinate.cs
+      branch: develop/1.0
+      repo: https://github.com/sramekpete/polyline-algorithm-csharp
+    id: .ctor
+    path: ../src/PolylineAlgorithm/Coordinate.cs
+    startLine: 27
+  assemblies:
+  - PolylineAlgorithm
+  namespace: PolylineAlgorithm
+  summary: Initializes a new instance of the <xref href="PolylineAlgorithm.Coordinate" data-throw-if-not-resolved="false"></xref> struct with default values (0) for <xref href="PolylineAlgorithm.Coordinate.Latitude" data-throw-if-not-resolved="false"></xref> and <xref href="PolylineAlgorithm.Coordinate.Longitude" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public Coordinate()
+    content.vb: Public Sub New()
+  overload: PolylineAlgorithm.Coordinate.#ctor*
+  nameWithType.vb: Coordinate.New()
+  fullName.vb: PolylineAlgorithm.Coordinate.New()
+  name.vb: New()
+- uid: PolylineAlgorithm.Coordinate.#ctor(System.Double,System.Double)
+  commentId: M:PolylineAlgorithm.Coordinate.#ctor(System.Double,System.Double)
+  id: '#ctor(System.Double,System.Double)'
+  parent: PolylineAlgorithm.Coordinate
+  langs:
+  - csharp
+  - vb
+  name: Coordinate(double, double)
+  nameWithType: Coordinate.Coordinate(double, double)
+  fullName: PolylineAlgorithm.Coordinate.Coordinate(double, double)
+  type: Constructor
+  source:
+    remote:
+      path: src/PolylineAlgorithm/Coordinate.cs
+      branch: develop/1.0
+      repo: https://github.com/sramekpete/polyline-algorithm-csharp
+    id: .ctor
+    path: ../src/PolylineAlgorithm/Coordinate.cs
+    startLine: 45
+  assemblies:
+  - PolylineAlgorithm
+  namespace: PolylineAlgorithm
+  summary: Initializes a new instance of the <xref href="PolylineAlgorithm.Coordinate" data-throw-if-not-resolved="false"></xref> struct with the specified latitude and longitude values.
+  example: []
+  syntax:
+    content: public Coordinate(double latitude, double longitude)
+    parameters:
+    - id: latitude
+      type: System.Double
+      description: The latitude component of the coordinate, in degrees. Must be between -90 and 90.
+    - id: longitude
+      type: System.Double
+      description: The longitude component of the coordinate, in degrees. Must be between -180 and 180.
+    content.vb: Public Sub New(latitude As Double, longitude As Double)
+  overload: PolylineAlgorithm.Coordinate.#ctor*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: >-
+      Thrown when <code class="paramref">latitude</code> is less than -90 or greater than 90,
+
+      or when <code class="paramref">longitude</code> is less than -180 or greater than 180.
+  nameWithType.vb: Coordinate.New(Double, Double)
+  fullName.vb: PolylineAlgorithm.Coordinate.New(Double, Double)
+  name.vb: New(Double, Double)
+- uid: PolylineAlgorithm.Coordinate.Latitude
+  commentId: P:PolylineAlgorithm.Coordinate.Latitude
+  id: Latitude
+  parent: PolylineAlgorithm.Coordinate
+  langs:
+  - csharp
+  - vb
+  name: Latitude
+  nameWithType: Coordinate.Latitude
+  fullName: PolylineAlgorithm.Coordinate.Latitude
+  type: Property
+  source:
+    remote:
+      path: src/PolylineAlgorithm/Coordinate.cs
+      branch: develop/1.0
+      repo: https://github.com/sramekpete/polyline-algorithm-csharp
+    id: Latitude
+    path: ../src/PolylineAlgorithm/Coordinate.cs
+    startLine: 61
+  assemblies:
+  - PolylineAlgorithm
+  namespace: PolylineAlgorithm
+  summary: Gets the latitude component of the coordinate, in degrees.
+  example: []
+  syntax:
+    content: public double Latitude { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public ReadOnly Property Latitude As Double
+  overload: PolylineAlgorithm.Coordinate.Latitude*
+- uid: PolylineAlgorithm.Coordinate.Longitude
+  commentId: P:PolylineAlgorithm.Coordinate.Longitude
+  id: Longitude
+  parent: PolylineAlgorithm.Coordinate
+  langs:
+  - csharp
+  - vb
+  name: Longitude
+  nameWithType: Coordinate.Longitude
+  fullName: PolylineAlgorithm.Coordinate.Longitude
+  type: Property
+  source:
+    remote:
+      path: src/PolylineAlgorithm/Coordinate.cs
+      branch: develop/1.0
+      repo: https://github.com/sramekpete/polyline-algorithm-csharp
+    id: Longitude
+    path: ../src/PolylineAlgorithm/Coordinate.cs
+    startLine: 66
+  assemblies:
+  - PolylineAlgorithm
+  namespace: PolylineAlgorithm
+  summary: Gets the longitude component of the coordinate, in degrees.
+  example: []
+  syntax:
+    content: public double Longitude { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public ReadOnly Property Longitude As Double
+  overload: PolylineAlgorithm.Coordinate.Longitude*
+- uid: PolylineAlgorithm.Coordinate.IsDefault
+  commentId: M:PolylineAlgorithm.Coordinate.IsDefault
+  id: IsDefault
+  parent: PolylineAlgorithm.Coordinate
+  langs:
+  - csharp
+  - vb
+  name: IsDefault()
+  nameWithType: Coordinate.IsDefault()
+  fullName: PolylineAlgorithm.Coordinate.IsDefault()
+  type: Method
+  source:
+    remote:
+      path: src/PolylineAlgorithm/Coordinate.cs
+      branch: develop/1.0
+      repo: https://github.com/sramekpete/polyline-algorithm-csharp
+    id: IsDefault
+    path: ../src/PolylineAlgorithm/Coordinate.cs
+    startLine: 74
+  assemblies:
+  - PolylineAlgorithm
+  namespace: PolylineAlgorithm
+  summary: Determines whether this coordinate is the default value (both <xref href="PolylineAlgorithm.Coordinate.Latitude" data-throw-if-not-resolved="false"></xref> and <xref href="PolylineAlgorithm.Coordinate.Longitude" data-throw-if-not-resolved="false"></xref> are 0).
+  example: []
+  syntax:
+    content: public bool IsDefault()
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if both latitude and longitude are 0; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Function IsDefault() As Boolean
+  overload: PolylineAlgorithm.Coordinate.IsDefault*
+- uid: PolylineAlgorithm.Coordinate.Equals(System.Object)
+  commentId: M:PolylineAlgorithm.Coordinate.Equals(System.Object)
+  id: Equals(System.Object)
+  parent: PolylineAlgorithm.Coordinate
+  langs:
+  - csharp
+  - vb
+  name: Equals(object?)
+  nameWithType: Coordinate.Equals(object?)
+  fullName: PolylineAlgorithm.Coordinate.Equals(object?)
+  type: Method
+  source:
+    remote:
+      path: src/PolylineAlgorithm/Coordinate.cs
+      branch: develop/1.0
+      repo: https://github.com/sramekpete/polyline-algorithm-csharp
+    id: Equals
+    path: ../src/PolylineAlgorithm/Coordinate.cs
+    startLine: 81
+  assemblies:
+  - PolylineAlgorithm
+  namespace: PolylineAlgorithm
+  summary: Indicates whether this instance and a specified object are equal.
+  example: []
+  syntax:
+    content: public override bool Equals(object? obj)
+    parameters:
+    - id: obj
+      type: System.Object
+      description: The object to compare with the current instance.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if <code class="paramref">obj</code> and this instance are the same type and represent the same value; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Overrides Function Equals(obj As Object) As Boolean
+  overridden: System.ValueType.Equals(System.Object)
+  overload: PolylineAlgorithm.Coordinate.Equals*
+  nameWithType.vb: Coordinate.Equals(Object)
+  fullName.vb: PolylineAlgorithm.Coordinate.Equals(Object)
+  name.vb: Equals(Object)
+- uid: PolylineAlgorithm.Coordinate.GetHashCode
+  commentId: M:PolylineAlgorithm.Coordinate.GetHashCode
+  id: GetHashCode
+  parent: PolylineAlgorithm.Coordinate
+  langs:
+  - csharp
+  - vb
+  name: GetHashCode()
+  nameWithType: Coordinate.GetHashCode()
+  fullName: PolylineAlgorithm.Coordinate.GetHashCode()
+  type: Method
+  source:
+    remote:
+      path: src/PolylineAlgorithm/Coordinate.cs
+      branch: develop/1.0
+      repo: https://github.com/sramekpete/polyline-algorithm-csharp
+    id: GetHashCode
+    path: ../src/PolylineAlgorithm/Coordinate.cs
+    startLine: 84
+  assemblies:
+  - PolylineAlgorithm
+  namespace: PolylineAlgorithm
+  summary: Returns the hash code for this instance.
+  example: []
+  syntax:
+    content: public override int GetHashCode()
+    return:
+      type: System.Int32
+      description: A 32-bit signed integer that is the hash code for this instance.
+    content.vb: Public Overrides Function GetHashCode() As Integer
+  overridden: System.ValueType.GetHashCode
+  overload: PolylineAlgorithm.Coordinate.GetHashCode*
+- uid: PolylineAlgorithm.Coordinate.ToString
+  commentId: M:PolylineAlgorithm.Coordinate.ToString
+  id: ToString
+  parent: PolylineAlgorithm.Coordinate
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: Coordinate.ToString()
+  fullName: PolylineAlgorithm.Coordinate.ToString()
+  type: Method
+  source:
+    remote:
+      path: src/PolylineAlgorithm/Coordinate.cs
+      branch: develop/1.0
+      repo: https://github.com/sramekpete/polyline-algorithm-csharp
+    id: ToString
+    path: ../src/PolylineAlgorithm/Coordinate.cs
+    startLine: 92
+  assemblies:
+  - PolylineAlgorithm
+  namespace: PolylineAlgorithm
+  summary: 'Returns a string representation of this coordinate in the format: <code>{ Latitude: [double], Longitude: [double] }</code>.'
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: A string representation of the coordinate.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.ValueType.ToString
+  overload: PolylineAlgorithm.Coordinate.ToString*
+- uid: PolylineAlgorithm.Coordinate.Equals(PolylineAlgorithm.Coordinate)
+  commentId: M:PolylineAlgorithm.Coordinate.Equals(PolylineAlgorithm.Coordinate)
+  id: Equals(PolylineAlgorithm.Coordinate)
+  parent: PolylineAlgorithm.Coordinate
+  langs:
+  - csharp
+  - vb
+  name: Equals(Coordinate)
+  nameWithType: Coordinate.Equals(Coordinate)
+  fullName: PolylineAlgorithm.Coordinate.Equals(PolylineAlgorithm.Coordinate)
+  type: Method
+  source:
+    remote:
+      path: src/PolylineAlgorithm/Coordinate.cs
+      branch: develop/1.0
+      repo: https://github.com/sramekpete/polyline-algorithm-csharp
+    id: Equals
+    path: ../src/PolylineAlgorithm/Coordinate.cs
+    startLine: 101
+  assemblies:
+  - PolylineAlgorithm
+  namespace: PolylineAlgorithm
+  summary: Indicates whether the current object is equal to another object of the same type.
+  example: []
+  syntax:
+    content: public bool Equals(Coordinate other)
+    parameters:
+    - id: other
+      type: PolylineAlgorithm.Coordinate
+      description: An object to compare with this object.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the current object is equal to the <code class="paramref">other</code> parameter; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Function Equals(other As Coordinate) As Boolean
+  overload: PolylineAlgorithm.Coordinate.Equals*
+  implements:
+  - System.IEquatable{PolylineAlgorithm.Coordinate}.Equals(PolylineAlgorithm.Coordinate)
+- uid: PolylineAlgorithm.Coordinate.op_Equality(PolylineAlgorithm.Coordinate,PolylineAlgorithm.Coordinate)
+  commentId: M:PolylineAlgorithm.Coordinate.op_Equality(PolylineAlgorithm.Coordinate,PolylineAlgorithm.Coordinate)
+  id: op_Equality(PolylineAlgorithm.Coordinate,PolylineAlgorithm.Coordinate)
+  parent: PolylineAlgorithm.Coordinate
+  langs:
+  - csharp
+  - vb
+  name: operator ==(Coordinate, Coordinate)
+  nameWithType: Coordinate.operator ==(Coordinate, Coordinate)
+  fullName: PolylineAlgorithm.Coordinate.operator ==(PolylineAlgorithm.Coordinate, PolylineAlgorithm.Coordinate)
+  type: Operator
+  source:
+    remote:
+      path: src/PolylineAlgorithm/Coordinate.cs
+      branch: develop/1.0
+      repo: https://github.com/sramekpete/polyline-algorithm-csharp
+    id: op_Equality
+    path: ../src/PolylineAlgorithm/Coordinate.cs
+    startLine: 118
+  assemblies:
+  - PolylineAlgorithm
+  namespace: PolylineAlgorithm
+  summary: Determines whether two <xref href="PolylineAlgorithm.Coordinate" data-throw-if-not-resolved="false"></xref> instances are equal.
+  example: []
+  syntax:
+    content: public static bool operator ==(Coordinate left, Coordinate right)
+    parameters:
+    - id: left
+      type: PolylineAlgorithm.Coordinate
+      description: The first coordinate to compare.
+    - id: right
+      type: PolylineAlgorithm.Coordinate
+      description: The second coordinate to compare.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if both coordinates are equal; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Shared Operator =(left As Coordinate, right As Coordinate) As Boolean
+  overload: PolylineAlgorithm.Coordinate.op_Equality*
+  nameWithType.vb: Coordinate.=(Coordinate, Coordinate)
+  fullName.vb: PolylineAlgorithm.Coordinate.=(PolylineAlgorithm.Coordinate, PolylineAlgorithm.Coordinate)
+  name.vb: =(Coordinate, Coordinate)
+- uid: PolylineAlgorithm.Coordinate.op_Inequality(PolylineAlgorithm.Coordinate,PolylineAlgorithm.Coordinate)
+  commentId: M:PolylineAlgorithm.Coordinate.op_Inequality(PolylineAlgorithm.Coordinate,PolylineAlgorithm.Coordinate)
+  id: op_Inequality(PolylineAlgorithm.Coordinate,PolylineAlgorithm.Coordinate)
+  parent: PolylineAlgorithm.Coordinate
+  langs:
+  - csharp
+  - vb
+  name: operator !=(Coordinate, Coordinate)
+  nameWithType: Coordinate.operator !=(Coordinate, Coordinate)
+  fullName: PolylineAlgorithm.Coordinate.operator !=(PolylineAlgorithm.Coordinate, PolylineAlgorithm.Coordinate)
+  type: Operator
+  source:
+    remote:
+      path: src/PolylineAlgorithm/Coordinate.cs
+      branch: develop/1.0
+      repo: https://github.com/sramekpete/polyline-algorithm-csharp
+    id: op_Inequality
+    path: ../src/PolylineAlgorithm/Coordinate.cs
+    startLine: 128
+  assemblies:
+  - PolylineAlgorithm
+  namespace: PolylineAlgorithm
+  summary: Determines whether two <xref href="PolylineAlgorithm.Coordinate" data-throw-if-not-resolved="false"></xref> instances are not equal.
+  example: []
+  syntax:
+    content: public static bool operator !=(Coordinate left, Coordinate right)
+    parameters:
+    - id: left
+      type: PolylineAlgorithm.Coordinate
+      description: The first coordinate to compare.
+    - id: right
+      type: PolylineAlgorithm.Coordinate
+      description: The second coordinate to compare.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the coordinates are not equal; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Shared Operator <>(left As Coordinate, right As Coordinate) As Boolean
+  overload: PolylineAlgorithm.Coordinate.op_Inequality*
+  nameWithType.vb: Coordinate.<>(Coordinate, Coordinate)
+  fullName.vb: PolylineAlgorithm.Coordinate.<>(PolylineAlgorithm.Coordinate, PolylineAlgorithm.Coordinate)
+  name.vb: <>(Coordinate, Coordinate)
+references:
+- uid: PolylineAlgorithm
+  commentId: N:PolylineAlgorithm
+  href: PolylineAlgorithm.html
+  name: PolylineAlgorithm
+  nameWithType: PolylineAlgorithm
+  fullName: PolylineAlgorithm
+- uid: System.IEquatable{PolylineAlgorithm.Coordinate}
+  commentId: T:System.IEquatable{PolylineAlgorithm.Coordinate}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<Coordinate>
+  nameWithType: IEquatable<Coordinate>
+  fullName: System.IEquatable<PolylineAlgorithm.Coordinate>
+  nameWithType.vb: IEquatable(Of Coordinate)
+  fullName.vb: System.IEquatable(Of PolylineAlgorithm.Coordinate)
+  name.vb: IEquatable(Of Coordinate)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: PolylineAlgorithm.Coordinate
+    name: Coordinate
+    href: PolylineAlgorithm.Coordinate.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: PolylineAlgorithm.Coordinate
+    name: Coordinate
+    href: PolylineAlgorithm.Coordinate.html
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: PolylineAlgorithm.Coordinate
+  commentId: T:PolylineAlgorithm.Coordinate
+  parent: PolylineAlgorithm
+  href: PolylineAlgorithm.Coordinate.html
+  name: Coordinate
+  nameWithType: Coordinate
+  fullName: PolylineAlgorithm.Coordinate
+- uid: PolylineAlgorithm.Coordinate.Latitude
+  commentId: P:PolylineAlgorithm.Coordinate.Latitude
+  href: PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_Latitude
+  name: Latitude
+  nameWithType: Coordinate.Latitude
+  fullName: PolylineAlgorithm.Coordinate.Latitude
+- uid: PolylineAlgorithm.Coordinate.Longitude
+  commentId: P:PolylineAlgorithm.Coordinate.Longitude
+  href: PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_Longitude
+  name: Longitude
+  nameWithType: Coordinate.Longitude
+  fullName: PolylineAlgorithm.Coordinate.Longitude
+- uid: PolylineAlgorithm.Coordinate.#ctor*
+  commentId: Overload:PolylineAlgorithm.Coordinate.#ctor
+  href: PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate__ctor
+  name: Coordinate
+  nameWithType: Coordinate.Coordinate
+  fullName: PolylineAlgorithm.Coordinate.Coordinate
+  nameWithType.vb: Coordinate.New
+  fullName.vb: PolylineAlgorithm.Coordinate.New
+  name.vb: New
+- uid: System.ArgumentOutOfRangeException
+  commentId: T:System.ArgumentOutOfRangeException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception
+  name: ArgumentOutOfRangeException
+  nameWithType: ArgumentOutOfRangeException
+  fullName: System.ArgumentOutOfRangeException
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: PolylineAlgorithm.Coordinate.Latitude*
+  commentId: Overload:PolylineAlgorithm.Coordinate.Latitude
+  href: PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_Latitude
+  name: Latitude
+  nameWithType: Coordinate.Latitude
+  fullName: PolylineAlgorithm.Coordinate.Latitude
+- uid: PolylineAlgorithm.Coordinate.Longitude*
+  commentId: Overload:PolylineAlgorithm.Coordinate.Longitude
+  href: PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_Longitude
+  name: Longitude
+  nameWithType: Coordinate.Longitude
+  fullName: PolylineAlgorithm.Coordinate.Longitude
+- uid: PolylineAlgorithm.Coordinate.IsDefault*
+  commentId: Overload:PolylineAlgorithm.Coordinate.IsDefault
+  href: PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_IsDefault
+  name: IsDefault
+  nameWithType: Coordinate.IsDefault
+  fullName: PolylineAlgorithm.Coordinate.IsDefault
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: PolylineAlgorithm.Coordinate.Equals*
+  commentId: Overload:PolylineAlgorithm.Coordinate.Equals
+  href: PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_Equals_System_Object_
+  name: Equals
+  nameWithType: Coordinate.Equals
+  fullName: PolylineAlgorithm.Coordinate.Equals
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: PolylineAlgorithm.Coordinate.GetHashCode*
+  commentId: Overload:PolylineAlgorithm.Coordinate.GetHashCode
+  href: PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_GetHashCode
+  name: GetHashCode
+  nameWithType: Coordinate.GetHashCode
+  fullName: PolylineAlgorithm.Coordinate.GetHashCode
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: PolylineAlgorithm.Coordinate.ToString*
+  commentId: Overload:PolylineAlgorithm.Coordinate.ToString
+  href: PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_ToString
+  name: ToString
+  nameWithType: Coordinate.ToString
+  fullName: PolylineAlgorithm.Coordinate.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.IEquatable{PolylineAlgorithm.Coordinate}.Equals(PolylineAlgorithm.Coordinate)
+  commentId: M:System.IEquatable{PolylineAlgorithm.Coordinate}.Equals(PolylineAlgorithm.Coordinate)
+  parent: System.IEquatable{PolylineAlgorithm.Coordinate}
+  definition: System.IEquatable`1.Equals(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(Coordinate)
+  nameWithType: IEquatable<Coordinate>.Equals(Coordinate)
+  fullName: System.IEquatable<PolylineAlgorithm.Coordinate>.Equals(PolylineAlgorithm.Coordinate)
+  nameWithType.vb: IEquatable(Of Coordinate).Equals(Coordinate)
+  fullName.vb: System.IEquatable(Of PolylineAlgorithm.Coordinate).Equals(PolylineAlgorithm.Coordinate)
+  spec.csharp:
+  - uid: System.IEquatable{PolylineAlgorithm.Coordinate}.Equals(PolylineAlgorithm.Coordinate)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: PolylineAlgorithm.Coordinate
+    name: Coordinate
+    href: PolylineAlgorithm.Coordinate.html
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable{PolylineAlgorithm.Coordinate}.Equals(PolylineAlgorithm.Coordinate)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: PolylineAlgorithm.Coordinate
+    name: Coordinate
+    href: PolylineAlgorithm.Coordinate.html
+  - name: )
+- uid: System.IEquatable`1.Equals(`0)
+  commentId: M:System.IEquatable`1.Equals(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(T)
+  nameWithType: IEquatable<T>.Equals(T)
+  fullName: System.IEquatable<T>.Equals(T)
+  nameWithType.vb: IEquatable(Of T).Equals(T)
+  fullName.vb: System.IEquatable(Of T).Equals(T)
+  spec.csharp:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+- uid: PolylineAlgorithm.Coordinate.op_Equality*
+  commentId: Overload:PolylineAlgorithm.Coordinate.op_Equality
+  href: PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_op_Equality_PolylineAlgorithm_Coordinate_PolylineAlgorithm_Coordinate_
+  name: operator ==
+  nameWithType: Coordinate.operator ==
+  fullName: PolylineAlgorithm.Coordinate.operator ==
+  nameWithType.vb: Coordinate.=
+  fullName.vb: PolylineAlgorithm.Coordinate.=
+  name.vb: =
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: PolylineAlgorithm.Coordinate.op_Equality*
+    name: ==
+    href: PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_op_Equality_PolylineAlgorithm_Coordinate_PolylineAlgorithm_Coordinate_
+- uid: PolylineAlgorithm.Coordinate.op_Inequality*
+  commentId: Overload:PolylineAlgorithm.Coordinate.op_Inequality
+  href: PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_op_Inequality_PolylineAlgorithm_Coordinate_PolylineAlgorithm_Coordinate_
+  name: operator !=
+  nameWithType: Coordinate.operator !=
+  fullName: PolylineAlgorithm.Coordinate.operator !=
+  nameWithType.vb: Coordinate.<>
+  fullName.vb: PolylineAlgorithm.Coordinate.<>
+  name.vb: <>
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: PolylineAlgorithm.Coordinate.op_Inequality*
+    name: '!='
+    href: PolylineAlgorithm.Coordinate.html#PolylineAlgorithm_Coordinate_op_Inequality_PolylineAlgorithm_Coordinate_PolylineAlgorithm_Coordinate_
