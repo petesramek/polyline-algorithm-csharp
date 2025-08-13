@@ -223,6 +223,7 @@ jobs:
           working-directory: './api-reference/'
           target-branch: ${{ github.head_ref || github.ref }}
           commit-message: 'Update docs for version ${{ env.friendly-version }}'
+          force: false
       - name: 'Generate assembly metadata'
         uses: ./.github/actions/docfx-build
         with:

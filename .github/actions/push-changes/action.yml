@@ -20,6 +20,9 @@ inputs:
   artifact-name:
     description: 'Name of the artifact to download before pushing changes.'
     required: false
+  force-checkout:
+    description: 'Force checkout the target branch, discarding local changes.'
+    required: false
 
 runs:  
   using: "composite"
@@ -47,7 +50,7 @@ runs:
     - name: Check for changes in ${{ inputs.working-directory }}
       shell: bash
       run: |
-        git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }} --force
+        git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }} ${{ inputs.force-checkout && '--force' || '' }}
         git stash apply
         git diff --staged --quiet -- ${{ inputs.working-directory }}
       continue-on-error: true
