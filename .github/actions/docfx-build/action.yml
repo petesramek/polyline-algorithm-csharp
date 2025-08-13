@@ -38,8 +38,13 @@ runs:
       run: dotnet tool update -g docfx
       shell: bash
     - name: 'Generate documentation'
-      run: docfx build ${{ inputs.docfx-json-manifest }} --output ${{ inputs.output-directory }}
+      run: docfx build ${{ inputs.docfx-json-manifest }}
       shell: bash
+    - name: 'Copy to output directory'
+      shell: bash
+      run: |
+        mkdir -p "${{ inputs.output-directory }}"
+        cp -r temp/* "${{ inputs.output-directory }}"     
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
