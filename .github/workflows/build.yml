@@ -214,26 +214,29 @@ jobs:
       - name: 'Generate assembly metadata'
         uses: ./.github/actions/docfx-metadata
         with:
+          artifact-name: 'assembly-metadata'
           docfx-json-manifest: './api-reference/assembly-metadata.json'
           assembly-version: ${{ needs.versioning.outputs.friendly-version }}
           target-directory: './api-reference/${{ env.friendly-version }}/'
       - name: 'Push documentation to ${{ github.head_ref || github.ref }} branch'
         uses: ./.github/actions/push-changes
         with:
+          artifact-name: 'assembly-metadata'
           working-directory: './api-reference/'
           target-branch: ${{ github.head_ref || github.ref }}
           commit-message: 'Update docs for version ${{ env.friendly-version }}'
           force: false
-      - name: 'Generate assembly metadata'
+      - name: 'Generate documentation'
         uses: ./.github/actions/docfx-build
         with:
+          artifact-name: 'documentation'
           docfx-json-manifest: './api-reference/api-reference.json'
           assembly-version: ${{ needs.versioning.outputs.friendly-version }}
-          target-directory: './api-reference/${{ env.friendly-version }}/'
+          output-directory: './api-reference/'
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './docs'
+          path: './api-reference/_docs'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

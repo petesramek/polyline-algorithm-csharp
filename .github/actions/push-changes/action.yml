@@ -12,14 +12,14 @@ inputs:
   commit-message:
     description: 'The commit message to use when pushing changes.'
     required: true
+  artifact-name:
+    description: 'Name of the artifact to download before pushing changes.'
+    required: true
 # Optional
   dotnet_sdk_version:
     description: '.NET SDK version. Default: 9.x'
     required: false
     default: '9.x'
-  artifact-name:
-    description: 'Name of the artifact to download before pushing changes.'
-    required: false
   force-checkout:
     description: 'Force checkout the target branch, discarding local changes.'
     required: false
@@ -34,7 +34,6 @@ runs:
       with:
         dotnet-version: ${{ env.dotnet-sdk-version }}
     - name: Download a single artifact
-      if: ${{ inputs.artifact-name != '' }}
       uses: actions/download-artifact@v4
       with:
         name: ${{ inputs.artifact-name }}

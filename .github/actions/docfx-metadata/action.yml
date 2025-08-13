@@ -3,6 +3,9 @@ author: 'Pete Sramek'
 description: 'Generate metadata using docfx'
 inputs:
 # Required
+  artifact-name:
+    description: 'Name of the artifact to upload after generating documentation'
+    required: true
   docfx-json-manifest:
     description: 'Path to the docfx JSON manifest file'
     required: true
@@ -30,3 +33,8 @@ runs:
     - name: 'Generate documentation'
       run: docfx metadata ${{ inputs.docfx-json-manifest }} --output ./api-reference/${{ inputs.assembly-version }}
       shell: bash
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ inputs.output-directory }}
