@@ -197,7 +197,7 @@ jobs:
   #       working-directory: ${{ runner.temp }}/benchmarks/
 
   publish-docs:
-    if: ${{ needs.global-variables.outputs.is-release && !needs.global-variables.outputs.is-preview }}
+    #if: ${{ needs.global-variables.outputs.is-release && !needs.global-variables.outputs.is-preview }}
     name: Docs with docfx
     needs: [global-variables, versioning, build]
     env:
@@ -218,17 +218,17 @@ jobs:
           docfx-json-manifest: './docfx/api-reference.json'
           staging-directory: './docs/temp/**'
           target-directory: './docs/${{ env.friendly-version }}/'
-      - name: 'Push documentation to docs branch'
-        uses: ./.github/actions/push-changes
-        with:
-          artifact-name: 'docs'
-          working-directory: './docs/${{ env.friendly-version }}/'
-          target-branch: 'docs'
-          commit-message: 'Update docs for version ${{ env.friendly-version }}'
-      # - name: Upload artifact
-      #   uses: actions/upload-pages-artifact@v3
+      # - name: 'Push documentation to docs branch'
+      #   uses: ./.github/actions/push-changes
       #   with:
-      #     path: './docs'
-      # - name: Deploy to GitHub Pages
-      #   id: deployment
-      #   uses: actions/deploy-pages@v4
+      #     artifact-name: 'docs'
+      #     working-directory: './docs/${{ env.friendly-version }}/'
+      #     target-branch: 'docs'
+      #     commit-message: 'Update docs for version ${{ env.friendly-version }}'
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './docs'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
