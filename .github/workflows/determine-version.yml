@@ -101,4 +101,13 @@ jobs:
         name: 'Set package version'
         shell: bash
         run: echo "package-version=${{ steps.gitversion.outputs.AssemblySemVer }}.${{ inputs.run-number }}-${{ steps.gitversion.outputs.PreReleaseLabel }}-${{ steps.gitversion.outputs.CommitsSinceVersionSource }}" >> $GITHUB_ENV
+        
+      - name: 'Outputs'
+        shell: bash
+        run: |
+          echo "friendly-version=${{ env.friendly-version }}"
+          echo "assembly-version=${{ env.assembly-version }}"
+          echo "assembly-informational-version=${{ env.assembly-informational-version }}"
+          echo "file-version=${{ env.file-version }}"
+          echo "package-version=${{ env.package-version }}"
           
