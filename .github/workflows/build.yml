@@ -211,6 +211,12 @@ jobs:
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
+      - name: 'testing variables'
+        shell: bash
+        run: |
+          echo "friendly-version: ${{ env.friendly-version }}"
+          echo "is-release: ${{ env.is-release }}"
+          echo "is-preview: ${{ env.is-preview }}"
       - name: 'Generate assembly metadata'
         uses: ./.github/actions/docfx-metadata
         with:
