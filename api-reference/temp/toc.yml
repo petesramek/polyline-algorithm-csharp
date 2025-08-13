@@ -1,0 +1,60 @@
+### YamlMime:TableOfContent
+items:
+- uid: PolylineAlgorithm
+  name: PolylineAlgorithm
+  type: Namespace
+  items:
+  - uid: PolylineAlgorithm.Coordinate
+    name: Coordinate
+    type: Struct
+  - uid: PolylineAlgorithm.CoordinateValueType
+    name: CoordinateValueType
+    type: Enum
+  - uid: PolylineAlgorithm.InvalidPolylineException
+    name: InvalidPolylineException
+    type: Class
+  - uid: PolylineAlgorithm.Polyline
+    name: Polyline
+    type: Struct
+  - uid: PolylineAlgorithm.PolylineDecoder
+    name: PolylineDecoder
+    type: Class
+  - uid: PolylineAlgorithm.PolylineEncoder
+    name: PolylineEncoder
+    type: Class
+  - uid: PolylineAlgorithm.PolylineEncoding
+    name: PolylineEncoding
+    type: Class
+  - uid: PolylineAlgorithm.PolylineEncodingOptions
+    name: PolylineEncodingOptions
+    type: Class
+  - uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder
+    name: PolylineEncodingOptionsBuilder
+    type: Class
+- uid: PolylineAlgorithm.Abstraction
+  name: PolylineAlgorithm.Abstraction
+  type: Namespace
+  items:
+  - uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
+    name: AbstractPolylineDecoder<TPolyline, TCoordinate>
+    type: Class
+  - uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2
+    name: AbstractPolylineEncoder<TCoordinate, TPolyline>
+    type: Class
+  - uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2
+    name: IPolylineDecoder<TPolyline, TCoordinate>
+    type: Interface
+  - uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2
+    name: IPolylineEncoder<TCoordinate, TPolyline>
+    type: Interface
+- uid: PolylineAlgorithm.Extensions
+  name: PolylineAlgorithm.Extensions
+  type: Namespace
+  items:
+  - uid: PolylineAlgorithm.Extensions.PolylineDecoderExtensions
+    name: PolylineDecoderExtensions
+    type: Class
+  - uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions
+    name: PolylineEncoderExtensions
+    type: Class
+memberLayout: SamePage
