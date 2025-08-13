@@ -27,6 +27,13 @@ runs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.dotnet-sdk-version }}
+    - name: 'testing variables'
+      shell: bash
+      run: |
+        echo "artifact-name: ${{ inputs.artifact-name }}"
+        echo "docfx-json-manifest: ${{ inputs.docfx-json-manifest }}"
+        echo "output-directory: ${{ inputs.output-directory }}"
+        echo "dotnet-sdk-version: ${{ inputs.dotnet_sdk_version }}"
     - name: 'Update docfx tool'
       run: dotnet tool update -g docfx
       shell: bash
