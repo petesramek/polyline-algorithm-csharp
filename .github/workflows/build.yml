@@ -201,7 +201,7 @@ jobs:
     name: Docs with docfx
     needs: [global-variables, versioning, build]
     env:
-      friendly-version: ${{ needs.versioning.outputs.friendly-version }}
+      y-version: ${{ needs.versioning.outputs.friendly-version }}
       is-release: ${{ needs.global-variables.outputs.is-release }}
       is-preview: ${{ needs.global-variables.outputs.is-preview }}
     environment:
@@ -211,20 +211,24 @@ jobs:
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
-      - name: 'Generate documentation'
-        uses: ./.github/actions/generate-docs
+      - name: 'Generate assembly metadata'
+        uses: ./.github/actions/docfx-metadata
         with:
-          artifact-name: 'docs'
-          docfx-json-manifest: './docfx/api-reference.json'
-          staging-directory: './docs/temp/**'
-          target-directory: './docs/${{ env.friendly-version }}/'
-      # - name: 'Push documentation to docs branch'
-      #   uses: ./.github/actions/push-changes
-      #   with:
-      #     artifact-name: 'docs'
-      #     working-directory: './docs/${{ env.friendly-version }}/'
-      #     target-branch: 'docs'
-      #     commit-message: 'Update docs for version ${{ env.friendly-version }}'
+          docfx-json-manifest: './api-reference/version-reference.json'
+          assembly-version: ${{ needs.versioning.outputs.friendly-version }}
+          target-directory: './api-reference/${{ env.friendly-version }}/'
+      - name: 'Push documentation to ${{ github.head_ref || github.ref }} branch'
+        uses: ./.github/actions/push-changes
+        with:
+          working-directory: './api-reference/${{ env.friendly-version }}/'
+          target-branch: ${{ github.head_ref || github.ref }}
+          commit-message: 'Update docs for version ${{ env.friendly-version }}'
+      - name: 'Generate assembly metadata'
+        uses: ./.github/actions/docfx-build
+        with:
+          docfx-json-manifest: './api-reference/api-reference.json'
+          assembly-version: ${{ needs.versioning.outputs.friendly-version }}
+          target-directory: './api-reference/${{ env.friendly-version }}/'
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

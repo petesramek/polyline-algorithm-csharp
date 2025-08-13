@@ -9,10 +9,7 @@ inputs:
   docfx-json-manifest:
     description: 'Path to the docfx JSON manifest file'
     required: true
-  staging-directory:
-    description: 'Staging directory for generated documentation'
-    required: true
-  target-directory:
+  output-directory:
     description: 'Target directory for generated documentation'
     required: true
 # Optional
@@ -34,16 +31,10 @@ runs:
       run: dotnet tool update -g docfx
       shell: bash
     - name: 'Generate documentation'
-      run: docfx ${{ inputs.docfx-json-manifest }}
-      shell: bash
-    - name: 'Create target directory'
-      run: mkdir -p ${{ inputs.target-directory }}
-      shell: bash
-    - name: 'Move files from staging to target directory'
-      run: mv ${{ inputs.staging-directory }} ${{ inputs.target-directory }}
+      run: docfx build ${{ inputs.docfx-json-manifest }} --output ${{ inputs.output-directory }}
       shell: bash
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: ${{ inputs.artifact-name }}
-        path: ${{ inputs.target-directory }}
+        path: ${{ inputs.output-directory }}

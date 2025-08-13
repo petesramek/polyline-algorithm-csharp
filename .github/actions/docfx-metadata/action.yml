@@ -1,0 +1,32 @@
+name: 'Generate metadata with docfx'
+author: 'Pete Sramek'
+description: 'Generate metadata using docfx'
+inputs:
+# Required
+  docfx-json-manifest:
+    description: 'Path to the docfx JSON manifest file'
+    required: true
+  assembly-version:
+    description: 'Assembly version to use for the generated metadata'
+    required: true
+# Optional
+  dotnet_sdk_version:
+    description: '.NET SDK version. Default: 9.x'
+    required: false
+    default: '9.x'
+
+runs:
+  using: composite
+  steps:
+    - name: 'Checkout ${{ github.head_ref || github.ref }}'
+      uses: actions/checkout@v4
+    - name: Dotnet Setup
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.dotnet-sdk-version }}
+    - name: 'Update docfx tool'
+      run: dotnet tool update -g docfx
+      shell: bash
+    - name: 'Generate documentation'
+      run: docfx metadata ${{ inputs.docfx-json-manifest }} --output ./api-reference/${{ inputs.assembly-version }}
+      shell: bash
