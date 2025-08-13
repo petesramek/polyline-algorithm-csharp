@@ -214,7 +214,7 @@ jobs:
       - name: 'Generate assembly metadata'
         uses: ./.github/actions/docfx-metadata
         with:
-          docfx-json-manifest: './api-reference/version-reference.json'
+          docfx-json-manifest: './api-reference/assembly-metadata.json'
           assembly-version: ${{ needs.versioning.outputs.friendly-version }}
           target-directory: './api-reference/${{ env.friendly-version }}/'
       - name: 'Push documentation to ${{ github.head_ref || github.ref }} branch'
