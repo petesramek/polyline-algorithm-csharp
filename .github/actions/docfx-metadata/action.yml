@@ -9,8 +9,8 @@ inputs:
   docfx-json-manifest:
     description: 'Path to the docfx JSON manifest file'
     required: true
-  assembly-version:
-    description: 'Assembly version to use for the generated metadata'
+  output-directory:
+    description: 'Target directory for generated documentation'
     required: true
 # Optional
   dotnet_sdk_version:
@@ -31,7 +31,7 @@ runs:
       run: dotnet tool update -g docfx
       shell: bash
     - name: 'Generate documentation'
-      run: docfx metadata ${{ inputs.docfx-json-manifest }} --output ./api-reference/${{ inputs.assembly-version }}
+      run: docfx metadata ${{ inputs.docfx-json-manifest }} --output ${{ inputs.output-directory }}
       shell: bash
     - name: Upload artifact
       uses: actions/upload-artifact@v4

@@ -217,7 +217,7 @@ jobs:
           artifact-name: 'assembly-metadata'
           docfx-json-manifest: './api-reference/assembly-metadata.json'
           assembly-version: ${{ needs.versioning.outputs.friendly-version }}
-          target-directory: './api-reference/${{ env.friendly-version }}/'
+          output-directory: './api-reference/${{ env.friendly-version }}/'
       - name: 'Push documentation to ${{ github.head_ref || github.ref }} branch'
         uses: ./.github/actions/push-changes
         with:
