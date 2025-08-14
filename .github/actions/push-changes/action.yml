@@ -42,23 +42,23 @@ runs:
         git config --global user.name "${{ github.actor }}"
         git config --global user.email "${{ github.actor }}@users.noreply.github.com"
         git add --  ${{ inputs.working-directory }}
-        git stash push --keep-index -- ${{ inputs.working-directory }} 
     - name: Create or switch to ${{ inputs.target-branch }}
       if: ${{ inputs.target-branch != '' }}
       shell: bash
       run: |
         git fetch origin
+        git stash push --keep-index -- ${{ inputs.working-directory }} 
         if git show-ref --verify --quiet refs/heads/${{ inputs.target-branch }}; then
           echo "Branch ${{ inputs.target-branch }} already exists, switching to it."
-          git checkout ${{ inputs.target-branch }}
+          git checkout ${{ inputs.target-branch }} --force
         else
           echo "Branch ${{ inputs.target-branch }} does not exist, creating it."
-          git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }} || git checkout -b ${{ inputs.target-branch }}
+          git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }} --force || git checkout -b ${{ inputs.target-branch }} --force
         fi
+        git stash apply
     - name: Check for changes in ${{ inputs.working-directory }}
       shell: bash
       run: |
-        git stash apply
         git diff --staged --quiet -- ${{ inputs.working-directory }}
       continue-on-error: true
       id: check-diff
