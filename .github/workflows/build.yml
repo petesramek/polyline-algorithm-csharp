@@ -231,8 +231,8 @@ jobs:
         with:
           target-branch: ${{ github.head_ref || github.ref }}
           commit-message: 'Update docs for version ${{ env.friendly-version }}'
-          force: false
-          working-directory: './api-reference/${{ env.friendly-version }}'
+          force-checkout: false
+          working-directory: './api-reference/${{ env.friendly-version }}/**'
       - name: 'Generate documentation'
         uses: ./.github/actions/docfx-build
         with:
