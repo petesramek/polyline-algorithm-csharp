@@ -1,0 +1,144 @@
+### YamlMime:ManagedReference
+items:
+- uid: PolylineAlgorithm.Abstraction
+  commentId: N:PolylineAlgorithm.Abstraction
+  id: PolylineAlgorithm.Abstraction
+  children:
+  - PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
+  - PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2
+  - PolylineAlgorithm.Abstraction.IPolylineDecoder`2
+  - PolylineAlgorithm.Abstraction.IPolylineEncoder`2
+  langs:
+  - csharp
+  - vb
+  name: PolylineAlgorithm.Abstraction
+  nameWithType: PolylineAlgorithm.Abstraction
+  fullName: PolylineAlgorithm.Abstraction
+  type: Namespace
+  assemblies:
+  - PolylineAlgorithm
+references:
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
+  commentId: T:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
+  href: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html
+  name: AbstractPolylineDecoder<TPolyline, TCoordinate>
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate)
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate)
+  name.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate)
+  spec.csharp:
+  - uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
+    name: AbstractPolylineDecoder
+    href: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html
+  - name: <
+  - name: TPolyline
+  - name: ','
+  - name: " "
+  - name: TCoordinate
+  - name: '>'
+  spec.vb:
+  - uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
+    name: AbstractPolylineDecoder
+    href: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TPolyline
+  - name: ','
+  - name: " "
+  - name: TCoordinate
+  - name: )
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2
+  commentId: T:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2
+  href: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html
+  name: AbstractPolylineEncoder<TCoordinate, TPolyline>
+  nameWithType: AbstractPolylineEncoder<TCoordinate, TPolyline>
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>
+  nameWithType.vb: AbstractPolylineEncoder(Of TCoordinate, TPolyline)
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder(Of TCoordinate, TPolyline)
+  name.vb: AbstractPolylineEncoder(Of TCoordinate, TPolyline)
+  spec.csharp:
+  - uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2
+    name: AbstractPolylineEncoder
+    href: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html
+  - name: <
+  - name: TCoordinate
+  - name: ','
+  - name: " "
+  - name: TPolyline
+  - name: '>'
+  spec.vb:
+  - uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2
+    name: AbstractPolylineEncoder
+    href: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCoordinate
+  - name: ','
+  - name: " "
+  - name: TPolyline
+  - name: )
+- uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2
+  commentId: T:PolylineAlgorithm.Abstraction.IPolylineDecoder`2
+  href: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html
+  name: IPolylineDecoder<TPolyline, TCoordinate>
+  nameWithType: IPolylineDecoder<TPolyline, TCoordinate>
+  fullName: PolylineAlgorithm.Abstraction.IPolylineDecoder<TPolyline, TCoordinate>
+  nameWithType.vb: IPolylineDecoder(Of TPolyline, TCoordinate)
+  fullName.vb: PolylineAlgorithm.Abstraction.IPolylineDecoder(Of TPolyline, TCoordinate)
+  name.vb: IPolylineDecoder(Of TPolyline, TCoordinate)
+  spec.csharp:
+  - uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2
+    name: IPolylineDecoder
+    href: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html
+  - name: <
+  - name: TPolyline
+  - name: ','
+  - name: " "
+  - name: TCoordinate
+  - name: '>'
+  spec.vb:
+  - uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2
+    name: IPolylineDecoder
+    href: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TPolyline
+  - name: ','
+  - name: " "
+  - name: TCoordinate
+  - name: )
+- uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2
+  commentId: T:PolylineAlgorithm.Abstraction.IPolylineEncoder`2
+  href: PolylineAlgorithm.Abstraction.IPolylineEncoder-2.html
+  name: IPolylineEncoder<TCoordinate, TPolyline>
+  nameWithType: IPolylineEncoder<TCoordinate, TPolyline>
+  fullName: PolylineAlgorithm.Abstraction.IPolylineEncoder<TCoordinate, TPolyline>
+  nameWithType.vb: IPolylineEncoder(Of TCoordinate, TPolyline)
+  fullName.vb: PolylineAlgorithm.Abstraction.IPolylineEncoder(Of TCoordinate, TPolyline)
+  name.vb: IPolylineEncoder(Of TCoordinate, TPolyline)
+  spec.csharp:
+  - uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2
+    name: IPolylineEncoder
+    href: PolylineAlgorithm.Abstraction.IPolylineEncoder-2.html
+  - name: <
+  - name: TCoordinate
+  - name: ','
+  - name: " "
+  - name: TPolyline
+  - name: '>'
+  spec.vb:
+  - uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2
+    name: IPolylineEncoder
+    href: PolylineAlgorithm.Abstraction.IPolylineEncoder-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCoordinate
+  - name: ','
+  - name: " "
+  - name: TPolyline
+  - name: )

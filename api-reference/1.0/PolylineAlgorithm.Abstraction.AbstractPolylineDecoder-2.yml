@@ -1,0 +1,953 @@
+### YamlMime:ManagedReference
+items:
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
+  commentId: T:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
+  id: AbstractPolylineDecoder`2
+  parent: PolylineAlgorithm.Abstraction
+  children:
+  - PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor
+  - PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
+  - PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.CreateCoordinate(System.Double,System.Double)
+  - PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Decode(`0)
+  - PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.GetReadOnlyMemory(`0)
+  - PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Options
+  langs:
+  - csharp
+  - vb
+  name: AbstractPolylineDecoder<TPolyline, TCoordinate>
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>
+  type: Class
+  source:
+    remote:
+      path: src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs
+      branch: develop/1.0
+      repo: https://github.com/sramekpete/polyline-algorithm-csharp
+    id: AbstractPolylineDecoder
+    path: ../src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs
+    startLine: 22
+  assemblies:
+  - PolylineAlgorithm
+  namespace: PolylineAlgorithm.Abstraction
+  summary: >-
+    Decodes encoded polyline strings into sequences of geographic coordinates.
+
+    Implements the <xref href="PolylineAlgorithm.Abstraction.IPolylineDecoder%602" data-throw-if-not-resolved="false"></xref> interface.
+  remarks: This abstract class provides a base implementation for decoding polylines, allowing subclasses to define how to handle specific polyline formats.
+  example: []
+  syntax:
+    content: 'public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder<TPolyline, TCoordinate>'
+    typeParameters:
+    - id: TPolyline
+    - id: TCoordinate
+    content.vb: Public MustInherit Class AbstractPolylineDecoder(Of TPolyline, TCoordinate) Implements IPolylineDecoder(Of TPolyline, TCoordinate)
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - PolylineAlgorithm.PolylineDecoder
+  implements:
+  - PolylineAlgorithm.Abstraction.IPolylineDecoder{{TPolyline},{TCoordinate}}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate)
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate)
+  name.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate)
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor
+  commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor
+  id: '#ctor'
+  parent: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
+  langs:
+  - csharp
+  - vb
+  name: AbstractPolylineDecoder()
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.AbstractPolylineDecoder()
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.AbstractPolylineDecoder()
+  type: Constructor
+  source:
+    remote:
+      path: src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs
+      branch: develop/1.0
+      repo: https://github.com/sramekpete/polyline-algorithm-csharp
+    id: .ctor
+    path: ../src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs
+    startLine: 26
+  assemblies:
+  - PolylineAlgorithm
+  namespace: PolylineAlgorithm.Abstraction
+  summary: Initializes a new instance of the <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineDecoder%602" data-throw-if-not-resolved="false"></xref> class with default encoding options.
+  example: []
+  syntax:
+    content: protected AbstractPolylineDecoder()
+    content.vb: Protected Sub New()
+  overload: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor*
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).New()
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).New()
+  name.vb: New()
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
+  commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
+  id: '#ctor(PolylineAlgorithm.PolylineEncodingOptions)'
+  parent: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
+  langs:
+  - csharp
+  - vb
+  name: AbstractPolylineDecoder(PolylineEncodingOptions)
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.AbstractPolylineDecoder(PolylineEncodingOptions)
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.AbstractPolylineDecoder(PolylineAlgorithm.PolylineEncodingOptions)
+  type: Constructor
+  source:
+    remote:
+      path: src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs
+      branch: develop/1.0
+      repo: https://github.com/sramekpete/polyline-algorithm-csharp
+    id: .ctor
+    path: ../src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs
+    startLine: 38
+  assemblies:
+  - PolylineAlgorithm
+  namespace: PolylineAlgorithm.Abstraction
+  summary: Initializes a new instance of the <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineDecoder%602" data-throw-if-not-resolved="false"></xref> class with the specified encoding options.
+  example: []
+  syntax:
+    content: protected AbstractPolylineDecoder(PolylineEncodingOptions options)
+    parameters:
+    - id: options
+      type: PolylineAlgorithm.PolylineEncodingOptions
+      description: The <xref href="PolylineAlgorithm.PolylineEncodingOptions" data-throw-if-not-resolved="false"></xref> to use for encoding operations.
+    content.vb: Protected Sub New(options As PolylineEncodingOptions)
+  overload: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when <code class="paramref">options</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).New(PolylineEncodingOptions)
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).New(PolylineAlgorithm.PolylineEncodingOptions)
+  name.vb: New(PolylineEncodingOptions)
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Options
+  commentId: P:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Options
+  id: Options
+  parent: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
+  langs:
+  - csharp
+  - vb
+  name: Options
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.Options
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.Options
+  type: Property
+  source:
+    remote:
+      path: src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs
+      branch: develop/1.0
+      repo: https://github.com/sramekpete/polyline-algorithm-csharp
+    id: Options
+    path: ../src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs
+    startLine: 45
+  assemblies:
+  - PolylineAlgorithm
+  namespace: PolylineAlgorithm.Abstraction
+  summary: Gets the encoding options used by this polyline encoder.
+  example: []
+  syntax:
+    content: public PolylineEncodingOptions Options { get; }
+    parameters: []
+    return:
+      type: PolylineAlgorithm.PolylineEncodingOptions
+    content.vb: Public ReadOnly Property Options As PolylineEncodingOptions
+  overload: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Options*
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).Options
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).Options
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Decode(`0)
+  commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Decode(`0)
+  id: Decode(`0)
+  parent: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
+  langs:
+  - csharp
+  - vb
+  name: Decode(TPolyline)
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.Decode(TPolyline)
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.Decode(TPolyline)
+  type: Method
+  source:
+    remote:
+      path: src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs
+      branch: develop/1.0
+      repo: https://github.com/sramekpete/polyline-algorithm-csharp
+    id: Decode
+    path: ../src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs
+    startLine: 65
+  assemblies:
+  - PolylineAlgorithm
+  namespace: PolylineAlgorithm.Abstraction
+  summary: Decodes an encoded <code class="typeparamref">TPolyline</code> into a sequence of <code class="typeparamref">TCoordinate</code> instances.
+  example: []
+  syntax:
+    content: public IEnumerable<TCoordinate> Decode(TPolyline polyline)
+    parameters:
+    - id: polyline
+      type: '{TPolyline}'
+      description: The <code class="typeparamref">TPolyline</code> instance containing the encoded polyline string to decode.
+    return:
+      type: System.Collections.Generic.IEnumerable{{TCoordinate}}
+      description: An <xref href="System.Collections.Generic.IEnumerable%601" data-throw-if-not-resolved="false"></xref> of <code class="typeparamref">TCoordinate</code> representing the decoded latitude and longitude pairs.
+    content.vb: Public Function Decode(polyline As TPolyline) As IEnumerable(Of TCoordinate)
+  overload: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Decode*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when <code class="paramref">polyline</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown when <code class="paramref">polyline</code> is empty.
+  - type: PolylineAlgorithm.InvalidPolylineException
+    commentId: T:PolylineAlgorithm.InvalidPolylineException
+    description: Thrown when the polyline format is invalid or malformed at a specific position.
+  implements:
+  - PolylineAlgorithm.Abstraction.IPolylineDecoder{{TPolyline},{TCoordinate}}.Decode({TPolyline})
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).Decode(TPolyline)
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).Decode(TPolyline)
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.GetReadOnlyMemory(`0)
+  commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.GetReadOnlyMemory(`0)
+  id: GetReadOnlyMemory(`0)
+  parent: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
+  langs:
+  - csharp
+  - vb
+  name: GetReadOnlyMemory(TPolyline)
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.GetReadOnlyMemory(TPolyline)
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.GetReadOnlyMemory(TPolyline)
+  type: Method
+  source:
+    remote:
+      path: src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs
+      branch: develop/1.0
+      repo: https://github.com/sramekpete/polyline-algorithm-csharp
+    id: GetReadOnlyMemory
+    path: ../src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs
+    startLine: 138
+  assemblies:
+  - PolylineAlgorithm
+  namespace: PolylineAlgorithm.Abstraction
+  summary: Converts the provided polyline instance into a <xref href="System.ReadOnlyMemory%601" data-throw-if-not-resolved="false"></xref> for decoding.
+  example: []
+  syntax:
+    content: protected abstract ReadOnlyMemory<char> GetReadOnlyMemory(TPolyline polyline)
+    parameters:
+    - id: polyline
+      type: '{TPolyline}'
+      description: The <code class="typeparamref">TPolyline</code> instance containing the encoded polyline data to decode.
+    return:
+      type: System.ReadOnlyMemory{System.Char}
+      description: A <xref href="System.ReadOnlyMemory%601" data-throw-if-not-resolved="false"></xref> representing the encoded polyline data.
+    content.vb: Protected MustOverride Function GetReadOnlyMemory(polyline As TPolyline) As ReadOnlyMemory(Of Char)
+  overload: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.GetReadOnlyMemory*
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).GetReadOnlyMemory(TPolyline)
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).GetReadOnlyMemory(TPolyline)
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.CreateCoordinate(System.Double,System.Double)
+  commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.CreateCoordinate(System.Double,System.Double)
+  id: CreateCoordinate(System.Double,System.Double)
+  parent: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
+  langs:
+  - csharp
+  - vb
+  name: CreateCoordinate(double, double)
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.CreateCoordinate(double, double)
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.CreateCoordinate(double, double)
+  type: Method
+  source:
+    remote:
+      path: src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs
+      branch: develop/1.0
+      repo: https://github.com/sramekpete/polyline-algorithm-csharp
+    id: CreateCoordinate
+    path: ../src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs
+    startLine: 152
+  assemblies:
+  - PolylineAlgorithm
+  namespace: PolylineAlgorithm.Abstraction
+  summary: Creates a coordinate instance from the given latitude and longitude values.
+  example: []
+  syntax:
+    content: protected abstract TCoordinate CreateCoordinate(double latitude, double longitude)
+    parameters:
+    - id: latitude
+      type: System.Double
+      description: The latitude value.
+    - id: longitude
+      type: System.Double
+      description: The longitude value.
+    return:
+      type: '{TCoordinate}'
+      description: A coordinate instance of type <code class="typeparamref">TCoordinate</code>.
+    content.vb: Protected MustOverride Function CreateCoordinate(latitude As Double, longitude As Double) As TCoordinate
+  overload: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.CreateCoordinate*
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).CreateCoordinate(Double, Double)
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).CreateCoordinate(Double, Double)
+  name.vb: CreateCoordinate(Double, Double)
+references:
+- uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2
+  commentId: T:PolylineAlgorithm.Abstraction.IPolylineDecoder`2
+  href: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html
+  name: IPolylineDecoder<TPolyline, TCoordinate>
+  nameWithType: IPolylineDecoder<TPolyline, TCoordinate>
+  fullName: PolylineAlgorithm.Abstraction.IPolylineDecoder<TPolyline, TCoordinate>
+  nameWithType.vb: IPolylineDecoder(Of TPolyline, TCoordinate)
+  fullName.vb: PolylineAlgorithm.Abstraction.IPolylineDecoder(Of TPolyline, TCoordinate)
+  name.vb: IPolylineDecoder(Of TPolyline, TCoordinate)
+  spec.csharp:
+  - uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2
+    name: IPolylineDecoder
+    href: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html
+  - name: <
+  - name: TPolyline
+  - name: ','
+  - name: " "
+  - name: TCoordinate
+  - name: '>'
+  spec.vb:
+  - uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2
+    name: IPolylineDecoder
+    href: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TPolyline
+  - name: ','
+  - name: " "
+  - name: TCoordinate
+  - name: )
+- uid: PolylineAlgorithm.Abstraction
+  commentId: N:PolylineAlgorithm.Abstraction
+  href: PolylineAlgorithm.html
+  name: PolylineAlgorithm.Abstraction
+  nameWithType: PolylineAlgorithm.Abstraction
+  fullName: PolylineAlgorithm.Abstraction
+  spec.csharp:
+  - uid: PolylineAlgorithm
+    name: PolylineAlgorithm
+    href: PolylineAlgorithm.html
+  - name: .
+  - uid: PolylineAlgorithm.Abstraction
+    name: Abstraction
+    href: PolylineAlgorithm.Abstraction.html
+  spec.vb:
+  - uid: PolylineAlgorithm
+    name: PolylineAlgorithm
+    href: PolylineAlgorithm.html
+  - name: .
+  - uid: PolylineAlgorithm.Abstraction
+    name: Abstraction
+    href: PolylineAlgorithm.Abstraction.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: PolylineAlgorithm.Abstraction.IPolylineDecoder{{TPolyline},{TCoordinate}}
+  commentId: T:PolylineAlgorithm.Abstraction.IPolylineDecoder{`0,`1}
+  parent: PolylineAlgorithm.Abstraction
+  definition: PolylineAlgorithm.Abstraction.IPolylineDecoder`2
+  href: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html
+  name: IPolylineDecoder<TPolyline, TCoordinate>
+  nameWithType: IPolylineDecoder<TPolyline, TCoordinate>
+  fullName: PolylineAlgorithm.Abstraction.IPolylineDecoder<TPolyline, TCoordinate>
+  nameWithType.vb: IPolylineDecoder(Of TPolyline, TCoordinate)
+  fullName.vb: PolylineAlgorithm.Abstraction.IPolylineDecoder(Of TPolyline, TCoordinate)
+  name.vb: IPolylineDecoder(Of TPolyline, TCoordinate)
+  spec.csharp:
+  - uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2
+    name: IPolylineDecoder
+    href: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html
+  - name: <
+  - name: TPolyline
+  - name: ','
+  - name: " "
+  - name: TCoordinate
+  - name: '>'
+  spec.vb:
+  - uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2
+    name: IPolylineDecoder
+    href: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TPolyline
+  - name: ','
+  - name: " "
+  - name: TCoordinate
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
+  commentId: T:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
+  href: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html
+  name: AbstractPolylineDecoder<TPolyline, TCoordinate>
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate)
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate)
+  name.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate)
+  spec.csharp:
+  - uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
+    name: AbstractPolylineDecoder
+    href: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html
+  - name: <
+  - name: TPolyline
+  - name: ','
+  - name: " "
+  - name: TCoordinate
+  - name: '>'
+  spec.vb:
+  - uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
+    name: AbstractPolylineDecoder
+    href: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TPolyline
+  - name: ','
+  - name: " "
+  - name: TCoordinate
+  - name: )
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor*
+  commentId: Overload:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor
+  href: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2__ctor
+  name: AbstractPolylineDecoder
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.AbstractPolylineDecoder
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.AbstractPolylineDecoder
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).New
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).New
+  name.vb: New
+- uid: PolylineAlgorithm.PolylineEncodingOptions
+  commentId: T:PolylineAlgorithm.PolylineEncodingOptions
+  parent: PolylineAlgorithm
+  href: PolylineAlgorithm.PolylineEncodingOptions.html
+  name: PolylineEncodingOptions
+  nameWithType: PolylineEncodingOptions
+  fullName: PolylineAlgorithm.PolylineEncodingOptions
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+  name: ArgumentNullException
+  nameWithType: ArgumentNullException
+  fullName: System.ArgumentNullException
+- uid: PolylineAlgorithm
+  commentId: N:PolylineAlgorithm
+  href: PolylineAlgorithm.html
+  name: PolylineAlgorithm
+  nameWithType: PolylineAlgorithm
+  fullName: PolylineAlgorithm
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Options*
+  commentId: Overload:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Options
+  href: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_Options
+  name: Options
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.Options
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.Options
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).Options
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).Options
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentexception
+  name: ArgumentException
+  nameWithType: ArgumentException
+  fullName: System.ArgumentException
+- uid: PolylineAlgorithm.InvalidPolylineException
+  commentId: T:PolylineAlgorithm.InvalidPolylineException
+  href: PolylineAlgorithm.InvalidPolylineException.html
+  name: InvalidPolylineException
+  nameWithType: InvalidPolylineException
+  fullName: PolylineAlgorithm.InvalidPolylineException
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Decode*
+  commentId: Overload:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Decode
+  href: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_Decode__0_
+  name: Decode
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.Decode
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.Decode
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).Decode
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).Decode
+- uid: PolylineAlgorithm.Abstraction.IPolylineDecoder{{TPolyline},{TCoordinate}}.Decode({TPolyline})
+  commentId: M:PolylineAlgorithm.Abstraction.IPolylineDecoder{`0,`1}.Decode(`0)
+  parent: PolylineAlgorithm.Abstraction.IPolylineDecoder{{TPolyline},{TCoordinate}}
+  definition: PolylineAlgorithm.Abstraction.IPolylineDecoder`2.Decode(`0)
+  href: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_IPolylineDecoder_2_Decode__0_
+  name: Decode(TPolyline)
+  nameWithType: IPolylineDecoder<TPolyline, TCoordinate>.Decode(TPolyline)
+  fullName: PolylineAlgorithm.Abstraction.IPolylineDecoder<TPolyline, TCoordinate>.Decode(TPolyline)
+  nameWithType.vb: IPolylineDecoder(Of TPolyline, TCoordinate).Decode(TPolyline)
+  fullName.vb: PolylineAlgorithm.Abstraction.IPolylineDecoder(Of TPolyline, TCoordinate).Decode(TPolyline)
+  spec.csharp:
+  - uid: PolylineAlgorithm.Abstraction.IPolylineDecoder{`0,`1}.Decode(`0)
+    name: Decode
+    href: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_IPolylineDecoder_2_Decode__0_
+  - name: (
+  - name: TPolyline
+  - name: )
+  spec.vb:
+  - uid: PolylineAlgorithm.Abstraction.IPolylineDecoder{`0,`1}.Decode(`0)
+    name: Decode
+    href: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_IPolylineDecoder_2_Decode__0_
+  - name: (
+  - name: TPolyline
+  - name: )
+- uid: '{TPolyline}'
+  commentId: '!:TPolyline'
+  definition: TPolyline
+  name: TPolyline
+  nameWithType: TPolyline
+  fullName: TPolyline
+- uid: System.Collections.Generic.IEnumerable{{TCoordinate}}
+  commentId: T:System.Collections.Generic.IEnumerable{`1}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<TCoordinate>
+  nameWithType: IEnumerable<TCoordinate>
+  fullName: System.Collections.Generic.IEnumerable<TCoordinate>
+  nameWithType.vb: IEnumerable(Of TCoordinate)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of TCoordinate)
+  name.vb: IEnumerable(Of TCoordinate)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: TCoordinate
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCoordinate
+  - name: )
+- uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2.Decode(`0)
+  commentId: M:PolylineAlgorithm.Abstraction.IPolylineDecoder`2.Decode(`0)
+  href: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_IPolylineDecoder_2_Decode__0_
+  name: Decode(TPolyline)
+  nameWithType: IPolylineDecoder<TPolyline, TCoordinate>.Decode(TPolyline)
+  fullName: PolylineAlgorithm.Abstraction.IPolylineDecoder<TPolyline, TCoordinate>.Decode(TPolyline)
+  nameWithType.vb: IPolylineDecoder(Of TPolyline, TCoordinate).Decode(TPolyline)
+  fullName.vb: PolylineAlgorithm.Abstraction.IPolylineDecoder(Of TPolyline, TCoordinate).Decode(TPolyline)
+  spec.csharp:
+  - uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2.Decode(`0)
+    name: Decode
+    href: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_IPolylineDecoder_2_Decode__0_
+  - name: (
+  - name: TPolyline
+  - name: )
+  spec.vb:
+  - uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2.Decode(`0)
+    name: Decode
+    href: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_IPolylineDecoder_2_Decode__0_
+  - name: (
+  - name: TPolyline
+  - name: )
+- uid: TPolyline
+  name: TPolyline
+  nameWithType: TPolyline
+  fullName: TPolyline
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.ReadOnlyMemory`1
+  commentId: T:System.ReadOnlyMemory`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  name: ReadOnlyMemory<T>
+  nameWithType: ReadOnlyMemory<T>
+  fullName: System.ReadOnlyMemory<T>
+  nameWithType.vb: ReadOnlyMemory(Of T)
+  fullName.vb: System.ReadOnlyMemory(Of T)
+  name.vb: ReadOnlyMemory(Of T)
+  spec.csharp:
+  - uid: System.ReadOnlyMemory`1
+    name: ReadOnlyMemory
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlyMemory`1
+    name: ReadOnlyMemory
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.GetReadOnlyMemory*
+  commentId: Overload:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.GetReadOnlyMemory
+  href: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_GetReadOnlyMemory__0_
+  name: GetReadOnlyMemory
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.GetReadOnlyMemory
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.GetReadOnlyMemory
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).GetReadOnlyMemory
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).GetReadOnlyMemory
+- uid: System.ReadOnlyMemory{System.Char}
+  commentId: T:System.ReadOnlyMemory{System.Char}
+  parent: System
+  definition: System.ReadOnlyMemory`1
+  href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  name: ReadOnlyMemory<char>
+  nameWithType: ReadOnlyMemory<char>
+  fullName: System.ReadOnlyMemory<char>
+  nameWithType.vb: ReadOnlyMemory(Of Char)
+  fullName.vb: System.ReadOnlyMemory(Of Char)
+  name.vb: ReadOnlyMemory(Of Char)
+  spec.csharp:
+  - uid: System.ReadOnlyMemory`1
+    name: ReadOnlyMemory
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  - name: <
+  - uid: System.Char
+    name: char
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.char
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlyMemory`1
+    name: ReadOnlyMemory
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Char
+    name: Char
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.char
+  - name: )
+- uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.CreateCoordinate*
+  commentId: Overload:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.CreateCoordinate
+  href: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_CreateCoordinate_System_Double_System_Double_
+  name: CreateCoordinate
+  nameWithType: AbstractPolylineDecoder<TPolyline, TCoordinate>.CreateCoordinate
+  fullName: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.CreateCoordinate
+  nameWithType.vb: AbstractPolylineDecoder(Of TPolyline, TCoordinate).CreateCoordinate
+  fullName.vb: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder(Of TPolyline, TCoordinate).CreateCoordinate
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: '{TCoordinate}'
+  commentId: '!:TCoordinate'
+  definition: TCoordinate
+  name: TCoordinate
+  nameWithType: TCoordinate
+  fullName: TCoordinate
+- uid: TCoordinate
+  name: TCoordinate
+  nameWithType: TCoordinate
+  fullName: TCoordinate
