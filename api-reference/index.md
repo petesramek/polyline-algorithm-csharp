@@ -1,7 +1,3 @@
----
-_layout: landing
----
-
 # PolylineAlgorithm for .NET
 
 [![NuGet](https://img.shields.io/nuget/v/PolylineAlgorithm.svg)](https://www.nuget.org/packages/PolylineAlgorithm/)
