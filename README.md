@@ -1,4 +1,4 @@
-# PolylineAlgorithm.Abstraction
+# PolylineAlgorithm for .NET
 
 [![NuGet](https://img.shields.io/nuget/v/PolylineAlgorithm.svg)](https://www.nuget.org/packages/PolylineAlgorithm/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -11,11 +11,11 @@ More info about the algorithm can be found at [Google Developers](https://develo
 
 ## Prerequisites
 
-PolylineAlgorithm.Abstraction is available as a NuGet package targeting .NET Standard 2.1.
+PolylineAlgorithm for .NET is available as a NuGet package targeting .NET Standard 2.1.
 
-.NET CLI: `dotnet add package PolylineAlgorithm.Abstraction`
+.NET CLI: `dotnet add package PolylineAlgorithm`
 
-Package Manager Console: `Install-Package PolylineAlgorithm.Abstraction`
+Package Manager Console: `Install-Package PolylineAlgorithm`
 
 ## How to use it
 

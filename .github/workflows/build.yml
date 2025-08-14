@@ -232,6 +232,10 @@ jobs:
           artifact-name: 'assembly-metadata'
           commit-message: 'Update docs for version ${{ env.friendly-version }}'
           working-directory: './api-reference/${{ env.friendly-version }}'
+      - name: 'Copy README.md as index.md for documentation'
+        shell: bash
+        run: |
+          cp ./README.md ./api-reference/index.md
       - name: 'Generate documentation'
         uses: ./.github/actions/docfx-build
         with:
