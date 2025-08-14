@@ -49,6 +49,10 @@ runs:
     - name: 'Generate assembly metadata'
       shell: bash
       run: docfx metadata ${{ inputs.docfx-json-manifest }}
+    - name: 'List directory'
+      shell: bash
+      run: |
+       ls
     - name: 'Copy metadata to output directory'
       shell: bash
       run: |
