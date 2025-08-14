@@ -230,7 +230,6 @@ jobs:
         uses: ./.github/actions/push-changes
         with:
           artifact-name: 'assembly-metadata'
-          target-branch: ${{ github.head_ref || github.ref }}
           commit-message: 'Update docs for version ${{ env.friendly-version }}'
           working-directory: './api-reference/${{ env.friendly-version }}'
       - name: 'Generate documentation'
