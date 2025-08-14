@@ -59,8 +59,8 @@ runs:
         mkdir -p ${{ inputs.output-directory }}
         cp -r ${{ inputs.temporary-directory }}/ ${{ inputs.output-directory }}
     - name: 'Upload artifact'
-      uses: actions/upload-pages-artifact@v3
+      uses: actions/upload-artifact@v3
       with:
          name: ${{ inputs.artifact-name }}
-         path: '.'
+         path: ${{ inputs.output-directory }}
   
