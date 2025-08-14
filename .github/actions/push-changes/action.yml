@@ -20,9 +20,6 @@ inputs:
     description: '.NET SDK version. Default: 9.x'
     required: false
     default: '9.x'
-  force-checkout:
-    description: 'Force checkout the target branch, discarding local changes. Default: false.'
-    required: false
 
 runs:  
   using: "composite"
@@ -49,7 +46,7 @@ runs:
     - name: Check for changes in ${{ inputs.working-directory }}
       shell: bash
       run: |
-        git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }} ${{ inputs.force-checkout && '--force' || '' }}
+        git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }} --force
         git stash apply
         git diff --staged --quiet -- ${{ inputs.working-directory }}
       continue-on-error: true
