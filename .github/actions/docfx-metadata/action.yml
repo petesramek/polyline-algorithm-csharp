@@ -36,8 +36,8 @@ runs:
     - name: 'Delete temporary folder'
       shell: bash
       run: |
-        if [ -d "${{ inputs.output-directory }}" ]; then
-          rm -rf "${{ inputs.output-directory }}"
+        if [ -d "${{ inputs.temporary-directory }}" ]; then
+          rm -rf "${{ inputs.temporary-directory }}"
         fi
     - name: 'Generate documentation'
       run: docfx metadata ${{ inputs.docfx-json-manifest }}
@@ -46,7 +46,7 @@ runs:
       shell: bash
       run: |
         mkdir -p "${{ inputs.output-directory }}"
-        cp -r "${{ inputs.output-directory }}" "${{ inputs.output-directory }}"
+        cp -r "${{ inputs.temporary-directory }}" "${{ inputs.output-directory }}"
         - name: 'Delete temporary folder'
     - name: Upload artifact
       uses: actions/upload-artifact@v4
