@@ -44,7 +44,7 @@ runs:
       shell: bash
       run: |
         mkdir -p ${{ inputs.output-directory }}
-        cp -r ${{ inputs.temporary-directory }} ${{ inputs.output-directory }}
+        cp -r ${{ inputs.temporary-directory }}/ ${{ inputs.output-directory }}
     - name: 'Upload artifact'
       uses: actions/upload-pages-artifact@v3
       with:
