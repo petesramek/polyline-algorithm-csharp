@@ -24,7 +24,7 @@ inputs:
 runs:  
   using: "composite"
   steps:
-    - name: 'Checkout ${{ github.head_ref || github.ref }}'
+    - name: 'Checkout ${{ github.ref }}'
       uses: actions/checkout@v4
     - name: Dotnet Setup
       uses: actions/setup-dotnet@v4
@@ -64,7 +64,7 @@ runs:
         git stash pop
         git commit -m'${{ inputs.commit-message }}' -- ${{ inputs.working-directory }}
         git push
-    - name: Reset branch to ${{ github.head_ref || github.ref }}
+    - name: Reset branch to ${{ github.ref }}
       shell: bash
       run: |
-        git checkout ${{ github.head_ref || github.ref }}
+        git checkout ${{ github.ref }}
