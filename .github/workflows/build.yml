@@ -224,15 +224,15 @@ jobs:
           docfx-json-manifest: 'assembly-metadata.json'
           temporary-directory: 'temp'
           output-directory: '${{ env.friendly-version }}'
-          working-directory: './api-reference/'
+          working-directory: './api-reference'
       - name: 'Push documentation to ${{ github.head_ref || github.ref }} branch'
         uses: ./.github/actions/push-changes
         with:
           artifact-name: 'assembly-metadata'
-          working-directory: './api-reference/'
           target-branch: ${{ github.head_ref || github.ref }}
           commit-message: 'Update docs for version ${{ env.friendly-version }}'
           force: false
+          working-directory: './api-reference/${{ env.friendly-version }}'
       - name: 'Generate documentation'
         uses: ./.github/actions/docfx-build
         with:
