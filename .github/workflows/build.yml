@@ -224,9 +224,8 @@ jobs:
         with:
           artifact-name: 'assembly-metadata'
           docfx-json-manifest: 'assembly-metadata.json'
-          temporary-directory: 'temp'
-          output-directory: '${{ env.friendly-version }}'
-          working-directory: './api-reference'
+          temporary-directory: './api-reference/temp'
+          output-directory: './api-reference/${{ env.friendly-version }}'
       - name: 'Push documentation to ${{ github.head_ref || github.ref }} branch'
         uses: ./.github/actions/push-changes
         with:
