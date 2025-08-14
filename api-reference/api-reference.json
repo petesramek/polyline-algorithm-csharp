@@ -19,14 +19,14 @@
         "dest": "",
         "files": [ "*.yml" ],
         "group": "v1.0",
-        "src": "v1.0",
+        "src": "1.0",
         "rootTocPath": "~/toc.html"
       },
       {
         "dest": "",
         "files": [ "*.yml" ],
         "group": "v1.1",
-        "src": "v1.1",
+        "src": "1.1",
         "rootTocPath": "~/toc.html"
       }
     ],
@@ -38,8 +38,8 @@
       }
     ],
     "groups": {
-      "v1.0": { "dest": "v1.0" },
-      "v1.1": { "dest": "v1.1" }
+      "v1.0": { "dest": "1.0" },
+      "v1.1": { "dest": "1.1" }
     },
     "output": "_docs",
     "template": [
