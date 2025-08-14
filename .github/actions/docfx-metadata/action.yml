@@ -49,5 +49,5 @@ runs:
       uses: actions/upload-pages-artifact@v3
       with:
          name: ${{ inputs.artifact-name }}
-         path: ${{ inputs.output-directory }}**
+         path: ${{ inputs.output-directory }}/**
   
