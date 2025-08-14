@@ -8,6 +8,7 @@ on:
     paths:
       - 'src/**'
       - 'api-reference/**'
+      - '.github/**'
 
 permissions:
   actions: read
