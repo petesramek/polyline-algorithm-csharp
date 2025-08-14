@@ -4,6 +4,9 @@ description: 'Generate metadata using docfx'
 
 inputs:
 # Required
+  artifact-name:
+    description: 'Name of the artifact to upload after generating metadata'
+    required: true
   docfx-json-manifest:
     description: 'Path to the docfx JSON manifest file'
     required: true
@@ -49,5 +52,5 @@ runs:
       uses: actions/upload-pages-artifact@v3
       with:
          name: ${{ inputs.artifact-name }}
-         path: ${{ inputs.output-directory }}
+         path: '${{ inputs.output-directory }}'
   
