@@ -1,6 +1,7 @@
 name: 'Generate metadata with docfx'
 author: 'Pete Sramek'
 description: 'Generate metadata using docfx'
+
 inputs:
 # Required
   artifact-name:
@@ -20,6 +21,10 @@ inputs:
     description: '.NET SDK version. Default: 9.x'
     required: false
     default: '9.x'
+  working-directory:
+    description: 'Working directory for the action. Default: .'
+    required: false
+    default: '.'
 
 runs:
   using: composite
@@ -39,17 +44,20 @@ runs:
         if [ -d "${{ inputs.temporary-directory }}" ]; then
           rm -rf "${{ inputs.temporary-directory }}"
         fi
+      working-directory: ${{ inputs.working-directory }}
     - name: 'Generate documentation'
-      run: docfx metadata ${{ inputs.docfx-json-manifest }}
       shell: bash
+      run: docfx metadata ${{ inputs.docfx-json-manifest }}
+      working-directory: ${{ inputs.working-directory }}
     - name: 'Copy metadata to output directory'
       shell: bash
       run: |
         mkdir -p "${{ inputs.output-directory }}"
         cp -r "${{ inputs.temporary-directory }}" "${{ inputs.output-directory }}"
-        - name: 'Delete temporary folder'
+      working-directory: ${{ inputs.working-directory }}
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: ${{ inputs.artifact-name }}
         path: ${{ inputs.output-directory }}
+      working-directory: ${{ inputs.working-directory }}
