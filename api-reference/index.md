@@ -1,23 +1,21 @@
 # PolylineAlgorithm for .NET
 
-
 [![Build](https://github.com/sramekpete/polyline-algorithm-csharp/actions/workflows/build.yml/badge.svg)](https://github.com/sramekpete/polyline-algorithm-csharp/actions/workflows/build.yml)
 [![NuGet](https://img.shields.io/nuget/v/PolylineAlgorithm.svg)](https://www.nuget.org/packages/PolylineAlgorithm/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Lightweight .NET Standard 2.1 library implementing Google Encoded Polyline Algorithm.
-
 More info about the algorithm can be found at [Google Developers](https://developers.google.com/maps/documentation/utilities/polylinealgorithm).
 
 ## Prerequisites
 
 PolylineAlgorithm for .NET is available as a NuGet package targeting .NET Standard 2.1.
 
-**.NET CLI:**
+**.NET CLI**
 
 `dotnet add package PolylineAlgorithm`
 
-**Package Manager Console:**
+**Package Manager Console**
 
 `Install-Package PolylineAlgorithm`
 
