@@ -33,7 +33,7 @@ runs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.dotnet-sdk-version }}
-      name: Download a single artifact
+    - name: Download a single artifact
       uses: actions/download-artifact@v4
       with:
         name: ${{ inputs.artifact-name }}
