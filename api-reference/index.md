@@ -13,11 +13,11 @@ More info about the algorithm can be found at [Google Developers](https://develo
 
 PolylineAlgorithm for .NET is available as a NuGet package targeting .NET Standard 2.1.
 
-.NET CLI:
+**.NET CLI:**
 
 `dotnet add package PolylineAlgorithm`
 
-Package Manager Console:
+**Package Manager Console:**
 
 `Install-Package PolylineAlgorithm`
 
