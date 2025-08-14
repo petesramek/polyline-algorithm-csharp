@@ -221,7 +221,6 @@ jobs:
       - name: 'Generate assembly metadata'
         uses: ./.github/actions/docfx-metadata
         with:
-          artifact-name: 'assembly-metadata'
           docfx-json-manifest: 'assembly-metadata.json'
           temporary-directory: 'temp'
           output-directory: '${{ env.friendly-version }}'
@@ -229,7 +228,6 @@ jobs:
       - name: 'Push documentation to ${{ github.head_ref || github.ref }} branch'
         uses: ./.github/actions/push-changes
         with:
-          artifact-name: 'assembly-metadata'
           target-branch: ${{ github.head_ref || github.ref }}
           commit-message: 'Update docs for version ${{ env.friendly-version }}'
           force: false

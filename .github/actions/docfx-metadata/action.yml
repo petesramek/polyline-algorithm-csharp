@@ -4,9 +4,6 @@ description: 'Generate metadata using docfx'
 
 inputs:
 # Required
-  artifact-name:
-    description: 'Name of the artifact to upload after generating documentation'
-    required: true
   docfx-json-manifest:
     description: 'Path to the docfx JSON manifest file'
     required: true
