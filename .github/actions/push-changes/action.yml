@@ -3,6 +3,9 @@ author: 'Pete Sramek'
 description: 'Push changes to a specified branch in the repository.'
 inputs:
   # Required
+  artifact-name:
+    description: 'Name of the artifact to download before pushing changes.'
+    required: true
   working-directory:
     description: 'The working directory where the changes will be pushed from.'
     required: true
@@ -17,11 +20,8 @@ inputs:
     description: '.NET SDK version. Default: 9.x'
     required: false
     default: '9.x'
-  artifact-name:
-    description: 'Name of the artifact to download before pushing changes.'
-    required: false
   force-checkout:
-    description: 'Force checkout the target branch, discarding local changes.'
+    description: 'Force checkout the target branch, discarding local changes. Default: false.'
     required: false
 
 runs:  
@@ -33,7 +33,6 @@ runs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.dotnet-sdk-version }}
-    - if: ${{ inputs.artifact-name }}
       name: Download a single artifact
       uses: actions/download-artifact@v4
       with:
