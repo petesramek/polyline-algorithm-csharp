@@ -30,9 +30,27 @@ runs:
     - name: 'Update docfx tool'
       run: dotnet tool update -g docfx
       shell: bash
-    - name: 'Generate documentation'
-      run: docfx metadata ${{ inputs.docfx-json-manifest }} --output ${{ inputs.output-directory }}
+    - name: 'Delete temporary folder'
       shell: bash
+      run: |
+        if [ -d "temp" ]; then
+          rm -rf temp
+        fi
+    - name: 'Generate documentation'
+      run: docfx metadata ${{ inputs.docfx-json-manifest }}
+      shell: bash
+    - name: 'Copy metadata to output directory'
+      shell: bash
+      run: |
+        mkdir -p "${{ inputs.output-directory }}"
+        cp -r temp/* "${{ inputs.output-directory }}"
+        - name: 'Delete temporary folder'
+    - name: 'Delete temporary folder'
+      shell: bash
+      run: |
+        if [ -d "temp" ]; then
+          rm -rf temp
+        fi
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
