@@ -239,6 +239,7 @@ jobs:
         with:
           artifact-name: 'documentation'
           docfx-json-manifest: './api-reference/api-reference.json'
+          output-directory: './_docs'
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
