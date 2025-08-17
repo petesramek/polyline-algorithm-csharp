@@ -51,6 +51,8 @@
       "_appName": "PolylineAlgorithm for .NET",
       "_appTitle": "PolylineAlgorithm for .NET",
       "_enableSearch": true,
+      "_enableNewTab": true,
+      "_disableContribution": false,
       "pdf": false
     }
   }
