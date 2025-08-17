@@ -1,4 +1,4 @@
-name: 'Publish Documentation'
+name: 'Publish documentation'
 
 on:
   workflow_run:
