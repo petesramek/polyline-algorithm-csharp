@@ -82,6 +82,15 @@ jobs:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
 
+      - name: 'Read env'
+        shell: bash
+        run: |
+          echo "Friendly version: ${{ env.friendly-version }}"
+          echo "Assembly version: ${{ env.assembly-version }}"
+          echo "Assembly informational version: ${{ env.assembly-informational-version }}"
+          echo "File version: ${{ env.file-version }}"
+          echo "Package version: ${{ env.package-version }}"
+
       - uses: ./.github/actions/build
         with:
           project-path: '**/PolylineAlgorithm.csproj'
