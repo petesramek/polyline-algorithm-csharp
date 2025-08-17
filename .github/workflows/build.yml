@@ -194,12 +194,6 @@ jobs:
           working-directory: ${{ runner.temp }}/${{ env.nuget-packages-directory }}
           dotnet-sdk-version: ${{ env.dotnet-sdk-version }}'
 
-    # with:
-    #   artifact-run-id: ${{ needs.workflow-variables.outputs.github-run-id }}
-    #   artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
-    #   nuget-feed-server: 'AzureArtifacts'
-    #   environment: 'Development'
-
   # benchmark:
   #   if: ${{ github.env.is_release || vars.BENCHMARKDOTNET_RUN_OVERRIDE == 'true' }}
   #   name: Benchmark with .NET CLI on ${{ matrix.os }}
