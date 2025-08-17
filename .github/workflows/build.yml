@@ -232,10 +232,8 @@ jobs:
           artifact-name: 'assembly-metadata'
           commit-message: 'Update docs for version ${{ env.friendly-version }}'
           working-directory: './api-reference/${{ env.friendly-version }}'
-      - name: 'Update branch'
-        shell: bash
-        run: |
-          git pull --rebase
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v4
       - name: 'Generate documentation'
         uses: ./.github/actions/docfx-build
         with:
