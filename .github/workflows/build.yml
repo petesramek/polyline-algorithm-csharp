@@ -50,11 +50,21 @@ jobs:
   versioning:
     name: 'Determine assembly version'
     needs: [global-variables]
+    runs-on: ubuntu-latest
 
-    uses: ./.github/workflows/determine-version.yml
-    with:
-      config-file-path: './.gitversion/version.yml'
-      run-number: ${{ needs.global-variables.outputs.github-run-number }}
+    outputs:
+      friendly-version: ${{ steps.determine-version.outputs.friendly-version }}
+      assembly-version: ${{ steps.determine-version.outputs.assembly-version }}
+      assembly-informational-version: ${{ steps.determine-version.outputs.assembly-informational-version }}
+      file-version: ${{ steps.determine-version.outputs.file-version }}
+      package-version: ${{ steps.determine-version.outputs.package-version }}
+
+    steps:
+      - uses: ./.github/actins/determine-version
+        id: determine-version
+        with:
+          config-file-path: './.gitversion/version.yml'
+          run-number: ${{ needs.global-variables.outputs.github-run-number }}
 
   build:
     name: 'Build source code'

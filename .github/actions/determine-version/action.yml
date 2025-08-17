@@ -1,0 +1,87 @@
+name: 'Build with .NET CLI'
+author: 'Pete Sramek'
+description: 'Compiles source code, uploads build artifacts.'
+inputs:
+# Required
+  config-file-path:
+    description: 'Path to the configuration file.'
+    required: true
+  run-number:
+    description: 'The run number of the parent workflow.'
+    required: true
+# Optional
+  dotnet-sdk-version:
+    description: 'Version of the .NET SDK to use. Default: ''9.0.x''.'
+    required: false
+    default: '9.0.x'
+  gitversion-version:
+    description: 'Version of GitVersion to use. Default: ''6.1.x''.'
+    required: false
+    default: '6.1.x'
+  prerelease-tag:
+    description: 'The prerelease tag to use. Default: ''''.'
+    required: false
+    default: ''
+outputs:
+  friendly-version:
+    description: "The friedly version."
+    value: ${{ jobs.version.outputs.friendly-version }}
+  assembly-version:
+    description: "The assembly version."
+    value: ${{ jobs.version.outputs.assembly-version }}
+  assembly-informational-version:
+    description: "The assembly informational version."
+    value: ${{ jobs.version.outputs.assembly-informational-version }}
+  file-version:
+    description: "The file version."
+    value: ${{ jobs.version.outputs.file-version }}
+  package-version:
+    description: "The package version."
+    value: ${{ jobs.version.outputs.package-version }}
+    
+runs:  
+  using: "composite"
+  steps:
+
+    - name: 'Checkout ${{ github.head_ref || github.ref }}'
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: 'Setup GitVersion ${{ env.git-version }}'
+      uses: gittools/actions/gitversion/setup@v4.1.0
+      with:
+        versionSpec: ${{ inputs.gitversion-version }}
+        preferLatestVersion: true
+
+    - name: 'Determine version'
+      id: gitversion
+      uses: gittools/actions/gitversion/execute@v4.1.0
+      with:
+        configFilePath: ${{ inputs.config-file-path }}
+          
+    - name: 'Set friendly version'
+      shell: bash
+      run: echo "friendly-version=${{ steps.gitversion.outputs.assemblySemVer }}" >> $GITHUB_ENV
+
+    - name: 'Set assembly version'
+      shell: bash
+      run: echo "assembly-version=${{ steps.gitversion.outputs.assemblySemVer }}.${{ inputs.run-number }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}" >> $GITHUB_ENV
+
+    - name: 'Set assembly informational version'
+      shell: bash
+      run: echo "assembly-informational-version=${{ steps.gitversion.outputs.assemblySemVer }}.${{ inputs.run-number }}+${{ steps.gitversion.outputs.sha }}" >> $GITHUB_ENV
+
+    - name: 'Set file version'
+      shell: bash
+      run: echo "file-version=${{ steps.gitversion.outputs.AssemblySemFileVer }}.${{ inputs.run-number }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}" >> $GITHUB_ENV
+
+    - if: ${{ steps.gitversion.outputs.PreReleaseLabelWithDash == '' }}
+      name: 'Set package version'
+      shell: bash
+      run: echo "package-version=${{ steps.gitversion.outputs.AssemblySemVer }}.${{ inputs.run-number }}" >> $GITHUB_ENV
+
+    - if: ${{ steps.gitversion.outputs.PreReleaseLabelWithDash != '' }}
+      name: 'Set package version'
+      shell: bash
+      run: echo "package-version=${{ steps.gitversion.outputs.AssemblySemVer }}.${{ inputs.run-number }}-${{ steps.gitversion.outputs.PreReleaseLabel }}-${{ steps.gitversion.outputs.CommitsSinceVersionSource }}" >> $GITHUB_ENV
