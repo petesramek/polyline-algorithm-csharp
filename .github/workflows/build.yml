@@ -223,5 +223,11 @@ jobs:
           commit-message: 'Updated docs for version ${{ env.friendly-version }}'
           working-directory: './api-reference/${{ env.friendly-version }}'
       - name: 'Publish documentation'
-        # if: ${{ env.is_release && !env.is_preview }}
         uses: ./.github/workflows/publish-documentation.yml
+
+  publish-docs:
+    # if: ${{ env.is_release && !env.is_preview }}
+    name: 'Publish documentation'
+    uses: ./.github/workflows/publish-documentation.yml
+    needs: [generate-assembly-metadata]
+    secrets: inherit
