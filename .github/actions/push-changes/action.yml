@@ -26,56 +26,100 @@ runs:
   steps:
     - name: 'Checkout ${{ github.ref }}'
       uses: actions/checkout@v4
+
     - name: Dotnet Setup
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.dotnet-sdk-version }}
+
     - name: Download a single artifact
       uses: actions/download-artifact@v4
       with:
         name: ${{ inputs.artifact-name }}
         path: ${{ inputs.working-directory }}
-    - name: Add changes from ${{ inputs.working-directory }}
-      shell: bash
-      run: |
-        git fetch origin
-        git config --global user.name "${{ github.actor }}"
-        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-        git add --  ${{ inputs.working-directory }}
-    - name: Create or switch to ${{ inputs.target-branch }}
-      if: ${{ inputs.target-branch != '' }}
-      shell: bash
-      run: |
-        git fetch origin
-        git stash push --keep-index -- ${{ inputs.working-directory }} 
-        if git show-ref --verify --quiet refs/heads/${{ inputs.target-branch }}; then
-          echo "Branch ${{ inputs.target-branch }} already exists, switching to it."
-          git checkout ${{ inputs.target-branch }} --force
-        else
-          echo "Branch ${{ inputs.target-branch }} does not exist, creating it."
-          git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }} --force || git checkout -b ${{ inputs.target-branch }} --force
-        fi
-        git stash apply
-    - name: Check for changes in ${{ inputs.working-directory }}
-      shell: bash
-      run: |
-        git diff --staged --quiet -- ${{ inputs.working-directory }}
-      continue-on-error: true
-      id: check-diff
-    - name: Push changes to ${{ inputs.target-branch }}, if exists
-      if: ${{ steps.check-diff.outcome == 'success' }}
-      shell: bash
-      run: |
-        echo "No changes to commit in ${{ inputs.working-directory }}"
-    - name: Push changes to ${{ inputs.target-branch }}, if exists
-      if: ${{ steps.check-diff.outcome == 'failure' }}
-      shell: bash
-      run: |
-        git reset --hard
-        git stash pop
-        git commit -m'${{ inputs.commit-message }}' -- ${{ inputs.working-directory }}
-        git push
-    - name: Reset branch to ${{ github.ref }}
+
+    - name: Checkout and Pull ${{ github.ref }}
       shell: bash
       run: |
         git checkout ${{ github.ref }}
+        git pull origin ${{ github.ref }}
+      working-directory: ${{ inputs.working-directory }}
+
+    - if: runner.os == 'Windows'
+      shell: bash
+      run: |
+        git config --global core.autocrlf false
+        git config --global core.eol lf
+
+    - if: runner.os != 'Windows'
+      shell: bash
+      run: |
+        git config --global core.autocrlf true
+        git config --global core.eol lf
+
+    - name: Validate changes
+      id: validate
+      shell: bash
+      run: |
+        set +e
+        git add .
+        git diff --quiet --exit-code --cached
+        echo has-changes="$?" >> $GITHUB_OUTPUT
+        set -e
+      working-directory: ${{ inputs.working-directory }}
+
+    - name: Push changes to ${{ github.ref }}
+      if: ${{ fromJSON(steps.validate.outputs.has-changes) == '1' }}
+      shell: bash
+      run: |
+        git config user.name "$(git log -n 1 --pretty=format:%an)"
+        git config user.email "$(git log -n 1 --pretty=format:%ae)"
+        git commit -m '${{ inputs.commit-message }}'
+        git pull origin ${{ github.ref }}
+        git push origin ${{ github.ref }}
+      working-directory: ${{ inputs.working-directory }}
+
+    # - name: Add changes from ${{ inputs.working-directory }}
+    #   shell: bash
+    #   run: |
+    #     git fetch origin
+    #     git config --global user.name "${{ github.actor }}"
+    #     git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+    #     git add --  ${{ inputs.working-directory }}
+    # - name: Create or switch to ${{ inputs.target-branch }}
+    #   if: ${{ inputs.target-branch != '' }}
+    #   shell: bash
+    #   run: |
+    #     git fetch origin
+    #     git stash push --keep-index -- ${{ inputs.working-directory }} 
+    #     if git show-ref --verify --quiet refs/heads/${{ inputs.target-branch }}; then
+    #       echo "Branch ${{ inputs.target-branch }} already exists, switching to it."
+    #       git checkout ${{ inputs.target-branch }} --force
+    #     else
+    #       echo "Branch ${{ inputs.target-branch }} does not exist, creating it."
+    #       git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }} --force || git checkout -b ${{ inputs.target-branch }} --force
+    #     fi
+    #     git stash apply
+    # - name: Check for changes in ${{ inputs.working-directory }}
+    #   shell: bash
+    #   run: |
+    #     git diff --staged --quiet -- ${{ inputs.working-directory }}
+    #   continue-on-error: true
+    #   id: check-diff
+    # - name: Push changes to ${{ inputs.target-branch }}, if exists
+    #   if: ${{ steps.check-diff.outcome == 'success' }}
+    #   shell: bash
+    #   run: |
+    #     echo "No changes to commit in ${{ inputs.working-directory }}"
+    # - name: Push changes to ${{ inputs.target-branch }}, if exists
+    #   if: ${{ steps.check-diff.outcome == 'failure' }}
+    #   shell: bash
+    #   run: |
+    #     git reset --hard
+    #     git stash pop
+    #     git commit -m'${{ inputs.commit-message }}' -- ${{ inputs.working-directory }}
+    #     git push
+    # - name: Reset branch to ${{ github.ref }}
+    #   shell: bash
+    #   run: |
+    #     git checkout ${{ github.ref }}
