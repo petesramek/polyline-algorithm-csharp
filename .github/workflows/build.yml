@@ -69,7 +69,7 @@ jobs:
           run-number: ${{ needs.global-variables.outputs.github-run-number }}
 
   build:
-    name: 'Build source code'
+    name: 'Compile source code'
     needs: [global-variables, versioning]
     runs-on: ubuntu-latest
 
