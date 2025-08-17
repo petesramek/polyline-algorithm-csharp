@@ -171,6 +171,8 @@ jobs:
   publish-package:
     name: 'Publish development package'
     needs: [pack]
+    env:
+      package-artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
     runs-on: ubuntu-latest
     environment: 'Development'
     steps:
@@ -185,7 +187,7 @@ jobs:
       - name: 'Publish package to Azure Artifact feed'
         uses: ./.github/actions/publish-nuget-package
         with:
-          artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
+          artifact-name: ${{ env.package-artifact-name }}
           nuget-feed-url: ${{ secrets.NUGET_FEED_URL }}
           nuget-feed-api-key: ${{ secrets.NUGET_FEED_API_KEY }}
           nuget-feed-server: 'AzureArtifacts'
