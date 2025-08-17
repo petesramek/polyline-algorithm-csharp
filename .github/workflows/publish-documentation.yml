@@ -1,12 +1,13 @@
 name: 'Generate & Publish Documentation'
 
 on:
-  push:
-    branches:
-      - 'release/**'
-      - 'develop/**' # Should be removed after development of this workflow is done
-    paths:
-      - 'api-reference/**'
+  workflow_call:
+  # push:
+  #   branches:
+  #     - 'release/**'
+  #     - 'develop/**' # Should be removed after development of this workflow is done
+  #   paths:
+  #     - 'api-reference/**'
 
 permissions:
   actions: read

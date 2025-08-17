@@ -222,3 +222,6 @@ jobs:
           artifact-name: 'assembly-metadata'
           commit-message: 'Updated docs for version ${{ env.friendly-version }}'
           working-directory: './api-reference/${{ env.friendly-version }}'
+      - name: 'Publish development package'
+        if: ${{ env.is_release && !env.is_preview }}
+        uses: ./.github/workflows/publish-documentation.yml
