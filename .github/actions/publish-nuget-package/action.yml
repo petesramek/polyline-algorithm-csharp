@@ -45,6 +45,11 @@ runs:
       with:
         name: ${{ inputs.package-artifact-name }}
 
+    - run: |
+        ls
+      shell: bash
+      working-directory: ${{ env.working-directory }}
+
     - if: ${{ inputs.nuget-feed-server == 'NuGet' }}
       name: 'Publish package to NuGet'
       shell: bash
