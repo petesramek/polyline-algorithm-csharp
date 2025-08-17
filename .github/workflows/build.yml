@@ -182,14 +182,10 @@ jobs:
         with:
           dotnet-version: ${{ env.dotnet-sdk-version }}
 
-      - name: Download package artifact
-        uses: actions/download-artifact@v5
-        with:
-          name: ${{ needs.pack.outputs.package-artifact-name }}
-
       - name: 'Publish package to Azure Artifact feed'
         uses: ./.github/actions/publish-nuget-package
         with:
+          artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
           nuget-feed-url: ${{ secrets.NUGET_FEED_URL }}
           nuget-feed-api-key: ${{ secrets.NUGET_FEED_API_KEY }}
           nuget-feed-server: 'AzureArtifacts'
