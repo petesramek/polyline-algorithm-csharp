@@ -23,6 +23,18 @@ inputs:
     required: false
     default: ''
 outputs:
+  minor:
+    description: "The minor version."
+    value: ${{ steps.gitversion.outputs.Minor }}
+  major:
+    description: "The major version."
+    value: ${{ steps.gitversion.outputs.Major }}
+  patch:
+    description: "The patch version."
+    value: ${{ inputs.run-number }}
+  build-number:
+    description: "The build number."
+    value: ${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
   friendly-version:
     description: "The friedly version."
     value: ${{ env.friendly-version }}
@@ -85,12 +97,3 @@ runs:
       name: 'Set package version'
       shell: bash
       run: echo "package-version=${{ steps.gitversion.outputs.AssemblySemVer }}.${{ inputs.run-number }}-${{ steps.gitversion.outputs.PreReleaseLabel }}-${{ steps.gitversion.outputs.CommitsSinceVersionSource }}" >> $GITHUB_ENV
-
-    - name: 'Read env'
-      shell: bash
-      run: |
-        echo "Friendly version: ${{ env.friendly-version }}"
-        echo "Assembly version: ${{ env.assembly-version }}"
-        echo "Assembly informational version: ${{ env.assembly-informational-version }}"
-        echo "File version: ${{ env.file-version }}"
-        echo "Package version: ${{ env.package-version }}"

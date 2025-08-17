@@ -7,7 +7,6 @@ on:
       - '**'
     paths:
       - 'src/**'
-      - '.github/**'
 
 permissions:
   actions: read
@@ -48,7 +47,7 @@ jobs:
           echo "is-preview:${{ startsWith(github.ref_name, 'preview') }}"
 
   versioning:
-    name: 'Determine versions'
+    name: 'Determine version'
     needs: [workflow-variables]
     runs-on: ubuntu-latest
 
