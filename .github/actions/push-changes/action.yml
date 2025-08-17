@@ -61,7 +61,7 @@ runs:
       shell: bash
       run: |
         git fetch origin
-        git stash push --keep-index -- ${{ inputs.working-directory }} 
+        git stash push --keep-index
         if git show-ref --verify --quiet refs/heads/${{ inputs.target-branch }}; then
           echo "Branch ${{ inputs.target-branch }} already exists, switching to it."
           git checkout ${{ inputs.target-branch }} --force
@@ -71,7 +71,7 @@ runs:
           git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }} --force || git checkout -b ${{ inputs.target-branch }} --force
           git pull origin ${{ inputs.target-branch }}
         fi
-        git stash apply -- ${{ inputs.working-directory }} 
+        git stash apply
 
     - name: Validate changes
       id: validate
