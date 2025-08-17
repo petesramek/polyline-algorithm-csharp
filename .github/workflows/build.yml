@@ -7,7 +7,6 @@ on:
       - '**'
     paths:
       - 'src/**'
-      - 'api-reference/**'
       - '.github/**'
 
 permissions:
@@ -40,7 +39,7 @@ jobs:
       is-preview: ${{ startsWith(github.ref_name, 'preview') }}
 
     steps:
-      - name: 'Global variables'
+      - name: 'Set workflow variables'
         id: github
         run: |
           echo "github-run-id:${{ github.run_id }}"
@@ -49,7 +48,7 @@ jobs:
           echo "is-preview:${{ startsWith(github.ref_name, 'preview') }}"
 
   versioning:
-    name: Versioning with GitVersion
+    name: 'Determine assembly version'
     needs: [global-variables]
 
     uses: ./.github/workflows/determine-version.yml
@@ -58,7 +57,7 @@ jobs:
       run-number: ${{ needs.global-variables.outputs.github-run-number }}
 
   build:
-    name: Build with .NET
+    name: 'Build source code'
     needs: [global-variables, versioning]
     runs-on: ubuntu-latest
 
@@ -80,7 +79,7 @@ jobs:
           treat-warnins-as-error: ${{ needs.global-variables.outputs.is-release }}
 
   test:
-    name: Test with .NET
+    name: 'Run tests'
     needs: [build]
     runs-on: ubuntu-latest
     steps:
@@ -115,7 +114,7 @@ jobs:
         run: cat ${{ steps.code-coverage-report.outputs.code-coverage-report-file }} >> $GITHUB_STEP_SUMMARY
 
   pack:
-    name: Pack with .NET
+    name: 'Package binaries'
     needs: [versioning, build]
     runs-on: ubuntu-latest
     env:
@@ -153,7 +152,7 @@ jobs:
             ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.snupkg
 
   publish-dev-package:
-    name: 'Publish'
+    name: 'Publish development package'
     uses: ./.github/workflows/release-nuget-package.yml
     needs: [global-variables, pack]
     secrets: inherit
@@ -198,10 +197,10 @@ jobs:
   #       run: cat **/*-report-github.md > $GITHUB_STEP_SUMMARY
   #       working-directory: ${{ runner.temp }}/benchmarks/
 
-  publish-docs:
+  generate-assembly-metadata:
     #if: ${{ needs.global-variables.outputs.is-release && !needs.global-variables.outputs.is-preview }}
-    name: Docs with docfx
-    needs: [global-variables, versioning, build]
+    name: 'Generate assembly metadata for documentation'
+    needs: [global-variables, versioning, build, test, pack]
     env:
       friendly-version: ${{ needs.versioning.outputs.friendly-version }}
       is-release: ${{ needs.global-variables.outputs.is-release }}
@@ -213,12 +212,6 @@ jobs:
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
-      - name: 'testing variables'
-        shell: bash
-        run: |
-          echo "friendly-version: ${{ env.friendly-version }}"
-          echo "is-release: ${{ env.is-release }}"
-          echo "is-preview: ${{ env.is-preview }}"
       - name: 'Generate assembly metadata'
         uses: ./.github/actions/docfx-metadata
         with:
@@ -226,25 +219,9 @@ jobs:
           docfx-json-manifest: './api-reference/assembly-metadata.json'
           temporary-directory: './api-reference/temp'
           output-directory: './api-reference/${{ env.friendly-version }}'
-      - name: 'Push documentation to ${{ github.ref }} branch'
+      - name: 'Push assembly metadata artifact'
         uses: ./.github/actions/push-changes
         with:
           artifact-name: 'assembly-metadata'
-          commit-message: 'Update docs for version ${{ env.friendly-version }}'
+          commit-message: 'Updated docs for version ${{ env.friendly-version }}'
           working-directory: './api-reference/${{ env.friendly-version }}'
-      - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v4
-      - name: 'Generate documentation'
-        uses: ./.github/actions/docfx-build
-        with:
-          artifact-name: 'documentation'
-          docfx-json-manifest: './api-reference/api-reference.json'
-          output-directory: './api-reference/_docs'
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          name: github-pages
-          path: './api-reference/_docs'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
