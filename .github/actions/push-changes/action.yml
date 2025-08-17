@@ -90,7 +90,7 @@ runs:
         git config user.name "$(git log -n 1 --pretty=format:%an)"
         git config user.email "$(git log -n 1 --pretty=format:%ae)"
         git commit -m '${{ inputs.commit-message }}'
-        git pull origin ${{ github.ref }}
+        git pull origin ${{ github.ref }} --rebase
         git push origin ${{ github.ref }}
       working-directory: ${{ inputs.working-directory }}
 
