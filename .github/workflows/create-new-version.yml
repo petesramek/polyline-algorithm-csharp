@@ -27,8 +27,8 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      major: ${{ inputs.version == 'Breaking changes' & fromJson(env.major) + 1 || fromJson(env.major) }}
-      minor: ${{ inputs.version == 'Minor update' & fromJson(env.minor) + 1 || fromJson(env.minor) }}
+      major: ${{ inputs.version == 'Breaking changes' && fromJson(env.major) + 1 || fromJson(env.major) }}
+      minor: ${{ inputs.version == 'Minor update' && fromJson(env.minor) + 1 || fromJson(env.minor) }}
 
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
