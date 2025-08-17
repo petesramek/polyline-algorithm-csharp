@@ -172,6 +172,7 @@ jobs:
     name: 'Publish development package'
     needs: [pack]
     runs-on: ubuntu-latest
+    environment: 'Development'
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
@@ -186,12 +187,12 @@ jobs:
         with:
           name: ${{ needs.pack.outputs.package-artifact-name }}
 
-      - name: 'Publish package to NuGet feed'
+      - name: 'Publish package to Azure Artifact feed'
         uses: ./.github/actions/publish-nuget-package
         with:
           nuget-feed-url: ${{ secrets.NUGET_FEED_URL }}
           nuget-feed-api-key: ${{ secrets.NUGET_FEED_API_KEY }}
-          nuget-feed-type: 'NuGet'
+          nuget-feed-type: 'AzureArtifacts'
           working-directory: ${{ runner.temp }}/${{ env.nuget-packages-directory }}
           dotnet-sdk-version: ${{ env.dotnet-sdk-version }}'
     # with:
