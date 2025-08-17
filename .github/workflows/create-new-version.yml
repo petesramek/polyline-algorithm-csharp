@@ -3,13 +3,14 @@ name: 'Create new version'
 on:
   workflow_dispatch:
     inputs:
-      version:
-        description: 'Select the type of version to create'
+      minor:
+        description: 'Minor version number'
+        type: number
         required: true
-        type: choice
-        options:
-          - 'Breaking changes'
-          - 'Minor update' 
+      major:
+        description: 'Major version number'
+        type: number
+        required: true
 
 permissions:
   actions: read
@@ -24,12 +25,10 @@ concurrency:
 jobs:
   versioning:
     name: 'Determine version'
-    needs: [workflow-variables]
     runs-on: ubuntu-latest
 
     outputs:
-      major: ${{ inputs.version == 'Breaking changes' && fromJson(env.major + 1)  || fromJson(env.major) }}
-      minor: ${{ inputs.version == 'Minor update' && fromJson(env.minor + 1) || fromJson(env.minor) }}
+      is-breaking-change: ${{ inputs.major > steps.versioning.outputs.major }}
 
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
@@ -51,5 +50,6 @@ jobs:
         run: |
           echo "major: ${{ steps.versioning.outputs.major }}"
           echo "minor: ${{ steps.versioning.outputs.minor }}"
+          echo "is-breaking-change: ${{ steps.versioning.outputs.is-breaking-change }}"
 
   
