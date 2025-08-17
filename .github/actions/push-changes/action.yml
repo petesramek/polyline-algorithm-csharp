@@ -38,11 +38,9 @@ runs:
         name: ${{ inputs.artifact-name }}
         path: ${{ inputs.working-directory }}
 
-    - name: Checkout and Pull ${{ github.ref }}
+    - name: Stage changes ${{ github.ref }}
       shell: bash
       run: |
-        git checkout ${{ github.ref }}
-        git pull origin ${{ github.ref }}
         git add .
       working-directory: ${{ inputs.working-directory }}
 
@@ -67,9 +65,11 @@ runs:
         if git show-ref --verify --quiet refs/heads/${{ inputs.target-branch }}; then
           echo "Branch ${{ inputs.target-branch }} already exists, switching to it."
           git checkout ${{ inputs.target-branch }} --force
+          git pull origin ${{ inputs.target-branch }}
         else
           echo "Branch ${{ inputs.target-branch }} does not exist, creating it."
           git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }} --force || git checkout -b ${{ inputs.target-branch }} --force
+          git pull origin ${{ inputs.target-branch }}
         fi
         git stash apply -- ${{ inputs.working-directory }} 
 
