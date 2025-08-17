@@ -44,6 +44,7 @@ runs:
       uses: actions/download-artifact@v5
       with:
         name: ${{ inputs.package-artifact-name }}
+      working-directory: ${{ inputs.working-directory }}
 
     - if: ${{ inputs.nuget-feed-type == 'NuGet' }}
       name: 'Add NuGet source'
