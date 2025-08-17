@@ -206,6 +206,30 @@ jobs:
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
+      - name: 'Overwrite assembly-metadata.json'
+        shell: bash
+        env:
+          source-folder: '../src'
+          project-files: '**/*.csproj'
+          output-folder: ${{ env.friendly-version }}
+        run: |
+          echo "{
+              \"$schema\": \"https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json\",
+              \"metadata\": [
+                {
+                  \"src\": [
+                    {
+                      \"src\": \"{{ env.source-folder }}\",
+                      \"files\": [
+                        \"{{ env.project-files }}\"
+                      ]
+                    }
+                  ],
+                  \"dest\": \"${{ env.output-folder }}\",
+                  \"outputFormat\": \"apiPage\"
+                }
+              ]
+            }" >! ./api-reference/assembly-metadata.json   
       - name: 'Generate assembly metadata'
         uses: ./.github/actions/docfx-metadata
         with:
