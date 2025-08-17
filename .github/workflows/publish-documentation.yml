@@ -1,7 +1,6 @@
 name: 'Generate & Publish Documentation'
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - 'release/**'
@@ -16,7 +15,7 @@ permissions:
 
 concurrency: 
   group: publish-docs-${{ github.head_ref || github.ref }}      
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   global-variables:

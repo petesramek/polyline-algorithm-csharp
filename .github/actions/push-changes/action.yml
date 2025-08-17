@@ -90,7 +90,7 @@ runs:
         git config user.name "$(git log -n 1 --pretty=format:%an)"
         git config user.email "$(git log -n 1 --pretty=format:%ae)"
         git commit -m '${{ inputs.commit-message }}'
-        git push origin ${{ github.head_ref || github.ref }}
+        git push ${{ github.head_ref || github.ref }}
       working-directory: ${{ inputs.working-directory }}
 
     # - name: Add changes from ${{ inputs.working-directory }}
