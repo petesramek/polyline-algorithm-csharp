@@ -28,7 +28,9 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      is-breaking-change: ${{ inputs.major > steps.versioning.outputs.major }}
+      major: ${{ env.major }}
+      minor: ${{ env.minor }}
+      is-breaking-change: ${{ inputs.major > env.major }}
 
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
