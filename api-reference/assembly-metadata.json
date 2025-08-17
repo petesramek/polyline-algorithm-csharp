@@ -10,7 +10,8 @@
           ]
         }
       ],
-      "dest": "temp"
+      "dest": "temp",
+      "outputFormat": "apiPage"
     }
   ]
 }
