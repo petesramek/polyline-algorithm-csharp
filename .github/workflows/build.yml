@@ -127,9 +127,13 @@ jobs:
 
   pack:
     name: 'Package binaries'
-    needs: [build]
+    needs: [versioning, build]
     runs-on: ubuntu-latest
     env:
+      assembly-version: ${{ needs.versioning.outputs.assembly-version }}
+      assembly-informational-version: ${{ needs.versioning.outputs.assembly-informational-version }}
+      file-version: ${{ needs.versioning.outputs.file-version }}
+      package-version: ${{ needs.versioning.outputs.package-version }}
       package-artifact-name: package
     outputs:
         package-artifact-name: ${{ env.package-artifact-name }}
