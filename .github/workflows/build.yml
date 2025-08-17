@@ -151,7 +151,7 @@ jobs:
             ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.nupkg
             ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.snupkg
 
-  publish-dev-package:
+  publish-package:
     name: 'Publish development package'
     uses: ./.github/workflows/release-nuget-package.yml
     needs: [global-variables, pack]
@@ -198,13 +198,10 @@ jobs:
   #       working-directory: ${{ runner.temp }}/benchmarks/
 
   generate-assembly-metadata:
-    #if: ${{ needs.global-variables.outputs.is-release && !needs.global-variables.outputs.is-preview }}
     name: 'Generate assembly metadata for documentation'
-    needs: [global-variables, versioning, publish-dev-package]
+    needs: [versioning, build]
     env:
       friendly-version: ${{ needs.versioning.outputs.friendly-version }}
-      is-release: ${{ needs.global-variables.outputs.is-release }}
-      is-preview: ${{ needs.global-variables.outputs.is-preview }}
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
