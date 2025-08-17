@@ -3,7 +3,7 @@ author: 'Pete Sramek'
 description: 'Publishes packages in working directory to public NuGet feed'
 inputs:
 # Required
-  artifact-name:
+  package-artifact-name:
     description: 'Name of the artifact to download and publish'
     required: true
   nuget-feed-url:
@@ -43,7 +43,7 @@ runs:
     - name: Download package artifact
       uses: actions/download-artifact@v5
       with:
-        name: ${{ needs.pack.outputs.package-artifact-name }}
+        name: ${{ inputs.package-artifact-name }}
 
     - if: ${{ inputs.nuget-feed-type == 'NuGet' }}
       name: 'Add NuGet source'

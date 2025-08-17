@@ -187,7 +187,7 @@ jobs:
       - name: 'Publish package to Azure Artifact feed'
         uses: ./.github/actions/publish-nuget-package
         with:
-          artifact-name: ${{ env.package-artifact-name }}
+          package-artifact-name: ${{ env.package-artifact-name }}
           nuget-feed-url: ${{ secrets.NUGET_FEED_URL }}
           nuget-feed-api-key: ${{ secrets.NUGET_FEED_API_KEY }}
           nuget-feed-server: 'AzureArtifacts'
