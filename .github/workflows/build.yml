@@ -67,6 +67,22 @@ jobs:
         with:
           config-file-path: './.gitversion/version.yml'
           run-number: ${{ needs.global-variables.outputs.github-run-number }}
+      - name: 'Read env'
+        shell: bash
+        run: |
+          echo "Friendly version: ${{ env.friendly-version }}"
+          echo "Assembly version: ${{ env.assembly-version }}"
+          echo "Assembly informational version: ${{ env.assembly-informational-version }}"
+          echo "File version: ${{ env.file-version }}"
+          echo "Package version: ${{ env.package-version }}"
+      - name: 'Read steps outputs'
+        shell: bash
+        run: |
+          echo "Friendly version: ${{ steps.determine-version.outputs.friendly-version }}"
+          echo "Assembly version: ${{ steps.determine-version.outputs.assembly-version }}"
+          echo "Assembly informational version: ${{ steps.determine-version.outputs.assembly-informational-version }}"
+          echo "File version: ${{ steps.determine-version.outputs.file-version }}"
+          echo "Package version: ${{ steps.determine-version.outputs.package-version }}"
 
   build:
     name: 'Build source code'
