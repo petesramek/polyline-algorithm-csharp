@@ -53,11 +53,11 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      friendly-version: ${{ steps.determine-version.outputs.friendly-version }}
-      assembly-version: ${{ steps.determine-version.outputs.assembly-version }}
-      assembly-informational-version: ${{ steps.determine-version.outputs.assembly-informational-version }}
-      file-version: ${{ steps.determine-version.outputs.file-version }}
-      package-version: ${{ steps.determine-version.outputs.package-version }}
+      friendly-version: ${{ env.friendly-version }}
+      assembly-version: ${{ env.assembly-version }}
+      assembly-informational-version: ${{ env.assembly-informational-version }}
+      file-version: ${{ env.outputs.file-version }}
+      package-version: ${{ env.outputs.package-version }}
 
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
