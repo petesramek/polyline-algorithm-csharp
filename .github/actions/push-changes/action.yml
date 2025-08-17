@@ -24,7 +24,7 @@ inputs:
 runs:  
   using: "composite"
   steps:
-    - name: 'Checkout ${{ github.ref }}'
+    - name: 'Checkout ${{ github.head_ref || github.ref }}'
       uses: actions/checkout@v4
 
     - name: Dotnet Setup
@@ -83,15 +83,14 @@ runs:
         set -e
       working-directory: ${{ inputs.working-directory }}
 
-    - name: Push changes to ${{ github.ref }}
+    - name: Push changes to ${{ github.head_ref || github.ref }}
       if: ${{ fromJSON(steps.validate.outputs.has-changes) == '1' }}
       shell: bash
       run: |
         git config user.name "$(git log -n 1 --pretty=format:%an)"
         git config user.email "$(git log -n 1 --pretty=format:%ae)"
         git commit -m '${{ inputs.commit-message }}'
-        git pull origin ${{ github.ref }} --rebase
-        git push origin ${{ github.ref }}
+        git push origin ${{ github.head_ref || github.ref }}
       working-directory: ${{ inputs.working-directory }}
 
     # - name: Add changes from ${{ inputs.working-directory }}

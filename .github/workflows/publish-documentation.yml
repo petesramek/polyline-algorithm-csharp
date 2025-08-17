@@ -15,7 +15,7 @@ permissions:
   id-token: write
 
 concurrency: 
-  group: documentation-${{ github.head_ref || github.ref }}      
+  group: publish-docs-${{ github.head_ref || github.ref }}      
   cancel-in-progress: true
 
 jobs:
@@ -24,10 +24,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      github-run-id: ${{ github.run_id }}
       github-run-number: ${{ github.run_number }}
-      is-release: ${{ startsWith(github.ref_name, 'release') }}
-      is-preview: ${{ startsWith(github.ref_name, 'preview') }}
 
     steps:
       - name: 'Global variables'
