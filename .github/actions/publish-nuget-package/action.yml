@@ -44,7 +44,6 @@ runs:
       uses: actions/download-artifact@v5
       with:
         name: ${{ inputs.package-artifact-name }}
-        path: ${{ inputs.working-directory }}
 
     - if: ${{ inputs.nuget-feed-server == 'NuGet' }}
       name: 'Publish package to NuGet'
