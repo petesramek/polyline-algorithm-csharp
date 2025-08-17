@@ -9,8 +9,8 @@ inputs:
   nuget-feed-api-key:
     description: 'NuGet feed API key'
     required: true
-  nuget-feed-type:
-    description: 'NuGet feed type. Allowed values: ''NuGet'', ''AzureArtifacts'''
+  nuget-feed-server:
+    description: 'NuGet feed server. Allowed values: ''NuGet'', ''AzureArtifacts'''
     required: true
 # Optional
   dotnet-sdk-version:
