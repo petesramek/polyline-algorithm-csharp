@@ -28,8 +28,8 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      major: ${{ inputs.version == 'Breaking changes' && fromJson(env.major) + 1 || fromJson(env.major) }}
-      minor: ${{ inputs.version == 'Minor update' && fromJson(env.minor) + 1 || fromJson(env.minor) }}
+      major: ${{ inputs.version == 'Breaking changes' && fromJson(env.major + 1)  || fromJson(env.major) }}
+      minor: ${{ inputs.version == 'Minor update' && fromJson(env.minor + 1) || fromJson(env.minor) }}
 
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
@@ -42,11 +42,11 @@ jobs:
           run-number: ${{ github.run-number }}
 
   variables:
-    name: 'Set workflow variables'
+    name: 'Read variables'
     runs-on: ubuntu-latest
     needs: [versioning]
     steps:
-      - name: 'Set workflow variables'
+      - name: 'Read variables'
         id: set-variables
         run: |
           echo "major: ${{ steps.versioning.outputs.major }}"
