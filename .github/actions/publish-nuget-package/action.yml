@@ -37,11 +37,6 @@ runs:
     - name: 'Checkout ${{ github.head_ref || github.ref }}'
       uses: actions/checkout@v4
 
-    - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: ${{ inputs.dotnet-sdk-version }}
-
     - if: ${{ inputs.nuget-feed-type == 'NuGet' }}
       name: 'Add NuGet source'
       shell: bash
