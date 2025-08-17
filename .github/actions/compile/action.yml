@@ -1,4 +1,4 @@
-name: 'Build with .NET CLI'
+name: 'Compile with .NET CLI'
 author: 'Pete Sramek'
 description: 'Compiles source code, uploads build artifacts.'
 inputs:

@@ -84,7 +84,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: 'Compile source code'
-        uses: ./.github/actions/build
+        uses: ./.github/actions/compile
         with:
           project-path: '**/PolylineAlgorithm.csproj'
           assembly-version: ${{ env.assembly-version }}
