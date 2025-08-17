@@ -44,7 +44,7 @@ jobs:
       run-number: ${{ needs.global-variables.outputs.github-run-number }}
 
   generate-docs:
-    name: 'Generrate documentation'
+    name: 'Generate documentation'
     needs: [global-variables, versioning]
     runs-on: ubuntu-latest
     env:
