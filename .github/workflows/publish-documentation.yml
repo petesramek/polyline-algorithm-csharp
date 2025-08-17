@@ -1,0 +1,79 @@
+name: 'Genrate & Publish Documentation'
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'release/**'
+      - 'develop/**' # Should be removed after development of this workflow is done
+    paths:
+      - 'api-reference/**'
+
+permissions:
+  actions: read
+  pages: write
+  id-token: write
+
+concurrency: 
+  group: documentation-${{ github.head_ref || github.ref }}      
+  cancel-in-progress: true
+
+jobs:
+  global-variables:
+    name: 'Global variables'
+    runs-on: ubuntu-latest
+
+    outputs:
+      github-run-id: ${{ github.run_id }}
+      github-run-number: ${{ github.run_number }}
+      is-release: ${{ startsWith(github.ref_name, 'release') }}
+      is-preview: ${{ startsWith(github.ref_name, 'preview') }}
+
+    steps:
+      - name: 'Global variables'
+        id: github
+        run: |
+          echo "github-run-number:${{ github.run_number }}"
+
+  versioning:
+    name: Versioning with GitVersion
+    needs: [global-variables]
+    uses: ./.github/workflows/determine-version.yml
+    with:
+      config-file-path: './.gitversion/version.yml'
+      run-number: ${{ needs.global-variables.outputs.github-run-number }}
+
+  generate-docs:
+    name: 'Generrate documentation'
+    needs: [global-variables, versioning]
+    runs-on: ubuntu-latest
+    env:
+      friendly-version: ${{ needs.versioning.outputs.friendly-version }}
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v4
+
+      - name: 'Generate documentation'
+        uses: ./.github/actions/docfx-build
+        with:
+          artifact-name: 'documentation'
+          docfx-json-manifest: './api-reference/api-reference.json'
+          output-directory: './api-reference/_docs'
+
+  publish-docs:
+    name: 'Publish documentation'
+    needs: [global-variables, versioning, build]
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 'Upload artifact'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: github-pages
+          path: './api-reference/_docs'
+
+      - name: 'Deploy to GitHub Pages'
+        id: deployment
+        uses: actions/deploy-pages@v4
