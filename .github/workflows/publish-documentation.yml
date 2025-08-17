@@ -62,7 +62,7 @@ jobs:
 
   publish-docs:
     name: 'Publish documentation'
-    needs: [global-variables, versioning]
+    needs: [global-variables, versioning, generate-docs]
     runs-on: ubuntu-latest
     environment:
       name: github-pages
