@@ -60,6 +60,8 @@ jobs:
       package-version: ${{ steps.determine-version.outputs.package-version }}
 
     steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v4
       - uses: ./.github/actions/determine-version
         id: determine-version
         with:
