@@ -15,6 +15,9 @@ inputs:
   treat-warnins-as-error:
     description: 'Treat warnings as errors.'
     required: true
+  project-path:
+    description: 'Search pattern for source code.'
+    required: true
 # Optional
   dotnet_sdk_version:
     description: '.NET SDK version. Default: ''9.x'''
@@ -28,9 +31,6 @@ inputs:
     description: 'Build platform. Deafult: ''Any CPU'''
     required: false
     default: 'Any CPU'
-  project-path:
-    description: 'Search pattern for source code.'
-    required: true
   upload-build-artifacts:
     description: 'Upload build artifacts, Default: ''true'''
     required: false
