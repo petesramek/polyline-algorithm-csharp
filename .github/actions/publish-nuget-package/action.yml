@@ -51,7 +51,7 @@ runs:
       shell: bash
       run: |
         dotnet nuget push **/*.nupkg --source ${{ vars.NUGET_PACKAGE_FEED_URL }} --api-key ${{ secrets.NUGET_PACKAGE_FEED_API_KEY }}
-      working-directory: ${{ runner.temp }}/${{ env.working-directory }}
+      working-directory: ${{ env.working-directory }}
 
     - if: ${{ inputs.nuget-feed-server == 'AzureArtifacts' }}
       name: 'Publish package to Azure Artifacts'
@@ -59,4 +59,4 @@ runs:
       run: |
         dotnet nuget add source ${{ vars.NUGET_PACKAGE_FEED_URL }} --name nuget-feed --username username --password ${{ secrets.NUGET_PACKAGE_FEED_API_KEY }} --store-password-in-clear-text
         dotnet nuget push **/*.nupkg --source nuget-feed --api-key ${{ secrets.NUGET_PACKAGE_FEED_API_KEY }} --skip-duplicate
-      working-directory: ${{ runner.temp }}/${{ env.working-directory }}
+      working-directory: ${{ env.working-directory }}
