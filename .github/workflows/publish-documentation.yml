@@ -1,4 +1,4 @@
-name: 'Generate & Publish Documentation'
+name: 'Publish Documentation'
 
 on:
   workflow_run:
