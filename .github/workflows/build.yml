@@ -205,9 +205,6 @@ jobs:
       friendly-version: ${{ needs.versioning.outputs.friendly-version }}
       is-release: ${{ needs.global-variables.outputs.is-release }}
       is-preview: ${{ needs.global-variables.outputs.is-preview }}
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
