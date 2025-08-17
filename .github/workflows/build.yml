@@ -200,7 +200,7 @@ jobs:
   generate-assembly-metadata:
     #if: ${{ needs.global-variables.outputs.is-release && !needs.global-variables.outputs.is-preview }}
     name: 'Generate assembly metadata for documentation'
-    needs: [global-variables, versioning, build, test, pack]
+    needs: [global-variables, versioning, publish-dev-package]
     env:
       friendly-version: ${{ needs.versioning.outputs.friendly-version }}
       is-release: ${{ needs.global-variables.outputs.is-release }}
