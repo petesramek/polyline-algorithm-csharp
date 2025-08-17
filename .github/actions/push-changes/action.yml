@@ -38,7 +38,7 @@ runs:
         name: ${{ inputs.artifact-name }}
         path: ${{ inputs.working-directory }}
 
-    - name: Stage changes ${{ github.ref }}
+    - name: Stage changes in ${{ inputs.working-directory }}
       shell: bash
       run: |
         git add .
