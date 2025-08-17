@@ -50,8 +50,8 @@ jobs:
       - name: 'Read variables'
         id: set-variables
         run: |
-          echo "major: ${{ steps.versioning.outputs.major }}"
-          echo "minor: ${{ steps.versioning.outputs.minor }}"
-          echo "is-breaking-change: ${{ steps.versioning.outputs.is-breaking-change }}"
+          echo "major: ${{ jobs.versioning.outputs.major }}"
+          echo "minor: ${{ jobs.versioning.outputs.minor }}"
+          echo "is-breaking-change: ${{ jobs.versioning.outputs.is-breaking-change }}"
 
   
