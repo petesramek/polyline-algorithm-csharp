@@ -170,14 +170,35 @@ jobs:
 
   publish-package:
     name: 'Publish development package'
-    uses: ./.github/workflows/release-nuget-package.yml
-    needs: [workflow-variables, pack]
-    secrets: inherit
-    with:
-      artifact-run-id: ${{ needs.workflow-variables.outputs.github-run-id }}
-      artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
-      nuget-feed-server: 'AzureArtifacts'
-      environment: 'Development'
+    needs: [pack]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+
+      - name: Download package artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ needs.pack.outputs.package-artifact-name }}
+
+      - name: 'Publish package to NuGet feed'
+        uses: ./.github/actions/publish-nuget-package
+        with:
+          nuget-feed-url: ${{ secrets.NUGET_FEED_URL }}
+          nuget-feed-api-key: ${{ secrets.NUGET_FEED_API_KEY }}
+          nuget-feed-type: 'NuGet'
+          working-directory: ${{ runner.temp }}/${{ env.nuget-packages-directory }}
+          dotnet-sdk-version: ${{ env.dotnet-sdk-version }}'
+    # with:
+    #   artifact-run-id: ${{ needs.workflow-variables.outputs.github-run-id }}
+    #   artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
+    #   nuget-feed-server: 'AzureArtifacts'
+    #   environment: 'Development'
 
   # benchmark:
   #   if: ${{ github.env.is_release || vars.BENCHMARKDOTNET_RUN_OVERRIDE == 'true' }}
