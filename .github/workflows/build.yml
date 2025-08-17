@@ -56,8 +56,8 @@ jobs:
       friendly-version: ${{ env.friendly-version }}
       assembly-version: ${{ env.assembly-version }}
       assembly-informational-version: ${{ env.assembly-informational-version }}
-      file-version: ${{ env.outputs.file-version }}
-      package-version: ${{ env.outputs.package-version }}
+      file-version: ${{ env.file-version }}
+      package-version: ${{ env.package-version }}
 
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
@@ -67,22 +67,6 @@ jobs:
         with:
           config-file-path: './.gitversion/version.yml'
           run-number: ${{ needs.global-variables.outputs.github-run-number }}
-      - name: 'Read env'
-        shell: bash
-        run: |
-          echo "Friendly version: ${{ env.friendly-version }}"
-          echo "Assembly version: ${{ env.assembly-version }}"
-          echo "Assembly informational version: ${{ env.assembly-informational-version }}"
-          echo "File version: ${{ env.file-version }}"
-          echo "Package version: ${{ env.package-version }}"
-      - name: 'Read steps outputs'
-        shell: bash
-        run: |
-          echo "Friendly version: ${{ steps.determine-version.outputs.friendly-version }}"
-          echo "Assembly version: ${{ steps.determine-version.outputs.assembly-version }}"
-          echo "Assembly informational version: ${{ steps.determine-version.outputs.assembly-informational-version }}"
-          echo "File version: ${{ steps.determine-version.outputs.file-version }}"
-          echo "Package version: ${{ steps.determine-version.outputs.package-version }}"
 
   build:
     name: 'Build source code'
@@ -97,15 +81,6 @@ jobs:
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
-
-      - name: 'Read env'
-        shell: bash
-        run: |
-          echo "Friendly version: ${{ env.friendly-version }}"
-          echo "Assembly version: ${{ env.assembly-version }}"
-          echo "Assembly informational version: ${{ env.assembly-informational-version }}"
-          echo "File version: ${{ env.file-version }}"
-          echo "Package version: ${{ env.package-version }}"
 
       - uses: ./.github/actions/build
         with:
@@ -152,13 +127,9 @@ jobs:
 
   pack:
     name: 'Package binaries'
-    needs: [versioning, build]
+    needs: [build]
     runs-on: ubuntu-latest
     env:
-      assembly-version: ${{ needs.versioning.outputs.assembly-version }}
-      assembly-informational-version: ${{ needs.versioning.outputs.assembly-informational-version }}
-      file-version: ${{ needs.versioning.outputs.file-version }}
-      package-version: ${{ needs.versioning.outputs.package-version }}
       package-artifact-name: package
     outputs:
         package-artifact-name: ${{ env.package-artifact-name }}
