@@ -60,6 +60,12 @@ jobs:
           docfx-json-manifest: './api-reference/api-reference.json'
           output-directory: './api-reference/_docs'
 
+      - name: 'Upload artifact'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: github-pages
+          path: './api-reference/_docs'
+
   publish-docs:
     name: 'Publish documentation'
     needs: [global-variables, versioning, generate-docs]
@@ -68,11 +74,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: 'Upload artifact'
-        uses: actions/upload-pages-artifact@v3
-        with:
-          name: github-pages
-          path: './api-reference/_docs'
 
       - name: 'Deploy to GitHub Pages'
         id: deployment
