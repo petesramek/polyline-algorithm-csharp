@@ -60,7 +60,7 @@ jobs:
       package-version: ${{ steps.determine-version.outputs.package-version }}
 
     steps:
-      - uses: ./.github/actins/determine-version
+      - uses: ./.github/actions/determine-version
         id: determine-version
         with:
           config-file-path: './.gitversion/version.yml'
