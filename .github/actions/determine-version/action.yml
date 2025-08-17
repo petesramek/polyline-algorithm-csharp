@@ -25,19 +25,19 @@ inputs:
 outputs:
   friendly-version:
     description: "The friedly version."
-    value: ${{ steps.gitversion.outputs.friendly-version }}
+    value: ${{ env.friendly-version }}
   assembly-version:
     description: "The assembly version."
-    value: ${{ steps.gitversion.outputs.assembly-version }}
+    value: ${{ env.assembly-version }}
   assembly-informational-version:
     description: "The assembly informational version."
-    value: ${{ steps.gitversion.outputs.assembly-informational-version }}
+    value: ${{ env.assembly-informational-version }}
   file-version:
     description: "The file version."
-    value: ${{ steps.gitversion.outputs.file-version }}
+    value: ${{ env.file-version }}
   package-version:
     description: "The package version."
-    value: ${{ steps.gitversion.outputs.package-version }}
+    value: ${{ env.package-version }}
     
 runs:  
   using: "composite"
