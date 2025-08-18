@@ -67,7 +67,7 @@ jobs:
         shell: bash
         id: create-pre-release-tag
         run: |
-          if [[ "${{ needs.workflow-variables.outputs.is-release }}" == 'true' ]]; then
+          if [[ '${{ needs.workflow-variables.outputs.is-release }}' == 'true' ]]; then
             echo "pre-release-tag=" >> GITHUB_OUTPUT
           else
             branch_name='${{ github.ref_name }}'
