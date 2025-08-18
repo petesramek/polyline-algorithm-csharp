@@ -48,14 +48,6 @@ jobs:
           echo "is-preview:${{ startsWith(github.ref_name, 'preview') }}"
 
   versioning:
-    name: 'Determine versions'
-    needs: [workflow-variables]
-    uses: './.github/workflows/determine-version.yml'
-    with:
-      config-file-path: './.gitversion/version.yml'
-      run-number: ${{ needs.workflow-variables.outputs.github-run-number }}
-
-  versioning-new:
     name: 'Determine versions (new)'
     needs: [workflow-variables]
     runs-on: ubuntu-latest
