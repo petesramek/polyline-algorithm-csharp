@@ -82,7 +82,7 @@ jobs:
           $(git rev-list --count origin/${{ github.ref_name }} ^origin/main)
           echo $1
           echo $(git rev-list --count origin/${{ github.ref_name }} ^origin/main)
-          echo "build-number=${git rev-list --count origin/${{ github.ref_name }} ^origin/main}" >> GITHUB_OUTPUT
+          echo "build-number=$(git rev-list --count origin/${{ github.ref_name }} ^origin/main)" >> GITHUB_OUTPUT
       - name: ''
         shell: bash
         run: |
