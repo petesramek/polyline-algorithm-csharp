@@ -72,8 +72,9 @@ jobs:
           else
             branch_name='${{ github.ref_name }}'
             echo "${branch_name}"
-            echo "${branch_name}" | tr '/${{ steps.versioning.outputs.version }}' '' | tr '/' '_' | tr '-' '_'
-            echo "pre-release-tag=${branch_name//[/]/_}" >> GITHUB_OUTPUT
+            echo "${branch_name}" | tr '/' '_' | tr '-' '_'
+            echo "pre-release-tag=${branch_name}" | tr '/' '_' | tr '-' '_'
+            echo "pre-release-tag=${branch_name}" | tr '/' '_' | tr '-' '_' >> GITHUB_OUTPUT
           fi
       - name: 'Format version'
         uses: ./.github/actions/format-version
