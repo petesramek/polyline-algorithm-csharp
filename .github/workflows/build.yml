@@ -78,7 +78,7 @@ jobs:
         with:
           version: ${{ steps.versioning.outputs.version }}
           patch: ${{ github.run_number }}
-          build: git rev-list --count ${{ github.ref_name }} ^main
+          build-number: git rev-list --count ${{ github.ref_name }} ^main
           sha: ${{ github.sha }}]
           pre-release-tag: ${{ steps.create-pre-release-tag.outputs.pre-release-tag }}
       - name: 'Read versions'
