@@ -9,8 +9,8 @@ inputs:
   patch:
     description: 'Patch version to append to the formatted version.'
     required: true
-  build:
-    description: 'Commit delta to append to the formatted version.'
+  build-number:
+    description: 'Build number to append to the formatted version.'
     required: true
   sha:
     description: 'Commit SHA to append to the formatted version.'
@@ -56,11 +56,11 @@ runs:
       id: format-version
       run: |
         echo "friendly-version=${{ inputs.version }}" >> $GITHUB_OUTPUT
-        echo "assembly-version=${{ inputs.version }}.${{ inputs.patch }}.${{ inputs.commit-delta }}" >> $GITHUB_OUTPUT
-        echo "assembly-informational-version=${{ inputs.version }}.${{ inputs.patch }}+${{ inputs.commit-sha }}" >> $GITHUB_OUTPUT
-        echo "file-version=${{ inputs.version }}.${{ inputs.patch }}.${{ inputs.commit-delta }}" >> $GITHUB_OUTPUT
+        echo "assembly-version=${{ inputs.version }}.${{ inputs.patch }}.${{ inputs.build-number }}" >> $GITHUB_OUTPUT
+        echo "assembly-informational-version=${{ inputs.version }}.${{ inputs.patch }}+${{ inputs.sha }}" >> $GITHUB_OUTPUT
+        echo "file-version=${{ inputs.version }}.${{ inputs.patch }}.${{ inputs.build-number }}" >> $GITHUB_OUTPUT
         if [ -n "${{ inputs.prerelease-tag }}" ]; then
-          echo "package-version=${{ inputs.version }}.${{ inputs.patch }}-${{ inputs.pre-release-tag }}-${{ inputs.commit-delta }}" >> $GITHUB_OUTPUT
+          echo "package-version=${{ inputs.version }}.${{ inputs.patch }}-${{ inputs.pre-release-tag }}-${{ inputs.build-number }}" >> $GITHUB_OUTPUT
         else
-          echo "package-version=${{ inputs.version }}.${{ inputs.patch }}.${{ inputs.commit-delta }}" >> $GITHUB_OUTPUT
+          echo "package-version=${{ inputs.version }}.${{ inputs.patch }}.${{ inputs.build-number }}" >> $GITHUB_OUTPUT
         fi
