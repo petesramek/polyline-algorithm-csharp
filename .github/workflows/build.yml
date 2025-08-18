@@ -50,24 +50,10 @@ jobs:
   versioning:
     name: 'Determine versions'
     needs: [workflow-variables]
-    runs-on: ubuntu-latest
-
-    outputs:
-      friendly-version: ${{ env.friendly-version }}
-      assembly-version: ${{ env.assembly-version }}
-      assembly-informational-version: ${{ env.assembly-informational-version }}
-      file-version: ${{ env.file-version }}
-      package-version: ${{ env.package-version }}
-
-    steps:
-      - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5
-      - name: 'Determine versions'
-        uses: ./.github/actions/determine-version
-        id: determine-version
-        with:
-          config-file-path: './.gitversion/version.yml'
-          run-number: ${{ needs.workflow-variables.outputs.github-run-number }}
+    uses: './.github/workflows/determine-version.yml'
+    with:
+      config-file-path: './.gitversion/version.yml'
+      run-number: ${{ needs.workflow-variables.outputs.github-run-number }}
 
   build:
     name: 'Compile source code'
