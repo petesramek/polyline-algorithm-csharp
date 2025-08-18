@@ -31,26 +31,26 @@ jobs:
           echo "github-run-number:${{ github.run_number }}"
 
   versioning:
-    name: 'Determine version'
+    name: 'Extract version (new)'
     needs: [workflow-variables]
     runs-on: ubuntu-latest
-
     outputs:
-      friendly-version: ${{ env.friendly-version }}
-      assembly-version: ${{ env.assembly-version }}
-      assembly-informational-version: ${{ env.assembly-informational-version }}
-      file-version: ${{ env.file-version }}
-      package-version: ${{ env.package-version }}
+        friendly-version: ${{ steps.versioning.outputs.friendly-version }}
 
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v4
-      - name: 'Determine versions'
-        uses: ./.github/actions/determine-version
-        id: determine-version
+        uses: actions/checkout@v5
         with:
-          config-file-path: './.gitversion/version.yml'
-          run-number: ${{ needs.workflow-variables.outputs.github-run-number }}
+          fetch-depth: 0 # Ensure the full git history is available for versioning
+      - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+      - name: 'Extract version from branch name'
+        id: versioning
+        uses: './.github/actions/extract-version'
+        with:
+          branch-name: ${{ github.ref_name }}
 
   generate-docs:
     name: 'Generate documentation'
