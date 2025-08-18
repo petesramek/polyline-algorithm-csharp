@@ -82,6 +82,7 @@ jobs:
           build_number="$(git rev-list --count origin/${{ github.ref_name }} ^origin/main)"
           echo $build_number
           echo "build-number='$build_number'"
+          echo "build-number='$(build_number)'"
           echo "build-number='$build_number'" >> GITHUB_OUTPUT
       - name: ''
         shell: bash
