@@ -51,6 +51,12 @@ jobs:
     name: 'Extract version (new)'
     needs: [workflow-variables]
     runs-on: ubuntu-latest
+    outputs:
+        friendly-version: ${{ steps.format-version.outputs.friendly-version }}
+        assembly-version: ${{ steps.format-version.outputs.assembly-version }}
+        assembly-informational-version: ${{ steps.format-version.outputs.assembly-informational-version }}
+        file-version: ${{ steps.format-version.outputs.file-version }}
+        package-version: ${{ steps.format-version.outputs.package-version }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v5
@@ -96,14 +102,6 @@ jobs:
           build-number: ${{ steps.create-build-number.outputs.build-number }}
           sha: ${{ github.sha }}
           pre-release-tag: ${{ steps.create-pre-release-tag.outputs.pre-release-tag }}
-      - name: 'Read versions'
-        shell: bash
-        run: |
-          echo "friendly-version=${{ steps.format-version.outputs.friendly-version }}"
-          echo "assembly-version=${{ steps.format-version.outputs.assembly-version }}"
-          echo "assembly-informational-version=${{ steps.format-version.outputs.assembly-informational-version }}"
-          echo "file-version=${{ steps.format-version.outputs.file-version }}"
-          echo "package-version=${{ steps.format-version.outputs.package-version }}"
 
   build:
     name: 'Compile source code'
