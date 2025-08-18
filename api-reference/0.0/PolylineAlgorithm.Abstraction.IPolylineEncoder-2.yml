@@ -1,0 +1,49 @@
+### YamlMime:ApiPage
+title: Interface IPolylineEncoder<TCoordinate, TPolyline>
+body:
+- api1: Interface IPolylineEncoder<TCoordinate, TPolyline>
+  id: PolylineAlgorithm_Abstraction_IPolylineEncoder_2
+  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/dependabot/nuget/src/PolylineAlgorithm/Microsoft.Extensions.Logging.Abstractions-9.0.8/src/PolylineAlgorithm/Abstraction/IPolylineEncoder.cs#L13
+  metadata:
+    uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2
+    commentId: T:PolylineAlgorithm.Abstraction.IPolylineEncoder`2
+- facts:
+  - name: Namespace
+    value:
+      text: PolylineAlgorithm.Abstraction
+      url: PolylineAlgorithm.Abstraction.html
+  - name: Assembly
+    value: PolylineAlgorithm.dll
+- markdown: Defines a contract for encoding a sequence of geographic coordinates into an encoded polyline string.
+- code: public interface IPolylineEncoder<TCoordinate, TPolyline>
+- h4: Type Parameters
+- parameters:
+  - name: TCoordinate
+  - name: TPolyline
+- h2: Methods
+- api3: Encode(IEnumerable<TCoordinate>)
+  id: PolylineAlgorithm_Abstraction_IPolylineEncoder_2_Encode_System_Collections_Generic_IEnumerable__0__
+  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/dependabot/nuget/src/PolylineAlgorithm/Microsoft.Extensions.Logging.Abstractions-9.0.8/src/PolylineAlgorithm/Abstraction/IPolylineEncoder.cs#L23
+  metadata:
+    uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2.Encode(System.Collections.Generic.IEnumerable{`0})
+    commentId: M:PolylineAlgorithm.Abstraction.IPolylineEncoder`2.Encode(System.Collections.Generic.IEnumerable{`0})
+- markdown: Encodes a sequence of geographic coordinates into an encoded polyline representation.
+- code: TPolyline Encode(IEnumerable<TCoordinate> coordinates)
+- h4: Parameters
+- parameters:
+  - name: coordinates
+    type:
+    - text: IEnumerable
+      url: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+    - <
+    - TCoordinate
+    - '>'
+    description: The collection of <code class="typeparamref">TCoordinate</code> instances to encode into a polyline.
+- h4: Returns
+- parameters:
+  - type:
+    - TPolyline
+    description: A <code class="typeparamref">TPolyline</code> containing the encoded polyline string that represents the input coordinates.
+languageId: csharp
+metadata:
+  description: Defines a contract for encoding a sequence of geographic coordinates into an encoded polyline string.
