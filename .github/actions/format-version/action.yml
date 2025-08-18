@@ -59,7 +59,7 @@ runs:
         echo "assembly-version=${{ inputs.version }}.${{ inputs.patch }}.${{ inputs.build-number }}" >> $GITHUB_OUTPUT
         echo "assembly-informational-version=${{ inputs.version }}.${{ inputs.patch }}+${{ inputs.sha }}" >> $GITHUB_OUTPUT
         echo "file-version=${{ inputs.version }}.${{ inputs.patch }}.${{ inputs.build-number }}" >> $GITHUB_OUTPUT
-        if [ -n "${{ inputs.prerelease-tag }}" ]; then
+        if [ -n "${{ inputs.pre-release-tag }}" ]; then
           echo "package-version=${{ inputs.version }}.${{ inputs.patch }}-${{ inputs.pre-release-tag }}-${{ inputs.build-number }}" >> $GITHUB_OUTPUT
         else
           echo "package-version=${{ inputs.version }}.${{ inputs.patch }}.${{ inputs.build-number }}" >> $GITHUB_OUTPUT
