@@ -9,10 +9,10 @@ inputs:
   patch:
     description: 'Patch version to append to the formatted version.'
     required: true
-  commit-delta:
+  build:
     description: 'Commit delta to append to the formatted version.'
     required: true
-  commit-sha:
+  sha:
     description: 'Commit SHA to append to the formatted version.'
     required: true
   pre-release-tag:
