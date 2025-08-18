@@ -78,6 +78,7 @@ jobs:
         shell: bash
         id: create-build-number
         run: |
+          git fetch --unshallow origin
           echo $(git rev-list HEAD --count --first-parent)
           echo "build-number=$(git rev-list --count ${{ github.ref_name }} ^main)" >> GITHUB_OUTPUT
       - name: 'Format version'
