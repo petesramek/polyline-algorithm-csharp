@@ -37,7 +37,7 @@ jobs:
           echo "promotion-type=${{ inputs.promotion-type }}"
           echo "${{ github.ref_name }}"
       - name: 'Check promotion type'
-        if: ${{ inputs.promotion-type }} != 'release' && ${{ inputs.promotion-type }} != 'preview'
+        if: ${{ inputs.promotion-type }} != 'preview' && ${{ inputs.promotion-type }} != 'release'
         run: |
             echo "Invalid promotion type: ${{ inputs.promotion-type }}"
             exit 1
