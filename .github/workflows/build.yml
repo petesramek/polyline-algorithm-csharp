@@ -77,7 +77,7 @@ jobs:
         id: create-build-number
         run: |
           git fetch origin
-          git switch origin/main
+          git checkout main origin/main
           git switch ${{ github.ref_name }}
           echo $(git rev-list --count ${{ github.ref_name }} ^main)
           echo "build-number=$(git rev-list --count ${{ github.ref_name }} ^main)" >> GITHUB_OUTPUT
