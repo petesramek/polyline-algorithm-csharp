@@ -33,6 +33,7 @@ runs:
       with:
         text: ${{ inputs.branch-name }}
         regex: ${{ inputs.version-format }}
+        flags: 'g'
 
     - name: 'Capture version in branch name'
       shell: bash
