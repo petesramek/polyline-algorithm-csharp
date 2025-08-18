@@ -26,8 +26,15 @@ env:
   is-maintenance-branch: ${{ startsWith(github.ref_name, 'support') }}
 
 jobs:
+  versioning:
+    name: 'Determine assembly version'
+    uses: ./.github/workflows/determine-version.yml
+    with:
+      config-file-path: './.gitversion/version.yml'
+      run-number: ${{ github.run-number }}    
   validate-promotion:
     name: 'Validate promotion'
+    needs: [versioning]
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
@@ -42,18 +49,12 @@ jobs:
         run: |
           echo "Invalid source branch: ${{ github.ref_name }}"
           exit 1
-      - name: 'Determine versions'
-        uses: ./.github/actions/determine-version
-        id: determine-version
-        with:
-          config-file-path: './.gitversion/version.yml'
-          run-number: ${{ github.run-number }}
       - name: 'Validate target branch'
         run: |
           if [[ "${{ inputs.promotion-type }}" == "preview" ]]; then
-            target_branch="preview/${{ steps.determine-version.outputs.friendly-version }}"
+            target_branch="preview/${{ jobs.versioning.outputs.friendly-version }}"
           else
-            target_branch="release/${{ steps.determine-version.outputs.friendly-version }}"
+            target_branch="release/${{ jobs.versioning.outputs.friendly-version }}"
           fi
           
           echo "Target branch: $target_branch"
