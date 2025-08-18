@@ -80,7 +80,7 @@ jobs:
         run: |
           git fetch --unshallow --filter=tree:0
           echo $(git rev-list --count origin/${{ github.ref_name }} ^origin/main)
-          echo "build-number=$(echo $(git rev-list --count origin/${{ github.ref_name }} ^origin/main))" >> GITHUB_OUTPUT
+          echo "build-number=$(git rev-list --count origin/${{ github.ref_name }} ^origin/main)" >> GITHUB_OUTPUT
       - name: ''
         shell: bash
         run: |
