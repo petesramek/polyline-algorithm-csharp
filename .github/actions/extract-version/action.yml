@@ -23,12 +23,6 @@ outputs:
   version:
     description: 'Version extracted from the branch name.'
     value: ${{ steps.regex-match.outputs.match }}
-  major:
-    description: 'Major version extracted from the branch name.'
-    value: ${{ steps.regex-match.outputs.group1 }}
-  minor:
-    description: 'Minor version extracted from the branch name.'
-    value: ${{ steps.regex-match.outputs.group2 }}
     
 runs:  
   using: "composite"

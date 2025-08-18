@@ -26,10 +26,10 @@ inputs:
 
 outputs:
   friendly-version:
-    description: 'Version extracted from the branch name.'
-    value: ${{ steps.regex-match.outputs.match }}
+    description: 'Formatted friendly version.'
+    value: ${{ steps.format-version.outputs.friendly-version }}
   assembly-version:
-    description: 'Formatted version.'
+    description: 'Formatted assembly version.'
     value: ${{ steps.format-version.outputs.assembly-version }}
   assembly-informational-version:
     description: 'Formatted assembly informational version.'
