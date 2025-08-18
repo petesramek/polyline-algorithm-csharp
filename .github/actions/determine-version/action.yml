@@ -32,4 +32,4 @@ runs:
       run: |
         echo "${{ inputs.branch-name }}"
         echo "${{ inputs.version-format }}"
-        echo "${{ inputs.branch-name }} | grep -Po '${{ inputs.version-format }}'"
+        echo "$(${{ inputs.branch-name }} | grep -Po '${{ inputs.version-format }}')"
