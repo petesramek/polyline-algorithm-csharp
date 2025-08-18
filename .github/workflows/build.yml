@@ -54,6 +54,8 @@ jobs:
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # Ensure the full git history is available for versioning
       - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
         uses: actions/setup-dotnet@v4
         with:
@@ -77,8 +79,6 @@ jobs:
         id: create-build-number
         run: |
           echo $(git rev-list HEAD --count --first-parent)
-          echo $(git rev-list --count ${{ github.ref_name }} ^main)
-          echo $(git rev-list --count ${{ github.ref_name }} ^main)
           echo "build-number=$(git rev-list --count ${{ github.ref_name }} ^main)" >> GITHUB_OUTPUT
       - name: 'Format version'
         id: format-version
