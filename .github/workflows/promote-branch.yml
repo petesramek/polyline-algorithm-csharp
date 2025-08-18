@@ -59,4 +59,4 @@ jobs:
           
           echo "Target branch: $target_branch"
 
-          git ls --exit-code --heads ${{ github.repositoryUrl }} refs/heads/$target_branch
+          git ls-remote --exit-code --heads ${{ github.repositoryUrl }} refs/heads/$target_branch
