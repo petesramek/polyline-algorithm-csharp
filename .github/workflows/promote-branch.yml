@@ -52,9 +52,9 @@ jobs:
       - name: 'Validate target branch'
         run: |
           if [[ "${{ inputs.promotion-type }}" == "preview" ]]; then
-            target_branch="preview/${{ jobs.versioning.outputs.friendly-version }}"
+            target_branch="preview/${{ needs.versioning.outputs.friendly-version }}"
           else
-            target_branch="release/${{ jobs.versioning.outputs.friendly-version }}"
+            target_branch="release/${{ needs.versioning.outputs.friendly-version }}"
           fi
           
           echo "Target branch: $target_branch"
