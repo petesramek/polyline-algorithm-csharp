@@ -25,7 +25,7 @@ jobs:
       github-run-number: ${{ github.run_number }}
 
     steps:
-      - name: 'Global variables'
+      - name: 'Workflow variables'
         id: github
         run: |
           echo "github-run-number:${{ github.run_number }}"
@@ -54,7 +54,7 @@ jobs:
 
   generate-docs:
     name: 'Generate documentation'
-    needs: [global-variables, versioning]
+    needs: [workflow-variables, versioning]
     runs-on: ubuntu-latest
     env:
       friendly-version: ${{ needs.versioning.outputs.friendly-version }}
@@ -77,7 +77,7 @@ jobs:
 
   publish-docs:
     name: 'Publish documentation'
-    needs: [global-variables, versioning, generate-docs]
+    needs: [workflow-variables, versioning, generate-docs]
     runs-on: ubuntu-latest
     environment:
       name: github-pages
