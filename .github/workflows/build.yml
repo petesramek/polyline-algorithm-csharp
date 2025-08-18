@@ -48,7 +48,7 @@ jobs:
           echo "is-preview:${{ startsWith(github.ref_name, 'preview') }}"
 
   versioning:
-    name: 'Determine versions (new)'
+    name: 'Extract version (new)'
     needs: [workflow-variables]
     runs-on: ubuntu-latest
     steps:
@@ -58,11 +58,29 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.dotnet-sdk-version }}
-      - name: 'Determine versions'
+      - name: 'Extract version from branch name'
         id: versioning
         uses: './.github/actions/determine-version'
         with:
           branch-name: ${{ github.ref_name }}
+      - name: ''
+        shell: bash
+        id: create-pre-release-tag
+        run: |
+          if [[ "${{ needs.workflow-variables.outputs.is-release }}" == 'true' ]]; then
+            echo "pre-release-tag=" >> GITHUB_OUTPUT
+          else
+            branch_name='${{ github.ref_name }}'
+            echo "pre-release-tag=${branch_name//[/]/_}" >> GITHUB_OUTPUT
+          fi
+      - name: 'Format version'
+        uses: ./.github/actions/format-version
+        with:
+          version: ${{ steps.versioning.outputs.version }}
+          patch: ${{ github.run_number }}
+          build: git rev-list --count ${{ github.ref_name }} ^main
+          sha: ${{ github.sha }}]
+          pre-release-tag: ${{ steps.create-pre-release-tag.outputs.pre-release-tag }}
 
   build:
     name: 'Compile source code'

@@ -1,0 +1,66 @@
+name: 'Format version'
+author: 'Pete Sramek'
+description: 'Formats versions.'
+inputs:
+# Required
+  version:
+    description: 'Version to use.'
+    required: true
+  patch:
+    description: 'Patch version to append to the formatted version.'
+    required: true
+  commit-delta:
+    description: 'Commit delta to append to the formatted version.'
+    required: true
+  commit-sha:
+    description: 'Commit SHA to append to the formatted version.'
+    required: true
+  pre-release-tag:
+    description: 'Pre-release tag to append to the formatted version.'
+    required: true
+# Optional
+  dotnet_sdk_version:
+    description: '.NET SDK version. Default: ''9.x'''
+    required: false
+    default: '9.x'
+
+outputs:
+  friendly-version:
+    description: 'Version extracted from the branch name.'
+    value: ${{ steps.regex-match.outputs.match }}
+  assembly-version:
+    description: 'Formatted version.'
+    value: ${{ steps.format-version.outputs.assembly-version }}
+  assembly-informational-version:
+    description: 'Formatted assembly informational version.'
+    value: ${{ steps.format-version.outputs.assembly-informational-version }}
+  file-version:
+    description: 'Formatted file version.'
+    value: ${{ steps.format-version.outputs.file-version }}
+  package-version:
+    description: 'Formatted package version.'
+    value: ${{ steps.format-version.outputs.package-version }}
+
+runs:  
+  using: "composite"
+  steps:
+    - name: 'Checkout ${{ github.head_ref || github.ref }}'
+      uses: actions/checkout@v5
+    
+    - name: 'Setup .NET ${{ inputs.dotnet_sdk_version }}'
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ inputs.dotnet_sdk_version }}
+    - name: 'Format version'
+      shell: bash
+      id: format-version
+      run: |
+        echo "friendly-version=${{ inputs.version }}" >> $GITHUB_OUTPUT
+        echo "assembly-version=${{ inputs.version }}.${{ inputs.patch }}.${{ inputs.commit-delta }}" >> $GITHUB_OUTPUT
+        echo "assembly-informational-version=${{ inputs.version }}.${{ inputs.patch }}+${{ inputs.commit-sha }}" >> $GITHUB_OUTPUT
+        echo "file-version=${{ inputs.version }}.${{ inputs.patch }}.${{ inputs.commit-delta }}" >> $GITHUB_OUTPUT
+        if [ -n "${{ inputs.prerelease-tag }}" ]; then
+          echo "package-version=${{ inputs.version }}.${{ inputs.patch }}-${{ inputs.pre-release-tag }}-${{ inputs.commit-delta }}" >> $GITHUB_OUTPUT
+        else
+          echo "package-version=${{ inputs.version }}.${{ inputs.patch }}.${{ inputs.commit-delta }}" >> $GITHUB_OUTPUT
+        fi

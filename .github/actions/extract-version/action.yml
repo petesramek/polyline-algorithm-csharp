@@ -1,4 +1,4 @@
-name: 'Determine version'
+name: 'Extract version'
 author: 'Pete Sramek'
 description: 'Determines versions for the build.'
 inputs:
@@ -49,7 +49,7 @@ runs:
         regex: ${{ inputs.version-format }}
         flags: 'g'
 
-    - name: 'Set version output'
+    - name: 'Set extracted version output'
       if: steps.regex-match.outputs.match != ''
       shell: bash
       run: |
