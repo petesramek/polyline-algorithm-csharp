@@ -3,7 +3,7 @@ title: Class InvalidPolylineException
 body:
 - api1: Class InvalidPolylineException
   id: PolylineAlgorithm_InvalidPolylineException
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/InvalidPolylineException.cs#L19
+  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.1/src/PolylineAlgorithm/InvalidPolylineException.cs#L19
   metadata:
     uid: PolylineAlgorithm.InvalidPolylineException
     commentId: T:PolylineAlgorithm.InvalidPolylineException

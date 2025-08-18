@@ -22,7 +22,7 @@ on:
         description: 'Version of GitVersion to use. Default: ''6.1.x''.'
         required: false
         type: string
-        default: '6.1.x'
+        default: '6.4.x'
       prerelease-tag:
         description: 'The prerelease tag to use. Default: ''''.'
         type: string
@@ -60,7 +60,7 @@ jobs:
     steps:
 
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 

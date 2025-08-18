@@ -3,7 +3,7 @@ title: Class AbstractPolylineDecoder<TPolyline, TCoordinate>
 body:
 - api1: Class AbstractPolylineDecoder<TPolyline, TCoordinate>
   id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L23
+  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.1/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L23
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
     commentId: T:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2
@@ -54,7 +54,7 @@ body:
 - h2: Constructors
 - api3: AbstractPolylineDecoder()
   id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2__ctor
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L27
+  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.1/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L27
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor
@@ -62,7 +62,7 @@ body:
 - code: protected AbstractPolylineDecoder()
 - api3: AbstractPolylineDecoder(PolylineEncodingOptions)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2__ctor_PolylineAlgorithm_PolylineEncodingOptions_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L39
+  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.1/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L39
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
@@ -84,7 +84,7 @@ body:
 - h2: Properties
 - api3: Options
   id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_Options
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L46
+  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.1/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L46
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Options
     commentId: P:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Options
@@ -98,7 +98,7 @@ body:
 - h2: Methods
 - api3: CreateCoordinate(double, double)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_CreateCoordinate_System_Double_System_Double_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L153
+  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.1/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L153
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.CreateCoordinate(System.Double,System.Double)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.CreateCoordinate(System.Double,System.Double)
@@ -123,7 +123,7 @@ body:
     description: A coordinate instance of type <code class="typeparamref">TCoordinate</code>.
 - api3: Decode(TPolyline)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_Decode__0_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L66
+  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.1/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L66
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Decode(`0)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Decode(`0)
@@ -160,7 +160,7 @@ body:
     description: Thrown when the polyline format is invalid or malformed at a specific position.
 - api3: GetReadOnlyMemory(TPolyline)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_GetReadOnlyMemory__0_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L139
+  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.1/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L139
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.GetReadOnlyMemory(`0)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.GetReadOnlyMemory(`0)

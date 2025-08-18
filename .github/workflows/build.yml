@@ -2,16 +2,12 @@ name: Build
 
 on:
   workflow_dispatch:
-  pull_request_target:
-    branches:
-      - 'preview/**'
-      - 'release/**'
   push:
     branches:
-      - 'develop/**'
-      - 'support/**'
+      - '**'
     paths:
       - 'src/**'
+      - '.github/**'
 
 permissions:
   actions: read
@@ -52,12 +48,26 @@ jobs:
           echo "is-preview:${{ startsWith(github.ref_name, 'preview') }}"
 
   versioning:
-    name: 'Determine assembly version'
+    name: 'Determine versions'
     needs: [workflow-variables]
-    uses: ./.github/workflows/determine-version.yml
-    with:
-      config-file-path: './.gitversion/version.yml'
-      run-number: ${{ needs.workflow-variables.outputs.github-run-number }}
+    runs-on: ubuntu-latest
+
+    outputs:
+      friendly-version: ${{ env.friendly-version }}
+      assembly-version: ${{ env.assembly-version }}
+      assembly-informational-version: ${{ env.assembly-informational-version }}
+      file-version: ${{ env.file-version }}
+      package-version: ${{ env.package-version }}
+
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v5
+      - name: 'Determine versions'
+        uses: ./.github/actions/determine-version
+        id: determine-version
+        with:
+          config-file-path: './.gitversion/version.yml'
+          run-number: ${{ needs.workflow-variables.outputs.github-run-number }}
 
   build:
     name: 'Compile source code'
@@ -71,7 +81,7 @@ jobs:
 
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 'Compile source code'
         uses: ./.github/actions/compile
@@ -88,7 +98,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 'Setup .NET'
         uses: actions/setup-dotnet@v4
@@ -134,7 +144,7 @@ jobs:
         package-artifact-name: ${{ env.package-artifact-name }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -167,7 +177,7 @@ jobs:
     environment: 'Development'
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -194,7 +204,7 @@ jobs:
   #   runs-on: ${{ matrix.os }}
   #   steps:
   #     - name: 'Checkout ${{ github.head_ref || github.ref }}'
-  #       uses: actions/checkout@v4
+  #       uses: actions/checkout@v5
   #     - name: Install .NET SDK
   #       uses: actions/setup-dotnet@v4
   #       with:
@@ -227,7 +237,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v4 
+        uses: actions/checkout@v5 
       - name: 'Generate assembly metadata'
         uses: ./.github/actions/docfx-metadata
         with:
