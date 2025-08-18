@@ -72,7 +72,7 @@ jobs:
           if [[ '${{ needs.workflow-variables.outputs.is-release }}' == 'true' ]]; then
             echo "pre-release-tag=" >> GITHUB_OUTPUT
           else
-            echo "pre-release-tag='${{ github.ref_name }} | tr '/' '.' | tr '-' '.'| tr '_' '.''" >> GITHUB_OUTPUT
+            echo "pre-release-tag=${{ github.ref_name }} | tr '/' '.' | tr '-' '.'| tr '_' '.'" >> GITHUB_OUTPUT
           fi
       - name: ''
         shell: bash
