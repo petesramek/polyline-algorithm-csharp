@@ -17,8 +17,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  global-variables:
-    name: 'Global variables'
+  workflow-variables:
+    name: 'Workflow variables'
     runs-on: ubuntu-latest
 
     outputs:
