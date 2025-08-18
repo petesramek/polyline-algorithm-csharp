@@ -76,7 +76,7 @@ jobs:
         shell: bash
         id: create-build-number
         run: |
-          git checkout main
+          git checkout -b main
           echo $(git rev-list --count ${{ github.ref_name }} ^main)
           echo "build-number=$(git rev-list --count ${{ github.ref_name }} ^main)" >> GITHUB_OUTPUT
       - name: 'Format version'
