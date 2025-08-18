@@ -44,7 +44,7 @@ jobs:
 
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: 'Determine versions'
         uses: ./.github/actions/determine-version
         id: determine-version
