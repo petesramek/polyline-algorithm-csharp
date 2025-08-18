@@ -19,7 +19,7 @@ on:
         required: false
         default: '9.0.x'
       gitversion-version:
-        description: 'Version of GitVersion to use. Default: ''6.4.x''.'
+        description: 'Version of GitVersion to use. Default: ''6.1.x''.'
         required: false
         type: string
         default: '6.4.x'
