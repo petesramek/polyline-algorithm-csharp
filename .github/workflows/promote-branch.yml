@@ -52,11 +52,11 @@ jobs:
       - name: 'Validate target branch'
         run: |
           if [[ "${{ inputs.promotion-type }}" == "preview" ]]; then
-            target_branch="preview/${{ needs.versioning.outputs.friendly-version }}"
+            echo "target-branch=preview/${{ needs.versioning.outputs.friendly-version }}" >> $GITHUB_ENV
           else
-            target_branch="release/${{ needs.versioning.outputs.friendly-version }}"
+            echo "target-branch=release/${{ needs.versioning.outputs.friendly-version }}" >> $GITHUB_ENV
           fi
           
-          echo "Target branch: $target_branch"
+          echo "Target branch: ${{ env.target-branch }}"
 
-          git ls-remote --exit-code --heads ${{ github.repositoryUrl }} refs/heads/$target_branch
+          git ls-remote --exit-code --heads ${{ github.repositoryUrl }} refs/heads/${{ env.target-branch }}
