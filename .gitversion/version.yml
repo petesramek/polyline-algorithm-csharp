@@ -41,6 +41,7 @@ branches:
     regex: ^develop\/([vV]?\d+.\d+(\.\d+){0,1})$
     tracks-release-branches: true
     source-branches:
+    - main
     - feature
   preview:
     mode: ManualDeployment

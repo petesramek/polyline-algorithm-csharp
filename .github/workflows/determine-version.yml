@@ -19,10 +19,10 @@ on:
         required: false
         default: '9.0.x'
       gitversion-version:
-        description: 'Version of GitVersion to use. Default: ''6.1.x''.'
+        description: 'Version of GitVersion to use. Default: ''6.4.x''.'
         required: false
         type: string
-        default: '6.1.x'
+        default: '6.4.x'
       prerelease-tag:
         description: 'The prerelease tag to use. Default: ''''.'
         type: string
