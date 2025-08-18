@@ -1,0 +1,44 @@
+name: 'Promote branch'
+
+on:
+  workflow_dispatch:
+   inputs:
+     promotion-type:
+       type: choice
+       options:
+         - 'release'
+         - 'preview'
+       description: 'Target branch to create.'
+       required: true
+
+permissions:
+  actions: read
+  id-token: write
+  contents: write
+
+concurrency:
+    group: 'promote-branch-${{ inputs.promotion-type }}-${{ github.head_ref || github.ref }}'
+    cancel-in-progress: false
+
+env:
+  dotnet-sdk-version: '9.x'
+  is-development-branch: ${{ startsWith(github.ref_name, 'develop') }}
+  is-maintenance-branch: ${{ startsWith(github.ref_name, 'support') }}
+
+jobs:
+  validate-promotion:
+    name: 'Validate promotion'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Check promotion type'
+        run: |
+          if [[ "${{ inputs.promotion-type }}" != "release" && "${{ inputs.promotion-type }}" != "preview" ]]; then
+            echo "Invalid promotion type: ${{ inputs.promotion-type }}"
+            exit 1
+          fi
+      - name: 'Check source branch'
+        run: |
+          if [[ "!${{ env.isdevelopment-branch }} || !${{ env.is-maintenance-branch }}" ]]; then
+            echo "Source branch is required."
+            exit 1
+          fi
