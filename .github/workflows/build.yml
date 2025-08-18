@@ -70,11 +70,7 @@ jobs:
           if [[ '${{ needs.workflow-variables.outputs.is-release }}' == 'true' ]]; then
             echo "pre-release-tag=" >> GITHUB_OUTPUT
           else
-            branch_name='${{ github.ref_name }}'
-            echo "${branch_name}"
-            echo "${branch_name}" | tr '/' '.' | tr '-' '.'| tr '_' '.'
-            echo "pre-release-tag=${branch_name} | tr '/' '.' | tr '-' '.'| tr '_' '.'"
-            echo "pre-release-tag=${branch_name} | tr '/' '.' | tr '-' '.'| tr '_' '.'" >> GITHUB_OUTPUT
+            echo "pre-release-tag='${{ github.ref_name }} | tr '/' '.' | tr '-' '.'| tr '_' '.'" >> GITHUB_OUTPUT
           fi
       - name: 'Format version'
         uses: ./.github/actions/format-version
