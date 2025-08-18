@@ -57,7 +57,7 @@ jobs:
     uses: ./.github/workflows/determine-version.yml
     with:
       config-file-path: './.gitversion/version.yml'
-      run-number: ${{ needs.global-variables.outputs.github-run-number }}
+      run-number: ${{ needs.workflow-variables.outputs.github-run-number }}
 
   build:
     name: 'Compile source code'
