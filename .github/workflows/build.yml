@@ -81,6 +81,10 @@ jobs:
           git fetch --unshallow --filter=tree:0
           echo $(git rev-list --count origin/${{ github.ref_name }} ^origin/main)
           echo "build-number=$(git rev-list --count origin/${{ github.ref_name }} ^origin/main)" >> GITHUB_OUTPUT
+      - name: ''
+        shell: bash
+        run: |
+          echo "${{ steps.create-build-number.outputs.build-number }}"
       - name: 'Format version'
         id: format-version
         uses: ./.github/actions/format-version
