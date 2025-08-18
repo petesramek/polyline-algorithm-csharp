@@ -70,7 +70,7 @@ jobs:
         id: create-pre-release-tag
         run: |
           if [[ '${{ needs.workflow-variables.outputs.is-release }}' == 'true' ]]; then
-            echo "pre-release-tag=''" >> $GITHUB_OUTPUT
+            echo "pre-release-tag=" >> $GITHUB_OUTPUT
           else
             echo "pre-release-tag=${{ github.ref_name }} | tr '/' '.' | tr '-' '.'| tr '_' '.'" >> $GITHUB_OUTPUT
           fi
@@ -84,7 +84,7 @@ jobs:
         shell: bash
         run: |
           echo "${{ steps.create-build-number.outputs.build-number }}"
-          echo "${{ toJSON(steps.create-build-number.outputs.build-number) }}"
+          echo "${{ steps.create-pre-release-tag.outputs.pre-release-tag }}"
       - name: 'Format version'
         id: format-version
         uses: ./.github/actions/format-version
