@@ -76,6 +76,7 @@ jobs:
         shell: bash
         id: create-build-number
         run: |
+          echo $(git rev-list --count origin/${{ github.ref_name }} ^origin/main)
           git fetch origin
           git checkout -b main origin/main
           git switch ${{ github.ref_name }}
@@ -87,7 +88,7 @@ jobs:
         with:
           version: ${{ steps.versioning.outputs.version }}
           patch: ${{ github.run_number }}
-          build-number: $( git rev-list --count ${{ github.ref_name }} ^main )
+          build-number: $( git rev-list --count origin/${{ github.ref_name }} ^origin/main )
           sha: ${{ github.sha }}]
           pre-release-tag: ${{ steps.create-pre-release-tag.outputs.pre-release-tag }}
       - name: 'Read versions'
