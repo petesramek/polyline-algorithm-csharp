@@ -26,10 +26,19 @@ runs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ inputs.dotnet_sdk_version }}
+    
+    - name: 'what what'
+      id: regex-match
+      uses: actions-ecosystem/action-regex-match@v2
+      with:
+        text: ${{ inputs.branch-name }}
+        regex: ${{ inputs.version-format }}
 
     - name: 'Capture version in branch name'
       shell: bash
       run: |
         echo "${{ inputs.branch-name }}"
         echo "${{ inputs.version-format }}"
-        echo "$(${{ inputs.branch-name }} | grep -Po '${{ inputs.version-format }}')"
+        echo "${{ steps.regex-match.outputs.match }}"
+        echo "${{ steps.regex-match.outputs.group1 }}"
+        echo "${{ steps.regex-match.outputs.group2 }}"
