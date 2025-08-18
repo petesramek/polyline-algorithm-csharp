@@ -30,6 +30,12 @@ jobs:
     name: 'Validate promotion'
     runs-on: ubuntu-latest
     steps:
+      - name: 'Read env variables'
+        run: |
+          echo "isdevelopment-branch=${{ env.is-development-branch }}"
+          echo "is-maintenance-branch=${{ env.is-maintenance-branch }}"
+          echo "promotion-type=${{ inputs.promotion-type }}"
+          echo "${{ github.ref_name }}"
       - name: 'Check promotion type'
         run: |
           if [[ "${{ inputs.promotion-type }}" != "release" && "${{ inputs.promotion-type }}" != "preview" ]]; then
