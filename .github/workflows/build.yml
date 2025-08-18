@@ -83,7 +83,7 @@ jobs:
           echo $build_number
           echo "build-number='$build_number'"
           echo "build-number='$(build_number)'"
-          echo "build-number='$build_number'" >> GITHUB_OUTPUT
+          echo "build-number='$(build_number)'" >> GITHUB_OUTPUT
       - name: ''
         shell: bash
         run: |
