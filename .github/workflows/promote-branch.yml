@@ -38,13 +38,13 @@ jobs:
           echo "${{ github.ref_name }}"
       - name: 'Check promotion type'
         run: |
-          if [[ "${{ inputs.promotion-type }} != 'release' || ${{ inputs.promotion-type }} != 'preview'" ]]; then
+          if [[ "${{ inputs.promotion-type }}" != 'release' || "${{ inputs.promotion-type }}" != 'preview' ]]; then
             echo "Invalid promotion type: ${{ inputs.promotion-type }}"
             exit 1
           fi
       - name: 'Check source branch'
         run: |
-          if [[ "${{ env.isdevelopment-branch }} == 'false' && ${{ env.is-maintenance-branch }} == 'false'" ]]; then
+          if [[ ${{ env.isdevelopment-branch }} == 'false' && ${{ env.is-maintenance-branch }} == 'false' ]]; then
             echo "Invalid source branch: ${{ github.ref_name }}"
             exit 1
           fi
