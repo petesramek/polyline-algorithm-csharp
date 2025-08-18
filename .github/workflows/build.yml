@@ -80,6 +80,7 @@ jobs:
         run: |
           git fetch --unshallow origin
           echo $(git rev-list HEAD --count --first-parent)
+          echo $(git rev-list --count ${{ github.ref_name }} ^main)
           echo "build-number=$(git rev-list --count ${{ github.ref_name }} ^main)" >> GITHUB_OUTPUT
       - name: 'Format version'
         id: format-version
