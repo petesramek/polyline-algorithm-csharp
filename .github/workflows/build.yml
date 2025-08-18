@@ -85,6 +85,7 @@ jobs:
         shell: bash
         run: |
           echo "${{ steps.create-build-number.outputs.build-number }}"
+          echo "${{ toJSON(steps.create-build-number.outputs.build-number) }}"
       - name: 'Format version'
         id: format-version
         uses: ./.github/actions/format-version
