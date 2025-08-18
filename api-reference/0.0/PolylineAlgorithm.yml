@@ -1,0 +1,71 @@
+### YamlMime:ApiPage
+title: Namespace PolylineAlgorithm
+body:
+- api1: Namespace PolylineAlgorithm
+  id: PolylineAlgorithm
+  metadata:
+    uid: PolylineAlgorithm
+    commentId: N:PolylineAlgorithm
+- h3: Namespaces
+- parameters:
+  - type:
+      text: PolylineAlgorithm.Abstraction
+      url: PolylineAlgorithm.Abstraction.html
+  - type:
+      text: PolylineAlgorithm.Extensions
+      url: PolylineAlgorithm.Extensions.html
+- h3: Classes
+- parameters:
+  - type:
+      text: InvalidPolylineException
+      url: PolylineAlgorithm.InvalidPolylineException.html
+    description: Exception thrown when a polyline is determined to be malformed or invalid during processing.
+  - type:
+      text: PolylineDecoder
+      url: PolylineAlgorithm.PolylineDecoder.html
+    description: >-
+      Decodes encoded polyline strings into sequences of geographic coordinates.
+
+      Implements the <xref href="PolylineAlgorithm.Abstraction.IPolylineDecoder%602" data-throw-if-not-resolved="false"></xref> interface.
+  - type:
+      text: PolylineEncoder
+      url: PolylineAlgorithm.PolylineEncoder.html
+    description: >-
+      Provides functionality to encode a collection of geographic coordinates into an encoded polyline string.
+
+      Implements the <xref href="PolylineAlgorithm.Abstraction.IPolylineEncoder%602" data-throw-if-not-resolved="false"></xref> interface.
+  - type:
+      text: PolylineEncoding
+      url: PolylineAlgorithm.PolylineEncoding.html
+    description: >-
+      Provides methods for encoding and decoding polyline data, as well as utilities for normalizing and de-normalizing
+
+      geographic coordinate values.
+  - type:
+      text: PolylineEncodingOptions
+      url: PolylineAlgorithm.PolylineEncodingOptions.html
+    description: Options for configuring polyline encoding.
+  - type:
+      text: PolylineEncodingOptionsBuilder
+      url: PolylineAlgorithm.PolylineEncodingOptionsBuilder.html
+    description: Provides a builder for configuring options for polyline encoding operations.
+- h3: Structs
+- parameters:
+  - type:
+      text: Coordinate
+      url: PolylineAlgorithm.Coordinate.html
+    description: Represents a geographic coordinate as a pair of latitude and longitude values.
+  - type:
+      text: Polyline
+      url: PolylineAlgorithm.Polyline.html
+    description: >-
+      Represents an immutable, read-only encoded polyline string.
+
+      Provides methods for creation, inspection, and conversion of polyline data from various character sources.
+- h3: Enums
+- parameters:
+  - type:
+      text: CoordinateValueType
+      url: PolylineAlgorithm.CoordinateValueType.html
+    description: Represents the type of a geographic coordinate value.
+languageId: csharp
