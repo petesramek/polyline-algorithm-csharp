@@ -71,7 +71,7 @@ jobs:
         uses: './.github/actions/extract-version'
         with:
           branch-name: ${{ github.ref_name }}
-      - name: ''
+      - name: 'Create pre-release tag'
         shell: bash
         id: create-pre-release-tag
         run: |
@@ -81,18 +81,13 @@ jobs:
             pre_release_tag=$(echo ${{ github.ref_name }} | tr '/' '.' | tr '-' '.'| tr '_' '.')
             echo "pre-release-tag=$pre_release_tag" >> $GITHUB_OUTPUT
           fi
-      - name: ''
+      - name: 'Create build number'
         shell: bash
         id: create-build-number
         run: |
           git fetch --unshallow --filter=tree:0
           build_number=$(git rev-list --count origin/${{ github.ref_name }} ^origin/main)
           echo "build-number=$build_number" >> $GITHUB_OUTPUT
-      - name: ''
-        shell: bash
-        run: |
-          echo "${{ steps.create-build-number.outputs.build-number }}"
-          echo "${{ steps.create-pre-release-tag.outputs.pre-release-tag }}"
       - name: 'Format version'
         id: format-version
         uses: ./.github/actions/format-version
