@@ -3,12 +3,6 @@ author: 'Pete Sramek'
 description: 'Push changes to a specified branch in the repository.'
 inputs:
   # Required
-  artifact-name:
-    description: 'Name of the artifact to download before pushing changes.'
-    required: true
-  working-directory:
-    description: 'The working directory where the changes will be pushed from.'
-    required: true
   commit-message:
     description: 'The commit message to use when pushing changes.'
     required: true
@@ -17,9 +11,18 @@ inputs:
     description: '.NET SDK version. Default: 9.x'
     required: false
     default: '9.x'
-  target-branch:
-    description: 'The branch to push changes to.'
+  artifact-name:
+    description: 'Name of the artifact to download before pushing changes. Default: '''''
     required: false
+    default: ''
+  working-directory:
+    description: 'The working directory where the changes will be pushed from. Default ''.'''
+    required: false
+    default: '.'
+  target-branch:
+    description: 'The branch to push changes to.. Default: '''''
+    required: false
+    default: ''
 
 runs:  
   using: "composite"
@@ -33,6 +36,7 @@ runs:
         dotnet-version: ${{ env.dotnet-sdk-version }}
 
     - name: Download a single artifact
+      if: ${{ inputs.artifact-name != '' }}
       uses: actions/download-artifact@v4
       with:
         name: ${{ inputs.artifact-name }}
@@ -93,48 +97,3 @@ runs:
         git pull --rebase origin ${{ github.head_ref || github.ref }}
         git push
       working-directory: ${{ inputs.working-directory }}
-
-    # - name: Add changes from ${{ inputs.working-directory }}
-    #   shell: bash
-    #   run: |
-    #     git fetch origin
-    #     git config --global user.name "${{ github.actor }}"
-    #     git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-    #     git add --  ${{ inputs.working-directory }}
-    # - name: Create or switch to ${{ inputs.target-branch }}
-    #   if: ${{ inputs.target-branch != '' }}
-    #   shell: bash
-    #   run: |
-    #     git fetch origin
-    #     git stash push --keep-index -- ${{ inputs.working-directory }} 
-    #     if git show-ref --verify --quiet refs/heads/${{ inputs.target-branch }}; then
-    #       echo "Branch ${{ inputs.target-branch }} already exists, switching to it."
-    #       git checkout ${{ inputs.target-branch }} --force
-    #     else
-    #       echo "Branch ${{ inputs.target-branch }} does not exist, creating it."
-    #       git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }} --force || git checkout -b ${{ inputs.target-branch }} --force
-    #     fi
-    #     git stash apply
-    # - name: Check for changes in ${{ inputs.working-directory }}
-    #   shell: bash
-    #   run: |
-    #     git diff --staged --quiet -- ${{ inputs.working-directory }}
-    #   continue-on-error: true
-    #   id: check-diff
-    # - name: Push changes to ${{ inputs.target-branch }}, if exists
-    #   if: ${{ steps.check-diff.outcome == 'success' }}
-    #   shell: bash
-    #   run: |
-    #     echo "No changes to commit in ${{ inputs.working-directory }}"
-    # - name: Push changes to ${{ inputs.target-branch }}, if exists
-    #   if: ${{ steps.check-diff.outcome == 'failure' }}
-    #   shell: bash
-    #   run: |
-    #     git reset --hard
-    #     git stash pop
-    #     git commit -m'${{ inputs.commit-message }}' -- ${{ inputs.working-directory }}
-    #     git push
-    # - name: Reset branch to ${{ github.ref }}
-    #   shell: bash
-    #   run: |
-    #     git checkout ${{ github.ref }}

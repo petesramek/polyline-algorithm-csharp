@@ -38,40 +38,12 @@ jobs:
 
     - name: Format with .NET CLI
       run: |
-        git checkout ${{ github.head_ref || github.ref }}
-        git pull origin ${{ github.head_ref || github.ref }}
         dotnet format whitespace
         dotnet format style
         dotnet format analyzers --diagnostics IDE0005 IDE0073
       working-directory: ${{ github.workspace }}
-
-    - if: runner.os == 'Windows'
-      run: |
-        git config --global core.autocrlf false
-        git config --global core.eol lf
-
-    - if: runner.os != 'Windows'
-      run: |
-        git config --global core.autocrlf true
-        git config --global core.eol lf
-
-    - name: Validate with .NET ${{ vars.DOTNET_SDK_VERSION }}
-      id: validate
-      shell: bash
-      run: |
-        set +e
-        git add .
-        git diff --quiet --exit-code --cached
-        echo has-changes="$?" >> $GITHUB_OUTPUT
-        set -e
-      working-directory: ${{ github.workspace }}
-
-    - name: Push changes to ${{ github.head_ref || github.ref }}
-      if: ${{ fromJSON(steps.validate.outputs.has-changes) == '1' }}
-      run: |
-        git config user.name "$(git log -n 1 --pretty=format:%an)"
-        git config user.email "$(git log -n 1 --pretty=format:%ae)"
-        git commit -m "applied file header rule"
-        git pull origin ${{ github.head_ref || github.ref }}
-        git push origin ${{ github.head_ref || github.ref }}
-      working-directory: ${{ github.workspace }}
+    
+    - name: 'Push changes'
+      uses: './.github/actions/push-changes'
+      with:
+        commit-message: 'Formatted csharp files'
