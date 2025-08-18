@@ -6,9 +6,9 @@ on:
      promotion-type:
        type: choice
        options:
-         - 'release'
          - 'preview'
-       description: 'Target branch to create.'
+         - 'release'
+       description: 'Promotion type.'
        required: true
 
 permissions:
@@ -26,19 +26,37 @@ env:
   is-maintenance-branch: ${{ startsWith(github.ref_name, 'support') }}
 
 jobs:
+  versioning:
+    name: 'Determine assembly version'
+    uses: ./.github/workflows/determine-version.yml
+    with:
+      config-file-path: './.gitversion/version.yml'
+      run-number: ${{ github.run-number }}    
   validate-promotion:
     name: 'Validate promotion'
+    needs: [versioning]
     runs-on: ubuntu-latest
     steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v4
       - name: 'Check promotion type'
+        if: ${{ (inputs.promotion-type != 'release') && (inputs.promotion-type != 'preview') }}
         run: |
-          if [[ "${{ inputs.promotion-type }}" != "release" && "${{ inputs.promotion-type }}" != "preview" ]]; then
-            echo "Invalid promotion type: ${{ inputs.promotion-type }}"
-            exit 1
-          fi
+          echo "Invalid promotion type: ${{ inputs.promotion-type }}"
+          exit 1
       - name: 'Check source branch'
+        if: ${{ (env.isdevelopment-branch == 'false') && (env.is-maintenance-branch == 'false') }}
         run: |
-          if [[ "!${{ env.isdevelopment-branch }} || !${{ env.is-maintenance-branch }}" ]]; then
-            echo "Source branch is required."
-            exit 1
+          echo "Invalid source branch: ${{ github.ref_name }}"
+          exit 1
+      - name: 'Validate target branch'
+        run: |
+          if [[ "${{ inputs.promotion-type }}" == "preview" ]]; then
+            echo "target-branch=preview/${{ needs.versioning.outputs.friendly-version }}" >> $GITHUB_ENV
+          else
+            echo "target-branch=release/${{ needs.versioning.outputs.friendly-version }}" >> $GITHUB_ENV
           fi
+          
+          echo "Target branch: ${{ env.target-branch }}"
+
+          git ls-remote --exit-code --heads origin ${{ env.target-branch }}
