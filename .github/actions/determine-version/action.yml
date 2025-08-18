@@ -3,15 +3,14 @@ author: 'Pete Sramek'
 description: 'Determines versions for the build.'
 inputs:
 # Required
+  branch-name:
+    description: 'Branch name.'
+    required: true
 # Optional
   version-format:
     description: 'Version format. Default: ''(<Major>?/d+).(<Minor>?/d+)'''
     required: false
     default: '(<Major>?/d+).(<Minor>?/d+)'
-  branch-name:
-    description: 'Branch name. Default: ''${{ github.ref_name }}'''
-    required: false
-    default: '${{ github.ref_name }}'
   dotnet_sdk_version:
     description: '.NET SDK version. Default: ''9.x'''
     required: false
