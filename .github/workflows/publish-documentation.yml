@@ -46,7 +46,7 @@ jobs:
       friendly-version: ${{ needs.versioning.outputs.friendly-version }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 'Generate documentation'
         uses: ./.github/actions/docfx-build

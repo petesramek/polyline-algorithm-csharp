@@ -38,7 +38,7 @@ runs:
           exit 1
 
     - name: 'Checkout ${{ github.head_ref || github.ref }}'
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Download package artifact
       uses: actions/download-artifact@v5
