@@ -6,8 +6,8 @@ on:
      promotion-type:
        type: choice
        options:
-         - 'release'
          - 'preview'
+         - 'release'
        description: 'Target branch to create.'
        required: true
 
@@ -44,7 +44,7 @@ jobs:
           fi
       - name: 'Check source branch'
         run: |
-          if [[ "!${{ env.isdevelopment-branch }} || !${{ env.is-maintenance-branch }}" ]]; then
+          if [[ "!${{ env.is-development-branch }} || !${{ env.is-maintenance-branch }}" ]]; then
             echo "Source branch is required."
             exit 1
           fi
