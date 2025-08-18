@@ -7,14 +7,28 @@ inputs:
     description: 'Branch name.'
     required: true
 # Optional
+  default-version:
+    description: 'Default version to use if no match is found. Default: ''0.0'''
+    required: false
+    default: '0.0'
   version-format:
-    description: 'Version format. Default: ''(<Major>?/d+).(<Minor>?/d+)'''
+    description: 'Version format. Default: ''(\d+).(\d+)'''
     required: false
     default: '(\d+).(\d+)'
   dotnet_sdk_version:
     description: '.NET SDK version. Default: ''9.x'''
     required: false
     default: '9.x'
+outputs:
+  version:
+    description: 'Version extracted from the branch name.'
+    value: ${{ steps.regex-match.outputs.match }}
+  major:
+    description: 'Major version extracted from the branch name.'
+    value: ${{ steps.regex-match.outputs.group1 }}
+  minor:
+    description: 'Minor version extracted from the branch name.'
+    value: ${{ steps.regex-match.outputs.group2 }}
     
 runs:  
   using: "composite"
@@ -27,7 +41,7 @@ runs:
       with:
         dotnet-version: ${{ inputs.dotnet_sdk_version }}
     
-    - name: 'what what'
+    - name: 'Match version'
       id: regex-match
       uses: actions-ecosystem/action-regex-match@v2
       with:
@@ -35,11 +49,14 @@ runs:
         regex: ${{ inputs.version-format }}
         flags: 'g'
 
-    - name: 'Capture version in branch name'
+    - name: 'Set version output'
+      if: steps.regex-match.outputs.match != ''
       shell: bash
       run: |
-        echo "${{ inputs.branch-name }}"
-        echo "${{ inputs.version-format }}"
-        echo "${{ steps.regex-match.outputs.match }}"
-        echo "${{ steps.regex-match.outputs.group1 }}"
-        echo "${{ steps.regex-match.outputs.group2 }}"
+        echo "version=${{ steps.regex-match.outputs.match }}" >> $GITHUB_OUTPUT
+    
+    - name: 'Set default version output'
+      if: steps.regex-match.outputs.match == ''
+      shell: bash
+      run: |
+        echo "version=${{ inputs.default-version }}" >> $GITHUB_OUTPUT
