@@ -80,6 +80,14 @@ jobs:
           build: git rev-list --count ${{ github.ref_name }} ^main
           sha: ${{ github.sha }}]
           pre-release-tag: ${{ steps.create-pre-release-tag.outputs.pre-release-tag }}
+      - name: 'Read versions'
+        shell: bash
+        run: |
+          echo "friendly-version=${{ steps.versioning.outputs.version }}"
+          echo "assembly-version=${{ steps.format-version.outputs.assembly-version }}"
+          echo "assembly-informational-version=${{ steps.format-version.outputs.assembly-informational-version }}"
+          echo "file-version=${{ steps.format-version.outputs.file-version }}"
+          echo "package-version=${{ steps.format-version.outputs.package-version }}"
 
   build:
     name: 'Compile source code'
