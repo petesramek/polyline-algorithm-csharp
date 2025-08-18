@@ -10,7 +10,7 @@ inputs:
   version-format:
     description: 'Version format. Default: ''(<Major>?/d+).(<Minor>?/d+)'''
     required: false
-    default: '(<Major>?/d+).(<Minor>?/d+)'
+    default: '(/d+).(/d+)'
   dotnet_sdk_version:
     description: '.NET SDK version. Default: ''9.x'''
     required: false
