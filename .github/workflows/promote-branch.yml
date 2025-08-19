@@ -82,7 +82,7 @@ jobs:
       - name: 'Check if base branch exists'
         id: check-target-branch-exists
         env:
-          target-branch: ${{ needs.workflow-variables.outputs.target-branch }}
+          target-branch: ${{ steps.set-target-branch.outputs.target-branch }}
         run: |
           set +e
 
@@ -102,7 +102,7 @@ jobs:
       - name: 'Check if base branch exists'
         id: check-base-branch-exists
         env:
-          base-branch: ${{ needs.workflow-variables.outputs.base-branch }}
+          base-branch: ${{ steps.set-base-branch.outputs.base-branch }}
         run: |
           set +e
 
@@ -124,11 +124,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           current-branch: ${{ github.ref_name }}
-          target-branch: ${{ needs.workflow-variables.outputs.target-branch }}
+          target-branch: ${{ steps.set-target-branch.outputs.target-branch }}
         run: |
           set +e
 
-          pull_request_exists=$(echo gh pr list --head ${{ env.current-branch }} --base ${{ env.target-branch }} --state "open" --limit 1 --jq '.total_count')
+          pull_request_exists=$(echo gh pr list --head ${{ env.current-branch }} --base ${{ env.target-branch }} --state 'open' --limit 1 --jq '.total_count')
 
           echo $pull_request_exists
 
