@@ -129,7 +129,7 @@ jobs:
         run: |
           # set +e
 
-          gh pr list --head ${{ env.current-branch }} --base ${{ env.target-branch }} --state open --limit 1 --json id
+          gh pr list --head ${{ env.current-branch }} --base ${{ env.target-branch }} --state open --limit 1 --json id --jq '.[].length'
 
           # pull_request_exists=$()
 
