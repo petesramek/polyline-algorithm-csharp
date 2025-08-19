@@ -1,0 +1,89 @@
+name: 'Publish documentation'
+
+on:
+  workflow_run:
+    workflows: ['build']
+
+    types:
+      - completed
+
+permissions:
+  actions: read
+  pages: write
+  id-token: write
+
+concurrency: 
+  group: publish-docs-${{ github.head_ref || github.ref }}      
+  cancel-in-progress: true
+
+jobs:
+  workflow-variables:
+    name: 'Workflow variables'
+    runs-on: ubuntu-latest
+
+    outputs:
+      github-run-number: ${{ github.run_number }}
+
+    steps:
+      - name: 'Workflow variables'
+        id: github
+        run: |
+          echo "github-run-number:${{ github.run_number }}"
+
+  versioning:
+    name: 'Extract version (new)'
+    needs: [workflow-variables]
+    runs-on: ubuntu-latest
+    outputs:
+        friendly-version: ${{ steps.versioning.outputs.friendly-version }}
+
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # Ensure the full git history is available for versioning
+      - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+      - name: 'Extract version from branch name'
+        id: versioning
+        uses: './.github/actions/extract-version'
+        with:
+          branch-name: ${{ github.ref_name }}
+
+  generate-docs:
+    name: 'Generate documentation'
+    needs: [workflow-variables, versioning]
+    runs-on: ubuntu-latest
+    env:
+      friendly-version: ${{ needs.versioning.outputs.friendly-version }}
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v5
+
+      - name: 'Generate documentation'
+        uses: ./.github/actions/docfx-build
+        with:
+          artifact-name: 'documentation'
+          docfx-json-manifest: './api-reference/api-reference.json'
+          output-directory: './api-reference/_docs'
+
+      - name: 'Upload artifact'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: github-pages
+          path: './api-reference/_docs'
+
+  publish-docs:
+    name: 'Publish documentation'
+    needs: [workflow-variables, versioning, generate-docs]
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+
+      - name: 'Deploy to GitHub Pages'
+        id: deployment
+        uses: actions/deploy-pages@v4

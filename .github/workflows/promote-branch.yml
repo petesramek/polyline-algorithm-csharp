@@ -1,0 +1,207 @@
+name: 'Promote branch'
+
+on:
+  workflow_dispatch:
+   inputs:
+     promotion-type:
+       type: choice
+       options:
+         - 'preview'
+         - 'release'
+       description: 'Promotion type.'
+       required: true
+     base-branch:
+       type: string
+       description: 'Base branch to create target from.'
+       default: 'main'
+       required: true
+
+permissions:
+  actions: read
+  id-token: write
+  contents: write
+  pull-requests: write
+
+concurrency:
+    group: 'promote-branch-${{ inputs.promotion-type }}-${{github.ref_name }}'
+    cancel-in-progress: false
+
+env:
+  dotnet-sdk-version: '9.x'
+  is-development-branch: ${{ startsWith(github.ref_name, 'develop') }}
+  is-maintenance-branch: ${{ startsWith(github.ref_name, 'support') }}
+
+jobs:
+  versioning:
+    name: 'Extract version (new)'
+    runs-on: ubuntu-latest
+    outputs:
+        friendly-version: ${{ steps.extract-version.outputs.version }}
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v5
+      - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+      - name: 'Extract version from branch name'
+        id: extract-version
+        uses: './.github/actions/extract-version'
+        with:
+          branch-name: ${{ github.ref_name }}
+  workflow-variables:
+    name: 'Set workflow variables'
+    needs: [versioning]
+    runs-on: ubuntu-latest
+    outputs:
+        base-branch: ${{ steps.set-base-branch.outputs.base-branch }}
+        target-branch: ${{ steps.set-target-branch.outputs.target-branch }}
+        target-branch-exists: ${{ steps.check-target-branch-exists.outputs.target-branch-exists }}
+        pull-request-exists: ${{ steps.check-pull-request-exists.outputs.pull-request-exists }}
+    steps:
+      - name: 'Set target branch'
+        id: set-target-branch
+        run: |
+          if [[ "${{ inputs.promotion-type }}" == "preview" ]]; then
+            target_branch="preview/${{ needs.versioning.outputs.friendly-version }}"
+          elif [[ "${{ inputs.promotion-type }}" == "release" ]]; then
+            target_branch="release/${{ needs.versioning.outputs.friendly-version }}"
+          fi
+          
+          echo "Setting target branch $target_branch."
+
+          echo "target-branch=$target_branch" >> $GITHUB_OUTPUT
+      - name: 'Set base branch'
+        id: set-base-branch
+        run: |
+          base_branch=${{ inputs.base-branch }}
+          
+          echo "Setting base branch $base_branch."
+          
+          echo "base-branch=$base_branch" >> $GITHUB_OUTPUT
+      - name: 'Check if base branch exists'
+        id: check-target-branch-exists
+        env:
+          target-branch: ${{ steps.set-target-branch.outputs.target-branch }}
+        run: |
+          set +e
+
+          git ls-remote --exit-code --heads origin ${{ env.target-branch }}
+
+          if [[ $? -eq 0 ]]; then
+            echo "Target branch ${{ env.target-branch }} does exist."
+            target_branch_exists="true"
+          else
+            echo "Target branch ${{ env.target-branch }} does not exist."
+            target_branch_exists="false"
+          fi
+
+          echo "target-branch-exists=$target_branch_exists" >> $GITHUB_OUTPUT
+
+          set -e
+      - name: 'Check if base branch exists'
+        id: check-base-branch-exists
+        env:
+          base-branch: ${{ steps.set-base-branch.outputs.base-branch }}
+        run: |
+          set +e
+
+          git ls-remote --exit-code --heads origin ${{ env.base-branch }}
+
+          if [[ $? -eq 0 ]]; then
+            echo "Base branch ${{ env.base-branch }} does exist."
+            base_branch_exists="true"
+          else
+            echo "Base branch ${{ env.base-branch }} does not exist."
+            base_branch_exists="false"
+          fi
+
+          echo "base-branch-exists=$base_branch_exists" >> $GITHUB_OUTPUT
+
+          set -e
+      - name: 'Check if pull request exists exists'
+        id: check-pull-request-exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository_owner }}/${{ github.event.repository.name }}
+          current-branch: ${{ github.ref_name }}
+          target-branch: ${{ steps.set-target-branch.outputs.target-branch }}
+        run: |
+          pull_request_count=$(gh pr list --head ${{ env.current-branch }} --base ${{ env.target-branch }} --state open --limit 1 --json id --jq '. | length')
+
+          if [[ $pull_request_count -eq 0 ]]; then
+            echo "Pull request does not exist."
+            pull_request_exists="false"
+          else
+            echo "Pull request does exist."
+            pull_request_exists="true"
+          fi
+
+          echo "pull-request-exists=$pull_request_exists" >> $GITHUB_OUTPUT
+
+  validate-promotion:
+    name: 'Validate promotion'
+    needs: [ versioning, workflow-variables ]
+    runs-on: ubuntu-latest
+    env:
+      promotion-type: ${{ inputs.promotion-type }}
+      base-branch: ${{ needs.workflow-variables.outputs.base-branch }}
+      current-branch: ${{ github.ref_name }}
+      target-branch: ${{ needs.workflow-variables.outputs.target-branch }}
+      pull-request-exists: ${{ needs.workflow-variables.outputs.pull-request-exists }}
+    outputs:
+        target-branch: ${{ env.target-branch }}
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v5
+      - name: 'Check promotion type'
+        if: ${{ (env.promotion-type != 'release') && (env.promotion-type != 'preview') }}
+        run: |
+          echo "Invalid promotion type ${{ inputs.promotion-type }}"
+          exit 1
+      - name: 'Validate current branch'
+        if: ${{ (env.isdevelopment-branch == 'false') && (env.is-maintenance-branch == 'false') }}
+        run: |
+          echo "Invalid current branch '${{ github.ref_name }}'"
+          exit 1
+      - name: 'Validate default and current branch'
+        if: ${{ env.base-branch == env.current-branch }}
+        run: |
+          echo "Default and current branch cannot be the same."
+          echo "Default branch is '${{ env.base-branch }}'"
+          echo "Current branch is '${{ env.current-branch }}'"
+          exit 1
+      - name: 'Validate pull request'
+        if: ${{ env.pull-request-exists == 'true' }}
+        run: |
+          echo "Pull request exists."
+          exit 1
+
+  promote-branch:
+    name: 'Promote branch ${{ github.ref_name }} to ${{ needs.workflow-variables.outputs.target-branch }}'
+    needs: [ workflow-variables, validate-promotion ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v5
+      - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+      - name: 'Create target branch'
+        if: ${{ needs.workflow-variables.outputs.target-branch-exists == 'false' }}
+        run: |
+          git config user.name "$(git log -n 1 --pretty=format:%an)"
+          git config user.email "$(git log -n 1 --pretty=format:%ae)"
+          git fetch origin
+          git switch ${{ needs.workflow-variables.outputs.base-branch }}
+          git checkout -b ${{ needs.workflow-variables.outputs.target-branch }} origin/${{ needs.workflow-variables.outputs.target-branch }} || git checkout -b ${{ needs.workflow-variables.outputs.target-branch }}
+          git push --set-upstream origin ${{ needs.workflow-variables.outputs.target-branch }}
+      - name: 'Create PR: "Promote ${{ env.current-branch }} to ${{ env.target-branch }}"'
+        if: ${{ needs.workflow-variables.outputs.pull-request-exists == 'false' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          current-branch: ${{ github.ref_name }}
+          target-branch: ${{ needs.workflow-variables.outputs.target-branch }}
+        run: |
+            gh pr create --title "Promote ${{ env.current-branch }} to ${{ env.target-branch }}" --fill --base ${{ env.target-branch }} --head ${{ env.current-branch }}

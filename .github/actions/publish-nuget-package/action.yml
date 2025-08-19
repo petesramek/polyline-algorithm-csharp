@@ -1,0 +1,61 @@
+name: 'Publish packages to NuGet feed'
+author: 'Pete Sramek'
+description: 'Publishes packages in working directory to public NuGet feed'
+inputs:
+# Required
+  package-artifact-name:
+    description: 'Name of the artifact to download and publish'
+    required: true
+  nuget-feed-url:
+    description: 'NuGet feed URL'
+    required: true
+  nuget-feed-api-key:
+    description: 'NuGet feed API key'
+    required: true
+  nuget-feed-server:
+    description: 'NuGet feed server. Allowed values: ''NuGet'', ''AzureArtifacts'''
+    required: true
+# Optional
+  dotnet-sdk-version:
+    description: '.NET SDK version. Default: 9.x'
+    required: false
+    default: '9.x'
+  working-directory: 
+    description: 'Working directory to search for file.'
+    required: false
+    default: ${{ github.workspace }}
+
+runs:
+  using: composite
+
+  steps:
+
+    - if: ${{ inputs.nuget-feed-server != 'NuGet' && inputs.nuget-feed-server != 'AzureArtifacts' }}
+      name: 'Validate NuGet feed server type'
+      shell: bash
+      run: |
+          echo "Invalid NuGet feed server type. Allowed values are ''NuGet'' or ''AzureArtifacts''."
+          exit 1
+
+    - name: 'Checkout ${{ github.head_ref || github.ref }}'
+      uses: actions/checkout@v5
+
+    - name: Download package artifact
+      uses: actions/download-artifact@v5
+      with:
+        name: ${{ inputs.package-artifact-name }}
+
+    - if: ${{ inputs.nuget-feed-server == 'NuGet' }}
+      name: 'Publish package to NuGet'
+      shell: bash
+      run: |
+        dotnet nuget push **/*.nupkg --source ${{ inputs.nuget-feed-url }} --api-key ${{ inputs.nuget-feed-api-key }}
+      working-directory: ${{ env.working-directory }}
+
+    - if: ${{ inputs.nuget-feed-server == 'AzureArtifacts' }}
+      name: 'Publish package to Azure Artifacts'
+      shell: bash
+      run: |
+        dotnet nuget add source ${{ inputs.nuget-feed-url }} --name nuget-feed --username username --password ${{ inputs.nuget-feed-api-key }} --store-password-in-clear-text
+        dotnet nuget push **/*.nupkg --source nuget-feed --api-key ${{ inputs.nuget-feed-api-key }} --skip-duplicate
+      working-directory: ${{ env.working-directory }}

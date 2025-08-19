@@ -1,0 +1,47 @@
+name: 'Generate docs with docfx'
+author: 'Pete Sramek'
+description: 'Generate documentation using docfx'
+inputs:
+# Required
+  artifact-name:
+    description: 'Name of the artifact to upload after generating documentation'
+    required: true
+  docfx-json-manifest:
+    description: 'Path to the docfx JSON manifest file'
+    required: true
+  output-directory:
+    description: 'Target directory for generated documentation'
+    required: true
+# Optional
+  dotnet_sdk_version:
+    description: '.NET SDK version. Default: 9.x'
+    required: false
+    default: '9.x'
+
+runs:
+  using: composite
+  steps:
+    - name: 'Checkout ${{ github.head_ref || github.ref }}'
+      uses: actions/checkout@v5
+    - name: Dotnet Setup
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.dotnet-sdk-version }}
+    - name: 'testing variables'
+      shell: bash
+      run: |
+        echo "artifact-name: ${{ inputs.artifact-name }}"
+        echo "docfx-json-manifest: ${{ inputs.docfx-json-manifest }}"
+        echo "output-directory: ${{ inputs.output-directory }}"
+        echo "dotnet-sdk-version: ${{ inputs.dotnet_sdk_version }}"
+    - name: 'Update docfx tool'
+      run: dotnet tool update -g docfx
+      shell: bash
+    - name: 'Generate documentation'
+      run: docfx build ${{ inputs.docfx-json-manifest }}
+      shell: bash
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ inputs.output-directory }}
