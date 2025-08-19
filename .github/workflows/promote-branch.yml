@@ -175,4 +175,4 @@ jobs:
           base-branch: ${{ needs.workflow-variables.outputs.base-branch }}
           current-branch: ${{ github.ref_name }}
         run: |
-            gh pr create --title "Promote ${{ needs.workflow-variables.outputs.base-branch }} to ${{ needs.workflow-variables.outputs.target-branch }}" --fill-verbose --base ${{ needs.workflow-variables.outputs.target-branch }} --head ${{ needs.workflow-variables.outputs.current-branch }}
+            gh pr create --title "Promote ${{ env.base-branch }} to ${{ env.target-branch }}" --fill-verbose --base ${{ env.target-branch }} --head ${{ env.current-branch }}
