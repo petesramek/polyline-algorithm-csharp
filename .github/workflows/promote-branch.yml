@@ -85,9 +85,11 @@ jobs:
         env:
           target-branch: ${{ needs.workflow-variables.outputs.target-branch }}
         run: |
-          exit_code=$(echo git ls-remote --exit-code --heads origin ${{ env.target-branch }})
+          set +e
 
-          if [[ $exit_code -eq 0 ]]; then
+          git ls-remote --exit-code --heads origin ${{ env.target-branch }}
+
+          if [[ $? -eq 0 ]]; then
             echo "Target branch exist: ${{ env.target-branch }}"
             exit 1
           fi
