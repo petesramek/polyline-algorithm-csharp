@@ -130,17 +130,17 @@ jobs:
           # set +e
 
           
-          pull_request_exists=$(gh pr list --head ${{ env.current-branch }} --base ${{ env.target-branch }} --state open --limit 1 --json id --jq '. | length') > 0
+          pull_request_count=$(gh pr list --head ${{ env.current-branch }} --base ${{ env.target-branch }} --state open --limit 1 --json id --jq '. | length')
+
+          if [[ $pull_request_count -eq 0 ]]; then
+            echo "Pull request does not exist."
+            pull_request_exists="false"
+          else
+            echo "Pull request does exist."
+            pull_request_exists="true"
+          fi
 
           echo $pull_request_exists
-
-          # if [[ $pull_request_exists -eq 0 ]]; then
-          #   echo "Pull request does not exist."
-          #   $pull_request_exists="false"
-          # else
-          #   echo "Pull request does exist."
-          #   $pull_request_exists="true"
-          # fi
 
           # echo "pull-request-exists=$pull_request_exists" >> $GITHUB_OUTPUT
 
