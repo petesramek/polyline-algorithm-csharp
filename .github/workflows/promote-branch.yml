@@ -92,7 +92,7 @@ jobs:
         target-branch: ${{ steps.compose-target-branch.outputs.target-branch }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: 'Check promotion type'
         if: ${{ (inputs.promotion-type != 'release') && (inputs.promotion-type != 'preview') }}
         run: |
@@ -110,7 +110,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
         uses: actions/setup-dotnet@v4
         with:
