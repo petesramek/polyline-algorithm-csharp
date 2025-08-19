@@ -1,4 +1,4 @@
-name: 'Promote branch'
+name: 'Promote branch ${{ github.ref_name }} to ${{ inputs.promotion-type }}'
 
 on:
   workflow_dispatch:
