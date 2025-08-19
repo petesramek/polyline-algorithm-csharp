@@ -49,6 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
         target-branch: ${{ steps.compose-target-branch.outputs.target-branch }}
+        target-branch-exists: ${{ steps.validate-target-branch.outputs.target-branch-exists }}
     steps:
       - name: 'Compose target branch name'
         id: compose-target-branch
@@ -59,9 +60,30 @@ jobs:
             target_branch="release/${{ needs.versioning.outputs.friendly-version }}"
           fi
           
-          echo "Target branch: $target_branch"
+          echo "Target branch name: $target_branch"
 
           echo "target-branch=$target_branch" >> $GITHUB_OUTPUT
+      - name: 'Validate target branch in origin'
+        id: validate-target-branch
+        env:
+          target-branch: ${{ needs.workflow-variables.outputs.target-branch }}
+        run: |
+          set +e
+
+          git ls-remote --exit-code --heads origin ${{ env.target-branch }}
+
+          if [[ $? -eq 0 ]]; then
+            echo "Target branch exist: ${{ env.target-branch }}"
+            target_branch_exists="true"
+          else
+            echo "Target branch does not exist: ${{ env.target-branch }}"
+            target_branch_exists="false"
+          fi
+
+          echo "target-branch-exists=$target_branch_exists" >> $GITHUB_OUTPUT
+
+          set -e
+
   validate-promotion:
     name: 'Validate promotion'
     needs: [ versioning, workflow-variables ]
@@ -76,20 +98,28 @@ jobs:
         run: |
           echo "Invalid promotion type: ${{ inputs.promotion-type }}"
           exit 1
-      - name: 'Check source branch'
+      - name: 'Validate source branch'
         if: ${{ (env.isdevelopment-branch == 'false') && (env.is-maintenance-branch == 'false') }}
         run: |
           echo "Invalid source branch: ${{ github.ref_name }}"
           exit 1
-      - name: 'Validate target branch'
-        env:
-          target-branch: ${{ needs.workflow-variables.outputs.target-branch }}
+
+  promote-branch:
+    name: 'Promote branch ${{  }}'
+    needs: [ workflow-variables, validate-promotion ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v4
+      - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+      - name: 'Create target branch'
+        if: ${{ needs.workflow-variables.outputs.target-branch-exists == 'false' }}
         run: |
-          set +e
-
-          git ls-remote --exit-code --heads origin ${{ env.target-branch }}
-
-          if [[ $? -eq 0 ]]; then
-            echo "Target branch exist: ${{ env.target-branch }}"
-            exit 1
-          fi
+          git config user.name "$(git log -n 1 --pretty=format:%an)"
+          git config user.email "$(git log -n 1 --pretty=format:%ae)"
+          git fetch origin
+          git checkout -b ${{ needs.workflow-variables.outputs.target-branch }} origin/HEAD
+          git push
