@@ -172,6 +172,7 @@ jobs:
           git push --set-upstream origin ${{ needs.workflow-variables.outputs.target-branch }}
       - name: 'Create PR'
         env:
+          GH_TOKEN: ${{ github.token }}
           current-branch: ${{ github.ref_name }}
           target-branch: ${{ needs.workflow-variables.outputs.target-branch }}
         run: |
