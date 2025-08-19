@@ -132,12 +132,12 @@ jobs:
 
           echo $pull_request_exists
 
-          if [[ $? -eq 0 ]]; then
-            echo "Base branch ${{ env.base-branch }} does exist."
-            $pull_request_exists="true"
-          else
-            echo "Base branch ${{ env.base-branch }} does not exist."
+          if [[ $pull_request_exists -eq 0 ]]; then
+            echo "Pull request does not exist."
             $pull_request_exists="false"
+          else
+            echo "Pull request does exist."
+            $pull_request_exists="true"
           fi
 
           echo "pull-request-exists=$pull_request_exists" >> $GITHUB_OUTPUT
@@ -153,8 +153,9 @@ jobs:
       base-branch: ${{ needs.workflow-variables.outputs.base-branch }}
       current-branch: ${{ github.ref_name }}
       target-branch: ${{ needs.workflow-variables.outputs.target-branch }}
+      pull-request-exists: ${{ needs.workflow-variables.outputs.pull-request-exists }}
     outputs:
-        target-branch: ${{ steps.compose-target-branch.outputs.target-branch }}
+        target-branch: ${{ env.target-branch }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v5
@@ -174,6 +175,11 @@ jobs:
           echo "Default and current branch cannot be the same."
           echo "Default branch is '${{ env.base-branch }}'"
           echo "Current branch is '${{ env.current-branch }}'"
+          exit 1
+      - name: 'Validate pull request'
+        if: ${{ env.pull-request-exists == 'true' }}
+        run: |
+          echo "Pull request exists."
           exit 1
 
   promote-branch:
@@ -196,7 +202,7 @@ jobs:
           git switch ${{ needs.workflow-variables.outputs.base-branch }}
           git checkout -b ${{ needs.workflow-variables.outputs.target-branch }} origin/${{ needs.workflow-variables.outputs.target-branch }} || git checkout -b ${{ needs.workflow-variables.outputs.target-branch }}
           git push --set-upstream origin ${{ needs.workflow-variables.outputs.target-branch }}
-      - name: 'Create PR'
+      - name: 'Create PR: "Promote ${{ env.current-branch }} to ${{ env.target-branch }}"'
         env:
           GH_TOKEN: ${{ github.token }}
           current-branch: ${{ github.ref_name }}
