@@ -102,7 +102,7 @@ jobs:
     env:
       promotion-type: ${{ inputs.promotion-type }}
       default-branch: ${{ needs.workflow-variables.outputs.default-branch }}
-      source-branch: ${{ github.ref_name }}
+      current-branch: ${{ github.ref_name }}
       target-branch: ${{ needs.workflow-variables.outputs.target-branch }}
     outputs:
         target-branch: ${{ steps.compose-target-branch.outputs.target-branch }}
@@ -112,19 +112,19 @@ jobs:
       - name: 'Check promotion type'
         if: ${{ (env.promotion-type != 'release') && (env.promotion-type != 'preview') }}
         run: |
-          echo "Invalid promotion type: ${{ inputs.promotion-type }}"
+          echo "Invalid promotion type ${{ inputs.promotion-type }}"
           exit 1
-      - name: 'Validate source branch'
+      - name: 'Validate current branch'
         if: ${{ (env.isdevelopment-branch == 'false') && (env.is-maintenance-branch == 'false') }}
         run: |
-          echo "Invalid source branch: '${{ github.ref_name }}'"
+          echo "Invalid current branch '${{ github.ref_name }}'"
           exit 1
-      - name: 'Validate default and source branch'
-        if: ${{ env.default-branch == env.source-branch }}
+      - name: 'Validate default and current branch'
+        if: ${{ env.default-branch == env.current-branch }}
         run: |
-          echo "Default and source branch cannot be the same."
-          echo "Default: '${{ env.default-branch }}'"
-          echo "Source: '${{ env.source-branch }}'"
+          echo "Default and current branch cannot be the same."
+          echo "Default branch is '${{ env.default-branch }}'"
+          echo "Current branch is '${{ env.current-branch }}'"
           exit 1
 
   promote-branch:
