@@ -28,7 +28,6 @@ env:
 jobs:
   versioning:
     name: 'Extract version (new)'
-    needs: [workflow-variables]
     runs-on: ubuntu-latest
     outputs:
         friendly-version: ${{ steps.format-version.outputs.friendly-version }}
