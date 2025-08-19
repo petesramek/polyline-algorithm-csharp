@@ -61,6 +61,8 @@ jobs:
           echo "Invalid source branch: ${{ github.ref_name }}"
           exit 1
       - name: 'Validate target branch'
+        env:
+          target-branch: ''
         run: |
           if [[ "${{ inputs.promotion-type }}" == "preview" ]]; then
             echo "target-branch=preview/${{ needs.versioning.outputs.friendly-version }}" >> $GITHUB_ENV
@@ -71,3 +73,8 @@ jobs:
           echo "Target branch: ${{ env.target-branch }}"
 
           git ls-remote --exit-code --heads origin ${{ env.target-branch }}
+
+          if [[ $? -ne 0 ]]; then
+            echo "Target branch does not exist: ${{ env.target-branch }}"
+            exit 1
+          fi
