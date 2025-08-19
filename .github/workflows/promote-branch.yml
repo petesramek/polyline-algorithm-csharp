@@ -20,6 +20,7 @@ permissions:
   actions: read
   id-token: write
   contents: write
+  pull-requests: write
 
 concurrency:
     group: 'promote-branch-${{ inputs.promotion-type }}-${{github.ref_name }}'
