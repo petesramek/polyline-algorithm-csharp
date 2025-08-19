@@ -126,7 +126,7 @@ jobs:
           current-branch: ${{ github.ref_name }}
           target-branch: ${{ steps.set-target-branch.outputs.target-branch }}
         run: |
-          set +e
+          # set +e
 
           gh pr list --head ${{ env.current-branch }} --base ${{ env.target-branch }} --state open --limit 1 --json id
 
@@ -144,7 +144,7 @@ jobs:
 
           # echo "pull-request-exists=$pull_request_exists" >> $GITHUB_OUTPUT
 
-          set -e
+          # set -e
 
   validate-promotion:
     name: 'Validate promotion'
