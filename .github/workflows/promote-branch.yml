@@ -73,7 +73,7 @@ jobs:
       - name: 'Get default branch'
         id: get-default-branch
         run: |
-          echo gh api repos/{owner}/{repo} --jq '.default_branch'
+          echo $(gh api repos/{owner}/{repo} --jq '.default_branch')
       - name: 'Validate target branch in origin'
         id: validate-target-branch
         env:
