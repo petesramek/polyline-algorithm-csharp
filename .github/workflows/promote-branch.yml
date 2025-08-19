@@ -130,7 +130,7 @@ jobs:
           # set +e
 
           
-          pull_request_exists=$(gh pr list --head ${{ env.current-branch }} --base ${{ env.target-branch }} --state open --limit 1 --json id --jq '. | length' > 0)
+          pull_request_exists=$(gh pr list --head ${{ env.current-branch }} --base ${{ env.target-branch }} --state open --limit 1 --json id --jq '. | length') > 0
 
           echo $pull_request_exists
 
