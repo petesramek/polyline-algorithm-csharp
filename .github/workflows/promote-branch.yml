@@ -171,6 +171,13 @@ jobs:
           echo "Default branch is '${{ env.base-branch }}'"
           echo "Current branch is '${{ env.current-branch }}'"
           exit 1
+      - name: 'Validate target and current branch'
+        if: ${{ env.target-branch == env.current-branch }}
+        run: |
+          echo "Default and target branch cannot be the same."
+          echo "Default branch is '${{ env.target-branch }}'"
+          echo "Current branch is '${{ env.current-branch }}'"
+          exit 1
       - name: 'Validate pull request'
         if: ${{ env.pull-request-exists == 'true' }}
         run: |
