@@ -128,7 +128,7 @@ jobs:
         run: |
           set +e
 
-          echo $(gh pr list --head ${{ env.current-branch }} --base ${{ env.target-branch }} --state 'open' --json)
+          echo $(gh pr list --head ${{ env.current-branch }} --base ${{ env.target-branch }} --state 'open' --limit 1 --json --jq 'length')
 
           pull_request_exists=$()
 
