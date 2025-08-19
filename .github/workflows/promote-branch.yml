@@ -63,6 +63,17 @@ jobs:
           echo "Target branch name: $target_branch"
 
           echo "target-branch=$target_branch" >> $GITHUB_OUTPUT
+#       - name: 'Get default branch'
+# -       id: get-default-branch
+#         run: |
+#           set +e
+#           default_branch=$(git remote show origin | grep 'HEAD branch' | awk '{print $NF}')
+#           echo "default-branch=$default_branch" >> $GITHUB_OUTPUT
+#           set -e
+      - name: 'Get default branch'
+        id: get-default-branch
+        run: |
+          echo gh api repos/{owner}/{repo} --jq '.default_branch'
       - name: 'Validate target branch in origin'
         id: validate-target-branch
         env:
