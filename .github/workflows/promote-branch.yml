@@ -172,4 +172,4 @@ jobs:
           git push --set-upstream origin ${{ needs.workflow-variables.outputs.target-branch }}
       - name: 'Create PR'
         run: |
-            gh pr create --title "" --base ${{ needs.workflow-variables.outputs.target-branch }} --head ${{ needs.workflow-variables.outputs.current-branch }}
+            gh pr create --title "Promote ${{ needs.workflow-variables.outputs.current-branch }} to ${{ needs.workflow-variables.outputs.target-branch }}" --fill-verbose --base ${{ needs.workflow-variables.outputs.target-branch }} --head ${{ needs.workflow-variables.outputs.current-branch }}
