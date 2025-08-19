@@ -35,7 +35,7 @@ runs:
       with:
         dotnet-version: ${{ inputs.dotnet_sdk_version }}
     
-    - name: 'Match version'
+    - name: 'Extract version from branch name'
       id: regex-match
       uses: actions-ecosystem/action-regex-match@v2
       with:

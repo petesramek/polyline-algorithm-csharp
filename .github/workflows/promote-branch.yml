@@ -27,11 +27,23 @@ env:
 
 jobs:
   versioning:
-    name: 'Determine assembly version'
-    uses: ./.github/workflows/determine-version.yml
-    with:
-      config-file-path: './.gitversion/version.yml'
-      run-number: ${{ github.run-number }}    
+    name: 'Extract version (new)'
+    needs: [workflow-variables]
+    runs-on: ubuntu-latest
+    outputs:
+        friendly-version: ${{ steps.format-version.outputs.friendly-version }}
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v5
+      - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+      - name: 'Extract version from branch name'
+        id: versioning
+        uses: './.github/actions/extract-version'
+        with:
+          branch-name: ${{ github.ref_name }}
   validate-promotion:
     name: 'Validate promotion'
     needs: [versioning]
