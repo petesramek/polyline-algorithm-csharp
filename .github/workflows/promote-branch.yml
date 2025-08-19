@@ -65,16 +65,16 @@ jobs:
           target-branch: ''
         run: |
           if [[ "${{ inputs.promotion-type }}" == "preview" ]]; then
-            echo "target-branch=preview/${{ needs.versioning.outputs.friendly-version }}" >> $GITHUB_ENV
+            target_branch=$(echo "target-branch=preview/${{ needs.versioning.outputs.friendly-version }}")
           else
-            echo "target-branch=release/${{ needs.versioning.outputs.friendly-version }}" >> $GITHUB_ENV
+            target_branch=$(echo "target-branch=release/${{ needs.versioning.outputs.friendly-version }}")
           fi
           
-          echo "Target branch: ${{ env.target-branch }}"
+          echo "Target branch: $target_branch
 
-          git ls-remote --exit-code --heads origin ${{ env.target-branch }}
+          git ls-remote --exit-code --heads origin $target_branch
 
           if [[ $? -ne 0 ]]; then
-            echo "Target branch does not exist: ${{ env.target-branch }}"
+            echo "Target branch does not exist: $target_branch"
             exit 1
           fi
