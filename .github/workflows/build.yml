@@ -214,3 +214,26 @@ jobs:
           nuget-feed-server: 'AzureArtifacts'
           working-directory: ${{ runner.temp }}/${{ env.nuget-packages-directory }}
           dotnet-sdk-version: ${{ env.dotnet-sdk-version }}'
+
+  generate-assembly-metadata:
+    name: 'Generate assembly metadata'
+    needs: [versioning, build]
+    env:
+      friendly-version: ${{ needs.versioning.outputs.friendly-version }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v5 
+      - name: 'Generate assembly metadata'
+        uses: ./.github/actions/docfx-metadata
+        with:
+          artifact-name: 'assembly-metadata'
+          docfx-json-manifest: './api-reference/assembly-metadata.json'
+          temporary-directory: './api-reference/temp'
+          output-directory: './api-reference/${{ env.friendly-version }}'
+      - name: 'Push assembly metadata artifact'
+        uses: ./.github/actions/push-changes
+        with:
+          artifact-name: 'assembly-metadata'
+          commit-message: 'Updated docs for version ${{ env.friendly-version }}'
+          working-directory: './api-reference/${{ env.friendly-version }}'
