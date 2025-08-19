@@ -127,9 +127,6 @@ jobs:
           current-branch: ${{ github.ref_name }}
           target-branch: ${{ steps.set-target-branch.outputs.target-branch }}
         run: |
-          # set +e
-
-          
           pull_request_count=$(gh pr list --head ${{ env.current-branch }} --base ${{ env.target-branch }} --state open --limit 1 --json id --jq '. | length')
 
           if [[ $pull_request_count -eq 0 ]]; then
@@ -140,11 +137,7 @@ jobs:
             pull_request_exists="true"
           fi
 
-          echo $pull_request_exists
-
-          # echo "pull-request-exists=$pull_request_exists" >> $GITHUB_OUTPUT
-
-          # set -e
+          echo "pull-request-exists=$pull_request_exists" >> $GITHUB_OUTPUT
 
   validate-promotion:
     name: 'Validate promotion'
