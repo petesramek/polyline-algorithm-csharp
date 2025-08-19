@@ -105,7 +105,7 @@ jobs:
           exit 1
 
   promote-branch:
-    name: 'Promote branch ${{  }}'
+    name: 'Promote branch ${{ github.ref_name }} to ${{ needs.workflow-variables.outputs.target-branch }}'
     needs: [ workflow-variables, validate-promotion ]
     runs-on: ubuntu-latest
     steps:
