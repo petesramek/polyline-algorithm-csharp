@@ -57,6 +57,7 @@ jobs:
         base-branch: ${{ steps.set-base-branch.outputs.base-branch }}
         target-branch: ${{ steps.set-target-branch.outputs.target-branch }}
         target-branch-exists: ${{ steps.check-target-branch-exists.outputs.target-branch-exists }}
+        pull-request-exists: ${{ steps.check-pull-request-exists.outputs.pull-request-exists }}
     steps:
       - name: 'Set target branch'
         id: set-target-branch
@@ -111,11 +112,33 @@ jobs:
             echo "Base branch ${{ env.base-branch }} does exist."
             base_branch_exists="true"
           else
-            echo "TarBaseget branch ${{ env.base-branch }} does not exist."
+            echo "Base branch ${{ env.base-branch }} does not exist."
             base_branch_exists="false"
           fi
 
           echo "base-branch-exists=$base_branch_exists" >> $GITHUB_OUTPUT
+
+          set -e
+      - name: 'Check if pull request exists exists'
+        id: check-pull-request-exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+          current-branch: ${{ github.ref_name }}
+          target-branch: ${{ needs.workflow-variables.outputs.target-branch }}
+        run: |
+          set +e
+
+          pull_request_exists=$(echo gh pr list --head ${{ env.current-branch }} -base ${{ env.target-branch }} --state "open" --limit 1 --jq '.total_count')
+
+          if [[ $? -eq 0 ]]; then
+            echo "Base branch ${{ env.base-branch }} does exist."
+            $pull_request_exists="true"
+          else
+            echo "Base branch ${{ env.base-branch }} does not exist."
+            $pull_request_exists="false"
+          fi
+
+          echo "pull-request-exists=$pull_request_exists" >> $GITHUB_OUTPUT
 
           set -e
 
