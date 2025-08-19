@@ -119,15 +119,10 @@ jobs:
       - name: 'Validate source branch'
         if: ${{ (env.isdevelopment-branch == 'false') && (env.is-maintenance-branch == 'false') }}
         run: |
-          echo "Invalid source branch: ${{ github.ref_name }}"
-          exit 1
-      - name: 'Validate source branch'
-        if: ${{ (env.is-development-branch == 'false') && (env.is-maintenance-branch == 'false') }}
-        run: |
-          echo "Invalid source branch: ${{ github.ref_name }}"
+          echo "Invalid source branch: '${{ github.ref_name }}'"
           exit 1
       - name: 'Validate default and source branch'
-        if: ${{ (env.default-branch == env.source-branch) }}
+        if: ${{ env.default-branch == env.source-branch }}
         run: |
           echo "Default and source branch cannot be the same."
           echo "Default: '${{ env.default-branch }}'"
