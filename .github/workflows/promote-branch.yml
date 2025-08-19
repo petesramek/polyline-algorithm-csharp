@@ -144,5 +144,6 @@ jobs:
           git config user.name "$(git log -n 1 --pretty=format:%an)"
           git config user.email "$(git log -n 1 --pretty=format:%ae)"
           git fetch origin
-          git checkout -b ${{ needs.workflow-variables.outputs.target-branch }} origin/HEAD
+          git switch ${{ needs.workflow-variables.outputs.default-branch }}
+          git checkout -b ${{ needs.workflow-variables.outputs.target-branch }}
           git push
