@@ -43,10 +43,31 @@ jobs:
         uses: './.github/actions/extract-version'
         with:
           branch-name: ${{ github.ref_name }}
-  validate-promotion:
-    name: 'Validate promotion'
+  workflow-variables:
+    name: 'Set workflow variables'
     needs: [versioning]
     runs-on: ubuntu-latest
+    outputs:
+        target-branch: ${{ steps.compose-target-branch.outputs.target-branch }}
+    steps:
+      - name: 'Compose target branch name'
+        id: compose-target-branch
+        run: |
+          if [[ "${{ inputs.promotion-type }}" == "preview" ]]; then
+            target_branch="preview/${{ needs.versioning.outputs.friendly-version }}"
+          elif [[ "${{ inputs.promotion-type }}" == "release" ]]; then
+            target_branch="release/${{ needs.versioning.outputs.friendly-version }}"
+          fi
+          
+          echo "Target branch: $target_branch"
+
+          echo "target-branch=$target_branch" >> $GITHUB_OUTPUT
+  validate-promotion:
+    name: 'Validate promotion'
+    needs: [ versioning, workflow-variables ]
+    runs-on: ubuntu-latest
+    outputs:
+        target-branch: ${{ steps.compose-target-branch.outputs.target-branch }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v4
@@ -62,19 +83,11 @@ jobs:
           exit 1
       - name: 'Validate target branch'
         env:
-          target-branch: ''
+          target-branch: ${{ needs.workflow-variables.outputs.target-branch }}
         run: |
-          if [[ "${{ inputs.promotion-type }}" == "preview" ]]; then
-            target_branch=$(echo "target-branch=preview/${{ needs.versioning.outputs.friendly-version }}")
-          else
-            target_branch=$(echo "target-branch=release/${{ needs.versioning.outputs.friendly-version }}")
-          fi
-          
-          echo "Target branch: $target_branch
-
-          git ls-remote --exit-code --heads origin $target_branch
+          git ls-remote --exit-code --heads origin ${{ env.target-branch }}
 
           if [[ $? -ne 0 ]]; then
-            echo "Target branch does not exist: $target_branch"
+            echo "Target branch does not exist: ${{ env.target-branch }}"
             exit 1
           fi
