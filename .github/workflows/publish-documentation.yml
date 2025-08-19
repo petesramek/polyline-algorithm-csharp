@@ -1,11 +1,7 @@
 name: 'Publish documentation'
 
 on:
-  workflow_run:
-    workflows: ['build']
-
-    types:
-      - completed
+  workflow_dispatch:
 
 permissions:
   actions: read
