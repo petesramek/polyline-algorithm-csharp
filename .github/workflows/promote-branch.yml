@@ -130,6 +130,8 @@ jobs:
 
           pull_request_exists=$(echo gh pr list --head ${{ env.current-branch }} -base ${{ env.target-branch }} --state "open" --limit 1 --jq '.total_count')
 
+          echo $pull_request_exists
+
           if [[ $? -eq 0 ]]; then
             echo "Base branch ${{ env.base-branch }} does exist."
             $pull_request_exists="true"
