@@ -72,6 +72,8 @@ jobs:
 #           set -e
       - name: 'Get default branch'
         id: get-default-branch
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           echo $(gh api repos/${{ github.repository }} --jq '.default_branch')
       - name: 'Validate target branch in origin'
