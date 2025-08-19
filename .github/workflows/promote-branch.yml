@@ -48,11 +48,12 @@ jobs:
     needs: [versioning]
     runs-on: ubuntu-latest
     outputs:
-        target-branch: ${{ steps.compose-target-branch.outputs.target-branch }}
-        target-branch-exists: ${{ steps.validate-target-branch.outputs.target-branch-exists }}
+        default-branch: ${{ steps.set-default-branch.outputs.default-branch }}
+        target-branch: ${{ steps.set-target-branch.outputs.target-branch }}
+        target-branch-exists: ${{ steps.check-target-branch-exists.outputs.target-branch-exists }}
     steps:
-      - name: 'Compose target branch name'
-        id: compose-target-branch
+      - name: 'Set target branch'
+        id: set-target-branch
         run: |
           if [[ "${{ inputs.promotion-type }}" == "preview" ]]; then
             target_branch="preview/${{ needs.versioning.outputs.friendly-version }}"
@@ -60,24 +61,21 @@ jobs:
             target_branch="release/${{ needs.versioning.outputs.friendly-version }}"
           fi
           
-          echo "Target branch name: $target_branch"
+          echo "Setting target branch $target_branch."
 
           echo "target-branch=$target_branch" >> $GITHUB_OUTPUT
-#       - name: 'Get default branch'
-# -       id: get-default-branch
-#         run: |
-#           set +e
-#           default_branch=$(git remote show origin | grep 'HEAD branch' | awk '{print $NF}')
-#           echo "default-branch=$default_branch" >> $GITHUB_OUTPUT
-#           set -e
       - name: 'Get default branch'
-        id: get-default-branch
+        id: set-default-branch
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          echo $(gh api repos/${{ github.repository }} --jq '.default_branch')
-      - name: 'Validate target branch in origin'
-        id: validate-target-branch
+          default_branch=$(gh api repos/${{ github.repository }} --jq '.default_branch')
+          
+          echo "Setting default branch $default_branch."
+          
+          echo "default-branch=$default_branch" >> $GITHUB_OUTPUT
+      - name: 'Check if target branch exists'
+        id: check-target-branch-exists
         env:
           target-branch: ${{ needs.workflow-variables.outputs.target-branch }}
         run: |
@@ -86,10 +84,10 @@ jobs:
           git ls-remote --exit-code --heads origin ${{ env.target-branch }}
 
           if [[ $? -eq 0 ]]; then
-            echo "Target branch exist: ${{ env.target-branch }}"
+            echo "Target ${{ env.target-branch }} branch does exist."
             target_branch_exists="true"
           else
-            echo "Target branch does not exist: ${{ env.target-branch }}"
+            echo "Target branch ${{ env.target-branch }} does not exist."
             target_branch_exists="false"
           fi
 
@@ -101,13 +99,20 @@ jobs:
     name: 'Validate promotion'
     needs: [ versioning, workflow-variables ]
     runs-on: ubuntu-latest
+    env:
+      is-development-branch: ${{ env.is-development-branch }}
+      is-maintenance-branch: ${{ env.is-maintenance-branch }}
+      promotion-type: ${{ inputs.promotion-type }}
+      default-branch: ${{ needs.workflow-variables.outputs.default-branch }}
+      source-branch: ${{ github.ref_name }}
+      target-branch: ${{ needs.workflow-variables.outputs.target-branch }}
     outputs:
         target-branch: ${{ steps.compose-target-branch.outputs.target-branch }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v5
       - name: 'Check promotion type'
-        if: ${{ (inputs.promotion-type != 'release') && (inputs.promotion-type != 'preview') }}
+        if: ${{ (env.promotion-type != 'release') && (inputs.promotion-type != 'preview') }}
         run: |
           echo "Invalid promotion type: ${{ inputs.promotion-type }}"
           exit 1
@@ -115,6 +120,18 @@ jobs:
         if: ${{ (env.isdevelopment-branch == 'false') && (env.is-maintenance-branch == 'false') }}
         run: |
           echo "Invalid source branch: ${{ github.ref_name }}"
+          exit 1
+      - name: 'Validate source branch'
+        if: ${{ (env.is-development-branch == 'false') && (env.is-maintenance-branch == 'false') }}
+        run: |
+          echo "Invalid source branch: ${{ github.ref_name }}"
+          exit 1
+      - name: 'Validate default and source branch'
+        if: ${{ (env.default-branch == env.source-branch) }}
+        run: |
+          echo "Default and source branch cannot be the same."
+          echo "Default: '${{ env.default-branch }}'"
+          echo "Source: '${{ env.source-branch }}'"
           exit 1
 
   promote-branch:
