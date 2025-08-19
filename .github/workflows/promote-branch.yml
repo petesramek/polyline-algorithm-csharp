@@ -123,6 +123,7 @@ jobs:
         id: check-pull-request-exists
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository_owner }}/${{ github.event.repository.name }}
           current-branch: ${{ github.ref_name }}
           target-branch: ${{ steps.set-target-branch.outputs.target-branch }}
         run: |
