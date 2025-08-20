@@ -13,7 +13,7 @@ using PolylineAlgorithm.Properties;
 /// Provides a builder for configuring options for polyline encoding operations.
 /// </summary>
 public class PolylineEncodingOptionsBuilder {
-    private int _bufferSize = 64_000;
+    private int _maxPolylineLength = 1_024;
     private ILoggerFactory _loggerFactory = NullLoggerFactory.Instance;
 
     private PolylineEncodingOptionsBuilder() { }
@@ -36,23 +36,25 @@ public class PolylineEncodingOptionsBuilder {
     /// </returns>
     public PolylineEncodingOptions Build() {
         return new PolylineEncodingOptions {
-            MaxBufferSize = _bufferSize,
+            MaxPolylineLength = _maxPolylineLength,
             LoggerFactory = _loggerFactory
         };
     }
 
     /// <summary>
-    /// Sets the buffer size for encoding operations.
+    /// Sets the maximum length of the polyline string that can be encoded.
     /// </summary>
-    /// <param name="bufferSize">
-    /// The maximum buffer size. Must be greater than 11.
+    /// <param name="maxLength">
+    /// The maximum length of the polyline string in characters.
     /// </param>
     /// <returns>
-    /// The current builder instance.
+    /// The current builder instance, allowing for method chaining.
     /// </returns>
-    /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="bufferSize"/> is less than or equal to 11.</exception>
-    public PolylineEncodingOptionsBuilder WithMaxBufferSize(int bufferSize) {
-        _bufferSize = bufferSize > 11 ? bufferSize : throw new ArgumentOutOfRangeException(nameof(bufferSize), string.Format(ExceptionMessageResource.BufferSizeMustBeGreaterThanMessageFormat, 11));
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when <paramref name="maxLength"/> is less than 1024 characters.
+    /// </exception>
+    public PolylineEncodingOptionsBuilder WithMaxPolylineLength(int maxLength) {
+        _maxPolylineLength = maxLength >= 1024 ? maxLength : throw new ArgumentOutOfRangeException(nameof(maxLength), string.Format(ExceptionMessageResource.BufferSizeMustBeGreaterThanMessageFormat, 11));
 
         return this;
     }
@@ -64,12 +66,12 @@ public class PolylineEncodingOptionsBuilder {
     /// The instance of a logger factory.
     /// </param>
     /// <returns>
-    /// The current builder instance.
+    /// The current builder instance, allowing for method chaining.
     /// </returns>
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="loggerFactory"/> is <see langword="null"/>.
     /// </exception>
-    public PolylineEncodingOptionsBuilder WithLoggerFactory(ILoggerFactory loggerFactory) {
+    public PolylineEncodingOptionsBuilder UseLoggerFactory(ILoggerFactory loggerFactory) {
         _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
 
         return this;

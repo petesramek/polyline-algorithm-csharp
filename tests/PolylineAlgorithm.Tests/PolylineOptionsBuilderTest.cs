@@ -25,7 +25,7 @@ public class PolylineOptionsBuilderTest {
     public void Build_Returns_Instance_With_Default_Values() {
         // Arrange
         var builder = PolylineEncodingOptionsBuilder.Create();
-        var bufferSize = 64_000;
+        var maxPolylineLength = 1_024;
         var loggerFactory = NullLoggerFactory.Instance;
 
         // Act
@@ -34,8 +34,7 @@ public class PolylineOptionsBuilderTest {
 
         // Assert
         Assert.IsNotNull(options);
-        Assert.AreEqual(bufferSize, options.MaxBufferSize);
-        Assert.AreEqual(bufferSize / sizeof(char), options.MaxBufferLength);
+        Assert.AreEqual(maxPolylineLength, options.MaxPolylineLength);
         Assert.AreEqual(loggerFactory, options.LoggerFactory);
     }
 
@@ -43,14 +42,14 @@ public class PolylineOptionsBuilderTest {
     public void WithBufferSize_Small_BufferSize_Parameter_Returns_Throws_ArgumentOutOfRangeException() {
         // Arrange
         static void WithSmallBufferSize() => PolylineEncodingOptionsBuilder.Create()
-            .WithMaxBufferSize(11);
+            .WithMaxPolylineLength(100);
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(WithSmallBufferSize);
 
         // Assert
         Assert.IsNotNull(exception);
-        Assert.AreEqual("bufferSize", exception.ParamName);
+        Assert.AreEqual("maxLength", exception.ParamName);
         Assert.Contains("Buffer size must be greater than 11.", exception.Message);
     }
 
@@ -62,13 +61,12 @@ public class PolylineOptionsBuilderTest {
 
         // Act
         var options = builder
-            .WithMaxBufferSize(expected)
+            .WithMaxPolylineLength(expected)
             .Build();
 
         // Assert
         Assert.IsNotNull(options);
-        Assert.AreEqual(expected, options.MaxBufferSize);
-        Assert.AreEqual(expected / sizeof(char), options.MaxBufferLength);
+        Assert.AreEqual(expected, options.MaxPolylineLength);
     }
 
     [TestMethod]
@@ -79,7 +77,7 @@ public class PolylineOptionsBuilderTest {
 
         // Act
         var options = builder
-            .WithLoggerFactory(expected)
+            .UseLoggerFactory(expected)
             .Build();
 
         // Assert
@@ -91,7 +89,7 @@ public class PolylineOptionsBuilderTest {
     public void WithLoggerFactory_Null_Parameter_Returns_Throws_ArgumentNullException() {
         // Arrange
         static void WithNullLoggerFactory() => PolylineEncodingOptionsBuilder.Create()
-            .WithLoggerFactory(null!);
+            .UseLoggerFactory(null!);
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentNullException>(WithNullLoggerFactory);

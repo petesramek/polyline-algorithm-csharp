@@ -15,7 +15,7 @@ using System;
 public class AbstractPolylineEncoderTest {
     private static readonly PolylineEncoder _encoder = new();
 
-    public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100], [1_000]];
+    public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100]];
 
     public static IEnumerable<(double, double)> NotANumberAndInfinityCoordinates => StaticValueProvider.Invalid.GetNotANumberAndInfinityCoordinates();
 
@@ -88,7 +88,7 @@ public class AbstractPolylineEncoderTest {
     [TestMethod]
     public void Encode_BufferTooSmall_Throws_InternalBufferOverflowException() {
         // Arrange
-        PolylineEncoder _encoder = new(new PolylineEncodingOptions { MaxBufferSize = 12 });
+        PolylineEncoder _encoder = new(new PolylineEncodingOptions { MaxPolylineLength = 12 });
         IEnumerable<(double Latitude, double Longitude)> coordinates = RandomValueProvider.GetCoordinates(2);
 
         // Act

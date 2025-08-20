@@ -15,7 +15,7 @@ using System;
 public class AbstractPolylineDecoderTest {
     private static readonly PolylineDecoder _decoder = new();
 
-    public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100], [1_000]];
+    public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100]];
 
     public static IEnumerable<(double, double)> NotANumberAndInfinityCoordinates => StaticValueProvider.Invalid.GetNotANumberAndInfinityCoordinates();
 

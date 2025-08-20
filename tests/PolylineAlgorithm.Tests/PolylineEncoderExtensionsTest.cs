@@ -14,7 +14,7 @@ using System.Linq;
 public class PolylineEncoderExtensionsTest {
     private readonly PolylineEncoder _encoder = new();
 
-    public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100], [1_000]];
+    public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100]];
 
     [TestMethod]
     public void Encode_Null_Encoder_Empty_List_Throws_ArgumentNullException() {

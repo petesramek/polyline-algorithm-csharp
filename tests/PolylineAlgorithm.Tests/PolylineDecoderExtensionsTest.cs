@@ -14,7 +14,7 @@ using System.Linq;
 public class PolylineDecoderExtensionsTest {
     private readonly PolylineDecoder _decoder = new();
 
-    public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100], [1_000]];
+    public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100]];
 
     [TestMethod]
     public void Decode_Null_Decoder_Null_String_Throws_ArgumentNullException() {

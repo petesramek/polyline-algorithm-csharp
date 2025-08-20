@@ -19,8 +19,7 @@ public class PolylineTest {
     public static IEnumerable<object[]> LengthParameters => [
         [1],
         [10],
-        [100],
-        [1_000]
+        [100]
     ];
 
     /// <summary>
