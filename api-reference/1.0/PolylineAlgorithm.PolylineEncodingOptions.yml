@@ -54,21 +54,21 @@ body:
       url: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory
 - h4: Remarks
 - markdown: The default logger factory is <xref href="Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory" data-throw-if-not-resolved="false"></xref>, which does not log any messages.
-- api3: MaxBufferSize
-  id: PolylineAlgorithm_PolylineEncodingOptions_MaxBufferSize
+- api3: MaxPolylineLength
+  id: PolylineAlgorithm_PolylineEncodingOptions_MaxPolylineLength
   src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L26
   metadata:
-    uid: PolylineAlgorithm.PolylineEncodingOptions.MaxBufferSize
-    commentId: P:PolylineAlgorithm.PolylineEncodingOptions.MaxBufferSize
-- markdown: Gets the maximum buffer size for encoding operations.
-- code: public int MaxBufferSize { get; }
+    uid: PolylineAlgorithm.PolylineEncodingOptions.MaxPolylineLength
+    commentId: P:PolylineAlgorithm.PolylineEncodingOptions.MaxPolylineLength
+- markdown: Gets or sets the maximum size of the buffer used for encoding.
+- code: public int MaxPolylineLength { get; }
 - h4: Property Value
 - parameters:
   - type:
     - text: int
       url: https://learn.microsoft.com/dotnet/api/system.int32
 - h4: Remarks
-- markdown: The default maximum buffer size is 64,000 bytes (64 KB). This can be adjusted based on the expected size of the polyline data, but should be enough for common cases.
+- markdown: The default value is 1,024 characters.
 languageId: csharp
 metadata:
   description: Options for configuring polyline encoding.
