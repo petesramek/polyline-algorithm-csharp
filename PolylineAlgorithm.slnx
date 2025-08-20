@@ -1,4 +1,9 @@
 <Solution>
+  <Configurations>
+    <BuildType Name="Analyze" />
+    <BuildType Name="Debug" />
+    <BuildType Name="Release" />
+  </Configurations>
   <Folder Name="/benchmarks/">
     <Project Path="benchmarks/PolylineAlgorithm.Benchmarks/PolylineAlgorithm.Benchmarks.csproj" />
   </Folder>

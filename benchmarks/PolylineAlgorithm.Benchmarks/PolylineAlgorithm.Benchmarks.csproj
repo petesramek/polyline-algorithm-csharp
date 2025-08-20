@@ -8,6 +8,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<InvariantGlobalization>true</InvariantGlobalization>
 		<NeutralLanguage>en</NeutralLanguage>
+		<Configurations>Debug;Release;Analyze</Configurations>
 	</PropertyGroup>
 
 	<PropertyGroup>
