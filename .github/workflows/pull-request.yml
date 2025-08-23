@@ -1,12 +1,12 @@
 name: Build
 
 on:
-  workflow_dispatch:
-  push:
+  pull_request_target:
     branches:
-      - '**'
+      - 'preview/**'
+      - 'release/**'
     paths:
-      - 'src/**'
+      - '**'  
 
 permissions:
   actions: read
@@ -43,7 +43,7 @@ jobs:
           echo "is-preview:${{ startsWith(github.ref_name, 'preview') }}"
 
   versioning:
-    name: 'Extract version'
+    name: 'Extract version from branch'
     runs-on: ubuntu-latest
     outputs:
         friendly-version: ${{ steps.format-version.outputs.friendly-version }}
@@ -90,22 +90,9 @@ jobs:
           sha: ${{ github.sha }}
           pre-release-tag: ${{ steps.create-pre-release-tag.outputs.pre-release-tag }}
 
-  format:
-    name: 'Format source code'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5
-
-      - name: 'Format source code'
-        uses: ./.github/actions/source/format
-        with:
-          project-path: '**/PolylineAlgorithm.csproj'
-
   build:
     name: 'Compile source code'
-    needs: [workflow-variables, versioning, format]
+    needs: [workflow-variables, versioning]
     runs-on: ubuntu-latest
 
     env:
@@ -228,25 +215,37 @@ jobs:
           working-directory: ${{ runner.temp }}/${{ env.nuget-packages-directory }}
           dotnet-sdk-version: ${{ env.dotnet-sdk-version }}'
 
-  generate-assembly-metadata:
-    name: 'Generate assembly metadata'
-    needs: [versioning, build]
-    env:
-      friendly-version: ${{ needs.versioning.outputs.friendly-version }}
-    runs-on: ubuntu-latest
+  benchmark:
+    if: ${{ github.env.is_release || vars.BENCHMARKDOTNET_RUN_OVERRIDE == 'true' }}
+    name: Benchmark with .NET CLI on ${{ matrix.os }}
+    needs: [build]
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5 
-      - name: 'Generate assembly metadata'
-        uses: ./.github/actions/documentation/docfx-metadata
+        uses: actions/checkout@v5
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@v4
         with:
-          artifact-name: 'assembly-metadata'
-          docfx-json-manifest: './api-reference/assembly-metadata.json'
-          temporary-directory: './api-reference/temp'
-          output-directory: './api-reference/${{ env.friendly-version }}'
-      - name: 'Push assembly metadata artifact'
-        uses: ./.github/actions/git/push-changes
+          dotnet-version: |
+            8.x
+            9.x
+      - name: Download Build
+        uses: actions/download-artifact@v5
         with:
-          artifact-name: 'assembly-metadata'
-          commit-message: 'Updated docs for version ${{ env.friendly-version }}'
-          working-directory: './api-reference/${{ env.friendly-version }}'
+          name: build
+      - name: Benchmark
+        working-directory: ${{ vars.BENCHMARKDOTNET_WORKING_DIRECTORY }}
+        run: dotnet run --configuration ${{ env.build-configuration }} /p:Platform=${{ env.build-platform }} --framework ${{ vars.DEFAULT_BUILD_FRAMEWORK }} --runtimes ${{ vars.BENCHMARKDOTNET_RUNTIMES }} --filter ${{ vars.BENCHMARKDOTNET_FILTER }} --artifacts ${{ runner.temp }}/benchmarks/ --exporters GitHub --memory --iterationTime 100 --join
+      - name: Upload Benchmark Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-${{ matrix.os }}
+          path: |
+            ${{ runner.temp }}/benchmarks/**/*-report-github.md
+      - name: Write Benchmark Summary 
+        shell: bash
+        run: cat **/*-report-github.md > $GITHUB_STEP_SUMMARY
+        working-directory: ${{ runner.temp }}/benchmarks/

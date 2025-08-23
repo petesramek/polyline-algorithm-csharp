@@ -1,0 +1,73 @@
+name: 'Format source code'
+author: 'Pete Sramek'
+description: 'Formats source code using dotnet format tool. Pushes changes to the current branch.'
+inputs:
+# Required
+  project-path:
+    description: 'Path to the project or solution file.'
+    required: true
+# Optional
+  dotnet_sdk_version:
+    description: '.NET SDK version. Default: ''9.x'''
+    required: false
+    default: '9.x'
+  format-whitespace:
+    description: 'Format whitespace. Default: ''true'''
+    required: false
+    default: 'true'
+  format-style:
+    description: 'Format style. Default: ''true'''
+    required: false
+    default: 'true'
+  format-analyzers:
+    description: 'Format analyzers. Default: ''false'''
+    required: false
+    default: 'false'
+  format-analyzers-diagnostics-parameter:
+    description: 'Format analyzers diagnostics parameter. Default: '''''
+    required: false
+    default: ''
+    
+runs:  
+  using: "composite"
+  steps:
+    - name: 'Checkout ${{ github.head_ref || github.ref }}'
+      uses: actions/checkout@v5
+    
+    - name: 'Setup .NET ${{ inputs.dotnet_sdk_version }}'
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ inputs.dotnet_sdk_version }}
+    
+    - name: Format whitespace
+      if: ${{ inputs.format-whitespace == 'true' }}
+      shell: bash
+      run: |
+        dotnet format whitespace
+      working-directory: ${{ github.workspace }}
+
+    - name: Format style
+      if: ${{ inputs.format-style == 'true' }}
+      shell: bash
+      run: |
+        dotnet format style
+      working-directory: ${{ github.workspace }}
+
+    - name: 'Set target branch'
+      if: ${{ inputs.format-analyzers == 'true' && inputs.format-analyzers-diagnostics-parameter != '' }}
+      id: set-diagnostics-parameter
+      shell: bash
+      run: |
+         echo "format-analyzers-diagnostics-parameter=--diagnostics ${{ inputs.format-analyzers-diagnostics-parameter }}" >> $GITHUB_OUTPUT
+
+    - name: Format analyzers
+      if: ${{ inputs.format-analyzers == 'true' }}
+      shell: bash
+      run: |
+        dotnet format analyzers ${{ env.format-analyzers-diagnostics-parameter }}
+      working-directory: ${{ github.workspace }}
+
+    - name: 'Push changes'
+      uses: './.github/actions/git/push-changes'
+      with:
+        commit-message: 'Formatted csharp files'
