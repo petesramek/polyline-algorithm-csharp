@@ -46,7 +46,7 @@ jobs:
           dotnet-version: ${{ env.dotnet-sdk-version }}
       - name: 'Extract version from branch name'
         id: extract-version
-        uses: './.github/actions/extract-version'
+        uses: './.github/actions/versioning/extract-version'
         with:
           branch-name: ${{ github.ref_name }}
   workflow-variables:

@@ -44,6 +44,6 @@ jobs:
       working-directory: ${{ github.workspace }}
     
     - name: 'Push changes'
-      uses: './.github/actions/push-changes'
+      uses: './.github/actions/git/push-changes'
       with:
         commit-message: 'Formatted csharp files'
