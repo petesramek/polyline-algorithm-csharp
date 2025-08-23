@@ -67,14 +67,14 @@ body:
     - text: PolylineEncodingOptionsBuilder
       url: PolylineAlgorithm.PolylineEncodingOptionsBuilder.html
     description: An <xref href="PolylineAlgorithm.PolylineEncodingOptionsBuilder" data-throw-if-not-resolved="false"></xref> instance for configuring polyline encoding options.
-- api3: UseLoggerFactory(ILoggerFactory)
-  id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_UseLoggerFactory_Microsoft_Extensions_Logging_ILoggerFactory_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L74
+- api3: WithLoggerFactory(ILoggerFactory)
+  id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_WithLoggerFactory_Microsoft_Extensions_Logging_ILoggerFactory_
+  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L72
   metadata:
-    uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.UseLoggerFactory(Microsoft.Extensions.Logging.ILoggerFactory)
-    commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.UseLoggerFactory(Microsoft.Extensions.Logging.ILoggerFactory)
+    uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithLoggerFactory(Microsoft.Extensions.Logging.ILoggerFactory)
+    commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithLoggerFactory(Microsoft.Extensions.Logging.ILoggerFactory)
 - markdown: Sets the logger factory for logging during encoding operations.
-- code: public PolylineEncodingOptionsBuilder UseLoggerFactory(ILoggerFactory loggerFactory)
+- code: public PolylineEncodingOptionsBuilder WithLoggerFactory(ILoggerFactory loggerFactory)
 - h4: Parameters
 - parameters:
   - name: loggerFactory
@@ -87,40 +87,40 @@ body:
   - type:
     - text: PolylineEncodingOptionsBuilder
       url: PolylineAlgorithm.PolylineEncodingOptionsBuilder.html
-    description: The current builder instance, allowing for method chaining.
+    description: The current builder instance.
 - h4: Exceptions
 - parameters:
   - type:
     - text: ArgumentNullException
       url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
     description: Thrown when <code class="paramref">loggerFactory</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
-- api3: WithMaxPolylineLength(int)
-  id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_WithMaxPolylineLength_System_Int32_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L56
+- api3: WithMaxBufferSize(int)
+  id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_WithMaxBufferSize_System_Int32_
+  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L54
   metadata:
-    uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithMaxPolylineLength(System.Int32)
-    commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithMaxPolylineLength(System.Int32)
-- markdown: Sets the maximum length of the polyline string that can be encoded.
-- code: public PolylineEncodingOptionsBuilder WithMaxPolylineLength(int maxLength)
+    uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithMaxBufferSize(System.Int32)
+    commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithMaxBufferSize(System.Int32)
+- markdown: Sets the buffer size for encoding operations.
+- code: public PolylineEncodingOptionsBuilder WithMaxBufferSize(int bufferSize)
 - h4: Parameters
 - parameters:
-  - name: maxLength
+  - name: bufferSize
     type:
     - text: int
       url: https://learn.microsoft.com/dotnet/api/system.int32
-    description: The maximum length of the polyline string in characters.
+    description: The maximum buffer size. Must be greater than 11.
 - h4: Returns
 - parameters:
   - type:
     - text: PolylineEncodingOptionsBuilder
       url: PolylineAlgorithm.PolylineEncodingOptionsBuilder.html
-    description: The current builder instance, allowing for method chaining.
+    description: The current builder instance.
 - h4: Exceptions
 - parameters:
   - type:
     - text: ArgumentOutOfRangeException
       url: https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception
-    description: Thrown when <code class="paramref">maxLength</code> is less than 1024 characters.
+    description: Thrown when <code class="paramref">bufferSize</code> is less than or equal to 11.
 languageId: csharp
 metadata:
   description: Provides a builder for configuring options for polyline encoding operations.
