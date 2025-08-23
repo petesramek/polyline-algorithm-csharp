@@ -36,15 +36,15 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      is-release: ${{ startsWith(github.ref_name, 'release') }}
-      is-preview: ${{ startsWith(github.ref_name, 'preview') }}
+      is-release: ${{ startsWith(github.base_ref, 'release') }}
+      is-preview: ${{ startsWith(github.base_ref , 'preview') }}
 
     steps:
       - name: 'Set workflow variables'
         id: github
         run: |
-          echo "is-release:${{ startsWith(github.ref_name, 'release') }}"
-          echo "is-preview:${{ startsWith(github.ref_name, 'preview') }}"
+          echo "is-release:${{ startsWith(github.base_ref, 'release') }}"
+          echo "is-preview:${{ startsWith(github.base_ref, 'preview') }}"
 
   versioning:
     name: 'Extract version from branch'
