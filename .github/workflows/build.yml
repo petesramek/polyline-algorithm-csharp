@@ -105,7 +105,7 @@ jobs:
 
   build:
     name: 'Compile source code'
-    needs: [workflow-variables, versioning]
+    needs: [workflow-variables, versioning, format]
     runs-on: ubuntu-latest
 
     env:
