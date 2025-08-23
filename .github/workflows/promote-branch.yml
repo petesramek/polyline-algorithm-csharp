@@ -33,7 +33,7 @@ env:
 
 jobs:
   versioning:
-    name: 'Extract version (new)'
+    name: 'Extract version'
     runs-on: ubuntu-latest
     outputs:
         friendly-version: ${{ steps.extract-version.outputs.version }}

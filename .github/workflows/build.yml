@@ -43,7 +43,7 @@ jobs:
           echo "is-preview:${{ startsWith(github.ref_name, 'preview') }}"
 
   versioning:
-    name: 'Extract version (new)'
+    name: 'Extract version'
     runs-on: ubuntu-latest
     outputs:
         friendly-version: ${{ steps.format-version.outputs.friendly-version }}
