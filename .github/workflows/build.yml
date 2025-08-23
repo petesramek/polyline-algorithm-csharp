@@ -206,7 +206,7 @@ jobs:
           dotnet-version: ${{ env.dotnet-sdk-version }}
 
       - name: 'Publish package to Azure Artifact feed'
-        uses: ./.github/actions/nuget/publish-nuget-package
+        uses: ./.github/actions/nuget/publish-package
         with:
           package-artifact-name: ${{ env.package-artifact-name }}
           nuget-feed-url: ${{ vars.NUGET_PACKAGE_FEED_URL }}
