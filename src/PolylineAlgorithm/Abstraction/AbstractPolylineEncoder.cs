@@ -218,4 +218,3 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
     protected abstract double GetLatitude(TCoordinate current);
 }
-
