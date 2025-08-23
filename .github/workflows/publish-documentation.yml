@@ -27,7 +27,7 @@ jobs:
           echo "github-run-number:${{ github.run_number }}"
 
   versioning:
-    name: 'Extract version (new)'
+    name: 'Extract version'
     needs: [workflow-variables]
     runs-on: ubuntu-latest
     outputs:
@@ -44,7 +44,7 @@ jobs:
           dotnet-version: ${{ env.dotnet-sdk-version }}
       - name: 'Extract version from branch name'
         id: versioning
-        uses: './.github/actions/extract-version'
+        uses: './.github/actions/versioning/extract-version'
         with:
           branch-name: ${{ github.ref_name }}
 
@@ -59,7 +59,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: 'Generate documentation'
-        uses: ./.github/actions/docfx-build
+        uses: ./.github/actions/documentation/docfx-build
         with:
           artifact-name: 'documentation'
           docfx-json-manifest: './api-reference/api-reference.json'

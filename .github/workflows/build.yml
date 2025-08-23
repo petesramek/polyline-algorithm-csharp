@@ -43,7 +43,7 @@ jobs:
           echo "is-preview:${{ startsWith(github.ref_name, 'preview') }}"
 
   versioning:
-    name: 'Extract version (new)'
+    name: 'Extract version'
     runs-on: ubuntu-latest
     outputs:
         friendly-version: ${{ steps.format-version.outputs.friendly-version }}
@@ -60,7 +60,7 @@ jobs:
           dotnet-version: ${{ env.dotnet-sdk-version }}
       - name: 'Extract version from branch name'
         id: extract-version
-        uses: './.github/actions/extract-version'
+        uses: './.github/actions/versioning/extract-version'
         with:
           branch-name: ${{ github.ref_name }}
       - name: 'Create pre-release tag'
@@ -82,7 +82,7 @@ jobs:
           echo "build-number=$build_number" >> $GITHUB_OUTPUT
       - name: 'Format version'
         id: format-version
-        uses: ./.github/actions/format-version
+        uses: ./.github/actions/versioning/format-version
         with:
           version: ${{ steps.extract-version.outputs.version }}
           patch: ${{ github.run_number }}
@@ -90,9 +90,22 @@ jobs:
           sha: ${{ github.sha }}
           pre-release-tag: ${{ steps.create-pre-release-tag.outputs.pre-release-tag }}
 
+  format:
+    name: 'Format source code'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v5
+
+      - name: 'Format source code'
+        uses: ./.github/actions/source/format
+        with:
+          project-path: '**/PolylineAlgorithm.csproj'
+
   build:
     name: 'Compile source code'
-    needs: [workflow-variables, versioning]
+    needs: [workflow-variables, versioning, format]
     runs-on: ubuntu-latest
 
     env:
@@ -105,7 +118,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: 'Compile source code'
-        uses: ./.github/actions/compile
+        uses: ./.github/actions/source/compile
         with:
           project-path: '**/PolylineAlgorithm.csproj'
           assembly-version: ${{ env.assembly-version }}
@@ -127,14 +140,14 @@ jobs:
           dotnet-version: ${{ env.dotnet-sdk-version }}
 
       - name: 'Run tests'
-        uses: ./.github/actions/test
+        uses: ./.github/actions/testing/test
         with:
           project-path: '**/PolylineAlgorithm.Tests.csproj'
           test-results-directory: '${{ runner.temp }}/${{ env.test-result-directory }}/'
           code-coverage-settings-file: '${{ github.workspace}}/code-coverage-settings.xml'
 
       - name: 'Generate test report'
-        uses: ./.github/actions/test-report
+        uses: ./.github/actions/testing/test-report
         id: test-report
         with:
           test-result-folder: '${{ runner.temp }}/${{ env.test-result-directory }}/'
@@ -143,7 +156,7 @@ jobs:
         run: cat ${{ steps.test-report.outputs.test-report-file }} >> $GITHUB_STEP_SUMMARY
 
       - name: 'Generate code coverage'
-        uses: ./.github/actions/code-coverage
+        uses: ./.github/actions/testing/code-coverage
         id: code-coverage-report
         with:
           test-result-folder: '${{ runner.temp }}/${{ env.test-result-directory }}/'
@@ -206,7 +219,7 @@ jobs:
           dotnet-version: ${{ env.dotnet-sdk-version }}
 
       - name: 'Publish package to Azure Artifact feed'
-        uses: ./.github/actions/publish-nuget-package
+        uses: ./.github/actions/nuget/publish-package
         with:
           package-artifact-name: ${{ env.package-artifact-name }}
           nuget-feed-url: ${{ vars.NUGET_PACKAGE_FEED_URL }}
@@ -225,14 +238,14 @@ jobs:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v5 
       - name: 'Generate assembly metadata'
-        uses: ./.github/actions/docfx-metadata
+        uses: ./.github/actions/documentation/docfx-metadata
         with:
           artifact-name: 'assembly-metadata'
           docfx-json-manifest: './api-reference/assembly-metadata.json'
           temporary-directory: './api-reference/temp'
           output-directory: './api-reference/${{ env.friendly-version }}'
       - name: 'Push assembly metadata artifact'
-        uses: ./.github/actions/push-changes
+        uses: ./.github/actions/git/push-changes
         with:
           artifact-name: 'assembly-metadata'
           commit-message: 'Updated docs for version ${{ env.friendly-version }}'
