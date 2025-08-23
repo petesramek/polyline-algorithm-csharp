@@ -15,6 +15,9 @@ dotnet_code_quality_unused_parameters = non_public:suggestion
 # C# files
 [*.cs]
 
+#### Public API analyzer
+dotnet_public_api_analyzer.require_api_files = true
+
 #### Core EditorConfig Options ####
 
 # Indentation and spacing
@@ -104,14 +107,14 @@ csharp_style_var_for_built_in_types = false
 csharp_style_var_when_type_is_apparent = false
 
 # Expression-bodied members
-csharp_style_expression_bodied_accessors = true
-csharp_style_expression_bodied_constructors = false
-csharp_style_expression_bodied_indexers = true
-csharp_style_expression_bodied_lambdas = when_on_single_line
-csharp_style_expression_bodied_local_functions = when_on_single_line
-csharp_style_expression_bodied_methods = false
-csharp_style_expression_bodied_operators = false
-csharp_style_expression_bodied_properties = true
+csharp_style_expression_bodied_accessors = true:silent
+csharp_style_expression_bodied_constructors = false:silent
+csharp_style_expression_bodied_indexers = true:silent
+csharp_style_expression_bodied_lambdas = when_on_single_line:silent
+csharp_style_expression_bodied_local_functions = when_on_single_line:silent
+csharp_style_expression_bodied_methods = false:silent
+csharp_style_expression_bodied_operators = false:silent
+csharp_style_expression_bodied_properties = true:silent
 
 # Pattern matching preferences
 csharp_style_pattern_matching_over_as_with_null_check = true
@@ -132,13 +135,13 @@ csharp_style_prefer_readonly_struct = true
 csharp_style_prefer_readonly_struct_member = true
 
 # Code-block preferences
-csharp_prefer_braces = true
-csharp_prefer_simple_using_statement = false
-csharp_prefer_system_threading_lock = true
-csharp_style_namespace_declarations = file_scoped
-csharp_style_prefer_method_group_conversion = false
-csharp_style_prefer_primary_constructors = true
-csharp_style_prefer_top_level_statements = false
+csharp_prefer_braces = true:silent
+csharp_prefer_simple_using_statement = false:suggestion
+csharp_prefer_system_threading_lock = true:suggestion
+csharp_style_namespace_declarations = file_scoped:silent
+csharp_style_prefer_method_group_conversion = false:silent
+csharp_style_prefer_primary_constructors = true:suggestion
+csharp_style_prefer_top_level_statements = false:silent
 
 # Expression-level preferences
 csharp_prefer_simple_default_expression = true
@@ -158,7 +161,7 @@ csharp_style_unused_value_assignment_preference = discard_variable
 csharp_style_unused_value_expression_statement_preference = discard_variable
 
 # 'using' directive preferences
-csharp_using_directive_placement = inside_namespace
+csharp_using_directive_placement = inside_namespace:silent
 
 # New line preferences
 csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = false
