@@ -90,6 +90,19 @@ jobs:
           sha: ${{ github.sha }}
           pre-release-tag: ${{ steps.create-pre-release-tag.outputs.pre-release-tag }}
 
+  format:
+    name: 'Format source code'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v5
+
+      - name: 'Format source code'
+        uses: ./.github/actions/source/format
+        with:
+          project-path: '**/PolylineAlgorithm.csproj'
+
   build:
     name: 'Compile source code'
     needs: [workflow-variables, versioning]

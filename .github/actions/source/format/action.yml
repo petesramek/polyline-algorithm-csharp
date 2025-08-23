@@ -20,9 +20,9 @@ inputs:
     required: false
     default: 'true'
   format-analyzers:
-    description: 'Format analyzers. Default: ''true'''
+    description: 'Format analyzers. Default: ''false'''
     required: false
-    default: 'true'
+    default: 'false'
   format-analyzers-diagnostics-parameter:
     description: 'Format analyzers diagnostics parameter. Default: '''''
     required: false
