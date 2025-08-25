@@ -189,7 +189,7 @@ jobs:
             ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.nupkg
             ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.snupkg
 
-  publish-package:
+  publish-development-package:
     name: 'Publish development package'
     needs: [pack]
     env:
