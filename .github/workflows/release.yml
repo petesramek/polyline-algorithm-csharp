@@ -2,15 +2,12 @@ name: 'Pull Request'
 
 on:
   pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
+    types: [closed]
     branches:
       - 'preview/**'
       - 'release/**'
     paths:
-      - '**'  
+      - 'src/**'
 
 permissions:
   actions: read
@@ -36,15 +33,26 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      is-release: ${{ startsWith(github.base_ref, 'release') }}
-      is-preview: ${{ startsWith(github.base_ref , 'preview') }}
+      is-release: ${{ startsWith(github.ref_name, 'release') }}
+      is-preview: ${{ startsWith(github.ref_name, 'preview') }}
 
     steps:
       - name: 'Set workflow variables'
         id: github
         run: |
-          echo "is-release:${{ startsWith(github.base_ref, 'release') }}"
-          echo "is-preview:${{ startsWith(github.base_ref, 'preview') }}"
+          echo "is-release:${{ startsWith(github.ref_name, 'release') }}"
+          echo "is-preview:${{ startsWith(github.ref_name, 'preview') }}"
+
+  validate-release:
+    name: 'Validate release branch'
+    needs: [workflow-variables]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Validate release branch'
+        if: ${{ needs.workflow-variables.outputs.is-release != 'true' || needs.workflow-variables.outputs.is-preview != 'true' }}
+        run: |
+          echo "This workflow can only be run on 'release/**' or 'preview/**' branches."
+          exit 1
 
   versioning:
     name: 'Extract version from branch'
@@ -193,13 +201,13 @@ jobs:
             ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.nupkg
             ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.snupkg
 
-  publish-development-package:
-    name: 'Publish development package'
+  publish-package:
+    name: 'Publish package'
     needs: [pack]
     env:
       package-artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
     runs-on: ubuntu-latest
-    environment: 'Development'
+    environment: 'NuGet'
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v5
@@ -215,41 +223,20 @@ jobs:
           package-artifact-name: ${{ env.package-artifact-name }}
           nuget-feed-url: ${{ vars.NUGET_PACKAGE_FEED_URL }}
           nuget-feed-api-key: ${{ secrets.NUGET_PACKAGE_FEED_API_KEY }}
-          nuget-feed-server: 'AzureArtifacts'
+          nuget-feed-server: 'NuGet'
           working-directory: ${{ runner.temp }}/${{ env.nuget-packages-directory }}
           dotnet-sdk-version: ${{ env.dotnet-sdk-version }}'
 
-  benchmark:
-    if: ${{ github.env.is_release || vars.BENCHMARKDOTNET_RUN_OVERRIDE == 'true' }}
-    name: Benchmark with .NET CLI on ${{ matrix.os }}
-    needs: [build]
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
+
+  release:
+    name: 'Create release'
+    needs: [publish-package]
+    runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v5
-      - name: Install .NET SDK
-        uses: actions/setup-dotnet@v4
+      
+      - name: 'Create GitHub Release'
+        uses: ./.github/actions/github/create-release
         with:
-          dotnet-version: |
-            8.x
-            9.x
-      - name: Download Build
-        uses: actions/download-artifact@v5
-        with:
-          name: build
-      - name: Benchmark
-        working-directory: ${{ vars.BENCHMARKDOTNET_WORKING_DIRECTORY }}
-        run: dotnet run --configuration ${{ env.build-configuration }} /p:Platform=${{ env.build-platform }} --framework ${{ vars.DEFAULT_BUILD_FRAMEWORK }} --runtimes ${{ vars.BENCHMARKDOTNET_RUNTIMES }} --filter ${{ vars.BENCHMARKDOTNET_FILTER }} --artifacts ${{ runner.temp }}/benchmarks/ --exporters GitHub --memory --iterationTime 100 --join
-      - name: Upload Benchmark Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: benchmark-${{ matrix.os }}
-          path: |
-            ${{ runner.temp }}/benchmarks/**/*-report-github.md
-      - name: Write Benchmark Summary 
-        shell: bash
-        run: cat **/*-report-github.md > $GITHUB_STEP_SUMMARY
-        working-directory: ${{ runner.temp }}/benchmarks/
+          release-version: ${{ github.ref_name }}

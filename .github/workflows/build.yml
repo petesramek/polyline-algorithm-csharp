@@ -50,7 +50,7 @@ jobs:
         assembly-version: ${{ steps.format-version.outputs.assembly-version }}
         assembly-informational-version: ${{ steps.format-version.outputs.assembly-informational-version }}
         file-version: ${{ steps.format-version.outputs.file-version }}
-        package-version: ${{ steps.format-version.outputs.package-version }}
+        release-version: ${{ steps.format-version.outputs.release-version }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v5
@@ -63,16 +63,6 @@ jobs:
         uses: './.github/actions/versioning/extract-version'
         with:
           branch-name: ${{ github.ref_name }}
-      - name: 'Create pre-release tag'
-        shell: bash
-        id: create-pre-release-tag
-        run: |
-          if [[ '${{ needs.workflow-variables.outputs.is-release }}' == 'true' ]]; then
-            echo "pre-release-tag=" >> $GITHUB_OUTPUT
-          else
-            pre_release_tag=$(echo ${{ github.ref_name }} | tr '/' '.' | tr '-' '.'| tr '_' '.')
-            echo "pre-release-tag=$pre_release_tag" >> $GITHUB_OUTPUT
-          fi
       - name: 'Create build number'
         shell: bash
         id: create-build-number
@@ -80,6 +70,21 @@ jobs:
           git fetch --unshallow --filter=tree:0
           build_number=$(git rev-list --count origin/${{ github.ref_name }} ^origin/main)
           echo "build-number=$build_number" >> $GITHUB_OUTPUT
+      - name: 'Create pre-release tag'
+        shell: bash
+        id: create-pre-release-tag
+        env:
+          build-number: ${{ steps.create-build-number.outputs.build-number }}
+        run: |
+          if [[ '${{ needs.workflow-variables.outputs.is-release }}' == 'true' ]]; then
+            echo "pre-release-tag=" >> $GITHUB_OUTPUT
+          elif [[ '${{ needs.workflow-variables.outputs.is-preview }}' == 'true' ]]; then
+            pre_release_tag='preview'
+            echo "pre-release-tag=$pre_release_tag" >> $GITHUB_OUTPUT
+          else
+            pre_release_tag=$(echo ${{ github.ref_name }} | tr '/' '-' | tr '.' '-'| tr '_' '-')
+            echo "pre-release-tag=$pre_release_tag" >> $GITHUB_OUTPUT
+          fi
       - name: 'Format version'
         id: format-version
         uses: ./.github/actions/versioning/format-version
@@ -172,7 +177,7 @@ jobs:
       assembly-version: ${{ needs.versioning.outputs.assembly-version }}
       assembly-informational-version: ${{ needs.versioning.outputs.assembly-informational-version }}
       file-version: ${{ needs.versioning.outputs.file-version }}
-      package-version: ${{ needs.versioning.outputs.package-version }}
+      release-version: ${{ needs.versioning.outputs.release-version }}
       package-artifact-name: package
     outputs:
         package-artifact-name: ${{ env.package-artifact-name }}
@@ -192,7 +197,7 @@ jobs:
 
       - name: Pack with .NET
         run: |
-          dotnet pack ${{ vars.SRC_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} /p:Platform="${{ env.build-platform }}" /p:PackageVersion=${{ env.package-version }} /p:Version=${{ env.assembly-version }} /p:AssemblyInformationalVersion=${{ env.assembly-informational-version }} /p:FileVersion=${{ env.file-version }} --output ${{ runner.temp }}/${{ env.nuget-packages-directory }}
+          dotnet pack ${{ vars.SRC_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} /p:Platform="${{ env.build-platform }}" /p:PackageVersion=${{ env.release-version }} /p:Version=${{ env.assembly-version }} /p:AssemblyInformationalVersion=${{ env.assembly-informational-version }} /p:FileVersion=${{ env.file-version }} --output ${{ runner.temp }}/${{ env.nuget-packages-directory }}
       
       - name: Upload Package
         uses: actions/upload-artifact@v4

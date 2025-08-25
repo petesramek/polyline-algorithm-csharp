@@ -37,9 +37,9 @@ outputs:
   file-version:
     description: 'Formatted file version.'
     value: ${{ steps.format-version.outputs.file-version }}
-  package-version:
-    description: 'Formatted package version.'
-    value: ${{ steps.format-version.outputs.package-version }}
+  release-version:
+    description: 'Formatted release version.'
+    value: ${{ steps.format-version.outputs.release-version }}
 
 runs:  
   using: "composite"
@@ -60,7 +60,7 @@ runs:
         echo "assembly-informational-version=${{ inputs.version }}.${{ inputs.patch }}+${{ inputs.sha }}" >> $GITHUB_OUTPUT
         echo "file-version=${{ inputs.version }}.${{ inputs.patch }}.${{ inputs.build-number }}" >> $GITHUB_OUTPUT
         if [ -n "${{ inputs.pre-release-tag }}" ]; then
-          echo "package-version=${{ inputs.version }}.${{ inputs.patch }}-${{ inputs.pre-release-tag }}-${{ inputs.build-number }}" >> $GITHUB_OUTPUT
+          echo "release-version=${{ inputs.version }}.${{ inputs.patch }}-${{ inputs.pre-release-tag }}.${{ inputs.build-number }}" >> $GITHUB_OUTPUT
         else
-          echo "package-version=${{ inputs.version }}.${{ inputs.patch }}.${{ inputs.build-number }}" >> $GITHUB_OUTPUT
+          echo "release-version=${{ inputs.version }}.${{ inputs.patch }}.${{ inputs.build-number }}" >> $GITHUB_OUTPUT
         fi

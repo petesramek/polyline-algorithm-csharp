@@ -1,0 +1,23 @@
+name: 'Create GitHub release'
+author: 'Pete Sramek'
+description: 'Create GitHub release.'
+inputs:
+    release-version:
+      description: 'Version to use for the release.'
+      required: true
+    is-preview:
+      description: 'Is this a preview release?'
+      required: true
+      default: 'false'
+
+runs:
+  using: composite
+  steps:
+    - name: 'Checkout ${{ github.head_ref || github.ref }}'
+      uses: actions/checkout@v5
+    - name: 'Create GitHub release PolylineAlgorithm ${{ env.release-version }}'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        gh release create ${{ env.release-version }} --generate-notes --discussion-category "General" $(if [ '${{ inputs.is-preview }}" = "true" ]; then echo "--prerelease"; fi)
