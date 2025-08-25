@@ -1,10 +1,11 @@
-name: Build
+name: 'Pull Request'
 
 on:
-  workflow_dispatch:
-  push:
+  pull_request:
+    types: [closed]
     branches:
-      - '**'
+      - 'preview/**'
+      - 'release/**'
     paths:
       - 'src/**'
 
@@ -42,8 +43,19 @@ jobs:
           echo "is-release:${{ startsWith(github.ref_name, 'release') }}"
           echo "is-preview:${{ startsWith(github.ref_name, 'preview') }}"
 
+  validate-release:
+    name: 'Validate release branch'
+    needs: [workflow-variables]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Validate release branch'
+        if: ${{ needs.workflow-variables.outputs.is-release != 'true' || needs.workflow-variables.outputs.is-preview != 'true' }}
+        run: |
+          echo "This workflow can only be run on 'release/**' or 'preview/**' branches."
+          exit 1
+
   versioning:
-    name: 'Extract version'
+    name: 'Extract version from branch'
     runs-on: ubuntu-latest
     outputs:
         friendly-version: ${{ steps.format-version.outputs.friendly-version }}
@@ -63,6 +75,16 @@ jobs:
         uses: './.github/actions/versioning/extract-version'
         with:
           branch-name: ${{ github.ref_name }}
+      - name: 'Create pre-release tag'
+        shell: bash
+        id: create-pre-release-tag
+        run: |
+          if [[ '${{ needs.workflow-variables.outputs.is-release }}' == 'true' ]]; then
+            echo "pre-release-tag=" >> $GITHUB_OUTPUT
+          else
+            pre_release_tag=$(echo ${{ github.ref_name }} | tr '/' '.' | tr '-' '.'| tr '_' '.')
+            echo "pre-release-tag=$pre_release_tag" >> $GITHUB_OUTPUT
+          fi
       - name: 'Create build number'
         shell: bash
         id: create-build-number
@@ -70,21 +92,6 @@ jobs:
           git fetch --unshallow --filter=tree:0
           build_number=$(git rev-list --count origin/${{ github.ref_name }} ^origin/main)
           echo "build-number=$build_number" >> $GITHUB_OUTPUT
-      - name: 'Create pre-release tag'
-        shell: bash
-        id: create-pre-release-tag
-        env:
-          build-number: ${{ steps.create-build-number.outputs.build-number }}
-        run: |
-          if [[ '${{ needs.workflow-variables.outputs.is-release }}' == 'true' ]]; then
-            echo "pre-release-tag=" >> $GITHUB_OUTPUT
-          elif [[ '${{ needs.workflow-variables.outputs.is-preview }}' == 'true' ]]; then
-            pre_release_tag='preview'
-            echo "pre-release-tag=$pre_release_tag" >> $GITHUB_OUTPUT
-          else
-            pre_release_tag=$(echo ${{ github.ref_name }} | tr '/' '-' | tr '.' '-'| tr '_' '-')
-            echo "pre-release-tag=$pre_release_tag" >> $GITHUB_OUTPUT
-          fi
       - name: 'Format version'
         id: format-version
         uses: ./.github/actions/versioning/format-version
@@ -95,22 +102,9 @@ jobs:
           sha: ${{ github.sha }}
           pre-release-tag: ${{ steps.create-pre-release-tag.outputs.pre-release-tag }}
 
-  format:
-    name: 'Format source code'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5
-
-      - name: 'Format source code'
-        uses: ./.github/actions/source/format
-        with:
-          project-path: '**/PolylineAlgorithm.csproj'
-
   build:
     name: 'Compile source code'
-    needs: [workflow-variables, versioning, format]
+    needs: [workflow-variables, versioning]
     runs-on: ubuntu-latest
 
     env:
@@ -208,12 +202,12 @@ jobs:
             ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.snupkg
 
   publish-package:
-    name: 'Publish development package'
+    name: 'Publish package'
     needs: [pack]
     env:
       package-artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
     runs-on: ubuntu-latest
-    environment: 'Development'
+    environment: 'NuGet'
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v5
@@ -229,29 +223,20 @@ jobs:
           package-artifact-name: ${{ env.package-artifact-name }}
           nuget-feed-url: ${{ vars.NUGET_PACKAGE_FEED_URL }}
           nuget-feed-api-key: ${{ secrets.NUGET_PACKAGE_FEED_API_KEY }}
-          nuget-feed-server: 'AzureArtifacts'
+          nuget-feed-server: 'NuGet'
           working-directory: ${{ runner.temp }}/${{ env.nuget-packages-directory }}
           dotnet-sdk-version: ${{ env.dotnet-sdk-version }}'
 
-  generate-assembly-metadata:
-    name: 'Generate assembly metadata'
-    needs: [versioning, build]
-    env:
-      friendly-version: ${{ needs.versioning.outputs.friendly-version }}
+
+  release:
+    name: 'Create release'
+    needs: [publish-package]
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5 
-      - name: 'Generate assembly metadata'
-        uses: ./.github/actions/documentation/docfx-metadata
+        uses: actions/checkout@v5
+      
+      - name: 'Create GitHub Release'
+        uses: ./.github/actions/github/create-release
         with:
-          artifact-name: 'assembly-metadata'
-          docfx-json-manifest: './api-reference/assembly-metadata.json'
-          temporary-directory: './api-reference/temp'
-          output-directory: './api-reference/${{ env.friendly-version }}'
-      - name: 'Push assembly metadata artifact'
-        uses: ./.github/actions/git/push-changes
-        with:
-          artifact-name: 'assembly-metadata'
-          commit-message: 'Updated docs for version ${{ env.friendly-version }}'
-          working-directory: './api-reference/${{ env.friendly-version }}'
+          release-version: ${{ github.ref_name }}

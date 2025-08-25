@@ -50,7 +50,7 @@ jobs:
         assembly-version: ${{ steps.format-version.outputs.assembly-version }}
         assembly-informational-version: ${{ steps.format-version.outputs.assembly-informational-version }}
         file-version: ${{ steps.format-version.outputs.file-version }}
-        package-version: ${{ steps.format-version.outputs.package-version }}
+        release-version: ${{ steps.format-version.outputs.release-version }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v5
@@ -159,7 +159,7 @@ jobs:
       assembly-version: ${{ needs.versioning.outputs.assembly-version }}
       assembly-informational-version: ${{ needs.versioning.outputs.assembly-informational-version }}
       file-version: ${{ needs.versioning.outputs.file-version }}
-      package-version: ${{ needs.versioning.outputs.package-version }}
+      release-version: ${{ needs.versioning.outputs.release-version }}
       package-artifact-name: package
     outputs:
         package-artifact-name: ${{ env.package-artifact-name }}
@@ -179,7 +179,7 @@ jobs:
 
       - name: Pack with .NET
         run: |
-          dotnet pack ${{ vars.SRC_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} /p:Platform="${{ env.build-platform }}" /p:PackageVersion=${{ env.package-version }} /p:Version=${{ env.assembly-version }} /p:AssemblyInformationalVersion=${{ env.assembly-informational-version }} /p:FileVersion=${{ env.file-version }} --output ${{ runner.temp }}/${{ env.nuget-packages-directory }}
+          dotnet pack ${{ vars.SRC_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} /p:Platform="${{ env.build-platform }}" /p:PackageVersion=${{ env.release-version }} /p:Version=${{ env.assembly-version }} /p:AssemblyInformationalVersion=${{ env.assembly-informational-version }} /p:FileVersion=${{ env.file-version }} --output ${{ runner.temp }}/${{ env.nuget-packages-directory }}
       
       - name: Upload Package
         uses: actions/upload-artifact@v4
