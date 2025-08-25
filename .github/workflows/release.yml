@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Validate release branch'
-        if: ${{ needs.workflow-variables.outputs.is-release != 'true' || needs.workflow-variables.outputs.is-preview != 'true' }}
+        if: ${{ needs.workflow-variables.outputs.is-release != 'true' && needs.workflow-variables.outputs.is-preview != 'true' }}
         run: |
           echo "This workflow can only be run on 'release/**' or 'preview/**' branches."
           exit 1
