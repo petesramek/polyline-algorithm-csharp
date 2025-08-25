@@ -39,7 +39,6 @@ jobs:
 
     steps:
       - name: 'Set workflow variables'
-        id: github
         run: |
           echo "is-release:${{ startsWith(github.base_ref, 'release') }}"
           echo "is-preview:${{ startsWith(github.base_ref, 'preview') }}"
@@ -65,6 +64,13 @@ jobs:
         uses: './.github/actions/versioning/extract-version'
         with:
           branch-name: ${{ github.base_ref }}
+      - name: 'Create build number'
+        shell: bash
+        id: create-build-number
+        run: |
+          git fetch --unshallow --filter=tree:0
+          build_number=$(git rev-list --count origin/${{ github.base_ref }} ^origin/main)
+          echo "build-number=$build_number" >> $GITHUB_OUTPUT
       - name: 'Create pre-release tag'
         shell: bash
         id: create-pre-release-tag
@@ -80,13 +86,6 @@ jobs:
             pre_release_tag=$(echo ${{ github.base_ref }} | tr '/' '-' | tr '.' '-'| tr '_' '-')
             echo "pre-release-tag=$pre_release_tag" >> $GITHUB_OUTPUT
           fi
-      - name: 'Create build number'
-        shell: bash
-        id: create-build-number
-        run: |
-          git fetch --unshallow --filter=tree:0
-          build_number=$(git rev-list --count origin/${{ github.base_ref }} ^origin/main)
-          echo "build-number=$build_number" >> $GITHUB_OUTPUT
       - name: 'Format version'
         id: format-version
         uses: ./.github/actions/versioning/format-version
