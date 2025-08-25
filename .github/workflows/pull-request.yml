@@ -8,9 +8,7 @@ on:
       - reopened
     branches:
       - 'preview/**'
-      - 'release/**'
-    paths:
-      - '**'  
+      - 'release/**' 
 
 permissions:
   actions: read

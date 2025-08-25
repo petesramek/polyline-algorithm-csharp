@@ -44,7 +44,7 @@ jobs:
           echo "is-preview:${{ startsWith(github.ref_name, 'preview') }}"
 
   validate-release:
-    name: 'Validate release branch'
+    name: 'Validate release'
     needs: [workflow-variables]
     runs-on: ubuntu-latest
     steps:
@@ -52,6 +52,11 @@ jobs:
         if: ${{ needs.workflow-variables.outputs.is-release != 'true' || needs.workflow-variables.outputs.is-preview != 'true' }}
         run: |
           echo "This workflow can only be run on 'release/**' or 'preview/**' branches."
+          exit 1
+      - name: 'Validate pull request merged'
+        if: ${{ github.event.pull_request.merged != true }}
+        run: |
+          echo "This workflow can only be run on merged pull requests."
           exit 1
 
   versioning:
