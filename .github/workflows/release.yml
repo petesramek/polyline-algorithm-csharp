@@ -33,15 +33,15 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      is-release: ${{ startsWith(github.ref_name, 'release') }}
-      is-preview: ${{ startsWith(github.ref_name, 'preview') }}
+      is-release: ${{ startsWith(github.base_ref, 'release') }}
+      is-preview: ${{ startsWith(github.base_ref, 'preview') }}
 
     steps:
       - name: 'Set workflow variables'
         id: github
         run: |
-          echo "is-release:${{ startsWith(github.ref_name, 'release') }}"
-          echo "is-preview:${{ startsWith(github.ref_name, 'preview') }}"
+          echo "is-release:${{ startsWith(github.base_ref, 'release') }}"
+          echo "is-preview:${{ startsWith(github.base_ref, 'preview') }}"
 
   validate-release:
     name: 'Validate release'
@@ -80,7 +80,7 @@ jobs:
         id: extract-version
         uses: './.github/actions/versioning/extract-version'
         with:
-          branch-name: ${{ github.ref_name }}
+          branch-name: ${{ github.base_ref }}
       - name: 'Create build number'
         shell: bash
         id: create-build-number
@@ -241,8 +241,10 @@ jobs:
 
   release:
     name: 'Create release'
-    needs: [publish-package, validate-release]
+    needs: [publish-package, validate-release, versioning]
     runs-on: ubuntu-latest
+    env:
+      release-version: ${{ needs.versioning.outputs.release-version }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v5
@@ -250,4 +252,4 @@ jobs:
       - name: 'Create GitHub Release'
         uses: ./.github/actions/github/create-release
         with:
-          release-version: ${{ github.ref_name }}
+          release-version: ${{ env.release-version }}
