@@ -1,12 +1,14 @@
 name: 'Pull Request'
 
 on:
-  pull_request_target:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
     branches:
       - 'preview/**'
-      - 'release/**'
-    paths:
-      - '**'  
+      - 'release/**' 
 
 permissions:
   actions: read
@@ -16,7 +18,7 @@ permissions:
 
 concurrency: 
   group: build-${{ github.head_ref || github.ref }}      
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 env:
   dotnet-sdk-version: '9.x'
@@ -32,25 +34,25 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      is-release: ${{ startsWith(github.ref_name, 'release') }}
-      is-preview: ${{ startsWith(github.ref_name, 'preview') }}
+      is-release: ${{ startsWith(github.base_ref, 'release') }}
+      is-preview: ${{ startsWith(github.base_ref , 'preview') }}
 
     steps:
       - name: 'Set workflow variables'
-        id: github
         run: |
-          echo "is-release:${{ startsWith(github.ref_name, 'release') }}"
-          echo "is-preview:${{ startsWith(github.ref_name, 'preview') }}"
+          echo "is-release:${{ startsWith(github.base_ref, 'release') }}"
+          echo "is-preview:${{ startsWith(github.base_ref, 'preview') }}"
 
   versioning:
     name: 'Extract version from branch'
     runs-on: ubuntu-latest
+    needs: [workflow-variables]
     outputs:
         friendly-version: ${{ steps.format-version.outputs.friendly-version }}
         assembly-version: ${{ steps.format-version.outputs.assembly-version }}
         assembly-informational-version: ${{ steps.format-version.outputs.assembly-informational-version }}
         file-version: ${{ steps.format-version.outputs.file-version }}
-        package-version: ${{ steps.format-version.outputs.package-version }}
+        release-version: ${{ steps.format-version.outputs.release-version }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v5
@@ -62,24 +64,29 @@ jobs:
         id: extract-version
         uses: './.github/actions/versioning/extract-version'
         with:
-          branch-name: ${{ github.ref_name }}
-      - name: 'Create pre-release tag'
-        shell: bash
-        id: create-pre-release-tag
-        run: |
-          if [[ '${{ needs.workflow-variables.outputs.is-release }}' == 'true' ]]; then
-            echo "pre-release-tag=" >> $GITHUB_OUTPUT
-          else
-            pre_release_tag=$(echo ${{ github.ref_name }} | tr '/' '.' | tr '-' '.'| tr '_' '.')
-            echo "pre-release-tag=$pre_release_tag" >> $GITHUB_OUTPUT
-          fi
+          branch-name: ${{ github.base_ref }}
       - name: 'Create build number'
         shell: bash
         id: create-build-number
         run: |
           git fetch --unshallow --filter=tree:0
-          build_number=$(git rev-list --count origin/${{ github.ref_name }} ^origin/main)
+          build_number=$(git rev-list --count origin/${{ github.base_ref }} ^origin/main)
           echo "build-number=$build_number" >> $GITHUB_OUTPUT
+      - name: 'Create pre-release tag'
+        shell: bash
+        id: create-pre-release-tag
+        env:
+          build-number: ${{ steps.create-build-number.outputs.build-number }}
+        run: |
+          if [[ '${{ needs.workflow-variables.outputs.is-release }}' == 'true' ]]; then
+            echo "pre-release-tag=" >> $GITHUB_OUTPUT
+          elif [[ '${{ needs.workflow-variables.outputs.is-preview }}' == 'true' ]]; then
+            pre_release_tag='preview'
+            echo "pre-release-tag=$pre_release_tag" >> $GITHUB_OUTPUT
+          else
+            pre_release_tag=$(echo ${{ github.base_ref }} | tr '/' '-' | tr '.' '-'| tr '_' '-')
+            echo "pre-release-tag=$pre_release_tag" >> $GITHUB_OUTPUT
+          fi
       - name: 'Format version'
         id: format-version
         uses: ./.github/actions/versioning/format-version
@@ -159,7 +166,7 @@ jobs:
       assembly-version: ${{ needs.versioning.outputs.assembly-version }}
       assembly-informational-version: ${{ needs.versioning.outputs.assembly-informational-version }}
       file-version: ${{ needs.versioning.outputs.file-version }}
-      package-version: ${{ needs.versioning.outputs.package-version }}
+      release-version: ${{ needs.versioning.outputs.release-version }}
       package-artifact-name: package
     outputs:
         package-artifact-name: ${{ env.package-artifact-name }}
@@ -179,7 +186,7 @@ jobs:
 
       - name: Pack with .NET
         run: |
-          dotnet pack ${{ vars.SRC_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} /p:Platform="${{ env.build-platform }}" /p:PackageVersion=${{ env.package-version }} /p:Version=${{ env.assembly-version }} /p:AssemblyInformationalVersion=${{ env.assembly-informational-version }} /p:FileVersion=${{ env.file-version }} --output ${{ runner.temp }}/${{ env.nuget-packages-directory }}
+          dotnet pack ${{ vars.SRC_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} /p:Platform="${{ env.build-platform }}" /p:PackageVersion=${{ env.release-version }} /p:Version=${{ env.assembly-version }} /p:AssemblyInformationalVersion=${{ env.assembly-informational-version }} /p:FileVersion=${{ env.file-version }} --output ${{ runner.temp }}/${{ env.nuget-packages-directory }}
       
       - name: Upload Package
         uses: actions/upload-artifact@v4
@@ -189,7 +196,7 @@ jobs:
             ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.nupkg
             ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.snupkg
 
-  publish-package:
+  publish-development-package:
     name: 'Publish development package'
     needs: [pack]
     env:
@@ -215,37 +222,37 @@ jobs:
           working-directory: ${{ runner.temp }}/${{ env.nuget-packages-directory }}
           dotnet-sdk-version: ${{ env.dotnet-sdk-version }}'
 
-  benchmark:
-    if: ${{ github.env.is_release || vars.BENCHMARKDOTNET_RUN_OVERRIDE == 'true' }}
-    name: Benchmark with .NET CLI on ${{ matrix.os }}
-    needs: [build]
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5
-      - name: Install .NET SDK
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: |
-            8.x
-            9.x
-      - name: Download Build
-        uses: actions/download-artifact@v5
-        with:
-          name: build
-      - name: Benchmark
-        working-directory: ${{ vars.BENCHMARKDOTNET_WORKING_DIRECTORY }}
-        run: dotnet run --configuration ${{ env.build-configuration }} /p:Platform=${{ env.build-platform }} --framework ${{ vars.DEFAULT_BUILD_FRAMEWORK }} --runtimes ${{ vars.BENCHMARKDOTNET_RUNTIMES }} --filter ${{ vars.BENCHMARKDOTNET_FILTER }} --artifacts ${{ runner.temp }}/benchmarks/ --exporters GitHub --memory --iterationTime 100 --join
-      - name: Upload Benchmark Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: benchmark-${{ matrix.os }}
-          path: |
-            ${{ runner.temp }}/benchmarks/**/*-report-github.md
-      - name: Write Benchmark Summary 
-        shell: bash
-        run: cat **/*-report-github.md > $GITHUB_STEP_SUMMARY
-        working-directory: ${{ runner.temp }}/benchmarks/
+  # benchmark:
+  #   if: ${{ github.env.is_release || vars.BENCHMARKDOTNET_RUN_OVERRIDE == 'true' }}
+  #   name: Benchmark with .NET CLI on ${{ matrix.os }}
+  #   needs: [build]
+  #   strategy:
+  #     matrix:
+  #       os: [ubuntu-latest, windows-latest, macos-latest]
+  #   runs-on: ${{ matrix.os }}
+  #   steps:
+  #     - name: 'Checkout ${{ github.head_ref || github.ref }}'
+  #       uses: actions/checkout@v5
+  #     - name: Install .NET SDK
+  #       uses: actions/setup-dotnet@v4
+  #       with:
+  #         dotnet-version: |
+  #           8.x
+  #           9.x
+  #     - name: Download Build
+  #       uses: actions/download-artifact@v5
+  #       with:
+  #         name: build
+  #     - name: Benchmark
+  #       working-directory: ${{ vars.BENCHMARKDOTNET_WORKING_DIRECTORY }}
+  #       run: dotnet run --configuration ${{ env.build-configuration }} /p:Platform=${{ env.build-platform }} --framework ${{ vars.DEFAULT_BUILD_FRAMEWORK }} --runtimes ${{ vars.BENCHMARKDOTNET_RUNTIMES }} --filter ${{ vars.BENCHMARKDOTNET_FILTER }} --artifacts ${{ runner.temp }}/benchmarks/ --exporters GitHub --memory --iterationTime 100 --join
+  #     - name: Upload Benchmark Results
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: benchmark-${{ matrix.os }}
+  #         path: |
+  #           ${{ runner.temp }}/benchmarks/**/*-report-github.md
+  #     - name: Write Benchmark Summary 
+  #       shell: bash
+  #       run: cat **/*-report-github.md > $GITHUB_STEP_SUMMARY
+  #       working-directory: ${{ runner.temp }}/benchmarks/
