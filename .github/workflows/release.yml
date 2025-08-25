@@ -176,7 +176,7 @@ jobs:
 
   pack:
     name: 'Package binaries'
-    needs: [versioning, build, validate-release]
+    needs: [versioning, build, test, validate-release]
     runs-on: ubuntu-latest
     env:
       assembly-version: ${{ needs.versioning.outputs.assembly-version }}
