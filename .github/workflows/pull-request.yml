@@ -46,6 +46,7 @@ jobs:
   versioning:
     name: 'Extract version from branch'
     runs-on: ubuntu-latest
+    needs: [workflow-variables]
     outputs:
         friendly-version: ${{ steps.format-version.outputs.friendly-version }}
         assembly-version: ${{ steps.format-version.outputs.assembly-version }}
