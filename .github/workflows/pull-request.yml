@@ -18,7 +18,7 @@ permissions:
 
 concurrency: 
   group: build-${{ github.head_ref || github.ref }}      
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 env:
   dotnet-sdk-version: '9.x'
