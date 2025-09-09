@@ -33,20 +33,15 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      is-release: ${{ startsWith(github.ref, 'release') }}
-      is-preview: ${{ startsWith(github.ref, 'preview') }}
+      is-release: ${{ startsWith(github.base_ref, 'release') }}
+      is-preview: ${{ startsWith(github.base_ref, 'preview') }}
 
     steps:
-      - name: ''
-        run: |
-          echo 'github.ref ${{ github.ref}}'
-          echo 'github.head_ref ${{ github.head_ref}}'
-          echo 'github.base_ref ${{ github.base_ref}}'
       - name: 'Set workflow variables'
         id: github
         run: |
-          echo "is-release:${{ startsWith(github.ref, 'release') }}"
-          echo "is-preview:${{ startsWith(github.ref, 'preview') }}"
+          echo "is-release:${{ startsWith(github.base_ref, 'release') }}"
+          echo "is-preview:${{ startsWith(github.base_ref, 'preview') }}"
 
   validate-release:
     name: 'Validate release'
@@ -85,7 +80,7 @@ jobs:
         id: extract-version
         uses: './.github/actions/versioning/extract-version'
         with:
-          branch-name: ${{ github.ref }}
+          branch-name: ${{ github.base_ref }}
       - name: 'Create build number'
         shell: bash
         id: create-build-number
@@ -105,7 +100,7 @@ jobs:
             pre_release_tag='preview'
             echo "pre-release-tag=$pre_release_tag" >> $GITHUB_OUTPUT
           else
-            pre_release_tag=$(echo ${{ github.ref }} | tr '/' '-' | tr '.' '-'| tr '_' '-')
+            pre_release_tag=$(echo ${{ github.base_ref }} | tr '/' '-' | tr '.' '-'| tr '_' '-')
             echo "pre-release-tag=$pre_release_tag" >> $GITHUB_OUTPUT
           fi
       - name: 'Format version'
