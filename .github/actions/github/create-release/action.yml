@@ -21,4 +21,4 @@ runs:
         GH_TOKEN: ${{ github.token }}
         preview-argument: "${{ inputs.is-preview == 'true' && '--prerelease' || '' }}"
       run: |
-        gh release create ${{ env.release-version }} --generate-notes --discussion-category "General"
+        gh release create ${{ env.release-version }} --generate-notes --discussion-category "General" ${{ env.preview-argument }}
