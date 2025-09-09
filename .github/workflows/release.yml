@@ -15,7 +15,7 @@ permissions:
   contents: write
 
 concurrency: 
-  group: build-${{ github.head_ref || github.ref }}      
+  group: release-${{ github.head_ref || github.ref }}      
   cancel-in-progress: false
 
 env:
