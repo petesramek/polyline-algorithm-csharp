@@ -1,12 +1,14 @@
 name: 'Pull Request'
 
 on:
-  pull_request_target:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
     branches:
       - 'preview/**'
-      - 'release/**'
-    paths:
-      - '**'  
+      - 'release/**' 
 
 permissions:
   actions: read
@@ -16,7 +18,7 @@ permissions:
 
 concurrency: 
   group: build-${{ github.head_ref || github.ref }}      
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 env:
   dotnet-sdk-version: '9.x'
@@ -32,19 +34,19 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      is-release: ${{ startsWith(github.ref_name, 'release') }}
-      is-preview: ${{ startsWith(github.ref_name, 'preview') }}
+      is-release: ${{ startsWith(github.base_ref, 'release') }}
+      is-preview: ${{ startsWith(github.base_ref , 'preview') }}
 
     steps:
       - name: 'Set workflow variables'
-        id: github
         run: |
-          echo "is-release:${{ startsWith(github.ref_name, 'release') }}"
-          echo "is-preview:${{ startsWith(github.ref_name, 'preview') }}"
+          echo "is-release:${{ startsWith(github.base_ref, 'release') }}"
+          echo "is-preview:${{ startsWith(github.base_ref, 'preview') }}"
 
   versioning:
     name: 'Extract version from branch'
     runs-on: ubuntu-latest
+    needs: [workflow-variables]
     outputs:
         friendly-version: ${{ steps.format-version.outputs.friendly-version }}
         assembly-version: ${{ steps.format-version.outputs.assembly-version }}
@@ -62,24 +64,29 @@ jobs:
         id: extract-version
         uses: './.github/actions/versioning/extract-version'
         with:
-          branch-name: ${{ github.ref_name }}
-      - name: 'Create pre-release tag'
-        shell: bash
-        id: create-pre-release-tag
-        run: |
-          if [[ '${{ needs.workflow-variables.outputs.is-release }}' == 'true' ]]; then
-            echo "pre-release-tag=" >> $GITHUB_OUTPUT
-          else
-            pre_release_tag=$(echo ${{ github.ref_name }} | tr '/' '.' | tr '-' '.'| tr '_' '.')
-            echo "pre-release-tag=$pre_release_tag" >> $GITHUB_OUTPUT
-          fi
+          branch-name: ${{ github.base_ref }}
       - name: 'Create build number'
         shell: bash
         id: create-build-number
         run: |
           git fetch --unshallow --filter=tree:0
-          build_number=$(git rev-list --count origin/${{ github.ref_name }} ^origin/main)
+          build_number=$(git rev-list --count origin/${{ github.base_ref }} ^origin/main)
           echo "build-number=$build_number" >> $GITHUB_OUTPUT
+      - name: 'Create pre-release tag'
+        shell: bash
+        id: create-pre-release-tag
+        env:
+          build-number: ${{ steps.create-build-number.outputs.build-number }}
+        run: |
+          if [[ '${{ needs.workflow-variables.outputs.is-release }}' == 'true' ]]; then
+            echo "pre-release-tag=" >> $GITHUB_OUTPUT
+          elif [[ '${{ needs.workflow-variables.outputs.is-preview }}' == 'true' ]]; then
+            pre_release_tag='preview'
+            echo "pre-release-tag=$pre_release_tag" >> $GITHUB_OUTPUT
+          else
+            pre_release_tag=$(echo ${{ github.base_ref }} | tr '/' '-' | tr '.' '-'| tr '_' '-')
+            echo "pre-release-tag=$pre_release_tag" >> $GITHUB_OUTPUT
+          fi
       - name: 'Format version'
         id: format-version
         uses: ./.github/actions/versioning/format-version
