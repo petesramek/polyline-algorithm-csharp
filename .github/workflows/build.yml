@@ -3,8 +3,9 @@ name: Build
 on:
   workflow_dispatch:
   push:
-    branches:
-      - '**'
+    branches-ignore:
+      - 'preview/**'
+      - 'release/**'
     paths:
       - 'src/**'
 
