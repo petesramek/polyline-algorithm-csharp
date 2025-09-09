@@ -192,10 +192,10 @@ jobs:
     outputs:
         package-artifact-name: ${{ env.package-artifact-name }}
     steps:
-      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+      - name: 'Checkout ${{ github.base_ref }}'
         uses: actions/checkout@v5
         with:
-          ref: ${{ github.base_ref }}
+          ref: '${{ github.base_ref }}'
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
