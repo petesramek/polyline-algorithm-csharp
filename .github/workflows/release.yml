@@ -36,6 +36,10 @@ jobs:
       is-preview: ${{ startsWith(github.ref, 'preview') }}
 
     steps:
+      - name: 'lsahfjlwe'
+        run: |
+          echo 'github.ref ${{ github.ref }}'
+          echo 'github.head_ref ${{ github.head_ref }}'
       - name: 'Set workflow variables'
         id: github
         run: |
