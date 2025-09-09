@@ -52,11 +52,6 @@ jobs:
         run: |
           echo "This workflow can only be run on 'release/**' or 'preview/**' branches."
           exit 1
-      - name: 'Validate pull request merged'
-        if: ${{ github.event.pull_request.merged != true }}
-        run: |
-          echo "This workflow can only be run on merged pull requests."
-          exit 1
 
   versioning:
     name: 'Extract version from branch'
