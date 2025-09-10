@@ -19,6 +19,6 @@ runs:
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
-        preview-argument: "${{ 'inputs.is-preview' == 'true' && '--prerelease' || '' }}"
+        preview-argument: "${{ inputs.is-preview == 'true' && '--prerelease' || '' }}"
       run: |
         gh release create ${{ env.release-version }} --generate-notes --discussion-category "General" ${{ env.preview-argument }}
