@@ -35,7 +35,7 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Title>PolylineAlgorithm for .NET</Title>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageTags>google;polyline;algorithm;maps;encoding;google-maps;polyline-algorithm</PackageTags>
+		<PackageTags>google;polyline;algorithm;encoding;polyline-algorithm;</PackageTags>
 		<Copyright>© 2025, Pete Sramek.</Copyright>
 	    <Authors>Pete Sramek</Authors>
 	    <Description>
