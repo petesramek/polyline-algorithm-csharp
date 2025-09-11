@@ -35,8 +35,12 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Title>PolylineAlgorithm for .NET</Title>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageTags>google;polyline;algorithm;maps;encoding;</PackageTags>
+		<PackageTags>google;polyline;algorithm;maps;encoding;google-maps;polyline-algorithm</PackageTags>
 		<Copyright>© 2025, Pete Sramek.</Copyright>
+	    <Authors>Pete Sramek</Authors>
+	    <Description>
+			Lightweight .NET Standard 2.1 library implementing Google Encoded Polyline Algorithm.
+		</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
