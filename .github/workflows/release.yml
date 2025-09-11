@@ -247,3 +247,4 @@ jobs:
         uses: ./.github/actions/github/create-release
         with:
           release-version: ${{ env.release-version }}
+          is-preview: ${{ needs.workflow-variables.outputs.is-preview }}
