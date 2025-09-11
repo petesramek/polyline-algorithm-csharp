@@ -22,7 +22,7 @@
 
 	<PropertyGroup>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-	</PropertyGroup>
+	</PropertyGroup>     
 
 	<PropertyGroup>
 		<DebugType>pdbonly</DebugType>
