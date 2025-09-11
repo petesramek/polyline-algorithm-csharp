@@ -1,0 +1,66 @@
+name: 'Generate metadata with docfx'
+author: 'Pete Sramek'
+description: 'Generate metadata using docfx'
+
+inputs:
+# Required
+  artifact-name:
+    description: 'Name of the artifact to upload after generating metadata'
+    required: true
+  docfx-json-manifest:
+    description: 'Path to the docfx JSON manifest file'
+    required: true
+  temporary-directory:
+    description: 'Temporary directory for docfx metadata generation'
+    required: true
+  output-directory:
+    description: 'Target directory for generated documentation'
+    required: true
+# Optional
+  dotnet_sdk_version:
+    description: '.NET SDK version. Default: 9.x'
+    required: false
+    default: '9.x'
+
+runs:
+  using: composite
+  steps:
+    - name: 'Checkout ${{ github.head_ref || github.ref }}'
+      uses: actions/checkout@v5
+    - name: Dotnet Setup
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.dotnet-sdk-version }}
+    - name: 'Update docfx tool'
+      run: dotnet tool update -g docfx
+      shell: bash
+    - name: 'Delete temporary folder'
+      shell: bash
+      run: |
+        if [ -d "${{ inputs.temporary-directory }}" ]; then
+          rm -rf "${{ inputs.temporary-directory }}"
+        fi
+    - name: 'Delete temporary folder'
+      shell: bash
+      run: |
+        if [ -d "$${{ inputs.output-directory }}" ]; then
+          rm -rf "${{ inputs.output-directory }}"
+        fi
+    - name: 'Generate assembly metadata'
+      shell: bash
+      run: docfx metadata ${{ inputs.docfx-json-manifest }}
+    - name: 'List directory'
+      shell: bash
+      run: |
+       ls
+    - name: 'Copy metadata to output directory'
+      shell: bash
+      run: |
+        mkdir -p ${{ inputs.output-directory }}
+        cp -r ${{ inputs.temporary-directory }}/* ${{ inputs.output-directory }}
+    - name: 'Upload artifact'
+      uses: actions/upload-artifact@v4
+      with:
+         name: ${{ inputs.artifact-name }}
+         path: ${{ inputs.output-directory }}
+  

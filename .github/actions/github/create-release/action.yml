@@ -1,0 +1,28 @@
+name: 'Create GitHub release'
+author: 'Pete Sramek'
+description: 'Create GitHub release.'
+inputs:
+    release-version:
+      description: 'Version to use for the release.'
+      required: true
+    is-preview:
+      description: 'Is this a preview release?'
+      required: true
+
+runs:
+  using: composite
+  steps:
+    - name: 'Checkout ${{ github.head_ref || github.ref }}'
+      uses: actions/checkout@v5
+    - run: |
+        echo "release-version=${{ inputs.release-version }}"
+        echo "is-preview=${{ inputs.is-preview }}"
+        echo "preview-argument=${{ inputs.is-preview == 'true' && '--prerelease' || '' }}"
+      shell: bash
+    - name: 'Create GitHub release PolylineAlgorithm ${{ env.release-version }}'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        preview-argument: "${{ inputs.is-preview == 'true' && '--prerelease' || '' }}"
+      run: |
+        gh release create ${{ env.release-version }} --generate-notes --discussion-category "General" ${{ env.preview-argument }}

@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/benchmarks/">
+    <Project Path="benchmarks/PolylineAlgorithm.Benchmarks/PolylineAlgorithm.Benchmarks.csproj" />
+  </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/PolylineAlgorithm.NetTopologySuite.Sample/PolylineAlgorithm.NetTopologySuite.Sample.csproj" Id="27a8fc47-0a3c-49c7-af5e-530514827785" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/PolylineAlgorithm/PolylineAlgorithm.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/PolylineAlgorithm.Tests/PolylineAlgorithm.Tests.csproj" />
+  </Folder>
+  <Folder Name="/utilities/" Id="02ea681e-c7d8-13c7-8484-4ac65e1b71e8">
+    <Project Path="utilities/PolylineAlgorithm.Utility/PolylineAlgorithm.Utility.csproj" Id="69392841-91d5-4b8d-acdb-dd56c87b3034" />
+  </Folder>
+</Solution>

@@ -1,113 +1,29 @@
-# .NET Polyline Algorithm (.NET Standard 2.0)
+# PolylineAlgorithm for .NET
 
-Lightweight .NET Standard 2.0 library implementing <a href="https://developers.google.com/maps/documentation/utilities/polylinealgorithm">Google Polyline Algorithm</a>. Designed with respect to flexibility, but still with easy to use.
+[![NuGet](https://img.shields.io/nuget/v/PolylineAlgorithm.svg)](https://www.nuget.org/packages/PolylineAlgorithm/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Build](https://github.com/sramekpete/polyline-algorithm-csharp/actions/workflows/build.yml/badge.svg)](https://github.com/sramekpete/polyline-algorithm-csharp/actions/workflows/build.yml)
 
-## Getting started
-### Prerequisites
+Lightweight .NET Standard 2.1 library implementing Google Encoded Polyline Algorithm.
+Package should be primarily used as baseline for libraries that implement polyline encoding/decoding functionality.
 
-.NET Polyline Algorithm is avalable as nuget package <a href="https://www.nuget.org/packages/Cloudikka.PolylineAlgorithm/">Cloudikka.PolylineAlgorithm</a> targeting .NET Standard 2.0.
+More info about the algorithm can be found at [Google Developers](https://developers.google.com/maps/documentation/utilities/polylinealgorithm).
 
-Command line:
+## Prerequisites
 
-`Install-Package Cloudikka.PolylineAlgorithm`
+PolylineAlgorithm for .NET is available as a NuGet package targeting .NET Standard 2.1.
 
-NuGet Package Manager:
+.NET CLI: `dotnet add package PolylineAlgorithm`
 
-`Cloudikka.PolylineAlgorithm`
+Package Manager Console: `Install-Package PolylineAlgorithm`
 
-#### Warning
+## How to use it
 
-Library is using <a href="https://msdn.microsoft.com/en-us/library/mt744804(v=vs.110).aspx">ValueTuple<T1, T2> Structure</a>. ValueTuple struct is avalable in .NET Framework 4.7 and above. Incase your project is targeting lower version of .NET Framework you probably have to install <a href="https://www.nuget.org/packages/System.ValueTuple/">System.ValueTuple</a> NuGet package. (not tested yet)
-  
-Command line:
+In the majority of cases you would like to inherit `AbstractPolylineDecoder<TPolyline, TCoordinate>` and `AbstractPolylineEncoder<TCoordinate, TPolyline>` classes and implement abstract methods that are mainly responsible for extracting data from your coordinate and polyline types and creating new instances of them.
 
-`Install-Package System.ValueTuple`
+In some cases you may want to implement your own decoder and encoder from scratch.
+In that case you can use `PolylineEncoding` static class that offers static methods for encoding and decoding polyline segments.
 
-NuGet Package Manager:
+## Documentation
 
-`System.ValueTuple`
-
-### Hot to use it
-
-There are three ways how to use .NET Polyline Algorithm library based on your needs. For each is available Encode and Decode methods.
-
-#### Static methods
-
-Whenever you just need to encode or decode Google polyline you can use static methods defined in static PolylineAlgorithm class.
-
-##### Decoding
-
-```csharp
-	string polyline = "polyline";
-	IEnumerable<(double, double)> coordinates = PolylineAlgorithm.Decode(polyline);
-```
-
-##### Encoding
-
-```csharp
-	IEnumerable<(double, double)> coordinates = new (double, double) [] { (35.635, 76.27182), (35.2435, 75.625), ... };
-	string polyline = PolylineAlgorithm.Encode(coordinates);
-```
-
-
-#### Default instance
-
-If you need to use dependency injection, you would like to have instance to deliver the work for you. In that case you can use default instance of PolylineEncoding class, which implements IPolylineEncoding<(double Latitude, double Longitude)> interface.
-
-##### Decoding
-
-```csharp
-	string polyline = "polyline";
-	var encoding = new PolylineEncoding();
-	IEnumerable<(double, double)> coordinates = encoding.Decode(polyline);
-```
-
-##### Encoding
-
-```csharp
-	IEnumerable<(double, double)> coordinates = new (double, double) [] { (35.635, 76.27182), (35.2435, 75.625), ... };
-	var encoding = new PolylineEncoding();
-	string polyline = encoding.Encode(coordinates);
-```
-
-#### Inherited base class
-
-There may be a scenario you need to pass and return different types to and from without a need to add another extra layer. In this case you can inherit PolylineEncodingBase<T> class and override template methods CreateResult and GetCoordinates.
-	
-##### Inheriting
-
-```csharp
-	public class MyPolylineEncoding : PolylineEncodingBase<Coordinate> {
-	
-		protected override Coordinate CreateResult(double latitude, double longitude) {
-				return new Coordinate(latitude, longitude);
-		}
-	
-		protected override (double Latitude, double Longitude) GetCoordinate(Coordinate source) {
-				return (source.Latitude, source.Longitude);
-		}
-		
-	}
-```
-
-##### Decoding
-
-```csharp
-	string polyline = "polyline";
-	var encoding = new MyPolylineEncoding();
-	IEnumerable<Coordinate> coordinates = encoding.Decode(polyline);
-```
-
-##### Encoding
-
-```csharp
-	IEnumerable<Coordinate> coordinates = new Coordinate [] { new Coordinate(35.635, 76.27182), new Coordinate(35.2435, 75.625), ... };
-	var encoding = new MyPolylineEncoding();
-	string polyline = encoding.Encode(coordinates);
-```
-
-### Documentation
-
-Documentation is can be found at https://dropoutcoder.github.io/polyline-algorithm-csharp/api/index.html.
-
-Happy coding!
+Documentation is can be found at [https://sramekpete.github.io/polyline-algorithm-csharp/](https://sramekpete.github.io/polyline-algorithm-csharp/).
