@@ -232,7 +232,6 @@ jobs:
           working-directory: ${{ runner.temp }}/${{ env.nuget-packages-directory }}
           dotnet-sdk-version: ${{ env.dotnet-sdk-version }}'
 
-
   release:
     name: 'Create release'
     needs: [workflow-variables, publish-package, validate-release, versioning]
@@ -249,3 +248,4 @@ jobs:
         with:
           release-version: ${{ env.release-version }}
           is-preview: ${{ env.is-preview }}
+          notes-start-tag: $(git describe --abbrev=0 --tags)
