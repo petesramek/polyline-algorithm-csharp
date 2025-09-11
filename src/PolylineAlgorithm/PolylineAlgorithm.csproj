@@ -28,7 +28,7 @@
 		<DebugType>pdbonly</DebugType>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-	</PropertyGroup>
+	</PropertyGroup>   
 
 	<PropertyGroup>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
