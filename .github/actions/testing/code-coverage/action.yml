@@ -1,0 +1,73 @@
+name: 'Test with .NET CLI'
+author: 'Pete Sramek'
+description: 'Run tests, collects code coverage, logs test results, uploads test artifacts'
+inputs:
+# Required
+  test-result-folder:
+    description: 'Folder where test results are stored'
+    required: true
+# Optional
+  dotnet_sdk_version:
+    description: '.NET SDK version. Default: 9.x'
+    required: false
+    default: '9.x'
+
+outputs:
+  code-coverage-report-file:
+    description: 'Path to the generated code coverage report'
+    value: ${{ steps.variables.outputs.code-coverage-report-file }}
+  code-coverage-merge-file:
+    description: 'Path to the merged code coverage file'
+    value: ${{ steps.variables.outputs.code-coverage-merge-file }}
+
+runs:
+  using: composite
+  steps:
+    - name: 'Checkout ${{ github.head_ref || github.ref }}'
+      uses: actions/checkout@v5
+    
+    - name: 'Setup .NET ${{ inputs.dotnet_sdk_version }}'
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ inputs.dotnet_sdk_version }}
+
+    - if: ${{ endsWith(inputs.test-result-folder, '/') }}
+      name: 'Set TEST_RESULT_FOLDER environment variable'
+      shell: bash
+      run: echo "TEST_RESULT_FOLDER=${{ inputs.test-result-folder }}" >> $GITHUB_ENV
+
+    - if: ${{ !endsWith(inputs.test-result-folder, '/') }}
+      name: 'Set TEST_RESULT_FOLDER environment variable'
+      shell: bash
+      run: echo "TEST_RESULT_FOLDER=${{ inputs.test-result-folder }}/" >> $GITHUB_ENV
+
+    - name: 'Set CODE_COVERAGE_REPORT_FOLDER environment variable'
+      shell: bash
+      run: echo "CODE_COVERAGE_REPORT_FOLDER=${{ env.TEST_RESULT_FOLDER }}coverage-report/" >> $GITHUB_ENV
+    
+    - name: 'Set CODE_COVERAGE_MERGED_FILE environment variable'
+      shell: bash
+      run: echo "CODE_COVERAGE_MERGED_FILE=${{ env.CODE_COVERAGE_REPORT_FOLDER }}code-coverage.cobertura.xml" >> $GITHUB_ENV
+
+    - name: 'Set code-coverage-report output'
+      id: variables
+      shell: bash
+      run: |
+        echo "code-coverage-report-file=${{ env.CODE_COVERAGE_REPORT_FOLDER }}Summary.md" >> $GITHUB_OUTPUT
+        echo "code-coverage-merge-file=${{ env.CODE_COVERAGE_MERGED_FILE }}" >> $GITHUB_OUTPUT
+
+    - name: 'Update dotnet-coverage tool'
+      shell: bash
+      run: dotnet tool update --global dotnet-coverage
+
+    - name: 'Merge code coverage reports'
+      shell: bash
+      run: dotnet-coverage merge --output ${{ env.CODE_COVERAGE_MERGED_FILE }} --output-format cobertura "${{ env.TEST_RESULT_FOLDER }}**/*.cobertura.xml"
+    
+    - name: 'Update dotnet-reportgenerator-globaltool tool'
+      shell: bash
+      run: dotnet tool update --global dotnet-reportgenerator-globaltool
+
+    - name: 'Generate code coverage report'
+      shell: bash
+      run: reportgenerator -reports:${{ env.CODE_COVERAGE_MERGED_FILE }} -targetdir:${{ env.CODE_COVERAGE_REPORT_FOLDER }} -reporttypes:"MarkdownSummary"
