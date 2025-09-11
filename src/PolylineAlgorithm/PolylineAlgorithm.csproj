@@ -37,8 +37,8 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>google;polyline;algorithm;encoding;polyline-algorithm;</PackageTags>
 		<Copyright>© 2025, Pete Sramek.</Copyright>
-	    <Authors>Pete Sramek</Authors>
-	    <Description>
+		<Authors>Pete Sramek</Authors>
+		<Description>
 			Lightweight .NET Standard 2.1 library implementing Google Encoded Polyline Algorithm.
 		</Description>
 	</PropertyGroup>
@@ -68,18 +68,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Properties\ExceptionMessageResource.Designer.cs">
-	    <DependentUpon>ExceptionMessageResource.resx</DependentUpon>
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	  </Compile>
+		<Compile Update="Properties\ExceptionMessageResource.Designer.cs">
+			<DependentUpon>ExceptionMessageResource.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Update="Properties\ExceptionMessageResource.resx">
-	    <LastGenOutput>ExceptionMessageResource.Designer.cs</LastGenOutput>
-	    <Generator>ResXFileCodeGenerator</Generator>
-	  </EmbeddedResource>
+		<EmbeddedResource Update="Properties\ExceptionMessageResource.resx">
+			<LastGenOutput>ExceptionMessageResource.Designer.cs</LastGenOutput>
+			<Generator>ResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
 	</ItemGroup>
 
 </Project>
