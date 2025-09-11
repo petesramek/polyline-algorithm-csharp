@@ -235,10 +235,11 @@ jobs:
 
   release:
     name: 'Create release'
-    needs: [publish-package, validate-release, versioning]
+    needs: [workflow-variables, publish-package, validate-release, versioning]
     runs-on: ubuntu-latest
     env:
       release-version: ${{ needs.versioning.outputs.release-version }}
+      is-preview: ${{ needs.workflow-variables.outputs.is-preview }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v5
@@ -247,4 +248,4 @@ jobs:
         uses: ./.github/actions/github/create-release
         with:
           release-version: ${{ env.release-version }}
-          is-preview: ${{ needs.workflow-variables.outputs.is-preview }}
+          is-preview: ${{ env.is-preview }}
