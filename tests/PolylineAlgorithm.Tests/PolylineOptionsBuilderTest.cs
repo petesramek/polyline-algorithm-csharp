@@ -1,0 +1,103 @@
+﻿//
+// Copyright © Pete Sramek. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+
+namespace PolylineAlgorithm.Tests;
+
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging.Testing;
+using PolylineAlgorithm;
+using PolylineAlgorithm.Tests.Fakes;
+
+[TestClass]
+public class PolylineOptionsBuilderTest {
+    [TestMethod]
+    public void Create_Returns_Instance() {
+        // Arrange && Act
+        var builder = PolylineEncodingOptionsBuilder.Create();
+
+        // Assert
+        Assert.IsNotNull(builder);
+    }
+
+    [TestMethod]
+    public void Build_Returns_Instance_With_Default_Values() {
+        // Arrange
+        var builder = PolylineEncodingOptionsBuilder.Create();
+        var bufferSize = 64_000;
+        var loggerFactory = NullLoggerFactory.Instance;
+
+        // Act
+        var options = builder
+            .Build();
+
+        // Assert
+        Assert.IsNotNull(options);
+        Assert.AreEqual(bufferSize, options.MaxBufferSize);
+        Assert.AreEqual(bufferSize / sizeof(char), options.MaxBufferLength);
+        Assert.AreEqual(loggerFactory, options.LoggerFactory);
+    }
+
+    [TestMethod]
+    public void WithBufferSize_Small_BufferSize_Parameter_Returns_Throws_ArgumentOutOfRangeException() {
+        // Arrange
+        static void WithSmallBufferSize() => PolylineEncodingOptionsBuilder.Create()
+            .WithMaxBufferSize(11);
+
+        // Act
+        var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(WithSmallBufferSize);
+
+        // Assert
+        Assert.IsNotNull(exception);
+        Assert.AreEqual("bufferSize", exception.ParamName);
+        Assert.Contains("Buffer size must be greater than 11.", exception.Message);
+    }
+
+    [TestMethod]
+    public void Build_Returns_Instance_With_Expected_Buffer_Size() {
+        // Arrange
+        var builder = PolylineEncodingOptionsBuilder.Create();
+        var expected = 32_000;
+
+        // Act
+        var options = builder
+            .WithMaxBufferSize(expected)
+            .Build();
+
+        // Assert
+        Assert.IsNotNull(options);
+        Assert.AreEqual(expected, options.MaxBufferSize);
+        Assert.AreEqual(expected / sizeof(char), options.MaxBufferLength);
+    }
+
+    [TestMethod]
+    public void Build_Returns_Instance_With_Expected_LoggerFactory() {
+        // Arrange
+        var builder = PolylineEncodingOptionsBuilder.Create();
+        var expected = new FakeLoggerFactory(new FakeLoggerProvider());
+
+        // Act
+        var options = builder
+            .WithLoggerFactory(expected)
+            .Build();
+
+        // Assert
+        Assert.IsNotNull(options);
+        Assert.AreEqual(expected, options.LoggerFactory);
+    }
+
+    [TestMethod]
+    public void WithLoggerFactory_Null_Parameter_Returns_Throws_ArgumentNullException() {
+        // Arrange
+        static void WithNullLoggerFactory() => PolylineEncodingOptionsBuilder.Create()
+            .WithLoggerFactory(null!);
+
+        // Act
+        var exception = Assert.ThrowsExactly<ArgumentNullException>(WithNullLoggerFactory);
+
+        // Assert
+        Assert.IsNotNull(exception);
+        Assert.AreEqual("loggerFactory", exception.ParamName);
+    }
+}
