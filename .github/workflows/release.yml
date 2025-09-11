@@ -34,6 +34,7 @@ jobs:
     outputs:
       is-release: ${{ startsWith(github.ref_name, 'release') }}
       is-preview: ${{ startsWith(github.ref_name, 'preview') }}
+      notes-start-tag: ${{ steps.github.outputs.notes-start-tag }}
 
     steps:
       - name: 'Set workflow variables'
@@ -41,6 +42,8 @@ jobs:
         run: |
           echo "is-release:${{ startsWith(github.ref_name, 'release') }}"
           echo "is-preview:${{ startsWith(github.ref_name, 'preview') }}"
+          notes-start-tag=$(git describe --abbrev=0 --tags)
+          echo "notes-start-tag=$notes-start-tag" >> $GITHUB_OUTPUT
 
   validate-release:
     name: 'Validate release'
@@ -239,6 +242,7 @@ jobs:
     env:
       release-version: ${{ needs.versioning.outputs.release-version }}
       is-preview: ${{ needs.workflow-variables.outputs.is-preview }}
+      notes-start-tag: ${{ needs.workflow-variables.outputs.notes-start-tag }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v5
@@ -248,4 +252,4 @@ jobs:
         with:
           release-version: ${{ env.release-version }}
           is-preview: ${{ env.is-preview }}
-          notes-start-tag: $(git describe --abbrev=0 --tags)
+          notes-start-tag: ${{ env.notes-start-tag }}
