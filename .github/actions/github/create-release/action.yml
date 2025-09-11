@@ -15,6 +15,11 @@ runs:
   steps:
     - name: 'Checkout ${{ github.head_ref || github.ref }}'
       uses: actions/checkout@v5
+    - run: |
+        echo "release-version=${{ inputs.release-version }}"
+        echo "is-preview=${{ inputs.is-preview }}"
+        echo "preview-argument=${{ inputs.is-preview == 'true' && '--prerelease' || '' }}"
+      shell: bach
     - name: 'Create GitHub release PolylineAlgorithm ${{ env.release-version }}'
       shell: bash
       env:
