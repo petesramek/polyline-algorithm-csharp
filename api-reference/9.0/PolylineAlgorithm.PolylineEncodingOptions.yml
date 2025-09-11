@@ -1,0 +1,74 @@
+### YamlMime:ApiPage
+title: Class PolylineEncodingOptions
+body:
+- api1: Class PolylineEncodingOptions
+  id: PolylineAlgorithm_PolylineEncodingOptions
+  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/dependabot/nuget/src/PolylineAlgorithm/Microsoft.Extensions.Logging.Abstractions-9.0.9/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L18
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncodingOptions
+    commentId: T:PolylineAlgorithm.PolylineEncodingOptions
+- facts:
+  - name: Namespace
+    value:
+      text: PolylineAlgorithm
+      url: PolylineAlgorithm.html
+  - name: Assembly
+    value: PolylineAlgorithm.dll
+- markdown: Options for configuring polyline encoding.
+- code: public sealed class PolylineEncodingOptions
+- h4: Inheritance
+- inheritance:
+  - text: object
+    url: https://learn.microsoft.com/dotnet/api/system.object
+  - text: PolylineEncodingOptions
+    url: PolylineAlgorithm.PolylineEncodingOptions.html
+- h4: Inherited Members
+- list:
+  - text: object.Equals(object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - text: object.Equals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - text: object.GetHashCode()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - text: object.GetType()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - text: object.ReferenceEquals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - text: object.ToString()
+    url: https://learn.microsoft.com/dotnet/api/system.object.tostring
+- h2: Remarks
+- markdown: This class allows you to set options such as buffer size and logger factory for encoding operations.
+- h2: Properties
+- api3: LoggerFactory
+  id: PolylineAlgorithm_PolylineEncodingOptions_LoggerFactory
+  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/dependabot/nuget/src/PolylineAlgorithm/Microsoft.Extensions.Logging.Abstractions-9.0.9/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L34
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncodingOptions.LoggerFactory
+    commentId: P:PolylineAlgorithm.PolylineEncodingOptions.LoggerFactory
+- markdown: Gets or sets the precision for encoding coordinates.
+- code: public ILoggerFactory LoggerFactory { get; }
+- h4: Property Value
+- parameters:
+  - type:
+    - text: ILoggerFactory
+      url: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory
+- h4: Remarks
+- markdown: The default logger factory is <xref href="Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory" data-throw-if-not-resolved="false"></xref>, which does not log any messages.
+- api3: MaxBufferSize
+  id: PolylineAlgorithm_PolylineEncodingOptions_MaxBufferSize
+  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/dependabot/nuget/src/PolylineAlgorithm/Microsoft.Extensions.Logging.Abstractions-9.0.9/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L26
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncodingOptions.MaxBufferSize
+    commentId: P:PolylineAlgorithm.PolylineEncodingOptions.MaxBufferSize
+- markdown: Gets the maximum buffer size for encoding operations.
+- code: public int MaxBufferSize { get; }
+- h4: Property Value
+- parameters:
+  - type:
+    - text: int
+      url: https://learn.microsoft.com/dotnet/api/system.int32
+- h4: Remarks
+- markdown: The default maximum buffer size is 64,000 bytes (64 KB). This can be adjusted based on the expected size of the polyline data, but should be enough for common cases.
+languageId: csharp
+metadata:
+  description: Options for configuring polyline encoding.

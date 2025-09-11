@@ -1,0 +1,45 @@
+### YamlMime:ApiPage
+title: Enum CoordinateValueType
+body:
+- api1: Enum CoordinateValueType
+  id: PolylineAlgorithm_CoordinateValueType
+  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/dependabot/nuget/src/PolylineAlgorithm/Microsoft.Extensions.Logging.Abstractions-9.0.9/src/PolylineAlgorithm/CoordinateValueType.cs#L11
+  metadata:
+    uid: PolylineAlgorithm.CoordinateValueType
+    commentId: T:PolylineAlgorithm.CoordinateValueType
+- facts:
+  - name: Namespace
+    value:
+      text: PolylineAlgorithm
+      url: PolylineAlgorithm.html
+  - name: Assembly
+    value: PolylineAlgorithm.dll
+- markdown: Represents the type of a geographic coordinate value.
+- code: public enum CoordinateValueType
+- h2: Fields
+- parameters:
+  - name: Latitude
+    default: "1"
+    description: >+
+      Represents a latitude value.
+
+  - name: Longitude
+    default: "2"
+    description: >+
+      Represents a longitude value.
+
+  - name: None
+    default: "0"
+    description: >+
+      Represents no specific type. This value is used when the type is not applicable or not specified.
+
+- h2: Remarks
+- markdown: >-
+    This enumeration is used to specify whether a coordinate value represents latitude or
+
+    longitude. Latitude values indicate the north-south position, while longitude values indicate the east-west
+
+    position.
+languageId: csharp
+metadata:
+  description: Represents the type of a geographic coordinate value.
