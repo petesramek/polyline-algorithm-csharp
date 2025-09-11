@@ -8,6 +8,10 @@ inputs:
     is-preview:
       description: 'Is this a preview release?'
       required: true
+    notes-start-tag:
+      description: 'Tag to start generating release notes from. Default: latest tag.'
+      required: false
+      default: ''
 
 runs:
   using: composite
@@ -18,11 +22,13 @@ runs:
         echo "release-version=${{ inputs.release-version }}"
         echo "is-preview=${{ inputs.is-preview }}"
         echo "preview-argument=${{ inputs.is-preview == 'true' && '--prerelease' || '' }}"
+        echo "start-tag=$(git describe --abbrev=0 --tags)"
       shell: bash
     - name: 'Create GitHub release PolylineAlgorithm ${{ env.release-version }}'
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
         preview-argument: "${{ inputs.is-preview == 'true' && '--prerelease' || '' }}"
+        notes-start-tag-argument: "${{ inputs.notes-start-tag != '' && '--notes-start-tag inputs.notes-start-tag' || '' }}"
       run: |
-        gh release create ${{ env.release-version }} --generate-notes --discussion-category "General" ${{ env.preview-argument }}
+        gh release create ${{ env.release-version }} --generate-notes --discussion-category "General" ${{ env.preview-argument }} ${{ env.notes-start-tag-argument }}
