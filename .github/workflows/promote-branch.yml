@@ -206,6 +206,10 @@ jobs:
           git switch ${{ needs.workflow-variables.outputs.base-branch }}
           git checkout -b ${{ needs.workflow-variables.outputs.target-branch }} origin/${{ needs.workflow-variables.outputs.target-branch }} || git checkout -b ${{ needs.workflow-variables.outputs.target-branch }}
           git push --set-upstream origin ${{ needs.workflow-variables.outputs.target-branch }}
+      - name: 'Rebase target onto current'
+        run: |
+          git checkout -b ${{ github.ref_name }}
+          git rebase ${{ needs.workflow-variables.outputs.target-branch }}
       - name: 'Create PR: "Promote ${{ env.current-branch }} to ${{ env.target-branch }}"'
         if: ${{ needs.workflow-variables.outputs.pull-request-exists == 'false' }}
         env:
