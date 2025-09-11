@@ -42,7 +42,8 @@ jobs:
         run: |
           echo "is-release:${{ startsWith(github.ref_name, 'release') }}"
           echo "is-preview:${{ startsWith(github.ref_name, 'preview') }}"
-          echo "notes-start-tag:$(git describe --abbrev=0 --tags)"
+          notes-start-tag=$(git describe --abbrev=0 --tags)
+          echo "notes-start-tag=$notes-start-tag" >> $GITHUB_OUTPUT
 
   validate-release:
     name: 'Validate release'
