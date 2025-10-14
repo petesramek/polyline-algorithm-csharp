@@ -25,6 +25,10 @@ runs:
         echo "notes-start-tag=${{ inputs.notes-start-tag }}"
         echo "notes-start-tag-argument="${{ inputs.notes-start-tag != '' && '--notes-start-tag $(inputs.notes-start-tag)' || '' }}"
       shell: bash
+    - name: 'Create git tag ${{ env.release-version }}'
+      shell: bash
+      run: |
+        git tag -a ${{ env.release-version }} -m "${{ env.release-version }}"
     - name: 'Create GitHub release PolylineAlgorithm ${{ env.release-version }}'
       shell: bash
       env:
