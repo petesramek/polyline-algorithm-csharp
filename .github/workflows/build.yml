@@ -191,7 +191,7 @@ jobs:
           dotnet-version: ${{ env.dotnet-sdk-version }}
 
       - name: Download Build
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build
 

@@ -173,7 +173,7 @@ jobs:
           dotnet-version: ${{ env.dotnet-sdk-version }}
 
       - name: Download Build
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build
 
@@ -233,7 +233,7 @@ jobs:
             8.x
             9.x
       - name: Download Build
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build
       - name: Benchmark
