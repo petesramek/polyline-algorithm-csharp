@@ -83,13 +83,13 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
 
         while (true) {
             // Check if we have reached the end of the sequence
-            if (sequence.Length == position) {
+            if (position < sequence.Length) {
                 break;
             }
 
             // Read the next value from the polyline encoding
-            if (!PolylineEncoding.TryReadValue(ref latitude, ref sequence, ref position)
-                || !PolylineEncoding.TryReadValue(ref longitude, ref sequence, ref position)
+            if (!PolylineEncoding.TryReadValue(ref latitude, sequence, ref position)
+                || !PolylineEncoding.TryReadValue(ref longitude, sequence, ref position)
             ) {
                 logger
                     .LogInvalidPolylineWarning(position);
@@ -106,7 +106,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
             .LogOperationFinishedInfo(nameof(Decode));
 
 
-        static void ValidateNullPolyline(TPolyline polyline, ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> logger) {
+        static void ValidateNullPolyline(TPolyline polyline, ILogger logger) {
             if (polyline is null) {
                 logger
                     .LogNullArgumentWarning(nameof(polyline));
@@ -115,14 +115,14 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
             }
         }
 
-        static void ValidateEmptySequence(ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> logger, ReadOnlyMemory<char> sequence) {
+        static void ValidateEmptySequence(ILogger logger, ReadOnlyMemory<char> sequence) {
             if (sequence.Length < Defaults.Polyline.Block.Length.Min) {
                 logger
                     .LogPolylineCannotBeShorterThanWarning(nameof(sequence), sequence.Length, Defaults.Polyline.Block.Length.Min);
                 logger.
                     LogOperationFailedInfo(nameof(Decode));
 
-                throw new ArgumentException(string.Format(ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage, sequence.Length), nameof(polyline));
+                throw new ArgumentException(string.Format(ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage, sequence.Length), nameof(sequence));
             }
         }
     }

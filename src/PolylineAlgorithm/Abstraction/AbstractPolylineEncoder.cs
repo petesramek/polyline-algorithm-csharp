@@ -64,7 +64,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     public TPolyline Encode(IEnumerable<TCoordinate> coordinates) {
         var logger = Options
             .LoggerFactory
-            .CreateLogger<AbstractPolylineDecoder<TPolyline, TCoordinate>>();
+            .CreateLogger<AbstractPolylineEncoder<TCoordinate, TPolyline>>();
 
         logger
             .LogOperationStartedInfo(nameof(Encode));
@@ -98,8 +98,8 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
             ValidateBuffer(logger, variance, position, buffer);
 
-            if (!PolylineEncoding.TryWriteValue(variance.Latitude, ref buffer, ref position)
-                || !PolylineEncoding.TryWriteValue(variance.Longitude, ref buffer, ref position)
+            if (!PolylineEncoding.TryWriteValue(variance.Latitude, buffer, ref position)
+                || !PolylineEncoding.TryWriteValue(variance.Longitude, buffer, ref position)
             ) {
                 // This shouldn't happen, but if it does, log the error and throw an exception.
                 logger
@@ -153,7 +153,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
             return requestedBufferLength;
         }
 
-        static void ValidateNullCoordinates(IEnumerable<TCoordinate> coordinates, ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> logger) {
+        static void ValidateNullCoordinates(IEnumerable<TCoordinate> coordinates, ILogger logger) {
             if (coordinates is null) {
                 logger
                     .LogNullArgumentWarning(nameof(coordinates));
@@ -164,7 +164,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
             }
         }
 
-        static void ValidateEmptyCoordinates(ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> logger, int count) {
+        static void ValidateEmptyCoordinates(ILogger logger, int count) {
             if (count < 1) {
                 logger
                     .LogEmptyArgumentWarning(nameof(coordinates));
@@ -175,7 +175,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
             }
         }
 
-        static void ValidateBuffer(ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> logger, CoordinateVariance variance, int position, Span<char> buffer) {
+        static void ValidateBuffer(ILogger logger, CoordinateVariance variance, int position, Span<char> buffer) {
             if (GetRemainingBufferSize(position, buffer.Length) < GetRequiredLength(variance)) {
                 logger
                     .LogInternalBufferOverflowWarning(position, buffer.Length, GetRequiredLength(variance));
