@@ -13,7 +13,7 @@ using System;
 
 [TestClass]
 public class AbstractPolylineDecoderTest {
-    private static readonly PolylineDecoder _decoder = new();
+    private static readonly PolylineDecoder _decoder = new(new());
 
     public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100], [1_000]];
 
@@ -26,7 +26,7 @@ public class AbstractPolylineDecoderTest {
     [TestMethod]
     public void Constructor_Parameterless_Ok() {
         // Arrange && Act
-        var decoder = new PolylineDecoder();
+        var decoder = new PolylineDecoder(new PolylineEncodingOptions());
 
         // Assert
         Assert.IsNotNull(decoder);
@@ -105,7 +105,7 @@ public class AbstractPolylineDecoderTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(InvalidPolylines), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(InvalidPolylines))]
     public void Decode_InvalidPolyline_Throws_InvalidPolylineException(string polyline) {
         // Arrange
 #pragma warning disable IDE0305 // Simplify collection initialization
@@ -162,9 +162,6 @@ public class AbstractPolylineDecoderTest {
     }
 
     public class PolylineDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-        public PolylineDecoder()
-            : base() { }
-
         public PolylineDecoder(PolylineEncodingOptions options)
             : base(options) { }
 

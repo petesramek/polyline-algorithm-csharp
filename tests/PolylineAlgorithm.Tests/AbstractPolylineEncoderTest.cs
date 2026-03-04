@@ -8,6 +8,7 @@ namespace PolylineAlgorithm.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Abstraction;
+using PolylineAlgorithm.Extensions;
 using PolylineAlgorithm.Utility;
 using System;
 
@@ -60,12 +61,12 @@ public class AbstractPolylineEncoderTest {
     }
 
     [TestMethod]
-    public void Encode_NullCoordinates_Throws_ArgumentException() {
+    public void Encode_Null_Coordinates_Throws_ArgumentException() {
         // Arrange
         static void Encode() => _encoder.Encode(null!);
 
         // Act
-        var exception = Assert.ThrowsExactly<ArgumentNullException>(Encode);
+        var exception = Assert.ThrowsExactly<ArgumentException>(Encode);
 
         // Assert
         Assert.AreEqual("coordinates", exception.ParamName);
@@ -73,7 +74,7 @@ public class AbstractPolylineEncoderTest {
     }
 
     [TestMethod]
-    public void Encode_EmptyCoordinates_Throws_ArgumentException() {
+    public void Encode_Empty_Coordinates_Throws_ArgumentException() {
         // Arrange
         static void Encode() => _encoder.Encode([]);
 
@@ -86,7 +87,7 @@ public class AbstractPolylineEncoderTest {
     }
 
     [TestMethod]
-    public void Encode_BufferTooSmall_Throws_InternalBufferOverflowException() {
+    public void Encode_Buffer_Too_Small_Throws_InternalBufferOverflowException() {
         // Arrange
         PolylineEncoder _encoder = new(new PolylineEncodingOptions { MaxBufferSize = 12 });
         IEnumerable<(double Latitude, double Longitude)> coordinates = RandomValueProvider.GetCoordinates(2);
@@ -100,7 +101,7 @@ public class AbstractPolylineEncoderTest {
 
     [TestMethod]
     [DynamicData(nameof(NotANumberAndInfinityCoordinates))]
-    public void Encode_NotANumberAndInfinityCoordinate_Throws_ArgumentOutOfRangeException((double, double) coordinate) {
+    public void Encode_Not_A_Number_And_Infinity_Coordinate_Throws_ArgumentOutOfRangeException((double, double) coordinate) {
         // Arrange
 
         // Act
@@ -112,7 +113,7 @@ public class AbstractPolylineEncoderTest {
 
     [TestMethod]
     [DynamicData(nameof(MinAndMaxCoordinates))]
-    public void Encode_MinAndMaxCoordinate_Throws_ArgumentOutOfRangeException((double, double) coordinate) {
+    public void Encode_Min_And_Max_Coordinate_Throws_ArgumentOutOfRangeException((double, double) coordinate) {
         // Arrange
 
         // Act
@@ -124,7 +125,7 @@ public class AbstractPolylineEncoderTest {
 
     [TestMethod]
     [DynamicData(nameof(CoordinateCount))]
-    public void Encode_RandomValue_ValidInput_Ok(int count) {
+    public void Encode_Random_Value_Valid_Input_Ok(int count) {
         // Arrange
         IEnumerable<(double Latitude, double Longitude)> coordinates = RandomValueProvider.GetCoordinates(count);
         string expected = RandomValueProvider.GetPolyline(count);
@@ -138,7 +139,7 @@ public class AbstractPolylineEncoderTest {
     }
 
     [TestMethod]
-    public void Encode_StaticValue_ValidInput_Ok() {
+    public void Encode_Static_Value_Valid_Input_Ok() {
         // Arrange
         IEnumerable<(double Latitude, double Longitude)> coordinates = StaticValueProvider.Valid.GetCoordinates();
         string expected = StaticValueProvider.Valid.GetPolyline();

@@ -14,10 +14,13 @@ using PolylineAlgorithm.Utility;
 /// Benchmarks for the <see cref="PolylineValue"/> struct.
 /// </summary>
 public class PolylineBenchmark {
-    private static readonly Consumer consumer = new();
+    private static readonly Consumer _consumer = new();
 
     [Params(1, 100, 1_000)]
     public int Count;
+
+    [Params(1000, 10_000, 100_000)]
+    public int Iterations;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     /// <summary>
@@ -69,11 +72,13 @@ public class PolylineBenchmark {
     /// </summary>
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
-    public Polyline Polyline_FromString() {
-        var polyline = Polyline
+    public void Polyline_FromString() {
+        for (int i = 0; i < Count; i++) {
+            var polyline = Polyline
             .FromString(StringValue);
 
-        return polyline;
+            _consumer.Consume(polyline);
+        }
     }
 
     /// <summary>
@@ -81,11 +86,13 @@ public class PolylineBenchmark {
     /// </summary>
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
-    public Polyline Polyline_FromCharArray() {
-        var polyline = Polyline
+    public void Polyline_FromCharArray() {
+        for (int i = 0; i < Iterations; i++) {
+            var polyline = Polyline
             .FromCharArray(CharArrayValue);
 
-        return polyline;
+            _consumer.Consume(polyline);
+        }
     }
 
     /// <summary>
@@ -93,11 +100,13 @@ public class PolylineBenchmark {
     /// </summary>
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
-    public Polyline Polyline_FromMemory() {
-        var polyline = Polyline
+    public void Polyline_FromMemory() {
+        for (int i = 0; i < Iterations; i++) {
+            var polyline = Polyline
             .FromMemory(MemoryValue);
 
-        return polyline;
+            _consumer.Consume(polyline);
+        }
     }
 
     /// <summary>
@@ -105,11 +114,13 @@ public class PolylineBenchmark {
     /// </summary>
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
-    public string Polyline_ToString() {
-        var stringValue = PolylineValue
+    public void Polyline_ToString() {
+        for (int i = 0; i < Iterations; i++) {
+            var stringValue = PolylineValue
             .ToString();
 
-        return stringValue;
+            _consumer.Consume(stringValue);
+        }
     }
 
 
@@ -119,11 +130,13 @@ public class PolylineBenchmark {
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
     public void Polyline_CopyTo() {
-        PolylineValue
+        for (int i = 0; i < Iterations; i++) {
+            PolylineValue
             .CopyTo(CopyToDestination);
 
-        CopyToDestination
-             .Consume(consumer);
+            CopyToDestination
+                 .Consume(_consumer);
+        }
     }
 
     /// <summary>
@@ -131,11 +144,13 @@ public class PolylineBenchmark {
     /// </summary>
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
-    public bool Polyline_Equals_SameValue() {
-        var equals = PolylineValue
+    public void Polyline_Equals_SameValue() {
+        for (int i = 0; i < Iterations; i++) {
+            var equals = PolylineValue
             .Equals(PolylineValue);
 
-        return equals;
+            _consumer.Consume(equals);
+        }
     }
 
     /// <summary>
@@ -143,11 +158,13 @@ public class PolylineBenchmark {
     /// </summary>
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
-    public bool Polyline_Equals_DifferentValue() {
-        var equals = PolylineValue
+    public void Polyline_Equals_DifferentValue() {
+        for (int i = 0; i < Iterations; i++) {
+            var equals = PolylineValue
             .Equals(PolylineNotEqualValue);
 
-        return equals;
+            _consumer.Consume(equals);
+        }
     }
 
 
@@ -156,10 +173,12 @@ public class PolylineBenchmark {
     /// </summary>
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
-    public bool Polyline_Equals_DifferentType() {
-        var equals = PolylineValue
+    public void Polyline_Equals_DifferentType() {
+        for (int i = 0; i < Iterations; i++) {
+            var equals = PolylineValue
             .Equals(StringValue);
 
-        return equals;
+            _consumer.Consume(equals);
+        }
     }
 }

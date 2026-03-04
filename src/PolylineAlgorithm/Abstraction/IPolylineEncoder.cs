@@ -4,9 +4,6 @@
 //
 
 namespace PolylineAlgorithm.Abstraction;
-
-using System.Collections.Generic;
-
 /// <summary>
 /// Defines a contract for encoding a sequence of geographic coordinates into an encoded polyline string.
 /// </summary>
@@ -20,5 +17,5 @@ public interface IPolylineEncoder<TCoordinate, TPolyline> {
     /// <returns>
     /// A <typeparamref name="TPolyline"/> containing the encoded polyline string that represents the input coordinates.
     /// </returns>
-    TPolyline Encode(IEnumerable<TCoordinate> coordinates);
+    TPolyline Encode(ReadOnlySpan<TCoordinate> coordinates);
 }

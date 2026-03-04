@@ -22,7 +22,7 @@ internal struct CoordinateVariance {
     /// Initializes a new instance of the <see cref="CoordinateVariance"/> struct with the default latitude and longitude deltas.
     /// </summary>
     public CoordinateVariance() {
-        _current =(default, default);
+        _current = (default, default);
     }
 
     /// <summary>

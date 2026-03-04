@@ -11,7 +11,6 @@ using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Internal.Logging;
 using PolylineAlgorithm.Properties;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -61,7 +60,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// <exception cref="ArgumentException">
     /// Thrown when <paramref name="coordinates"/> is an empty enumeration.
     /// </exception>
-    public TPolyline Encode(IEnumerable<TCoordinate> coordinates) {
+    public TPolyline Encode(ReadOnlySpan<TCoordinate> coordinates) {
         var logger = Options
             .LoggerFactory
             .CreateLogger<AbstractPolylineEncoder<TCoordinate, TPolyline>>();
@@ -69,31 +68,23 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
         logger
             .LogOperationStartedInfo(nameof(Encode));
 
-        Debug.Assert(coordinates is not null, "Coordinates cannot be null.");
+        Debug.Assert(coordinates.Length >= 0, "Count must be non-negative.");
 
-        ValidateNullCoordinates(coordinates, logger);
-
-        int count = GetCount(coordinates);
-
-        Debug.Assert(count >= 0, "Count must be non-negative.");
-
-        ValidateEmptyCoordinates(logger, count);
+        ValidateEmptyCoordinates(coordinates, logger);
 
         CoordinateVariance variance = new();
 
         int position = 0;
         int consumed = 0;
-        int length = GetMaxBufferLength(count);
+        int length = GetMaxBufferLength(coordinates.Length);
 
         Span<char> buffer = stackalloc char[length];
 
-        using var enumerator = coordinates.GetEnumerator();
-
-        while (enumerator.MoveNext()) {
+        for (var i = 0; i < coordinates.Length; i++) {
             variance
                 .Next(
-                    PolylineEncoding.Normalize(GetLatitude(enumerator.Current), CoordinateValueType.Latitude),
-                    PolylineEncoding.Normalize(GetLongitude(enumerator.Current), CoordinateValueType.Longitude)
+                    PolylineEncoding.Normalize(GetLatitude(coordinates[i]), CoordinateValueType.Latitude),
+                    PolylineEncoding.Normalize(GetLongitude(coordinates[i]), CoordinateValueType.Longitude)
                 );
 
             ValidateBuffer(logger, variance, position, buffer);
@@ -117,11 +108,6 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
             .LogOperationFinishedInfo(nameof(Encode));
 
         return CreatePolyline(buffer[..position].ToString().AsMemory());
-
-        static int GetCount(IEnumerable<TCoordinate> coordinates) => coordinates switch {
-            ICollection collection => collection.Count,
-            _ => coordinates.Count(),
-        };
 
         static int GetRequiredLength(CoordinateVariance variance) =>
             PolylineEncoding.GetCharCount(variance.Latitude) + PolylineEncoding.GetCharCount(variance.Longitude);
@@ -164,8 +150,8 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
             }
         }
 
-        static void ValidateEmptyCoordinates(ILogger logger, int count) {
-            if (count < 1) {
+        static void ValidateEmptyCoordinates(ReadOnlySpan<TCoordinate> coordinates, ILogger logger) {
+            if (coordinates.Length < 1) {
                 logger
                     .LogEmptyArgumentWarning(nameof(coordinates));
                 logger

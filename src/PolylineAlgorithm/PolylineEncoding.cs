@@ -38,7 +38,7 @@ public static class PolylineEncoding {
     /// langword="false"/>.
     /// </returns>
 
-    public static bool TryReadValue(ref int variance, ReadOnlyMemory<char> buffer, ref int position) {
+    public static bool TryReadValue(ref int variance, ref ReadOnlyMemory<char> buffer, ref int position) {
         // Validate that the position is within the bounds of the buffer.
         if (position == buffer.Length) {
             return false;
@@ -146,7 +146,7 @@ public static class PolylineEncoding {
 
         // Write the value to the buffer in a way that encodes it using the specified algorithm.
         while (rem >= Defaults.Algorithm.Space) {
-            buffer[position++] = 
+            buffer[position++] =
                 (char)((Defaults.Algorithm.Space
                 | (rem & Defaults.Algorithm.UnitSeparator))
                 + Defaults.Algorithm.QuestionMark);

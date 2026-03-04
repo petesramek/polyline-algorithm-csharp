@@ -19,6 +19,9 @@ public class PolylineDecoderBenchmark {
     [Params(1, 100, 1_000)]
     public int Count;
 
+    [Params(1000, 10_000, 100_000)]
+    public int Iterations;
+
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     /// <summary>
     /// Gets the string value representing the encoded polyline.
@@ -30,7 +33,7 @@ public class PolylineDecoderBenchmark {
     /// <summary>
     /// The polyline decoder instance.
     /// </summary>
-    public PolylineDecoder Decoder = new();
+    public readonly PolylineDecoder Decoder = new();
 
     /// <summary>
     /// Sets up the data for the benchmarks.
@@ -45,8 +48,10 @@ public class PolylineDecoderBenchmark {
     /// </summary>
     [Benchmark]
     public void PolylineDecoder_Decode() {
-        Decoder
-            .Decode(Polyline)
-            .Consume(_consumer);
+        for (int i = 0; i < Iterations; i++) {
+            Decoder
+                .Decode(Polyline)
+                .Consume(_consumer);
+        }
     }
 }

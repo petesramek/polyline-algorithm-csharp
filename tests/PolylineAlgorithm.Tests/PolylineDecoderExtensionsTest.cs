@@ -62,7 +62,7 @@ public class PolylineDecoderExtensionsTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(CoordinateCount), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(CoordinateCount))]
     public void Decode_String_Returns_Expected_Coordinates(int count) {
         // Arrange
         var polyline = RandomValueProvider.GetPolyline(count);
@@ -78,7 +78,7 @@ public class PolylineDecoderExtensionsTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(CoordinateCount), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(CoordinateCount))]
     public void Decode_CharArray_Returns_Expected_Coordinates(int count) {
         // Arrange
         var polyline = RandomValueProvider.GetPolyline(count).ToCharArray();
@@ -94,7 +94,7 @@ public class PolylineDecoderExtensionsTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(CoordinateCount), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(CoordinateCount))]
     public void Decode_Memory_Returns_Expected_Coordinates(int count) {
         // Arrange
         var polyline = RandomValueProvider.GetPolyline(count).AsMemory();

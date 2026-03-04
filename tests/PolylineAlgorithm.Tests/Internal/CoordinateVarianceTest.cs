@@ -48,7 +48,7 @@ public class CoordinateVarianceTests {
     }
 
     [TestMethod]
-    [DynamicData(nameof(Coordinates), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(Coordinates))]
     public void Next_Calculates_Correct_Variance_From_Default_Variance(int latitude, int longitude) {
         // Arrange
         CoordinateVariance variance = new();
@@ -63,7 +63,7 @@ public class CoordinateVarianceTests {
     }
 
     [TestMethod]
-    [DynamicData(nameof(Variances), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(Variances))]
     public void Next_Calculates_Correct_Variance_From_Previous_Variance((int Latitude, int Longitude) initial, (int Latitude, int Longitude) next, (int Latitude, int Longitude) expected) {
         // Arrange
         CoordinateVariance variance = new();
@@ -78,7 +78,7 @@ public class CoordinateVarianceTests {
     }
 
     [TestMethod]
-    [DynamicData(nameof(Coordinates), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(Coordinates))]
     public void ToString_Returns_Value_Containing_Variance(int latitude, int longitude) {
         // Arrange
         CoordinateVariance variance = new();

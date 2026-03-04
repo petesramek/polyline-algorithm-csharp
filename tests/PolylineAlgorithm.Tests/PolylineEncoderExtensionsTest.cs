@@ -19,7 +19,7 @@ public class PolylineEncoderExtensionsTest {
     [TestMethod]
     public void Encode_Null_Encoder_Empty_List_Throws_ArgumentNullException() {
         // Arrange
-        static void Encode() => PolylineEncoderExtensions.Encode(null!, new List<Coordinate>());
+        static void Encode() => PolylineEncoderExtensions.Encode<Coordinate, Polyline>(null!, new List<Coordinate>());
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentNullException>(Encode);
@@ -30,20 +30,20 @@ public class PolylineEncoderExtensionsTest {
     }
 
     [TestMethod]
-    public void Encode_Null_Encoder_Null_CharArray_Throws_ArgumentNullException() {
+    public void Encode_Null_Coordinates_Throws_ArgumentNullException() {
         // Arrange
-        static void Encode() => PolylineEncoderExtensions.Encode(null!, []);
+        void Encode() => PolylineEncoderExtensions.Encode(_encoder, (List<Coordinate>)null!);
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentNullException>(Encode);
 
         // Assert
-        Assert.AreEqual("encoder", exception.ParamName);
+        Assert.AreEqual("coordinates", exception.ParamName);
         Assert.IsTrue(exception.Message.Contains("Value cannot be null.", StringComparison.Ordinal));
     }
 
     [TestMethod]
-    [DynamicData(nameof(CoordinateCount), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(CoordinateCount))]
     public void Encode_List_Returns_Expected_Coordinates(int count) {
         // Arrange
         var coordinates = RandomValueProvider.GetCoordinates(count)
@@ -59,7 +59,7 @@ public class PolylineEncoderExtensionsTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(CoordinateCount), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(CoordinateCount))]
     public void Encode_Array_Returns_Expected_Coordinates(int count) {
         // Arrange
         var coordinates = RandomValueProvider.GetCoordinates(count)

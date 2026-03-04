@@ -11,7 +11,6 @@ using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Internal.Logging;
 using PolylineAlgorithm.Properties;
 using System;
-using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
 /// Decodes encoded polyline strings into sequences of geographic coordinates.
@@ -83,13 +82,13 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
 
         while (true) {
             // Check if we have reached the end of the sequence
-            if (position < sequence.Length) {
+            if (position >= sequence.Length) {
                 break;
             }
 
             // Read the next value from the polyline encoding
-            if (!PolylineEncoding.TryReadValue(ref latitude, sequence, ref position)
-                || !PolylineEncoding.TryReadValue(ref longitude, sequence, ref position)
+            if (!PolylineEncoding.TryReadValue(ref latitude, ref sequence, ref position)
+                || !PolylineEncoding.TryReadValue(ref longitude, ref sequence, ref position)
             ) {
                 logger
                     .LogInvalidPolylineWarning(position);
@@ -118,11 +117,11 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
         static void ValidateEmptySequence(ILogger logger, ReadOnlyMemory<char> sequence) {
             if (sequence.Length < Defaults.Polyline.Block.Length.Min) {
                 logger
-                    .LogPolylineCannotBeShorterThanWarning(nameof(sequence), sequence.Length, Defaults.Polyline.Block.Length.Min);
+                    .LogPolylineCannotBeShorterThanWarning(nameof(polyline), sequence.Length, Defaults.Polyline.Block.Length.Min);
                 logger.
                     LogOperationFailedInfo(nameof(Decode));
 
-                throw new ArgumentException(string.Format(ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage, sequence.Length), nameof(sequence));
+                throw new ArgumentException(string.Format(ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage, sequence.Length), nameof(polyline));
             }
         }
     }

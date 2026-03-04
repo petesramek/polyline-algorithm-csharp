@@ -64,7 +64,7 @@ internal static class RandomValueProvider {
         var enumeration = Enumerable
                             .Range(0, count)
                             .Select(i => (RandomLatitude(), RandomLongitude()))
-                            .ToList();
+                            .ToArray();
 
         entry = _cache.GetOrAdd(count, _ => new PolylineCoordinateCollectionPair(enumeration, _encoder.Encode(enumeration)));
 

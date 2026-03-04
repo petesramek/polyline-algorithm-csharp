@@ -9,6 +9,8 @@ using PolylineAlgorithm;
 using PolylineAlgorithm.Abstraction;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using static PolylineAlgorithm.Internal.Defaults;
 
 /// <summary>
 /// Provides extension methods for the <see cref="IPolylineEncoder{TCoordinate, TPolyline}"/> interface to facilitate encoding geographic coordinates into polylines.
@@ -29,12 +31,54 @@ public static class PolylineEncoderExtensions {
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="encoder"/> is <see langword="null"/>.
     /// </exception>
-    public static Polyline Encode(this IPolylineEncoder<Coordinate, Polyline> encoder, ICollection<Coordinate> coordinates) {
+    public static TPolyline Encode<TCoordinate, TPolyline>(this IPolylineEncoder<TCoordinate, TPolyline> encoder, List<TCoordinate> coordinates) {
         if (encoder is null) {
             throw new ArgumentNullException(nameof(encoder));
         }
 
-        return encoder.Encode(coordinates);
+        if (coordinates is null) {
+            throw new ArgumentNullException(nameof(coordinates));
+        }
+
+        ReadOnlySpan<TCoordinate> span;
+
+#if NET5_0_OR_GREATER
+        span = CollectionsMarshal.AsSpan(coordinates);
+#else
+        span = coordinates.ToArray().AsSpan();
+#endif
+
+        return encoder.Encode(span);
+    }
+
+
+    /// <summary>
+    /// Encodes an array of <see cref="Coordinate"/> instances into an encoded polyline.
+    /// </summary>
+    /// <param name="encoder">
+    /// The <see cref="IPolylineEncoder{TCoordinate, TPolyline}"/> instance used to perform the encoding operation.
+    /// </param>
+    /// <param name="coordinates">
+    /// The array of <see cref="Coordinate"/> objects to encode.
+    /// </param>
+    /// <returns>
+    /// A <see cref="Polyline"/> representing the encoded polyline string for the provided coordinates.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when <paramref name="encoder"/> is <see langword="null"/>.
+    /// </exception>
+    public static TPolyline Encode<TCoordinate, TPolyline>(this IPolylineEncoder<TCoordinate, TPolyline> encoder, TCoordinate[] coordinates) {
+        if (encoder is null) {
+            throw new ArgumentNullException(nameof(encoder));
+        }
+
+        if (coordinates is null) {
+            throw new ArgumentNullException(nameof(coordinates));
+        }
+
+        var span = coordinates.AsSpan();
+
+        return encoder.Encode(span);
     }
 
     /// <summary>
@@ -52,11 +96,13 @@ public static class PolylineEncoderExtensions {
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="encoder"/> is <see langword="null"/>.
     /// </exception>
-    public static Polyline Encode(this IPolylineEncoder<Coordinate, Polyline> encoder, Coordinate[] coordinates) {
+    public static TPolyline Encode<TCoordinate, TPolyline>(this IPolylineEncoder<TCoordinate, TPolyline> encoder, IEnumerable<TCoordinate> coordinates) {
         if (encoder is null) {
             throw new ArgumentNullException(nameof(encoder));
         }
 
-        return encoder.Encode(coordinates);
+        var span = coordinates.ToArray().AsSpan();
+
+        return encoder.Encode(span);
     }
 }

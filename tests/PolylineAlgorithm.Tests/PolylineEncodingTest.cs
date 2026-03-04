@@ -108,7 +108,7 @@ public class PolylineEncodingTest {
     #endregion
 
     [TestMethod]
-    [DynamicData(nameof(DenormalizedNormalizedPairs), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(DenormalizedNormalizedPairs))]
     public void Normalize_Equals_Expected(double denormalized, int expected, CoordinateValueType type) {
         // Arrange & Act
         int result = PolylineEncoding.Normalize(denormalized, type);
@@ -119,7 +119,7 @@ public class PolylineEncodingTest {
 
 
     [TestMethod]
-    [DynamicData(nameof(DenormalizedNormalizedPairs), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(DenormalizedNormalizedPairs))]
     public void Denormalize_Equals_Expected(double expected, int normalized, CoordinateValueType type) {
         // Arrange & Act
         double result = PolylineEncoding.Denormalize(normalized, type);
@@ -129,7 +129,7 @@ public class PolylineEncodingTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(VariancePolylinePairs), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(VariancePolylinePairs))]
     public void TryWriteValue_StaticBuffer_Returns_True_Equals_Expected(int variance, string expected) {
         // Arrange
         int position = 0;
@@ -146,7 +146,7 @@ public class PolylineEncodingTest {
 
 
     [TestMethod]
-    [DynamicData(nameof(VariancePolylinePairs), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(VariancePolylinePairs))]
     public void TryWriteValue_DynamicBuffer_Returns_True_Equals_Expected(int variance, string expected) {
         // Arrange
         int position = 0;
@@ -164,7 +164,7 @@ public class PolylineEncodingTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(VariancePolylinePairs), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(VariancePolylinePairs))]
     public void TryWriteValue_BufferTooSmall_Returns_False(int variance, string _) {
         // Arrange
         int position = 0;
@@ -179,7 +179,7 @@ public class PolylineEncodingTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(VariancePolylinePairs), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(VariancePolylinePairs))]
     public void TryReadValue_Ok(int expected, string polyline) {
         // Arrange
         int position = 0;
@@ -187,7 +187,7 @@ public class PolylineEncodingTest {
         var buffer = polyline.AsMemory();
 
         // Act
-        bool result = PolylineEncoding.TryReadValue(ref variance, buffer, ref position);
+        bool result = PolylineEncoding.TryReadValue(ref variance, ref buffer, ref position);
 
         // Assert
         Assert.IsTrue(result);
@@ -203,7 +203,7 @@ public class PolylineEncodingTest {
         ReadOnlyMemory<char> buffer = Memory<char>.Empty;
 
         // Act
-        bool result = PolylineEncoding.TryReadValue(ref variance, buffer, ref position);
+        bool result = PolylineEncoding.TryReadValue(ref variance, ref buffer, ref position);
 
         // Assert
         Assert.IsFalse(result);
@@ -220,7 +220,7 @@ public class PolylineEncodingTest {
         ReadOnlyMemory<char> buffer = chars.AsMemory();
 
         // Act
-        bool result = PolylineEncoding.TryReadValue(ref variance, buffer, ref position);
+        bool result = PolylineEncoding.TryReadValue(ref variance, ref buffer, ref position);
 
         // Assert
         Assert.IsFalse(result);
@@ -228,7 +228,7 @@ public class PolylineEncodingTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(DenormalizedOutOfRangeValues), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(DenormalizedOutOfRangeValues))]
     public void Normalize_Throws_ArgumentOutOfRangeException(double value, CoordinateValueType type) {
         // Arrange
         static int Normalize(double value, CoordinateValueType type) => PolylineEncoding.Normalize(value, type);
@@ -241,7 +241,7 @@ public class PolylineEncodingTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(NormalizedOutOfRangeValues), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(NormalizedOutOfRangeValues))]
     public void Denormalize_Throws_ArgumentOutOfRangeException(int value, CoordinateValueType type) {
         // Arrange
         static double Denormalize(int value, CoordinateValueType type) => PolylineEncoding.Denormalize(value, type);
@@ -254,7 +254,7 @@ public class PolylineEncodingTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(VarianceCharCountPairs), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(VarianceCharCountPairs))]
     public void GetCharCount_Equals_Expected(int variance, int expected) {
         // Arrange & Act
         var charCount = PolylineEncoding.GetCharCount(variance);

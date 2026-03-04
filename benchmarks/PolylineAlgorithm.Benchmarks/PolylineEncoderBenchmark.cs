@@ -6,7 +6,9 @@
 namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Engines;
 using PolylineAlgorithm;
+using PolylineAlgorithm.Extensions;
 using PolylineAlgorithm.Utility;
 using System.Collections.Generic;
 
@@ -14,8 +16,13 @@ using System.Collections.Generic;
 /// Benchmarks for the <see cref="PolylineEncoder"/> class.
 /// </summary>
 public class PolylineEncoderBenchmark {
+    private readonly Consumer _consumer = new();
+
     [Params(1, 100, 1_000)]
     public int Count;
+
+    [Params(1000, 10_000, 100_000)]
+    public int Iterations;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     /// <summary>
@@ -32,7 +39,7 @@ public class PolylineEncoderBenchmark {
     /// <summary>
     /// The polyline encoder instance.
     /// </summary>
-    public PolylineEncoder Encoder = new();
+    public readonly PolylineEncoder Encoder = new();
 
     /// <summary>
     /// Sets up the data for the benchmarks.
@@ -48,11 +55,13 @@ public class PolylineEncoderBenchmark {
     /// </summary>
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
-    public Polyline PolylineEncoder_Encode_List() {
-        var polyline = Encoder
-            .Encode(List!);
+    public void PolylineEncoder_Encode_List() {
+        for (int i = 0; i < Iterations; i++) {
+            var polyline = Encoder
+                .Encode(List!);
 
-        return polyline;
+            _consumer.Consume(polyline);
+        }
     }
 
     /// <summary>
@@ -60,10 +69,12 @@ public class PolylineEncoderBenchmark {
     /// </summary>
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
-    public Polyline PolylineEncoder_Encode_Enumerator() {
-        var polyline = Encoder
+    public void PolylineEncoder_Encode_Enumerator() {
+        for (int i = 0; i < Iterations; i++) {
+            var polyline = Encoder
             .Encode(Enumeration!);
 
-        return polyline;
+            _consumer.Consume(polyline);
+        }
     }
 }
