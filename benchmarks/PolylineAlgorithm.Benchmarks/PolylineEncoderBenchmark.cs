@@ -21,7 +21,7 @@ public class PolylineEncoderBenchmark {
     [Params(1, 100, 1_000)]
     public int Count;
 
-    [Params(1000, 10_000, 100_000)]
+    [Params(100)]
     public int Iterations;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
@@ -34,6 +34,17 @@ public class PolylineEncoderBenchmark {
     /// Gets the list of coordinates to be encoded.
     /// </summary>
     public List<Coordinate> List { get; private set; }
+
+    /// <summary>
+    /// Gets the list of coordinates to be encoded.
+    /// </summary>
+    public Coordinate[] Array { get; private set; }
+
+    /// <summary>
+    /// Gets the list of coordinates to be encoded.
+    /// </summary>
+    public ReadOnlyMemory<Coordinate> Memory { get; private set; }
+
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
     /// <summary>
@@ -48,6 +59,36 @@ public class PolylineEncoderBenchmark {
     public void SetupData() {
         Enumeration = RandomValueProvider.GetCoordinates(Count).Select(c => new Coordinate(c.Latitude, c.Longitude));
         List = [.. Enumeration];
+        Array = [.. Enumeration];
+        Memory =  Array.AsMemory();
+    }
+
+    /// <summary>
+    /// Benchmarks the encoding of a list of coordinates into a polyline.
+    /// </summary>
+    /// <returns>The encoded polyline.</returns>
+    [Benchmark]
+    public void PolylineEncoder_Encode_Span() {
+        for (int i = 0; i < Iterations; i++) {
+            var polyline = Encoder
+                .Encode(Memory.Span!);
+
+            _consumer.Consume(polyline);
+        }
+    }
+
+    /// <summary>
+    /// Benchmarks the encoding of a list of coordinates into a polyline.
+    /// </summary>
+    /// <returns>The encoded polyline.</returns>
+    [Benchmark]
+    public void PolylineEncoder_Encode_Array() {
+        for (int i = 0; i < Iterations; i++) {
+            var polyline = Encoder
+                .Encode(Array!);
+
+            _consumer.Consume(polyline);
+        }
     }
 
     /// <summary>

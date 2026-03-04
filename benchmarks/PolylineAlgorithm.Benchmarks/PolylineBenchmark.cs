@@ -19,7 +19,7 @@ public class PolylineBenchmark {
     [Params(1, 100, 1_000)]
     public int Count;
 
-    [Params(1000, 10_000, 100_000)]
+    [Params(100)]
     public int Iterations;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
@@ -73,7 +73,7 @@ public class PolylineBenchmark {
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
     public void Polyline_FromString() {
-        for (int i = 0; i < Count; i++) {
+        for (int i = 0; i < Iterations; i++) {
             var polyline = Polyline
             .FromString(StringValue);
 
