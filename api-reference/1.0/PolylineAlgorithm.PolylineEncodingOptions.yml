@@ -3,7 +3,7 @@ title: Class PolylineEncodingOptions
 body:
 - api1: Class PolylineEncodingOptions
   id: PolylineAlgorithm_PolylineEncodingOptions
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L18
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L18
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptions
     commentId: T:PolylineAlgorithm.PolylineEncodingOptions
@@ -41,7 +41,7 @@ body:
 - h2: Properties
 - api3: LoggerFactory
   id: PolylineAlgorithm_PolylineEncodingOptions_LoggerFactory
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L34
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L34
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptions.LoggerFactory
     commentId: P:PolylineAlgorithm.PolylineEncodingOptions.LoggerFactory
@@ -56,7 +56,7 @@ body:
 - markdown: The default logger factory is <xref href="Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory" data-throw-if-not-resolved="false"></xref>, which does not log any messages.
 - api3: MaxBufferSize
   id: PolylineAlgorithm_PolylineEncodingOptions_MaxBufferSize
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L26
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L26
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptions.MaxBufferSize
     commentId: P:PolylineAlgorithm.PolylineEncodingOptions.MaxBufferSize

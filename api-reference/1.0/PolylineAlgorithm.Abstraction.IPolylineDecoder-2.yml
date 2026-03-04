@@ -3,7 +3,7 @@ title: Interface IPolylineDecoder<TPolyline, TCoordinate>
 body:
 - api1: Interface IPolylineDecoder<TPolyline, TCoordinate>
   id: PolylineAlgorithm_Abstraction_IPolylineDecoder_2
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/IPolylineDecoder.cs#L13
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/IPolylineDecoder.cs#L13
   metadata:
     uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2
     commentId: T:PolylineAlgorithm.Abstraction.IPolylineDecoder`2
@@ -23,7 +23,7 @@ body:
 - h2: Methods
 - api3: Decode(TPolyline)
   id: PolylineAlgorithm_Abstraction_IPolylineDecoder_2_Decode__0_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/IPolylineDecoder.cs#L23
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/IPolylineDecoder.cs#L23
   metadata:
     uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2.Decode(`0)
     commentId: M:PolylineAlgorithm.Abstraction.IPolylineDecoder`2.Decode(`0)

@@ -3,7 +3,7 @@ title: Class PolylineEncoder
 body:
 - api1: Class PolylineEncoder
   id: PolylineAlgorithm_PolylineEncoder
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L11
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L11
   metadata:
     uid: PolylineAlgorithm.PolylineEncoder
     commentId: T:PolylineAlgorithm.PolylineEncoder
@@ -35,8 +35,8 @@ body:
 - list:
   - text: AbstractPolylineEncoder<Coordinate, Polyline>.Options
     url: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_Options
-  - text: AbstractPolylineEncoder<Coordinate, Polyline>.Encode(IEnumerable<Coordinate>)
-    url: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_Encode_System_Collections_Generic_IEnumerable__0__
+  - text: AbstractPolylineEncoder<Coordinate, Polyline>.Encode(ReadOnlySpan<Coordinate>)
+    url: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_Encode_System_ReadOnlySpan__0__
   - text: object.Equals(object)
     url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
   - text: object.Equals(object, object)
@@ -51,16 +51,18 @@ body:
     url: https://learn.microsoft.com/dotnet/api/system.object.tostring
 - h4: Extension Methods
 - list:
-  - text: PolylineEncoderExtensions.Encode(IPolylineEncoder<Coordinate, Polyline>, ICollection<Coordinate>)
-    url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode_PolylineAlgorithm_Abstraction_IPolylineEncoder_PolylineAlgorithm_Coordinate_PolylineAlgorithm_Polyline__System_Collections_Generic_ICollection_PolylineAlgorithm_Coordinate__
-  - text: PolylineEncoderExtensions.Encode(IPolylineEncoder<Coordinate, Polyline>, Coordinate[])
-    url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode_PolylineAlgorithm_Abstraction_IPolylineEncoder_PolylineAlgorithm_Coordinate_PolylineAlgorithm_Polyline__PolylineAlgorithm_Coordinate___
+  - text: PolylineEncoderExtensions.Encode<Coordinate, Polyline>(IPolylineEncoder<Coordinate, Polyline>, List<Coordinate>)
+    url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1__System_Collections_Generic_List___0__
+  - text: PolylineEncoderExtensions.Encode<Coordinate, Polyline>(IPolylineEncoder<Coordinate, Polyline>, Coordinate[])
+    url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1____0___
+  - text: PolylineEncoderExtensions.Encode<Coordinate, Polyline>(IPolylineEncoder<Coordinate, Polyline>, IEnumerable<Coordinate>)
+    url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1__System_Collections_Generic_IEnumerable___0__
 - h2: Remarks
 - markdown: This abstract class serves as a base for specific polyline encoders, allowing customization of the encoding process.
 - h2: Constructors
 - api3: PolylineEncoder()
   id: PolylineAlgorithm_PolylineEncoder__ctor
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L13
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L13
   metadata:
     uid: PolylineAlgorithm.PolylineEncoder.#ctor
     commentId: M:PolylineAlgorithm.PolylineEncoder.#ctor
@@ -68,7 +70,7 @@ body:
 - code: public PolylineEncoder()
 - api3: PolylineEncoder(PolylineEncodingOptions)
   id: PolylineAlgorithm_PolylineEncoder__ctor_PolylineAlgorithm_PolylineEncodingOptions_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L17
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L17
   metadata:
     uid: PolylineAlgorithm.PolylineEncoder.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
     commentId: M:PolylineAlgorithm.PolylineEncoder.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
@@ -90,7 +92,7 @@ body:
 - h2: Methods
 - api3: CreatePolyline(ReadOnlyMemory<char>)
   id: PolylineAlgorithm_PolylineEncoder_CreatePolyline_System_ReadOnlyMemory_System_Char__
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L31
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L31
   metadata:
     uid: PolylineAlgorithm.PolylineEncoder.CreatePolyline(System.ReadOnlyMemory{System.Char})
     commentId: M:PolylineAlgorithm.PolylineEncoder.CreatePolyline(System.ReadOnlyMemory{System.Char})
@@ -115,7 +117,7 @@ body:
     description: An instance of <xref href="PolylineAlgorithm.Polyline" data-throw-if-not-resolved="false"></xref> representing the encoded polyline.
 - api3: GetLatitude(Coordinate)
   id: PolylineAlgorithm_PolylineEncoder_GetLatitude_PolylineAlgorithm_Coordinate_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L21
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L21
   metadata:
     uid: PolylineAlgorithm.PolylineEncoder.GetLatitude(PolylineAlgorithm.Coordinate)
     commentId: M:PolylineAlgorithm.PolylineEncoder.GetLatitude(PolylineAlgorithm.Coordinate)
@@ -135,7 +137,7 @@ body:
     description: The latitude value as a <xref href="System.Double" data-throw-if-not-resolved="false"></xref>.
 - api3: GetLongitude(Coordinate)
   id: PolylineAlgorithm_PolylineEncoder_GetLongitude_PolylineAlgorithm_Coordinate_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L26
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L26
   metadata:
     uid: PolylineAlgorithm.PolylineEncoder.GetLongitude(PolylineAlgorithm.Coordinate)
     commentId: M:PolylineAlgorithm.PolylineEncoder.GetLongitude(PolylineAlgorithm.Coordinate)
