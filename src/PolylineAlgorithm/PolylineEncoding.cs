@@ -4,6 +4,7 @@
 //
 
 namespace PolylineAlgorithm;
+
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Properties;
 using System;
@@ -37,7 +38,7 @@ public static class PolylineEncoding {
     /// langword="false"/>.
     /// </returns>
 
-    public static bool TryReadValue(ref int variance, ref ReadOnlyMemory<char> buffer, ref int position) {
+    public static bool TryReadValue(ref int variance, ReadOnlyMemory<char> buffer, ref int position) {
         // Validate that the position is within the bounds of the buffer.
         if (position == buffer.Length) {
             return false;
@@ -130,7 +131,7 @@ public static class PolylineEncoding {
     /// <see langword="true"/> if the value was successfully written to the buffer; otherwise, <see langword="false"/>.
     /// </returns>
 
-    public static bool TryWriteValue(int variance, ref Span<char> buffer, ref int position) {
+    public static bool TryWriteValue(int variance, Span<char> buffer, ref int position) {
         // Validate that the position and required space for write is within the bounds of the buffer.
         if (buffer.Length < position + GetCharCount(variance)) {
             return false;
@@ -145,7 +146,10 @@ public static class PolylineEncoding {
 
         // Write the value to the buffer in a way that encodes it using the specified algorithm.
         while (rem >= Defaults.Algorithm.Space) {
-            buffer[position++] = (char)((Defaults.Algorithm.Space | rem & Defaults.Algorithm.UnitSeparator) + Defaults.Algorithm.QuestionMark);
+            buffer[position++] = 
+                (char)((Defaults.Algorithm.Space
+                | (rem & Defaults.Algorithm.UnitSeparator))
+                + Defaults.Algorithm.QuestionMark);
             rem >>= Defaults.Algorithm.ShiftLength;
         }
 
@@ -198,7 +202,9 @@ public static class PolylineEncoding {
             return 0;
         }
 
-        return (int)Math.Round(value * Defaults.Algorithm.Precision);
+        checked {
+            return (int)Math.Round(value * Defaults.Algorithm.Precision, MidpointRounding.AwayFromZero);
+        }
     }
 
     /// <summary>
@@ -230,23 +236,45 @@ public static class PolylineEncoding {
     };
 
     /// <summary>
+    /// Validates whether the specified normalized value falls within the acceptable range for the given value type.
+    /// </summary>
+    /// <param name="normalized">
+    /// The normalized value to validate.
+    /// </param>
+    /// <param name="type">
+    /// The type of value to validate, such as latitude or longitude.
+    /// </param>
+    /// <returns>
+    /// <see langword="true"/> if the <paramref name="normalized"/> is within the valid range for the specified <paramref
+    /// name="type"/>; otherwise, <see langword="false"/>.
+    /// </returns>
+    private static bool ValidateValue(int normalized, CoordinateValueType type) => type switch {
+        CoordinateValueType.Latitude => normalized >= Defaults.Coordinate.Latitude.Normalized.Min &&
+                                         normalized <= Defaults.Coordinate.Latitude.Normalized.Max,
+        CoordinateValueType.Longitude => normalized >= Defaults.Coordinate.Longitude.Normalized.Min &&
+                                         normalized <= Defaults.Coordinate.Longitude.Normalized.Max,
+        _ => false,
+    };
+
+    /// <summary>
     /// Validates whether the specified denormalized value falls within the acceptable range for the given value type.
     /// </summary>
-    /// <param name="value">
+    /// <param name="denormalized">
     /// The denormalized value to validate.
     /// </param>
     /// <param name="type">
     /// The type of value to validate, such as latitude or longitude.
     /// </param>
     /// <returns>
-    /// <see langword="true"/> if the <paramref name="value"/> is within the valid range for the specified <paramref
+    /// <see langword="true"/> if the <paramref name="denormalized"/> is within the valid range for the specified <paramref
     /// name="type"/>; otherwise, <see langword="false"/>.
     /// </returns>
-    private static bool ValidateValue<T>(T value, CoordinateValueType type) => (type, value) switch {
-        (CoordinateValueType.Latitude, int normalized) when normalized >= Defaults.Coordinate.Latitude.Normalized.Min && normalized <= Defaults.Coordinate.Latitude.Normalized.Max => true,
-        (CoordinateValueType.Longitude, int normalized) when normalized >= Defaults.Coordinate.Longitude.Normalized.Min && normalized <= Defaults.Coordinate.Longitude.Normalized.Max => true,
-        (CoordinateValueType.Latitude, double denormalized) when denormalized >= Defaults.Coordinate.Latitude.Min && denormalized <= Defaults.Coordinate.Latitude.Max => true,
-        (CoordinateValueType.Longitude, double denormalized) when denormalized >= Defaults.Coordinate.Longitude.Min && denormalized <= Defaults.Coordinate.Longitude.Max => true,
+    private static bool ValidateValue(double denormalized, CoordinateValueType type) => type switch {
+        CoordinateValueType.Latitude => denormalized >= Defaults.Coordinate.Latitude.Min &&
+                                         denormalized <= Defaults.Coordinate.Latitude.Max,
+        CoordinateValueType.Longitude => denormalized >= Defaults.Coordinate.Longitude.Min &&
+                                         denormalized <= Defaults.Coordinate.Longitude.Max,
         _ => false,
     };
+
 }
