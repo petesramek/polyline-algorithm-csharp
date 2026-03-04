@@ -7,6 +7,7 @@ namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
+using Microsoft.VSDiagnostics;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Extensions;
 using PolylineAlgorithm.Utility;
@@ -19,9 +20,6 @@ public class PolylineDecoderBenchmark {
 
     [Params(1, 100, 1_000)]
     public int Count;
-
-    [Params(100)]
-    public int Iterations;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     /// <summary>
@@ -67,11 +65,9 @@ public class PolylineDecoderBenchmark {
     /// </summary>
     [Benchmark]
     public void PolylineDecoder_Decode_Polyline() {
-        for (int i = 0; i < Iterations; i++) {
-            Decoder
-                .Decode(Polyline)
-                .Consume(_consumer);
-        }
+        Decoder
+            .Decode(Polyline)
+            .Consume(_consumer);
     }
 
     /// <summary>
@@ -79,11 +75,9 @@ public class PolylineDecoderBenchmark {
     /// </summary>
     [Benchmark]
     public void PolylineDecoder_Decode_String() {
-        for (int i = 0; i < Iterations; i++) {
-            Decoder
-                .Decode(String)
-                .Consume(_consumer);
-        }
+        Decoder
+            .Decode(String)
+            .Consume(_consumer);
     }
 
     /// <summary>
@@ -91,11 +85,9 @@ public class PolylineDecoderBenchmark {
     /// </summary>
     [Benchmark]
     public void PolylineDecoder_Decode_CharArray() {
-        for (int i = 0; i < Iterations; i++) {
-            Decoder
-                .Decode(CharArray)
-                .Consume(_consumer);
-        }
+        Decoder
+            .Decode(CharArray)
+            .Consume(_consumer);
     }
 
     /// <summary>
@@ -103,10 +95,8 @@ public class PolylineDecoderBenchmark {
     /// </summary>
     [Benchmark]
     public void PolylineDecoder_Decode_Memory() {
-        for (int i = 0; i < Iterations; i++) {
-            Decoder
-                .Decode(Memory)
-                .Consume(_consumer);
-        }
+        Decoder
+            .Decode(Memory)
+            .Consume(_consumer);
     }
 }

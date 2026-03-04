@@ -31,6 +31,7 @@ public static class PolylineEncoderExtensions {
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="encoder"/> is <see langword="null"/>.
     /// </exception>
+#pragma warning disable CA1002 // Do not expose generic lists
     public static TPolyline Encode<TCoordinate, TPolyline>(this IPolylineEncoder<TCoordinate, TPolyline> encoder, List<TCoordinate> coordinates) {
         if (encoder is null) {
             throw new ArgumentNullException(nameof(encoder));
@@ -50,6 +51,7 @@ public static class PolylineEncoderExtensions {
 
         return encoder.Encode(span);
     }
+#pragma warning restore CA1002 // Do not expose generic lists
 
 
     /// <summary>
@@ -77,31 +79,6 @@ public static class PolylineEncoderExtensions {
         }
 
         var span = coordinates.AsSpan();
-
-        return encoder.Encode(span);
-    }
-
-    /// <summary>
-    /// Encodes an array of <see cref="Coordinate"/> instances into an encoded polyline.
-    /// </summary>
-    /// <param name="encoder">
-    /// The <see cref="IPolylineEncoder{TCoordinate, TPolyline}"/> instance used to perform the encoding operation.
-    /// </param>
-    /// <param name="coordinates">
-    /// The array of <see cref="Coordinate"/> objects to encode.
-    /// </param>
-    /// <returns>
-    /// A <see cref="Polyline"/> representing the encoded polyline string for the provided coordinates.
-    /// </returns>
-    /// <exception cref="ArgumentNullException">
-    /// Thrown when <paramref name="encoder"/> is <see langword="null"/>.
-    /// </exception>
-    public static TPolyline Encode<TCoordinate, TPolyline>(this IPolylineEncoder<TCoordinate, TPolyline> encoder, IEnumerable<TCoordinate> coordinates) {
-        if (encoder is null) {
-            throw new ArgumentNullException(nameof(encoder));
-        }
-
-        var span = coordinates.ToArray().AsSpan();
 
         return encoder.Encode(span);
     }

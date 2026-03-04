@@ -11,6 +11,7 @@ using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Internal.Logging;
 using PolylineAlgorithm.Properties;
 using System;
+using System.Runtime.CompilerServices;
 
 /// <summary>
 /// Decodes encoded polyline strings into sequences of geographic coordinates.
@@ -104,7 +105,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
         logger
             .LogOperationFinishedInfo(nameof(Decode));
 
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static void ValidateNullPolyline(TPolyline polyline, ILogger logger) {
             if (polyline is null) {
                 logger
@@ -114,6 +115,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static void ValidateEmptySequence(ILogger logger, ReadOnlyMemory<char> sequence) {
             if (sequence.Length < Defaults.Polyline.Block.Length.Min) {
                 logger
@@ -135,6 +137,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     /// <returns>
     /// A <see cref="ReadOnlyMemory{T}"/> representing the encoded polyline data.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected abstract ReadOnlyMemory<char> GetReadOnlyMemory(TPolyline polyline);
 
     /// <summary>
@@ -149,5 +152,6 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     /// <returns>
     /// A coordinate instance of type <typeparamref name="TCoordinate"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected abstract TCoordinate CreateCoordinate(double latitude, double longitude);
 }

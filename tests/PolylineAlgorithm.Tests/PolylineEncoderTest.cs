@@ -26,7 +26,7 @@ public class PolylineEncoderTest {
     [TestMethod]
     public void Encode_NullInput_ThrowsException() {
         // Arrange
-        IEnumerable<Coordinate> @null = null!;
+        List<Coordinate> @null = null!;
 
         // Act
         void EncodeNullCoordinates() {
@@ -43,7 +43,7 @@ public class PolylineEncoderTest {
     [TestMethod]
     public void Encode_EmptyInput_ThrowsException() {
         // Arrange
-        IEnumerable<Coordinate> empty = [];
+        List<Coordinate> empty = [];
 
         // Act
         void EncodeEmptyCoordinates() => Encoder.Encode(empty);
@@ -60,7 +60,7 @@ public class PolylineEncoderTest {
     [DynamicData(nameof(CoordinateCount))]
     public void Encode_RandomValue_ValidInput_Ok(int count) {
         // Arrange
-        IEnumerable<Coordinate> valid = RandomValueProvider.GetCoordinates(count).Select(c => new Coordinate(c.Latitude, c.Longitude));
+        List<Coordinate> valid = [.. RandomValueProvider.GetCoordinates(count).Select(c => new Coordinate(c.Latitude, c.Longitude))];
         Polyline expected = Polyline.FromString(RandomValueProvider.GetPolyline(count));
 
         // Act
@@ -79,7 +79,7 @@ public class PolylineEncoderTest {
     [TestMethod]
     public void Encode_StaticValue_ValidInput_Ok() {
         // Arrange
-        IEnumerable<Coordinate> valid = StaticValueProvider.Valid.GetCoordinates().Select(c => new Coordinate(c.Latitude, c.Longitude));
+        List<Coordinate> valid = [.. StaticValueProvider.Valid.GetCoordinates().Select(c => new Coordinate(c.Latitude, c.Longitude))];
         Polyline expected = Polyline.FromString(StaticValueProvider.Valid.GetPolyline());
 
         // Act
