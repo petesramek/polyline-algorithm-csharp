@@ -3,7 +3,7 @@ title: Class PolylineEncoding
 body:
 - api1: Class PolylineEncoding
   id: PolylineAlgorithm_PolylineEncoding
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L19
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L20
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding
     commentId: T:PolylineAlgorithm.PolylineEncoding
@@ -50,7 +50,7 @@ body:
 - h2: Methods
 - api3: Denormalize(int, CoordinateValueType)
   id: PolylineAlgorithm_PolylineEncoding_Denormalize_System_Int32_PolylineAlgorithm_CoordinateValueType_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L91
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L92
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.Denormalize(System.Int32,PolylineAlgorithm.CoordinateValueType)
     commentId: M:PolylineAlgorithm.PolylineEncoding.Denormalize(System.Int32,PolylineAlgorithm.CoordinateValueType)
@@ -86,7 +86,7 @@ body:
     description: Thrown when <code class="paramref">value</code> is outside the valid range for the specified <code class="paramref">type</code>.
 - api3: GetCharCount(int)
   id: PolylineAlgorithm_PolylineEncoding_GetCharCount_System_Int32_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L222
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L228
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.GetCharCount(System.Int32)
     commentId: M:PolylineAlgorithm.PolylineEncoding.GetCharCount(System.Int32)
@@ -123,7 +123,7 @@ body:
     using a switch expression.
 - api3: Normalize(double, CoordinateValueType)
   id: PolylineAlgorithm_PolylineEncoding_Normalize_System_Double_PolylineAlgorithm_CoordinateValueType_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L180
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L184
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.Normalize(System.Double,PolylineAlgorithm.CoordinateValueType)
     commentId: M:PolylineAlgorithm.PolylineEncoding.Normalize(System.Double,PolylineAlgorithm.CoordinateValueType)
@@ -165,7 +165,7 @@ body:
       <code class="paramref">type</code>.
 - api3: TryReadValue(ref int, ref ReadOnlyMemory<char>, ref int)
   id: PolylineAlgorithm_PolylineEncoding_TryReadValue_System_Int32__System_ReadOnlyMemory_System_Char___System_Int32__
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L40
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L41
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.TryReadValue(System.Int32@,System.ReadOnlyMemory{System.Char}@,System.Int32@)
     commentId: M:PolylineAlgorithm.PolylineEncoding.TryReadValue(System.Int32@,System.ReadOnlyMemory{System.Char}@,System.Int32@)
@@ -203,14 +203,14 @@ body:
     This method processes the buffer starting at the specified position and attempts to decode a value.
         The decoded value is used to update the <code class="paramref">variance</code> parameter. The method stops reading when a
         termination condition is met or the end of the buffer is reached.
-- api3: TryWriteValue(int, ref Span<char>, ref int)
-  id: PolylineAlgorithm_PolylineEncoding_TryWriteValue_System_Int32_System_Span_System_Char___System_Int32__
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L133
+- api3: TryWriteValue(int, Span<char>, ref int)
+  id: PolylineAlgorithm_PolylineEncoding_TryWriteValue_System_Int32_System_Span_System_Char__System_Int32__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L134
   metadata:
-    uid: PolylineAlgorithm.PolylineEncoding.TryWriteValue(System.Int32,System.Span{System.Char}@,System.Int32@)
-    commentId: M:PolylineAlgorithm.PolylineEncoding.TryWriteValue(System.Int32,System.Span{System.Char}@,System.Int32@)
+    uid: PolylineAlgorithm.PolylineEncoding.TryWriteValue(System.Int32,System.Span{System.Char},System.Int32@)
+    commentId: M:PolylineAlgorithm.PolylineEncoding.TryWriteValue(System.Int32,System.Span{System.Char},System.Int32@)
 - markdown: Attempts to write a value derived from the specified <code class="paramref">variance</code> into the provided <code class="paramref">buffer</code> at the given <code class="paramref">position</code>.
-- code: public static bool TryWriteValue(int variance, ref Span<char> buffer, ref int position)
+- code: public static bool TryWriteValue(int variance, Span<char> buffer, ref int position)
 - h4: Parameters
 - parameters:
   - name: variance

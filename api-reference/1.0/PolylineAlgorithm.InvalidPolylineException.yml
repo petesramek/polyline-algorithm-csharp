@@ -3,7 +3,7 @@ title: Class InvalidPolylineException
 body:
 - api1: Class InvalidPolylineException
   id: PolylineAlgorithm_InvalidPolylineException
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/InvalidPolylineException.cs#L19
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/InvalidPolylineException.cs#L19
   metadata:
     uid: PolylineAlgorithm.InvalidPolylineException
     commentId: T:PolylineAlgorithm.InvalidPolylineException
@@ -15,7 +15,10 @@ body:
   - name: Assembly
     value: PolylineAlgorithm.dll
 - markdown: Exception thrown when a polyline is determined to be malformed or invalid during processing.
-- code: 'public sealed class InvalidPolylineException : Exception, ISerializable'
+- code: >-
+    [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Internal use only.")]
+
+    public sealed class InvalidPolylineException : Exception, ISerializable
 - h4: Inheritance
 - inheritance:
   - text: object

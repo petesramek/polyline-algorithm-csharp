@@ -3,7 +3,7 @@ title: Interface IPolylineEncoder<TCoordinate, TPolyline>
 body:
 - api1: Interface IPolylineEncoder<TCoordinate, TPolyline>
   id: PolylineAlgorithm_Abstraction_IPolylineEncoder_2
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/IPolylineEncoder.cs#L13
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/IPolylineEncoder.cs#L10
   metadata:
     uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2
     commentId: T:PolylineAlgorithm.Abstraction.IPolylineEncoder`2
@@ -20,21 +20,29 @@ body:
 - parameters:
   - name: TCoordinate
   - name: TPolyline
+- h4: Extension Methods
+- list:
+  - text: PolylineEncoderExtensions.Encode<TCoordinate, TPolyline>(IPolylineEncoder<TCoordinate, TPolyline>, List<TCoordinate>)
+    url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1__System_Collections_Generic_List___0__
+  - text: PolylineEncoderExtensions.Encode<TCoordinate, TPolyline>(IPolylineEncoder<TCoordinate, TPolyline>, TCoordinate[])
+    url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1____0___
+  - text: PolylineEncoderExtensions.Encode<TCoordinate, TPolyline>(IPolylineEncoder<TCoordinate, TPolyline>, IEnumerable<TCoordinate>)
+    url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1__System_Collections_Generic_IEnumerable___0__
 - h2: Methods
-- api3: Encode(IEnumerable<TCoordinate>)
-  id: PolylineAlgorithm_Abstraction_IPolylineEncoder_2_Encode_System_Collections_Generic_IEnumerable__0__
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/IPolylineEncoder.cs#L23
+- api3: Encode(ReadOnlySpan<TCoordinate>)
+  id: PolylineAlgorithm_Abstraction_IPolylineEncoder_2_Encode_System_ReadOnlySpan__0__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/IPolylineEncoder.cs#L20
   metadata:
-    uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2.Encode(System.Collections.Generic.IEnumerable{`0})
-    commentId: M:PolylineAlgorithm.Abstraction.IPolylineEncoder`2.Encode(System.Collections.Generic.IEnumerable{`0})
+    uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2.Encode(System.ReadOnlySpan{`0})
+    commentId: M:PolylineAlgorithm.Abstraction.IPolylineEncoder`2.Encode(System.ReadOnlySpan{`0})
 - markdown: Encodes a sequence of geographic coordinates into an encoded polyline representation.
-- code: TPolyline Encode(IEnumerable<TCoordinate> coordinates)
+- code: TPolyline Encode(ReadOnlySpan<TCoordinate> coordinates)
 - h4: Parameters
 - parameters:
   - name: coordinates
     type:
-    - text: IEnumerable
-      url: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+    - text: ReadOnlySpan
+      url: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
     - <
     - TCoordinate
     - '>'

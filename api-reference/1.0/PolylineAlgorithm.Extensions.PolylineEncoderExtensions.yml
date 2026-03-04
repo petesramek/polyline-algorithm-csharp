@@ -3,7 +3,7 @@ title: Class PolylineEncoderExtensions
 body:
 - api1: Class PolylineEncoderExtensions
   id: PolylineAlgorithm_Extensions_PolylineEncoderExtensions
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L16
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L18
   metadata:
     uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions
     commentId: T:PolylineAlgorithm.Extensions.PolylineEncoderExtensions
@@ -39,14 +39,14 @@ body:
   - text: object.ToString()
     url: https://learn.microsoft.com/dotnet/api/system.object.tostring
 - h2: Methods
-- api3: Encode(IPolylineEncoder<Coordinate, Polyline>, ICollection<Coordinate>)
-  id: PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode_PolylineAlgorithm_Abstraction_IPolylineEncoder_PolylineAlgorithm_Coordinate_PolylineAlgorithm_Polyline__System_Collections_Generic_ICollection_PolylineAlgorithm_Coordinate__
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L32
+- api3: Encode<TCoordinate, TPolyline>(IPolylineEncoder<TCoordinate, TPolyline>, List<TCoordinate>)
+  id: PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1__System_Collections_Generic_List___0__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L34
   metadata:
-    uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode(PolylineAlgorithm.Abstraction.IPolylineEncoder{PolylineAlgorithm.Coordinate,PolylineAlgorithm.Polyline},System.Collections.Generic.ICollection{PolylineAlgorithm.Coordinate})
-    commentId: M:PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode(PolylineAlgorithm.Abstraction.IPolylineEncoder{PolylineAlgorithm.Coordinate,PolylineAlgorithm.Polyline},System.Collections.Generic.ICollection{PolylineAlgorithm.Coordinate})
-- markdown: Encodes a collection of <xref href="PolylineAlgorithm.Coordinate" data-throw-if-not-resolved="false"></xref> instances into an encoded polyline.
-- code: public static Polyline Encode(this IPolylineEncoder<Coordinate, Polyline> encoder, ICollection<Coordinate> coordinates)
+    uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},System.Collections.Generic.List{``0})
+    commentId: M:PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},System.Collections.Generic.List{``0})
+- markdown: Encodes a collection of <xref href="PolylineAlgorithm.Internal.Defaults.Coordinate" data-throw-if-not-resolved="false"></xref> instances into an encoded polyline.
+- code: public static TPolyline Encode<TCoordinate, TPolyline>(this IPolylineEncoder<TCoordinate, TPolyline> encoder, List<TCoordinate> coordinates)
 - h4: Parameters
 - parameters:
   - name: encoder
@@ -54,43 +54,43 @@ body:
     - text: IPolylineEncoder
       url: PolylineAlgorithm.Abstraction.IPolylineEncoder-2.html
     - <
-    - text: Coordinate
-      url: PolylineAlgorithm.Coordinate.html
+    - TCoordinate
     - ','
     - " "
-    - text: Polyline
-      url: PolylineAlgorithm.Polyline.html
+    - TPolyline
     - '>'
     description: The <xref href="PolylineAlgorithm.Abstraction.IPolylineEncoder%602" data-throw-if-not-resolved="false"></xref> instance used to perform the encoding operation.
   - name: coordinates
     type:
-    - text: ICollection
-      url: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+    - text: List
+      url: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
     - <
-    - text: Coordinate
-      url: PolylineAlgorithm.Coordinate.html
+    - TCoordinate
     - '>'
-    description: The sequence of <xref href="PolylineAlgorithm.Coordinate" data-throw-if-not-resolved="false"></xref> objects to encode.
+    description: The sequence of <xref href="PolylineAlgorithm.Internal.Defaults.Coordinate" data-throw-if-not-resolved="false"></xref> objects to encode.
 - h4: Returns
 - parameters:
   - type:
-    - text: Polyline
-      url: PolylineAlgorithm.Polyline.html
-    description: A <xref href="PolylineAlgorithm.Polyline" data-throw-if-not-resolved="false"></xref> representing the encoded polyline string for the provided coordinates.
+    - TPolyline
+    description: A <xref href="PolylineAlgorithm.Internal.Defaults.Polyline" data-throw-if-not-resolved="false"></xref> representing the encoded polyline string for the provided coordinates.
+- h4: Type Parameters
+- parameters:
+  - name: TCoordinate
+  - name: TPolyline
 - h4: Exceptions
 - parameters:
   - type:
     - text: ArgumentNullException
       url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
     description: Thrown when <code class="paramref">encoder</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
-- api3: Encode(IPolylineEncoder<Coordinate, Polyline>, Coordinate[])
-  id: PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode_PolylineAlgorithm_Abstraction_IPolylineEncoder_PolylineAlgorithm_Coordinate_PolylineAlgorithm_Polyline__PolylineAlgorithm_Coordinate___
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L55
+- api3: Encode<TCoordinate, TPolyline>(IPolylineEncoder<TCoordinate, TPolyline>, TCoordinate[])
+  id: PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1____0___
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L70
   metadata:
-    uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode(PolylineAlgorithm.Abstraction.IPolylineEncoder{PolylineAlgorithm.Coordinate,PolylineAlgorithm.Polyline},PolylineAlgorithm.Coordinate[])
-    commentId: M:PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode(PolylineAlgorithm.Abstraction.IPolylineEncoder{PolylineAlgorithm.Coordinate,PolylineAlgorithm.Polyline},PolylineAlgorithm.Coordinate[])
-- markdown: Encodes an array of <xref href="PolylineAlgorithm.Coordinate" data-throw-if-not-resolved="false"></xref> instances into an encoded polyline.
-- code: public static Polyline Encode(this IPolylineEncoder<Coordinate, Polyline> encoder, Coordinate[] coordinates)
+    uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},``0[])
+    commentId: M:PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},``0[])
+- markdown: Encodes an array of <xref href="PolylineAlgorithm.Internal.Defaults.Coordinate" data-throw-if-not-resolved="false"></xref> instances into an encoded polyline.
+- code: public static TPolyline Encode<TCoordinate, TPolyline>(this IPolylineEncoder<TCoordinate, TPolyline> encoder, TCoordinate[] coordinates)
 - h4: Parameters
 - parameters:
   - name: encoder
@@ -98,27 +98,71 @@ body:
     - text: IPolylineEncoder
       url: PolylineAlgorithm.Abstraction.IPolylineEncoder-2.html
     - <
-    - text: Coordinate
-      url: PolylineAlgorithm.Coordinate.html
+    - TCoordinate
     - ','
     - " "
-    - text: Polyline
-      url: PolylineAlgorithm.Polyline.html
+    - TPolyline
     - '>'
     description: The <xref href="PolylineAlgorithm.Abstraction.IPolylineEncoder%602" data-throw-if-not-resolved="false"></xref> instance used to perform the encoding operation.
   - name: coordinates
     type:
-    - text: Coordinate
-      url: PolylineAlgorithm.Coordinate.html
+    - TCoordinate
     - '['
     - ']'
-    description: The array of <xref href="PolylineAlgorithm.Coordinate" data-throw-if-not-resolved="false"></xref> objects to encode.
+    description: The array of <xref href="PolylineAlgorithm.Internal.Defaults.Coordinate" data-throw-if-not-resolved="false"></xref> objects to encode.
 - h4: Returns
 - parameters:
   - type:
-    - text: Polyline
-      url: PolylineAlgorithm.Polyline.html
-    description: A <xref href="PolylineAlgorithm.Polyline" data-throw-if-not-resolved="false"></xref> representing the encoded polyline string for the provided coordinates.
+    - TPolyline
+    description: A <xref href="PolylineAlgorithm.Internal.Defaults.Polyline" data-throw-if-not-resolved="false"></xref> representing the encoded polyline string for the provided coordinates.
+- h4: Type Parameters
+- parameters:
+  - name: TCoordinate
+  - name: TPolyline
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentNullException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+    description: Thrown when <code class="paramref">encoder</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+- api3: Encode<TCoordinate, TPolyline>(IPolylineEncoder<TCoordinate, TPolyline>, IEnumerable<TCoordinate>)
+  id: PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1__System_Collections_Generic_IEnumerable___0__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L99
+  metadata:
+    uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},System.Collections.Generic.IEnumerable{``0})
+    commentId: M:PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},System.Collections.Generic.IEnumerable{``0})
+- markdown: Encodes an array of <xref href="PolylineAlgorithm.Internal.Defaults.Coordinate" data-throw-if-not-resolved="false"></xref> instances into an encoded polyline.
+- code: public static TPolyline Encode<TCoordinate, TPolyline>(this IPolylineEncoder<TCoordinate, TPolyline> encoder, IEnumerable<TCoordinate> coordinates)
+- h4: Parameters
+- parameters:
+  - name: encoder
+    type:
+    - text: IPolylineEncoder
+      url: PolylineAlgorithm.Abstraction.IPolylineEncoder-2.html
+    - <
+    - TCoordinate
+    - ','
+    - " "
+    - TPolyline
+    - '>'
+    description: The <xref href="PolylineAlgorithm.Abstraction.IPolylineEncoder%602" data-throw-if-not-resolved="false"></xref> instance used to perform the encoding operation.
+  - name: coordinates
+    type:
+    - text: IEnumerable
+      url: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+    - <
+    - TCoordinate
+    - '>'
+    description: The array of <xref href="PolylineAlgorithm.Internal.Defaults.Coordinate" data-throw-if-not-resolved="false"></xref> objects to encode.
+- h4: Returns
+- parameters:
+  - type:
+    - TPolyline
+    description: A <xref href="PolylineAlgorithm.Internal.Defaults.Polyline" data-throw-if-not-resolved="false"></xref> representing the encoded polyline string for the provided coordinates.
+- h4: Type Parameters
+- parameters:
+  - name: TCoordinate
+  - name: TPolyline
 - h4: Exceptions
 - parameters:
   - type:

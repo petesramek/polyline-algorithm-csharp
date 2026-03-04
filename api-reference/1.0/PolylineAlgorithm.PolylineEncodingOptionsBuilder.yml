@@ -3,7 +3,7 @@ title: Class PolylineEncodingOptionsBuilder
 body:
 - api1: Class PolylineEncodingOptionsBuilder
   id: PolylineAlgorithm_PolylineEncodingOptionsBuilder
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L15
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L15
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder
     commentId: T:PolylineAlgorithm.PolylineEncodingOptionsBuilder
@@ -41,7 +41,7 @@ body:
 - h2: Methods
 - api3: Build()
   id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_Build
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L37
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L37
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.Build
     commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.Build
@@ -55,7 +55,7 @@ body:
     description: A configured <xref href="PolylineAlgorithm.PolylineEncodingOptions" data-throw-if-not-resolved="false"></xref> instance.
 - api3: Create()
   id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_Create
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L27
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L27
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.Create
     commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.Create
@@ -69,7 +69,7 @@ body:
     description: An <xref href="PolylineAlgorithm.PolylineEncodingOptionsBuilder" data-throw-if-not-resolved="false"></xref> instance for configuring polyline encoding options.
 - api3: WithLoggerFactory(ILoggerFactory)
   id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_WithLoggerFactory_Microsoft_Extensions_Logging_ILoggerFactory_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L72
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L72
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithLoggerFactory(Microsoft.Extensions.Logging.ILoggerFactory)
     commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithLoggerFactory(Microsoft.Extensions.Logging.ILoggerFactory)
@@ -96,7 +96,7 @@ body:
     description: Thrown when <code class="paramref">loggerFactory</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 - api3: WithMaxBufferSize(int)
   id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_WithMaxBufferSize_System_Int32_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L54
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L54
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithMaxBufferSize(System.Int32)
     commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithMaxBufferSize(System.Int32)
