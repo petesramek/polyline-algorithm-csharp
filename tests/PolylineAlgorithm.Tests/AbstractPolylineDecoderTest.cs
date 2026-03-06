@@ -169,7 +169,7 @@ public class AbstractPolylineDecoderTest {
             return (latitude, longitude);
         }
 
-        protected override ReadOnlyMemory<char> GetReadOnlyMemory(string? polyline) {
+        protected override ReadOnlyMemory<char> GetReadOnlyMemory(ref string polyline) {
             return polyline.AsMemory();
         }
     }

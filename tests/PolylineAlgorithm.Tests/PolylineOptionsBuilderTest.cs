@@ -25,7 +25,7 @@ public class PolylineOptionsBuilderTest {
     public void Build_Returns_Instance_With_Default_Values() {
         // Arrange
         var builder = PolylineEncodingOptionsBuilder.Create();
-        var bufferSize = 64_000;
+        var stackAllocLimit = 512;
         var loggerFactory = NullLoggerFactory.Instance;
 
         // Act
@@ -34,41 +34,39 @@ public class PolylineOptionsBuilderTest {
 
         // Assert
         Assert.IsNotNull(options);
-        Assert.AreEqual(bufferSize, options.MaxBufferSize);
-        Assert.AreEqual(bufferSize / sizeof(char), options.MaxBufferLength);
+        Assert.AreEqual(stackAllocLimit, options.StackAllocLimit);
         Assert.AreEqual(loggerFactory, options.LoggerFactory);
     }
 
     [TestMethod]
-    public void WithBufferSize_Small_BufferSize_Parameter_Returns_Throws_ArgumentOutOfRangeException() {
+    public void WithStackAllocLimit_Small_StackAllocLimit_Parameter_Returns_Throws_ArgumentOutOfRangeException() {
         // Arrange
         static void WithSmallBufferSize() => PolylineEncodingOptionsBuilder.Create()
-            .WithMaxBufferSize(11);
+            .WithStackAllocLimit(0);
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(WithSmallBufferSize);
 
         // Assert
         Assert.IsNotNull(exception);
-        Assert.AreEqual("bufferSize", exception.ParamName);
-        Assert.Contains("Buffer size must be greater than 11.", exception.Message);
+        Assert.AreEqual("stackAllocLimit", exception.ParamName);
+        Assert.Contains("Stack alloc limit must be equal or greater than 1.", exception.Message);
     }
 
     [TestMethod]
-    public void Build_Returns_Instance_With_Expected_Buffer_Size() {
+    public void Build_Returns_Instance_With_Expected_StackAllocLimit() {
         // Arrange
         var builder = PolylineEncodingOptionsBuilder.Create();
-        var expected = 32_000;
+        var expected = 256;
 
         // Act
         var options = builder
-            .WithMaxBufferSize(expected)
+            .WithStackAllocLimit(expected)
             .Build();
 
         // Assert
         Assert.IsNotNull(options);
-        Assert.AreEqual(expected, options.MaxBufferSize);
-        Assert.AreEqual(expected / sizeof(char), options.MaxBufferLength);
+        Assert.AreEqual(expected, options.StackAllocLimit);
     }
 
     [TestMethod]

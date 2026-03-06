@@ -54,7 +54,7 @@ public class PolylineTest {
 
         // Assert
         Assert.IsNotNull(exception);
-        Assert.AreEqual(nameof(value), exception.ParamName);
+        Assert.AreEqual("polyline", exception.ParamName);
     }
 
     /// <summary>
@@ -92,7 +92,7 @@ public class PolylineTest {
 
         // Assert
         Assert.IsNotNull(exception);
-        Assert.AreEqual(nameof(value), exception.ParamName);
+        Assert.AreEqual("polyline", exception.ParamName);
     }
 
     /// <summary>

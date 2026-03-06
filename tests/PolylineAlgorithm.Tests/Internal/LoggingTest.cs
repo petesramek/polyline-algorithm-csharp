@@ -31,7 +31,7 @@ public class LoggingTest {
 
         // Assert
         Assert.AreEqual(new EventId(101, nameof(LogDebugExtensions.LogOperationStartedDebug)), _loggerProvider.Collector.LatestRecord.Id);
-        Assert.AreEqual(LogLevel.Information, _loggerProvider.Collector.LatestRecord.Level);
+        Assert.AreEqual(LogLevel.Debug, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual(
             $"Operation {value ?? "(null)"} has started.",
             _loggerProvider.Collector.LatestRecord.Message);
@@ -53,7 +53,7 @@ public class LoggingTest {
 
         // Assert
         Assert.AreEqual(new EventId(102, nameof(LogDebugExtensions.LogOperationFailedDebug)), _loggerProvider.Collector.LatestRecord.Id);
-        Assert.AreEqual(LogLevel.Information, _loggerProvider.Collector.LatestRecord.Level);
+        Assert.AreEqual(LogLevel.Debug, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual(
             $"Operation {value ?? "(null)"} has failed.",
             _loggerProvider.Collector.LatestRecord.Message);
@@ -75,7 +75,7 @@ public class LoggingTest {
 
         // Assert
         Assert.AreEqual(new EventId(103, nameof(LogDebugExtensions.LogOperationFinishedDebug)), _loggerProvider.Collector.LatestRecord.Id);
-        Assert.AreEqual(LogLevel.Information, _loggerProvider.Collector.LatestRecord.Level);
+        Assert.AreEqual(LogLevel.Debug, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual(
             $"Operation {value ?? "(null)"} has finished.",
             _loggerProvider.Collector.LatestRecord.Message);

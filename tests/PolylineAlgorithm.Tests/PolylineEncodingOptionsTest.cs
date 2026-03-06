@@ -17,26 +17,24 @@ public class PolylineEncodingOptionsTest {
         var options = new PolylineEncodingOptions();
 
         // Assert
-        Assert.AreEqual(64_000, options.MaxBufferSize);
-        Assert.AreEqual(64_000 / sizeof(char), options.MaxBufferLength);
+        Assert.AreEqual(512, options.StackAllocLimit);
         Assert.IsInstanceOfType<NullLoggerFactory>(options.LoggerFactory);
     }
 
     [TestMethod]
     public void Constructor_ValidOptions_Ok() {
         // Arrange
-        var bufferSize = 32_000;
+        var stackAllocLimit = 256;
         var loggerFactory = new FakeLoggerFactory(new FakeLoggerProvider());
 
         // Act
         var options = new PolylineEncodingOptions() {
-            MaxBufferSize = bufferSize,
+            StackAllocLimit = stackAllocLimit,
             LoggerFactory = loggerFactory
         };
 
         // Assert
-        Assert.AreEqual(bufferSize, options.MaxBufferSize);
-        Assert.AreEqual(bufferSize / sizeof(char), options.MaxBufferLength);
+        Assert.AreEqual(stackAllocLimit, options.StackAllocLimit);
         Assert.IsInstanceOfType<FakeLoggerFactory>(options.LoggerFactory);
     }
 }

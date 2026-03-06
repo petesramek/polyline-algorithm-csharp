@@ -135,8 +135,8 @@
   <data name="ArgumentCannotBeCoordinateValueTypeMessageFormat" xml:space="preserve">
     <value>Argument cannot be CoordinateValueType.{0}.</value>
   </data>
-  <data name="BufferSizeMustBeGreaterThanMessageFormat" xml:space="preserve">
-    <value>Buffer size must be greater than {0}.</value>
+  <data name="StackAllocLimitMustBeEqualOrGreaterThanMessageFormat" xml:space="preserve">
+    <value>Stack alloc limit must be equal or greater than {0}.</value>
   </data>
   <data name="DestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthMessage" xml:space="preserve">
     <value>Destination array length must be greater than the polyline length.</value>

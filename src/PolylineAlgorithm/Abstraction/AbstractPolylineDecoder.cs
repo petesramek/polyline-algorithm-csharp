@@ -73,11 +73,11 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
         _logger.
             LogOperationStartedDebug(OperationName);
 
-        ValidateNullPolyline(ref polyline, _logger);
+        ValidateNullPolyline(polyline, _logger);
 
-        ReadOnlyMemory<char> sequence = GetReadOnlyMemory(polyline);
+        ReadOnlyMemory<char> sequence = GetReadOnlyMemory(ref polyline);
 
-        ValidateEmptySequence(ref sequence, _logger);
+        ValidateEmptySequence(sequence, _logger);
 
         int position = 0;
         int latitude = 0;
@@ -85,8 +85,8 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
 
         while (position < sequence.Length) {
             // Read the next value from the polyline encoding
-            if (!PolylineEncoding.TryReadValue(ref latitude, ref sequence, ref position)
-                || !PolylineEncoding.TryReadValue(ref longitude, ref sequence, ref position)
+            if (!PolylineEncoding.TryReadValue(ref latitude, sequence, ref position)
+                || !PolylineEncoding.TryReadValue(ref longitude, sequence, ref position)
             ) {
                 _logger.
                     LogOperationFailedDebug(OperationName);
@@ -103,7 +103,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
             .LogOperationFinishedDebug(OperationName);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static void ValidateNullPolyline(ref TPolyline polyline, ILogger logger) {
+        static void ValidateNullPolyline(TPolyline polyline, ILogger logger) {
             if (polyline is null) {
                 logger
                     .LogNullArgumentWarning(nameof(polyline));
@@ -113,7 +113,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static void ValidateEmptySequence(ref ReadOnlyMemory<char> polyline, ILogger logger) {
+        static void ValidateEmptySequence(ReadOnlyMemory<char> polyline, ILogger logger) {
             if (polyline.Length < Defaults.Polyline.Block.Length.Min) {
                 logger.
                     LogOperationFailedDebug(OperationName);
@@ -135,7 +135,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     /// A <see cref="ReadOnlyMemory{T}"/> representing the encoded polyline data.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected abstract ReadOnlyMemory<char> GetReadOnlyMemory(TPolyline polyline);
+    protected abstract ReadOnlyMemory<char> GetReadOnlyMemory(ref TPolyline polyline);
 
     /// <summary>
     /// Creates a coordinate instance from the given latitude and longitude values.

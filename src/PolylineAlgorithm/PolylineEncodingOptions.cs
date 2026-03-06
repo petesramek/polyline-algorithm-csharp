@@ -18,27 +18,18 @@ using System.Diagnostics;
 [DebuggerDisplay("MaxBufferSize: {MaxBufferSize}, MaxBufferLength: {MaxBufferLength}, LoggerFactoryType: {LoggerFactory.GetType().Name}")]
 public sealed class PolylineEncodingOptions {
     /// <summary>
-    /// Gets the maximum buffer size for encoding operations.
-    /// </summary>
-    /// <remarks>
-    /// The default maximum buffer size is 64,000 bytes (64 KB). This can be adjusted based on the expected size of the polyline data, but should be enough for common cases.
-    /// </remarks>
-    public int MaxBufferSize { get; internal set; } = 64_000;
-
-    /// <summary>
-    /// Gets or sets the precision for encoding coordinates.
+    /// Gets logger factory.
     /// </summary>
     /// <remarks>
     /// The default logger factory is <see cref="NullLoggerFactory"/>, which does not log any messages.
     /// </remarks>
     public ILoggerFactory LoggerFactory { get; internal set; } = NullLoggerFactory.Instance;
 
-
     /// <summary>
-    /// Gets the maximum length of the encoded polyline string.
+    /// Gets stackalloc limit.
     /// </summary>
     /// <remarks>
-    /// The maximum length is calculated based on the buffer size divided by the size of a character.
+    /// The default stack alloc limit is 512.
     /// </remarks>
-    internal int MaxBufferLength => MaxBufferSize / sizeof(char);
+    public int StackAllocLimit { get; internal set; } = 512;
 }

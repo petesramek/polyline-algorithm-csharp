@@ -28,7 +28,7 @@ public sealed class PolylineEncoder : AbstractPolylineEncoder<Coordinate, Polyli
     }
 
     /// <inheritdoc />
-    protected override Polyline CreatePolyline(ref ReadOnlyMemory<char> polyline) {
+    protected override Polyline CreatePolyline(ReadOnlyMemory<char> polyline) {
         return Polyline.FromMemory(polyline);
     }
 }

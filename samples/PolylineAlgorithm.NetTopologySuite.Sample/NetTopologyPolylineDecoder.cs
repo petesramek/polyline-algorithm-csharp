@@ -41,7 +41,7 @@ public sealed class NetTopologyPolylineDecoder : AbstractPolylineDecoder<string,
     /// <exception cref="ArgumentException">
     /// Thrown when the provided polyline string is null, empty, or consists only of whitespace characters.
     /// </exception>
-    protected override ReadOnlyMemory<char> GetReadOnlyMemory(string polyline) {
+    protected override ReadOnlyMemory<char> GetReadOnlyMemory(ref string polyline) {
         return polyline.AsMemory();
     }
 }

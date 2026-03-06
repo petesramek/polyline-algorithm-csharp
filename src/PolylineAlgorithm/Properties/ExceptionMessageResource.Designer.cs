@@ -97,15 +97,6 @@ namespace PolylineAlgorithm.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Buffer size must be greater than {0}..
-        /// </summary>
-        internal static string BufferSizeMustBeGreaterThanMessageFormat {
-            get {
-                return ResourceManager.GetString("BufferSizeMustBeGreaterThanMessageFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to {0} must be between {1} and {2}..
         /// </summary>
         internal static string CoordinateValueMustBeBetweenValuesMessageFormat {
@@ -147,6 +138,15 @@ namespace PolylineAlgorithm.Properties {
         internal static string PolylineStringIsMalformedMessage {
             get {
                 return ResourceManager.GetString("PolylineStringIsMalformedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stack alloc limit must be equal or greater than {0}..
+        /// </summary>
+        internal static string StackAllocLimitMustBeEqualOrGreaterThanMessageFormat {
+            get {
+                return ResourceManager.GetString("StackAllocLimitMustBeEqualOrGreaterThanMessageFormat", resourceCulture);
             }
         }
     }

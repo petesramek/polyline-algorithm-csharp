@@ -13,7 +13,7 @@ using PolylineAlgorithm.Properties;
 /// Provides a builder for configuring options for polyline encoding operations.
 /// </summary>
 public class PolylineEncodingOptionsBuilder {
-    private int _bufferSize = 64_000;
+    private int _stackAllocLimit = 512;
     private ILoggerFactory _loggerFactory = NullLoggerFactory.Instance;
 
     private PolylineEncodingOptionsBuilder() { }
@@ -36,7 +36,7 @@ public class PolylineEncodingOptionsBuilder {
     /// </returns>
     public PolylineEncodingOptions Build() {
         return new PolylineEncodingOptions {
-            MaxBufferSize = _bufferSize,
+            StackAllocLimit = _stackAllocLimit,
             LoggerFactory = _loggerFactory
         };
     }
@@ -51,8 +51,9 @@ public class PolylineEncodingOptionsBuilder {
     /// The current builder instance.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="bufferSize"/> is less than or equal to 11.</exception>
-    public PolylineEncodingOptionsBuilder WithMaxBufferSize(int bufferSize) {
-        _bufferSize = bufferSize > 11 ? bufferSize : throw new ArgumentOutOfRangeException(nameof(bufferSize), string.Format(ExceptionMessageResource.BufferSizeMustBeGreaterThanMessageFormat, 11));
+    public PolylineEncodingOptionsBuilder WithStackAllocLimit(int stackAllocLimit) {
+        const int minStackAllocLimit = 1;
+        _stackAllocLimit = stackAllocLimit >= minStackAllocLimit ? stackAllocLimit : throw new ArgumentOutOfRangeException(nameof(stackAllocLimit), string.Format(ExceptionMessageResource.StackAllocLimitMustBeEqualOrGreaterThanMessageFormat, minStackAllocLimit));
 
         return this;
     }

@@ -23,7 +23,7 @@ public sealed class PolylineDecoder : AbstractPolylineDecoder<Polyline, Coordina
     }
 
     /// <inheritdoc />
-    protected override ReadOnlyMemory<char> GetReadOnlyMemory(Polyline polyline) {
+    protected override ReadOnlyMemory<char> GetReadOnlyMemory(ref Polyline polyline) {
         return polyline.Value;
     }
 }

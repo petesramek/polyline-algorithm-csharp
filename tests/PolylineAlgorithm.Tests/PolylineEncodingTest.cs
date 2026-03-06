@@ -136,7 +136,7 @@ public class PolylineEncodingTest {
         Span<char> buffer = stackalloc char[6];
 
         // Act
-        bool result = PolylineEncoding.TryWriteValue(variance, ref buffer, ref position);
+        bool result = PolylineEncoding.TryWriteValue(variance, buffer, ref position);
 
         // Assert
         Assert.IsTrue(result);
@@ -154,7 +154,7 @@ public class PolylineEncodingTest {
         Span<char> buffer = stackalloc char[required];
 
         // Act
-        bool result = PolylineEncoding.TryWriteValue(variance, ref buffer, ref position);
+        bool result = PolylineEncoding.TryWriteValue(variance, buffer, ref position);
 
         // Assert
         Assert.IsTrue(result);
@@ -172,7 +172,7 @@ public class PolylineEncodingTest {
         Span<char> buffer = stackalloc char[required - 1];
 
         // Act
-        bool result = PolylineEncoding.TryWriteValue(variance, ref buffer, ref position);
+        bool result = PolylineEncoding.TryWriteValue(variance, buffer, ref position);
 
         // Assert
         Assert.IsFalse(result);
@@ -187,7 +187,7 @@ public class PolylineEncodingTest {
         var buffer = polyline.AsMemory();
 
         // Act
-        bool result = PolylineEncoding.TryReadValue(ref variance, ref buffer, ref position);
+        bool result = PolylineEncoding.TryReadValue(ref variance, buffer, ref position);
 
         // Assert
         Assert.IsTrue(result);
@@ -203,7 +203,7 @@ public class PolylineEncodingTest {
         ReadOnlyMemory<char> buffer = Memory<char>.Empty;
 
         // Act
-        bool result = PolylineEncoding.TryReadValue(ref variance, ref buffer, ref position);
+        bool result = PolylineEncoding.TryReadValue(ref variance, buffer, ref position);
 
         // Assert
         Assert.IsFalse(result);
@@ -220,7 +220,7 @@ public class PolylineEncodingTest {
         ReadOnlyMemory<char> buffer = chars.AsMemory();
 
         // Act
-        bool result = PolylineEncoding.TryReadValue(ref variance, ref buffer, ref position);
+        bool result = PolylineEncoding.TryReadValue(ref variance, buffer, ref position);
 
         // Assert
         Assert.IsFalse(result);

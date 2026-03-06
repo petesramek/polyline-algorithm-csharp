@@ -13,8 +13,7 @@ using System.Runtime.InteropServices;
 /// Represents the difference (variance) in latitude and longitude between consecutive geographic coordinates.
 /// This struct is used to compute and store the change in coordinate values as integer deltas.
 /// </summary>
-[DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
-[StructLayout(LayoutKind.Sequential, Pack = 4, Size = 16)]
+[DebuggerDisplay("{ToString(),nq}")]
 internal struct CoordinateVariance {
     private (int Latitude, int Longitude) _current;
 
@@ -59,15 +58,7 @@ internal struct CoordinateVariance {
     /// <param name="next">The next coordinate value.</param>
     /// <returns>The computed variance between <paramref name="initial"/> and <paramref name="next"/>.</returns>
 
-    private static int Variance(int initial, int next) => (initial, next) switch {
-        (0, 0) => 0,
-        (0, _) => next,
-        (_, 0) => -initial,
-        ( < 0, < 0) => -(Math.Abs(next) - Math.Abs(initial)),
-        ( < 0, > 0) => next + Math.Abs(initial),
-        ( > 0, < 0) => -(Math.Abs(next) + initial),
-        ( > 0, > 0) => next - initial,
-    };
+    private static int Variance(int initial, int next) => next - initial;
 
     /// <summary>
     /// Returns a string representation of the current coordinate variance.
@@ -75,6 +66,8 @@ internal struct CoordinateVariance {
     /// <returns>
     /// A string in the format <c>{ Coordinate:  { Latitude: [int], Longitude: [int] }, Variance: { Latitude: [int], Longitude: [int] } }</c> representing the current coordinate and deltas to previous coordinate.
     /// </returns>
-    public override readonly string ToString()
-        => $"{{ Coordinate:  {{ Latitude: {Latitude}, Longitude: {Longitude} }}, Variance: {{ Latitude: {Latitude}, Longitude: {Longitude} }} }}";
+    public override readonly string ToString() =>
+        $"{{ Coordinate: {{ Latitude: {_current.Latitude}, Longitude: {_current.Longitude} }}, " +
+        $"Variance: {{ Latitude: {Latitude}, Longitude: {Longitude} }} }}";
+
 }

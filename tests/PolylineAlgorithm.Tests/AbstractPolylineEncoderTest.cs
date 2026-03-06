@@ -87,19 +87,6 @@ public class AbstractPolylineEncoderTest {
     }
 
     [TestMethod]
-    public void Encode_Buffer_Too_Small_Throws_InternalBufferOverflowException() {
-        // Arrange
-        PolylineEncoder _encoder = new(new PolylineEncodingOptions { MaxBufferSize = 12 });
-        List<(double Latitude, double Longitude)> coordinates = RandomValueProvider.GetCoordinates(2).ToList();
-
-        // Act
-        var exception = Assert.ThrowsExactly<InternalBufferOverflowException>(() => _encoder.Encode(coordinates));
-
-        // Assert
-        Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
-    }
-
-    [TestMethod]
     [DynamicData(nameof(NotANumberAndInfinityCoordinates))]
     public void Encode_Not_A_Number_And_Infinity_Coordinate_Throws_ArgumentOutOfRangeException((double, double) coordinate) {
         // Arrange
@@ -159,7 +146,7 @@ public class AbstractPolylineEncoderTest {
         public PolylineEncoder(PolylineEncodingOptions options)
             : base(options) { }
 
-        protected override string CreatePolyline(ref ReadOnlyMemory<char> polyline) => polyline.ToString();
+        protected override string CreatePolyline(ReadOnlyMemory<char> polyline) => polyline.ToString();
         protected override double GetLatitude((double Latitude, double Longitude) coordinate) => coordinate.Latitude;
         protected override double GetLongitude((double Latitude, double Longitude) coordinate) => coordinate.Longitude;
     }
