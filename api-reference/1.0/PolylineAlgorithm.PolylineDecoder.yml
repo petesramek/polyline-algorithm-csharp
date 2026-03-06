@@ -116,14 +116,14 @@ body:
     - text: Coordinate
       url: PolylineAlgorithm.Coordinate.html
     description: A coordinate instance of type <xref href="PolylineAlgorithm.Coordinate" data-throw-if-not-resolved="false"></xref>.
-- api3: GetReadOnlyMemory(Polyline)
-  id: PolylineAlgorithm_PolylineDecoder_GetReadOnlyMemory_PolylineAlgorithm_Polyline_
+- api3: GetReadOnlyMemory(ref Polyline)
+  id: PolylineAlgorithm_PolylineDecoder_GetReadOnlyMemory_PolylineAlgorithm_Polyline__
   src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineDecoder.cs#L26
   metadata:
-    uid: PolylineAlgorithm.PolylineDecoder.GetReadOnlyMemory(PolylineAlgorithm.Polyline)
-    commentId: M:PolylineAlgorithm.PolylineDecoder.GetReadOnlyMemory(PolylineAlgorithm.Polyline)
+    uid: PolylineAlgorithm.PolylineDecoder.GetReadOnlyMemory(PolylineAlgorithm.Polyline@)
+    commentId: M:PolylineAlgorithm.PolylineDecoder.GetReadOnlyMemory(PolylineAlgorithm.Polyline@)
 - markdown: Converts the provided polyline instance into a <xref href="System.ReadOnlyMemory%601" data-throw-if-not-resolved="false"></xref> for decoding.
-- code: protected override ReadOnlyMemory<char> GetReadOnlyMemory(Polyline polyline)
+- code: protected override ReadOnlyMemory<char> GetReadOnlyMemory(ref Polyline polyline)
 - h4: Parameters
 - parameters:
   - name: polyline
