@@ -41,7 +41,7 @@ body:
 - h2: Methods
 - api3: Encode<TCoordinate, TPolyline>(IPolylineEncoder<TCoordinate, TPolyline>, List<TCoordinate>)
   id: PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1__System_Collections_Generic_List___0__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L34
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L35
   metadata:
     uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},System.Collections.Generic.List{``0})
     commentId: M:PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},System.Collections.Generic.List{``0})
@@ -85,7 +85,7 @@ body:
     description: Thrown when <code class="paramref">encoder</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 - api3: Encode<TCoordinate, TPolyline>(IPolylineEncoder<TCoordinate, TPolyline>, TCoordinate[])
   id: PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1____0___
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L70
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L72
   metadata:
     uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},``0[])
     commentId: M:PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},``0[])
@@ -109,50 +109,6 @@ body:
     - TCoordinate
     - '['
     - ']'
-    description: The array of <xref href="PolylineAlgorithm.Internal.Defaults.Coordinate" data-throw-if-not-resolved="false"></xref> objects to encode.
-- h4: Returns
-- parameters:
-  - type:
-    - TPolyline
-    description: A <xref href="PolylineAlgorithm.Internal.Defaults.Polyline" data-throw-if-not-resolved="false"></xref> representing the encoded polyline string for the provided coordinates.
-- h4: Type Parameters
-- parameters:
-  - name: TCoordinate
-  - name: TPolyline
-- h4: Exceptions
-- parameters:
-  - type:
-    - text: ArgumentNullException
-      url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
-    description: Thrown when <code class="paramref">encoder</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
-- api3: Encode<TCoordinate, TPolyline>(IPolylineEncoder<TCoordinate, TPolyline>, IEnumerable<TCoordinate>)
-  id: PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1__System_Collections_Generic_IEnumerable___0__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L99
-  metadata:
-    uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},System.Collections.Generic.IEnumerable{``0})
-    commentId: M:PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},System.Collections.Generic.IEnumerable{``0})
-- markdown: Encodes an array of <xref href="PolylineAlgorithm.Internal.Defaults.Coordinate" data-throw-if-not-resolved="false"></xref> instances into an encoded polyline.
-- code: public static TPolyline Encode<TCoordinate, TPolyline>(this IPolylineEncoder<TCoordinate, TPolyline> encoder, IEnumerable<TCoordinate> coordinates)
-- h4: Parameters
-- parameters:
-  - name: encoder
-    type:
-    - text: IPolylineEncoder
-      url: PolylineAlgorithm.Abstraction.IPolylineEncoder-2.html
-    - <
-    - TCoordinate
-    - ','
-    - " "
-    - TPolyline
-    - '>'
-    description: The <xref href="PolylineAlgorithm.Abstraction.IPolylineEncoder%602" data-throw-if-not-resolved="false"></xref> instance used to perform the encoding operation.
-  - name: coordinates
-    type:
-    - text: IEnumerable
-      url: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
-    - <
-    - TCoordinate
-    - '>'
     description: The array of <xref href="PolylineAlgorithm.Internal.Defaults.Coordinate" data-throw-if-not-resolved="false"></xref> objects to encode.
 - h4: Returns
 - parameters:

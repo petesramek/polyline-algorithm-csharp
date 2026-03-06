@@ -203,14 +203,14 @@ body:
     This method processes the buffer starting at the specified position and attempts to decode a value.
         The decoded value is used to update the <code class="paramref">variance</code> parameter. The method stops reading when a
         termination condition is met or the end of the buffer is reached.
-- api3: TryWriteValue(int, Span<char>, ref int)
-  id: PolylineAlgorithm_PolylineEncoding_TryWriteValue_System_Int32_System_Span_System_Char__System_Int32__
+- api3: TryWriteValue(int, ref Span<char>, ref int)
+  id: PolylineAlgorithm_PolylineEncoding_TryWriteValue_System_Int32_System_Span_System_Char___System_Int32__
   src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L134
   metadata:
-    uid: PolylineAlgorithm.PolylineEncoding.TryWriteValue(System.Int32,System.Span{System.Char},System.Int32@)
-    commentId: M:PolylineAlgorithm.PolylineEncoding.TryWriteValue(System.Int32,System.Span{System.Char},System.Int32@)
+    uid: PolylineAlgorithm.PolylineEncoding.TryWriteValue(System.Int32,System.Span{System.Char}@,System.Int32@)
+    commentId: M:PolylineAlgorithm.PolylineEncoding.TryWriteValue(System.Int32,System.Span{System.Char}@,System.Int32@)
 - markdown: Attempts to write a value derived from the specified <code class="paramref">variance</code> into the provided <code class="paramref">buffer</code> at the given <code class="paramref">position</code>.
-- code: public static bool TryWriteValue(int variance, Span<char> buffer, ref int position)
+- code: public static bool TryWriteValue(int variance, ref Span<char> buffer, ref int position)
 - h4: Parameters
 - parameters:
   - name: variance

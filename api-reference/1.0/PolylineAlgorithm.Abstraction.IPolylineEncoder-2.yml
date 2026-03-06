@@ -26,8 +26,6 @@ body:
     url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1__System_Collections_Generic_List___0__
   - text: PolylineEncoderExtensions.Encode<TCoordinate, TPolyline>(IPolylineEncoder<TCoordinate, TPolyline>, TCoordinate[])
     url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1____0___
-  - text: PolylineEncoderExtensions.Encode<TCoordinate, TPolyline>(IPolylineEncoder<TCoordinate, TPolyline>, IEnumerable<TCoordinate>)
-    url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1__System_Collections_Generic_IEnumerable___0__
 - h2: Methods
 - api3: Encode(ReadOnlySpan<TCoordinate>)
   id: PolylineAlgorithm_Abstraction_IPolylineEncoder_2_Encode_System_ReadOnlySpan__0__
