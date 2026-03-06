@@ -5,9 +5,7 @@
 
 namespace PolylineAlgorithm.Internal;
 
-using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 /// <summary>
 /// Represents the difference (variance) in latitude and longitude between consecutive geographic coordinates.

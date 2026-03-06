@@ -12,11 +12,8 @@ using PolylineAlgorithm.Internal.Logging;
 using PolylineAlgorithm.Properties;
 using System;
 using System.Buffers;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using static PolylineAlgorithm.Internal.Defaults.Polyline.Block;
 
 /// <summary>
 /// Provides functionality to encode a collection of geographic coordinates into an encoded polyline string.
@@ -114,12 +111,12 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
                 consumed++;
             }
         } finally {
-            if(temp is not null) {
+            if (temp is not null) {
                 ArrayPool<char>.Shared.Return(temp);
             }
         }
 
-        
+
 
         _logger
             .LogOperationFinishedDebug(OperationName);
