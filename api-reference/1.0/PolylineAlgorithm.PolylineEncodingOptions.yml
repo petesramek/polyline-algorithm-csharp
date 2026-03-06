@@ -41,11 +41,11 @@ body:
 - h2: Properties
 - api3: LoggerFactory
   id: PolylineAlgorithm_PolylineEncodingOptions_LoggerFactory
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L34
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L26
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptions.LoggerFactory
     commentId: P:PolylineAlgorithm.PolylineEncodingOptions.LoggerFactory
-- markdown: Gets or sets the precision for encoding coordinates.
+- markdown: Gets logger factory.
 - code: public ILoggerFactory LoggerFactory { get; }
 - h4: Property Value
 - parameters:
@@ -54,21 +54,21 @@ body:
       url: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory
 - h4: Remarks
 - markdown: The default logger factory is <xref href="Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory" data-throw-if-not-resolved="false"></xref>, which does not log any messages.
-- api3: MaxBufferSize
-  id: PolylineAlgorithm_PolylineEncodingOptions_MaxBufferSize
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L26
+- api3: StackAllocLimit
+  id: PolylineAlgorithm_PolylineEncodingOptions_StackAllocLimit
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L34
   metadata:
-    uid: PolylineAlgorithm.PolylineEncodingOptions.MaxBufferSize
-    commentId: P:PolylineAlgorithm.PolylineEncodingOptions.MaxBufferSize
-- markdown: Gets the maximum buffer size for encoding operations.
-- code: public int MaxBufferSize { get; }
+    uid: PolylineAlgorithm.PolylineEncodingOptions.StackAllocLimit
+    commentId: P:PolylineAlgorithm.PolylineEncodingOptions.StackAllocLimit
+- markdown: Gets stackalloc limit.
+- code: public int StackAllocLimit { get; }
 - h4: Property Value
 - parameters:
   - type:
     - text: int
       url: https://learn.microsoft.com/dotnet/api/system.int32
 - h4: Remarks
-- markdown: The default maximum buffer size is 64,000 bytes (64 KB). This can be adjusted based on the expected size of the polyline data, but should be enough for common cases.
+- markdown: The default stack alloc limit is 512.
 languageId: csharp
 metadata:
   description: Options for configuring polyline encoding.

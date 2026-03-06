@@ -88,14 +88,14 @@ body:
       url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
     description: Thrown when <code class="paramref">options</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>
 - h2: Methods
-- api3: CreatePolyline(ref ReadOnlyMemory<char>)
-  id: PolylineAlgorithm_PolylineEncoder_CreatePolyline_System_ReadOnlyMemory_System_Char___
+- api3: CreatePolyline(ReadOnlyMemory<char>)
+  id: PolylineAlgorithm_PolylineEncoder_CreatePolyline_System_ReadOnlyMemory_System_Char__
   src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L31
   metadata:
-    uid: PolylineAlgorithm.PolylineEncoder.CreatePolyline(System.ReadOnlyMemory{System.Char}@)
-    commentId: M:PolylineAlgorithm.PolylineEncoder.CreatePolyline(System.ReadOnlyMemory{System.Char}@)
+    uid: PolylineAlgorithm.PolylineEncoder.CreatePolyline(System.ReadOnlyMemory{System.Char})
+    commentId: M:PolylineAlgorithm.PolylineEncoder.CreatePolyline(System.ReadOnlyMemory{System.Char})
 - markdown: Creates a polyline instance from the provided read-only sequence of characters.
-- code: protected override Polyline CreatePolyline(ref ReadOnlyMemory<char> polyline)
+- code: protected override Polyline CreatePolyline(ReadOnlyMemory<char> polyline)
 - h4: Parameters
 - parameters:
   - name: polyline

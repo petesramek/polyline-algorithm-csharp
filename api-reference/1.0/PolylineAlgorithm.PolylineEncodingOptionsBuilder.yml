@@ -69,7 +69,7 @@ body:
     description: An <xref href="PolylineAlgorithm.PolylineEncodingOptionsBuilder" data-throw-if-not-resolved="false"></xref> instance for configuring polyline encoding options.
 - api3: WithLoggerFactory(ILoggerFactory)
   id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_WithLoggerFactory_Microsoft_Extensions_Logging_ILoggerFactory_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L72
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L73
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithLoggerFactory(Microsoft.Extensions.Logging.ILoggerFactory)
     commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithLoggerFactory(Microsoft.Extensions.Logging.ILoggerFactory)
@@ -94,21 +94,20 @@ body:
     - text: ArgumentNullException
       url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
     description: Thrown when <code class="paramref">loggerFactory</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
-- api3: WithMaxBufferSize(int)
-  id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_WithMaxBufferSize_System_Int32_
+- api3: WithStackAllocLimit(int)
+  id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_WithStackAllocLimit_System_Int32_
   src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L54
   metadata:
-    uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithMaxBufferSize(System.Int32)
-    commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithMaxBufferSize(System.Int32)
+    uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithStackAllocLimit(System.Int32)
+    commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithStackAllocLimit(System.Int32)
 - markdown: Sets the buffer size for encoding operations.
-- code: public PolylineEncodingOptionsBuilder WithMaxBufferSize(int bufferSize)
+- code: public PolylineEncodingOptionsBuilder WithStackAllocLimit(int stackAllocLimit)
 - h4: Parameters
 - parameters:
-  - name: bufferSize
+  - name: stackAllocLimit
     type:
     - text: int
       url: https://learn.microsoft.com/dotnet/api/system.int32
-    description: The maximum buffer size. Must be greater than 11.
 - h4: Returns
 - parameters:
   - type:

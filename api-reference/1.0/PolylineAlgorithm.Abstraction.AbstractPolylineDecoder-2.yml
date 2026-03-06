@@ -158,14 +158,14 @@ body:
     - text: InvalidPolylineException
       url: PolylineAlgorithm.InvalidPolylineException.html
     description: Thrown when the polyline format is invalid or malformed at a specific position.
-- api3: GetReadOnlyMemory(TPolyline)
-  id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_GetReadOnlyMemory__0_
+- api3: GetReadOnlyMemory(ref TPolyline)
+  id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_GetReadOnlyMemory__0__
   src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L137
   metadata:
-    uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.GetReadOnlyMemory(`0)
-    commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.GetReadOnlyMemory(`0)
+    uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.GetReadOnlyMemory(`0@)
+    commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.GetReadOnlyMemory(`0@)
 - markdown: Converts the provided polyline instance into a <xref href="System.ReadOnlyMemory%601" data-throw-if-not-resolved="false"></xref> for decoding.
-- code: protected abstract ReadOnlyMemory<char> GetReadOnlyMemory(TPolyline polyline)
+- code: protected abstract ReadOnlyMemory<char> GetReadOnlyMemory(ref TPolyline polyline)
 - h4: Parameters
 - parameters:
   - name: polyline
