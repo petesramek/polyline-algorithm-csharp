@@ -131,7 +131,7 @@ public static class PolylineEncoding {
     /// <see langword="true"/> if the value was successfully written to the buffer; otherwise, <see langword="false"/>.
     /// </returns>
 
-    public static bool TryWriteValue(int variance, Span<char> buffer, ref int position) {
+    public static bool TryWriteValue(int variance, ref Span<char> buffer, ref int position) {
         // Validate that the position and required space for write is within the bounds of the buffer.
         if (buffer.Length < position + GetCharCount(variance)) {
             return false;

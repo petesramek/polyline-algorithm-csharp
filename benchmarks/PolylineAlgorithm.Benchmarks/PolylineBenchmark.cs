@@ -18,7 +18,7 @@ public class PolylineBenchmark {
     private static readonly Consumer _consumer = new();
 
     [Params(1, 100, 1_000)]
-    public int Count;
+    public int CoordinatesCount;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     /// <summary>
@@ -56,8 +56,8 @@ public class PolylineBenchmark {
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        PolylineValue = Polyline.FromString(RandomValueProvider.GetPolyline(Count));
-        PolylineNotEqualValue = Polyline.FromString(RandomValueProvider.GetPolyline(Count + Random.Shared.Next(1, 101)));
+        PolylineValue = Polyline.FromString(RandomValueProvider.GetPolyline(CoordinatesCount));
+        PolylineNotEqualValue = Polyline.FromString(RandomValueProvider.GetPolyline(CoordinatesCount + Random.Shared.Next(1, 101)));
         StringValue = PolylineValue.ToString();
         CharArrayValue = [.. StringValue];
         MemoryValue = CharArrayValue.AsMemory();

@@ -53,7 +53,8 @@ public class PolylineTest {
         var exception = Assert.ThrowsExactly<ArgumentNullException>(() => New(value));
 
         // Assert
-
+        Assert.IsNotNull(exception);
+        Assert.AreEqual(nameof(value), exception.ParamName);
     }
 
     /// <summary>
@@ -90,7 +91,8 @@ public class PolylineTest {
         var exception = Assert.ThrowsExactly<ArgumentNullException>(() => New(value));
 
         // Assert
-
+        Assert.IsNotNull(exception);
+        Assert.AreEqual(nameof(value), exception.ParamName);
     }
 
     /// <summary>

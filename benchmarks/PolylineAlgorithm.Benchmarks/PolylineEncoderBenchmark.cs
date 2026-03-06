@@ -20,7 +20,7 @@ public class PolylineEncoderBenchmark {
     private readonly Consumer _consumer = new();
 
     [Params(1, 100, 1_000)]
-    public int Count;
+    public int CoordinatesCount;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     /// <summary>
@@ -50,7 +50,7 @@ public class PolylineEncoderBenchmark {
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        List = RandomValueProvider.GetCoordinates(Count).Select(c => new Coordinate(c.Latitude, c.Longitude)).ToList();
+        List = RandomValueProvider.GetCoordinates(CoordinatesCount).Select(c => new Coordinate(c.Latitude, c.Longitude)).ToList();
         Array = [.. List];
         Memory = Array.AsMemory();
     }

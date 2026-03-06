@@ -133,7 +133,7 @@ namespace PolylineAlgorithm.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Argument cannot be shorten than 2 characters. Actual length: {0}..
+        ///   Looks up a localized string similar to Argument cannot be shorten than {1} characters. Actual length: {0}..
         /// </summary>
         internal static string PolylineCannotBeShorterThanExceptionMessage {
             get {

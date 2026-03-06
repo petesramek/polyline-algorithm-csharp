@@ -159,7 +159,7 @@ public class AbstractPolylineEncoderTest {
         public PolylineEncoder(PolylineEncodingOptions options)
             : base(options) { }
 
-        protected override string CreatePolyline(ReadOnlyMemory<char> polyline) => polyline.ToString();
+        protected override string CreatePolyline(ref ReadOnlyMemory<char> polyline) => polyline.ToString();
         protected override double GetLatitude((double Latitude, double Longitude) coordinate) => coordinate.Latitude;
         protected override double GetLongitude((double Latitude, double Longitude) coordinate) => coordinate.Longitude;
     }

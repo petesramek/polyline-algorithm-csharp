@@ -136,7 +136,7 @@ public class PolylineEncodingTest {
         Span<char> buffer = stackalloc char[6];
 
         // Act
-        bool result = PolylineEncoding.TryWriteValue(variance, buffer, ref position);
+        bool result = PolylineEncoding.TryWriteValue(variance, ref buffer, ref position);
 
         // Assert
         Assert.IsTrue(result);
@@ -154,7 +154,7 @@ public class PolylineEncodingTest {
         Span<char> buffer = stackalloc char[required];
 
         // Act
-        bool result = PolylineEncoding.TryWriteValue(variance, buffer, ref position);
+        bool result = PolylineEncoding.TryWriteValue(variance, ref buffer, ref position);
 
         // Assert
         Assert.IsTrue(result);
@@ -172,7 +172,7 @@ public class PolylineEncodingTest {
         Span<char> buffer = stackalloc char[required - 1];
 
         // Act
-        bool result = PolylineEncoding.TryWriteValue(variance, buffer, ref position);
+        bool result = PolylineEncoding.TryWriteValue(variance, ref buffer, ref position);
 
         // Assert
         Assert.IsFalse(result);

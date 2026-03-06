@@ -21,6 +21,7 @@ using System.Runtime.CompilerServices;
 /// This abstract class provides a base implementation for decoding polylines, allowing subclasses to define how to handle specific polyline formats.
 /// </remarks>
 public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder<TPolyline, TCoordinate> {
+    private readonly ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> _logger;
     /// <summary>
     /// Initializes a new instance of the <see cref="AbstractPolylineDecoder{TPolyline, TCoordinate}"/> class with default encoding options.
     /// </summary>
@@ -38,10 +39,13 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     /// </exception>
     protected AbstractPolylineDecoder(PolylineEncodingOptions options) {
         Options = options ?? throw new ArgumentNullException(nameof(options));
+        _logger = Options
+            .LoggerFactory
+            .CreateLogger<AbstractPolylineDecoder<TPolyline, TCoordinate>>();
     }
 
     /// <summary>
-    /// Gets the encoding options used by this polyline encoder.
+    /// Gets the encoding options used by this polyline decoder.
     /// </summary>
     public PolylineEncodingOptions Options { get; }
 
@@ -56,7 +60,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     /// </returns>
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="polyline"/> is <see langword="null"/>.
-    /// </exception>"
+    /// </exception>
     /// <exception cref="ArgumentException">
     /// Thrown when <paramref name="polyline"/> is empty.
     /// </exception>
@@ -64,37 +68,30 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     /// Thrown when the polyline format is invalid or malformed at a specific position.
     /// </exception>
     public IEnumerable<TCoordinate> Decode(TPolyline polyline) {
-        var logger = Options
-            .LoggerFactory
-            .CreateLogger<AbstractPolylineDecoder<TPolyline, TCoordinate>>();
+        const string OperationName = nameof(Decode);
 
-        logger.
-            LogOperationStartedInfo(nameof(Decode));
+        _logger.
+            LogOperationStartedDebug(OperationName);
 
-        ValidateNullPolyline(polyline, logger);
+        ValidateNullPolyline(ref polyline, _logger);
 
         ReadOnlyMemory<char> sequence = GetReadOnlyMemory(polyline);
 
-        ValidateEmptySequence(logger, sequence);
+        ValidateEmptySequence(ref sequence, _logger);
 
         int position = 0;
         int latitude = 0;
         int longitude = 0;
 
-        while (true) {
-            // Check if we have reached the end of the sequence
-            if (position >= sequence.Length) {
-                break;
-            }
-
+        while (position < sequence.Length) {
             // Read the next value from the polyline encoding
             if (!PolylineEncoding.TryReadValue(ref latitude, ref sequence, ref position)
                 || !PolylineEncoding.TryReadValue(ref longitude, ref sequence, ref position)
             ) {
-                logger
+                _logger.
+                    LogOperationFailedDebug(OperationName);
+                _logger
                     .LogInvalidPolylineWarning(position);
-                logger.
-                    LogOperationFailedInfo(nameof(Decode));
 
                 InvalidPolylineException.Throw(position);
             }
@@ -102,11 +99,11 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
             yield return CreateCoordinate(PolylineEncoding.Denormalize(latitude, CoordinateValueType.Latitude), PolylineEncoding.Denormalize(longitude, CoordinateValueType.Longitude));
         }
 
-        logger
-            .LogOperationFinishedInfo(nameof(Decode));
+        _logger
+            .LogOperationFinishedDebug(OperationName);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static void ValidateNullPolyline(TPolyline polyline, ILogger logger) {
+        static void ValidateNullPolyline(ref TPolyline polyline, ILogger logger) {
             if (polyline is null) {
                 logger
                     .LogNullArgumentWarning(nameof(polyline));
@@ -116,14 +113,14 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static void ValidateEmptySequence(ILogger logger, ReadOnlyMemory<char> sequence) {
-            if (sequence.Length < Defaults.Polyline.Block.Length.Min) {
-                logger
-                    .LogPolylineCannotBeShorterThanWarning(nameof(polyline), sequence.Length, Defaults.Polyline.Block.Length.Min);
+        static void ValidateEmptySequence(ref ReadOnlyMemory<char> polyline, ILogger logger) {
+            if (polyline.Length < Defaults.Polyline.Block.Length.Min) {
                 logger.
-                    LogOperationFailedInfo(nameof(Decode));
+                    LogOperationFailedDebug(OperationName);
+                logger
+                    .LogPolylineCannotBeShorterThanWarning(nameof(polyline), polyline.Length, Defaults.Polyline.Block.Length.Min);
 
-                throw new ArgumentException(string.Format(ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage, sequence.Length), nameof(polyline));
+                throw new ArgumentException(string.Format(ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage, polyline.Length, Defaults.Polyline.Block.Length.Min), nameof(polyline));
             }
         }
     }

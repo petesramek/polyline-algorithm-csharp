@@ -124,7 +124,7 @@
     <value>Polyline is malformed at position {0}.</value>
   </data>
   <data name="PolylineCannotBeShorterThanExceptionMessage" xml:space="preserve">
-    <value>Argument cannot be shorten than 2 characters. Actual length: {0}.</value>
+    <value>Argument cannot be shorten than {1} characters. Actual length: {0}.</value>
   </data>
   <data name="ArgumentValueMustBeFiniteNumber" xml:space="preserve">
     <value>Value must be a finite number.</value>

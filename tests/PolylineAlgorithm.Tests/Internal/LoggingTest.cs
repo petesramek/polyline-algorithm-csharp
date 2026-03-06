@@ -20,17 +20,17 @@ public class LoggingTest {
     [DataRow("")]
     [DataRow(" ")]
     [DataRow("operationName")]
-    public void ILogger_LogOperationStartedInfo_Ok(string value) {
+    public void ILogger_LogOperationStartedDebug_Ok(string value) {
         // Arrange
         string operationName = value;
 
         // Act
         _loggerFactory
             .CreateLogger<LoggingTest>()
-            .LogOperationStartedInfo(operationName);
+            .LogOperationStartedDebug(operationName);
 
         // Assert
-        Assert.AreEqual(new EventId(201, nameof(LogInfoExtensions.LogOperationStartedInfo)), _loggerProvider.Collector.LatestRecord.Id);
+        Assert.AreEqual(new EventId(101, nameof(LogDebugExtensions.LogOperationStartedDebug)), _loggerProvider.Collector.LatestRecord.Id);
         Assert.AreEqual(LogLevel.Information, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual(
             $"Operation {value ?? "(null)"} has started.",
@@ -42,17 +42,17 @@ public class LoggingTest {
     [DataRow("")]
     [DataRow(" ")]
     [DataRow("operationName")]
-    public void ILogger_LogOperationFailedInfo_Ok(string value) {
+    public void ILogger_LogOperationFailedDebug_Ok(string value) {
         // Arrange
         string operationName = value;
 
         // Act
         _loggerFactory
             .CreateLogger<LoggingTest>()
-            .LogOperationFailedInfo(operationName);
+            .LogOperationFailedDebug(operationName);
 
         // Assert
-        Assert.AreEqual(new EventId(202, nameof(LogInfoExtensions.LogOperationFailedInfo)), _loggerProvider.Collector.LatestRecord.Id);
+        Assert.AreEqual(new EventId(102, nameof(LogDebugExtensions.LogOperationFailedDebug)), _loggerProvider.Collector.LatestRecord.Id);
         Assert.AreEqual(LogLevel.Information, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual(
             $"Operation {value ?? "(null)"} has failed.",
@@ -64,17 +64,17 @@ public class LoggingTest {
     [DataRow("")]
     [DataRow(" ")]
     [DataRow("operationName")]
-    public void ILogger_LogOperationFinishedInfo_Ok(string value) {
+    public void ILogger_LogOperationFinishedDebug_Ok(string value) {
         // Arrange
         string operationName = value;
 
         // Act
         _loggerFactory
             .CreateLogger<LoggingTest>()
-            .LogOperationFinishedInfo(operationName);
+            .LogOperationFinishedDebug(operationName);
 
         // Assert
-        Assert.AreEqual(new EventId(203, nameof(LogInfoExtensions.LogOperationFinishedInfo)), _loggerProvider.Collector.LatestRecord.Id);
+        Assert.AreEqual(new EventId(103, nameof(LogDebugExtensions.LogOperationFinishedDebug)), _loggerProvider.Collector.LatestRecord.Id);
         Assert.AreEqual(LogLevel.Information, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual(
             $"Operation {value ?? "(null)"} has finished.",

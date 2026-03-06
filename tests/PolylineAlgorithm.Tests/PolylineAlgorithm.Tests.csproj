@@ -2,10 +2,6 @@
 	
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
-		<LangVersion>13.0</LangVersion>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<InvariantGlobalization>true</InvariantGlobalization>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -22,20 +18,14 @@
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
-	<PropertyGroup>
-		<AnalysisMode>All</AnalysisMode>
-		<AnalysisLevel>latest</AnalysisLevel>
-		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-		<EnableNETAnalyzers>false</EnableNETAnalyzers>
-	</PropertyGroup>
-
 	<ItemGroup>
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.*" />
-		<PackageReference Include="MSTest" Version="4.*" />
-		<PackageReference Include="Microsoft.Testing.Platform.MSBuild" Version="2.*" />
-		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.*" />
-		<PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="2.*" />
-		<PackageReference Include="Microsoft.Extensions.Diagnostics.Testing" Version="9.*" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="MSTest" />
+		<PackageReference Include="Microsoft.Testing.Platform.MSBuild" />
+		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
+		<PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
+		<PackageReference Include="Microsoft.Extensions.Diagnostics.Testing" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
 	</ItemGroup>
 	
 	<ItemGroup>

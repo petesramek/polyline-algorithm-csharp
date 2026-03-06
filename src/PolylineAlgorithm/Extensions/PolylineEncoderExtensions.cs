@@ -44,12 +44,12 @@ public static class PolylineEncoderExtensions {
         ReadOnlySpan<TCoordinate> span;
 
 #if NET5_0_OR_GREATER
-        span = CollectionsMarshal.AsSpan(coordinates);
+        return encoder.Encode(CollectionsMarshal.AsSpan(coordinates));
 #else
-        span = coordinates.ToArray().AsSpan();
+        return encoder.Encode(coordinates.ToArray().AsSpan());
 #endif
 
-        return encoder.Encode(span);
+
     }
 #pragma warning restore CA1002 // Do not expose generic lists
 
@@ -78,8 +78,6 @@ public static class PolylineEncoderExtensions {
             throw new ArgumentNullException(nameof(coordinates));
         }
 
-        var span = coordinates.AsSpan();
-
-        return encoder.Encode(span);
+        return encoder.Encode(coordinates.AsSpan());
     }
 }

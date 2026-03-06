@@ -21,7 +21,7 @@ public sealed class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point, 
     /// <returns>
     /// An encoded polyline string representation of the provided polyline.
     /// </returns>
-    protected override string CreatePolyline(ReadOnlyMemory<char> polyline) {
+    protected override string CreatePolyline(ref ReadOnlyMemory<char> polyline) {
         if (polyline.IsEmpty) {
             return string.Empty;
         }
