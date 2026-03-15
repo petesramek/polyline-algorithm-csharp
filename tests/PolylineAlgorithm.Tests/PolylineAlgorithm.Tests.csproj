@@ -33,7 +33,7 @@
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*" />
 		<PackageReference Include="MSTest" Version="3.*" />
 		<PackageReference Include="Microsoft.Testing.Platform.MSBuild" Version="1.*" />
-		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.*" />
+		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.*" />
 		<PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="1.*" />
 		<PackageReference Include="Microsoft.Extensions.Diagnostics.Testing" Version="9.*" />
 	</ItemGroup>
