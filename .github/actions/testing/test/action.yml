@@ -67,7 +67,6 @@ runs:
           ARGS+=(--report-trx )
         fi
 
-        # Native Code Coverage switches & filters
         if [[ "${{ inputs.collect-code-coverage }}" == "true" ]]; then
           ARGS+=(--coverage )
           ARGS+=(--coverage-output-format "${{ inputs.code-coverage-output-format }}" )
