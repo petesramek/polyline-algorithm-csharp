@@ -1,4 +1,4 @@
-name: Build
+﻿name: Build
 
 on:
   workflow_dispatch:
@@ -54,7 +54,7 @@ jobs:
         release-version: ${{ steps.format-version.outputs.release-version }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
         uses: actions/setup-dotnet@v5
         with:
@@ -102,7 +102,7 @@ jobs:
 
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: 'Format source code'
         uses: ./.github/actions/source/format
@@ -121,7 +121,7 @@ jobs:
 
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: 'Compile source code'
         uses: ./.github/actions/source/compile
@@ -138,7 +138,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: 'Setup .NET'
         uses: actions/setup-dotnet@v5
@@ -184,7 +184,7 @@ jobs:
         package-artifact-name: ${{ env.package-artifact-name }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
@@ -192,7 +192,7 @@ jobs:
           dotnet-version: ${{ env.dotnet-sdk-version }}
 
       - name: Download Build
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: build
 
@@ -201,7 +201,7 @@ jobs:
           dotnet pack ${{ vars.SRC_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} /p:Platform="${{ env.build-platform }}" /p:PackageVersion=${{ env.release-version }} /p:Version=${{ env.assembly-version }} /p:AssemblyInformationalVersion=${{ env.assembly-informational-version }} /p:FileVersion=${{ env.file-version }} --output ${{ runner.temp }}/${{ env.nuget-packages-directory }}
       
       - name: Upload Package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.package-artifact-name }}
           path: |
@@ -217,7 +217,7 @@ jobs:
     environment: 'Development'
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
@@ -242,7 +242,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5 
+        uses: actions/checkout@v6 
       - name: 'Generate assembly metadata'
         uses: ./.github/actions/documentation/docfx-metadata
         with:

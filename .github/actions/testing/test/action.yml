@@ -1,4 +1,4 @@
-name: 'Test with .NET CLI'
+﻿name: 'Test with .NET CLI'
 author: 'Pete Sramek'
 description: 'Run tests, collects code coverage, logs test results, uploads test artifacts'
 inputs:
@@ -50,7 +50,7 @@ runs:
   using: composite
   steps:
     - name: 'Checkout ${{ github.head_ref || github.ref }}'
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
     
     - name: 'Setup .NET ${{ inputs.dotnet_sdk_version }}'
       uses: actions/setup-dotnet@v4
@@ -85,7 +85,7 @@ runs:
     
     - name: 'Upload test results'
       if: ${{ inputs.upload-test-artifacts == 'true' }}
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: '${{ inputs.test-artifacts-name }}'
         path: '${{ inputs.test-results-directory }}*'

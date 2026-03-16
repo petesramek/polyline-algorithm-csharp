@@ -1,4 +1,4 @@
-name: 'Format source code'
+﻿name: 'Format source code'
 author: 'Pete Sramek'
 description: 'Formats source code using dotnet format tool. Pushes changes to the current branch.'
 inputs:
@@ -32,7 +32,7 @@ runs:
   using: "composite"
   steps:
     - name: 'Checkout ${{ github.head_ref || github.ref }}'
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
     
     - name: 'Setup .NET ${{ inputs.dotnet_sdk_version }}'
       uses: actions/setup-dotnet@v4
