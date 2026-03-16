@@ -60,27 +60,28 @@ runs:
     - name: 'Test with .NET CLI'
       shell: bash
       env:
-        DOTNET_USE_TEST_PLATFORM: '1'
+        DOTNET_USE_TEST_PLATFORM: '1' # Ensures you're using the new test platform if necessary
       run: |
         ARGS=()
         ARGS+=("${{ inputs.project-path }}")
         ARGS+=(--configuration "${{ inputs.build-configuration }}")
         ARGS+=(--results-directory "${{ inputs.test-results-directory }}")
 
-        # Optional TRX logger
+        # Optional: TRX logger
         if [[ "${{ inputs.use-trf-logger }}" == "true" ]]; then
           ARGS+=(--logger:trx)
         fi
 
-        # Optional code coverage logic
+        # Native Code Coverage switches
         if [[ "${{ inputs.collect-code-coverage }}" == "true" ]]; then
-          ARGS+=(--collect:"XPlat Code Coverage")
-
-          if [[ -n "${{ inputs.code-coverage-settings-file }}" ]]; then
-            ARGS+=(--property:ExcludeByAttribute="^System\.Diagnostics\.DebuggerHiddenAttribute$,^System\.Diagnostics\.CodeAnalysis\.ExcludeFromCodeCoverageAttribute$" }}")
-          fi
-
-          ARGS+=(--property:CoverletOutputFormat="${{ inputs.code-coverage-output-format }}")
+          ARGS+=(--collect:"Code Coverage")
+          # Output format: cobertura, json, etc
+          ARGS+=(--cc-output-format:"${{ inputs.code-coverage-output-format }}")
+          # Exclude by attribute (comma-separated, no regex)
+          ARGS+=(--cc-exclude-attribute:"System.Diagnostics.DebuggerHiddenAttribute,System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute")
+          # You can add more --cc-* switches if needed, e.g.:
+          # ARGS+=(--cc-include:"MyNamespace*")  # Include filters
+          # ARGS+=(--cc-exclude:"OtherNamespace*")  # Exclude by name
         fi
 
         echo "Running: dotnet test ${ARGS[*]}"
