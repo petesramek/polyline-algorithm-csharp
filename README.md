@@ -151,9 +151,6 @@ A: Latitude must be -90..90; longitude -180..180. Out-of-range input throws `Arg
 **Q: Which .NET versions are supported?**  
 A: All platforms supporting `netstandard2.1` (including .NET Core and .NET 5+).
 
-**Q: How do I add a new polyline algorithm or coordinate type?**  
-A: Implement `IPolylineEncoder<TCoordinate, TPolyline>`, add tests and doc comments, and submit a PR.
-
 ## Contributing
 
 - Follow code style and PR instructions in [AGENTS.md](./AGENTS.md).
