@@ -65,6 +65,20 @@ runs:
       with:
         dotnet-version: ${{ inputs.dotnet_sdk_version }}
 
+    - name: Show .NET version and info
+      shell: bash
+      run: |
+        dotnet --version
+        dotnet --info
+        env | grep DOTNET_USE_TEST_PLATFORM || true
+
+    - name: Explicit test platform version
+      shell: bash
+      run: |
+        dotnet --list-sdks
+        dotnet tool install --global microsoft.testplatform.console
+        ~/.dotnet/tools/vstest.console --version || true
+
     - name: 'Test with .NET CLI (Native Code Coverage)'
       shell: bash
       env:
