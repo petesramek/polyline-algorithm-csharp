@@ -44,7 +44,7 @@ Install-Package PolylineAlgorithm
 
 ## Usage
 
-### PolylineEncoder and PolylineDecoder (predefined coordinate and polyline types)
+### PolylineEncoder and PolylineDecoder (predefined `Coordinate` and `Polyline` types)
 
 #### Encoding
 
