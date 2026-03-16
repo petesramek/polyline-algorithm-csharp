@@ -1,6 +1,17 @@
 ﻿# PolylineAlgorithm for .NET
 
-Lightweight .NET Standard 2.1 library implementing Google Encoded Polyline Algorithm.
+Lightweight .NET Standard 2.1 library implementing Google-compliant Encoded Polyline Algorithm with strong input validation, modern API patterns, and extensibility for custom coordinate types.
+
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Reference](#api-reference)
+- [Benchmarks](#benchmarks)
+- [FAQ](#faq)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Features
 
