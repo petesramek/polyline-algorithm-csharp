@@ -168,9 +168,9 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
                 logger
                     .LogOperationFailedDebug(OperationName);
                 logger
-                    .LogInternalBufferOverflowWarning(position, buffer.Length, GetRequiredLength(variance));
+                    .LogInternalBufferOverflowWarning(position, buffer.Length, requiredSpace);
 
-                throw new InternalBufferOverflowException();
+                throw new InternalBufferOverflowException($"Internal buffer has size of {buffer.Length}. At position {position} is required additional {GetRequiredLength(variance)} space.");
             }
         }
     }
