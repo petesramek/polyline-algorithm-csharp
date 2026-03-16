@@ -2,9 +2,9 @@
 author: 'Pete Sramek'
 description: 'Run tests, collects code coverage, logs test results, uploads test artifacts'
 inputs:
-# Required
-
-# Optional
+  project-path:
+    description: 'Test project path.'
+    required: true  
   dotnet_sdk_version:
     description: '.NET SDK version. Default: 10.x'
     required: false
@@ -13,9 +13,6 @@ inputs:
     description: 'Build configuration. Default: Release'
     required: false
     default: 'Release'
-  project-path:
-    description: 'Test project path.'
-    required: true
   use-trf-logger:
     description: 'Use TRX logger. Default: true'
     required: false
@@ -28,8 +25,20 @@ inputs:
     description: 'Code coverage output format. Default: cobertura'
     required: false
     default: 'cobertura'
+  code-coverage-include:
+    description: 'Comma separated patterns for --cc-include. Default: ""'
+    required: false
+    default: ''
+  code-coverage-exclude:
+    description: 'Comma separated patterns for --cc-exclude. Default: ""'
+    required: false
+    default: ''
+  code-coverage-exclude-attribute:
+    description: 'Comma separated attribute names for --cc-exclude-attribute. Default: "System.Diagnostics.DebuggerHiddenAttribute,System.Diagnostics.DebuggerNonUserCodeAttribute,System.CodeDom.Compiler.GeneratedCodeAttribute,System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute"'
+    required: false
+    default: 'System.Diagnostics.DebuggerHiddenAttribute,System.Diagnostics.DebuggerNonUserCodeAttribute,System.CodeDom.Compiler.GeneratedCodeAttribute,System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute'
   code-coverage-settings-file:
-    description: 'Code coverage settings file. Default: '
+    description: 'Code coverage settings file. Default: ""'
     required: false
     default: ''
   upload-test-artifacts:
@@ -39,8 +48,7 @@ inputs:
   test-results-directory:
     description: 'Search pattern for test artifacts. Default: test-results'
     required: false
-    default: |
-      'test-results'
+    default: 'test-results'
   test-artifacts-name:
     description: 'Test artifacts name, Default: test-results'
     required: false
@@ -57,31 +65,34 @@ runs:
       with:
         dotnet-version: ${{ inputs.dotnet_sdk_version }}
 
-    - name: 'Test with .NET CLI'
+    - name: 'Test with .NET CLI (Native Code Coverage)'
       shell: bash
       env:
-        DOTNET_USE_TEST_PLATFORM: '1' # Ensures you're using the new test platform if necessary
+        DOTNET_USE_TEST_PLATFORM: '1'
       run: |
         ARGS=()
         ARGS+=("${{ inputs.project-path }}")
         ARGS+=(--configuration "${{ inputs.build-configuration }}")
         ARGS+=(--results-directory "${{ inputs.test-results-directory }}")
 
-        # Optional: TRX logger
         if [[ "${{ inputs.use-trf-logger }}" == "true" ]]; then
           ARGS+=(--logger:trx)
         fi
 
-        # Native Code Coverage switches
+        # Native Code Coverage switches & filters
         if [[ "${{ inputs.collect-code-coverage }}" == "true" ]]; then
           ARGS+=(--collect:"Code Coverage")
-          # Output format: cobertura, json, etc
           ARGS+=(--cc-output-format:"${{ inputs.code-coverage-output-format }}")
-          # Exclude by attribute (comma-separated, no regex)
-          ARGS+=(--cc-exclude-attribute:"System.Diagnostics.DebuggerHiddenAttribute,System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute")
-          # You can add more --cc-* switches if needed, e.g.:
-          # ARGS+=(--cc-include:"MyNamespace*")  # Include filters
-          # ARGS+=(--cc-exclude:"OtherNamespace*")  # Exclude by name
+
+          if [[ -n "${{ inputs.code-coverage-include }}" ]]; then
+            ARGS+=(--cc-include:"${{ inputs.code-coverage-include }}")
+          fi
+          if [[ -n "${{ inputs.code-coverage-exclude }}" ]]; then
+            ARGS+=(--cc-exclude:"${{ inputs.code-coverage-exclude }}")
+          fi
+
+          # Always use exclude-attribute; will be default unless overridden by user
+          ARGS+=(--cc-exclude-attribute:"${{ inputs.code-coverage-exclude-attribute }}")
         fi
 
         echo "Running: dotnet test ${ARGS[*]}"
