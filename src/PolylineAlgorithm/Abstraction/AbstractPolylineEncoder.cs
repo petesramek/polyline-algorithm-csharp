@@ -64,6 +64,8 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// <exception cref="ArgumentException">
     /// Thrown when <paramref name="coordinates"/> is an empty enumeration.
     /// </exception>
+    /// <exception cref="InternalBufferOverflowException"></exception>
+    /// <exception cref="InvalidOperationException"></exception>
     public TPolyline Encode(ReadOnlySpan<TCoordinate> coordinates) {
         const string OperationName = nameof(Encode);
 

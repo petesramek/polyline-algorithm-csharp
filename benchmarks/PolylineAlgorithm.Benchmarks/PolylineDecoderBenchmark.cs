@@ -12,7 +12,7 @@ using PolylineAlgorithm.Extensions;
 using PolylineAlgorithm.Utility;
 
 /// <summary>
-/// Benchmarks for the <see cref="PolylineDecoder"/> class.
+/// Benchmarks for <see cref="PolylineDecoder"/>.
 /// </summary>
 public class PolylineDecoderBenchmark {
     private readonly Consumer _consumer = new();
@@ -22,34 +22,34 @@ public class PolylineDecoderBenchmark {
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     /// <summary>
-    /// Gets the string value representing the encoded polyline.
+    /// Polyline instance for benchmarks.
     /// </summary>
     public Polyline Polyline { get; private set; }
 
     /// <summary>
-    /// Gets the string value representing the encoded polyline.
+    /// Encoded polyline as string.
     /// </summary>
     public string String { get; private set; }
 
     /// <summary>
-    /// Gets the string value representing the encoded polyline.
+    /// Encoded polyline as char array.
     /// </summary>
     public char[] CharArray { get; private set; }
 
     /// <summary>
-    /// Gets the string value representing the encoded polyline.
+    /// Encoded polyline as read-only memory.
     /// </summary>
     public ReadOnlyMemory<char> Memory { get; private set; }
 
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
     /// <summary>
-    /// The polyline decoder instance.
+    /// Polyline decoder instance.
     /// </summary>
     public readonly PolylineDecoder Decoder = new();
 
     /// <summary>
-    /// Sets up the data for the benchmarks.
+    /// Sets up benchmark data.
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
@@ -60,7 +60,7 @@ public class PolylineDecoderBenchmark {
     }
 
     /// <summary>
-    /// Benchmarks the decoding of a polyline from a string.
+    /// Benchmark: decode polyline instance.
     /// </summary>
     [Benchmark]
     public void PolylineDecoder_Decode_Polyline() {
@@ -70,7 +70,7 @@ public class PolylineDecoderBenchmark {
     }
 
     /// <summary>
-    /// Benchmarks the decoding of a polyline from a string.
+    /// Benchmark: decode from string.
     /// </summary>
     [Benchmark]
     public void PolylineDecoder_Decode_String() {
@@ -80,7 +80,7 @@ public class PolylineDecoderBenchmark {
     }
 
     /// <summary>
-    /// Benchmarks the decoding of a polyline from a string.
+    /// Benchmark: decode from char array.
     /// </summary>
     [Benchmark]
     public void PolylineDecoder_Decode_CharArray() {
@@ -90,7 +90,7 @@ public class PolylineDecoderBenchmark {
     }
 
     /// <summary>
-    /// Benchmarks the decoding of a polyline from a string.
+    /// Benchmark: decode from memory.
     /// </summary>
     [Benchmark]
     public void PolylineDecoder_Decode_Memory() {

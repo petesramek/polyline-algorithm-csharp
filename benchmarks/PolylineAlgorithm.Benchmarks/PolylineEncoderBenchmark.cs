@@ -13,39 +13,42 @@ using PolylineAlgorithm.Utility;
 using System.Collections.Generic;
 
 /// <summary>
-/// Benchmarks for the <see cref="PolylineEncoder"/> class.
+/// Benchmarks for <see cref="PolylineEncoder"/>.
 /// </summary>
 public class PolylineEncoderBenchmark {
     private readonly Consumer _consumer = new();
 
+    /// <summary>
+    /// Number of coordinates for benchmarks.
+    /// </summary>
     [Params(1, 100, 1_000)]
     public int CoordinatesCount;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     /// <summary>
-    /// Gets the list of coordinates to be encoded.
+    /// Coordinates as list.
     /// </summary>
     public List<Coordinate> List { get; private set; }
 
     /// <summary>
-    /// Gets the list of coordinates to be encoded.
+    /// Coordinates as array.
     /// </summary>
     public Coordinate[] Array { get; private set; }
 
     /// <summary>
-    /// Gets the list of coordinates to be encoded.
+    /// Coordinates as read-only memory.
     /// </summary>
     public ReadOnlyMemory<Coordinate> Memory { get; private set; }
 
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
     /// <summary>
-    /// The polyline encoder instance.
+    /// Polyline encoder instance.
     /// </summary>
     public readonly PolylineEncoder Encoder = new();
 
     /// <summary>
-    /// Sets up the data for the benchmarks.
+    /// Sets up benchmark data.
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
@@ -55,9 +58,9 @@ public class PolylineEncoderBenchmark {
     }
 
     /// <summary>
-    /// Benchmarks the encoding of a list of coordinates into a polyline.
+    /// Benchmark: encode coordinates from span.
     /// </summary>
-    /// <returns>The encoded polyline.</returns>
+    /// <returns>Encoded polyline.</returns>
     [Benchmark]
     public void PolylineEncoder_Encode_Span() {
         var polyline = Encoder
@@ -67,9 +70,9 @@ public class PolylineEncoderBenchmark {
     }
 
     /// <summary>
-    /// Benchmarks the encoding of a list of coordinates into a polyline.
+    /// Benchmark: encode coordinates from array.
     /// </summary>
-    /// <returns>The encoded polyline.</returns>
+    /// <returns>Encoded polyline.</returns>
     [Benchmark]
     public void PolylineEncoder_Encode_Array() {
         var polyline = Encoder
@@ -79,9 +82,9 @@ public class PolylineEncoderBenchmark {
     }
 
     /// <summary>
-    /// Benchmarks the encoding of a list of coordinates into a polyline.
+    /// Benchmark: encode coordinates from list.
     /// </summary>
-    /// <returns>The encoded polyline.</returns>
+    /// <returns>Encoded polyline.</returns>
     [Benchmark]
     public void PolylineEncoder_Encode_List() {
         var polyline = Encoder

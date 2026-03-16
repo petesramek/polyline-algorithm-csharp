@@ -11,11 +11,14 @@ using PolylineAlgorithm;
 using PolylineAlgorithm.Utility;
 
 /// <summary>
-/// Benchmarks for the <see cref="PolylineValue"/> struct.
+/// Benchmarks for <see cref="Polyline"/>.
 /// </summary>
 public class PolylineBenchmark {
     private static readonly Consumer _consumer = new();
 
+    /// <summary>
+    /// Number of coordinates for benchmarks. Set by BenchmarkDotNet.
+    /// </summary>
     [Params(1, 100, 1_000)]
     public int CoordinatesCount;
 
@@ -45,6 +48,11 @@ public class PolylineBenchmark {
     /// </summary>
     public Polyline PolylineNotEqualValue { get; private set; }
 
+    /// <summary>
+    /// Gets the destination array used for benchmarking the <see cref="Polyline.CopyTo(char[])"/> method.
+    /// This array is initialized in <see cref="SetupData"/> to match the length of the encoded polyline,
+    /// and is used as the target buffer for copying polyline data during benchmark runs.
+    /// </summary>
     public char[] CopyToDestination { get; private set; }
 
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
@@ -65,7 +73,7 @@ public class PolylineBenchmark {
     }
 
     /// <summary>
-    /// Benchmarks the encoding of a list of coordinates into a polyline.
+    /// Benchmark: create polyline from string.
     /// </summary>
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
@@ -77,7 +85,7 @@ public class PolylineBenchmark {
     }
 
     /// <summary>
-    /// Benchmarks the encoding of an enumeration of coordinates into a polyline.
+    /// Benchmark: create polyline from char array.
     /// </summary>
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
@@ -89,7 +97,7 @@ public class PolylineBenchmark {
     }
 
     /// <summary>
-    /// Benchmarks the encoding of an enumeration of coordinates into a polyline.
+    /// Benchmark: create polyline from memory.
     /// </summary>
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
@@ -101,7 +109,7 @@ public class PolylineBenchmark {
     }
 
     /// <summary>
-    /// Benchmarks the encoding of an enumeration of coordinates into a polyline.
+    /// Benchmark: convert polyline to string.
     /// </summary>
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
@@ -114,7 +122,7 @@ public class PolylineBenchmark {
 
 
     /// <summary>
-    /// Benchmarks the encoding of an enumeration of coordinates into a polyline.
+    /// Benchmark: copy polyline to array.
     /// </summary>
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
@@ -127,7 +135,7 @@ public class PolylineBenchmark {
     }
 
     /// <summary>
-    /// Benchmarks the encoding of an enumeration of coordinates into a polyline.
+    /// Benchmark: compare polyline with same value.
     /// </summary>
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
@@ -139,7 +147,7 @@ public class PolylineBenchmark {
     }
 
     /// <summary>
-    /// Benchmarks the encoding of an enumeration of coordinates into a polyline.
+    /// Benchmark: compare polyline with different value.
     /// </summary>
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
@@ -152,7 +160,7 @@ public class PolylineBenchmark {
 
 
     /// <summary>
-    /// Benchmarks the encoding of an enumeration of coordinates into a polyline.
+    /// Benchmark: compare polyline with different type.
     /// </summary>
     /// <returns>The encoded polyline.</returns>
     [Benchmark]
