@@ -11,7 +11,7 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<IsTestProject>true</IsTestProject>
-		<UseModernDotnetTest>true</UseModernDotnetTest>
+		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
 	</PropertyGroup>
 
 	<PropertyGroup>
