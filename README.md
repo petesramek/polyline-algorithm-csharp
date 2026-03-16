@@ -49,8 +49,10 @@ Console.WriteLine(encoded.ToString());
 ```csharp
 using PolylineAlgorithm;
 
+Polyline polyline = Polyline.FromString("yseiHoc_MwacOjnwM");
+
 var decoder = new PolylineDecoder();
-IEnumerable<Coordinate> decoded = decoder.Decode(encoded.ToString());
+IEnumerable<Coordinate> decoded = decoder.Decode(polyline);
 ```
 
 ### Custom encoder and decoder (user0defined coordinate and polyline types)
@@ -125,7 +127,7 @@ Custom decoder usage.
 ```csharp
 using PolylineAlgorithm;
 
-string encoded = "oir~FxmzuOnhA|dHlyConJ"
+string encoded = "yseiHoc_MwacOjnwM";
 
 var decoder = new MyPolylineDecoder();
 IEnumerable<(double Latitude, double Longitude)> decoded = decoder.Decode(encoded);
