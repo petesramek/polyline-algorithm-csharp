@@ -13,10 +13,6 @@ inputs:
     description: 'Build configuration. Default: Release'
     required: false
     default: 'Release'
-  use-testing-platform:
-    description: 'Use Microsoft Testing Platform, Default: true'
-    required: false
-    default: 'true'
   project-path:
     description: 'Search pattern for test projects.'
     required: true
@@ -64,30 +60,24 @@ runs:
     - if: ${{ inputs.use-trf-logger == 'true' }}
       name: 'Set TRX_LOGGER_ARGS environment variable'
       shell: bash
-      run: echo "TRX_LOGGER_ARGS=--report-trx" >> $GITHUB_ENV
-    
-    - if: ${{ inputs.test-runsettings-path != '' }}
-      name: 'Set RUN_SETTINGS_ARGS environment variable'
-      shell: bash
-      run: echo "RUN_SETTINGS_ARGS=--setttings ${{ inputs.test-runsettings-path }}" >> $GITHUB_ENV
+      run: echo "TRX_LOGGER_ARGS=--logger:trx" >> $GITHUB_ENV
 
     - if: ${{ inputs.collect-code-coverage == 'true' }}
       name: 'Set CODE_COVERAGE_ARGS environment variable'
       shell: bash
       run: |
-        echo "CODE_COVERAGE_ARGS=--coverage --coverage-output-format ${{ inputs.code-coverage-output-format}}" >> $GITHUB_ENV
+        echo "CODE_COVERAGE_ARGS=--collect:"XPlat Code Coverage" /p:CoverletOutputFormat=${{ inputs.code-coverage-output-format}}" >> $GITHUB_ENV
 
     - if: ${{ inputs.collect-code-coverage == 'true' && inputs.code-coverage-settings-file != ''}}
       name: 'Set CODE_COVERAGE_ARGS environment variable'
       shell: bash
       run: |
-        echo "CODE_COVERAGE_ARGS=${{ env.CODE_COVERAGE_ARGS }} --coverage-settings ${{ inputs.code-coverage-settings-file }}" >> $GITHUB_ENV
+        echo "CODE_COVERAGE_ARGS=${{ env.CODE_COVERAGE_ARGS }} --settings ${{ inputs.code-coverage-settings-file }}" >> $GITHUB_ENV
       
     - name: 'Test with .NET CLI'
       shell: bash
       run: dotnet test ${{ inputs.test-project-glob-pattern }} --configuration ${{ inputs.build-configuration }} -- ${{ env.CODE_COVERAGE_ARGS }} ${{ env.TRX_LOGGER_ARGS }} --results-directory ${{ inputs.test-results-directory }}
-      env:
-        DOTNET_TEST_USE_MICROSOFT_TESTING_PLATFORM: true
+
     - name: 'Upload test results'
       if: ${{ inputs.upload-test-artifacts == 'true' }}
       uses: actions/upload-artifact@v7
