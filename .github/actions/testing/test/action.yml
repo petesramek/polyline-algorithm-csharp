@@ -1,4 +1,4 @@
-name: 'Test with .NET CLI'
+﻿name: 'Test with .NET CLI'
 author: 'Pete Sramek'
 description: 'Run tests, collects code coverage, logs test results, uploads test artifacts'
 inputs:
@@ -13,6 +13,10 @@ inputs:
     description: 'Build configuration. Default: Release'
     required: false
     default: 'Release'
+  use-testing-platform:
+    description: 'Use Microsoft Testing Platform, Default: true'
+    required: false
+    default: 'true'
   project-path:
     description: 'Search pattern for test projects.'
     required: true
@@ -50,7 +54,7 @@ runs:
   using: composite
   steps:
     - name: 'Checkout ${{ github.head_ref || github.ref }}'
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
     
     - name: 'Setup .NET ${{ inputs.dotnet_sdk_version }}'
       uses: actions/setup-dotnet@v4
@@ -82,10 +86,11 @@ runs:
     - name: 'Test with .NET CLI'
       shell: bash
       run: dotnet test ${{ inputs.test-project-glob-pattern }} --configuration ${{ inputs.build-configuration }} -- ${{ env.CODE_COVERAGE_ARGS }} ${{ env.TRX_LOGGER_ARGS }} --results-directory ${{ inputs.test-results-directory }}
-    
+      env:
+        DOTNET_TEST_USE_MICROSOFT_TESTING_PLATFORM: true
     - name: 'Upload test results'
       if: ${{ inputs.upload-test-artifacts == 'true' }}
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: '${{ inputs.test-artifacts-name }}'
         path: '${{ inputs.test-results-directory }}*'
