@@ -10,6 +10,9 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
+#if NET8_0_OR_GREATER
+using System.Text;
+#endif
 
 /// <summary>
 /// Represents a geographic coordinate as a pair of latitude and longitude values.
@@ -20,8 +23,14 @@ using System.Runtime.InteropServices;
 /// and provides methods for equality comparison and string representation.
 /// </remarks>
 [DebuggerDisplay("{ToString()}")]
-[StructLayout(LayoutKind.Sequential, Pack = 8, Size = 16)]
+[StructLayout(LayoutKind.Auto)]
 public readonly struct Coordinate : IEquatable<Coordinate> {
+#if NET8_0_OR_GREATER
+    private static readonly CompositeFormat _coordinateValueMustBeBetweenValuesMessageFormat = CompositeFormat.Parse(ExceptionMessageResource.CoordinateValueMustBeBetweenValuesMessageFormat);
+#else
+    private static readonly string _coordinateValueMustBeBetweenValuesMessageFormat = ExceptionMessageResource.CoordinateValueMustBeBetweenValuesMessageFormat;
+#endif
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Coordinate"/> struct with default values (0) for <see cref="Latitude"/> and <see cref="Longitude"/>.
     /// </summary>
@@ -44,12 +53,12 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// or when <paramref name="longitude"/> is less than -180 or greater than 180.
     /// </exception>
     public Coordinate(double latitude, double longitude) {
-        if (latitude < -90 || latitude > 90 || double.IsNaN(latitude) || double.IsInfinity(latitude)) {
-            throw new ArgumentOutOfRangeException(nameof(latitude), string.Format(ExceptionMessageResource.CoordinateValueMustBeBetweenValuesMessageFormat, "Latitude", -90, 90));
+        if (latitude < -90 || latitude > 90 || !double.IsFinite(latitude)) {
+            throw new ArgumentOutOfRangeException(nameof(latitude), string.Format(CultureInfo.InvariantCulture, _coordinateValueMustBeBetweenValuesMessageFormat, "Latitude", -90, 90));
         }
 
-        if (longitude < -180 || longitude > 180 || double.IsNaN(longitude) || double.IsInfinity(longitude)) {
-            throw new ArgumentOutOfRangeException(nameof(longitude), string.Format(ExceptionMessageResource.CoordinateValueMustBeBetweenValuesMessageFormat, "Longitude", -180, 180));
+        if (longitude < -180 || longitude > 180 || !double.IsFinite(longitude)) {
+            throw new ArgumentOutOfRangeException(nameof(longitude), string.Format(CultureInfo.InvariantCulture, _coordinateValueMustBeBetweenValuesMessageFormat, "Longitude", -180, 180));
         }
 
         Latitude = latitude;
@@ -73,13 +82,17 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <see langword="true"/> if both latitude and longitude are 0; otherwise, <see langword="false"/>.
     /// </returns>
     public bool IsDefault()
-        => Latitude == default
-        && Longitude == default;
-
-    #region Overrides
+        => Latitude.Equals(default)
+        && Longitude.Equals(default);
 
     /// <inheritdoc />
     public override bool Equals(object? obj) => obj is Coordinate coordinate && Equals(coordinate);
+
+    /// <inheritdoc />
+    public bool Equals(Coordinate other) {
+        return Latitude.Equals(other.Latitude) &&
+               Longitude.Equals(other.Longitude);
+    }
 
     /// <inheritdoc />
     public override int GetHashCode() => HashCode.Combine(Latitude, Longitude);
@@ -93,20 +106,6 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     public override string ToString() {
         return $"{{ {nameof(Latitude)}: {Latitude.ToString("G", CultureInfo.InvariantCulture)}, {nameof(Longitude)}: {Longitude.ToString("G", CultureInfo.InvariantCulture)} }}";
     }
-
-    #endregion
-
-    #region IEquatable<Coordinate> implementation
-
-    /// <inheritdoc />
-    public bool Equals(Coordinate other) {
-        return Latitude == other.Latitude &&
-               Longitude == other.Longitude;
-    }
-
-    #endregion
-
-    #region Equality operators
 
     /// <summary>
     /// Determines whether two <see cref="Coordinate"/> instances are equal.
@@ -127,6 +126,4 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <see langword="true"/> if the coordinates are not equal; otherwise, <see langword="false"/>.
     /// </returns>
     public static bool operator !=(Coordinate left, Coordinate right) => !(left == right);
-
-    #endregion
 }

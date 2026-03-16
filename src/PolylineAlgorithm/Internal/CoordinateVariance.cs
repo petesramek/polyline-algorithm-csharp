@@ -6,12 +6,14 @@
 namespace PolylineAlgorithm.Internal;
 
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 /// <summary>
 /// Represents the difference (variance) in latitude and longitude between consecutive geographic coordinates.
 /// This struct is used to compute and store the change in coordinate values as integer deltas.
 /// </summary>
 [DebuggerDisplay("{ToString(),nq}")]
+[StructLayout(LayoutKind.Auto)]
 internal struct CoordinateVariance {
     private (int Latitude, int Longitude) _current;
 

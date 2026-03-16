@@ -8,7 +8,7 @@
 /// longitude. Latitude values indicate the north-south position, while longitude values indicate the east-west
 /// position.
 /// </remarks>
-public enum CoordinateValueType : int {
+public enum CoordinateValueType {
     /// <summary>
     /// Represents no specific type. This value is used when the type is not applicable or not specified.
     /// </summary>
@@ -20,5 +20,5 @@ public enum CoordinateValueType : int {
     /// <summary>
     /// Represents a longitude value.
     /// </summary>
-    Longitude = 2
+    Longitude = 2,
 }

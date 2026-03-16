@@ -15,7 +15,7 @@ using System.Diagnostics;
 /// <remarks>
 /// This class allows you to set options such as buffer size and logger factory for encoding operations.
 /// </remarks>
-[DebuggerDisplay("MaxBufferSize: {MaxBufferSize}, MaxBufferLength: {MaxBufferLength}, LoggerFactoryType: {LoggerFactory.GetType().Name}")]
+[DebuggerDisplay("StackAllocLimit: {StackAllocLimit}, LoggerFactoryType: {GetLoggerFactoryType()}")]
 public sealed class PolylineEncodingOptions {
     /// <summary>
     /// Gets logger factory.
@@ -32,4 +32,6 @@ public sealed class PolylineEncodingOptions {
     /// The default stack alloc limit is 512.
     /// </remarks>
     public int StackAllocLimit { get; internal set; } = 512;
+
+    private string GetLoggerFactoryType() => LoggerFactory.GetType().Name;
 }

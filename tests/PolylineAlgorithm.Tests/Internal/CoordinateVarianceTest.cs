@@ -6,15 +6,16 @@
 namespace PolylineAlgorithm.Tests.Internal;
 
 using PolylineAlgorithm.Internal;
+using System.Globalization;
 
 [TestClass]
-public class CoordinateVarianceTests {
+public class CoordinateVarianceTest {
     public static IEnumerable<(int Latitude, int Longitude)> Coordinates => [
         (0, 0),
         (-10, -10),
         (10, -10),
         (-10, 10),
-        (10, 10)
+        (10, 10),
     ];
 
     public static IEnumerable<((int Latitude, int Longitude) Initial, (int Latitude, int Longitude) Next, (int Latitude, int Longitude) Result)> Variances => [
@@ -35,7 +36,7 @@ public class CoordinateVarianceTests {
         ((0, 10), (0, 0), (0, -10)),
         ((0, -10), (0, 0), (0, 10)),
         ((10, 0), (0, 0), (-10, 0)),
-        ((-10, 0), (0, 0), (10, 0))
+        ((-10, 0), (0, 0), (10, 0)),
     ];
 
     [TestMethod]
@@ -88,7 +89,7 @@ public class CoordinateVarianceTests {
         string result = variance.ToString();
 
         // Assert
-        Assert.Contains($"Latitude: {latitude}", result);
-        Assert.Contains($"Longitude: {longitude}", result);
+        Assert.Contains($"Latitude: {latitude.ToString(CultureInfo.InvariantCulture)}", result, StringComparison.Ordinal);
+        Assert.Contains($"Longitude: {longitude.ToString(CultureInfo.InvariantCulture)}", result, StringComparison.Ordinal);
     }
 }

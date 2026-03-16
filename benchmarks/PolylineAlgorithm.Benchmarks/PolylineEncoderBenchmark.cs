@@ -22,7 +22,7 @@ public class PolylineEncoderBenchmark {
     /// Number of coordinates for benchmarks.
     /// </summary>
     [Params(1, 100, 1_000)]
-    public int CoordinatesCount;
+    public int CoordinatesCount { get; set; }
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     /// <summary>
@@ -45,14 +45,14 @@ public class PolylineEncoderBenchmark {
     /// <summary>
     /// Polyline encoder instance.
     /// </summary>
-    public readonly PolylineEncoder Encoder = new();
+    private readonly PolylineEncoder _encoder = new();
 
     /// <summary>
     /// Sets up benchmark data.
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        List = RandomValueProvider.GetCoordinates(CoordinatesCount).Select(c => new Coordinate(c.Latitude, c.Longitude)).ToList();
+        List = [.. RandomValueProvider.GetCoordinates(CoordinatesCount).Select(c => new Coordinate(c.Latitude, c.Longitude))];
         Array = [.. List];
         Memory = Array.AsMemory();
     }
@@ -63,7 +63,7 @@ public class PolylineEncoderBenchmark {
     /// <returns>Encoded polyline.</returns>
     [Benchmark]
     public void PolylineEncoder_Encode_Span() {
-        var polyline = Encoder
+        var polyline = _encoder
             .Encode(Memory.Span!);
 
         _consumer.Consume(polyline);
@@ -75,7 +75,7 @@ public class PolylineEncoderBenchmark {
     /// <returns>Encoded polyline.</returns>
     [Benchmark]
     public void PolylineEncoder_Encode_Array() {
-        var polyline = Encoder
+        var polyline = _encoder
             .Encode(Array!);
 
         _consumer.Consume(polyline);
@@ -87,7 +87,7 @@ public class PolylineEncoderBenchmark {
     /// <returns>Encoded polyline.</returns>
     [Benchmark]
     public void PolylineEncoder_Encode_List() {
-        var polyline = Encoder
+        var polyline = _encoder
             .Encode(List!);
 
         _consumer.Consume(polyline);

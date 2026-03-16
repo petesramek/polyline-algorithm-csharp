@@ -8,7 +8,7 @@ namespace PolylineAlgorithm.Tests.Fakes;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Testing;
 
-internal class FakeLoggerFactory : ILoggerFactory {
+internal sealed class FakeLoggerFactory : ILoggerFactory {
     private bool _isDisposed;
     public FakeLoggerFactory(FakeLoggerProvider loggerProvider) {
         Provider = loggerProvider ?? throw new ArgumentNullException(nameof(loggerProvider));
@@ -24,10 +24,10 @@ internal class FakeLoggerFactory : ILoggerFactory {
         return Provider.CreateLogger(categoryName);
     }
 
-    protected virtual void Dispose(bool disposing) {
+    public void Dispose(bool disposing) {
         if (!_isDisposed) {
             if (disposing) {
-
+                Provider?.Dispose();
             }
 
             _isDisposed = true;

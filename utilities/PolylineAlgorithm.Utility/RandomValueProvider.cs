@@ -16,6 +16,7 @@ using System.Linq;
 /// Provides random generation and caching of coordinate collections and their encoded polyline representations.
 /// Useful for testing and benchmarking polyline algorithms with reproducible random data.
 /// </summary>
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA5394:Do not use insecure randomness", Justification = "Internal use only.")]
 internal static class RandomValueProvider {
     private static readonly Random _random = new(DateTime.Now.Millisecond);
     private static readonly ConcurrentDictionary<int, PolylineCoordinateCollectionPair> _cache = new();
@@ -63,12 +64,10 @@ internal static class RandomValueProvider {
 
         var enumeration = Enumerable
                             .Range(0, count)
-                            .Select(i => (RandomLatitude(), RandomLongitude()))
+                            .Select(_ => (RandomLatitude(), RandomLongitude()))
                             .ToArray();
 
-        entry = _cache.GetOrAdd(count, _ => new PolylineCoordinateCollectionPair(enumeration, _encoder.Encode(enumeration)));
-
-        return entry;
+        return _cache.GetOrAdd(count, new PolylineCoordinateCollectionPair(enumeration, _encoder.Encode(enumeration)));
     }
 
     /// <summary>
@@ -104,7 +103,7 @@ internal static class RandomValueProvider {
         public string Polyline { get; } = polyline;
     }
 
-    private class PolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
+    private sealed class PolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
 
         protected override string CreatePolyline(ReadOnlyMemory<char> polyline) {
             return polyline.ToString();

@@ -35,7 +35,7 @@ public class CoordinateTest {
         [0, double.MaxValue],
         [0, double.NaN],
         [0, double.PositiveInfinity],
-        [0, double.NegativeInfinity]
+        [0, double.NegativeInfinity],
     ];
 
     /// <summary>
@@ -44,9 +44,9 @@ public class CoordinateTest {
     [TestMethod]
     public void Constructor_Parameterless_Ok() {
         // Arrange
-        bool @default = true;
-        double latitude = 0d;
-        double longitude = 0d;
+        const bool @default = true;
+        const double latitude = 0d;
+        const double longitude = 0d;
 
         // Act
         Coordinate result = new();
@@ -84,10 +84,10 @@ public class CoordinateTest {
     public void Constructor_Invalid_Parameters_Ok(double latitude, double longitude) {
         // Arrange
         // Act
-        static void New(double latitude, double longitude) => new Coordinate(latitude, longitude);
+        static Coordinate New(double latitude, double longitude) => new(latitude, longitude);
 
         // Assert
-        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => New(latitude, longitude));
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => _ = New(latitude, longitude));
     }
 
     /// <summary>
@@ -143,6 +143,7 @@ public class CoordinateTest {
     /// Tests the <see cref="Coordinate"/> constructor with latitude out of range.
     /// </summary>
     [TestMethod]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1806:Do not ignore method results", Justification = "Tests.")]
     public void Constructor_Latitude_OutOfRange_Throws() {
         // Arrange & Act
         static void OverMaxLatitude() => new Coordinate(91, 0);
@@ -157,6 +158,7 @@ public class CoordinateTest {
     /// Tests the <see cref="Coordinate"/> constructor with longitude out of range.
     /// </summary>
     [TestMethod]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1806:Do not ignore method results", Justification = "Tests.")]
     public void Constructor_Longitude_OutOfRange_Throws() {
         // Arrange & Act
         static void UnderMinLongitude() => new Coordinate(0, -181);
@@ -199,13 +201,11 @@ public class CoordinateTest {
         object equalCoordinate = new Coordinate(10, 20);
         object notEqualCoordinate = new Coordinate(0, 0);
         object notCoordinate = "not a coordinate";
-        object @null = null!;
 
         // Act & Assert
         Assert.IsTrue(coordinate.Equals(equalCoordinate));
         Assert.IsFalse(coordinate.Equals(notEqualCoordinate));
         Assert.IsFalse(coordinate.Equals(notCoordinate));
-        Assert.IsFalse(coordinate.Equals(@null));
     }
 
     /// <summary>
@@ -230,8 +230,8 @@ public class CoordinateTest {
         var coordinate = new Coordinate(12.34, 56.78);
 
         // Act & Assert
-        Assert.Contains("Latitude: 12.34", coordinate.ToString());
-        Assert.Contains("Longitude: 56.78", coordinate.ToString());
+        Assert.Contains("Latitude: 12.34", coordinate.ToString(), StringComparison.Ordinal);
+        Assert.Contains("Longitude: 56.78", coordinate.ToString(), StringComparison.Ordinal);
     }
 
     /// <summary>

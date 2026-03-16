@@ -14,19 +14,17 @@ using System;
 
 [TestClass]
 public class AbstractPolylineEncoderTest {
-    private static readonly PolylineEncoder _encoder = new();
+    private static readonly TestPolylineEncoder _encoder = new();
 
     public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100], [1_000]];
 
-    public static IEnumerable<(double, double)> NotANumberAndInfinityCoordinates => StaticValueProvider.Invalid.GetNotANumberAndInfinityCoordinates();
-
-    public static IEnumerable<(double, double)> MinAndMaxCoordinates => StaticValueProvider.Invalid.GetMinAndMaxCoordinates();
+    public static IEnumerable<(double, double)> InvalidCoordinates => StaticValueProvider.Invalid.GetNotANumberAndInfinityCoordinates().Union(StaticValueProvider.Invalid.GetMinAndMaxCoordinates());
 
 
     [TestMethod]
     public void Constructor_Parameterless_Ok() {
         // Arrange && Act
-        var encoder = new PolylineEncoder();
+        var encoder = new TestPolylineEncoder();
 
         // Assert
         Assert.IsNotNull(encoder);
@@ -39,7 +37,7 @@ public class AbstractPolylineEncoderTest {
         var options = new PolylineEncodingOptions();
 
         // Act
-        var encoder = new PolylineEncoder(options);
+        var encoder = new TestPolylineEncoder(options);
 
         // Assert
         Assert.IsNotNull(encoder);
@@ -50,7 +48,7 @@ public class AbstractPolylineEncoderTest {
     [TestMethod]
     public void Constructor_Null_Options_Throws_ArgumentNullException() {
         // Arrange
-        static void New() => new PolylineEncoder(null!);
+        static TestPolylineEncoder New() => new(null!);
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentNullException>(New);
@@ -87,20 +85,8 @@ public class AbstractPolylineEncoderTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(NotANumberAndInfinityCoordinates))]
-    public void Encode_Not_A_Number_And_Infinity_Coordinate_Throws_ArgumentOutOfRangeException((double, double) coordinate) {
-        // Arrange
-
-        // Act
-        var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => _encoder.Encode([coordinate]));
-
-        // Assert
-        Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
-    }
-
-    [TestMethod]
-    [DynamicData(nameof(MinAndMaxCoordinates))]
-    public void Encode_Min_And_Max_Coordinate_Throws_ArgumentOutOfRangeException((double, double) coordinate) {
+    [DynamicData(nameof(InvalidCoordinates))]
+    public void Encode_Invalid_Coordinate_Throws_ArgumentOutOfRangeException((double, double) coordinate) {
         // Arrange
 
         // Act
@@ -122,7 +108,7 @@ public class AbstractPolylineEncoderTest {
 
         // Assert
         Assert.AreEqual(expected.Length, result.Length);
-        Assert.IsTrue(expected.Equals(result));
+        Assert.IsTrue(expected.Equals(result, StringComparison.Ordinal));
     }
 
     [TestMethod]
@@ -136,14 +122,14 @@ public class AbstractPolylineEncoderTest {
 
         // Assert
         Assert.AreEqual(expected.Length, result.Length);
-        Assert.IsTrue(expected.Equals(result));
+        Assert.IsTrue(expected.Equals(result, StringComparison.Ordinal));
     }
 
-    public class PolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
-        public PolylineEncoder()
+    private sealed class TestPolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
+        public TestPolylineEncoder()
             : base() { }
 
-        public PolylineEncoder(PolylineEncodingOptions options)
+        public TestPolylineEncoder(PolylineEncodingOptions options)
             : base(options) { }
 
         protected override string CreatePolyline(ReadOnlyMemory<char> polyline) => polyline.ToString();

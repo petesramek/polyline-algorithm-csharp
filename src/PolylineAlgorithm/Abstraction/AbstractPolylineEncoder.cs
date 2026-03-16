@@ -13,6 +13,7 @@ using PolylineAlgorithm.Properties;
 using System;
 using System.Buffers;
 using System.Diagnostics;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 
 /// <summary>
@@ -66,6 +67,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// </exception>
     /// <exception cref="InternalBufferOverflowException"></exception>
     /// <exception cref="InvalidOperationException"></exception>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "MA0051:Method is too long", Justification = "Method contains local methods. Actual method only 55 lines.")]
     public TPolyline Encode(ReadOnlySpan<TCoordinate> coordinates) {
         const string OperationName = nameof(Encode);
 
@@ -80,7 +82,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
         int position = 0;
         int consumed = 0;
-        int length = GetMaxBufferLength(coordinates.Length, _logger);
+        int length = GetMaxBufferLength(coordinates.Length);
 
         char[]? temp = length <= Options.StackAllocLimit
             ? null
@@ -118,8 +120,6 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
             }
         }
 
-
-
         _logger
             .LogOperationFinishedDebug(OperationName);
 
@@ -134,13 +134,13 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
             Debug.Assert(length > 0, "Buffer length must be greater than zero.");
             Debug.Assert(position >= 0, "Position must be non-negative.");
             Debug.Assert(position < length, "Position must be less than buffer length.");
-            Debug.Assert(length - position >= 0, "Remaining length must be non-negative.");
+            Debug.Assert(length >= position, "Remaining length must be non-negative.");
 
             return length - position;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        int GetMaxBufferLength(int count, ILogger logger) {
+        static int GetMaxBufferLength(int count) {
             Debug.Assert(count > 0, "Count must be greater than zero.");
 
             int requestedBufferLength = count * Defaults.Polyline.Block.Length.Max;
@@ -165,12 +165,14 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static void ValidateBuffer(CoordinateVariance variance, int position, Span<char> buffer, ILogger logger) {
             if (GetRemainingBufferSize(position, buffer.Length) < GetRequiredLength(variance)) {
+                var requiredLength = GetRequiredLength(variance);
+
                 logger
                     .LogOperationFailedDebug(OperationName);
                 logger
-                    .LogInternalBufferOverflowWarning(position, buffer.Length, requiredSpace);
+                    .LogInternalBufferOverflowWarning(position, buffer.Length, requiredLength);
 
-                throw new InternalBufferOverflowException($"Internal buffer has size of {buffer.Length}. At position {position} is required additional {GetRequiredLength(variance)} space.");
+                throw new InternalBufferOverflowException($"Internal buffer has size of {buffer.Length}. At position {position.ToString(CultureInfo.InvariantCulture)} is required additional {requiredLength.ToString(CultureInfo.InvariantCulture)} space.");
             }
         }
     }

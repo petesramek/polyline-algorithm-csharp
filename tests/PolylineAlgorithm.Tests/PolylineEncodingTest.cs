@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 
 [TestClass]
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "In test we want to test invalid values.")]
 public class PolylineEncodingTest {
     #region Dynamic Data Properties
 
@@ -33,7 +34,7 @@ public class PolylineEncodingTest {
         (524288,"____@"),
         (-524288,"~~~^"),
         (16777215,"}~~~^"),
-        (-16777215,"|~~~^")
+        (-16777215,"|~~~^"),
     ];
 
     public static IEnumerable<(double denormalized, int normalized, CoordinateValueType)> DenormalizedNormalizedPairs => [
@@ -48,7 +49,7 @@ public class PolylineEncodingTest {
         (90,9000000, CoordinateValueType.Longitude),
         (-90,-9000000, CoordinateValueType.Longitude),
         (180,18000000, CoordinateValueType.Longitude),
-        (-180,-18000000, CoordinateValueType.Longitude)
+        (-180,-18000000, CoordinateValueType.Longitude),
     ];
 
     public static IEnumerable<(double denormalized, CoordinateValueType)> DenormalizedOutOfRangeValues => [

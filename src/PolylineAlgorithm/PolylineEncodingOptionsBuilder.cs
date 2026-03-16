@@ -8,11 +8,20 @@ namespace PolylineAlgorithm;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using PolylineAlgorithm.Properties;
+using System.Globalization;
+#if NET8_0_OR_GREATER
+using System.Text;
+#endif
 
 /// <summary>
 /// Provides a builder for configuring options for polyline encoding operations.
 /// </summary>
-public class PolylineEncodingOptionsBuilder {
+public sealed class PolylineEncodingOptionsBuilder {
+#if NET8_0_OR_GREATER
+    private static readonly CompositeFormat _stackAllocLimitMustBeEqualOrGreaterThanMessageFormat = CompositeFormat.Parse(ExceptionMessageResource.StackAllocLimitMustBeEqualOrGreaterThanMessageFormat);
+#else
+    private static readonly string _stackAllocLimitMustBeEqualOrGreaterThanMessageFormat = ExceptionMessageResource.StackAllocLimitMustBeEqualOrGreaterThanMessageFormat;
+#endif
     private int _stackAllocLimit = 512;
     private ILoggerFactory _loggerFactory = NullLoggerFactory.Instance;
 
@@ -37,23 +46,23 @@ public class PolylineEncodingOptionsBuilder {
     public PolylineEncodingOptions Build() {
         return new PolylineEncodingOptions {
             StackAllocLimit = _stackAllocLimit,
-            LoggerFactory = _loggerFactory
+            LoggerFactory = _loggerFactory,
         };
     }
 
     /// <summary>
     /// Sets the buffer size for encoding operations.
     /// </summary>
-    /// <param name="bufferSize">
+    /// <param name="stackAllocLimit">
     /// The maximum buffer size. Must be greater than 11.
     /// </param>
     /// <returns>
     /// The current builder instance.
     /// </returns>
-    /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="bufferSize"/> is less than or equal to 11.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="stackAllocLimit"/> is less than or equal to 11.</exception>
     public PolylineEncodingOptionsBuilder WithStackAllocLimit(int stackAllocLimit) {
         const int minStackAllocLimit = 1;
-        _stackAllocLimit = stackAllocLimit >= minStackAllocLimit ? stackAllocLimit : throw new ArgumentOutOfRangeException(nameof(stackAllocLimit), string.Format(ExceptionMessageResource.StackAllocLimitMustBeEqualOrGreaterThanMessageFormat, minStackAllocLimit));
+        _stackAllocLimit = stackAllocLimit >= minStackAllocLimit ? stackAllocLimit : throw new ArgumentOutOfRangeException(nameof(stackAllocLimit), string.Format(CultureInfo.InvariantCulture, _stackAllocLimitMustBeEqualOrGreaterThanMessageFormat, minStackAllocLimit));
 
         return this;
     }

@@ -18,7 +18,7 @@ public class PolylineEncoderTest {
     /// <summary>
     /// The instance of the <see cref="PolylineEncoder"/> used for testing.
     /// </summary>
-    public PolylineEncoder Encoder = new();
+    private readonly PolylineEncoder _encoder = new();
 
     /// <summary>
     /// Tests the <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})"/> method with a null input, expecting an <see cref="ArgumentNullException"/>.
@@ -30,7 +30,7 @@ public class PolylineEncoderTest {
 
         // Act
         void EncodeNullCoordinates() {
-            Encoder.Encode(@null);
+            _encoder.Encode(@null);
         }
 
         // Assert
@@ -46,7 +46,7 @@ public class PolylineEncoderTest {
         List<Coordinate> empty = [];
 
         // Act
-        void EncodeEmptyCoordinates() => Encoder.Encode(empty);
+        void EncodeEmptyCoordinates() => _encoder.Encode(empty);
 
         // Assert
         Assert.ThrowsExactly<ArgumentException>(() => EncodeEmptyCoordinates());
@@ -64,7 +64,7 @@ public class PolylineEncoderTest {
         Polyline expected = Polyline.FromString(RandomValueProvider.GetPolyline(count));
 
         // Act
-        var result = Encoder.Encode(valid);
+        var result = _encoder.Encode(valid);
 
         // Assert
         Assert.AreEqual(expected.IsEmpty, result.IsEmpty);
@@ -83,7 +83,7 @@ public class PolylineEncoderTest {
         Polyline expected = Polyline.FromString(StaticValueProvider.Valid.GetPolyline());
 
         // Act
-        var result = Encoder.Encode(valid);
+        var result = _encoder.Encode(valid);
 
         // Assert
         Assert.AreEqual(expected.Length == 0, result.IsEmpty);
@@ -100,7 +100,7 @@ public class PolylineEncoderTest {
         {
             new(10, 20),
             new(-10, -20),
-            new(0, 0)
+            new(0, 0),
         };
 
         var encoder = new PolylineEncoder();
@@ -109,7 +109,7 @@ public class PolylineEncoderTest {
         var polyline = encoder.Encode(coordinates);
         var decoded = decoder.Decode(polyline).ToList();
 
-        Assert.AreEqual(coordinates.Count, decoded.Count);
+        Assert.HasCount(coordinates.Count, decoded);
 
         for (int i = 0; i < coordinates.Count; i++) {
             Assert.AreEqual(coordinates[i].Latitude, decoded[i].Latitude/*, 1e-6*/);

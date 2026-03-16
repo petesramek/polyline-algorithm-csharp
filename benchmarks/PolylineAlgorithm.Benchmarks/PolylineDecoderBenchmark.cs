@@ -18,7 +18,7 @@ public class PolylineDecoderBenchmark {
     private readonly Consumer _consumer = new();
 
     [Params(1, 100, 1_000)]
-    public int CoordinatesCount;
+    public int CoordinatesCount { get; set; }
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     /// <summary>
@@ -46,7 +46,7 @@ public class PolylineDecoderBenchmark {
     /// <summary>
     /// Polyline decoder instance.
     /// </summary>
-    public readonly PolylineDecoder Decoder = new();
+    private readonly PolylineDecoder _decoder = new();
 
     /// <summary>
     /// Sets up benchmark data.
@@ -64,7 +64,7 @@ public class PolylineDecoderBenchmark {
     /// </summary>
     [Benchmark]
     public void PolylineDecoder_Decode_Polyline() {
-        Decoder
+        _decoder
             .Decode(Polyline)
             .Consume(_consumer);
     }
@@ -74,7 +74,7 @@ public class PolylineDecoderBenchmark {
     /// </summary>
     [Benchmark]
     public void PolylineDecoder_Decode_String() {
-        Decoder
+        _decoder
             .Decode(String)
             .Consume(_consumer);
     }
@@ -84,7 +84,7 @@ public class PolylineDecoderBenchmark {
     /// </summary>
     [Benchmark]
     public void PolylineDecoder_Decode_CharArray() {
-        Decoder
+        _decoder
             .Decode(CharArray)
             .Consume(_consumer);
     }
@@ -94,7 +94,7 @@ public class PolylineDecoderBenchmark {
     /// </summary>
     [Benchmark]
     public void PolylineDecoder_Decode_Memory() {
-        Decoder
+        _decoder
             .Decode(Memory)
             .Consume(_consumer);
     }

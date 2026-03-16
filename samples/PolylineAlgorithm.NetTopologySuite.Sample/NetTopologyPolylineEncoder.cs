@@ -31,7 +31,9 @@ public sealed class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point, 
     /// <param name="current">Point instance.</param>
     /// <returns>Latitude value.</returns>
     protected override double GetLatitude(Point current) {
-        // Validate parameter
+        if (current is null) {
+            throw new ArgumentNullException(nameof(current));
+        }
 
         return current.X;
     }
@@ -42,7 +44,9 @@ public sealed class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point, 
     /// <param name="current">Point instance.</param>
     /// <returns>Longitude value.</returns>
     protected override double GetLongitude(Point current) {
-        // Validate parameter
+        if (current is null) {
+            throw new ArgumentNullException(nameof(current));
+        }
 
         return current.Y;
     }

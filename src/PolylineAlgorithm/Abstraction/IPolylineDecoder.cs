@@ -10,7 +10,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Defines a contract for decoding an encoded polyline into a sequence of geographic coordinates.
 /// </summary>
-public interface IPolylineDecoder<TPolyline, TCoordinate> {
+public interface IPolylineDecoder<TPolyline, out TCoordinate> {
     /// <summary>
     /// Decodes the specified encoded polyline into a sequence of geographic coordinates.
     /// </summary>

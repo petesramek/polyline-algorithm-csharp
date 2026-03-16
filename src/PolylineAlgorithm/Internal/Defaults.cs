@@ -73,6 +73,7 @@ internal static class Defaults {
             /// <summary>
             /// Contains constants related to normalized latitude values.
             /// </summary>
+            [SuppressMessage("Critical Code Smell", "S3218:Inner class members should not shadow outer class \"static\" or type members", Justification = "Internal use only.")]
             internal static class Normalized {
                 /// <summary>
                 /// The minimum normalized latitude value.
@@ -105,6 +106,7 @@ internal static class Defaults {
             /// <summary>
             /// Contains constants related to normalized longitude values.
             /// </summary>
+            [SuppressMessage("Critical Code Smell", "S3218:Inner class members should not shadow outer class \"static\" or type members", Justification = "Internal use only.")]
             internal static class Normalized {
                 /// <summary>
                 /// The minimum normalized latitude value.

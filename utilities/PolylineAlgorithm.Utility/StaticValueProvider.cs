@@ -15,7 +15,7 @@ internal static class StaticValueProvider {
         /// <summary>
         /// A predefined polyline instance representing a fixed encoded polyline string.
         /// </summary>
-        private static readonly string _polyline = "???_gsia@_cidP??~fsia@?~fsia@~bidP?~bidP??_gsia@";
+        private const string Polyline = "???_gsia@_cidP??~fsia@?~fsia@~bidP?~bidP??_gsia@";
 
         /// <summary>
         /// A predefined collection of <see cref="Coordinate"/> instances representing a closed path around the globe.
@@ -28,7 +28,7 @@ internal static class StaticValueProvider {
             new (90, -180),
             new (0, -180),
             new (-90, -180),
-            new (-90, 0)
+            new (-90, 0),
         ];
 
         /// <summary>
@@ -40,11 +40,11 @@ internal static class StaticValueProvider {
         }
 
         /// <summary>
-        /// Gets the predefined <see cref="Polyline"/> instance.
+        /// Gets the predefined <see cref="PolylineAlgorithm.Polyline"/> instance.
         /// </summary>
-        /// <returns>The static <see cref="Polyline"/> value.</returns>
+        /// <returns>The static <see cref="PolylineAlgorithm.Polyline"/> value.</returns>
         public static string GetPolyline() {
-            return _polyline;
+            return Polyline;
         }
     }
 

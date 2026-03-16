@@ -13,7 +13,7 @@ using System;
 
 [TestClass]
 public class AbstractPolylineDecoderTest {
-    private static readonly PolylineDecoder _decoder = new(new());
+    private static readonly TestPolylineDecoder _decoder = new(new());
 
     public static IEnumerable<object[]> CoordinateCount => [[1], [10], [100], [1_000]];
 
@@ -26,7 +26,7 @@ public class AbstractPolylineDecoderTest {
     [TestMethod]
     public void Constructor_Parameterless_Ok() {
         // Arrange && Act
-        var decoder = new PolylineDecoder(new PolylineEncodingOptions());
+        var decoder = new TestPolylineDecoder(new PolylineEncodingOptions());
 
         // Assert
         Assert.IsNotNull(decoder);
@@ -39,7 +39,7 @@ public class AbstractPolylineDecoderTest {
         var options = new PolylineEncodingOptions();
 
         // Act
-        var decoder = new PolylineDecoder(options);
+        var decoder = new TestPolylineDecoder(options);
 
         // Assert
         Assert.IsNotNull(decoder);
@@ -49,7 +49,7 @@ public class AbstractPolylineDecoderTest {
     [TestMethod]
     public void Constructor_Null_Options_Throws_ArgumentNullException() {
         // Arrange
-        static void New() => new PolylineDecoder(null!);
+        static TestPolylineDecoder New() => new(null!);
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentNullException>(New);
@@ -62,9 +62,7 @@ public class AbstractPolylineDecoderTest {
     [TestMethod]
     public void Decode_NullPolyline_Throws_ArgumentException() {
         // Arrange
-#pragma warning disable IDE0305 // Simplify collection initialization
-        static void Decode() => _decoder.Decode(null!).ToList();
-#pragma warning restore IDE0305 // Simplify collection initialization
+        static IEnumerable<(double Latitude, double Longitude)> Decode() => [.. _decoder.Decode(null!)];
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentNullException>(Decode);
@@ -77,9 +75,7 @@ public class AbstractPolylineDecoderTest {
     [TestMethod]
     public void Decode_EmptyPolyline_Throws_ArgumentException() {
         // Arrange
-#pragma warning disable IDE0305 // Simplify collection initialization
-        static void Decode() => _decoder.Decode(string.Empty).ToList();
-#pragma warning restore IDE0305 // Simplify collection initialization
+        static IEnumerable<(double Latitude, double Longitude)> Decode() => [.. _decoder.Decode(string.Empty)];
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentException>(Decode);
@@ -92,9 +88,7 @@ public class AbstractPolylineDecoderTest {
     [TestMethod]
     public void Decode_WhitespacePolyline_Throws_ArgumentException() {
         // Arrange
-#pragma warning disable IDE0305 // Simplify collection initialization
-        static void Decode() => _decoder.Decode(" ").ToList();
-#pragma warning restore IDE0305 // Simplify collection initialization
+        static IEnumerable<(double Latitude, double Longitude)> Decode() => [.. _decoder.Decode(" ")];
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentException>(Decode);
@@ -108,9 +102,7 @@ public class AbstractPolylineDecoderTest {
     [DynamicData(nameof(InvalidPolylines))]
     public void Decode_InvalidPolyline_Throws_InvalidPolylineException(string polyline) {
         // Arrange
-#pragma warning disable IDE0305 // Simplify collection initialization
-        void Decode() => _decoder.Decode(polyline).ToList();
-#pragma warning restore IDE0305 // Simplify collection initialization
+        IEnumerable<(double Latitude, double Longitude)> Decode() => [.. _decoder.Decode(polyline)];
 
         // Act
         var exception = Assert.ThrowsExactly<InvalidPolylineException>(Decode);
@@ -123,9 +115,7 @@ public class AbstractPolylineDecoderTest {
     [TestMethod]
     public void Decode_ShortPolyline_Throws_InvalidPolylineException() {
         // Arrange
-#pragma warning disable IDE0305 // Simplify collection initialization
-        static void Decode() => _decoder.Decode("?").ToList();
-#pragma warning restore IDE0305 // Simplify collection initialization
+        static IEnumerable<(double Latitude, double Longitude)> Decode() => [.. _decoder.Decode("?")];
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentException>(Decode);
@@ -161,8 +151,8 @@ public class AbstractPolylineDecoderTest {
         CollectionAssert.AreEqual(expected.ToArray(), result.ToArray());
     }
 
-    public class PolylineDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-        public PolylineDecoder(PolylineEncodingOptions options)
+    private sealed class TestPolylineDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
+        public TestPolylineDecoder(PolylineEncodingOptions options)
             : base(options) { }
 
         protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) {

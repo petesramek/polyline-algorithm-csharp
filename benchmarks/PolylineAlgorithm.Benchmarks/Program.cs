@@ -10,7 +10,7 @@ using BenchmarkDotNet.Running;
 /// <summary>
 /// Main entry point for benchmarks.
 /// </summary>
-internal class Program {
+internal static class Program {
     /// <summary>
     /// Runs the benchmarks.
     /// </summary>

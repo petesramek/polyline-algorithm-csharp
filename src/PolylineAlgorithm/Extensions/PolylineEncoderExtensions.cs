@@ -17,21 +17,22 @@ using static PolylineAlgorithm.Internal.Defaults;
 /// </summary>
 public static class PolylineEncoderExtensions {
     /// <summary>
-    /// Encodes a collection of <see cref="Coordinate"/> instances into an encoded polyline.
+    /// Encodes a collection of <see cref="PolylineAlgorithm.Coordinate"/> instances into an encoded polyline.
     /// </summary>
     /// <param name="encoder">
     /// The <see cref="IPolylineEncoder{TCoordinate, TPolyline}"/> instance used to perform the encoding operation.
     /// </param>
     /// <param name="coordinates">
-    /// The sequence of <see cref="Coordinate"/> objects to encode.
+    /// The sequence of <see cref="PolylineAlgorithm.Coordinate"/> objects to encode.
     /// </param>
     /// <returns>
-    /// A <see cref="Polyline"/> representing the encoded polyline string for the provided coordinates.
+    /// A <see cref="PolylineAlgorithm.Polyline"/> representing the encoded polyline string for the provided coordinates.
     /// </returns>
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="encoder"/> is <see langword="null"/>.
     /// </exception>
-#pragma warning disable CA1002 // Do not expose generic lists
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1002:Do not expose generic lists", Justification = "We need a list as we do need to marshal it as span.")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "MA0016:Prefer using collection abstraction instead of implementation", Justification = "We need a list as we do need to marshal it as span.")]
     public static TPolyline Encode<TCoordinate, TPolyline>(this IPolylineEncoder<TCoordinate, TPolyline> encoder, List<TCoordinate> coordinates) {
         if (encoder is null) {
             throw new ArgumentNullException(nameof(encoder));
@@ -41,30 +42,25 @@ public static class PolylineEncoderExtensions {
             throw new ArgumentNullException(nameof(coordinates));
         }
 
-        ReadOnlySpan<TCoordinate> span;
-
 #if NET5_0_OR_GREATER
         return encoder.Encode(CollectionsMarshal.AsSpan(coordinates));
 #else
-        return encoder.Encode(coordinates.ToArray().AsSpan());
+        return encoder.Encode([.. coordinates]);
 #endif
-
-
     }
-#pragma warning restore CA1002 // Do not expose generic lists
 
 
     /// <summary>
-    /// Encodes an array of <see cref="Coordinate"/> instances into an encoded polyline.
+    /// Encodes an array of <see cref="PolylineAlgorithm.Coordinate"/> instances into an encoded polyline.
     /// </summary>
     /// <param name="encoder">
     /// The <see cref="IPolylineEncoder{TCoordinate, TPolyline}"/> instance used to perform the encoding operation.
     /// </param>
     /// <param name="coordinates">
-    /// The array of <see cref="Coordinate"/> objects to encode.
+    /// The array of <see cref="PolylineAlgorithm.Coordinate"/> objects to encode.
     /// </param>
     /// <returns>
-    /// A <see cref="Polyline"/> representing the encoded polyline string for the provided coordinates.
+    /// A <see cref="PolylineAlgorithm.Polyline"/> representing the encoded polyline string for the provided coordinates.
     /// </returns>
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="encoder"/> is <see langword="null"/>.

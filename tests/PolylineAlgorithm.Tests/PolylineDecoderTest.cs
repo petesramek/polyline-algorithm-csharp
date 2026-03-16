@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright © Pete Sramek. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
@@ -18,7 +18,7 @@ public class PolylineDecoderTest {
     /// <summary>
     /// The instance of the <see cref="PolylineDecoder"/> used for testing.
     /// </summary>
-    public PolylineDecoder Decoder = new();
+    private readonly PolylineDecoder _decoder = new();
 
     /// <summary>
     /// Tests the <see cref="PolylineDecoder.Decode(ref readonly Polyline)"/> method with an empty input, expecting an <see cref="ArgumentException"/>.
@@ -29,28 +29,11 @@ public class PolylineDecoderTest {
         Polyline empty = new();
 
         // Act
-#pragma warning disable IDE0305 // Simplify collection initialization
-        void Execute(Polyline value) => Decoder.Decode(value).ToList();
-#pragma warning restore IDE0305 // Simplify collection initialization
+        IEnumerable<Coordinate> Execute(Polyline value) => [.. _decoder.Decode(value)];
 
         // Assert
         Assert.ThrowsExactly<ArgumentException>(() => Execute(empty));
     }
-
-    /// <summary>
-    /// Tests the <see cref="PolylineDecoder.Decode(ref readonly Polyline)"/> method with an invalid input, expecting an <see cref="InvalidCoordinateException"/>.
-    /// </summary>
-    //[TestMethod]
-    //public void Decode_Invalid_Input_ThrowsException() {
-    //    // Arrange
-    //    Polyline value = Polyline.FromString(StaticValueProvider.GetPolyline());
-
-    //    // Act
-    //    void Execute(Polyline value) => Decoder.Decode(value).ToList();
-
-    //    // Assert
-    //    var exception = Assert.ThrowsExactly<InvalidPolylineException>(() => Execute(value));
-    //}
 
     /// <summary>
     /// Tests the <see cref="PolylineDecoder.Decode(ref readonly Polyline)"/> method with a valid input.
@@ -64,7 +47,7 @@ public class PolylineDecoderTest {
         Polyline value = Polyline.FromString(RandomValueProvider.GetPolyline(count));
 
         // Act
-        var result = Decoder.Decode(value);
+        var result = _decoder.Decode(value);
 
         // Assert
         CollectionAssert.AreEqual(expected.ToArray(), result.ToArray());
@@ -77,7 +60,7 @@ public class PolylineDecoderTest {
         string value = StaticValueProvider.Valid.GetPolyline();
 
         // Act
-        var result = Decoder.Decode(Polyline.FromString(value));
+        var result = _decoder.Decode(Polyline.FromString(value));
 
         // Assert
         CollectionAssert.AreEqual(expected.ToArray(), result.ToArray());

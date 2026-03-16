@@ -20,7 +20,7 @@ public class PolylineTest {
         [1],
         [10],
         [100],
-        [1_000]
+        [1_000],
     ];
 
     /// <summary>
@@ -29,7 +29,7 @@ public class PolylineTest {
     [TestMethod]
     public void Constructor_Parameterless_Ok() {
         // Arrange
-        int expectedLength = 0;
+        const int expectedLength = 0;
 
         // Act
         Polyline polyline = new();
@@ -46,7 +46,7 @@ public class PolylineTest {
     [TestMethod]
     public void FromString_Null_String_ArgumentNullException() {
         // Arrange
-        string value = null!;
+        const string value = null!;
         static Polyline New(string value) => Polyline.FromString(value);
 
         // Act
@@ -60,7 +60,7 @@ public class PolylineTest {
     /// <summary>
     /// Tests the <see cref="Polyline"/> constructor with a character array parameter.
     /// </summary>
-    /// <param name="value">The string value.</param>
+    /// <param name="size">Number of coordinates in polyline.</param>
     [TestMethod]
     [DynamicData(nameof(LengthParameters))]
     public void FromString_String_Parameter_Ok(int size) {
@@ -98,7 +98,7 @@ public class PolylineTest {
     /// <summary>
     /// Tests the <see cref="Polyline"/> constructor with a character array parameter.
     /// </summary>
-    /// <param name="value">The string value.</param>
+    /// <param name="size">Number of coordinates in polyline.</param>
     [TestMethod]
     [DynamicData(nameof(LengthParameters))]
     public void FromCharArray_CharArray_Parameter_Ok(int size) {
@@ -119,10 +119,8 @@ public class PolylineTest {
     /// <summary>
     /// Tests the <see cref="Polyline"/> constructor with a memory parameter.
     /// </summary>
-    /// <param name="value">The string value.</param>
     [TestMethod]
-    [DynamicData(nameof(LengthParameters))]
-    public void FromMemory_Empty_Memory_Parameter_Ok(int size) {
+    public void FromMemory_Empty_Memory_Parameter_Ok() {
         // Arrange
         var polyline = ReadOnlyMemory<char>.Empty;
         bool isEmpty = polyline.Length == 0;
@@ -140,7 +138,7 @@ public class PolylineTest {
     /// <summary>
     /// Tests the <see cref="Polyline"/> constructor with a memory parameter.
     /// </summary>
-    /// <param name="value">The string value.</param>
+    /// <param name="size">Number of coordinates in polyline.</param>
     [TestMethod]
     [DynamicData(nameof(LengthParameters))]
     public void FromMemory_Memory_Parameter_Ok(int size) {
@@ -161,7 +159,7 @@ public class PolylineTest {
     /// <summary>
     /// Tests the <see cref="Polyline.ToString"/> method.
     /// </summary>
-    /// <param name="value">The string value.</param>
+    /// <param name="size">Number of coordinates in polyline.</param>
     [TestMethod]
     [DynamicData(nameof(LengthParameters))]
     public void ToString_Returns_Correct_String(int size) {
@@ -179,7 +177,6 @@ public class PolylineTest {
     /// <summary>
     /// Tests the <see cref="Polyline.ToString"/> method.
     /// </summary>
-    /// <param name="value">The string value.</param>
     [TestMethod]
     public void ToString_Returns_Empty_String() {
         // Arrange
@@ -196,7 +193,7 @@ public class PolylineTest {
     /// <summary>
     /// Tests the <see cref="Polyline.ToCharArray"/> method.
     /// </summary>
-    /// <param name="value">The string value.</param>
+    /// <param name="size">Number of coordinates in polyline.</param>
     [TestMethod]
     [DynamicData(nameof(LengthParameters))]
     public void CopyTo_Equals_Correct_CharArray(int size) {
@@ -215,7 +212,7 @@ public class PolylineTest {
     /// <summary>
     /// Tests the <see cref="Polyline.ToCharArray"/> method.
     /// </summary>
-    /// <param name="value">The string value.</param>
+    /// <param name="size">Number of coordinates in polyline.</param>
     [TestMethod]
     [DynamicData(nameof(LengthParameters))]
     public void CopyTo_Smaller_Array_Destination_Parameter_Throws_ArgumentException(int size) {
@@ -234,7 +231,7 @@ public class PolylineTest {
     /// <summary>
     /// Tests the <see cref="Polyline.ToCharArray"/> method.
     /// </summary>
-    /// <param name="value">The string value.</param>
+    /// <param name="size">Number of coordinates in polyline.</param>
     [TestMethod]
     [DynamicData(nameof(LengthParameters))]
     public void CopyTo_Null_Destination_Parameter_Throws_ArgumentNullException(int size) {
@@ -257,7 +254,7 @@ public class PolylineTest {
         Polyline equal = Polyline.FromString(nameof(polyline));
         Polyline notEqual = Polyline.FromString(nameof(notEqual));
         Polyline empty = new();
-        string typeNotEqual = "not a polyline";
+        const string typeNotEqual = "not a polyline";
 
         // Act && Assert
         Assert.IsTrue(polyline == equal);

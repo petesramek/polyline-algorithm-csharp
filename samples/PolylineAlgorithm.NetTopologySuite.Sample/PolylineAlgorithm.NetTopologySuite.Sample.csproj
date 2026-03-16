@@ -9,7 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="NetTopologySuite" />
+		<PackageReference Include="NetTopologySuite" Version="2.*" />
 	</ItemGroup>
 
 	<ItemGroup>

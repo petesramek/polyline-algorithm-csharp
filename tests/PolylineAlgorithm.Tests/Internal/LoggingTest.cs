@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Testing;
 using PolylineAlgorithm.Internal.Logging;
 using PolylineAlgorithm.Tests.Fakes;
+using System.Globalization;
 
 [TestClass]
 public class LoggingTest {
@@ -124,9 +125,9 @@ public class LoggingTest {
     [TestMethod]
     public void ILogger_LogInternalBufferOverflowWarning_Ok() {
         // Arrange
-        int position = 5;
-        int bufferLength = 10;
-        int requiredSpace = 15;
+        const int position = 5;
+        const int bufferLength = 10;
+        const int requiredSpace = 15;
 
         // Act
         _loggerFactory
@@ -144,8 +145,8 @@ public class LoggingTest {
     [TestMethod]
     public void ILogger_LogCannotWriteValueToBufferWarning_Ok() {
         // Arrange
-        int position = 5;
-        int index = 1;
+        const int position = 5;
+        const int index = 1;
 
         // Act
         _loggerFactory
@@ -168,8 +169,8 @@ public class LoggingTest {
     public void ILogger_LogPolylineCannotBeShorterThanWarning_Ok(string value) {
         // Arrange
         string argumentName = value;
-        int actualLength = 10;
-        int minimumLength = 5;
+        const int actualLength = 10;
+        const int minimumLength = 5;
 
         // Act
         _loggerFactory
@@ -188,8 +189,8 @@ public class LoggingTest {
     [TestMethod]
     public void ILogger_LogRequestedBufferSizeExceedsMaxBufferLengthWarning_Ok() {
         // Arrange
-        int requestedBufferLength = 5;
-        int maxBufferLength = 10;
+        const int requestedBufferLength = 5;
+        const int maxBufferLength = 10;
 
         // Act
         _loggerFactory
@@ -207,7 +208,7 @@ public class LoggingTest {
     [TestMethod]
     public void ILogger_LogInvalidPolylineWarning_Ok() {
         // Arrange
-        int position = 5;
+        const int position = 5;
 
         // Act
         _loggerFactory
@@ -218,7 +219,7 @@ public class LoggingTest {
         Assert.AreEqual(new EventId(307, nameof(LogWarningExtensions.LogInvalidPolylineWarning)), _loggerProvider.Collector.LatestRecord.Id);
         Assert.AreEqual(LogLevel.Warning, _loggerProvider.Collector.LatestRecord.Level);
         Assert.AreEqual(
-            $"Polyline is invalid or malformed at position {position}.",
+            $"Polyline is invalid or malformed at position {position.ToString(CultureInfo.InvariantCulture)}.",
             _loggerProvider.Collector.LatestRecord.Message);
     }
 }

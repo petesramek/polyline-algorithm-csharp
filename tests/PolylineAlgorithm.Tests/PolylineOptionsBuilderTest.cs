@@ -25,7 +25,7 @@ public class PolylineOptionsBuilderTest {
     public void Build_Returns_Instance_With_Default_Values() {
         // Arrange
         var builder = PolylineEncodingOptionsBuilder.Create();
-        var stackAllocLimit = 512;
+        const int stackAllocLimit = 512;
         var loggerFactory = NullLoggerFactory.Instance;
 
         // Act
@@ -50,14 +50,14 @@ public class PolylineOptionsBuilderTest {
         // Assert
         Assert.IsNotNull(exception);
         Assert.AreEqual("stackAllocLimit", exception.ParamName);
-        Assert.Contains("Stack alloc limit must be equal or greater than 1.", exception.Message);
+        Assert.Contains("Stack alloc limit must be equal or greater than 1.", exception.Message, StringComparison.Ordinal);
     }
 
     [TestMethod]
     public void Build_Returns_Instance_With_Expected_StackAllocLimit() {
         // Arrange
         var builder = PolylineEncodingOptionsBuilder.Create();
-        var expected = 256;
+        const int expected = 256;
 
         // Act
         var options = builder
@@ -73,7 +73,7 @@ public class PolylineOptionsBuilderTest {
     public void Build_Returns_Instance_With_Expected_LoggerFactory() {
         // Arrange
         var builder = PolylineEncodingOptionsBuilder.Create();
-        var expected = new FakeLoggerFactory(new FakeLoggerProvider());
+        using var expected = new FakeLoggerFactory(new FakeLoggerProvider());
 
         // Act
         var options = builder

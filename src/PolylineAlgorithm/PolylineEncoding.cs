@@ -8,6 +8,10 @@ namespace PolylineAlgorithm;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Properties;
 using System;
+using System.Globalization;
+#if NET8_0_OR_GREATER
+using System.Text;
+#endif
 
 /// <summary>
 /// Provides methods for encoding and decoding polyline data, as well as utilities for normalizing and de-normalizing
@@ -18,6 +22,13 @@ using System;
 /// coordinates. It also provides validation utilities to ensure values conform to expected ranges for latitude and
 /// longitude.</remarks>
 public static class PolylineEncoding {
+#if NET8_0_OR_GREATER
+    private static readonly CompositeFormat _argumentCannotBeCoordinateValueTypeMessageFormat = CompositeFormat.Parse(ExceptionMessageResource.ArgumentCannotBeCoordinateValueTypeMessageFormat);
+    private static readonly CompositeFormat _argumentOutOfRangeForSpecifiedCoordinateValueTypeMessageFormat = CompositeFormat.Parse(ExceptionMessageResource.ArgumentOutOfRangeForSpecifiedCoordinateValueTypeMessageFormat);
+#else
+    private static readonly string _argumentCannotBeCoordinateValueTypeMessageFormat = ExceptionMessageResource.ArgumentCannotBeCoordinateValueTypeMessageFormat;
+    private static readonly string _argumentOutOfRangeForSpecifiedCoordinateValueTypeMessageFormat = ExceptionMessageResource.ArgumentOutOfRangeForSpecifiedCoordinateValueTypeMessageFormat;
+#endif
     /// <summary>
     /// Attempts to read a value from the specified buffer and updates the variance.
     /// </summary>
@@ -92,12 +103,12 @@ public static class PolylineEncoding {
     public static double Denormalize(int value, CoordinateValueType type) {
         // Validate that the type is not None, as it does not represent a valid coordinate value type.
         if (type == CoordinateValueType.None) {
-            throw new ArgumentOutOfRangeException(nameof(type), string.Format(ExceptionMessageResource.ArgumentCannotBeCoordinateValueTypeMessageFormat, type.ToString()));
+            throw new ArgumentOutOfRangeException(nameof(type), string.Format(CultureInfo.InvariantCulture, _argumentCannotBeCoordinateValueTypeMessageFormat, type.ToString()));
         }
 
         // Validate that the value is finite and within the acceptable range for the specified type.
         if (!ValidateValue(value, type)) {
-            throw new ArgumentOutOfRangeException(nameof(value), value, string.Format(ExceptionMessageResource.ArgumentOutOfRangeForSpecifiedCoordinateValueTypeMessageFormat, type.ToString().ToLowerInvariant()));
+            throw new ArgumentOutOfRangeException(nameof(value), value, string.Format(CultureInfo.InvariantCulture, _argumentOutOfRangeForSpecifiedCoordinateValueTypeMessageFormat, type.ToString().ToLowerInvariant()));
         }
 
         // Return fast if the value is zero, return 0.0 as the denormalized value.
@@ -184,7 +195,7 @@ public static class PolylineEncoding {
     public static int Normalize(double value, CoordinateValueType type) {
         // Validate that the type is not None, as it does not represent a valid coordinate value type.
         if (type == CoordinateValueType.None) {
-            throw new ArgumentOutOfRangeException(nameof(type), string.Format(ExceptionMessageResource.ArgumentCannotBeCoordinateValueTypeMessageFormat, type.ToString()));
+            throw new ArgumentOutOfRangeException(nameof(type), string.Format(CultureInfo.InvariantCulture, _argumentCannotBeCoordinateValueTypeMessageFormat, type.ToString()));
         }
 
         // Validate that the value is finite and not NaN or Infinity.
@@ -194,11 +205,11 @@ public static class PolylineEncoding {
 
         // Validate that the value is within the acceptable range for the specified type.
         if (!ValidateValue(value, type)) {
-            throw new ArgumentOutOfRangeException(nameof(value), value, string.Format(ExceptionMessageResource.ArgumentOutOfRangeForSpecifiedCoordinateValueTypeMessageFormat, type.ToString().ToLowerInvariant()));
+            throw new ArgumentOutOfRangeException(nameof(value), value, string.Format(CultureInfo.InvariantCulture, _argumentOutOfRangeForSpecifiedCoordinateValueTypeMessageFormat, type.ToString().ToLowerInvariant()));
         }
 
         // Fast return if the value is zero, return 0 as the normalized value.
-        if (value == default) {
+        if (value.Equals(default)) {
             return 0;
         }
 

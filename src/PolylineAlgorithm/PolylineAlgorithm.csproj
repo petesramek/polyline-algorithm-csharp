@@ -10,13 +10,13 @@
 
 	<PropertyGroup>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-	</PropertyGroup>     
+	</PropertyGroup>
 
 	<PropertyGroup>
 		<DebugType>pdbonly</DebugType>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-	</PropertyGroup>   
+	</PropertyGroup>
 
 	<PropertyGroup>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
@@ -39,11 +39,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers">
+		<PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="4.*">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions"  Version="[6.0.0,11.0.0)" />
 	</ItemGroup>
 
 	<ItemGroup>

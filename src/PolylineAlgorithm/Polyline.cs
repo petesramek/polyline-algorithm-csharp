@@ -20,13 +20,11 @@ using System.Runtime.InteropServices;
 [StructLayout(LayoutKind.Auto)]
 [DebuggerDisplay("Value: {ToDebugString()}, IsEmpty: {IsEmpty}, Length: {Length}")]
 public readonly struct Polyline : IEquatable<Polyline> {
-    private readonly ReadOnlyMemory<char> _value;
-
     /// <summary>
     /// Initializes a new, empty instance of the <see cref="Polyline"/> struct.
     /// </summary>
     public Polyline() {
-        _value = ReadOnlyMemory<char>.Empty;
+        Value = ReadOnlyMemory<char>.Empty;
     }
 
     /// <summary>
@@ -36,13 +34,13 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// A read-only memory region of characters representing an encoded polyline.
     /// </param>
     private Polyline(ReadOnlyMemory<char> value) {
-        _value = value;
+        Value = value;
     }
 
     /// <summary>
     /// Gets the underlying read-only sequence of characters representing the polyline.
     /// </summary>
-    internal readonly ReadOnlyMemory<char> Value => _value;
+    internal readonly ReadOnlyMemory<char> Value { get; }
 
     /// <summary>
     /// Gets a value indicating whether this <see cref="Polyline"/> is empty.
@@ -75,7 +73,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
             throw new ArgumentException(ExceptionMessageResource.DestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthMessage, nameof(destination));
         }
 
-        _value.CopyTo(destination);
+        Value.CopyTo(destination);
     }
 
     /// <summary>
@@ -116,7 +114,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     }
 
     /// <inheritdoc />
-    public override bool Equals(object obj) {
+    public override bool Equals(object? obj) {
         return obj is Polyline other && Equals(other);
     }
 

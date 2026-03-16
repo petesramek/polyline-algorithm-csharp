@@ -6,6 +6,7 @@
 namespace PolylineAlgorithm.Tests;
 
 using PolylineAlgorithm;
+using System.Globalization;
 
 /// <summary>
 /// Defines tests for the <see cref="InvalidPolylineException"/> type.
@@ -16,6 +17,7 @@ public class InvalidPolylineExceptionTest {
     /// Tests the <see cref="InvalidPolylineException.Throw(int)"/> method with an invalid coordinate parameter, expecting an <see cref="InvalidPolylineException"/>.
     /// </summary>
     [TestMethod]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA5394:Do not use insecure randomness", Justification = "Tests.")]
     public void Throw_Method_Invalid_Coordinate_Parameter_PolylineMalformedException_Throw() {
         // Arrange
         var position = Random.Shared.Next();
@@ -26,6 +28,6 @@ public class InvalidPolylineExceptionTest {
 
         // Assert
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
-        Assert.Contains(position.ToString(), exception.Message);
+        Assert.Contains(position.ToString(CultureInfo.InvariantCulture), exception.Message, StringComparison.Ordinal);
     }
 }

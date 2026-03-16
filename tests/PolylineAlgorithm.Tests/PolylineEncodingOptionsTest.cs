@@ -24,13 +24,13 @@ public class PolylineEncodingOptionsTest {
     [TestMethod]
     public void Constructor_ValidOptions_Ok() {
         // Arrange
-        var stackAllocLimit = 256;
+        const int stackAllocLimit = 256;
         var loggerFactory = new FakeLoggerFactory(new FakeLoggerProvider());
 
         // Act
         var options = new PolylineEncodingOptions() {
             StackAllocLimit = stackAllocLimit,
-            LoggerFactory = loggerFactory
+            LoggerFactory = loggerFactory,
         };
 
         // Assert
