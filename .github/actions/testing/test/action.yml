@@ -57,38 +57,34 @@ runs:
       with:
         dotnet-version: ${{ inputs.dotnet_sdk_version }}
 
-    - if: ${{ inputs.use-trf-logger == 'true' }}
-      name: 'Set TRX_LOGGER_ARGS environment variable'
-      shell: bash
-      run: echo "TRX_LOGGER_ARGS=--logger:trx" >> $GITHUB_ENV
-
-    - if: ${{ inputs.collect-code-coverage == 'true' }}
-      name: 'Set CODE_COVERAGE_ARGS environment variable'
-      shell: bash
-      run: |
-        echo 'CODE_COVERAGE_ARGS=--collect:"XPlat Code Coverage"' >> $GITHUB_ENV
-
-    - if: ${{ inputs.collect-code-coverage == 'true' && inputs.code-coverage-settings-file != ''}}
-      name: 'Set CODE_COVERAGE_ARGS environment variable'
-      shell: bash
-      run: |
-        echo "CODE_COVERAGE_ARGS=${{ env.CODE_COVERAGE_ARGS }} --settings ${{ inputs.code-coverage-settings-file }}" >> $GITHUB_ENV
-    
-    - if: ${{ inputs.collect-code-coverage == 'true'}}
-      name: 'Set CODE_COVERAGE_ARGS environment variable'
-      shell: bash
-      run: |
-        echo "CODE_COVERAGE_ARGS=${{ env.CODE_COVERAGE_ARGS }} --property:CoverletOutputFormat=${{ inputs.code-coverage-output-format}}" >> $GITHUB_ENV
-
     - name: 'Test with .NET CLI'
       shell: bash
-      run: dotnet test ${{ inputs.project-path }} \
-        --configuration ${{ inputs.build-configuration }} \
-        ${{ env.TRX_LOGGER_ARGS }} \
-        --results-directory ${{ inputs.test-results-directory }} \
-        ${{ env.CODE_COVERAGE_ARGS }}
       env:
         DOTNET_USE_TEST_PLATFORM: '1'
+      run: |
+        ARGS=()
+        ARGS+=("${{ inputs.project-path }}")
+        ARGS+=(--configuration "${{ inputs.build-configuration }}")
+        ARGS+=(--results-directory "${{ inputs.test-results-directory }}")
+
+        # Optional TRX logger
+        if [[ "${{ inputs.use-trf-logger }}" == "true" ]]; then
+          ARGS+=(--logger:trx)
+        fi
+
+        # Optional code coverage logic
+        if [[ "${{ inputs.collect-code-coverage }}" == "true" ]]; then
+          ARGS+=(--collect:"XPlat Code Coverage")
+
+          if [[ -n "${{ inputs.code-coverage-settings-file }}" ]]; then
+            ARGS+=(--settings "${{ inputs.code-coverage-settings-file }}")
+          fi
+
+          ARGS+=(--property:CoverletOutputFormat="${{ inputs.code-coverage-output-format }}")
+        fi
+
+        echo "Running: dotnet test ${ARGS[*]}"
+        dotnet test "${ARGS[@]}"
 
     - name: 'Upload test results'
       if: ${{ inputs.upload-test-artifacts == 'true' }}
