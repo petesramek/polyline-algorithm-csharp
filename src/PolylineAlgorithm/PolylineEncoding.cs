@@ -198,7 +198,7 @@ public static class PolylineEncoding {
         }
 
         // Fast return if the value is zero, return 0 as the normalized value.
-        if (value == 0.0) {
+        if (value == default) {
             return 0;
         }
 
@@ -221,19 +221,24 @@ public static class PolylineEncoding {
     /// integer.
     /// </param>
     /// <returns>
-    /// The number of characters required to represent the <paramref name="variance"/> value,  based on its magnitude.
-    /// Returns a value between 1 and 6 inclusive.
+    /// The number of characters required to represent the <paramref name="variance"/> value, based on its magnitude.
     /// </returns>
 
-    public static int GetCharCount(int variance) => variance switch {
-        // DO NOT CHANGE THE ORDER. We are skipping inside exclusive ranges as those are covered by previous statements.
-        >= -16 and <= +15 => 1,
-        >= -512 and <= +511 => 2,
-        >= -16384 and <= +16383 => 3,
-        >= -524288 and <= +524287 => 4,
-        >= -16777216 and <= +16777215 => 5,
-        _ => 6,
-    };
+    public static int GetCharCount(int variance) {
+        int rem = variance << 1;
+        if (variance < 0) {
+            rem = ~rem;
+        }
+
+        int count = 1;
+
+        while (rem >= Defaults.Algorithm.Space) {
+            rem >>= Defaults.Algorithm.ShiftLength;
+            count++;
+        }
+
+        return count;
+    }
 
     /// <summary>
     /// Validates whether the specified normalized value falls within the acceptable range for the given value type.
