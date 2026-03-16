@@ -146,7 +146,7 @@ jobs:
       - name: 'Run tests'
         uses: ./.github/actions/testing/test
         with:
-          project-path: './tests'
+          project-path: '/tests'
           test-results-directory: '${{ runner.temp }}/${{ env.test-result-directory }}/'
           code-coverage-settings-file: '${{ github.workspace}}/code-coverage-settings.xml'
 
