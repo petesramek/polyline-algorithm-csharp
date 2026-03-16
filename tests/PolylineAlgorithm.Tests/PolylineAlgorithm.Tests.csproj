@@ -11,12 +11,6 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<IsTestProject>true</IsTestProject>
-		<EnableMSTestRunner>true</EnableMSTestRunner>
-		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
-		<TestingPlatformShowTestsFailure>true</TestingPlatformShowTestsFailure>
-		<TestingPlatformCaptureOutput>false</TestingPlatformCaptureOutput>
-		<TestingExtensionsProfile>None</TestingExtensionsProfile>
-		<UseMicrosoftTestingPlatform>true</UseMicrosoftTestingPlatform>
 		<UseModernDotnetTest>true</UseModernDotnetTest>
 	</PropertyGroup>
 
