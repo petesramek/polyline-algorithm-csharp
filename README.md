@@ -16,10 +16,17 @@ Lightweight .NET Standard 2.1 library implementing Google-compliant Encoded Poly
 
 ## Features
 
-- Immutable types for encoded polylines and geographic coordinates
-- Simple, extensible encoding interface (`IPolylineEncoder<TCoordinate, TPolyline>`)
-- Unit tests and benchmarks included
-- Internal logging and diagnostics (for agents and maintainers)
+- Fully compliant Google Encoded Polyline Algorithm for .NET Standard 2.1+
+- Immutable, strongly-typed coordinate and polyline data structures
+- Predefined encoder and decoder types for quick usage, extensibility for custom coordinate types
+- Robust input validation with descriptive exceptions for malformed/invalid data
+- Simple, extensible encoding and decoding APIs (`IPolylineEncoder<TCoordinate, TPolyline>`, `IPolylineDecoder<TPolyline, TCoordinate>`, `AbstractPolylineEncoder<TCoordinate, TPolyline>`, `AbstractPolylineDecoder<TPolyline, TCoordinate>`)
+- Default encoding and decoding implementations (`PolylineEncoder`, `PolylineDecoder`)
+- Advanced configuration via `PolylineEncodingOptions` (buffer size, logging, etc.)
+- Internal logging and diagnostic support for agents and maintainers
+- Thorough unit tests and benchmarks for correctness and performance
+- Auto-generated API documentation ([API Reference](https://petesramek.github.io/polyline-algorithm-csharp/))
+- Support for .NET Core, .NET 5+, Xamarin, Unity, Blazor, and other platforms supporting `netstandard2.1`
 
 ## Installation
 
