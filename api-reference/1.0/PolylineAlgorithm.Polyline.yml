@@ -3,7 +3,7 @@ title: Struct Polyline
 body:
 - api1: Struct Polyline
   id: PolylineAlgorithm_Polyline
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Polyline.cs#L20
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Polyline.cs#L20
   metadata:
     uid: PolylineAlgorithm.Polyline
     commentId: T:PolylineAlgorithm.Polyline
@@ -42,7 +42,7 @@ body:
 - h2: Constructors
 - api3: Polyline()
   id: PolylineAlgorithm_Polyline__ctor
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Polyline.cs#L28
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Polyline.cs#L28
   metadata:
     uid: PolylineAlgorithm.Polyline.#ctor
     commentId: M:PolylineAlgorithm.Polyline.#ctor
@@ -51,7 +51,7 @@ body:
 - h2: Properties
 - api3: IsEmpty
   id: PolylineAlgorithm_Polyline_IsEmpty
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Polyline.cs#L50
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Polyline.cs#L50
   metadata:
     uid: PolylineAlgorithm.Polyline.IsEmpty
     commentId: P:PolylineAlgorithm.Polyline.IsEmpty
@@ -64,7 +64,7 @@ body:
       url: https://learn.microsoft.com/dotnet/api/system.boolean
 - api3: Length
   id: PolylineAlgorithm_Polyline_Length
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Polyline.cs#L55
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Polyline.cs#L55
   metadata:
     uid: PolylineAlgorithm.Polyline.Length
     commentId: P:PolylineAlgorithm.Polyline.Length
@@ -78,7 +78,7 @@ body:
 - h2: Methods
 - api3: CopyTo(char[])
   id: PolylineAlgorithm_Polyline_CopyTo_System_Char___
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Polyline.cs#L69
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Polyline.cs#L69
   metadata:
     uid: PolylineAlgorithm.Polyline.CopyTo(System.Char[])
     commentId: M:PolylineAlgorithm.Polyline.CopyTo(System.Char[])
@@ -105,7 +105,7 @@ body:
     description: Thrown when the length of <code class="paramref">destination</code> does not match the polyline's length.
 - api3: Equals(Polyline)
   id: PolylineAlgorithm_Polyline_Equals_PolylineAlgorithm_Polyline_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Polyline.cs#L110
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Polyline.cs#L110
   metadata:
     uid: PolylineAlgorithm.Polyline.Equals(PolylineAlgorithm.Polyline)
     commentId: M:PolylineAlgorithm.Polyline.Equals(PolylineAlgorithm.Polyline)
@@ -126,7 +126,7 @@ body:
     description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the current object is equal to the <code class="paramref">other</code> parameter; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
 - api3: Equals(object)
   id: PolylineAlgorithm_Polyline_Equals_System_Object_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Polyline.cs#L119
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Polyline.cs#L119
   metadata:
     uid: PolylineAlgorithm.Polyline.Equals(System.Object)
     commentId: M:PolylineAlgorithm.Polyline.Equals(System.Object)
@@ -147,7 +147,7 @@ body:
     description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if <code class="paramref">obj</code> and this instance are the same type and represent the same value; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
 - api3: FromCharArray(char[])
   id: PolylineAlgorithm_Polyline_FromCharArray_System_Char___
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Polyline.cs#L168
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Polyline.cs#L168
   metadata:
     uid: PolylineAlgorithm.Polyline.FromCharArray(System.Char[])
     commentId: M:PolylineAlgorithm.Polyline.FromCharArray(System.Char[])
@@ -176,7 +176,7 @@ body:
     description: Thrown when <code class="paramref">polyline</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 - api3: FromMemory(ReadOnlyMemory<char>)
   id: PolylineAlgorithm_Polyline_FromMemory_System_ReadOnlyMemory_System_Char__
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Polyline.cs#L205
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Polyline.cs#L205
   metadata:
     uid: PolylineAlgorithm.Polyline.FromMemory(System.ReadOnlyMemory{System.Char})
     commentId: M:PolylineAlgorithm.Polyline.FromMemory(System.ReadOnlyMemory{System.Char})
@@ -201,7 +201,7 @@ body:
     description: The <xref href="PolylineAlgorithm.Polyline" data-throw-if-not-resolved="false"></xref> instance corresponding to the specified memory region.
 - api3: FromString(string)
   id: PolylineAlgorithm_Polyline_FromString_System_String_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Polyline.cs#L188
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Polyline.cs#L188
   metadata:
     uid: PolylineAlgorithm.Polyline.FromString(System.String)
     commentId: M:PolylineAlgorithm.Polyline.FromString(System.String)
@@ -228,7 +228,7 @@ body:
     description: Thrown when <code class="paramref">polyline</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 - api3: GetHashCode()
   id: PolylineAlgorithm_Polyline_GetHashCode
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Polyline.cs#L124
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Polyline.cs#L124
   metadata:
     uid: PolylineAlgorithm.Polyline.GetHashCode
     commentId: M:PolylineAlgorithm.Polyline.GetHashCode
@@ -242,7 +242,7 @@ body:
     description: A 32-bit signed integer that is the hash code for this instance.
 - api3: ToString()
   id: PolylineAlgorithm_Polyline_ToString
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Polyline.cs#L87
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Polyline.cs#L87
   metadata:
     uid: PolylineAlgorithm.Polyline.ToString
     commentId: M:PolylineAlgorithm.Polyline.ToString
@@ -257,7 +257,7 @@ body:
 - h2: Operators
 - api3: operator ==(Polyline, Polyline)
   id: PolylineAlgorithm_Polyline_op_Equality_PolylineAlgorithm_Polyline_PolylineAlgorithm_Polyline_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Polyline.cs#L140
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Polyline.cs#L140
   metadata:
     uid: PolylineAlgorithm.Polyline.op_Equality(PolylineAlgorithm.Polyline,PolylineAlgorithm.Polyline)
     commentId: M:PolylineAlgorithm.Polyline.op_Equality(PolylineAlgorithm.Polyline,PolylineAlgorithm.Polyline)
@@ -283,7 +283,7 @@ body:
     description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the polylines are equal; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
 - api3: operator !=(Polyline, Polyline)
   id: PolylineAlgorithm_Polyline_op_Inequality_PolylineAlgorithm_Polyline_PolylineAlgorithm_Polyline_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Polyline.cs#L150
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Polyline.cs#L150
   metadata:
     uid: PolylineAlgorithm.Polyline.op_Inequality(PolylineAlgorithm.Polyline,PolylineAlgorithm.Polyline)
     commentId: M:PolylineAlgorithm.Polyline.op_Inequality(PolylineAlgorithm.Polyline,PolylineAlgorithm.Polyline)

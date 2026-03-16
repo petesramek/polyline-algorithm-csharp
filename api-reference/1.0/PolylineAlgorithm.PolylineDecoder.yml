@@ -3,7 +3,7 @@ title: Class PolylineDecoder
 body:
 - api1: Class PolylineDecoder
   id: PolylineAlgorithm_PolylineDecoder
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineDecoder.cs#L11
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/PolylineDecoder.cs#L11
   metadata:
     uid: PolylineAlgorithm.PolylineDecoder
     commentId: T:PolylineAlgorithm.PolylineDecoder
@@ -62,7 +62,7 @@ body:
 - h2: Constructors
 - api3: PolylineDecoder()
   id: PolylineAlgorithm_PolylineDecoder__ctor
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineDecoder.cs#L13
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/PolylineDecoder.cs#L13
   metadata:
     uid: PolylineAlgorithm.PolylineDecoder.#ctor
     commentId: M:PolylineAlgorithm.PolylineDecoder.#ctor
@@ -70,7 +70,7 @@ body:
 - code: public PolylineDecoder()
 - api3: PolylineDecoder(PolylineEncodingOptions)
   id: PolylineAlgorithm_PolylineDecoder__ctor_PolylineAlgorithm_PolylineEncodingOptions_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineDecoder.cs#L17
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/PolylineDecoder.cs#L17
   metadata:
     uid: PolylineAlgorithm.PolylineDecoder.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
     commentId: M:PolylineAlgorithm.PolylineDecoder.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
@@ -92,7 +92,7 @@ body:
 - h2: Methods
 - api3: CreateCoordinate(double, double)
   id: PolylineAlgorithm_PolylineDecoder_CreateCoordinate_System_Double_System_Double_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineDecoder.cs#L21
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/PolylineDecoder.cs#L21
   metadata:
     uid: PolylineAlgorithm.PolylineDecoder.CreateCoordinate(System.Double,System.Double)
     commentId: M:PolylineAlgorithm.PolylineDecoder.CreateCoordinate(System.Double,System.Double)
@@ -118,7 +118,7 @@ body:
     description: A coordinate instance of type <xref href="PolylineAlgorithm.Coordinate" data-throw-if-not-resolved="false"></xref>.
 - api3: GetReadOnlyMemory(Polyline)
   id: PolylineAlgorithm_PolylineDecoder_GetReadOnlyMemory_PolylineAlgorithm_Polyline_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineDecoder.cs#L26
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/PolylineDecoder.cs#L26
   metadata:
     uid: PolylineAlgorithm.PolylineDecoder.GetReadOnlyMemory(PolylineAlgorithm.Polyline)
     commentId: M:PolylineAlgorithm.PolylineDecoder.GetReadOnlyMemory(PolylineAlgorithm.Polyline)

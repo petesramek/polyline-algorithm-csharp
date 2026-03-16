@@ -3,7 +3,7 @@ title: Class PolylineEncoder
 body:
 - api1: Class PolylineEncoder
   id: PolylineAlgorithm_PolylineEncoder
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L11
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L11
   metadata:
     uid: PolylineAlgorithm.PolylineEncoder
     commentId: T:PolylineAlgorithm.PolylineEncoder
@@ -60,7 +60,7 @@ body:
 - h2: Constructors
 - api3: PolylineEncoder()
   id: PolylineAlgorithm_PolylineEncoder__ctor
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L13
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L13
   metadata:
     uid: PolylineAlgorithm.PolylineEncoder.#ctor
     commentId: M:PolylineAlgorithm.PolylineEncoder.#ctor
@@ -68,7 +68,7 @@ body:
 - code: public PolylineEncoder()
 - api3: PolylineEncoder(PolylineEncodingOptions)
   id: PolylineAlgorithm_PolylineEncoder__ctor_PolylineAlgorithm_PolylineEncodingOptions_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L17
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L17
   metadata:
     uid: PolylineAlgorithm.PolylineEncoder.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
     commentId: M:PolylineAlgorithm.PolylineEncoder.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
@@ -90,7 +90,7 @@ body:
 - h2: Methods
 - api3: CreatePolyline(ReadOnlyMemory<char>)
   id: PolylineAlgorithm_PolylineEncoder_CreatePolyline_System_ReadOnlyMemory_System_Char__
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L31
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L31
   metadata:
     uid: PolylineAlgorithm.PolylineEncoder.CreatePolyline(System.ReadOnlyMemory{System.Char})
     commentId: M:PolylineAlgorithm.PolylineEncoder.CreatePolyline(System.ReadOnlyMemory{System.Char})
@@ -115,7 +115,7 @@ body:
     description: An instance of <xref href="PolylineAlgorithm.Polyline" data-throw-if-not-resolved="false"></xref> representing the encoded polyline.
 - api3: GetLatitude(Coordinate)
   id: PolylineAlgorithm_PolylineEncoder_GetLatitude_PolylineAlgorithm_Coordinate_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L21
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L21
   metadata:
     uid: PolylineAlgorithm.PolylineEncoder.GetLatitude(PolylineAlgorithm.Coordinate)
     commentId: M:PolylineAlgorithm.PolylineEncoder.GetLatitude(PolylineAlgorithm.Coordinate)
@@ -135,7 +135,7 @@ body:
     description: The latitude value as a <xref href="System.Double" data-throw-if-not-resolved="false"></xref>.
 - api3: GetLongitude(Coordinate)
   id: PolylineAlgorithm_PolylineEncoder_GetLongitude_PolylineAlgorithm_Coordinate_
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L26
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/PolylineEncoder.cs#L26
   metadata:
     uid: PolylineAlgorithm.PolylineEncoder.GetLongitude(PolylineAlgorithm.Coordinate)
     commentId: M:PolylineAlgorithm.PolylineEncoder.GetLongitude(PolylineAlgorithm.Coordinate)
