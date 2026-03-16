@@ -223,9 +223,9 @@ public static class PolylineEncoding {
     /// <returns>
     /// The number of characters required to represent the <paramref name="variance"/> value, based on its magnitude.
     /// </returns>
-
     public static int GetCharCount(int variance) {
-        int rem = variance << 1;
+        long rem = (long)variance << 1;
+
         if (variance < 0) {
             rem = ~rem;
         }

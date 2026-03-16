@@ -101,8 +101,8 @@ public class PolylineEncodingTest {
         (-16777216,5),
         (16777216,6),
         (-16777217,6),
-        (int.MaxValue,6),
-        (int.MinValue,6),
+        (int.MaxValue,7),
+        (int.MinValue,7),
     ];
 
     #endregion
