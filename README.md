@@ -151,6 +151,30 @@ A: Latitude must be -90..90; longitude -180..180. Out-of-range input throws `Arg
 **Q: Which .NET versions are supported?**  
 A: All platforms supporting `netstandard2.1` (including .NET Core and .NET 5+).
 
+**Q: What happens if I pass invalid or malformed input to the decoder?**
+A: The decoder will throw descriptive exceptions for malformed polyline strings. Check exception handling in your application.
+
+**Q: How do I customize encoding options (e.g., buffer size, logging)?**
+A: Use the PolylineEncodingOptionsBuilder to set custom options and pass to the PolylineEncoder constructor.
+
+**Q: Is the library thread-safe?**
+A: Yes, the main encoding and decoding APIs are stateless and thread-safe. If using mutable shared resources, manage synchronization in your code.
+
+**Q: Can the library be used in Unity, Xamarin, Blazor, or other .NET-compatible platforms?**
+A: Yes! Any environment supporting netstandard2.1 can use this library.
+
+**Q: Where can I report bugs or request features?**
+A: Open a GitHub issue using the provided templates in the repository and tag @petesramek.
+
+**Q: Is there support for elevation, time stamps, or third coordinate values?**
+A: Not currently, not planned to be added, but you can extend by implementing your own encoder/decoder using `PolylineEncoding` class methods.
+
+**Q: How do I contribute documentation improvements?**
+A: Update XML doc comments in the codebase and submit a PR; all public APIs require XML documentation. In case, you would like to improve guides you have to updage relevant markdown file in `/api-reference/guide` folder.
+
+**Q: Does the library support streaming or incremental decoding of polylines?**
+A: Currently, only batch encode/decode is supported. For streaming scenarios, implement custom logic using `PolylineEncoding` utility functions.
+
 ## Contributing
 
 - Follow code style and PR instructions in [AGENTS.md](./AGENTS.md).
