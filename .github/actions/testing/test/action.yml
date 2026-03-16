@@ -77,7 +77,7 @@ runs:
           ARGS+=(--collect:"XPlat Code Coverage")
 
           if [[ -n "${{ inputs.code-coverage-settings-file }}" ]]; then
-            ARGS+=(--settings "${{ inputs.code-coverage-settings-file }}")
+            ARGS+=(--property:ExcludeByAttribute="^System\.Diagnostics\.DebuggerHiddenAttribute$,^System\.Diagnostics\.CodeAnalysis\.ExcludeFromCodeCoverageAttribute$" }}")
           fi
 
           ARGS+=(--property:CoverletOutputFormat="${{ inputs.code-coverage-output-format }}")
