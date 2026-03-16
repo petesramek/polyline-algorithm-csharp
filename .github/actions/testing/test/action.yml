@@ -25,18 +25,6 @@ inputs:
     description: 'Code coverage output format. Default: cobertura'
     required: false
     default: 'cobertura'
-  code-coverage-include:
-    description: 'Comma separated patterns for --cc-include. Default: ""'
-    required: false
-    default: ''
-  code-coverage-exclude:
-    description: 'Comma separated patterns for --cc-exclude. Default: ""'
-    required: false
-    default: ''
-  code-coverage-exclude-attribute:
-    description: 'Comma separated attribute names for --cc-exclude-attribute. Default: "System.Diagnostics.DebuggerHiddenAttribute,System.Diagnostics.DebuggerNonUserCodeAttribute,System.CodeDom.Compiler.GeneratedCodeAttribute,System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute"'
-    required: false
-    default: 'System.Diagnostics.DebuggerHiddenAttribute,System.Diagnostics.DebuggerNonUserCodeAttribute,System.CodeDom.Compiler.GeneratedCodeAttribute,System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute'
   code-coverage-settings-file:
     description: 'Code coverage settings file. Default: ""'
     required: false
@@ -71,7 +59,7 @@ runs:
         DOTNET_USE_TEST_PLATFORM: '1'
       run: |
         ARGS=()
-        ARGS+=("${{ inputs.project-path }}")
+        ARGS+=("--project ${{ inputs.project-path }}")
         ARGS+=(--configuration "${{ inputs.build-configuration }}")
         ARGS+=(--results-directory "${{ inputs.test-results-directory }}")
 
@@ -81,18 +69,12 @@ runs:
 
         # Native Code Coverage switches & filters
         if [[ "${{ inputs.collect-code-coverage }}" == "true" ]]; then
-          ARGS+=(--collect:"Code Coverage")
-          ARGS+=(--cc-output-format:"${{ inputs.code-coverage-output-format }}")
+          ARGS+=(--coverage ")
+          ARGS+=(--coverage-output-format "${{ inputs.code-coverage-output-format }}")
 
-          if [[ -n "${{ inputs.code-coverage-include }}" ]]; then
-            ARGS+=(--cc-include:"${{ inputs.code-coverage-include }}")
+          if [[ -n "${{ inputs.code-coverage-settings-file }}" ]]; then
+            ARGS+=(--coverage-settings:"${{ inputs.code-coverage-settings-file }}")
           fi
-          if [[ -n "${{ inputs.code-coverage-exclude }}" ]]; then
-            ARGS+=(--cc-exclude:"${{ inputs.code-coverage-exclude }}")
-          fi
-
-          # Always use exclude-attribute; will be default unless overridden by user
-          ARGS+=(--cc-exclude-attribute:"${{ inputs.code-coverage-exclude-attribute }}")
         fi
 
         echo "Running: dotnet test ${ARGS[*]}"
