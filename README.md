@@ -66,7 +66,7 @@ var decoder = new PolylineDecoder();
 IEnumerable<Coordinate> decoded = decoder.Decode(polyline);
 ```
 
-### Custom encoder and decoder (user0defined coordinate and polyline types)
+### Custom encoder and decoder (user-defined coordinate and polyline types)
 
 #### Encoding
 
