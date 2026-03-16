@@ -16,6 +16,7 @@
 		<TestingPlatformShowTestsFailure>true</TestingPlatformShowTestsFailure>
 		<TestingPlatformCaptureOutput>false</TestingPlatformCaptureOutput>
 		<TestingExtensionsProfile>None</TestingExtensionsProfile>
+		<UseMicrosoftTestingPlatform>true</UseMicrosoftTestingPlatform>
 	</PropertyGroup>
 
 	<PropertyGroup>
