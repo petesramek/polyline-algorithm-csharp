@@ -82,7 +82,11 @@ runs:
 
     - name: 'Test with .NET CLI'
       shell: bash
-      run: dotnet test ${{ inputs.project-path }} --configuration ${{ inputs.build-configuration }} ${{ env.TRX_LOGGER_ARGS }} --results-directory ${{ inputs.test-results-directory }} ${{ env.CODE_COVERAGE_ARGS }}
+      run: dotnet test ${{ inputs.project-path }} \
+        --configuration ${{ inputs.build-configuration }} \
+        ${{ env.TRX_LOGGER_ARGS }} \
+        --results-directory ${{ inputs.test-results-directory }} \
+        ${{ env.CODE_COVERAGE_ARGS }}
       env:
         DOTNET_USE_TEST_PLATFORM: '1'
 
