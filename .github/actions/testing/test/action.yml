@@ -66,7 +66,7 @@ runs:
       name: 'Set CODE_COVERAGE_ARGS environment variable'
       shell: bash
       run: |
-        echo "CODE_COVERAGE_ARGS=--collect:"XPlat Code Coverage" /p:CoverletOutputFormat=${{ inputs.code-coverage-output-format}}" >> $GITHUB_ENV
+        echo "CODE_COVERAGE_ARGS=--collect:"XPlat Code Coverage" --property:CoverletOutputFormat=${{ inputs.code-coverage-output-format}}" >> $GITHUB_ENV
 
     - if: ${{ inputs.collect-code-coverage == 'true' && inputs.code-coverage-settings-file != ''}}
       name: 'Set CODE_COVERAGE_ARGS environment variable'
