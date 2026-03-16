@@ -3,7 +3,7 @@ title: Interface IPolylineEncoder<TCoordinate, TPolyline>
 body:
 - api1: Interface IPolylineEncoder<TCoordinate, TPolyline>
   id: PolylineAlgorithm_Abstraction_IPolylineEncoder_2
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/IPolylineEncoder.cs#L13
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Abstraction/IPolylineEncoder.cs#L13
   metadata:
     uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2
     commentId: T:PolylineAlgorithm.Abstraction.IPolylineEncoder`2
@@ -23,7 +23,7 @@ body:
 - h2: Methods
 - api3: Encode(IEnumerable<TCoordinate>)
   id: PolylineAlgorithm_Abstraction_IPolylineEncoder_2_Encode_System_Collections_Generic_IEnumerable__0__
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/IPolylineEncoder.cs#L23
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Abstraction/IPolylineEncoder.cs#L23
   metadata:
     uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2.Encode(System.Collections.Generic.IEnumerable{`0})
     commentId: M:PolylineAlgorithm.Abstraction.IPolylineEncoder`2.Encode(System.Collections.Generic.IEnumerable{`0})

@@ -3,7 +3,7 @@ title: Enum CoordinateValueType
 body:
 - api1: Enum CoordinateValueType
   id: PolylineAlgorithm_CoordinateValueType
-  src: https://github.com/sramekpete/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/CoordinateValueType.cs#L11
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/CoordinateValueType.cs#L11
   metadata:
     uid: PolylineAlgorithm.CoordinateValueType
     commentId: T:PolylineAlgorithm.CoordinateValueType
