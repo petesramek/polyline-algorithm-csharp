@@ -66,7 +66,7 @@ runs:
       name: 'Set CODE_COVERAGE_ARGS environment variable'
       shell: bash
       run: |
-        echo "CODE_COVERAGE_ARGS=--collect:\"XPlat Code Coverage\"" >> $GITHUB_ENV
+        echo "CODE_COVERAGE_ARGS=--collect:'XPlat Code Coverage'" >> $GITHUB_ENV
 
     - if: ${{ inputs.collect-code-coverage == 'true' && inputs.code-coverage-settings-file != ''}}
       name: 'Set CODE_COVERAGE_ARGS environment variable'
@@ -82,7 +82,7 @@ runs:
 
     - name: 'Test with .NET CLI'
       shell: bash
-      run: dotnet test ${{ inputs.project-path }} --configuration ${{ inputs.build-configuration }} ${{ env.TRX_LOGGER_ARGS }} --results-directory ${{ inputs.test-results-directory }} ${{ env.CODE_COVERAGE_ARGS }}
+      run: dotnet test --use-test-platform ${{ inputs.project-path }} --configuration ${{ inputs.build-configuration }} ${{ env.TRX_LOGGER_ARGS }} --results-directory ${{ inputs.test-results-directory }} ${{ env.CODE_COVERAGE_ARGS }}
 
     - name: 'Upload test results'
       if: ${{ inputs.upload-test-artifacts == 'true' }}
