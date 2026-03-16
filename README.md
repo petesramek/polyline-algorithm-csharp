@@ -11,6 +11,7 @@ Lightweight .NET Standard 2.1 library implementing Google-compliant Encoded Poly
 - [Benchmarks](#benchmarks)
 - [FAQ](#faq)
 - [Contributing](#contributing)
+- [Support](#support)
 - [License](#license)
 
 ## Features
@@ -193,6 +194,10 @@ A: Currently, only batch encode/decode is supported. For streaming scenarios, im
 - Follow code style and PR instructions in [AGENTS.md](./AGENTS.md).
 - Ensure all features are covered by tests and XML doc comments.
 - For questions or suggestions, open an issue and use the provided templates.
+
+## Support
+
+Have a question, bug, or feature request? [Open an issue!](https://github.com/petesramek/polyline-algorithm-csharp/issues)
 
 ---
 
