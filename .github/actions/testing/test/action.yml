@@ -64,7 +64,7 @@ runs:
         ARGS+=(--results-directory "${{ inputs.test-results-directory }}" )
 
         if [[ "${{ inputs.use-trf-logger }}" == "true" ]]; then
-          ARGS+=(--logger:trx )
+          ARGS+=(--report-trx )
         fi
 
         # Native Code Coverage switches & filters
