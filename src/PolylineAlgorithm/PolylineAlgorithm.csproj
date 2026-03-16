@@ -43,7 +43,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions"  Version="[6.0.0,11.0.0)" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="[6.0.0,11.0.0)" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -56,11 +56,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="Properties\ExceptionMessageResource.Designer.cs">
-			<DependentUpon>ExceptionMessageResource.resx</DependentUpon>
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-		</Compile>
+	  <Compile Update="Properties\ExceptionMessageResource.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>ExceptionMessageResource.resx</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
