@@ -1,4 +1,4 @@
-name: 'Generate test report with Liquid Test Reports CLI'
+﻿name: 'Generate test report with Liquid Test Reports CLI'
 author: 'Pete Sramek'
 description: 'Run tests, collects code coverage, logs test results, uploads test artifacts'
 inputs:
@@ -8,9 +8,9 @@ inputs:
     required: true
 # Optional
   dotnet_sdk_version:
-    description: '.NET SDK version. Default: 9.x'
+    description: '.NET SDK version. Default: 10.x'
     required: false
-    default: '9.x'
+    default: '10.x'
   test-report-filename:
     description: 'Filename of the test report. Default: test-report.md'
     required: false

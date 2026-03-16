@@ -1,4 +1,4 @@
-name: 'Pull Request'
+﻿name: 'Pull Request'
 
 on:
   pull_request:
@@ -21,7 +21,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  dotnet-sdk-version: '9.x'
+  dotnet-sdk-version: '10.x'
   build-configuration: 'Release'
   build-platform: 'Any CPU'
   git-version: '6.0.x'
@@ -238,7 +238,7 @@ jobs:
         with:
           dotnet-version: |
             8.x
-            9.x
+            10.x
       - name: Download Build
         uses: actions/download-artifact@v5
         with:

@@ -1,4 +1,4 @@
-name: 'Promote branch'
+﻿name: 'Promote branch'
 
 on:
   workflow_dispatch:
@@ -27,7 +27,7 @@ concurrency:
     cancel-in-progress: false
 
 env:
-  dotnet-sdk-version: '9.x'
+  dotnet-sdk-version: '10.x'
   is-development-branch: ${{ startsWith(github.ref_name, 'develop') }}
   is-maintenance-branch: ${{ startsWith(github.ref_name, 'support') }}
 

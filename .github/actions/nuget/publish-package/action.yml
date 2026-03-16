@@ -1,4 +1,4 @@
-name: 'Publish packages to NuGet feed'
+﻿name: 'Publish packages to NuGet feed'
 author: 'Pete Sramek'
 description: 'Publishes packages in working directory to public NuGet feed'
 inputs:
@@ -17,9 +17,9 @@ inputs:
     required: true
 # Optional
   dotnet-sdk-version:
-    description: '.NET SDK version. Default: 9.x'
+    description: '.NET SDK version. Default: 10.x'
     required: false
-    default: '9.x'
+    default: '10.x'
   working-directory: 
     description: 'Working directory to search for file.'
     required: false

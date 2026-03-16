@@ -6,9 +6,9 @@ inputs:
 
 # Optional
   dotnet_sdk_version:
-    description: '.NET SDK version. Default: 9.x'
+    description: '.NET SDK version. Default: 10.x'
     required: false
-    default: '9.x'
+    default: '10.x'
   build-configuration:
     description: 'Build configuration. Default: Release'
     required: false
