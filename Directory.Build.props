@@ -16,9 +16,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Meziantou.Analyzer" />
-		<PackageReference Include="Roslynator.Analyzers" />
-		<PackageReference Include="SonarAnalyzer.CSharp" />
+		<PackageReference Include="Roslynator.Analyzers" PrivateAssets="all" />
+		<PackageReference Include="Meziantou.Analyzer" PrivateAssets="all" />
+		<PackageReference Include="SonarAnalyzer.CSharp" PrivateAssets="all" />
+		<PackageReference Include="SmartAnalyzers.ExceptionAnalyzer" PrivateAssets="all" />
 	</ItemGroup>
 
 </Project>
