@@ -8,9 +8,9 @@ inputs:
     required: true
 # Optional
   dotnet_sdk_version:
-    description: '.NET SDK version. Default: 9.x'
+    description: '.NET SDK version. Default: 10.x'
     required: false
-    default: '9.x'
+    default: '10.x'
   artifact-name:
     description: 'Name of the artifact to download before pushing changes. Default: '''''
     required: false

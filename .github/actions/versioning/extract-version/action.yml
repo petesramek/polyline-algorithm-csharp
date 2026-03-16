@@ -16,9 +16,9 @@ inputs:
     required: false
     default: '(\d+).(\d+)'
   dotnet_sdk_version:
-    description: '.NET SDK version. Default: ''9.x'''
+    description: '.NET SDK version. Default: ''10.x'''
     required: false
-    default: '9.x'
+    default: '10.x'
 outputs:
   version:
     description: 'Version extracted from the branch name.'

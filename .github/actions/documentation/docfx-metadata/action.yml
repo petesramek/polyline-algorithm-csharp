@@ -18,9 +18,9 @@ inputs:
     required: true
 # Optional
   dotnet_sdk_version:
-    description: '.NET SDK version. Default: 9.x'
+    description: '.NET SDK version. Default: 10.x'
     required: false
-    default: '9.x'
+    default: '10.x'
 
 runs:
   using: composite
@@ -63,4 +63,3 @@ runs:
       with:
          name: ${{ inputs.artifact-name }}
          path: ${{ inputs.output-directory }}
-  

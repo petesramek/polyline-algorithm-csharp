@@ -20,7 +20,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  dotnet-sdk-version: '9.x'
+  dotnet-sdk-version: '10.x'
   build-configuration: 'Release'
   build-platform: 'Any CPU'
   git-version: '6.0.x'
@@ -148,7 +148,7 @@ jobs:
       - name: 'Run tests'
         uses: ./.github/actions/testing/test
         with:
-          project-path: '**/PolylineAlgorithm.Tests.csproj'
+          project-path: './tests/PolylineAlgorithm.Tests/PolylineAlgorithm.Tests.csproj'
           test-results-directory: '${{ runner.temp }}/${{ env.test-result-directory }}/'
           code-coverage-settings-file: '${{ github.workspace}}/code-coverage-settings.xml'
 
