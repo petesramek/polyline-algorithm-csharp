@@ -64,7 +64,7 @@ runs:
       name: 'Set CODE_COVERAGE_ARGS environment variable'
       shell: bash
       run: |
-        echo "CODE_COVERAGE_ARGS=--collect:"Code Coverage" --coverage-output-format ${{ inputs.code-coverage-output-format}}" >> $GITHUB_ENV
+        echo "CODE_COVERAGE_ARGS=--coverage --coverage-output-format ${{ inputs.code-coverage-output-format}}" >> $GITHUB_ENV
 
     - if: ${{ inputs.collect-code-coverage == 'true' && inputs.code-coverage-settings-file != ''}}
       name: 'Set CODE_COVERAGE_ARGS environment variable'
