@@ -1,0 +1,251 @@
+### YamlMime:ApiPage
+title: Class PolylineEncoding
+body:
+- api1: Class PolylineEncoding
+  id: PolylineAlgorithm_PolylineEncoding
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L24
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncoding
+    commentId: T:PolylineAlgorithm.PolylineEncoding
+- facts:
+  - name: Namespace
+    value:
+      text: PolylineAlgorithm
+      url: PolylineAlgorithm.html
+  - name: Assembly
+    value: PolylineAlgorithm.dll
+- markdown: >-
+    Provides methods for encoding and decoding polyline data, as well as utilities for normalizing and de-normalizing
+
+    geographic coordinate values.
+- code: public static class PolylineEncoding
+- h4: Inheritance
+- inheritance:
+  - text: object
+    url: https://learn.microsoft.com/dotnet/api/system.object
+  - text: PolylineEncoding
+    url: PolylineAlgorithm.PolylineEncoding.html
+- h4: Inherited Members
+- list:
+  - text: object.Equals(object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - text: object.Equals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - text: object.GetHashCode()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - text: object.GetType()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - text: object.MemberwiseClone()
+    url: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - text: object.ReferenceEquals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - text: object.ToString()
+    url: https://learn.microsoft.com/dotnet/api/system.object.tostring
+- h2: Remarks
+- markdown: >-
+    The <xref href="PolylineAlgorithm.PolylineEncoding" data-throw-if-not-resolved="false"></xref> class includes functionality for working with encoded polyline
+        data, such as reading and writing encoded values, as well as methods for normalizing and de-normalizing geographic
+        coordinates. It also provides validation utilities to ensure values conform to expected ranges for latitude and
+        longitude.
+- h2: Methods
+- api3: Denormalize(int, CoordinateValueType)
+  id: PolylineAlgorithm_PolylineEncoding_Denormalize_System_Int32_PolylineAlgorithm_CoordinateValueType_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L103
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncoding.Denormalize(System.Int32,PolylineAlgorithm.CoordinateValueType)
+    commentId: M:PolylineAlgorithm.PolylineEncoding.Denormalize(System.Int32,PolylineAlgorithm.CoordinateValueType)
+- markdown: Converts a normalized integer value to its denormalized double representation based on the specified type.
+- code: public static double Denormalize(int value, CoordinateValueType type)
+- h4: Parameters
+- parameters:
+  - name: value
+    type:
+    - text: int
+      url: https://learn.microsoft.com/dotnet/api/system.int32
+    description: The normalized integer value to be denormalized. Must be within the valid range for the specified <code class="paramref">type</code>.
+  - name: type
+    type:
+    - text: CoordinateValueType
+      url: PolylineAlgorithm.CoordinateValueType.html
+    description: The type that defines the valid range for <code class="paramref">value</code>.
+- h4: Returns
+- parameters:
+  - type:
+    - text: double
+      url: https://learn.microsoft.com/dotnet/api/system.double
+    description: The denormalized double representation of the input value. Returns <code>0.0</code> if <code class="paramref">value</code> is <code>0</code>.
+- h4: Remarks
+- markdown: >-
+    The denormalization process divides the input value by a predefined precision factor to
+        produce the resulting double. Ensure that <code class="paramref">value</code> is validated against the specified <code class="paramref">type</code> before calling this method.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentOutOfRangeException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception
+    description: Thrown when <code class="paramref">value</code> is outside the valid range for the specified <code class="paramref">type</code>.
+- api3: GetCharCount(int)
+  id: PolylineAlgorithm_PolylineEncoding_GetCharCount_System_Int32_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L237
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncoding.GetCharCount(System.Int32)
+    commentId: M:PolylineAlgorithm.PolylineEncoding.GetCharCount(System.Int32)
+- markdown: >-
+    Determines the number of characters required to represent the specified integer value within predefined
+
+    variance ranges.
+- code: public static int GetCharCount(int variance)
+- h4: Parameters
+- parameters:
+  - name: variance
+    type:
+    - text: int
+      url: https://learn.microsoft.com/dotnet/api/system.int32
+    description: >-
+      The integer value for which the character count is calculated. Must be within the range  of a 32-bit signed
+
+      integer.
+- h4: Returns
+- parameters:
+  - type:
+    - text: int
+      url: https://learn.microsoft.com/dotnet/api/system.int32
+    description: The number of characters required to represent the <code class="paramref">variance</code> value, based on its magnitude.
+- h4: Remarks
+- markdown: >-
+    The method uses predefined ranges to efficiently determine the character count.  Smaller
+
+    values require fewer characters, while larger values require more.  This method is optimized for performance
+
+    using a switch expression.
+- api3: Normalize(double, CoordinateValueType)
+  id: PolylineAlgorithm_PolylineEncoding_Normalize_System_Double_PolylineAlgorithm_CoordinateValueType_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L195
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncoding.Normalize(System.Double,PolylineAlgorithm.CoordinateValueType)
+    commentId: M:PolylineAlgorithm.PolylineEncoding.Normalize(System.Double,PolylineAlgorithm.CoordinateValueType)
+- markdown: Normalizes a given numeric value based on the specified type and precision settings.
+- code: public static int Normalize(double value, CoordinateValueType type)
+- h4: Parameters
+- parameters:
+  - name: value
+    type:
+    - text: double
+      url: https://learn.microsoft.com/dotnet/api/system.double
+    description: The numeric value to normalize. Must be a finite number.
+  - name: type
+    type:
+    - text: CoordinateValueType
+      url: PolylineAlgorithm.CoordinateValueType.html
+    description: The type against which the value is validated. Determines the acceptable range for the value.
+- h4: Returns
+- parameters:
+  - type:
+    - text: int
+      url: https://learn.microsoft.com/dotnet/api/system.int32
+    description: An integer representing the normalized value. Returns <code>0</code> if the input value is <code>0.0</code>.
+- h4: Remarks
+- markdown: >-
+    This method validates the input value to ensure it is finite and within the acceptable range
+
+    for the specified type. If the value is valid, it applies a normalization algorithm using a predefined precision
+
+    factor.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentOutOfRangeException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception
+    description: >-
+      Thrown when <code class="paramref">value</code> is not a finite number or is outside the valid range for the specified
+
+      <code class="paramref">type</code>.
+- api3: TryReadValue(ref int, ReadOnlyMemory<char>, ref int)
+  id: PolylineAlgorithm_PolylineEncoding_TryReadValue_System_Int32__System_ReadOnlyMemory_System_Char__System_Int32__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L52
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncoding.TryReadValue(System.Int32@,System.ReadOnlyMemory{System.Char},System.Int32@)
+    commentId: M:PolylineAlgorithm.PolylineEncoding.TryReadValue(System.Int32@,System.ReadOnlyMemory{System.Char},System.Int32@)
+- markdown: Attempts to read a value from the specified buffer and updates the variance.
+- code: public static bool TryReadValue(ref int variance, ReadOnlyMemory<char> buffer, ref int position)
+- h4: Parameters
+- parameters:
+  - name: variance
+    type:
+    - text: int
+      url: https://learn.microsoft.com/dotnet/api/system.int32
+    description: A reference to the integer that will be updated based on the value read from the buffer.
+  - name: buffer
+    type:
+    - text: ReadOnlyMemory
+      url: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+    - <
+    - text: char
+      url: https://learn.microsoft.com/dotnet/api/system.char
+    - '>'
+    description: A reference to the read-only memory buffer containing the data to be processed.
+  - name: position
+    type:
+    - text: int
+      url: https://learn.microsoft.com/dotnet/api/system.int32
+    description: A reference to the current position within the buffer. The position is incremented as the method reads data.
+- h4: Returns
+- parameters:
+  - type:
+    - text: bool
+      url: https://learn.microsoft.com/dotnet/api/system.boolean
+    description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if a value was successfully read and the end of the buffer was not reached; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+- h4: Remarks
+- markdown: >-
+    This method processes the buffer starting at the specified position and attempts to decode a value.
+        The decoded value is used to update the <code class="paramref">variance</code> parameter. The method stops reading when a
+        termination condition is met or the end of the buffer is reached.
+- api3: TryWriteValue(int, Span<char>, ref int)
+  id: PolylineAlgorithm_PolylineEncoding_TryWriteValue_System_Int32_System_Span_System_Char__System_Int32__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L145
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncoding.TryWriteValue(System.Int32,System.Span{System.Char},System.Int32@)
+    commentId: M:PolylineAlgorithm.PolylineEncoding.TryWriteValue(System.Int32,System.Span{System.Char},System.Int32@)
+- markdown: Attempts to write a value derived from the specified <code class="paramref">variance</code> into the provided <code class="paramref">buffer</code> at the given <code class="paramref">position</code>.
+- code: public static bool TryWriteValue(int variance, Span<char> buffer, ref int position)
+- h4: Parameters
+- parameters:
+  - name: variance
+    type:
+    - text: int
+      url: https://learn.microsoft.com/dotnet/api/system.int32
+    description: The integer value used to calculate the output to be written into the buffer.
+  - name: buffer
+    type:
+    - text: Span
+      url: https://learn.microsoft.com/dotnet/api/system.span-1
+    - <
+    - text: char
+      url: https://learn.microsoft.com/dotnet/api/system.char
+    - '>'
+    description: A reference to the span of characters where the value will be written.
+  - name: position
+    type:
+    - text: int
+      url: https://learn.microsoft.com/dotnet/api/system.int32
+    description: >-
+      A reference to the current position in the buffer where writing begins. This value is updated to reflect the new
+
+      position after writing.
+- h4: Returns
+- parameters:
+  - type:
+    - text: bool
+      url: https://learn.microsoft.com/dotnet/api/system.boolean
+    description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the value was successfully written to the buffer; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+- h4: Remarks
+- markdown: >-
+    This method performs bounds checking to ensure that the buffer has sufficient space to
+
+    accommodate the calculated value. If the buffer does not have enough space, the method returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> without modifying the buffer or position.
+languageId: csharp
+metadata:
+  description: >-
+    Provides methods for encoding and decoding polyline data, as well as utilities for normalizing and de-normalizing
+
+    geographic coordinate values.
