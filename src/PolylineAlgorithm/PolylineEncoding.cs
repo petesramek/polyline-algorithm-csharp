@@ -71,7 +71,7 @@ public static class PolylineEncoding {
         }
 
         // Fast return if precision is zero, return current value converted to Int32.
-        if (precision == 0) {
+        if (precision == default) {
             return Convert.ToInt32(value);
         }
 
@@ -127,8 +127,8 @@ public static class PolylineEncoding {
         }
 
         // Fast return if precision is zero, return current value converted to Int32.
-        if (precision == 0) {
-            return Convert.ToDouble(value);
+        if (precision == default) {
+            return value;
         }
 
         uint factor = Pow10.GetFactor(precision);
