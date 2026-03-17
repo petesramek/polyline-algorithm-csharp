@@ -106,6 +106,9 @@ public static class PolylineEncoding {
     /// without division.
     /// </para>
     /// <para>
+    /// The calculation is performed inside a <c>checked</c> block to ensure that any arithmetic overflow is detected and an <see cref="OverflowException"/> is thrown.
+    /// </para>
+    /// <para>
     /// For example, with a precision of 5:
     /// <list type="bullet">
     /// <item><description>A value of 3778903 becomes 37.78903</description></item>
@@ -125,12 +128,16 @@ public static class PolylineEncoding {
     /// <returns>
     /// The denormalized floating-point coordinate value.
     /// </returns>
+    /// <exception cref="OverflowException">
+    /// Thrown if the arithmetic operation overflows during conversion.
+    /// </exception>
     public static double Denormalize(int value, uint precision = 5) {
         // Return fast if the value is zero, return 0.0 as the denormalized value.
         if (value == 0) {
             return 0.0;
         }
 
+        // Using 'checked' to ensure overflow exceptions are thrown if the result exceeds numeric limits.
         checked {
             return precision == 0 ? value : value / Math.Pow(10, precision);
         }
