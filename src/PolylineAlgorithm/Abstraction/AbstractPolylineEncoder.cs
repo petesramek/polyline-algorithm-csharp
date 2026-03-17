@@ -78,7 +78,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
         ValidateEmptyCoordinates(ref coordinates, _logger);
 
-        CoordinateDelta variance = new();
+        CoordinateDelta delta = new();
 
         int position = 0;
         int consumed = 0;
@@ -92,16 +92,14 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
         try {
             for (var i = 0; i < coordinates.Length; i++) {
-                variance
+                delta
                     .Next(
                         PolylineEncoding.Normalize(GetLatitude(coordinates[i]), CoordinateValueType.Latitude),
                         PolylineEncoding.Normalize(GetLongitude(coordinates[i]), CoordinateValueType.Longitude)
                     );
 
-                ValidateBuffer(variance, position, buffer, _logger);
-
-                if (!PolylineEncoding.TryWriteValue(variance.Latitude, buffer, ref position)
-                    || !PolylineEncoding.TryWriteValue(variance.Longitude, buffer, ref position)
+                if (!PolylineEncoding.TryWriteValue(delta.Latitude, buffer, ref position)
+                    || !PolylineEncoding.TryWriteValue(delta.Longitude, buffer, ref position)
                 ) {
                     // This shouldn't happen, but if it does, log the error and throw an exception.
                     _logger
@@ -126,8 +124,8 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
         return CreatePolyline(buffer[..position].ToString().AsMemory());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int GetRequiredLength(CoordinateDelta variance) =>
-            PolylineEncoding.GetCharCount(variance.Latitude) + PolylineEncoding.GetCharCount(variance.Longitude);
+        static int GetRequiredLength(CoordinateDelta delta) =>
+            PolylineEncoding.GetCharCount(delta.Latitude) + PolylineEncoding.GetCharCount(delta.Longitude);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static int GetRemainingBufferSize(int position, int length) {
@@ -159,20 +157,6 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
                     .LogEmptyArgumentWarning(nameof(coordinates));
 
                 throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeEmptyEnumerationMessage, nameof(coordinates));
-            }
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static void ValidateBuffer(CoordinateDelta variance, int position, Span<char> buffer, ILogger logger) {
-            if (GetRemainingBufferSize(position, buffer.Length) < GetRequiredLength(variance)) {
-                var requiredLength = GetRequiredLength(variance);
-
-                logger
-                    .LogOperationFailedDebug(OperationName);
-                logger
-                    .LogInternalBufferOverflowWarning(position, buffer.Length, requiredLength);
-
-                throw new InternalBufferOverflowException($"Internal buffer has size of {buffer.Length}. At position {position.ToString(CultureInfo.InvariantCulture)} is required additional {requiredLength.ToString(CultureInfo.InvariantCulture)} space.");
             }
         }
     }

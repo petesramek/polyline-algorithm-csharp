@@ -30,12 +30,12 @@ public static class PolylineEncoding {
     private static readonly string _argumentOutOfRangeForSpecifiedCoordinateValueTypeMessageFormat = ExceptionMessageResource.ArgumentOutOfRangeForSpecifiedCoordinateValueTypeMessageFormat;
 #endif
     /// <summary>
-    /// Attempts to read a value from the specified buffer and updates the variance.
+    /// Attempts to read a value from the specified buffer and updates the delta.
     /// </summary>
     /// <remarks>This method processes the buffer starting at the specified position and attempts to decode a value.
-    /// The decoded value is used to update the <paramref name="variance"/> parameter. The method stops reading when a
+    /// The decoded value is used to update the <paramref name="delta"/> parameter. The method stops reading when a
     /// termination condition is met or the end of the buffer is reached.</remarks>
-    /// <param name="variance">
+    /// <param name="delta">
     /// A reference to the integer that will be updated based on the value read from the buffer.
     /// </param>
     /// <param name="buffer">
@@ -49,7 +49,7 @@ public static class PolylineEncoding {
     /// langword="false"/>.
     /// </returns>
 
-    public static bool TryReadValue(ref int variance, ReadOnlyMemory<char> buffer, ref int position) {
+    public static bool TryReadValue(ref int delta, ReadOnlyMemory<char> buffer, ref int position) {
         // Validate that the position is within the bounds of the buffer.
         if (position == buffer.Length) {
             return false;
@@ -73,7 +73,7 @@ public static class PolylineEncoding {
             }
         }
 
-        variance += (sum & 1) == 1 ? ~(sum >> 1) : sum >> 1;
+        delta += (sum & 1) == 1 ? ~(sum >> 1) : sum >> 1;
 
         // If the end of the buffer was reached without reading a complete value, return false.
         return chunk < Defaults.Algorithm.Space;
@@ -120,7 +120,7 @@ public static class PolylineEncoding {
     }
 
     /// <summary>
-    /// Attempts to write a value derived from the specified <paramref name="variance"/> into the provided <paramref
+    /// Attempts to write a value derived from the specified <paramref name="delta"/> into the provided <paramref
     /// name="buffer"/> at the given <paramref name="position"/>.
     /// </summary>
     /// <remarks>
@@ -128,7 +128,7 @@ public static class PolylineEncoding {
     /// accommodate the calculated value. If the buffer does not have enough space, the method returns <see
     /// langword="false"/> without modifying the buffer or position.
     /// </remarks>
-    /// <param name="variance">
+    /// <param name="delta">
     /// The integer value used to calculate the output to be written into the buffer.
     /// </param>
     /// <param name="buffer">
@@ -142,16 +142,16 @@ public static class PolylineEncoding {
     /// <see langword="true"/> if the value was successfully written to the buffer; otherwise, <see langword="false"/>.
     /// </returns>
 
-    public static bool TryWriteValue(int variance, Span<char> buffer, ref int position) {
+    public static bool TryWriteValue(int delta, Span<char> buffer, ref int position) {
         // Validate that the position and required space for write is within the bounds of the buffer.
-        if (buffer.Length < position + GetCharCount(variance)) {
+        if (buffer.Length < position + GetCharCount(delta)) {
             return false;
         }
 
-        int rem = variance << 1;
+        int rem = delta << 1;
 
-        // If the variance is negative, we need to invert the bits to get the correct representation.
-        if (variance < 0) {
+        // If the delta is negative, we need to invert the bits to get the correct representation.
+        if (delta < 0) {
             rem = ~rem;
         }
 
@@ -220,24 +220,24 @@ public static class PolylineEncoding {
 
     /// <summary>
     /// Determines the number of characters required to represent the specified integer value within predefined
-    /// variance ranges.
+    /// delta ranges.
     /// </summary>
     /// <remarks>
     /// The method uses predefined ranges to efficiently determine the character count.  Smaller
     /// values require fewer characters, while larger values require more.  This method is optimized for performance
     /// using a switch expression.
     /// </remarks>
-    /// <param name="variance">
+    /// <param name="delta">
     /// The integer value for which the character count is calculated. Must be within the range  of a 32-bit signed
     /// integer.
     /// </param>
     /// <returns>
-    /// The number of characters required to represent the <paramref name="variance"/> value, based on its magnitude.
+    /// The number of characters required to represent the <paramref name="delta"/> value, based on its magnitude.
     /// </returns>
-    public static int GetCharCount(int variance) {
-        long rem = (long)variance << 1;
+    public static int GetCharCount(int delta) {
+        long rem = (long)delta << 1;
 
-        if (variance < 0) {
+        if (delta < 0) {
             rem = ~rem;
         }
 

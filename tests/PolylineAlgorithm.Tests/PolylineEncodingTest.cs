@@ -15,7 +15,7 @@ using System.Collections.Generic;
 public class PolylineEncodingTest {
     #region Dynamic Data Properties
 
-    public static IEnumerable<(int variance, string polyline)> VariancePolylinePairs => [
+    public static IEnumerable<(int delta, string polyline)> DeltaPolylinePairs => [
         (0,"?"),
         (1,"A"),
         (-1,"@"),
@@ -84,7 +84,7 @@ public class PolylineEncodingTest {
         (0, CoordinateValueType.Unspecified),
     ];
 
-    public static IEnumerable<(int variance, int charCount)> VarianceCharCountPairs => [
+    public static IEnumerable<(int delta, int charCount)> DeltaCharCountPairs => [
         (0, 1),
         (15, 1),
         (-16, 1),
@@ -134,14 +134,14 @@ public class PolylineEncodingTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(VariancePolylinePairs))]
-    public void TryWriteValue_StaticBuffer_Returns_True_Equals_Expected(int variance, string expected) {
+    [DynamicData(nameof(DeltaPolylinePairs))]
+    public void TryWriteValue_StaticBuffer_Returns_True_Equals_Expected(int delta, string expected) {
         // Arrange
         int position = 0;
         Span<char> buffer = stackalloc char[6];
 
         // Act
-        bool result = PolylineEncoding.TryWriteValue(variance, buffer, ref position);
+        bool result = PolylineEncoding.TryWriteValue(delta, buffer, ref position);
 
         // Assert
         Assert.IsTrue(result);
@@ -151,15 +151,15 @@ public class PolylineEncodingTest {
 
 
     [TestMethod]
-    [DynamicData(nameof(VariancePolylinePairs))]
-    public void TryWriteValue_DynamicBuffer_Returns_True_Equals_Expected(int variance, string expected) {
+    [DynamicData(nameof(DeltaPolylinePairs))]
+    public void TryWriteValue_DynamicBuffer_Returns_True_Equals_Expected(int delta, string expected) {
         // Arrange
         int position = 0;
-        int required = PolylineEncoding.GetCharCount(variance);
+        int required = PolylineEncoding.GetCharCount(delta);
         Span<char> buffer = stackalloc char[required];
 
         // Act
-        bool result = PolylineEncoding.TryWriteValue(variance, buffer, ref position);
+        bool result = PolylineEncoding.TryWriteValue(delta, buffer, ref position);
 
         // Assert
         Assert.IsTrue(result);
@@ -169,46 +169,46 @@ public class PolylineEncodingTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(VariancePolylinePairs))]
-    public void TryWriteValue_BufferTooSmall_Returns_False(int variance, string _) {
+    [DynamicData(nameof(DeltaPolylinePairs))]
+    public void TryWriteValue_BufferTooSmall_Returns_False(int delta, string _) {
         // Arrange
         int position = 0;
-        int required = PolylineEncoding.GetCharCount(variance);
+        int required = PolylineEncoding.GetCharCount(delta);
         Span<char> buffer = stackalloc char[required - 1];
 
         // Act
-        bool result = PolylineEncoding.TryWriteValue(variance, buffer, ref position);
+        bool result = PolylineEncoding.TryWriteValue(delta, buffer, ref position);
 
         // Assert
         Assert.IsFalse(result);
     }
 
     [TestMethod]
-    [DynamicData(nameof(VariancePolylinePairs))]
+    [DynamicData(nameof(DeltaPolylinePairs))]
     public void TryReadValue_Ok(int expected, string polyline) {
         // Arrange
         int position = 0;
-        int variance = 0;
+        int delta = 0;
         var buffer = polyline.AsMemory();
 
         // Act
-        bool result = PolylineEncoding.TryReadValue(ref variance, buffer, ref position);
+        bool result = PolylineEncoding.TryReadValue(ref delta, buffer, ref position);
 
         // Assert
         Assert.IsTrue(result);
         Assert.AreEqual(buffer.Length, position);
-        Assert.AreEqual(expected, variance);
+        Assert.AreEqual(expected, delta);
     }
 
     [TestMethod]
     public void TryReadValue_EmptyBuffer_Returns_False() {
         // Arrange
-        int variance = 0;
+        int delta = 0;
         int position = 0;
         ReadOnlyMemory<char> buffer = Memory<char>.Empty;
 
         // Act
-        bool result = PolylineEncoding.TryReadValue(ref variance, buffer, ref position);
+        bool result = PolylineEncoding.TryReadValue(ref delta, buffer, ref position);
 
         // Assert
         Assert.IsFalse(result);
@@ -218,18 +218,18 @@ public class PolylineEncodingTest {
     public void TryReadValue_MalformedBuffer_Returns_False() {
         //Arrange
         int position = 0;
-        int variance = 42;
-        int expected = variance;
+        int delta = 42;
+        int expected = delta;
         // Buffer with a char that will never finish a value (simulate incomplete encoding)
         char[] chars = [(char)127]; // 127 - 63 = 64, which is >= 32, so loop never breaks
         ReadOnlyMemory<char> buffer = chars.AsMemory();
 
         // Act
-        bool result = PolylineEncoding.TryReadValue(ref variance, buffer, ref position);
+        bool result = PolylineEncoding.TryReadValue(ref delta, buffer, ref position);
 
         // Assert
         Assert.IsFalse(result);
-        Assert.AreEqual(expected, variance);
+        Assert.AreEqual(expected, delta);
     }
 
     [TestMethod]
@@ -259,10 +259,10 @@ public class PolylineEncodingTest {
     }
 
     [TestMethod]
-    [DynamicData(nameof(VarianceCharCountPairs))]
-    public void GetCharCount_Equals_Expected(int variance, int expected) {
+    [DynamicData(nameof(DeltaCharCountPairs))]
+    public void GetCharCount_Equals_Expected(int delta, int expected) {
         // Arrange & Act
-        var charCount = PolylineEncoding.GetCharCount(variance);
+        var charCount = PolylineEncoding.GetCharCount(delta);
 
         // Assert
         Assert.AreEqual(expected, charCount);

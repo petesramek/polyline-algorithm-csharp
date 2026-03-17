@@ -18,7 +18,7 @@ public class CoordinateDeltaTest {
         (10, 10),
     ];
 
-    public static IEnumerable<((int Latitude, int Longitude) Initial, (int Latitude, int Longitude) Next, (int Latitude, int Longitude) Result)> Variances => [
+    public static IEnumerable<((int Latitude, int Longitude) Initial, (int Latitude, int Longitude) Next, (int Latitude, int Longitude) Result)> Deltas => [
         ((10, 10), (-20, -20), (-30, -30)),
         ((-10, -10), (20, 20), (30, 30)),
         ((0, 10), (10, -10), (10, -20)),
@@ -42,51 +42,51 @@ public class CoordinateDeltaTest {
     [TestMethod]
     public void Constructor_Sets_Defaults() {
         // Arrange & Act
-        CoordinateDelta variance = new();
+        CoordinateDelta delta = new();
         // Assert
-        Assert.AreEqual(0, variance.Latitude);
-        Assert.AreEqual(0, variance.Longitude);
+        Assert.AreEqual(0, delta.Latitude);
+        Assert.AreEqual(0, delta.Longitude);
     }
 
     [TestMethod]
     [DynamicData(nameof(Coordinates))]
-    public void Next_Calculates_Correct_Variance_From_Default_Variance(int latitude, int longitude) {
+    public void Next_Calculates_Correct_Delta_From_Default_Delta(int latitude, int longitude) {
         // Arrange
-        CoordinateDelta variance = new();
+        CoordinateDelta delta = new();
         var expected = (latitude, longitude);
 
         // Act
-        variance.Next(latitude, longitude);
+        delta.Next(latitude, longitude);
 
         // Assert
-        Assert.AreEqual(expected.latitude, variance.Latitude);
-        Assert.AreEqual(expected.longitude, variance.Longitude);
+        Assert.AreEqual(expected.latitude, delta.Latitude);
+        Assert.AreEqual(expected.longitude, delta.Longitude);
     }
 
     [TestMethod]
-    [DynamicData(nameof(Variances))]
-    public void Next_Calculates_Correct_Variance_From_Previous_Variance((int Latitude, int Longitude) initial, (int Latitude, int Longitude) next, (int Latitude, int Longitude) expected) {
+    [DynamicData(nameof(Deltas))]
+    public void Next_Calculates_Correct_Delta_From_Previous_Delta((int Latitude, int Longitude) initial, (int Latitude, int Longitude) next, (int Latitude, int Longitude) expected) {
         // Arrange
-        CoordinateDelta variance = new();
-        variance.Next(initial.Latitude, initial.Longitude);
+        CoordinateDelta delta = new();
+        delta.Next(initial.Latitude, initial.Longitude);
 
         // Act
-        variance.Next(next.Latitude, next.Longitude);
+        delta.Next(next.Latitude, next.Longitude);
 
         // Assert
-        Assert.AreEqual(expected.Latitude, variance.Latitude);
-        Assert.AreEqual(expected.Longitude, variance.Longitude);
+        Assert.AreEqual(expected.Latitude, delta.Latitude);
+        Assert.AreEqual(expected.Longitude, delta.Longitude);
     }
 
     [TestMethod]
     [DynamicData(nameof(Coordinates))]
-    public void ToString_Returns_Value_Containing_Variance(int latitude, int longitude) {
+    public void ToString_Returns_Value_Containing_Delta(int latitude, int longitude) {
         // Arrange
-        CoordinateDelta variance = new();
-        variance.Next(latitude, longitude);
+        CoordinateDelta delta = new();
+        delta.Next(latitude, longitude);
 
         // Act
-        string result = variance.ToString();
+        string result = delta.ToString();
 
         // Assert
         Assert.Contains($"Latitude: {latitude.ToString(CultureInfo.InvariantCulture)}", result, StringComparison.Ordinal);

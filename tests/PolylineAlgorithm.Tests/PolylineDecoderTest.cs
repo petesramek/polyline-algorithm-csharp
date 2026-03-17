@@ -6,6 +6,7 @@
 namespace PolylineAlgorithm.Tests;
 
 using PolylineAlgorithm;
+using PolylineAlgorithm.Extensions;
 using PolylineAlgorithm.Utility;
 
 /// <summary>
@@ -64,5 +65,22 @@ public class PolylineDecoderTest {
 
         // Assert
         CollectionAssert.AreEqual(expected.ToArray(), result.ToArray());
+    }
+
+    /// <summary>
+    /// Tests the round-trip decoding and encoding of polyline.
+    /// </summary>
+    [TestMethod]
+    public void Decode_Encode_RoundTrip_Ok() {
+        var polyline = Polyline.FromString(StaticValueProvider.Valid.GetPolyline());
+
+        var encoder = new PolylineEncoder();
+        var decoder = new PolylineDecoder();
+
+
+        var decoded = decoder.Decode(polyline).ToList();
+        var result = encoder.Encode(decoded);
+
+        Assert.AreEqual(polyline, result);
     }
 }

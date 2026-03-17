@@ -9,7 +9,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 /// <summary>
-/// Represents the difference (variance) in latitude and longitude between consecutive geographic coordinates.
+/// Represents the difference (delta) in latitude and longitude between consecutive geographic coordinates.
 /// This struct is used to compute and store the change in coordinate values as integer deltas.
 /// </summary>
 [DebuggerDisplay("{ToString(),nq}")]
@@ -25,49 +25,49 @@ internal struct CoordinateDelta {
     }
 
     /// <summary>
-    /// Gets the current variance in latitude between the most recent and previous coordinate.
+    /// Gets the current delta in latitude between the most recent and previous coordinate.
     /// </summary>
     public int Latitude { get; private set; }
 
     /// <summary>
-    /// Gets the current variance in longitude between the most recent and previous coordinate.
+    /// Gets the current delta in longitude between the most recent and previous coordinate.
     /// </summary>
     public int Longitude { get; private set; }
 
     /// <summary>
-    /// Updates the variance values based on the next latitude and longitude, and sets the current coordinate as next variance baseline.
+    /// Updates the delta values based on the next latitude and longitude, and sets the current coordinate as next delta baseline.
     /// </summary>
     /// <param name="latitude">The next latitude value.</param>
     /// <param name="longitude">The next longitude value.</param>
 
     public void Next(int latitude, int longitude) {
-        Latitude = Variance(_current.Latitude, latitude);
-        Longitude = Variance(_current.Longitude, longitude);
+        Latitude = Delta(_current.Latitude, latitude);
+        Longitude = Delta(_current.Longitude, longitude);
 
         _current.Latitude = latitude;
         _current.Longitude = longitude;
     }
 
     /// <summary>
-    /// Calculates the variance (delta) between two coordinate values.
+    /// Calculates the delta between two coordinate values.
     /// </summary>
     /// <remarks>
     /// This method computes the difference between two integer coordinate values, handling cases where the values may be positive or negative.
     /// </remarks>
     /// <param name="initial">The previous coordinate value.</param>
     /// <param name="next">The next coordinate value.</param>
-    /// <returns>The computed variance between <paramref name="initial"/> and <paramref name="next"/>.</returns>
+    /// <returns>The computed delta between <paramref name="initial"/> and <paramref name="next"/>.</returns>
 
-    private static int Variance(int initial, int next) => next - initial;
+    private static int Delta(int initial, int next) => next - initial;
 
     /// <summary>
-    /// Returns a string representation of the current coordinate variance.
+    /// Returns a string representation of the current coordinate delta.
     /// </summary>
     /// <returns>
-    /// A string in the format <c>{ Coordinate:  { Latitude: [int], Longitude: [int] }, Variance: { Latitude: [int], Longitude: [int] } }</c> representing the current coordinate and deltas to previous coordinate.
+    /// A string in the format <c>{ Coordinate:  { Latitude: [int], Longitude: [int] }, Delta: { Latitude: [int], Longitude: [int] } }</c> representing the current coordinate and deltas to previous coordinate.
     /// </returns>
     public override readonly string ToString() =>
         $"{{ Coordinate: {{ Latitude: {_current.Latitude}, Longitude: {_current.Longitude} }}, " +
-        $"Variance: {{ Latitude: {Latitude}, Longitude: {Longitude} }} }}";
+        $"Delta: {{ Latitude: {Latitude}, Longitude: {Longitude} }} }}";
 
 }

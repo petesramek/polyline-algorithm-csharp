@@ -118,7 +118,7 @@ public class PolylineEncoderTest {
     /// Tests the round-trip encoding and decoding of coordinates.
     /// </summary>
     [TestMethod]
-    public void EncodeDecode_RoundTrip_Ok() {
+    public void Encode_Decode_RoundTrip_Ok() {
         var coordinates = new List<Coordinate>
         {
             new(10, 20),
@@ -138,5 +138,23 @@ public class PolylineEncoderTest {
             Assert.AreEqual(coordinates[i].Latitude, decoded[i].Latitude/*, 1e-6*/);
             Assert.AreEqual(coordinates[i].Longitude, decoded[i].Longitude/*, 1e-6*/);
         }
+    }
+
+    /// <summary>
+    /// Tests the <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})"/> method with a valid input.
+    /// </summary>
+    /// <remarks>Expected result is that the encoded polyline matches <see cref="Values.Polyline.Valid"/>.</remarks>
+    [TestMethod]
+    public void Encode_Buffer_Too_Small_Throws_Exception() {
+        // Arrange
+        var options = PolylineEncodingOptionsBuilder.Create().WithStackAllocLimit(12).Build();
+        PolylineEncoder encoder = new(options);
+        List<Coordinate> valid = [.. RandomValueProvider.GetCoordinates(100).Select(c => new Coordinate(c.Latitude, c.Longitude))];
+
+        // Act
+        void Encode() => encoder.Encode(valid);
+
+        // Assert
+        Assert.ThrowsExactly<InternalBufferOverflowException>(Encode);
     }
 }
