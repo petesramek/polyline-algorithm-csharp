@@ -19,4 +19,7 @@ internal static partial class LogDebugExtensions {
 
     [LoggerMessage(EVENT_ID_BASE + 3, LOG_LEVEL, "Operation {operationName} has finished.")]
     internal static partial void LogOperationFinishedDebug(this ILogger logger, string operationName);
+
+    [LoggerMessage(EVENT_ID_BASE + 4, LOG_LEVEL, "Decoded coordinate: (Latitude: {latitude}, Longitude: {longitude}) at position {position}.")]
+    internal static partial void LogDecodedCoordinateDebug(this ILogger logger, double latitude, double longitude, int position);
 }

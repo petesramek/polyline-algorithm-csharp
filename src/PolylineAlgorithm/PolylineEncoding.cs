@@ -8,6 +8,8 @@ namespace PolylineAlgorithm;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Properties;
 using System;
+using System.Numerics;
+using System.Runtime.InteropServices;
 
 /// <summary>
 /// Provides methods for encoding and decoding polyline data, as well as utilities for normalizing and de-normalizing
@@ -88,7 +90,7 @@ public static class PolylineEncoding {
     /// <remarks>
     /// <para>
     /// This method reverses the normalization performed by <see cref="Normalize"/>. It takes an integer value and converts it
-    /// to a double by dividing by 10 raised to the power of the specified precision. If <paramref name="precision"/> is 0,
+    /// to a double by dividing it by 10 raised to the power of the specified precision. If <paramref name="precision"/> is 0,
     /// the value is returned as a double without division.
     /// </para>
     /// <para>
@@ -312,5 +314,71 @@ public static class PolylineEncoding {
         }
 
         return size;
+    }
+
+    /// <summary>
+    /// Validates that a polyline segment is free of invalid characters.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method checks each character in the provided polyline segment against the valid range of characters
+    /// for polyline encoding. It ensures that all characters are within the ASCII range from '?' (63) to '_' (95),
+    /// inclusive.
+    /// </para>
+    /// <para>
+    /// If an invalid character is found, an <see cref="ArgumentException"/> is thrown, indicating the invalid character
+    /// and the position in the polyline where it was found.
+    /// </para>
+    /// <para>
+    /// This validation is useful for debugging and ensuring data integrity before attempting to decode or process
+    /// polyline data.
+    /// </para>
+    /// </remarks>
+    /// <param name="polyline">
+    /// A span representing the polyline segment to validate.
+    /// </param>
+    /// <exception cref="ArgumentException">
+    /// Thrown when an invalid character is found in the polyline segment.
+    /// </exception>
+    public static void ValidateFormat(ReadOnlySpan<char> polyline)
+    {
+        int length = polyline.Length;
+        int vectorSize = Vector<ushort>.Count;
+
+        const ushort min = Defaults.Algorithm.QuestionMark;
+        const ushort max = min * 2;
+
+        // Create constant vectors once
+        var minVector = new Vector<ushort>(min);
+        var maxVector = new Vector<ushort>(max);
+
+        int i = 0;
+        for (; i <= length - vectorSize; i += vectorSize)
+        {
+            var span = MemoryMarshal.Cast<char, ushort>(polyline.Slice(i, vectorSize));
+#if NET5_0_OR_GREATER
+            var chars = new Vector<ushort>(span);
+#else
+            var chars = new Vector<ushort>(span.ToArray());
+#endif
+            var belowMin = Vector.LessThan(chars, minVector);
+            var aboveMax = Vector.GreaterThan(chars, maxVector);
+            if (Vector.BitwiseOr(belowMin, aboveMax) != Vector<ushort>.Zero)
+            {
+                // Fallback to scalar check for this block
+                for (int j = 0; j < vectorSize; j++)
+                {
+                    char character = polyline[i + j];
+                    if (character < min || character > max)
+                        throw new ArgumentException($"Polyline contains invalid character '{character}'.", nameof(polyline));
+                }
+            }
+        }
+        for (; i < length; i++)
+        {
+            char character = polyline[i];
+            if (character < min || character > max)
+                throw new ArgumentException($"Polyline contains invalid character '{character}'.", nameof(polyline));
+        }
     }
 }
