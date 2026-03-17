@@ -7,6 +7,7 @@ namespace PolylineAlgorithm.Abstraction;
 
 using Microsoft.Extensions.Logging;
 using PolylineAlgorithm;
+using PolylineAlgorithm.Diagnostics;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Internal.Logging;
 using System;
@@ -74,7 +75,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
 
         ValidateNullPolyline(polyline, _logger);
 
-        ReadOnlyMemory<char> sequence = GetReadOnlyMemory(ref polyline);
+        ReadOnlyMemory<char> sequence = GetReadOnlyMemory(in polyline);
 
         ValidateEmptySequence(sequence, _logger);
 
@@ -134,7 +135,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     /// A <see cref="ReadOnlyMemory{T}"/> representing the encoded polyline data.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected abstract ReadOnlyMemory<char> GetReadOnlyMemory(ref TPolyline polyline);
+    protected abstract ReadOnlyMemory<char> GetReadOnlyMemory(in TPolyline polyline);
 
     /// <summary>
     /// Creates a coordinate instance from the given latitude and longitude values.

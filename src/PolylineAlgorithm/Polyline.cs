@@ -49,9 +49,9 @@ public readonly struct Polyline : IEquatable<Polyline> {
     public readonly bool IsEmpty => Value.IsEmpty;
 
     /// <summary>
-    /// Gets the length of the polyline in characters.
+    /// Gets the length of the polyline in characters as an <see cref="int"/>.
     /// </summary>
-    public readonly long Length => Value.Length;
+    public readonly int Length => Value.Length;
 
     /// <summary>
     /// Copies the characters of this polyline to the specified destination array.
@@ -88,7 +88,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
             return string.Empty;
         }
 
-        return Value.ToString();
+        return new string(Value.Span);
     }
 
     /// <summary>
@@ -107,10 +107,19 @@ public readonly struct Polyline : IEquatable<Polyline> {
             return string.Empty;
         }
 
-        return Value.Length <= 32 ? $"\"{Value}\"" : $"\"{Value[..10]}...{Value[^10..]}\"";
+        var span = Value.Span;
+        if (span.Length <= 32)
+            return $"\"{new string(span)}\"";
+        return $"\"{new string(span.Slice(0, 10))}...{new string(span.Slice(span.Length - 10))}\"";
     }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Determines whether the current <see cref="Polyline"/> instance is equal to another <see cref="Polyline"/> instance.
+    /// </summary>
+    /// <param name="other">The other <see cref="Polyline"/> to compare with.</param>
+    /// <returns>
+    /// <see langword="true"/> if the instances are equal; otherwise, <see langword="false"/>.
+    /// </returns>
     public bool Equals(Polyline other) {
         if ((IsEmpty != other.IsEmpty) || (Length != other.Length)) {
             return false;
@@ -126,7 +135,16 @@ public readonly struct Polyline : IEquatable<Polyline> {
 
     /// <inheritdoc />
     public override int GetHashCode() {
-        return Value.GetHashCode();
+        // Content-based hash code for value equality
+        var span = Value.Span;
+        if (span.IsEmpty)
+            return 0;
+        unchecked {
+            int hash = 17;
+            for (int i = 0; i < span.Length; i++)
+                hash = hash * 31 + span[i];
+            return hash;
+        }
     }
 
     /// <summary>
@@ -154,8 +172,6 @@ public readonly struct Polyline : IEquatable<Polyline> {
     public static bool operator !=(Polyline left, Polyline right) {
         return !(left == right);
     }
-
-    #region Factory methods
 
     /// <summary>
     /// Creates a <see cref="Polyline"/> from a Unicode character array.
@@ -214,5 +230,22 @@ public readonly struct Polyline : IEquatable<Polyline> {
         return new Polyline(polyline);
     }
 
-    #endregion
+    /// <summary>
+    /// Copies the characters of this polyline to the specified destination array, starting at a specified index of the destination.
+    /// Only the first <see cref="Length"/> characters are written.
+    /// </summary>
+    /// <param name="destination">The destination array to copy the characters to.</param>
+    /// <param name="destinationIndex">The zero-based index in the destination array at which copying begins.</param>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="destination"/> is <see langword="null" />.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="destinationIndex"/> is less than 0 or greater than the length of <paramref name="destination"/>.</exception>
+    /// <exception cref="ArgumentException">Thrown when the number of elements from <paramref name="destinationIndex"/> to the end of the array is less than the polyline's length.</exception>
+    public void CopyTo(char[] destination, int destinationIndex) {
+        if (destination is null)
+            throw new ArgumentNullException(nameof(destination));
+        if (destinationIndex < 0 || destinationIndex > destination.Length)
+            throw new ArgumentOutOfRangeException(nameof(destinationIndex));
+        if (destination.Length - destinationIndex < Value.Length)
+            throw new ArgumentException(ExceptionMessageResource.DestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthMessage, nameof(destination));
+        Value.Span.CopyTo(destination.AsSpan(destinationIndex));
+    }
 }

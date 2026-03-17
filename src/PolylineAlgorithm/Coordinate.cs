@@ -12,7 +12,6 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 #if NET8_0_OR_GREATER
 using System.Text;
-using System.Linq.Expressions;
 #endif
 
 /// <summary>
@@ -22,10 +21,13 @@ using System.Linq.Expressions;
 /// This struct is designed to be immutable and lightweight, providing a simple way to represent
 /// geographic coordinates in degrees. It includes validation for latitude and longitude ranges
 /// and provides methods for equality comparison and string representation.
+/// 
+/// <para>Note: The value (0, 0) is a valid coordinate (Gulf of Guinea), but is also treated as the "default" value by <see cref="IsDefault"/>.</para>
 /// </remarks>
 [DebuggerDisplay("{ToString()}")]
 [StructLayout(LayoutKind.Auto)]
-public readonly struct Coordinate : IEquatable<Coordinate> {
+public readonly struct Coordinate : IEquatable<Coordinate>
+{
 #if NET8_0_OR_GREATER
     private static readonly CompositeFormat _coordinateValueMustBeBetweenValuesMessageFormat = CompositeFormat.Parse(ExceptionMessageResource.CoordinateValueMustBeBetweenValuesMessageFormat);
 #else
@@ -35,7 +37,11 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <summary>
     /// Initializes a new instance of the <see cref="Coordinate"/> struct with default values (0) for <see cref="Latitude"/> and <see cref="Longitude"/>.
     /// </summary>
-    public Coordinate() {
+    /// <remarks>
+    /// The default value (0, 0) is a valid coordinate (Gulf of Guinea), but is also treated as the "default" value by <see cref="IsDefault"/>.
+    /// </remarks>
+    public Coordinate()
+    {
         Latitude = default;
         Longitude = default;
     }
@@ -53,7 +59,8 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// Thrown when <paramref name="latitude"/> is less than -90 or greater than 90,
     /// or when <paramref name="longitude"/> is less than -180 or greater than 180.
     /// </exception>
-    public Coordinate(double latitude, double longitude) {
+    public Coordinate(double latitude, double longitude)
+    {
         Validator.ValidateLatitude(latitude);
         Validator.ValidateLongitude(longitude);
 
@@ -74,6 +81,9 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <summary>
     /// Determines whether this coordinate is the default value (both <see cref="Latitude"/> and <see cref="Longitude"/> are 0).
     /// </summary>
+    /// <remarks>
+    /// The value (0, 0) is a valid coordinate (Gulf of Guinea), but is also treated as the "default" value by this method.
+    /// </remarks>
     /// <returns>
     /// <see langword="true"/> if both latitude and longitude are 0; otherwise, <see langword="false"/>.
     /// </returns>
@@ -85,10 +95,23 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     public override bool Equals(object? obj) => obj is Coordinate coordinate && Equals(coordinate);
 
     /// <inheritdoc />
-    public bool Equals(Coordinate other) {
+    public bool Equals(Coordinate other)
+    {
         return Latitude.Equals(other.Latitude) &&
                Longitude.Equals(other.Longitude);
     }
+
+    /// <summary>
+    /// Determines whether two <see cref="Coordinate"/> instances are approximately equal within a specified tolerance.
+    /// </summary>
+    /// <param name="other">The other coordinate to compare.</param>
+    /// <param name="tolerance">The maximum allowed difference for latitude and longitude.</param>
+    /// <returns>
+    /// <see langword="true"/> if both latitude and longitude differ by less than <paramref name="tolerance"/>; otherwise, <see langword="false"/>.
+    /// </returns>
+    public bool Equals(Coordinate other, double tolerance)
+        => Math.Abs(Latitude - other.Latitude) < tolerance
+        && Math.Abs(Longitude - other.Longitude) < tolerance;
 
     /// <inheritdoc />
     public override int GetHashCode() => HashCode.Combine(Latitude, Longitude);
@@ -99,7 +122,8 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <returns>
     /// A string representation of the coordinate.
     /// </returns>
-    public override string ToString() {
+    public override string ToString()
+    {
         return $"{{ {nameof(Latitude)}: {Latitude.ToString("G", CultureInfo.InvariantCulture)}, {nameof(Longitude)}: {Longitude.ToString("G", CultureInfo.InvariantCulture)} }}";
     }
 
@@ -126,7 +150,8 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <summary>
     /// Provides validation methods for latitude and longitude values used in <see cref="Coordinate"/>.
     /// </summary>
-    internal static class Validator {
+    internal static class Validator
+    {
         /// <summary>
         /// Validates that the specified latitude is within the valid range of -90 to 90 degrees and is a finite value.
         /// </summary>
@@ -134,8 +159,10 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown when <paramref name="latitude"/> is less than -90, greater than 90, or not a finite value.
         /// </exception>
-        internal static void ValidateLatitude(double latitude) {
-            if (latitude < -90 || latitude > 90 || !double.IsFinite(latitude)) {
+        internal static void ValidateLatitude(double latitude)
+        {
+            if (latitude < -90 || latitude > 90 || !double.IsFinite(latitude))
+            {
                 throw new ArgumentOutOfRangeException(nameof(latitude), string.Format(CultureInfo.InvariantCulture, _coordinateValueMustBeBetweenValuesMessageFormat, "Latitude", -90, 90));
             }
         }
@@ -147,8 +174,10 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown when <paramref name="longitude"/> is less than -180, greater than 180, or not a finite value.
         /// </exception>
-        internal static void ValidateLongitude(double longitude) {
-            if (longitude < -180 || longitude > 180 || !double.IsFinite(longitude)) {
+        internal static void ValidateLongitude(double longitude)
+        {
+            if (longitude < -180 || longitude > 180 || !double.IsFinite(longitude))
+            {
                 throw new ArgumentOutOfRangeException(nameof(longitude), string.Format(CultureInfo.InvariantCulture, _coordinateValueMustBeBetweenValuesMessageFormat, "Longitude", -180, 180));
             }
         }
