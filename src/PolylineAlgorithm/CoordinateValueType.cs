@@ -12,7 +12,7 @@ public enum CoordinateValueType {
     /// <summary>
     /// Represents no specific type. This value is used when the type is not applicable or not specified.
     /// </summary>
-    None = 0,
+    Unspecified = 0,
     /// <summary>
     /// Represents a latitude value.
     /// </summary>

@@ -14,13 +14,13 @@ using System.Runtime.InteropServices;
 /// </summary>
 [DebuggerDisplay("{ToString(),nq}")]
 [StructLayout(LayoutKind.Auto)]
-internal struct CoordinateVariance {
+internal struct CoordinateDelta {
     private (int Latitude, int Longitude) _current;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="CoordinateVariance"/> struct with the default latitude and longitude deltas.
+    /// Initializes a new instance of the <see cref="CoordinateDelta"/> struct with the default latitude and longitude deltas.
     /// </summary>
-    public CoordinateVariance() {
+    public CoordinateDelta() {
         _current = (default, default);
     }
 

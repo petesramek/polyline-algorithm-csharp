@@ -5,11 +5,13 @@
 
 namespace PolylineAlgorithm;
 
+using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Properties;
 using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 #if NET8_0_OR_GREATER
 using System.Text;
 #endif

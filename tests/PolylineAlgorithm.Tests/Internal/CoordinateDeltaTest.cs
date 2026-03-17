@@ -9,7 +9,7 @@ using PolylineAlgorithm.Internal;
 using System.Globalization;
 
 [TestClass]
-public class CoordinateVarianceTest {
+public class CoordinateDeltaTest {
     public static IEnumerable<(int Latitude, int Longitude)> Coordinates => [
         (0, 0),
         (-10, -10),
@@ -42,7 +42,7 @@ public class CoordinateVarianceTest {
     [TestMethod]
     public void Constructor_Sets_Defaults() {
         // Arrange & Act
-        CoordinateVariance variance = new();
+        CoordinateDelta variance = new();
         // Assert
         Assert.AreEqual(0, variance.Latitude);
         Assert.AreEqual(0, variance.Longitude);
@@ -52,7 +52,7 @@ public class CoordinateVarianceTest {
     [DynamicData(nameof(Coordinates))]
     public void Next_Calculates_Correct_Variance_From_Default_Variance(int latitude, int longitude) {
         // Arrange
-        CoordinateVariance variance = new();
+        CoordinateDelta variance = new();
         var expected = (latitude, longitude);
 
         // Act
@@ -67,7 +67,7 @@ public class CoordinateVarianceTest {
     [DynamicData(nameof(Variances))]
     public void Next_Calculates_Correct_Variance_From_Previous_Variance((int Latitude, int Longitude) initial, (int Latitude, int Longitude) next, (int Latitude, int Longitude) expected) {
         // Arrange
-        CoordinateVariance variance = new();
+        CoordinateDelta variance = new();
         variance.Next(initial.Latitude, initial.Longitude);
 
         // Act
@@ -82,7 +82,7 @@ public class CoordinateVarianceTest {
     [DynamicData(nameof(Coordinates))]
     public void ToString_Returns_Value_Containing_Variance(int latitude, int longitude) {
         // Arrange
-        CoordinateVariance variance = new();
+        CoordinateDelta variance = new();
         variance.Next(latitude, longitude);
 
         // Act

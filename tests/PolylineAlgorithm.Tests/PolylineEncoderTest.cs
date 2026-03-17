@@ -20,6 +20,29 @@ public class PolylineEncoderTest {
     /// </summary>
     private readonly PolylineEncoder _encoder = new();
 
+    public void Constructor_Options_Ok() {
+        // Arrange
+        var options = new PolylineEncodingOptions();
+
+        // Act
+        var encoder = new PolylineEncoder(options);
+
+        // Assert
+        Assert.IsNotNull(encoder);
+        Assert.AreEqual(options, encoder.Options);
+    }
+
+    public void Constructor_NullOptions_Throws_ArgumentNullException() {
+        // Arrange
+        PolylineEncodingOptions options = null!;
+
+        // Act
+        PolylineEncoder New() => new(options);
+
+        // Assert
+        Assert.ThrowsExactly<ArgumentNullException>(New);
+    }
+
     /// <summary>
     /// Tests the <see cref="PolylineEncoder.Encode(IEnumerable{Coordinate})"/> method with a null input, expecting an <see cref="ArgumentNullException"/>.
     /// </summary>

@@ -67,6 +67,8 @@ public class PolylineEncodingTest {
         (double.PositiveInfinity,CoordinateValueType.Latitude),
         (double.NegativeInfinity,CoordinateValueType.Longitude),
         (double.PositiveInfinity,CoordinateValueType.Longitude),
+        (0, CoordinateValueType.Unspecified),
+        (0, CoordinateValueType.Unspecified),
     ];
 
     public static IEnumerable<(int normalized, CoordinateValueType)> NormalizedOutOfRangeValues => [
@@ -78,6 +80,8 @@ public class PolylineEncodingTest {
         (int.MaxValue,CoordinateValueType.Latitude),
         (int.MinValue,CoordinateValueType.Longitude),
         (int.MaxValue,CoordinateValueType.Longitude),
+        (0, CoordinateValueType.Unspecified),
+        (0, CoordinateValueType.Unspecified),
     ];
 
     public static IEnumerable<(int variance, int charCount)> VarianceCharCountPairs => [

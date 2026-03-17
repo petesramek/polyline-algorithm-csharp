@@ -102,7 +102,7 @@ public static class PolylineEncoding {
 
     public static double Denormalize(int value, CoordinateValueType type) {
         // Validate that the type is not None, as it does not represent a valid coordinate value type.
-        if (type == CoordinateValueType.None) {
+        if (type == CoordinateValueType.Unspecified) {
             throw new ArgumentOutOfRangeException(nameof(type), string.Format(CultureInfo.InvariantCulture, _argumentCannotBeCoordinateValueTypeMessageFormat, type.ToString()));
         }
 
@@ -194,7 +194,7 @@ public static class PolylineEncoding {
 
     public static int Normalize(double value, CoordinateValueType type) {
         // Validate that the type is not None, as it does not represent a valid coordinate value type.
-        if (type == CoordinateValueType.None) {
+        if (type == CoordinateValueType.Unspecified) {
             throw new ArgumentOutOfRangeException(nameof(type), string.Format(CultureInfo.InvariantCulture, _argumentCannotBeCoordinateValueTypeMessageFormat, type.ToString()));
         }
 

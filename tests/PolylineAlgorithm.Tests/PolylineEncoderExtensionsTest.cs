@@ -30,9 +30,35 @@ public class PolylineEncoderExtensionsTest {
     }
 
     [TestMethod]
-    public void Encode_Null_Coordinates_Throws_ArgumentNullException() {
+    public void Encode_Null_Encoder_Empty_Array_Throws_ArgumentNullException() {
+        // Arrange
+        static void Encode() => PolylineEncoderExtensions.Encode<Coordinate, Polyline>(null!, Array.Empty<Coordinate>());
+
+        // Act
+        var exception = Assert.ThrowsExactly<ArgumentNullException>(Encode);
+
+        // Assert
+        Assert.AreEqual("encoder", exception.ParamName);
+        Assert.IsTrue(exception.Message.Contains("Value cannot be null.", StringComparison.Ordinal));
+    }
+
+    [TestMethod]
+    public void Encode_Null_List_Throws_ArgumentNullException() {
         // Arrange
         void Encode() => PolylineEncoderExtensions.Encode(_encoder, (List<Coordinate>)null!);
+
+        // Act
+        var exception = Assert.ThrowsExactly<ArgumentNullException>(Encode);
+
+        // Assert
+        Assert.AreEqual("coordinates", exception.ParamName);
+        Assert.IsTrue(exception.Message.Contains("Value cannot be null.", StringComparison.Ordinal));
+    }
+
+    [TestMethod]
+    public void Encode_Null_Array_Throws_ArgumentNullException() {
+        // Arrange
+        void Encode() => PolylineEncoderExtensions.Encode(_encoder, (Coordinate[])null!);
 
         // Act
         var exception = Assert.ThrowsExactly<ArgumentNullException>(Encode);

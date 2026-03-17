@@ -78,7 +78,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
         ValidateEmptyCoordinates(ref coordinates, _logger);
 
-        CoordinateVariance variance = new();
+        CoordinateDelta variance = new();
 
         int position = 0;
         int consumed = 0;
@@ -126,7 +126,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
         return CreatePolyline(buffer[..position].ToString().AsMemory());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int GetRequiredLength(CoordinateVariance variance) =>
+        static int GetRequiredLength(CoordinateDelta variance) =>
             PolylineEncoding.GetCharCount(variance.Latitude) + PolylineEncoding.GetCharCount(variance.Longitude);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -163,7 +163,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static void ValidateBuffer(CoordinateVariance variance, int position, Span<char> buffer, ILogger logger) {
+        static void ValidateBuffer(CoordinateDelta variance, int position, Span<char> buffer, ILogger logger) {
             if (GetRemainingBufferSize(position, buffer.Length) < GetRequiredLength(variance)) {
                 var requiredLength = GetRequiredLength(variance);
 

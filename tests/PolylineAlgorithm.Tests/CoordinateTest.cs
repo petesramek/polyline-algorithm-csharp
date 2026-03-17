@@ -185,6 +185,8 @@ public class CoordinateTest {
         Coordinate max = new(MaxLatitude, MaxLongitude);
 
         // Assert
+        Assert.IsFalse(min.IsDefault());
+        Assert.IsFalse(max.IsDefault());
         Assert.AreEqual(MinLatitude, min.Latitude);
         Assert.AreEqual(-MaxLongitude, min.Longitude);
         Assert.AreEqual(MaxLatitude, max.Latitude);
@@ -249,5 +251,31 @@ public class CoordinateTest {
         Assert.IsFalse(coordinate != equalCoordinate);
         Assert.IsTrue(coordinate != notEqualCoordinate);
         Assert.IsFalse(coordinate == notEqualCoordinate);
+    }
+
+    /// <summary>
+    /// Tests the <see cref="Coordinate.GetHashCode"/> method for equal coordinates.
+    /// </summary>
+    [TestMethod]
+    public void GetHashCode_EqualCoordinates_SameHash() {
+        // Arrange
+        var c1 = new Coordinate(90, 180);
+        var c2 = new Coordinate(90, 180);
+
+        // Act & Assert
+        Assert.AreEqual(c1.GetHashCode(), c2.GetHashCode());
+    }
+
+    /// <summary>
+    /// Tests the <see cref="Coordinate.GetHashCode"/> method for different coordinates.
+    /// </summary>
+    [TestMethod]
+    public void GetHashCode_DifferentCoordinates_DifferentHash() {
+        // Arrange
+        var c1 = new Coordinate(90, 180);
+        var c2 = new Coordinate(-90, -180);
+
+        // Act & Assert
+        Assert.AreNotEqual(c1.GetHashCode(), c2.GetHashCode());
     }
 }
