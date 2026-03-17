@@ -8,6 +8,7 @@ namespace PolylineAlgorithm;
 using PolylineAlgorithm.Properties;
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 /// <summary>
@@ -96,6 +97,11 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <returns>
     /// A string that includes the polyline value, truncated if necessary, for debugging purposes.
     /// </returns>
+    [ExcludeFromCodeCoverage(
+#if NET5_0_OR_GREATER
+        Justification = "Only used during debugging."
+#endif
+    )]
     private string ToDebugString() {
         if (IsEmpty) {
             return string.Empty;
