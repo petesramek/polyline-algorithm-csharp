@@ -49,6 +49,10 @@ body:
       text: PolylineEncodingOptionsBuilder
       url: PolylineAlgorithm.PolylineEncodingOptionsBuilder.html
     description: Provides a builder for configuring options for polyline encoding operations.
+  - type:
+      text: Pow10
+      url: PolylineAlgorithm.Pow10.html
+    description: Provides optimized calculation of powers of 10 for precision-based operations.
 - h3: Structs
 - parameters:
   - type:

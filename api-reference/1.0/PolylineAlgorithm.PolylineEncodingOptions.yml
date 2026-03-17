@@ -54,6 +54,24 @@ body:
       url: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory
 - h4: Remarks
 - markdown: The default logger factory is <xref href="Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory" data-throw-if-not-resolved="false"></xref>, which does not log any messages.
+- api3: Precision
+  id: PolylineAlgorithm_PolylineEncodingOptions_Precision
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L43
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncodingOptions.Precision
+    commentId: P:PolylineAlgorithm.PolylineEncodingOptions.Precision
+- markdown: Gets the precision used for polyline encoding.
+- code: public uint Precision { get; }
+- h4: Property Value
+- parameters:
+  - type:
+    - text: uint
+      url: https://learn.microsoft.com/dotnet/api/system.uint32
+- h4: Remarks
+- markdown: >-
+    The precision determines the number of decimal places to use when encoding coordinates.
+
+    The default value is 5, which is commonly used for geographic coordinates.
 - api3: StackAllocLimit
   id: PolylineAlgorithm_PolylineEncodingOptions_StackAllocLimit
   src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L34
