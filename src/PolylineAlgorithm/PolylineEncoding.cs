@@ -78,7 +78,7 @@ public static class PolylineEncoding {
         uint factor = Pow10.GetFactor(precision);
 
         checked {
-            return (int)Math.Round(value * factor, MidpointRounding.AwayFromZero);
+            return (int)Math.Truncate(value * factor);
         }
     }
 
