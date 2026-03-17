@@ -13,7 +13,6 @@ using PolylineAlgorithm.Properties;
 using System;
 using System.Buffers;
 using System.Diagnostics;
-using System.Globalization;
 using System.Runtime.CompilerServices;
 
 /// <summary>
@@ -96,8 +95,8 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
                 delta
                     .Next(
-                        PolylineEncoding.Normalize(GetLatitude(coordinates[i]), CoordinateValueType.Latitude),
-                        PolylineEncoding.Normalize(GetLongitude(coordinates[i]), CoordinateValueType.Longitude)
+                        PolylineEncoding.Normalize(GetLatitude(coordinates[i]), Options.Precision),
+                        PolylineEncoding.Normalize(GetLongitude(coordinates[i]), Options.Precision)
                     );
 
                 if (!PolylineEncoding.TryWriteValue(delta.Latitude, buffer, ref position)

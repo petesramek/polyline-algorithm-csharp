@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 
 [TestClass]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "In test we want to test invalid values.")]
 public class PolylineEncodingTest {
     #region Dynamic Data Properties
 
@@ -37,19 +36,17 @@ public class PolylineEncodingTest {
         (-16777215,"|~~~^"),
     ];
 
-    public static IEnumerable<(double denormalized, int normalized, CoordinateValueType)> DenormalizedNormalizedPairs => [
-        (0,0, CoordinateValueType.Latitude),
-        (0,0, CoordinateValueType.Longitude),
-        (1.23456,123456, CoordinateValueType.Latitude),
-        (-1.23456,-123456, CoordinateValueType.Latitude),
-        (1.23456,123456, CoordinateValueType.Longitude),
-        (-1.23456,-123456, CoordinateValueType.Longitude),
-        (90,9000000, CoordinateValueType.Latitude),
-        (-90,-9000000, CoordinateValueType.Latitude),
-        (90,9000000, CoordinateValueType.Longitude),
-        (-90,-9000000, CoordinateValueType.Longitude),
-        (180,18000000, CoordinateValueType.Longitude),
-        (-180,-18000000, CoordinateValueType.Longitude),
+    public static IEnumerable<(double denormalized, int normalized, uint precision)> DenormalizedNormalizedPairs => [
+        (0, 0, 5),
+        (0, 0, 5),
+        (1.23456, 123456, 5),
+        (-1.23456789, -123456, 5),
+        (1.23456789, 12, 2),
+        (-1.23456789, -12, 2),
+        (90, 9000000, 5),
+        (-90, -900000, 5),
+        (90, 900, 2),
+        (-90, -900, 2),
     ];
 
     public static IEnumerable<(double denormalized, CoordinateValueType)> DenormalizedOutOfRangeValues => [
@@ -84,7 +81,7 @@ public class PolylineEncodingTest {
         (0, CoordinateValueType.Unspecified),
     ];
 
-    public static IEnumerable<(int delta, int charCount)> DeltaCharCountPairs => [
+    public static IEnumerable<(int delta, int bufferSize)> DeltaBufferSizePairs => [
         (0, 1),
         (15, 1),
         (-16, 1),
@@ -114,9 +111,9 @@ public class PolylineEncodingTest {
 
     [TestMethod]
     [DynamicData(nameof(DenormalizedNormalizedPairs))]
-    public void Normalize_Equals_Expected(double denormalized, int expected, CoordinateValueType type) {
+    public void Normalize_Equals_Expected(double denormalized, int expected, uint precision) {
         // Arrange & Act
-        int result = PolylineEncoding.Normalize(denormalized, type);
+        int result = PolylineEncoding.Normalize(denormalized, precision);
 
         // Assert
         Assert.AreEqual(expected, result);
@@ -125,9 +122,9 @@ public class PolylineEncodingTest {
 
     [TestMethod]
     [DynamicData(nameof(DenormalizedNormalizedPairs))]
-    public void Denormalize_Equals_Expected(double expected, int normalized, CoordinateValueType type) {
+    public void Denormalize_Equals_Expected(double expected, int normalized, uint precision) {
         // Arrange & Act
-        double result = PolylineEncoding.Denormalize(normalized, type);
+        double result = PolylineEncoding.Denormalize(normalized, precision);
 
         // Assert
         Assert.AreEqual(expected, result);
@@ -155,7 +152,7 @@ public class PolylineEncodingTest {
     public void TryWriteValue_DynamicBuffer_Returns_True_Equals_Expected(int delta, string expected) {
         // Arrange
         int position = 0;
-        int required = PolylineEncoding.GetCharCount(delta);
+        int required = PolylineEncoding.GetRequiredBufferSize(delta);
         Span<char> buffer = stackalloc char[required];
 
         // Act
@@ -173,7 +170,7 @@ public class PolylineEncodingTest {
     public void TryWriteValue_BufferTooSmall_Returns_False(int delta, string _) {
         // Arrange
         int position = 0;
-        int required = PolylineEncoding.GetCharCount(delta);
+        int required = PolylineEncoding.GetRequiredBufferSize(delta);
         Span<char> buffer = stackalloc char[required - 1];
 
         // Act
@@ -234,12 +231,12 @@ public class PolylineEncodingTest {
 
     [TestMethod]
     [DynamicData(nameof(DenormalizedOutOfRangeValues))]
-    public void Normalize_Throws_ArgumentOutOfRangeException(double value, CoordinateValueType type) {
+    public void Normalize_Throws_ArgumentOutOfRangeException(double value) {
         // Arrange
-        static int Normalize(double value, CoordinateValueType type) => PolylineEncoding.Normalize(value, type);
+        static int Normalize(double value) => PolylineEncoding.Normalize(value);
 
         // Act
-        var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => Normalize(value, type));
+        var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => Normalize(value));
 
         // Assert
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
@@ -247,24 +244,24 @@ public class PolylineEncodingTest {
 
     [TestMethod]
     [DynamicData(nameof(NormalizedOutOfRangeValues))]
-    public void Denormalize_Throws_ArgumentOutOfRangeException(int value, CoordinateValueType type) {
+    public void Denormalize_Throws_ArgumentOutOfRangeException(int value) {
         // Arrange
-        static double Denormalize(int value, CoordinateValueType type) => PolylineEncoding.Denormalize(value, type);
+        static double Denormalize(int value) => PolylineEncoding.Denormalize(value);
 
         // Act
-        var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => Denormalize(value, type));
+        var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => Denormalize(value));
 
         // Assert
         Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
     }
 
     [TestMethod]
-    [DynamicData(nameof(DeltaCharCountPairs))]
+    [DynamicData(nameof(DeltaBufferSizePairs))]
     public void GetCharCount_Equals_Expected(int delta, int expected) {
         // Arrange & Act
-        var charCount = PolylineEncoding.GetCharCount(delta);
+        var bufferSize = PolylineEncoding.GetRequiredBufferSize(delta);
 
         // Assert
-        Assert.AreEqual(expected, charCount);
+        Assert.AreEqual(expected, bufferSize);
     }
 }

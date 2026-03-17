@@ -22,6 +22,7 @@ public sealed class PolylineEncodingOptionsBuilder {
 #else
     private static readonly string _stackAllocLimitMustBeEqualOrGreaterThanMessageFormat = ExceptionMessageResource.StackAllocLimitMustBeEqualOrGreaterThanMessageFormat;
 #endif
+    private uint _precision = 5;
     private int _stackAllocLimit = 512;
     private ILoggerFactory _loggerFactory = NullLoggerFactory.Instance;
 
@@ -45,24 +46,46 @@ public sealed class PolylineEncodingOptionsBuilder {
     /// </returns>
     public PolylineEncodingOptions Build() {
         return new PolylineEncodingOptions {
+            Precision = _precision,
             StackAllocLimit = _stackAllocLimit,
             LoggerFactory = _loggerFactory,
         };
     }
 
     /// <summary>
-    /// Sets the buffer size for encoding operations.
+    /// Configures the buffer size used for stack allocation during polyline encoding operations.
     /// </summary>
     /// <param name="stackAllocLimit">
-    /// The maximum buffer size. Must be greater than 11.
+    /// The maximum buffer size to use for stack allocation. Must be greater than or equal to 1.
+    /// </param>
+    /// <returns>
+    /// Returns the current <see cref="PolylineEncodingOptionsBuilder"/> instance for method chaining.
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if <paramref name="stackAllocLimit"/> is less than 1.
+    /// </exception>
+    /// <remarks>
+    /// This method allows customization of the internal buffer size for encoding, which can impact performance and memory usage.
+    /// </remarks>
+    public PolylineEncodingOptionsBuilder WithStackAllocLimit(int stackAllocLimit) {
+        const int minStackAllocLimit = 1;
+
+        _stackAllocLimit = stackAllocLimit >= minStackAllocLimit ? stackAllocLimit : throw new ArgumentOutOfRangeException(nameof(stackAllocLimit), string.Format(CultureInfo.InvariantCulture, _stackAllocLimitMustBeEqualOrGreaterThanMessageFormat, minStackAllocLimit));
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the precision for encoding values.
+    /// </summary>
+    /// <param name="precision">
+    /// The number of decimal places to use for encoding values. Default is 5.
     /// </param>
     /// <returns>
     /// The current builder instance.
     /// </returns>
-    /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="stackAllocLimit"/> is less than or equal to 11.</exception>
-    public PolylineEncodingOptionsBuilder WithStackAllocLimit(int stackAllocLimit) {
-        const int minStackAllocLimit = 1;
-        _stackAllocLimit = stackAllocLimit >= minStackAllocLimit ? stackAllocLimit : throw new ArgumentOutOfRangeException(nameof(stackAllocLimit), string.Format(CultureInfo.InvariantCulture, _stackAllocLimitMustBeEqualOrGreaterThanMessageFormat, minStackAllocLimit));
+    public PolylineEncodingOptionsBuilder WithPrecision(uint precision) {
+        _precision = precision;
 
         return this;
     }

@@ -8,10 +8,6 @@ namespace PolylineAlgorithm;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Properties;
 using System;
-using System.Globalization;
-#if NET8_0_OR_GREATER
-using System.Text;
-#endif
 
 /// <summary>
 /// Provides methods for encoding and decoding polyline data, as well as utilities for normalizing and de-normalizing
@@ -22,34 +18,13 @@ using System.Text;
 /// coordinates. It also provides validation utilities to ensure values conform to expected ranges for latitude and
 /// longitude.</remarks>
 public static class PolylineEncoding {
-#if NET8_0_OR_GREATER
-    private static readonly CompositeFormat _argumentCannotBeCoordinateValueTypeMessageFormat = CompositeFormat.Parse(ExceptionMessageResource.ArgumentCannotBeCoordinateValueTypeMessageFormat);
-#else
-    private static readonly string _argumentCannotBeCoordinateValueTypeMessageFormat = ExceptionMessageResource.ArgumentCannotBeCoordinateValueTypeMessageFormat;
-#endif
-
-
-    /// <summary>
-    /// Gets the midpoint rounding strategy used when normalizing coordinate values.
-    /// </summary>
-    /// <remarks>
-    /// This property defines how rounding is performed during the normalization process in the <see cref="Normalize"/> method.
-    /// The value is set to <see cref="MidpointRounding.AwayFromZero"/>, which means that when a number is halfway between two others,
-    /// it is rounded toward the nearest number that is away from zero.
-    /// </remarks>
-    /// <value>
-    /// <see cref="MidpointRounding.AwayFromZero"/>
-    /// </value>
-    public static MidpointRounding Rounding { get; } = MidpointRounding.AwayFromZero;
-
     /// <summary>
     /// Normalizes a geographic coordinate value to an integer representation based on the specified precision.
     /// </summary>
     /// <remarks>
     /// <para>
     /// This method converts a floating-point coordinate value into a normalized integer by multiplying it by 10 raised
-    /// to the power of the specified precision, then rounding the result using the <see cref="Rounding"/> strategy
-    /// (<see cref="MidpointRounding.AwayFromZero"/>).
+    /// to the power of the specified precision, then rounding the result using the specified <paramref name="rounding"/> strategy.
     /// </para>
     /// <para>
     /// For example, with the default precision of 5:
@@ -71,6 +46,10 @@ public static class PolylineEncoding {
     /// The value is multiplied by 10^<paramref name="precision"/> before rounding. 
     /// Default is 5, which is standard for polyline encoding.
     /// </param>
+    /// <param name="rounding">
+    /// The rounding strategy to use when converting the scaled value to an integer.
+    /// Default is <see cref="MidpointRounding.AwayFromZero"/>, which rounds midpoint values to the nearest number away from zero.
+    /// </param>
     /// <returns>
     /// An integer representing the normalized value. Returns <c>0</c> if the input <paramref name="value"/> is <c>0.0</c>.
     /// </returns>
@@ -80,7 +59,7 @@ public static class PolylineEncoding {
     /// <exception cref="OverflowException">
     /// Thrown when the normalized result exceeds the range of a 32-bit signed integer during the conversion from double to int.
     /// </exception>
-    public static int Normalize(double value, uint precision = 5) {
+    public static int Normalize(double value, uint precision = 5, MidpointRounding rounding = MidpointRounding.AwayFromZero) {
         // Validate that the value is finite and not NaN or Infinity.
         if (!double.IsFinite(value)) {
             throw new ArgumentOutOfRangeException(nameof(value), ExceptionMessageResource.ArgumentValueMustBeFiniteNumber);
@@ -91,8 +70,10 @@ public static class PolylineEncoding {
             return 0;
         }
 
+        uint factor = Pow10.GetFactor(precision);
+
         checked {
-            return (int)Math.Round(precision == 0 ? value : value * Math.Pow(10, precision), Rounding);
+            return (int)Math.Round(precision == 0 ? value : value * factor, rounding);
         }
     }
 
@@ -102,11 +83,11 @@ public static class PolylineEncoding {
     /// <remarks>
     /// <para>
     /// This method reverses the normalization process performed by <see cref="Normalize"/>. It takes an integer value and converts it
-    /// to a double by dividing by 10 raised to the power of the specified precision. If the precision is 0, the value is returned as a double
+    /// to a double by dividing it by 10 raised to the power of the specified precision. If the precision is 0, the value is returned as a double
     /// without division.
     /// </para>
     /// <para>
-    /// The calculation is performed inside a <c>checked</c> block to ensure that any arithmetic overflow is detected and an <see cref="OverflowException"/> is thrown.
+    /// The calculation is performed inside a <see langword="checked"/> block to ensure that any arithmetic overflow is detected and an <see cref="OverflowException"/> is thrown.
     /// </para>
     /// <para>
     /// For example, with a precision of 5:
@@ -132,14 +113,14 @@ public static class PolylineEncoding {
     /// Thrown if the arithmetic operation overflows during conversion.
     /// </exception>
     public static double Denormalize(int value, uint precision = 5) {
-        // Return fast if the value is zero, return 0.0 as the denormalized value.
         if (value == 0) {
             return 0.0;
         }
 
-        // Using 'checked' to ensure overflow exceptions are thrown if the result exceeds numeric limits.
+        uint factor = Pow10.GetFactor(precision);
+
         checked {
-            return precision == 0 ? value : value / Math.Pow(10, precision);
+            return precision == 0 ? value : (double)value / factor;
         }
     }
 
@@ -242,7 +223,7 @@ public static class PolylineEncoding {
     /// </returns>
     public static bool TryWriteValue(int delta, Span<char> buffer, ref int position) {
         // Validate that the position and required space for write is within the bounds of the buffer.
-        if (buffer.Slice(position).Length < GetRequiredBufferSize(delta)) {
+        if (buffer[position..].Length < GetRequiredBufferSize(delta)) {
             return false;
         }
 

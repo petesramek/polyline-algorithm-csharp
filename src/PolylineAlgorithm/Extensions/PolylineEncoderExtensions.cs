@@ -5,12 +5,10 @@
 
 namespace PolylineAlgorithm.Extensions;
 
-using PolylineAlgorithm;
 using PolylineAlgorithm.Abstraction;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using static PolylineAlgorithm.Internal.Defaults;
 
 /// <summary>
 /// Provides extension methods for the <see cref="IPolylineEncoder{TCoordinate, TPolyline}"/> interface to facilitate encoding geographic coordinates into polylines.

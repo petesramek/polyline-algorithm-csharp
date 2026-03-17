@@ -34,6 +34,15 @@ public sealed class PolylineEncodingOptions {
     public int StackAllocLimit { get; internal set; } = 512;
 
     /// <summary>
+    /// Gets the precision used for polyline encoding.
+    /// </summary>
+    /// <remarks>
+    /// The precision determines the number of decimal places to use when encoding coordinates.
+    /// The default value is 5, which is commonly used for geographic coordinates.
+    /// </remarks>
+    public uint Precision { get; internal set; } = 5;
+
+    /// <summary>
     /// Returns type name of a logger factory for debugging purposes.
     /// </summary>
     /// <returns>
