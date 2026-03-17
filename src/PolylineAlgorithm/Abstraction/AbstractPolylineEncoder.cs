@@ -124,20 +124,6 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
         return CreatePolyline(buffer[..position].ToString().AsMemory());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int GetRequiredLength(CoordinateDelta delta) =>
-            PolylineEncoding.GetCharCount(delta.Latitude) + PolylineEncoding.GetCharCount(delta.Longitude);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int GetRemainingBufferSize(int position, int length) {
-            Debug.Assert(length > 0, "Buffer length must be greater than zero.");
-            Debug.Assert(position >= 0, "Position must be non-negative.");
-            Debug.Assert(position < length, "Position must be less than buffer length.");
-            Debug.Assert(length >= position, "Remaining length must be non-negative.");
-
-            return length - position;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static int GetMaxBufferLength(int count) {
             Debug.Assert(count > 0, "Count must be greater than zero.");
 
