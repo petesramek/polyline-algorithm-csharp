@@ -92,6 +92,8 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
         try {
             for (var i = 0; i < coordinates.Length; i++) {
+
+
                 delta
                     .Next(
                         PolylineEncoding.Normalize(GetLatitude(coordinates[i]), CoordinateValueType.Latitude),

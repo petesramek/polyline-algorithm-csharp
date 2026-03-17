@@ -33,5 +33,11 @@ public sealed class PolylineEncodingOptions {
     /// </remarks>
     public int StackAllocLimit { get; internal set; } = 512;
 
+    /// <summary>
+    /// Returns type name of a logger factory for debugging purposes.
+    /// </summary>
+    /// <returns>
+    /// String representation of <see cref="LoggerFactory"/> property instance.
+    /// </returns>
     private string GetLoggerFactoryType() => LoggerFactory.GetType().Name;
 }

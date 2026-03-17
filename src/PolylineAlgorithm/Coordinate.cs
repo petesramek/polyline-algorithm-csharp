@@ -14,6 +14,7 @@ using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 #if NET8_0_OR_GREATER
 using System.Text;
+using System.Linq.Expressions;
 #endif
 
 /// <summary>
@@ -55,13 +56,8 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// or when <paramref name="longitude"/> is less than -180 or greater than 180.
     /// </exception>
     public Coordinate(double latitude, double longitude) {
-        if (latitude < -90 || latitude > 90 || !double.IsFinite(latitude)) {
-            throw new ArgumentOutOfRangeException(nameof(latitude), string.Format(CultureInfo.InvariantCulture, _coordinateValueMustBeBetweenValuesMessageFormat, "Latitude", -90, 90));
-        }
-
-        if (longitude < -180 || longitude > 180 || !double.IsFinite(longitude)) {
-            throw new ArgumentOutOfRangeException(nameof(longitude), string.Format(CultureInfo.InvariantCulture, _coordinateValueMustBeBetweenValuesMessageFormat, "Longitude", -180, 180));
-        }
+        Validator.ValidateLatitude(latitude);
+        Validator.ValidateLongitude(longitude);
 
         Latitude = latitude;
         Longitude = longitude;
@@ -128,4 +124,35 @@ public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <see langword="true"/> if the coordinates are not equal; otherwise, <see langword="false"/>.
     /// </returns>
     public static bool operator !=(Coordinate left, Coordinate right) => !(left == right);
+
+    /// <summary>
+    /// Provides validation methods for latitude and longitude values used in <see cref="Coordinate"/>.
+    /// </summary>
+    internal static class Validator {
+        /// <summary>
+        /// Validates that the specified latitude is within the valid range of -90 to 90 degrees and is a finite value.
+        /// </summary>
+        /// <param name="latitude">The latitude value to validate.</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown when <paramref name="latitude"/> is less than -90, greater than 90, or not a finite value.
+        /// </exception>
+        internal static void ValidateLatitude(double latitude) {
+            if (latitude < -90 || latitude > 90 || !double.IsFinite(latitude)) {
+                throw new ArgumentOutOfRangeException(nameof(latitude), string.Format(CultureInfo.InvariantCulture, _coordinateValueMustBeBetweenValuesMessageFormat, "Latitude", -90, 90));
+            }
+        }
+
+        /// <summary>
+        /// Validates that the specified longitude is within the valid range of -180 to 180 degrees and is a finite value.
+        /// </summary>
+        /// <param name="longitude">The longitude value to validate.</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown when <paramref name="longitude"/> is less than -180, greater than 180, or not a finite value.
+        /// </exception>
+        internal static void ValidateLongitude(double longitude) {
+            if (longitude < -180 || longitude > 180 || !double.IsFinite(longitude)) {
+                throw new ArgumentOutOfRangeException(nameof(longitude), string.Format(CultureInfo.InvariantCulture, _coordinateValueMustBeBetweenValuesMessageFormat, "Longitude", -180, 180));
+            }
+        }
+    }
 }

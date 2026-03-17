@@ -26,10 +26,6 @@ internal static class Defaults {
     /// Contains default values and constants specific to the polyline encoding algorithm.
     /// </summary>
     internal static class Algorithm {
-        /// <summary>
-        /// The precision factor used to round coordinate values during polyline encoding.
-        /// </summary>
-        internal const int Precision = 100_000;
 
         /// <summary>
         /// The number of bits to shift during polyline encoding.
@@ -69,21 +65,6 @@ internal static class Defaults {
             /// The maximum valid latitude value.
             /// </summary>
             internal const double Max = 90.00000;
-
-            /// <summary>
-            /// Contains constants related to normalized latitude values.
-            /// </summary>
-            [SuppressMessage("Critical Code Smell", "S3218:Inner class members should not shadow outer class \"static\" or type members", Justification = "Internal use only.")]
-            internal static class Normalized {
-                /// <summary>
-                /// The minimum normalized latitude value.
-                /// </summary>
-                internal const int Min = (int)(Latitude.Min * Algorithm.Precision);
-                /// <summary>
-                /// The maximum normalized latitude value.
-                /// </summary>
-                internal const int Max = (int)(Latitude.Max * Algorithm.Precision);
-            }
         }
 
         /// <summary>
@@ -102,21 +83,6 @@ internal static class Defaults {
             /// The maximum valid longitude value.
             /// </summary>
             internal const double Max = 180.00000;
-
-            /// <summary>
-            /// Contains constants related to normalized longitude values.
-            /// </summary>
-            [SuppressMessage("Critical Code Smell", "S3218:Inner class members should not shadow outer class \"static\" or type members", Justification = "Internal use only.")]
-            internal static class Normalized {
-                /// <summary>
-                /// The minimum normalized latitude value.
-                /// </summary>
-                internal const int Min = (int)(Longitude.Min * Algorithm.Precision);
-                /// <summary>
-                /// The maximum normalized latitude value.
-                /// </summary>
-                internal const int Max = (int)(Longitude.Max * Algorithm.Precision);
-            }
         }
     }
 
@@ -129,18 +95,18 @@ internal static class Defaults {
         /// </summary>
         internal static class Block {
             /// <summary>
-            /// Contains constants related to the length of encoded coordinates in polyline encoding.
+            /// Contains constants related to the length of encoded vakues in polyline encoding.
             /// </summary>
             internal static class Length {
                 /// <summary>
-                /// The minimum number of characters required to represent an encoded coordinate.
+                /// The minimum number of characters required to represent an encoded value.
                 /// </summary>
                 internal const int Min = 2;
 
                 /// <summary>
-                /// The maximum number of characters allowed to represent an encoded coordinate.
+                /// The maximum number of characters allowed to represent an encoded value.
                 /// </summary>
-                internal const int Max = 12;
+                internal const int Max = 14;
             }
         }
     }
