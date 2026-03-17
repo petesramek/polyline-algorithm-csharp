@@ -1,0 +1,55 @@
+### YamlMime:ApiPage
+title: Interface IPolylineEncoder<TCoordinate, TPolyline>
+body:
+- api1: Interface IPolylineEncoder<TCoordinate, TPolyline>
+  id: PolylineAlgorithm_Abstraction_IPolylineEncoder_2
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/IPolylineEncoder.cs#L10
+  metadata:
+    uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2
+    commentId: T:PolylineAlgorithm.Abstraction.IPolylineEncoder`2
+- facts:
+  - name: Namespace
+    value:
+      text: PolylineAlgorithm.Abstraction
+      url: PolylineAlgorithm.Abstraction.html
+  - name: Assembly
+    value: PolylineAlgorithm.dll
+- markdown: Defines a contract for encoding a sequence of geographic coordinates into an encoded polyline string.
+- code: public interface IPolylineEncoder<TCoordinate, TPolyline>
+- h4: Type Parameters
+- parameters:
+  - name: TCoordinate
+  - name: TPolyline
+- h4: Extension Methods
+- list:
+  - text: PolylineEncoderExtensions.Encode<TCoordinate, TPolyline>(IPolylineEncoder<TCoordinate, TPolyline>, List<TCoordinate>)
+    url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1__System_Collections_Generic_List___0__
+  - text: PolylineEncoderExtensions.Encode<TCoordinate, TPolyline>(IPolylineEncoder<TCoordinate, TPolyline>, TCoordinate[])
+    url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1____0___
+- h2: Methods
+- api3: Encode(ReadOnlySpan<TCoordinate>)
+  id: PolylineAlgorithm_Abstraction_IPolylineEncoder_2_Encode_System_ReadOnlySpan__0__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/IPolylineEncoder.cs#L20
+  metadata:
+    uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2.Encode(System.ReadOnlySpan{`0})
+    commentId: M:PolylineAlgorithm.Abstraction.IPolylineEncoder`2.Encode(System.ReadOnlySpan{`0})
+- markdown: Encodes a sequence of geographic coordinates into an encoded polyline representation.
+- code: TPolyline Encode(ReadOnlySpan<TCoordinate> coordinates)
+- h4: Parameters
+- parameters:
+  - name: coordinates
+    type:
+    - text: ReadOnlySpan
+      url: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+    - <
+    - TCoordinate
+    - '>'
+    description: The collection of <code class="typeparamref">TCoordinate</code> instances to encode into a polyline.
+- h4: Returns
+- parameters:
+  - type:
+    - TPolyline
+    description: A <code class="typeparamref">TPolyline</code> containing the encoded polyline string that represents the input coordinates.
+languageId: csharp
+metadata:
+  description: Defines a contract for encoding a sequence of geographic coordinates into an encoded polyline string.

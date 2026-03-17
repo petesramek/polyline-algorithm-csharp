@@ -1,0 +1,250 @@
+### YamlMime:ApiPage
+title: Struct Coordinate
+body:
+- api1: Struct Coordinate
+  id: PolylineAlgorithm_Coordinate
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L27
+  metadata:
+    uid: PolylineAlgorithm.Coordinate
+    commentId: T:PolylineAlgorithm.Coordinate
+- facts:
+  - name: Namespace
+    value:
+      text: PolylineAlgorithm
+      url: PolylineAlgorithm.html
+  - name: Assembly
+    value: PolylineAlgorithm.dll
+- markdown: Represents a geographic coordinate as a pair of latitude and longitude values.
+- code: 'public readonly struct Coordinate : IEquatable<Coordinate>'
+- h4: Implements
+- list:
+  - text: IEquatable<Coordinate>
+    url: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+- h4: Inherited Members
+- list:
+  - text: object.Equals(object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - text: object.Equals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - text: object.GetHashCode()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - text: object.GetType()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - text: object.ReferenceEquals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - text: object.ToString()
+    url: https://learn.microsoft.com/dotnet/api/system.object.tostring
+- h2: Remarks
+- markdown: >-
+    This struct is designed to be immutable and lightweight, providing a simple way to represent
+
+    geographic coordinates in degrees. It includes validation for latitude and longitude ranges
+
+    and provides methods for equality comparison and string representation.
+- h2: Constructors
+- api3: Coordinate()
+  id: PolylineAlgorithm_Coordinate__ctor
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L39
+  metadata:
+    uid: PolylineAlgorithm.Coordinate.#ctor
+    commentId: M:PolylineAlgorithm.Coordinate.#ctor
+- markdown: Initializes a new instance of the <xref href="PolylineAlgorithm.Coordinate" data-throw-if-not-resolved="false"></xref> struct with default values (0) for <xref href="PolylineAlgorithm.Coordinate.Latitude" data-throw-if-not-resolved="false"></xref> and <xref href="PolylineAlgorithm.Coordinate.Longitude" data-throw-if-not-resolved="false"></xref>.
+- code: public Coordinate()
+- api3: Coordinate(double, double)
+  id: PolylineAlgorithm_Coordinate__ctor_System_Double_System_Double_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L57
+  metadata:
+    uid: PolylineAlgorithm.Coordinate.#ctor(System.Double,System.Double)
+    commentId: M:PolylineAlgorithm.Coordinate.#ctor(System.Double,System.Double)
+- markdown: Initializes a new instance of the <xref href="PolylineAlgorithm.Coordinate" data-throw-if-not-resolved="false"></xref> struct with the specified latitude and longitude values.
+- code: public Coordinate(double latitude, double longitude)
+- h4: Parameters
+- parameters:
+  - name: latitude
+    type:
+    - text: double
+      url: https://learn.microsoft.com/dotnet/api/system.double
+    description: The latitude component of the coordinate, in degrees. Must be between -90 and 90.
+  - name: longitude
+    type:
+    - text: double
+      url: https://learn.microsoft.com/dotnet/api/system.double
+    description: The longitude component of the coordinate, in degrees. Must be between -180 and 180.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentOutOfRangeException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception
+    description: >-
+      Thrown when <code class="paramref">latitude</code> is less than -90 or greater than 90,
+
+      or when <code class="paramref">longitude</code> is less than -180 or greater than 180.
+- h2: Properties
+- api3: Latitude
+  id: PolylineAlgorithm_Coordinate_Latitude
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L73
+  metadata:
+    uid: PolylineAlgorithm.Coordinate.Latitude
+    commentId: P:PolylineAlgorithm.Coordinate.Latitude
+- markdown: Gets the latitude component of the coordinate, in degrees.
+- code: public double Latitude { get; }
+- h4: Property Value
+- parameters:
+  - type:
+    - text: double
+      url: https://learn.microsoft.com/dotnet/api/system.double
+- api3: Longitude
+  id: PolylineAlgorithm_Coordinate_Longitude
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L78
+  metadata:
+    uid: PolylineAlgorithm.Coordinate.Longitude
+    commentId: P:PolylineAlgorithm.Coordinate.Longitude
+- markdown: Gets the longitude component of the coordinate, in degrees.
+- code: public double Longitude { get; }
+- h4: Property Value
+- parameters:
+  - type:
+    - text: double
+      url: https://learn.microsoft.com/dotnet/api/system.double
+- h2: Methods
+- api3: Equals(object?)
+  id: PolylineAlgorithm_Coordinate_Equals_System_Object_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L91
+  metadata:
+    uid: PolylineAlgorithm.Coordinate.Equals(System.Object)
+    commentId: M:PolylineAlgorithm.Coordinate.Equals(System.Object)
+- markdown: Indicates whether this instance and a specified object are equal.
+- code: public override bool Equals(object? obj)
+- h4: Parameters
+- parameters:
+  - name: obj
+    type:
+    - text: object
+      url: https://learn.microsoft.com/dotnet/api/system.object
+    - '?'
+    description: The object to compare with the current instance.
+- h4: Returns
+- parameters:
+  - type:
+    - text: bool
+      url: https://learn.microsoft.com/dotnet/api/system.boolean
+    description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if <code class="paramref">obj</code> and this instance are the same type and represent the same value; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+- api3: Equals(Coordinate)
+  id: PolylineAlgorithm_Coordinate_Equals_PolylineAlgorithm_Coordinate_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L94
+  metadata:
+    uid: PolylineAlgorithm.Coordinate.Equals(PolylineAlgorithm.Coordinate)
+    commentId: M:PolylineAlgorithm.Coordinate.Equals(PolylineAlgorithm.Coordinate)
+- markdown: Indicates whether the current object is equal to another object of the same type.
+- code: public bool Equals(Coordinate other)
+- h4: Parameters
+- parameters:
+  - name: other
+    type:
+    - text: Coordinate
+      url: PolylineAlgorithm.Coordinate.html
+    description: An object to compare with this object.
+- h4: Returns
+- parameters:
+  - type:
+    - text: bool
+      url: https://learn.microsoft.com/dotnet/api/system.boolean
+    description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the current object is equal to the <code class="paramref">other</code> parameter; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+- api3: GetHashCode()
+  id: PolylineAlgorithm_Coordinate_GetHashCode
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L100
+  metadata:
+    uid: PolylineAlgorithm.Coordinate.GetHashCode
+    commentId: M:PolylineAlgorithm.Coordinate.GetHashCode
+- markdown: Returns the hash code for this instance.
+- code: public override int GetHashCode()
+- h4: Returns
+- parameters:
+  - type:
+    - text: int
+      url: https://learn.microsoft.com/dotnet/api/system.int32
+    description: A 32-bit signed integer that is the hash code for this instance.
+- api3: IsDefault()
+  id: PolylineAlgorithm_Coordinate_IsDefault
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L86
+  metadata:
+    uid: PolylineAlgorithm.Coordinate.IsDefault
+    commentId: M:PolylineAlgorithm.Coordinate.IsDefault
+- markdown: Determines whether this coordinate is the default value (both <xref href="PolylineAlgorithm.Coordinate.Latitude" data-throw-if-not-resolved="false"></xref> and <xref href="PolylineAlgorithm.Coordinate.Longitude" data-throw-if-not-resolved="false"></xref> are 0).
+- code: public bool IsDefault()
+- h4: Returns
+- parameters:
+  - type:
+    - text: bool
+      url: https://learn.microsoft.com/dotnet/api/system.boolean
+    description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if both latitude and longitude are 0; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+- api3: ToString()
+  id: PolylineAlgorithm_Coordinate_ToString
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L108
+  metadata:
+    uid: PolylineAlgorithm.Coordinate.ToString
+    commentId: M:PolylineAlgorithm.Coordinate.ToString
+- markdown: 'Returns a string representation of this coordinate in the format: <code>{ Latitude: [double], Longitude: [double] }</code>.'
+- code: public override string ToString()
+- h4: Returns
+- parameters:
+  - type:
+    - text: string
+      url: https://learn.microsoft.com/dotnet/api/system.string
+    description: A string representation of the coordinate.
+- h2: Operators
+- api3: operator ==(Coordinate, Coordinate)
+  id: PolylineAlgorithm_Coordinate_op_Equality_PolylineAlgorithm_Coordinate_PolylineAlgorithm_Coordinate_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L120
+  metadata:
+    uid: PolylineAlgorithm.Coordinate.op_Equality(PolylineAlgorithm.Coordinate,PolylineAlgorithm.Coordinate)
+    commentId: M:PolylineAlgorithm.Coordinate.op_Equality(PolylineAlgorithm.Coordinate,PolylineAlgorithm.Coordinate)
+- markdown: Determines whether two <xref href="PolylineAlgorithm.Coordinate" data-throw-if-not-resolved="false"></xref> instances are equal.
+- code: public static bool operator ==(Coordinate left, Coordinate right)
+- h4: Parameters
+- parameters:
+  - name: left
+    type:
+    - text: Coordinate
+      url: PolylineAlgorithm.Coordinate.html
+    description: The first coordinate to compare.
+  - name: right
+    type:
+    - text: Coordinate
+      url: PolylineAlgorithm.Coordinate.html
+    description: The second coordinate to compare.
+- h4: Returns
+- parameters:
+  - type:
+    - text: bool
+      url: https://learn.microsoft.com/dotnet/api/system.boolean
+    description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if both coordinates are equal; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+- api3: operator !=(Coordinate, Coordinate)
+  id: PolylineAlgorithm_Coordinate_op_Inequality_PolylineAlgorithm_Coordinate_PolylineAlgorithm_Coordinate_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L130
+  metadata:
+    uid: PolylineAlgorithm.Coordinate.op_Inequality(PolylineAlgorithm.Coordinate,PolylineAlgorithm.Coordinate)
+    commentId: M:PolylineAlgorithm.Coordinate.op_Inequality(PolylineAlgorithm.Coordinate,PolylineAlgorithm.Coordinate)
+- markdown: Determines whether two <xref href="PolylineAlgorithm.Coordinate" data-throw-if-not-resolved="false"></xref> instances are not equal.
+- code: public static bool operator !=(Coordinate left, Coordinate right)
+- h4: Parameters
+- parameters:
+  - name: left
+    type:
+    - text: Coordinate
+      url: PolylineAlgorithm.Coordinate.html
+    description: The first coordinate to compare.
+  - name: right
+    type:
+    - text: Coordinate
+      url: PolylineAlgorithm.Coordinate.html
+    description: The second coordinate to compare.
+- h4: Returns
+- parameters:
+  - type:
+    - text: bool
+      url: https://learn.microsoft.com/dotnet/api/system.boolean
+    description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the coordinates are not equal; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+languageId: csharp
+metadata:
+  description: Represents a geographic coordinate as a pair of latitude and longitude values.
