@@ -59,21 +59,26 @@ public static class PolylineEncoding {
     /// <exception cref="OverflowException">
     /// Thrown when the normalized result exceeds the range of a 32-bit signed integer during the conversion from double to int.
     /// </exception>
-    public static int Normalize(double value, uint precision = 5, MidpointRounding rounding = MidpointRounding.AwayFromZero) {
-        // Validate that the value is finite and not NaN or Infinity.
-        if (!double.IsFinite(value)) {
-            throw new ArgumentOutOfRangeException(nameof(value), ExceptionMessageResource.ArgumentValueMustBeFiniteNumber);
-        }
-
+    public static int Normalize(double value, uint precision = 5) {
         // Fast return if the value is zero, return 0 as the normalized value.
         if (value.Equals(default)) {
             return 0;
         }
 
+        // Validate that the value is finite and not NaN or Infinity.
+        if (!double.IsFinite(value)) {
+            throw new ArgumentOutOfRangeException(nameof(value), ExceptionMessageResource.ArgumentValueMustBeFiniteNumber);
+        }
+
+        // Fast return if precision is zero, return current value converted to Int32.
+        if (precision == 0) {
+            return Convert.ToInt32(value);
+        }
+
         uint factor = Pow10.GetFactor(precision);
 
         checked {
-            return (int)Math.Round(precision == 0 ? value : value * factor, rounding);
+            return (int)Math.Round(value * factor, MidpointRounding.AwayFromZero);
         }
     }
 
@@ -82,12 +87,13 @@ public static class PolylineEncoding {
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This method reverses the normalization process performed by <see cref="Normalize"/>. It takes an integer value and converts it
-    /// to a double by dividing it by 10 raised to the power of the specified precision. If the precision is 0, the value is returned as a double
-    /// without division.
+    /// This method reverses the normalization performed by <see cref="Normalize"/>. It takes an integer value and converts it
+    /// to a double by dividing by 10 raised to the power of the specified precision. If <paramref name="precision"/> is 0,
+    /// the value is returned as a double without division.
     /// </para>
     /// <para>
-    /// The calculation is performed inside a <see langword="checked"/> block to ensure that any arithmetic overflow is detected and an <see cref="OverflowException"/> is thrown.
+    /// The calculation is performed inside a <see langword="checked"/> block to ensure that any arithmetic overflow is detected
+    /// and an <see cref="OverflowException"/> is thrown.
     /// </para>
     /// <para>
     /// For example, with a precision of 5:
@@ -106,6 +112,9 @@ public static class PolylineEncoding {
     /// <param name="precision">
     /// The number of decimal places used during normalization. Default is 5, matching standard polyline encoding precision.
     /// </param>
+    /// <param name="rounding">
+    /// The rounding strategy to use when converting the result to a double. Default is <see cref="MidpointRounding.AwayFromZero"/>.
+    /// </param>
     /// <returns>
     /// The denormalized floating-point coordinate value.
     /// </returns>
@@ -113,14 +122,20 @@ public static class PolylineEncoding {
     /// Thrown if the arithmetic operation overflows during conversion.
     /// </exception>
     public static double Denormalize(int value, uint precision = 5) {
-        if (value == 0) {
-            return 0.0;
+        if (value.Equals(default)) {
+            return default;
+        }
+
+        // Fast return if precision is zero, return current value converted to Int32.
+        if (precision == 0) {
+            return Convert.ToDouble(value);
         }
 
         uint factor = Pow10.GetFactor(precision);
 
         checked {
-            return precision == 0 ? value : (double)value / factor;
+
+            return value / (double)factor;
         }
     }
 

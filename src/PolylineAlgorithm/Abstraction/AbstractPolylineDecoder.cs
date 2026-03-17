@@ -9,13 +9,8 @@ using Microsoft.Extensions.Logging;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Internal.Logging;
-using PolylineAlgorithm.Properties;
 using System;
-using System.Globalization;
 using System.Runtime.CompilerServices;
-#if NET8_0_OR_GREATER
-using System.Text;
-#endif
 
 /// <summary>
 /// Decodes encoded polyline strings into sequences of geographic coordinates.
@@ -25,13 +20,6 @@ using System.Text;
 /// This abstract class provides a base implementation for decoding polylines, allowing subclasses to define how to handle specific polyline formats.
 /// </remarks>
 public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder<TPolyline, TCoordinate> {
-#if NET8_0_OR_GREATER
-    private static readonly CompositeFormat _polylineCannotBeShorterThanExceptionMessage = CompositeFormat.Parse(ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage);
-#else
-    private static readonly string _polylineCannotBeShorterThanExceptionMessage = ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage;
-#endif
-
-
     private readonly ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> _logger;
     /// <summary>
     /// Initializes a new instance of the <see cref="AbstractPolylineDecoder{TPolyline, TCoordinate}"/> class with default encoding options.
@@ -131,7 +119,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
                 logger
                     .LogPolylineCannotBeShorterThanWarning(nameof(polyline), polyline.Length, Defaults.Polyline.Block.Length.Min);
 
-                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, _polylineCannotBeShorterThanExceptionMessage, polyline.Length, Defaults.Polyline.Block.Length.Min), nameof(polyline));
+                throw new ArgumentException(ExceptionMessages.GetPolylineCannotBeShorterThanExceptionMessage(polyline.Length, Defaults.Polyline.Block.Length.Min), nameof(polyline));
             }
         }
     }
