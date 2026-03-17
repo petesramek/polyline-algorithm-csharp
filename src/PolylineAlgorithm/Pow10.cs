@@ -13,26 +13,46 @@ public static class Pow10 {
     /// <summary>
     /// Pre-computed powers of 10 from 10^0 to 10^9.
     /// </summary>
-    private static readonly uint[] _pow10 = {/* 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000*/ };
+    private static readonly uint[] _pow10 = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
 
     /// <summary>
-    /// Gets the multiplication factor for a given precision level.
+    /// Gets or sets a value indicating whether pre-computed powers of 10 should be used for optimization.
     /// </summary>
-    /// <param name="precision">The precision level (exponent for base 10).</param>
+    /// <value>
+    /// <see langword="true"/> to use cached values for precision 0-9; <see langword="false"/> to always compute using <see cref="Math.Pow"/>.
+    /// The default is <see langword="true"/>.
+    /// </value>
+    /// <remarks>
+    /// When enabled, <see cref="GetFactor"/> retrieves values from the cache for precision levels 0-9,
+    /// providing faster performance. When disabled, all calculations use <see cref="Math.Pow"/>.
+    /// </remarks>
+    public static bool UseCache { get; set; } = true;
+
+    /// <summary>
+    /// Returns the power of 10 for the specified precision level.
+    /// </summary>
+    /// <param name="precision">
+    /// The exponent for the base 10 (i.e., the number of decimal places).
+    /// </param>
     /// <returns>
-    /// The power of 10 corresponding to the specified precision (10^precision).
+    /// The value of 10 raised to the power of <paramref name="precision"/> as a <see cref="uint"/>
     /// </returns>
     /// <remarks>
-    /// For precision values 0-9, returns pre-computed values for optimal performance.
-    /// For larger values, computes the result using <see cref="Math.Pow"/>.
-    /// The operation is performed in a checked context to detect arithmetic overflow.
+    /// If <see cref="UseCache"/> is <see langword="true"/> and <paramref name="precision"/> is between 0 and 9 (inclusive),
+    /// the method returns a cached value for optimal performance. For other values or if caching is disabled,
+    /// the result is computed using <see cref="Math.Pow"/>. The calculation is performed in a checked context to
+    /// ensure that arithmetic overflow is detected.
     /// </remarks>
     /// <exception cref="OverflowException">
-    /// Thrown when the computed power of 10 exceeds <see cref="uint.MaxValue"/>.
+    /// Thrown if the computed value exceeds <see cref="uint.MaxValue"/>.
     /// </exception>
     public static uint GetFactor(uint precision) {
         checked {
-            return precision < _pow10.Length ? _pow10[precision] : (uint)Math.Pow(10, precision);
+            if (UseCache && precision < _pow10.Length) {
+                return _pow10[precision];
+            }
+
+            return (uint)Math.Pow(10, precision);
         }
     }
 }
