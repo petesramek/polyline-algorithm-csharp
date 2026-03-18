@@ -35,7 +35,7 @@ public class PolylineValidationBenchmark {
     [Benchmark]
     public void Vectorized_Structure_Validation_3() => ValidateStructureVectorized(polyline);
 
-    public static void ValidateVectorized(ReadOnlySpan<char> polyline) {
+    public static void ValidateCharsVectorized(ReadOnlySpan<char> polyline) {
         int length = polyline.Length;
         int vectorSize = Vector<ushort>.Count;
 
@@ -73,19 +73,8 @@ public class PolylineValidationBenchmark {
         }
     }
 
-    /// <summary>
-    /// Validates that a polyline is structurally correct:
-    /// - All characters are in the allowed range
-    /// - No block exceeds 7 characters
-    /// - Polyline ends with a block terminator
-    /// </summary>
-    /// <param name="polyline">The polyline to validate.</param>
-    /// <exception cref="ArgumentException">Thrown if the polyline is structurally invalid.</exception>
-    public static void ValidateStructureForeach(ReadOnlySpan<char> polyline) {
-        // 1. SIMD character check (reuse existing method)
-        ValidateVectorized(polyline);
 
-        // 2. Block structure check
+    private static void ValidateBlockLength(ReadOnlySpan<char> polyline) {
         int blockLen = 0;
         bool foundBlockEnd = false;
 
@@ -104,6 +93,21 @@ public class PolylineValidationBenchmark {
 
         if (!foundBlockEnd)
             throw new ArgumentException("Polyline does not end with a valid block terminator.", nameof(polyline));
+    }
+
+    /// <summary>
+    /// Validates that a polyline is structurally correct:
+    /// - All characters are in the allowed range
+    /// - No block exceeds 7 characters
+    /// - Polyline ends with a block terminator
+    /// </summary>
+    /// <param name="polyline">The polyline to validate.</param>
+    /// <exception cref="ArgumentException">Thrown if the polyline is structurally invalid.</exception>
+    public static void ValidateStructureForeach(ReadOnlySpan<char> polyline) {
+        // 1. SIMD character check (reuse existing method)
+        ValidateCharsVectorized(polyline);
+        // 2. Block structure check
+        ValidateBlockLength(polyline);
     }
 
     public static void ValidateStructureVectorized(ReadOnlySpan<char> polyline) {
@@ -133,7 +137,7 @@ public class PolylineValidationBenchmark {
             }
 
             for (int j = 0; j < vectorSize; j++) {
-                if (slice[j] != 0) {
+                if (slice[j] < End) {
                     int globalIndex = i + j;
                     if (globalIndex - blockEndIndex > 7) {
                         throw new ArgumentException($"Block at position {blockEndIndex + 1} exceeds 7 characters.", nameof(polyline));
