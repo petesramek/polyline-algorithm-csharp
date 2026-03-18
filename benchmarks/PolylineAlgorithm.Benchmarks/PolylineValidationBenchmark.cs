@@ -8,6 +8,7 @@ using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Utility;
 using System;
 using System.Buffers;
+using System.Collections.Concurrent;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -28,33 +29,11 @@ public class PolylineValidationBenchmark {
         polyline = RandomValueProvider.GetPolyline(CoordinatesCount);
     }
 
-    //[Benchmark]
-    //public void Foreach_Char_Validation() => ValidateForeach(polyline);
-
-    //[Benchmark]
-    //public void Vectorized_Char_Validation() => ValidateVectorized(polyline);
+    [Benchmark]
+    public void Foreach_Structure_Validation() => ValidateStructureForeach(polyline);
 
     [Benchmark]
-    public void Foreach_Structure_Validation() => ValidateStructure(polyline);
-
-    [Benchmark]
-    public void Foreach_Structure_Validation_2() => ValidateStructure_5(polyline);
-
-    //[Benchmark]
-    //public void Vectorized_Structure_Validation_1() => ValidateStructureVectorized_1(polyline);
-
-    //[Benchmark]
-    //public void Vectorized_Structure_Validation_2() => ValidateStructureVectorized_2(polyline);
-
-    [Benchmark]
-    public void Vectorized_Structure_Validation_3() => ValidateStructureVectorized_3(polyline);
-
-    //private void ValidateForeach(string polyline) {
-    //    foreach (char character in polyline) {
-    //        if (character < Defaults.Algorithm.QuestionMark || character > Defaults.Algorithm.QuestionMark * 2)
-    //            throw new ArgumentException("Invalid character");
-    //    }
-    //}
+    public void Vectorized_Structure_Validation_3() => ValidateStructureVectorized(polyline);
 
     public static void ValidateVectorized(ReadOnlySpan<char> polyline) {
         int length = polyline.Length;
@@ -102,7 +81,7 @@ public class PolylineValidationBenchmark {
     /// </summary>
     /// <param name="polyline">The polyline to validate.</param>
     /// <exception cref="ArgumentException">Thrown if the polyline is structurally invalid.</exception>
-    public static void ValidateStructure(ReadOnlySpan<char> polyline) {
+    public static void ValidateStructureForeach(ReadOnlySpan<char> polyline) {
         // 1. SIMD character check (reuse existing method)
         ValidateVectorized(polyline);
 
@@ -111,10 +90,9 @@ public class PolylineValidationBenchmark {
         bool foundBlockEnd = false;
 
         for (int i = 0; i < polyline.Length; i++) {
-            int value = polyline[i] - Defaults.Algorithm.QuestionMark;
             blockLen++;
 
-            if (value < Defaults.Algorithm.Space) {
+            if (polyline[i] < End) {
                 foundBlockEnd = true;
                 if (blockLen > 7)
                     throw new ArgumentException($"Block at position {i - blockLen + 1} exceeds 7 characters.", nameof(polyline));
@@ -128,121 +106,13 @@ public class PolylineValidationBenchmark {
             throw new ArgumentException("Polyline does not end with a valid block terminator.", nameof(polyline));
     }
 
-    //    public static void ValidateStructureVectorized_1(ReadOnlySpan<char> polyline) {
-    //        // 1. SIMD character check (reuse existing method)
-    //        ValidateVectorized(polyline);
-
-    //        // 2. Vectorized block end search
-    //        int length = polyline.Length;
-    //        int vectorSize = Vector<ushort>.Count;
-    //        int blockLen = 0;
-    //        bool foundBlockEnd = false;
-
-    //        var space = new Vector<ushort>(Defaults.Algorithm.Space);
-    //        var qmark = Defaults.Algorithm.QuestionMark;
-
-    //        int i = 0;
-    //        for (; i <= length - vectorSize; i += vectorSize) {
-    //            var span = MemoryMarshal.Cast<char, ushort>(polyline.Slice(i, vectorSize));
-    //#if NET5_0_OR_GREATER
-    //            var chars = new Vector<ushort>(span);
-    //#else
-    //        var chars = new Vector<ushort>(span.ToArray());
-    //#endif
-    //            // Subtract question mark from all
-    //            var adjusted = chars - new Vector<ushort>(qmark);
-    //            // Find block ends: adjusted < space
-    //            var isBlockEnd = Vector.LessThan(adjusted, space);
-
-    //            for (int j = 0; j < vectorSize; j++) {
-    //                blockLen++;
-    //                if (isBlockEnd[j] != 0) {
-    //                    foundBlockEnd = true;
-    //                    if (blockLen > 7)
-    //                        throw new ArgumentException($"Block at position {i + j - blockLen + 1} exceeds 7 characters.", nameof(polyline));
-    //                    blockLen = 0;
-    //                } else {
-    //                    foundBlockEnd = false;
-    //                }
-    //            }
-    //        }
-
-    //        // Scalar tail
-    //        for (; i < length; i++) {
-    //            int value = polyline[i] - qmark;
-    //            blockLen++;
-    //            if (value < Defaults.Algorithm.Space) {
-    //                foundBlockEnd = true;
-    //                if (blockLen > 7)
-    //                    throw new ArgumentException($"Block at position {i - blockLen + 1} exceeds 7 characters.", nameof(polyline));
-    //                blockLen = 0;
-    //            } else {
-    //                foundBlockEnd = false;
-    //            }
-    //        }
-
-    //        if (!foundBlockEnd)
-    //            throw new ArgumentException("Polyline does not end with a valid block terminator.", nameof(polyline));
-    //    }
-
-    //    public static void ValidateStructureVectorized_2(ReadOnlySpan<char> polyline) {
-    //        // 1. SIMD character check (reuse existing method)
-    //        ValidateVectorized(polyline);
-
-    //        // 2. SIMD block end detection
-    //        int length = polyline.Length;
-    //        int vectorSize = Vector<ushort>.Count;
-    //        var space = new Vector<ushort>(Defaults.Algorithm.Space);
-    //        var qmark = Defaults.Algorithm.QuestionMark;
-
-    //        // Over-allocate for worst case (every char is a block end)
-    //        int[] blockEnds = new int[length];
-    //        int blockEndCount = 0;
-
-    //        int i = 0;
-    //        for (; i <= length - vectorSize; i += vectorSize) {
-    //            var span = MemoryMarshal.Cast<char, ushort>(polyline.Slice(i, vectorSize));
-    //#if NET5_0_OR_GREATER
-    //            var chars = new Vector<ushort>(span);
-    //#else
-    //        var chars = new Vector<ushort>(span.ToArray());
-    //#endif
-    //            var adjusted = chars - new Vector<ushort>(qmark);
-    //            var isBlockEnd = Vector.LessThan(adjusted, space);
-
-    //            for (int j = 0; j < vectorSize; j++) {
-    //                if (isBlockEnd[j] != 0) {
-    //                    blockEnds[blockEndCount++] = i + j;
-    //                }
-    //            }
-    //        }
-    //        // Scalar tail
-    //        for (; i < length; i++) {
-    //            int value = polyline[i] - qmark;
-    //            if (value < Defaults.Algorithm.Space) {
-    //                blockEnds[blockEndCount++] = i;
-    //            }
-    //        }
-
-    //        // 3. Validate block lengths using block end positions
-    //        int lastEnd = -1;
-    //        for (int idx = 0; idx < blockEndCount; idx++) {
-    //            int end = blockEnds[idx];
-    //            int blockLen = end - lastEnd;
-    //            if (blockLen > 7)
-    //                throw new ArgumentException($"Block at position {lastEnd + 1} exceeds 7 characters.", nameof(polyline));
-    //            lastEnd = end;
-    //        }
-    //        if (lastEnd != polyline.Length - 1)
-    //            throw new ArgumentException("Polyline does not end with a valid block terminator.", nameof(polyline));
-    //    }
-
-    public static void ValidateStructureVectorized_3(ReadOnlySpan<char> polyline) {
+    public static void ValidateStructureVectorized(ReadOnlySpan<char> polyline) {
         int length = polyline.Length;
         int vectorSize = Vector<ushort>.Count;
         int blockEndIndex = -1;
         var span = MemoryMarshal.Cast<char, ushort>(polyline);
         int i = 0;
+
         for (; i <= length - vectorSize; i += vectorSize) {
             var slice = span.Slice(i, vectorSize);
 
@@ -256,17 +126,18 @@ public class PolylineValidationBenchmark {
             if (Vector.BitwiseOr(belowMin, aboveMax) != Vector<ushort>.Zero) {
                 for (int j = 0; j < vectorSize; j++) {
                     char character = polyline[i + j];
-                    if (character < Min || character > Max)
+                    if (character < Min || character > Max) {
                         throw new ArgumentException($"Polyline contains invalid character '{character}'.", nameof(polyline));
+                    }
                 }
             }
 
-            var isBlockEnd = Vector.LessThan(chars, BlockEndVector);
             for (int j = 0; j < vectorSize; j++) {
-                if (isBlockEnd[j] != 0) {
+                if (slice[j] != 0) {
                     int globalIndex = i + j;
-                    if (globalIndex - blockEndIndex > 7)
+                    if (globalIndex - blockEndIndex > 7) {
                         throw new ArgumentException($"Block at position {blockEndIndex + 1} exceeds 7 characters.", nameof(polyline));
+                    }
                     blockEndIndex = globalIndex;
                 }
             }
@@ -274,154 +145,26 @@ public class PolylineValidationBenchmark {
 
         for (; i < length; i++) {
             char character = polyline[i];
-            if (character < Min || character > Max)
+            if (character < Min || character > Max) {
                 throw new ArgumentException($"Polyline contains invalid character '{character}'.", nameof(polyline));
-            int value = character - Min;
-            if (value < Defaults.Algorithm.Space) {
-                if (i - blockEndIndex > 7)
+            }
+            if (character < End) {
+                if (i - blockEndIndex > 7) {
                     throw new ArgumentException($"Block at position {blockEndIndex + 1} exceeds 7 characters.", nameof(polyline));
+                }
                 blockEndIndex = i;
             }
         }
 
-        if (blockEndIndex != polyline.Length - 1)
+        if (blockEndIndex != polyline.Length - 1) {
             throw new ArgumentException("Polyline does not end with a valid block terminator.", nameof(polyline));
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void ValidateVectorized_5(ReadOnlySpan<char> polyline) {
-        // Assumes polyline.Length == Vector<ushort>.Count
-        var span = MemoryMarshal.Cast<char, ushort>(polyline);
-#if NET5_0_OR_GREATER
-        var chars = new Vector<ushort>(span);
-#else
-        var chars = new Vector<ushort>(span.ToArray());
-#endif
-        var belowMin = Vector.LessThan(chars, MinVector);
-        var aboveMax = Vector.GreaterThan(chars, MaxVector);
-        if (Vector.BitwiseOr(belowMin, aboveMax) != Vector<ushort>.Zero) {
-            // Fallback to scalar check for this block
-            for (int j = 0; j < Vector<ushort>.Count; j++) {
-                char character = polyline[j];
-                if (character < Min || character > Max)
-                    throw new ArgumentException($"Polyline contains invalid character '{character}'.", nameof(polyline));
-            }
-        }
-    }
-
-    public static void ValidateStructure_5(ReadOnlySpan<char> polyline) {
-        int length = polyline.Length;
-        int vectorSize = Vector<ushort>.Count;
-        int blockLen = 0;
-        bool foundBlockEnd = false;
-        int lastVectorized = 0;
-
-        for (int i = 0; i < length; i++) {
-            int value = polyline[i] - Defaults.Algorithm.QuestionMark;
-            blockLen++;
-
-            // Every time we reach a vector boundary, process that chunk
-            if ((i + 1 - lastVectorized) == vectorSize) {
-                ValidateVectorized(polyline.Slice(lastVectorized, vectorSize));
-                lastVectorized = i + 1;
-            }
-
-            if (value < Defaults.Algorithm.Space) {
-                foundBlockEnd = true;
-                if (blockLen > 7)
-                    throw new ArgumentException($"Block at position {i - blockLen + 1} exceeds 7 characters.", nameof(polyline));
-                blockLen = 0;
-            } else {
-                foundBlockEnd = false;
-            }
-        }
-
-        // Process any remaining unprocessed tail (less than vectorSize)
-        int remaining = length - lastVectorized;
-        if (remaining > 0) {
-            for (int i = lastVectorized; i < length; i++) {
-                char character = polyline[i];
-                if (character < Min || character > Max)
-                    throw new ArgumentException($"Polyline contains invalid character '{character}'.", nameof(polyline));
-            }
-        }
-
-        if (!foundBlockEnd)
-            throw new ArgumentException("Polyline does not end with a valid block terminator.", nameof(polyline));
-    }
-
-    public static void ValidateStructure_6(ReadOnlyMemory<char> polyline) {
-        ValidateCharacters_New(polyline);
-        ValidateStructure_New(polyline);
-    }
-
-    private static void ValidateStructure_New(ReadOnlyMemory<char> polyline) {
-        int i = 0;
-        int ei = 6;
-
-        var chunk = polyline[i..ei];
-
-        for (; i < ei; i++) {
-            if (chunk.Span[i] >= 32 && chunk.Span[i] <= 95) {
-                ei += 7;
-            }
-        }
-
-        if (i < polyline.Length) {
-            throw new ArgumentException("Polyline does not end with a valid block terminator.", nameof(polyline));
-        }
-    }
-
-    private static void ValidateCharacters_New(ReadOnlyMemory<char> polyline) {
-        int vectorSize = Vector<ushort>.Count;
-        int i = 0;
-        long length = polyline.Length;
-
-        var memory = polyline[..vectorSize];
-
-        for (; i <= length - vectorSize; i += vectorSize) {
-            ValidateCharacters_Vector(memory);
-            memory = polyline[i..vectorSize];
-        }
-
-        ValidateCharacters_Foreach(polyline[i..]);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void ValidateCharacters_Vector(ReadOnlyMemory<char> polyline) {
-        var span = polyline.Span;
-
-#if NET5_0_OR_GREATER
-        var chars = new Vector<ushort>();
-#else
-        var chars = new Vector<ushort>(span.ToArray());
-#endif
-        var belowMin = Vector.LessThan(chars, MinVector);
-        var aboveMax = Vector.GreaterThan(chars, MaxVector);
-        if (Vector.BitwiseOr(belowMin, aboveMax) != Vector<ushort>.Zero) {
-            // Fallback to scalar check for this block to report invalid character
-            for (int i = 0; i < polyline.Length; i++) {
-                char character = span[i];
-                if (character < Min || character > Max)
-                    throw new ArgumentException($"Polyline contains invalid character '{character}'.", nameof(polyline));
-            }
-        }
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void ValidateCharacters_Foreach(ReadOnlyMemory<char> polyline) {
-        var span = polyline.Span;
-
-        for (int i = 0; i < polyline.Length; i++) {
-            char character = span[i];
-            if (character < Min || character > Max)
-                throw new ArgumentException($"Polyline contains invalid character '{character}'.", nameof(polyline));
         }
     }
 
     private static readonly ushort Min = Defaults.Algorithm.QuestionMark;
     private static readonly ushort Max = (ushort)(Defaults.Algorithm.QuestionMark * 2);
+    private static readonly ushort End = (ushort)(Defaults.Algorithm.QuestionMark + Defaults.Algorithm.Space);
+
     private static readonly Vector<ushort> MinVector = new Vector<ushort>(Min);
     private static readonly Vector<ushort> MaxVector = new Vector<ushort>(Max);
-    private static readonly Vector<ushort> BlockEndVector = MinVector + new Vector<ushort>(Defaults.Algorithm.Space);
 }
