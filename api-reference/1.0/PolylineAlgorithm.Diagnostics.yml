@@ -1,0 +1,15 @@
+### YamlMime:ApiPage
+title: Namespace PolylineAlgorithm.Diagnostics
+body:
+- api1: Namespace PolylineAlgorithm.Diagnostics
+  id: PolylineAlgorithm_Diagnostics
+  metadata:
+    uid: PolylineAlgorithm.Diagnostics
+    commentId: N:PolylineAlgorithm.Diagnostics
+- h3: Classes
+- parameters:
+  - type:
+      text: InvalidPolylineException
+      url: PolylineAlgorithm.Diagnostics.InvalidPolylineException.html
+    description: Exception thrown when a polyline is determined to be malformed or invalid during processing.
+languageId: csharp

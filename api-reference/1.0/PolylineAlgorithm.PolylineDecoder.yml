@@ -37,6 +37,8 @@ body:
     url: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_Options
   - text: AbstractPolylineDecoder<Polyline, Coordinate>.Decode(Polyline)
     url: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_Decode__0_
+  - text: AbstractPolylineDecoder<Polyline, Coordinate>.Decode(Polyline, CancellationToken)
+    url: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html#PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_Decode__0_System_Threading_CancellationToken_
   - text: object.Equals(object)
     url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
   - text: object.Equals(object, object)
@@ -82,13 +84,12 @@ body:
     type:
     - text: PolylineEncodingOptions
       url: PolylineAlgorithm.PolylineEncodingOptions.html
-    description: The <xref href="PolylineAlgorithm.PolylineEncodingOptions" data-throw-if-not-resolved="false"></xref> to use for encoding operations.
 - h4: Exceptions
 - parameters:
   - type:
     - text: ArgumentNullException
       url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
-    description: Thrown when <code class="paramref">options</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>
+    description: Thrown when <code class="paramref">encodingOptions</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>
 - h2: Methods
 - api3: CreateCoordinate(double, double)
   id: PolylineAlgorithm_PolylineDecoder_CreateCoordinate_System_Double_System_Double_
@@ -96,7 +97,6 @@ body:
   metadata:
     uid: PolylineAlgorithm.PolylineDecoder.CreateCoordinate(System.Double,System.Double)
     commentId: M:PolylineAlgorithm.PolylineDecoder.CreateCoordinate(System.Double,System.Double)
-- markdown: Creates a coordinate instance from the given latitude and longitude values.
 - code: protected override Coordinate CreateCoordinate(double latitude, double longitude)
 - h4: Parameters
 - parameters:
@@ -104,33 +104,28 @@ body:
     type:
     - text: double
       url: https://learn.microsoft.com/dotnet/api/system.double
-    description: The latitude value.
   - name: longitude
     type:
     - text: double
       url: https://learn.microsoft.com/dotnet/api/system.double
-    description: The longitude value.
 - h4: Returns
 - parameters:
   - type:
     - text: Coordinate
       url: PolylineAlgorithm.Coordinate.html
-    description: A coordinate instance of type <xref href="PolylineAlgorithm.Coordinate" data-throw-if-not-resolved="false"></xref>.
-- api3: GetReadOnlyMemory(ref Polyline)
+- api3: GetReadOnlyMemory(in Polyline)
   id: PolylineAlgorithm_PolylineDecoder_GetReadOnlyMemory_PolylineAlgorithm_Polyline__
   src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineDecoder.cs#L26
   metadata:
     uid: PolylineAlgorithm.PolylineDecoder.GetReadOnlyMemory(PolylineAlgorithm.Polyline@)
     commentId: M:PolylineAlgorithm.PolylineDecoder.GetReadOnlyMemory(PolylineAlgorithm.Polyline@)
-- markdown: Converts the provided polyline instance into a <xref href="System.ReadOnlyMemory%601" data-throw-if-not-resolved="false"></xref> for decoding.
-- code: protected override ReadOnlyMemory<char> GetReadOnlyMemory(ref Polyline polyline)
+- code: protected override ReadOnlyMemory<char> GetReadOnlyMemory(in Polyline polyline)
 - h4: Parameters
 - parameters:
   - name: polyline
     type:
     - text: Polyline
       url: PolylineAlgorithm.Polyline.html
-    description: The <xref href="PolylineAlgorithm.Polyline" data-throw-if-not-resolved="false"></xref> instance containing the encoded polyline data to decode.
 - h4: Returns
 - parameters:
   - type:
@@ -140,7 +135,6 @@ body:
     - text: char
       url: https://learn.microsoft.com/dotnet/api/system.char
     - '>'
-    description: A <xref href="System.ReadOnlyMemory%601" data-throw-if-not-resolved="false"></xref> representing the encoded polyline data.
 languageId: csharp
 metadata:
   description: >-
