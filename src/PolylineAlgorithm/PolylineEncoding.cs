@@ -75,13 +75,13 @@ public static class PolylineEncoding {
 
         // Fast return if precision is zero, return current value converted to Int32.
         if (precision == default) {
-            return Convert.ToInt32(value);
+            return (int)Math.Truncate(value);
         }
 
         uint factor = Pow10.GetFactor(precision);
 
         checked {
-            return (int)Math.Truncate(value * factor);
+            return (int)(Math.Truncate(value * 10 * factor) / 10);
         }
     }
 
