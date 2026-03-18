@@ -50,7 +50,7 @@ body:
 - h2: Methods
 - api3: Denormalize(int, uint)
   id: PolylineAlgorithm_PolylineEncoding_Denormalize_System_Int32_System_UInt32_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L127
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L128
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.Denormalize(System.Int32,System.UInt32)
     commentId: M:PolylineAlgorithm.PolylineEncoding.Denormalize(System.Int32,System.UInt32)
@@ -117,7 +117,7 @@ body:
     description: Thrown if the arithmetic operation overflows during conversion.
 - api3: GetRequiredBufferSize(int)
   id: PolylineAlgorithm_PolylineEncoding_GetRequiredBufferSize_System_Int32_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L303
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L304
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.GetRequiredBufferSize(System.Int32)
     commentId: M:PolylineAlgorithm.PolylineEncoding.GetRequiredBufferSize(System.Int32)
@@ -268,7 +268,7 @@ body:
     description: Thrown when the normalized result exceeds the range of a 32-bit signed integer during the conversion from double to int.
 - api3: TryReadValue(ref int, ReadOnlyMemory<char>, ref int)
   id: PolylineAlgorithm_PolylineEncoding_TryReadValue_System_Int32__System_ReadOnlyMemory_System_Char__System_Int32__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L174
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L175
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.TryReadValue(System.Int32@,System.ReadOnlyMemory{System.Char},System.Int32@)
     commentId: M:PolylineAlgorithm.PolylineEncoding.TryReadValue(System.Int32@,System.ReadOnlyMemory{System.Char},System.Int32@)
@@ -328,7 +328,7 @@ body:
     </p>
 - api3: TryWriteValue(int, Span<char>, ref int)
   id: PolylineAlgorithm_PolylineEncoding_TryWriteValue_System_Int32_System_Span_System_Char__System_Int32__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L242
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L243
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.TryWriteValue(System.Int32,System.Span{System.Char},System.Int32@)
     commentId: M:PolylineAlgorithm.PolylineEncoding.TryWriteValue(System.Int32,System.Span{System.Char},System.Int32@)
