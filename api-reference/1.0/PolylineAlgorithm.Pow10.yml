@@ -1,0 +1,83 @@
+### YamlMime:ApiPage
+title: Class Pow10
+body:
+- api1: Class Pow10
+  id: PolylineAlgorithm_Pow10
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Pow10.cs#L12
+  metadata:
+    uid: PolylineAlgorithm.Pow10
+    commentId: T:PolylineAlgorithm.Pow10
+- facts:
+  - name: Namespace
+    value:
+      text: PolylineAlgorithm
+      url: PolylineAlgorithm.html
+  - name: Assembly
+    value: PolylineAlgorithm.dll
+- markdown: Provides optimized calculation of powers of 10 for precision-based operations.
+- code: public static class Pow10
+- h4: Inheritance
+- inheritance:
+  - text: object
+    url: https://learn.microsoft.com/dotnet/api/system.object
+  - text: Pow10
+    url: PolylineAlgorithm.Pow10.html
+- h4: Inherited Members
+- list:
+  - text: object.Equals(object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - text: object.Equals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - text: object.GetHashCode()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - text: object.GetType()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - text: object.MemberwiseClone()
+    url: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - text: object.ReferenceEquals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - text: object.ToString()
+    url: https://learn.microsoft.com/dotnet/api/system.object.tostring
+- h2: Remarks
+- markdown: >-
+    This class caches common powers of 10 (10^0 through 10^9) for efficient lookup,
+
+    falling back to <xref href="System.Math.Pow(System.Double%2cSystem.Double)" data-throw-if-not-resolved="false"></xref> for larger exponents.
+- h2: Methods
+- api3: GetFactor(uint)
+  id: PolylineAlgorithm_Pow10_GetFactor_System_UInt32_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Pow10.cs#L33
+  metadata:
+    uid: PolylineAlgorithm.Pow10.GetFactor(System.UInt32)
+    commentId: M:PolylineAlgorithm.Pow10.GetFactor(System.UInt32)
+- markdown: Gets the multiplication factor for a given precision level.
+- code: public static uint GetFactor(uint precision)
+- h4: Parameters
+- parameters:
+  - name: precision
+    type:
+    - text: uint
+      url: https://learn.microsoft.com/dotnet/api/system.uint32
+    description: The precision level (exponent for base 10).
+- h4: Returns
+- parameters:
+  - type:
+    - text: uint
+      url: https://learn.microsoft.com/dotnet/api/system.uint32
+    description: The power of 10 corresponding to the specified precision (10^precision).
+- h4: Remarks
+- markdown: >-
+    For precision values 0-9, returns pre-computed values for optimal performance.
+
+    For larger values, computes the result using <xref href="System.Math.Pow(System.Double%2cSystem.Double)" data-throw-if-not-resolved="false"></xref>.
+
+    The operation is performed in a checked context to detect arithmetic overflow.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: OverflowException
+      url: https://learn.microsoft.com/dotnet/api/system.overflowexception
+    description: Thrown when the computed power of 10 exceeds <xref href="System.UInt32.MaxValue" data-throw-if-not-resolved="false"></xref>.
+languageId: csharp
+metadata:
+  description: Provides optimized calculation of powers of 10 for precision-based operations.
