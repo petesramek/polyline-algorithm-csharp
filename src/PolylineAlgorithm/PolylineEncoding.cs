@@ -83,6 +83,7 @@ public static class PolylineEncoding {
         checked {
             return (int)(Math.Truncate(value * 10 * factor) / 10);
         }
+
     }
 
     /// <summary>
