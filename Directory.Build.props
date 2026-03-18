@@ -15,10 +15,6 @@
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	</PropertyGroup>
 
-	<PropertyGroup>
-		<SuppressTfmSupportBuildErrors>true</SuppressTfmSupportBuildErrors>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<PackageReference Include="Roslynator.Analyzers" Version="4.*" PrivateAssets="all" />
 		<PackageReference Include="Meziantou.Analyzer" Version="3.*" PrivateAssets="all" />
