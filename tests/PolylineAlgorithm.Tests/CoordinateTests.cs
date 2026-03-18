@@ -1116,4 +1116,190 @@ public class CoordinateTests {
         // Act & Assert
         _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validator.ValidateLongitude(longitude));
     }
+
+    /// <summary>
+    /// Tests that Equals with tolerance returns true when coordinates are identical.
+    /// </summary>
+    [TestMethod]
+    public void EqualsWithTolerance_IdenticalCoordinates_ReturnsTrue() {
+        // Arrange
+        var coordinate1 = new Coordinate(45.0, 90.0);
+        var coordinate2 = new Coordinate(45.0, 90.0);
+        double tolerance = 0.0001;
+
+        // Act
+        bool result = coordinate1.Equals(coordinate2, tolerance);
+
+        // Assert
+        Assert.IsTrue(result);
+    }
+
+    /// <summary>
+    /// Tests that Equals with tolerance returns true when latitude difference is just below tolerance.
+    /// </summary>
+    [TestMethod]
+    public void EqualsWithTolerance_LatitudeDifferenceBelowTolerance_ReturnsTrue() {
+        // Arrange
+        var coordinate1 = new Coordinate(45.0, 90.0);
+        var coordinate2 = new Coordinate(45.00005, 90.0);
+        double tolerance = 0.0001;
+
+        // Act
+        bool result = coordinate1.Equals(coordinate2, tolerance);
+
+        // Assert
+        Assert.IsTrue(result);
+    }
+
+    /// <summary>
+    /// Tests that Equals with tolerance returns true when longitude difference is just below tolerance.
+    /// </summary>
+    [TestMethod]
+    public void EqualsWithTolerance_LongitudeDifferenceBelowTolerance_ReturnsTrue() {
+        // Arrange
+        var coordinate1 = new Coordinate(45.0, 90.0);
+        var coordinate2 = new Coordinate(45.0, 90.00005);
+        double tolerance = 0.0001;
+
+        // Act
+        bool result = coordinate1.Equals(coordinate2, tolerance);
+
+        // Assert
+        Assert.IsTrue(result);
+    }
+
+    /// <summary>
+    /// Tests that Equals with tolerance returns false when latitude difference exceeds tolerance.
+    /// </summary>
+    [TestMethod]
+    public void EqualsWithTolerance_LatitudeDifferenceExceedsTolerance_ReturnsFalse() {
+        // Arrange
+        var coordinate1 = new Coordinate(45.0, 90.0);
+        var coordinate2 = new Coordinate(45.0002, 90.0);
+        double tolerance = 0.0001;
+
+        // Act
+        bool result = coordinate1.Equals(coordinate2, tolerance);
+
+        // Assert
+        Assert.IsFalse(result);
+    }
+
+    /// <summary>
+    /// Tests that Equals with tolerance returns false when longitude difference exceeds tolerance.
+    /// </summary>
+    [TestMethod]
+    public void EqualsWithTolerance_LongitudeDifferenceExceedsTolerance_ReturnsFalse() {
+        // Arrange
+        var coordinate1 = new Coordinate(45.0, 90.0);
+        var coordinate2 = new Coordinate(45.0, 90.0002);
+        double tolerance = 0.0001;
+
+        // Act
+        bool result = coordinate1.Equals(coordinate2, tolerance);
+
+        // Assert
+        Assert.IsFalse(result);
+    }
+
+    /// <summary>
+    /// Tests that GetHashCode returns same value for identical coordinates.
+    /// </summary>
+    [TestMethod]
+    public void GetHashCode_IdenticalCoordinates_ReturnsSameHashCode() {
+        // Arrange
+        var coordinate1 = new Coordinate(45.0, 90.0);
+        var coordinate2 = new Coordinate(45.0, 90.0);
+
+        // Act
+        int hash1 = coordinate1.GetHashCode();
+        int hash2 = coordinate2.GetHashCode();
+
+        // Assert
+        Assert.AreEqual(hash1, hash2);
+    }
+
+    /// <summary>
+    /// Tests that GetHashCode returns different values for different coordinates.
+    /// </summary>
+    [TestMethod]
+    public void GetHashCode_DifferentCoordinates_ReturnsDifferentHashCode() {
+        // Arrange
+        var coordinate1 = new Coordinate(45.0, 90.0);
+        var coordinate2 = new Coordinate(46.0, 91.0);
+
+        // Act
+        int hash1 = coordinate1.GetHashCode();
+        int hash2 = coordinate2.GetHashCode();
+
+        // Assert
+        Assert.AreNotEqual(hash1, hash2);
+    }
+
+    /// <summary>
+    /// Tests that GetHashCode returns consistent value for multiple calls on same coordinate.
+    /// </summary>
+    [TestMethod]
+    public void GetHashCode_MultipleCalls_ReturnsConsistentValue() {
+        // Arrange
+        var coordinate = new Coordinate(45.0, 90.0);
+
+        // Act
+        int hash1 = coordinate.GetHashCode();
+        int hash2 = coordinate.GetHashCode();
+
+        // Assert
+        Assert.AreEqual(hash1, hash2);
+    }
+
+    /// <summary>
+    /// Tests that GetHashCode returns same value for coordinates with zero values.
+    /// </summary>
+    [TestMethod]
+    public void GetHashCode_ZeroCoordinates_ReturnsSameHashCode() {
+        // Arrange
+        var coordinate1 = new Coordinate(0.0, 0.0);
+        var coordinate2 = new Coordinate();
+
+        // Act
+        int hash1 = coordinate1.GetHashCode();
+        int hash2 = coordinate2.GetHashCode();
+
+        // Assert
+        Assert.AreEqual(hash1, hash2);
+    }
+
+    /// <summary>
+    /// Tests that GetHashCode handles extreme latitude values.
+    /// </summary>
+    [TestMethod]
+    public void GetHashCode_ExtremeLatitudeValues_ReturnsHashCode() {
+        // Arrange
+        var coordinate1 = new Coordinate(90.0, 0.0);
+        var coordinate2 = new Coordinate(-90.0, 0.0);
+
+        // Act
+        int hash1 = coordinate1.GetHashCode();
+        int hash2 = coordinate2.GetHashCode();
+
+        // Assert
+        Assert.AreNotEqual(hash1, hash2);
+    }
+
+    /// <summary>
+    /// Tests that GetHashCode handles extreme longitude values.
+    /// </summary>
+    [TestMethod]
+    public void GetHashCode_ExtremeLongitudeValues_ReturnsHashCode() {
+        // Arrange
+        var coordinate1 = new Coordinate(0.0, 180.0);
+        var coordinate2 = new Coordinate(0.0, -180.0);
+
+        // Act
+        int hash1 = coordinate1.GetHashCode();
+        int hash2 = coordinate2.GetHashCode();
+
+        // Assert
+        Assert.AreNotEqual(hash1, hash2);
+    }
 }
