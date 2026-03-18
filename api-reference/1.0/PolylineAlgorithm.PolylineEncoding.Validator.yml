@@ -3,7 +3,7 @@ title: Class PolylineEncoding.Validator
 body:
 - api1: Class PolylineEncoding.Validator
   id: PolylineAlgorithm_PolylineEncoding_Validator
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L320
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L321
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.Validator
     commentId: T:PolylineAlgorithm.PolylineEncoding.Validator
@@ -40,7 +40,7 @@ body:
 - h2: Methods
 - api3: ValidateBlockLength(ReadOnlySpan<char>)
   id: PolylineAlgorithm_PolylineEncoding_Validator_ValidateBlockLength_System_ReadOnlySpan_System_Char__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L417
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L418
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.Validator.ValidateBlockLength(System.ReadOnlySpan{System.Char})
     commentId: M:PolylineAlgorithm.PolylineEncoding.Validator.ValidateBlockLength(System.ReadOnlySpan{System.Char})
@@ -74,7 +74,7 @@ body:
     description: Thrown when a block exceeds 7 characters or the polyline does not end with a valid block terminator.
 - api3: ValidateCharRange(ReadOnlySpan<char>)
   id: PolylineAlgorithm_PolylineEncoding_Validator_ValidateCharRange_System_ReadOnlySpan_System_Char__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L371
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L372
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.Validator.ValidateCharRange(System.ReadOnlySpan{System.Char})
     commentId: M:PolylineAlgorithm.PolylineEncoding.Validator.ValidateCharRange(System.ReadOnlySpan{System.Char})
@@ -112,7 +112,7 @@ body:
     description: Thrown when an invalid character is found in the polyline segment.
 - api3: ValidateFormat(ReadOnlySpan<char>)
   id: PolylineAlgorithm_PolylineEncoding_Validator_ValidateFormat_System_ReadOnlySpan_System_Char__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L349
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L350
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.Validator.ValidateFormat(System.ReadOnlySpan{System.Char})
     commentId: M:PolylineAlgorithm.PolylineEncoding.Validator.ValidateFormat(System.ReadOnlySpan{System.Char})
