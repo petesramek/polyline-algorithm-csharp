@@ -12,14 +12,13 @@ body:
       text: PolylineAlgorithm.Abstraction
       url: PolylineAlgorithm.Abstraction.html
   - type:
+      text: PolylineAlgorithm.Diagnostics
+      url: PolylineAlgorithm.Diagnostics.html
+  - type:
       text: PolylineAlgorithm.Extensions
       url: PolylineAlgorithm.Extensions.html
 - h3: Classes
 - parameters:
-  - type:
-      text: InvalidPolylineException
-      url: PolylineAlgorithm.InvalidPolylineException.html
-    description: Exception thrown when a polyline is determined to be malformed or invalid during processing.
   - type:
       text: PolylineDecoder
       url: PolylineAlgorithm.PolylineDecoder.html
@@ -53,6 +52,9 @@ body:
       text: Pow10
       url: PolylineAlgorithm.Pow10.html
     description: Provides optimized calculation of powers of 10 for precision-based operations.
+  - type:
+      text: PolylineEncoding.Validator
+      url: PolylineAlgorithm.PolylineEncoding.Validator.html
 - h3: Structs
 - parameters:
   - type:
@@ -66,10 +68,4 @@ body:
       Represents an immutable, read-only encoded polyline string.
 
       Provides methods for creation, inspection, and conversion of polyline data from various character sources.
-- h3: Enums
-- parameters:
-  - type:
-      text: CoordinateValueType
-      url: PolylineAlgorithm.CoordinateValueType.html
-    description: Represents the type of a geographic coordinate value.
 languageId: csharp

@@ -3,14 +3,14 @@
   href: PolylineAlgorithm.yml
   items:
   - name: Classes
-  - name: InvalidPolylineException
-    href: PolylineAlgorithm.InvalidPolylineException.yml
   - name: PolylineDecoder
     href: PolylineAlgorithm.PolylineDecoder.yml
   - name: PolylineEncoder
     href: PolylineAlgorithm.PolylineEncoder.yml
   - name: PolylineEncoding
     href: PolylineAlgorithm.PolylineEncoding.yml
+  - name: PolylineEncoding.Validator
+    href: PolylineAlgorithm.PolylineEncoding.Validator.yml
   - name: PolylineEncodingOptions
     href: PolylineAlgorithm.PolylineEncodingOptions.yml
   - name: PolylineEncodingOptionsBuilder
@@ -22,9 +22,6 @@
     href: PolylineAlgorithm.Coordinate.yml
   - name: Polyline
     href: PolylineAlgorithm.Polyline.yml
-  - name: Enums
-  - name: CoordinateValueType
-    href: PolylineAlgorithm.CoordinateValueType.yml
 - name: PolylineAlgorithm.Abstraction
   href: PolylineAlgorithm.Abstraction.yml
   items:
@@ -38,6 +35,12 @@
     href: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.yml
   - name: IPolylineEncoder<TCoordinate, TPolyline>
     href: PolylineAlgorithm.Abstraction.IPolylineEncoder-2.yml
+- name: PolylineAlgorithm.Diagnostics
+  href: PolylineAlgorithm.Diagnostics.yml
+  items:
+  - name: Classes
+  - name: InvalidPolylineException
+    href: PolylineAlgorithm.Diagnostics.InvalidPolylineException.yml
 - name: PolylineAlgorithm.Extensions
   href: PolylineAlgorithm.Extensions.yml
   items:

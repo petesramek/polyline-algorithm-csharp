@@ -43,14 +43,33 @@ body:
     This class caches common powers of 10 (10^0 through 10^9) for efficient lookup,
 
     falling back to <xref href="System.Math.Pow(System.Double%2cSystem.Double)" data-throw-if-not-resolved="false"></xref> for larger exponents.
+- h2: Properties
+- api3: UseCache
+  id: PolylineAlgorithm_Pow10_UseCache
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Pow10.cs#L29
+  metadata:
+    uid: PolylineAlgorithm.Pow10.UseCache
+    commentId: P:PolylineAlgorithm.Pow10.UseCache
+- markdown: Gets or sets a value indicating whether pre-computed powers of 10 should be used for optimization.
+- code: public static bool UseCache { get; set; }
+- h4: Property Value
+- parameters:
+  - type:
+    - text: bool
+      url: https://learn.microsoft.com/dotnet/api/system.boolean
+- h4: Remarks
+- markdown: >-
+    When enabled, <xref href="PolylineAlgorithm.Pow10.GetFactor(System.UInt32)" data-throw-if-not-resolved="false"></xref> retrieves values from the cache for precision levels 0-9,
+
+    providing faster performance. When disabled, all calculations use <xref href="System.Math.Pow(System.Double%2cSystem.Double)" data-throw-if-not-resolved="false"></xref>.
 - h2: Methods
 - api3: GetFactor(uint)
   id: PolylineAlgorithm_Pow10_GetFactor_System_UInt32_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Pow10.cs#L33
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Pow10.cs#L49
   metadata:
     uid: PolylineAlgorithm.Pow10.GetFactor(System.UInt32)
     commentId: M:PolylineAlgorithm.Pow10.GetFactor(System.UInt32)
-- markdown: Gets the multiplication factor for a given precision level.
+- markdown: Returns the power of 10 for the specified precision level.
 - code: public static uint GetFactor(uint precision)
 - h4: Parameters
 - parameters:
@@ -58,26 +77,28 @@ body:
     type:
     - text: uint
       url: https://learn.microsoft.com/dotnet/api/system.uint32
-    description: The precision level (exponent for base 10).
+    description: The exponent for the base 10 (i.e., the number of decimal places).
 - h4: Returns
 - parameters:
   - type:
     - text: uint
       url: https://learn.microsoft.com/dotnet/api/system.uint32
-    description: The power of 10 corresponding to the specified precision (10^precision).
+    description: The value of 10 raised to the power of <code class="paramref">precision</code> as a <xref href="System.UInt32" data-throw-if-not-resolved="false"></xref>
 - h4: Remarks
 - markdown: >-
-    For precision values 0-9, returns pre-computed values for optimal performance.
+    If <xref href="PolylineAlgorithm.Pow10.UseCache" data-throw-if-not-resolved="false"></xref> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> and <code class="paramref">precision</code> is between 0 and 9 (inclusive),
 
-    For larger values, computes the result using <xref href="System.Math.Pow(System.Double%2cSystem.Double)" data-throw-if-not-resolved="false"></xref>.
+    the method returns a cached value for optimal performance. For other values or if caching is disabled,
 
-    The operation is performed in a checked context to detect arithmetic overflow.
+    the result is computed using <xref href="System.Math.Pow(System.Double%2cSystem.Double)" data-throw-if-not-resolved="false"></xref>. The calculation is performed in a checked context to
+
+    ensure that arithmetic overflow is detected.
 - h4: Exceptions
 - parameters:
   - type:
     - text: OverflowException
       url: https://learn.microsoft.com/dotnet/api/system.overflowexception
-    description: Thrown when the computed power of 10 exceeds <xref href="System.UInt32.MaxValue" data-throw-if-not-resolved="false"></xref>.
+    description: Thrown if the computed value exceeds <xref href="System.UInt32.MaxValue" data-throw-if-not-resolved="false"></xref>.
 languageId: csharp
 metadata:
   description: Provides optimized calculation of powers of 10 for precision-based operations.
