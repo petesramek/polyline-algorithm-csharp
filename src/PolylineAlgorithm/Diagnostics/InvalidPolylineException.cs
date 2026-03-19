@@ -17,9 +17,14 @@ using System.Diagnostics.CodeAnalysis;
 /// This exception is used internally to indicate that a polyline string does not conform to the expected format or contains errors.
 /// </remarks>
 [DebuggerDisplay($"{nameof(InvalidPolylineException)}: {{ToString()}}")]
-[SuppressMessage("Roslynator", "RCS1194:Implement exception constructors", Justification = "This exception is intended for use by consumers of the library, but additional constructors are not required for its intended usage.")]
-[SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Standard exception constructors are not necessary for the intended usage of this exception type.")]
-public sealed class InvalidPolylineException : Exception {
+public sealed class InvalidPolylineException : Exception
+{
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InvalidPolylineException"/> class.
+    /// </summary>
+    public InvalidPolylineException()
+        : base() { }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="InvalidPolylineException"/> class with a specified error message.
     /// </summary>
@@ -30,17 +35,14 @@ public sealed class InvalidPolylineException : Exception {
         : base(message) { }
 
     /// <summary>
-    /// Throws an <see cref="InvalidPolylineException"/> with a message indicating the position in the polyline where the error was detected.
+    /// Initializes a new instance of the <see cref="InvalidPolylineException"/> class with a specified error message and a reference to the inner exception that is the cause of this exception.
     /// </summary>
-    /// <param name="position">
-    /// The zero-based index in the polyline string where the error occurred.
+    /// <param name="message">
+    /// The error message that explains the reason for the exception.
     /// </param>
-    /// <exception cref="InvalidPolylineException">
-    /// Always thrown to indicate that the polyline is malformed at the specified position.
-    /// </exception>
-    internal static void Throw(long position) {
-        Debug.Assert(position >= 0, "Position must be a non-negative value.");
-
-        ExceptionGuard.ThrowInvalidPolyline(position);
-    }
+    /// <param name="innerException">
+    /// The exception that is the cause of the current exception, or a null reference if no inner exception is specified.
+    /// </param>
+    public InvalidPolylineException(string message, Exception innerException)
+        : base(message, innerException) { }
 }
