@@ -18,12 +18,12 @@ public class PolylineEncodingValidationBenchmark {
     }
 
     [Benchmark(Baseline = true)]
-    public void ValidateCharRange() => PolylineEncoding.Validator.ValidateCharRange(polyline);
+    public void ValidateCharRange() => PolylineEncoding.Validation.ValidateCharRange(polyline);
 
     [Benchmark]
-    public void ValidateBlockLength() => PolylineEncoding.Validator.ValidateBlockLength(polyline);
+    public void ValidateBlockLength() => PolylineEncoding.Validation.ValidateBlockLength(polyline);
 
 
     [Benchmark]
-    public void ValidateFormat() => PolylineEncoding.Validator.ValidateFormat(polyline);
+    public void ValidateFormat() => PolylineEncoding.Validation.ValidateFormat(polyline);
 }

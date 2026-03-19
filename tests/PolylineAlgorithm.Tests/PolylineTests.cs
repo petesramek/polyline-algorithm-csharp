@@ -6,6 +6,7 @@
 namespace PolylineAlgorithm.Tests;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PolylineAlgorithm;
 
 /// <summary>
 /// Tests for the <see cref="Polyline"/> type.
@@ -924,5 +925,41 @@ public class PolylineTests {
         Assert.AreEqual('x', destination[2]);
         Assert.AreEqual('\0', destination[3]);
         Assert.AreEqual('\0', destination[4]);
+    }
+
+    [TestMethod]
+    public void EqualityOperator_IdenticalPolylines_ReturnsTrue() {
+        var polyline1 = Polyline.FromString("abcdef");
+        var polyline2 = Polyline.FromString("abcdef");
+
+        Assert.IsTrue(polyline1 == polyline2);
+        Assert.IsFalse(polyline1 != polyline2);
+    }
+
+    [TestMethod]
+    public void EqualityOperator_DifferentPolylines_ReturnsFalse() {
+        var polyline1 = Polyline.FromString("abcdef");
+        var polyline2 = Polyline.FromString("ghijkl");
+
+        Assert.IsFalse(polyline1 == polyline2);
+        Assert.IsTrue(polyline1 != polyline2);
+    }
+
+    [TestMethod]
+    public void EqualityOperator_EmptyPolylines_ReturnsTrue() {
+        var polyline1 = new Polyline();
+        var polyline2 = new Polyline();
+
+        Assert.IsTrue(polyline1 == polyline2);
+        Assert.IsFalse(polyline1 != polyline2);
+    }
+
+    [TestMethod]
+    public void EqualityOperator_EmptyAndNonEmptyPolylines_ReturnsFalse() {
+        var polyline1 = new Polyline();
+        var polyline2 = Polyline.FromString("abcdef");
+
+        Assert.IsFalse(polyline1 == polyline2);
+        Assert.IsTrue(polyline1 != polyline2);
     }
 }

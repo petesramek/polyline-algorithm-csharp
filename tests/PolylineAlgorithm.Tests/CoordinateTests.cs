@@ -1302,4 +1302,40 @@ public class CoordinateTests {
         // Assert
         Assert.AreNotEqual(hash1, hash2);
     }
+
+    /// <summary>
+    /// Tests equality operator for identical coordinates.
+    /// </summary>
+    [TestMethod]
+    public void EqualityOperator_IdenticalCoordinates_ReturnsTrue() {
+        var coord1 = new Coordinate(10.0, 20.0);
+        var coord2 = new Coordinate(10.0, 20.0);
+
+        Assert.IsTrue(coord1 == coord2);
+        Assert.IsFalse(coord1 != coord2);
+    }
+
+    /// <summary>
+    /// Tests equality operator for different coordinates.
+    /// </summary>
+    [TestMethod]
+    public void EqualityOperator_DifferentCoordinates_ReturnsFalse() {
+        var coord1 = new Coordinate(10.0, 20.0);
+        var coord2 = new Coordinate(15.0, 25.0);
+
+        Assert.IsFalse(coord1 == coord2);
+        Assert.IsTrue(coord1 != coord2);
+    }
+
+    /// <summary>
+    /// Tests equality operator for default coordinates.
+    /// </summary>
+    [TestMethod]
+    public void EqualityOperator_DefaultCoordinates_ReturnsTrue() {
+        var coord1 = new Coordinate();
+        var coord2 = new Coordinate();
+
+        Assert.IsTrue(coord1 == coord2);
+        Assert.IsFalse(coord1 != coord2);
+    }
 }

@@ -7,7 +7,8 @@ namespace PolylineAlgorithm;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using PolylineAlgorithm.Properties;
+using PolylineAlgorithm.Diagnostics;
+using PolylineAlgorithm.Internal;
 using System.Globalization;
 #if NET8_0_OR_GREATER
 using System.Text;
@@ -17,11 +18,6 @@ using System.Text;
 /// Provides a builder for configuring options for polyline encoding operations.
 /// </summary>
 public sealed class PolylineEncodingOptionsBuilder {
-#if NET8_0_OR_GREATER
-    private static readonly CompositeFormat _stackAllocLimitMustBeEqualOrGreaterThanMessageFormat = CompositeFormat.Parse(ExceptionMessageResource.StackAllocLimitMustBeEqualOrGreaterThanMessageFormat);
-#else
-    private static readonly string _stackAllocLimitMustBeEqualOrGreaterThanMessageFormat = ExceptionMessageResource.StackAllocLimitMustBeEqualOrGreaterThanMessageFormat;
-#endif
     private uint _precision = 5;
     private int _stackAllocLimit = 512;
     private ILoggerFactory _loggerFactory = NullLoggerFactory.Instance;
@@ -69,9 +65,11 @@ public sealed class PolylineEncodingOptionsBuilder {
     /// </remarks>
     public PolylineEncodingOptionsBuilder WithStackAllocLimit(int stackAllocLimit) {
         const int minStackAllocLimit = 1;
-
-        _stackAllocLimit = stackAllocLimit >= minStackAllocLimit ? stackAllocLimit : throw new ArgumentOutOfRangeException(nameof(stackAllocLimit), string.Format(CultureInfo.InvariantCulture, _stackAllocLimitMustBeEqualOrGreaterThanMessageFormat, minStackAllocLimit));
-
+        _stackAllocLimit = stackAllocLimit >= minStackAllocLimit
+            ? stackAllocLimit
+            : throw new ArgumentOutOfRangeException(
+                nameof(stackAllocLimit),
+                ExceptionMessages.GetPolylineCannotBeShorterThanExceptionMessage(minStackAllocLimit));
         return this;
     }
 

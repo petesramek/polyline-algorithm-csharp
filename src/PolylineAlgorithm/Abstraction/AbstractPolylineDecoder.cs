@@ -160,7 +160,7 @@ namespace PolylineAlgorithm.Abstraction
         {
             try
             {
-                PolylineEncoding.Validator.ValidateFormat(polylineSequence.Span);
+                PolylineEncoding.Validation.ValidateFormat(polylineSequence.Span);
             }
             catch (ArgumentException ex)
             {

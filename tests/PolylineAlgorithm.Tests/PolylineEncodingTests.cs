@@ -215,6 +215,87 @@ public class PolylineEncodingTests {
         Assert.AreEqual(expected, result);
     }
 
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Normalize"/> throws <see cref="OverflowException"/> for value causing overflow.
+    /// </summary>
+    [TestMethod]
+    public void Normalize_ValueCausingOverflow_ThrowsOverflowException() {
+        // Arrange
+        const double value = double.MaxValue / 10;
+        const uint precision = 5;
+
+        // Act & Assert
+        Assert.ThrowsExactly<OverflowException>(() => PolylineEncoding.Normalize(value, precision));
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Normalize"/> handles negative value with zero precision.
+    /// </summary>
+    [TestMethod]
+    public void Normalize_NegativeValueZeroPrecision_ReturnsTruncatedValue() {
+        // Arrange
+        const double value = -37.78903;
+        const uint precision = 0;
+        const int expected = -37;
+
+        // Act
+        int result = PolylineEncoding.Normalize(value, precision);
+
+        // Assert
+        Assert.AreEqual(expected, result);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Normalize"/> handles negative value with precision 3.
+    /// </summary>
+    [TestMethod]
+    public void Normalize_NegativeValuePrecision3_ReturnsNormalizedValue() {
+        // Arrange
+        const double value = -12.34567;
+        const uint precision = 3;
+        const int expected = -12345;
+
+        // Act
+        int result = PolylineEncoding.Normalize(value, precision);
+
+        // Assert
+        Assert.AreEqual(expected, result);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Normalize"/> handles large positive value.
+    /// </summary>
+    [TestMethod]
+    public void Normalize_LargePositiveValue_ReturnsNormalizedValue() {
+        // Arrange
+        const double value = 180.0;
+        const uint precision = 5;
+        const int expected = 18000000;
+
+        // Act
+        int result = PolylineEncoding.Normalize(value, precision);
+
+        // Assert
+        Assert.AreEqual(expected, result);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Normalize"/> handles large negative value.
+    /// </summary>
+    [TestMethod]
+    public void Normalize_LargeNegativeValue_ReturnsNormalizedValue() {
+        // Arrange
+        const double value = -180.0;
+        const uint precision = 5;
+        const int expected = -18000000;
+
+        // Act
+        int result = PolylineEncoding.Normalize(value, precision);
+
+        // Assert
+        Assert.AreEqual(expected, result);
+    }
+
     #endregion
 
     #region Denormalize Tests
@@ -343,6 +424,74 @@ public class PolylineEncodingTests {
         const int value = -123;
         const uint precision = 1;
         const double expected = -12.3;
+
+        // Act
+        double result = PolylineEncoding.Denormalize(value, precision);
+
+        // Assert
+        Assert.AreEqual(expected, result, 0.000001);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Denormalize"/> handles large positive value.
+    /// </summary>
+    [TestMethod]
+    public void Denormalize_LargePositiveValue_ReturnsDenormalizedValue() {
+        // Arrange
+        const int value = 18000000;
+        const uint precision = 5;
+        const double expected = 180.0;
+
+        // Act
+        double result = PolylineEncoding.Denormalize(value, precision);
+
+        // Assert
+        Assert.AreEqual(expected, result, 0.000001);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Denormalize"/> handles large negative value.
+    /// </summary>
+    [TestMethod]
+    public void Denormalize_LargeNegativeValue_ReturnsDenormalizedValue() {
+        // Arrange
+        const int value = -18000000;
+        const uint precision = 5;
+        const double expected = -180.0;
+
+        // Act
+        double result = PolylineEncoding.Denormalize(value, precision);
+
+        // Assert
+        Assert.AreEqual(expected, result, 0.000001);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Denormalize"/> handles int.MaxValue.
+    /// </summary>
+    [TestMethod]
+    public void Denormalize_MaxValue_ReturnsDenormalizedValue() {
+        // Arrange
+        const int value = int.MaxValue;
+        const uint precision = 5;
+        const double expected = 21474.83647;
+
+        // Act
+        double result = PolylineEncoding.Denormalize(value, precision);
+
+        // Assert
+        Assert.AreEqual(expected, result, 0.000001);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Denormalize"/> handles int.MinValue.
+    /// </summary>
+    [TestMethod]
+    public void Denormalize_MinValue_ReturnsDenormalizedValue() {
+        // Arrange
+        const int value = int.MinValue;
+        const uint precision = 5;
+        const double expected = -21474.83648;
 
         // Act
         double result = PolylineEncoding.Denormalize(value, precision);
@@ -517,6 +666,75 @@ public class PolylineEncodingTests {
 
         // Assert
         Assert.IsFalse(result);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.TryReadValue"/> reads negative delta correctly with odd LSB.
+    /// </summary>
+    [TestMethod]
+    public void TryReadValue_NegativeDeltaOddLSB_ReadsDeltaCorrectly() {
+        // Arrange
+        int delta = 0;
+        ReadOnlyMemory<char> buffer = "@".AsMemory(); // char with value that produces odd LSB
+        int position = 0;
+
+        // Act
+        bool result = PolylineEncoding.TryReadValue(ref delta, buffer, ref position);
+
+        // Assert
+        Assert.IsTrue(result);
+        Assert.AreEqual(-1, delta);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.TryReadValue"/> handles empty buffer.
+    /// </summary>
+    [TestMethod]
+    public void TryReadValue_EmptyBuffer_ReturnsFalse() {
+        // Arrange
+        int delta = 0;
+        ReadOnlyMemory<char> buffer = ReadOnlyMemory<char>.Empty;
+        int position = 0;
+
+        // Act
+        bool result = PolylineEncoding.TryReadValue(ref delta, buffer, ref position);
+
+        // Assert
+        Assert.IsFalse(result);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.TryReadValue"/> handles character at Space boundary.
+    /// </summary>
+    [TestMethod]
+    public void TryReadValue_CharacterAtSpaceBoundary_ReadsDeltaCorrectly() {
+        // Arrange
+        int delta = 0;
+        ReadOnlyMemory<char> buffer = "_".AsMemory(); // char '_' = 95, 95 - 63 = 32 (Space)
+        int position = 0;
+
+        // Act
+        bool result = PolylineEncoding.TryReadValue(ref delta, buffer, ref position);
+
+        // Assert
+        Assert.IsFalse(result);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.TryReadValue"/> handles maximum encoded value.
+    /// </summary>
+    [TestMethod]
+    public void TryReadValue_MaximumEncodedValue_ReadsDeltaCorrectly() {
+        // Arrange
+        int delta = 0;
+        ReadOnlyMemory<char> buffer = "\u00ff\u00ff\u00ff\u00ff\u00ff?".AsMemory();
+        int position = 0;
+
+        // Act
+        bool result = PolylineEncoding.TryReadValue(ref delta, buffer, ref position);
+
+        // Assert
+        Assert.IsTrue(result);
     }
 
     #endregion
@@ -712,6 +930,115 @@ public class PolylineEncodingTests {
         Assert.IsFalse(result);
     }
 
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.TryWriteValue"/> writes int.MaxValue correctly.
+    /// </summary>
+    [TestMethod]
+    public void TryWriteValue_MaxValue_WritesCorrectly() {
+        // Arrange
+        const int delta = int.MaxValue;
+        Span<char> buffer = stackalloc char[20];
+        int position = 0;
+
+        // Act
+        bool result = PolylineEncoding.TryWriteValue(delta, buffer, ref position);
+
+        // Assert
+        Assert.IsTrue(result);
+        Assert.IsTrue(position > 0);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.TryWriteValue"/> writes int.MinValue correctly.
+    /// </summary>
+    [TestMethod]
+    public void TryWriteValue_MinValue_WritesCorrectly() {
+        // Arrange
+        const int delta = int.MinValue;
+        Span<char> buffer = stackalloc char[20];
+        int position = 0;
+
+        // Act
+        bool result = PolylineEncoding.TryWriteValue(delta, buffer, ref position);
+
+        // Assert
+        Assert.IsTrue(result);
+        Assert.IsTrue(position > 0);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.TryWriteValue"/> handles exact buffer size for value.
+    /// </summary>
+    [TestMethod]
+    public void TryWriteValue_ExactBufferSize_WritesCorrectly() {
+        // Arrange
+        const int delta = 100;
+        int requiredSize = PolylineEncoding.GetRequiredBufferSize(delta);
+        Span<char> buffer = stackalloc char[requiredSize];
+        int position = 0;
+
+        // Act
+        bool result = PolylineEncoding.TryWriteValue(delta, buffer, ref position);
+
+        // Assert
+        Assert.IsTrue(result);
+        Assert.AreEqual(requiredSize, position);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.TryWriteValue"/> fails with one less than required buffer size.
+    /// </summary>
+    [TestMethod]
+    public void TryWriteValue_OneLessThanRequired_ReturnsFalse() {
+        // Arrange
+        const int delta = 100;
+        int requiredSize = PolylineEncoding.GetRequiredBufferSize(delta);
+        Span<char> buffer = stackalloc char[requiredSize - 1];
+        int position = 0;
+
+        // Act
+        bool result = PolylineEncoding.TryWriteValue(delta, buffer, ref position);
+
+        // Assert
+        Assert.IsFalse(result);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.TryWriteValue"/> handles delta at Space boundary (31).
+    /// </summary>
+    [TestMethod]
+    public void TryWriteValue_DeltaAtSpaceBoundary_WritesCorrectly() {
+        // Arrange
+        const int delta = 31;
+        Span<char> buffer = stackalloc char[10];
+        int position = 0;
+
+        // Act
+        bool result = PolylineEncoding.TryWriteValue(delta, buffer, ref position);
+
+        // Assert
+        Assert.IsTrue(result);
+        Assert.AreEqual(2, position);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.TryWriteValue"/> handles delta just above Space boundary (32).
+    /// </summary>
+    [TestMethod]
+    public void TryWriteValue_DeltaAboveSpaceBoundary_WritesCorrectly() {
+        // Arrange
+        const int delta = 32;
+        Span<char> buffer = stackalloc char[10];
+        int position = 0;
+
+        // Act
+        bool result = PolylineEncoding.TryWriteValue(delta, buffer, ref position);
+
+        // Assert
+        Assert.IsTrue(result);
+        Assert.AreEqual(2, position);
+    }
+
     #endregion
 
     #region GetRequiredBufferSize Tests
@@ -886,7 +1213,7 @@ public class PolylineEncodingTests {
     #region ValidateFormat Tests
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateFormat"/> succeeds with valid polyline.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateFormat"/> succeeds with valid polyline.
     /// </summary>
     [TestMethod]
     public void ValidateFormat_ValidPolyline_DoesNotThrow() {
@@ -894,11 +1221,11 @@ public class PolylineEncodingTests {
         const string polyline = "_p~iF";
 
         // Act & Assert
-        PolylineEncoding.Validator.ValidateFormat(polyline);
+        PolylineEncoding.Validation.ValidateFormat(polyline);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateFormat"/> succeeds with empty polyline after ValidateCharRange but fails at ValidateBlockLength.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateFormat"/> succeeds with empty polyline after ValidateCharRange but fails at ValidateBlockLength.
     /// </summary>
     [TestMethod]
     public void ValidateFormat_EmptyPolyline_ThrowsArgumentException() {
@@ -906,12 +1233,12 @@ public class PolylineEncodingTests {
         const string polyline = "";
 
         // Act & Assert
-        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validator.ValidateFormat(polyline));
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateFormat(polyline));
         Assert.AreEqual("Polyline does not end with a valid block terminator. (Parameter 'polyline')", exception.Message);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateFormat"/> throws when polyline contains invalid character.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateFormat"/> throws when polyline contains invalid character.
     /// </summary>
     [TestMethod]
     public void ValidateFormat_InvalidCharacter_ThrowsArgumentException() {
@@ -919,12 +1246,12 @@ public class PolylineEncodingTests {
         const string polyline = "ABC\u0020DEF";
 
         // Act & Assert
-        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validator.ValidateFormat(polyline));
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateFormat(polyline));
         Assert.IsTrue(exception.Message.Contains("invalid character"));
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateFormat"/> throws when block exceeds 7 characters.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateFormat"/> throws when block exceeds 7 characters.
     /// </summary>
     [TestMethod]
     public void ValidateFormat_BlockExceedsMaxLength_ThrowsArgumentException() {
@@ -932,12 +1259,12 @@ public class PolylineEncodingTests {
         const string polyline = "________?";
 
         // Act & Assert
-        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validator.ValidateFormat(polyline));
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateFormat(polyline));
         Assert.IsTrue(exception.Message.Contains("exceeds 7 characters"));
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateFormat"/> throws when polyline does not end with terminator.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateFormat"/> throws when polyline does not end with terminator.
     /// </summary>
     [TestMethod]
     public void ValidateFormat_NoBlockTerminator_ThrowsArgumentException() {
@@ -945,12 +1272,12 @@ public class PolylineEncodingTests {
         const string polyline = "__";
 
         // Act & Assert
-        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validator.ValidateFormat(polyline));
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateFormat(polyline));
         Assert.AreEqual("Polyline does not end with a valid block terminator. (Parameter 'polyline')", exception.Message);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateFormat"/> succeeds with multiple valid blocks.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateFormat"/> succeeds with multiple valid blocks.
     /// </summary>
     [TestMethod]
     public void ValidateFormat_MultipleValidBlocks_DoesNotThrow() {
@@ -958,7 +1285,7 @@ public class PolylineEncodingTests {
         const string polyline = "_p~iFn~cD";
 
         // Act & Assert
-        PolylineEncoding.Validator.ValidateFormat(polyline);
+        PolylineEncoding.Validation.ValidateFormat(polyline);
     }
 
     #endregion
@@ -966,7 +1293,7 @@ public class PolylineEncodingTests {
     #region ValidateCharRange Tests
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateCharRange"/> succeeds with valid characters.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> succeeds with valid characters.
     /// </summary>
     [TestMethod]
     public void ValidateCharRange_ValidCharacters_DoesNotThrow() {
@@ -974,11 +1301,11 @@ public class PolylineEncodingTests {
         const string polyline = "_p~iF";
 
         // Act & Assert
-        PolylineEncoding.Validator.ValidateCharRange(polyline);
+        PolylineEncoding.Validation.ValidateCharRange(polyline);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateCharRange"/> succeeds with empty polyline.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> succeeds with empty polyline.
     /// </summary>
     [TestMethod]
     public void ValidateCharRange_EmptyPolyline_DoesNotThrow() {
@@ -986,11 +1313,11 @@ public class PolylineEncodingTests {
         const string polyline = "";
 
         // Act & Assert
-        PolylineEncoding.Validator.ValidateCharRange(polyline);
+        PolylineEncoding.Validation.ValidateCharRange(polyline);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateCharRange"/> succeeds with minimum valid character.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> succeeds with minimum valid character.
     /// </summary>
     [TestMethod]
     public void ValidateCharRange_MinimumValidCharacter_DoesNotThrow() {
@@ -998,11 +1325,11 @@ public class PolylineEncodingTests {
         const string polyline = "?";
 
         // Act & Assert
-        PolylineEncoding.Validator.ValidateCharRange(polyline);
+        PolylineEncoding.Validation.ValidateCharRange(polyline);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateCharRange"/> succeeds with maximum valid character.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> succeeds with maximum valid character.
     /// </summary>
     [TestMethod]
     public void ValidateCharRange_MaximumValidCharacter_DoesNotThrow() {
@@ -1010,11 +1337,11 @@ public class PolylineEncodingTests {
         const string polyline = "~";
 
         // Act & Assert
-        PolylineEncoding.Validator.ValidateCharRange(polyline);
+        PolylineEncoding.Validation.ValidateCharRange(polyline);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateCharRange"/> throws when character is below minimum.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> throws when character is below minimum.
     /// </summary>
     [TestMethod]
     public void ValidateCharRange_CharacterBelowMinimum_ThrowsArgumentException() {
@@ -1022,12 +1349,12 @@ public class PolylineEncodingTests {
         const string polyline = "ABC\u003eXYZ";
 
         // Act & Assert
-        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validator.ValidateCharRange(polyline));
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateCharRange(polyline));
         Assert.IsTrue(exception.Message.Contains("invalid character"));
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateCharRange"/> throws when character is above maximum.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> throws when character is above maximum.
     /// </summary>
     [TestMethod]
     public void ValidateCharRange_CharacterAboveMaximum_ThrowsArgumentException() {
@@ -1035,12 +1362,12 @@ public class PolylineEncodingTests {
         const string polyline = "ABC\u007fXYZ";
 
         // Act & Assert
-        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validator.ValidateCharRange(polyline));
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateCharRange(polyline));
         Assert.IsTrue(exception.Message.Contains("invalid character"));
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateCharRange"/> throws when first character is invalid.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> throws when first character is invalid.
     /// </summary>
     [TestMethod]
     public void ValidateCharRange_InvalidFirstCharacter_ThrowsArgumentException() {
@@ -1048,12 +1375,12 @@ public class PolylineEncodingTests {
         const string polyline = "\u0020ABCD";
 
         // Act & Assert
-        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validator.ValidateCharRange(polyline));
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateCharRange(polyline));
         Assert.IsTrue(exception.Message.Contains("invalid character"));
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateCharRange"/> throws when last character is invalid.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> throws when last character is invalid.
     /// </summary>
     [TestMethod]
     public void ValidateCharRange_InvalidLastCharacter_ThrowsArgumentException() {
@@ -1061,12 +1388,12 @@ public class PolylineEncodingTests {
         const string polyline = "ABCD\u0020";
 
         // Act & Assert
-        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validator.ValidateCharRange(polyline));
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateCharRange(polyline));
         Assert.IsTrue(exception.Message.Contains("invalid character"));
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateCharRange"/> throws when middle character is invalid.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> throws when middle character is invalid.
     /// </summary>
     [TestMethod]
     public void ValidateCharRange_InvalidMiddleCharacter_ThrowsArgumentException() {
@@ -1074,12 +1401,12 @@ public class PolylineEncodingTests {
         const string polyline = "AB\u0020D";
 
         // Act & Assert
-        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validator.ValidateCharRange(polyline));
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateCharRange(polyline));
         Assert.IsTrue(exception.Message.Contains("invalid character"));
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateCharRange"/> succeeds with all valid characters.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> succeeds with all valid characters.
     /// </summary>
     [TestMethod]
     public void ValidateCharRange_AllValidCharacters_DoesNotThrow() {
@@ -1087,11 +1414,11 @@ public class PolylineEncodingTests {
         const string polyline = "?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
 
         // Act & Assert
-        PolylineEncoding.Validator.ValidateCharRange(polyline);
+        PolylineEncoding.Validation.ValidateCharRange(polyline);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateCharRange"/> throws for null byte character.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> throws for null byte character.
     /// </summary>
     [TestMethod]
     public void ValidateCharRange_NullByteCharacter_ThrowsArgumentException() {
@@ -1099,12 +1426,12 @@ public class PolylineEncodingTests {
         const string polyline = "ABC\u0000DEF";
 
         // Act & Assert
-        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validator.ValidateCharRange(polyline));
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateCharRange(polyline));
         Assert.IsTrue(exception.Message.Contains("invalid character"));
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateCharRange"/> succeeds with long valid polyline to exercise SIMD path.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> succeeds with long valid polyline to exercise SIMD path.
     /// </summary>
     [TestMethod]
     public void ValidateCharRange_LongValidPolyline_DoesNotThrow() {
@@ -1112,11 +1439,11 @@ public class PolylineEncodingTests {
         string polyline = new string('?', 100);
 
         // Act & Assert
-        PolylineEncoding.Validator.ValidateCharRange(polyline);
+        PolylineEncoding.Validation.ValidateCharRange(polyline);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateCharRange"/> throws with invalid character in SIMD processed region.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> throws with invalid character in SIMD processed region.
     /// </summary>
     [TestMethod]
     public void ValidateCharRange_InvalidCharacterInSimdRegion_ThrowsArgumentException() {
@@ -1124,12 +1451,12 @@ public class PolylineEncodingTests {
         string polyline = new string('?', 50) + "\u0020" + new string('?', 50);
 
         // Act & Assert
-        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validator.ValidateCharRange(polyline));
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateCharRange(polyline));
         Assert.IsTrue(exception.Message.Contains("invalid character"));
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateCharRange"/> throws with invalid character in scalar remainder region.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> throws with invalid character in scalar remainder region.
     /// </summary>
     [TestMethod]
     public void ValidateCharRange_InvalidCharacterInScalarRegion_ThrowsArgumentException() {
@@ -1137,12 +1464,12 @@ public class PolylineEncodingTests {
         string polyline = new string('?', 50) + "\u0020";
 
         // Act & Assert
-        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validator.ValidateCharRange(polyline));
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateCharRange(polyline));
         Assert.IsTrue(exception.Message.Contains("invalid character"));
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateCharRange"/> succeeds with one character below End threshold.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> succeeds with one character below End threshold.
     /// </summary>
     [TestMethod]
     public void ValidateCharRange_CharacterAtEnd_DoesNotThrow() {
@@ -1150,7 +1477,7 @@ public class PolylineEncodingTests {
         const string polyline = "^";
 
         // Act & Assert
-        PolylineEncoding.Validator.ValidateCharRange(polyline);
+        PolylineEncoding.Validation.ValidateCharRange(polyline);
     }
 
     #endregion
@@ -1158,7 +1485,7 @@ public class PolylineEncodingTests {
     #region ValidateBlockLength Tests
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateBlockLength"/> succeeds with single valid block.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> succeeds with single valid block.
     /// </summary>
     [TestMethod]
     public void ValidateBlockLength_SingleValidBlock_DoesNotThrow() {
@@ -1166,11 +1493,11 @@ public class PolylineEncodingTests {
         const string polyline = "?";
 
         // Act & Assert
-        PolylineEncoding.Validator.ValidateBlockLength(polyline);
+        PolylineEncoding.Validation.ValidateBlockLength(polyline);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateBlockLength"/> succeeds with block of length 7.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> succeeds with block of length 7.
     /// </summary>
     [TestMethod]
     public void ValidateBlockLength_BlockLength7_DoesNotThrow() {
@@ -1178,11 +1505,11 @@ public class PolylineEncodingTests {
         const string polyline = "\u00ff\u00ff\u00ff\u00ff\u00ff\u00ff?";
 
         // Act & Assert
-        PolylineEncoding.Validator.ValidateBlockLength(polyline);
+        PolylineEncoding.Validation.ValidateBlockLength(polyline);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateBlockLength"/> throws when block exceeds 7 characters.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> throws when block exceeds 7 characters.
     /// </summary>
     [TestMethod]
     public void ValidateBlockLength_BlockExceeds7Characters_ThrowsArgumentException() {
@@ -1190,12 +1517,12 @@ public class PolylineEncodingTests {
         const string polyline = "_______?";
 
         // Act & Assert
-        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validator.ValidateBlockLength(polyline));
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateBlockLength(polyline));
         Assert.AreEqual("Block at position 0 exceeds 7 characters. (Parameter 'polyline')", exception.Message);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateBlockLength"/> throws when polyline does not end with terminator.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> throws when polyline does not end with terminator.
     /// </summary>
     [TestMethod]
     public void ValidateBlockLength_NoTerminator_ThrowsArgumentException() {
@@ -1203,12 +1530,12 @@ public class PolylineEncodingTests {
         const string polyline = "\u00ff\u00ff";
 
         // Act & Assert
-        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validator.ValidateBlockLength(polyline));
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateBlockLength(polyline));
         Assert.AreEqual("Polyline does not end with a valid block terminator. (Parameter 'polyline')", exception.Message);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateBlockLength"/> throws for empty polyline.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> throws for empty polyline.
     /// </summary>
     [TestMethod]
     public void ValidateBlockLength_EmptyPolyline_ThrowsArgumentException() {
@@ -1216,12 +1543,12 @@ public class PolylineEncodingTests {
         const string polyline = "";
 
         // Act & Assert
-        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validator.ValidateBlockLength(polyline));
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateBlockLength(polyline));
         Assert.AreEqual("Polyline does not end with a valid block terminator. (Parameter 'polyline')", exception.Message);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateBlockLength"/> succeeds with multiple valid blocks.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> succeeds with multiple valid blocks.
     /// </summary>
     [TestMethod]
     public void ValidateBlockLength_MultipleValidBlocks_DoesNotThrow() {
@@ -1229,11 +1556,11 @@ public class PolylineEncodingTests {
         const string polyline = "_p~iFn~cD";
 
         // Act & Assert
-        PolylineEncoding.Validator.ValidateBlockLength(polyline);
+        PolylineEncoding.Validation.ValidateBlockLength(polyline);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateBlockLength"/> throws when second block exceeds 7 characters.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> throws when second block exceeds 7 characters.
     /// </summary>
     [TestMethod]
     public void ValidateBlockLength_SecondBlockExceeds7Characters_ThrowsArgumentException() {
@@ -1241,12 +1568,12 @@ public class PolylineEncodingTests {
         const string polyline = ">\u00ff\u00ff\u00ff\u00ff\u00ff\u00ff\u00ff>";
 
         // Act & Assert
-        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validator.ValidateBlockLength(polyline));
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateBlockLength(polyline));
         Assert.AreEqual("Block at position 1 exceeds 7 characters. (Parameter 'polyline')", exception.Message);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateBlockLength"/> succeeds with consecutive terminators.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> succeeds with consecutive terminators.
     /// </summary>
     [TestMethod]
     public void ValidateBlockLength_ConsecutiveTerminators_DoesNotThrow() {
@@ -1254,11 +1581,11 @@ public class PolylineEncodingTests {
         const string polyline = "??";
 
         // Act & Assert
-        PolylineEncoding.Validator.ValidateBlockLength(polyline);
+        PolylineEncoding.Validation.ValidateBlockLength(polyline);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateBlockLength"/> throws when last block has no terminator.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> throws when last block has no terminator.
     /// </summary>
     [TestMethod]
     public void ValidateBlockLength_LastBlockNoTerminator_ThrowsArgumentException() {
@@ -1266,12 +1593,12 @@ public class PolylineEncodingTests {
         const string polyline = "?\u00ff";
 
         // Act & Assert
-        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validator.ValidateBlockLength(polyline));
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateBlockLength(polyline));
         Assert.AreEqual("Polyline does not end with a valid block terminator. (Parameter 'polyline')", exception.Message);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateBlockLength"/> succeeds with block of exactly 6 characters before terminator.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> succeeds with block of exactly 6 characters before terminator.
     /// </summary>
     [TestMethod]
     public void ValidateBlockLength_BlockLength6_DoesNotThrow() {
@@ -1279,11 +1606,11 @@ public class PolylineEncodingTests {
         const string polyline = "\u00ff\u00ff\u00ff\u00ff\u00ff?";
 
         // Act & Assert
-        PolylineEncoding.Validator.ValidateBlockLength(polyline);
+        PolylineEncoding.Validation.ValidateBlockLength(polyline);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateBlockLength"/> succeeds with varying block lengths.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> succeeds with varying block lengths.
     /// </summary>
     [TestMethod]
     public void ValidateBlockLength_VaryingBlockLengths_DoesNotThrow() {
@@ -1291,11 +1618,11 @@ public class PolylineEncodingTests {
         const string polyline = "?\u00ff\u00ff?\u00ff\u00ff\u00ff\u00ff\u00ff\u00ff?";
 
         // Act & Assert
-        PolylineEncoding.Validator.ValidateBlockLength(polyline);
+        PolylineEncoding.Validation.ValidateBlockLength(polyline);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateBlockLength"/> succeeds with character exactly at End threshold (95).
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> succeeds with character exactly at End threshold (95).
     /// </summary>
     [TestMethod]
     public void ValidateBlockLength_CharacterAtEndThreshold_DoesNotThrow() {
@@ -1303,11 +1630,11 @@ public class PolylineEncodingTests {
         const string polyline = "_?";
 
         // Act & Assert
-        PolylineEncoding.Validator.ValidateBlockLength(polyline);
+        PolylineEncoding.Validation.ValidateBlockLength(polyline);
     }
 
     /// <summary>
-    /// Tests that <see cref="PolylineEncoding.Validator.ValidateBlockLength"/> throws when 8th character causes block to exceed.
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> throws when 8th character causes block to exceed.
     /// </summary>
     [TestMethod]
     public void ValidateBlockLength_ExactlyAt8thCharacter_ThrowsArgumentException() {
@@ -1315,8 +1642,360 @@ public class PolylineEncodingTests {
         const string polyline = "\u00ff\u00ff\u00ff\u00ff\u00ff\u00ff\u00ff?";
 
         // Act & Assert
-        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validator.ValidateBlockLength(polyline));
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateBlockLength(polyline));
         Assert.AreEqual("Block at position 0 exceeds 7 characters. (Parameter 'polyline')", exception.Message);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateFormat"/> succeeds with single character terminator.
+    /// </summary>
+    [TestMethod]
+    public void ValidateFormat_SingleCharacterTerminator_DoesNotThrow() {
+        // Arrange
+        const string polyline = "?";
+
+        // Act & Assert
+        PolylineEncoding.Validation.ValidateFormat(polyline);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateFormat"/> succeeds with exactly 7 character block.
+    /// </summary>
+    [TestMethod]
+    public void ValidateFormat_BlockOfExactly7Characters_DoesNotThrow() {
+        // Arrange - 6 continuation characters (>=95) plus terminator (<95)
+        const string polyline = "~~~~~~?";
+
+        // Act & Assert
+        PolylineEncoding.Validation.ValidateFormat(polyline);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateFormat"/> throws when character is exactly one below minimum.
+    /// </summary>
+    [TestMethod]
+    public void ValidateFormat_CharacterOneBelowMinimum_ThrowsArgumentException() {
+        // Arrange
+        const string polyline = "??>\u003e?";
+
+        // Act & Assert
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateFormat(polyline));
+        Assert.IsTrue(exception.Message.Contains("invalid character"));
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateFormat"/> throws when character is exactly one above maximum.
+    /// </summary>
+    [TestMethod]
+    public void ValidateFormat_CharacterOneAboveMaximum_ThrowsArgumentException() {
+        // Arrange
+        const string polyline = "??\u007f?";
+
+        // Act & Assert
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateFormat(polyline));
+        Assert.IsTrue(exception.Message.Contains("invalid character"));
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateFormat"/> throws when both validations would fail, char validation fails first.
+    /// </summary>
+    [TestMethod]
+    public void ValidateFormat_InvalidCharacterAndBlockStructure_ThrowsForInvalidCharacter() {
+        // Arrange - has invalid character and would also fail block validation
+        const string polyline = "\u0020\u00ff\u00ff\u00ff\u00ff\u00ff\u00ff\u00ff\u00ff";
+
+        // Act & Assert
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateFormat(polyline));
+        Assert.IsTrue(exception.Message.Contains("invalid character"));
+    }
+
+    #endregion
+
+    #region ValidateCharRange Additional Edge Cases
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> succeeds with string exactly at vector boundary.
+    /// </summary>
+    [TestMethod]
+    public void ValidateCharRange_StringExactlyVectorSize_DoesNotThrow() {
+        // Arrange - length that aligns exactly with vector size
+        int vectorSize = System.Numerics.Vector<ushort>.Count;
+        string polyline = new string('?', vectorSize);
+
+        // Act & Assert
+        PolylineEncoding.Validation.ValidateCharRange(polyline);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> succeeds with string exactly twice vector size.
+    /// </summary>
+    [TestMethod]
+    public void ValidateCharRange_StringExactlyTwiceVectorSize_DoesNotThrow() {
+        // Arrange - length that is exactly 2x vector size
+        int vectorSize = System.Numerics.Vector<ushort>.Count;
+        string polyline = new string('~', vectorSize * 2);
+
+        // Act & Assert
+        PolylineEncoding.Validation.ValidateCharRange(polyline);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> throws with invalid character at vector boundary.
+    /// </summary>
+    [TestMethod]
+    public void ValidateCharRange_InvalidCharacterAtVectorBoundary_ThrowsArgumentException() {
+        // Arrange - invalid character right at the vector boundary
+        int vectorSize = System.Numerics.Vector<ushort>.Count;
+        string polyline = new string('?', vectorSize) + "\u0020" + new string('?', vectorSize);
+
+        // Act & Assert
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateCharRange(polyline));
+        Assert.IsTrue(exception.Message.Contains("invalid character"));
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> throws with invalid character at start of vector block.
+    /// </summary>
+    [TestMethod]
+    public void ValidateCharRange_InvalidCharacterAtStartOfVectorBlock_ThrowsArgumentException() {
+        // Arrange - invalid character at the start of a vector block
+        int vectorSize = System.Numerics.Vector<ushort>.Count;
+        string polyline = new string('?', vectorSize * 2) + "\u0020";
+
+        // Act & Assert
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateCharRange(polyline));
+        Assert.IsTrue(exception.Message.Contains("invalid character"));
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> throws when multiple invalid characters in same vector.
+    /// </summary>
+    [TestMethod]
+    public void ValidateCharRange_MultipleInvalidCharactersInSameVector_ThrowsArgumentException() {
+        // Arrange - multiple invalid characters in same vector block
+        const string polyline = "?\u0020?\u0020?";
+
+        // Act & Assert
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateCharRange(polyline));
+        Assert.IsTrue(exception.Message.Contains("invalid character"));
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> succeeds with mixed valid characters.
+    /// </summary>
+    [TestMethod]
+    public void ValidateCharRange_MixedValidCharacters_DoesNotThrow() {
+        // Arrange - mix of terminators and continuation characters
+        const string polyline = "?@AB_`ab|}~";
+
+        // Act & Assert
+        PolylineEncoding.Validation.ValidateCharRange(polyline);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> throws for character exactly at Min-1.
+    /// </summary>
+    [TestMethod]
+    public void ValidateCharRange_CharacterExactlyMinMinusOne_ThrowsArgumentException() {
+        // Arrange - character '>' (62), which is Min-1
+        const string polyline = "??\u003e";
+
+        // Act & Assert
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateCharRange(polyline));
+        Assert.IsTrue(exception.Message.Contains("invalid character"));
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> throws for character exactly at Max+1.
+    /// </summary>
+    [TestMethod]
+    public void ValidateCharRange_CharacterExactlyMaxPlusOne_ThrowsArgumentException() {
+        // Arrange - character DEL (127), which is Max+1
+        const string polyline = "??\u007f";
+
+        // Act & Assert
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateCharRange(polyline));
+        Assert.IsTrue(exception.Message.Contains("invalid character"));
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateCharRange"/> throws with invalid character at last position in vector.
+    /// </summary>
+    [TestMethod]
+    public void ValidateCharRange_InvalidCharacterAtLastPositionInVector_ThrowsArgumentException() {
+        // Arrange - invalid character at the end of a vector block
+        int vectorSize = System.Numerics.Vector<ushort>.Count;
+        string polyline = new string('?', vectorSize - 1) + "\u0020" + new string('?', vectorSize);
+
+        // Act & Assert
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateCharRange(polyline));
+        Assert.IsTrue(exception.Message.Contains("invalid character"));
+    }
+
+    #endregion
+
+    #region ValidateBlockLength Additional Edge Cases
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> succeeds with alternating pattern of continuation and terminator.
+    /// </summary>
+    [TestMethod]
+    public void ValidateBlockLength_AlternatingContinuationAndTerminator_DoesNotThrow() {
+        // Arrange - pattern of _? repeated
+        const string polyline = "_?_?_?_?";
+
+        // Act & Assert
+        PolylineEncoding.Validation.ValidateBlockLength(polyline);
+    }
+
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> throws when single continuation character has no terminator.
+    /// </summary>
+    [TestMethod]
+    public void ValidateBlockLength_SingleContinuationNoTerminator_ThrowsArgumentException() {
+        // Arrange - single continuation character without terminator
+        const string polyline = "_";
+
+        // Act & Assert
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateBlockLength(polyline));
+        Assert.AreEqual("Polyline does not end with a valid block terminator. (Parameter 'polyline')", exception.Message);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> succeeds with maximum length blocks separated by terminators.
+    /// </summary>
+    [TestMethod]
+    public void ValidateBlockLength_MaximumLengthBlocksSeparatedByTerminators_DoesNotThrow() {
+        // Arrange - first block of 7 characters, second block of 7 characters
+        const string polyline = "~~~~~~?~~~~~~?";
+
+        // Act & Assert
+        PolylineEncoding.Validation.ValidateBlockLength(polyline);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> throws when middle block exceeds 7 characters.
+    /// </summary>
+    [TestMethod]
+    public void ValidateBlockLength_MiddleBlockExceeds7Characters_ThrowsArgumentException() {
+        // Arrange - first block valid, second exceeds
+        const string polyline = "??________?";
+
+        // Act & Assert
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateBlockLength(polyline));
+        Assert.IsTrue(exception.Message.Contains("exceeds 7 characters"));
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> succeeds with all characters being terminators.
+    /// </summary>
+    [TestMethod]
+    public void ValidateBlockLength_AllTerminators_DoesNotThrow() {
+        // Arrange - all characters are terminators
+        const string polyline = "?????????";
+
+        // Act & Assert
+        PolylineEncoding.Validation.ValidateBlockLength(polyline);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> succeeds with block of exactly 2 characters.
+    /// </summary>
+    [TestMethod]
+    public void ValidateBlockLength_BlockOfExactly2Characters_DoesNotThrow() {
+        // Arrange - block with one continuation and terminator
+        const string polyline = "~?";
+
+        // Act & Assert
+        PolylineEncoding.Validation.ValidateBlockLength(polyline);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> succeeds with block of exactly 3 characters.
+    /// </summary>
+    [TestMethod]
+    public void ValidateBlockLength_BlockOfExactly3Characters_DoesNotThrow() {
+        // Arrange - block with 2 continuations and terminator
+        const string polyline = "~~?";
+
+        // Act & Assert
+        PolylineEncoding.Validation.ValidateBlockLength(polyline);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> succeeds with block of exactly 4 characters.
+    /// </summary>
+    [TestMethod]
+    public void ValidateBlockLength_BlockOfExactly4Characters_DoesNotThrow() {
+        // Arrange - block with 3 continuations and terminator
+        const string polyline = "~~~?";
+
+        // Act & Assert
+        PolylineEncoding.Validation.ValidateBlockLength(polyline);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> succeeds with block of exactly 5 characters.
+    /// </summary>
+    [TestMethod]
+    public void ValidateBlockLength_BlockOfExactly5Characters_DoesNotThrow() {
+        // Arrange - block with 4 continuations and terminator
+        const string polyline = "~~~~?";
+
+        // Act & Assert
+        PolylineEncoding.Validation.ValidateBlockLength(polyline);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> throws for exactly 8 continuation characters followed by terminator.
+    /// </summary>
+    [TestMethod]
+    public void ValidateBlockLength_Exactly8ContinuationsBeforeTerminator_ThrowsArgumentException() {
+        // Arrange - 8 continuation characters then terminator
+        const string polyline = "~~~~~~~~?";
+
+        // Act & Assert
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateBlockLength(polyline));
+        Assert.IsTrue(exception.Message.Contains("exceeds 7 characters"));
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> throws for 9 continuation characters followed by terminator.
+    /// </summary>
+    [TestMethod]
+    public void ValidateBlockLength_9ContinuationsBeforeTerminator_ThrowsArgumentException() {
+        // Arrange - 9 continuation characters then terminator
+        const string polyline = "~~~~~~~~~?";
+
+        // Act & Assert
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateBlockLength(polyline));
+        Assert.IsTrue(exception.Message.Contains("exceeds 7 characters"));
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> succeeds with character at position 94 (one below End).
+    /// </summary>
+    [TestMethod]
+    public void ValidateBlockLength_CharacterAtPosition94_DoesNotThrow() {
+        // Arrange - character '^' (94), which is a terminator (< 95)
+        const string polyline = "^";
+
+        // Act & Assert
+        PolylineEncoding.Validation.ValidateBlockLength(polyline);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="PolylineEncoding.Validation.ValidateBlockLength"/> throws when third block has no terminator.
+    /// </summary>
+    [TestMethod]
+    public void ValidateBlockLength_ThirdBlockNoTerminator_ThrowsArgumentException() {
+        // Arrange - two valid blocks followed by unterminated block
+        const string polyline = "?_?~";
+
+        // Act & Assert
+        ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoding.Validation.ValidateBlockLength(polyline));
+        Assert.AreEqual("Polyline does not end with a valid block terminator. (Parameter 'polyline')", exception.Message);
     }
 
     #endregion

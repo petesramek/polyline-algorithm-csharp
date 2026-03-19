@@ -318,7 +318,7 @@ public static class PolylineEncoding {
         return size;
     }
 
-    public static class Validator {
+    public static class Validation {
         /// <summary>
         /// Validates the format of a polyline segment, ensuring all characters are valid and block structure is correct.
         /// </summary>
