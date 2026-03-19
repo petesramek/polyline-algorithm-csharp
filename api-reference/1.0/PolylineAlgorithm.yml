@@ -49,9 +49,6 @@ body:
       url: PolylineAlgorithm.PolylineEncodingOptionsBuilder.html
     description: Provides a builder for configuring options for polyline encoding operations.
   - type:
-      text: PolylineEncoding.Validation
-      url: PolylineAlgorithm.PolylineEncoding.Validation.html
-  - type:
       text: Coordinate.Validator
       url: PolylineAlgorithm.Coordinate.Validator.html
     description: Provides static methods for validating latitude and longitude values used in <xref href="PolylineAlgorithm.Coordinate" data-throw-if-not-resolved="false"></xref>.

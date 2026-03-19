@@ -11,8 +11,6 @@
     href: PolylineAlgorithm.PolylineEncoder.yml
   - name: PolylineEncoding
     href: PolylineAlgorithm.PolylineEncoding.yml
-  - name: PolylineEncoding.Validation
-    href: PolylineAlgorithm.PolylineEncoding.Validation.yml
   - name: PolylineEncodingOptions
     href: PolylineAlgorithm.PolylineEncodingOptions.yml
   - name: PolylineEncodingOptionsBuilder

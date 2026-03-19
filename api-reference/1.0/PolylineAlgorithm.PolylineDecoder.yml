@@ -84,12 +84,13 @@ body:
     type:
     - text: PolylineEncodingOptions
       url: PolylineAlgorithm.PolylineEncodingOptions.html
+    description: The <xref href="PolylineAlgorithm.PolylineEncodingOptions" data-throw-if-not-resolved="false"></xref> to use for encoding operations.
 - h4: Exceptions
 - parameters:
   - type:
     - text: ArgumentNullException
       url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
-    description: Thrown when <code class="paramref">encodingOptions</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>
+    description: Thrown when <code class="paramref">options</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>
 - h2: Methods
 - api3: CreateCoordinate(double, double)
   id: PolylineAlgorithm_PolylineDecoder_CreateCoordinate_System_Double_System_Double_
