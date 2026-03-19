@@ -6,7 +6,9 @@ using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal.Diagnostics;
 using System;
 using System.Collections.Generic;
+#if NET5_0_OR_GREATER
 using System.Runtime.InteropServices;
+#endif
 
 /// <summary>
 /// Provides extension methods for the <see cref="IPolylineEncoder{TCoordinate, TPolyline}"/> interface to facilitate encoding geographic coordinates into polylines.
