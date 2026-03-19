@@ -3,7 +3,7 @@ title: Class PolylineEncodingOptions
 body:
 - api1: Class PolylineEncodingOptions
   id: PolylineAlgorithm_PolylineEncodingOptions
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L18
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L29
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptions
     commentId: T:PolylineAlgorithm.PolylineEncodingOptions
@@ -14,7 +14,7 @@ body:
       url: PolylineAlgorithm.html
   - name: Assembly
     value: PolylineAlgorithm.dll
-- markdown: Options for configuring polyline encoding.
+- markdown: Provides configuration options for polyline encoding operations.
 - code: public sealed class PolylineEncodingOptions
 - h4: Inheritance
 - inheritance:
@@ -37,15 +37,28 @@ body:
   - text: object.ToString()
     url: https://learn.microsoft.com/dotnet/api/system.object.tostring
 - h2: Remarks
-- markdown: This class allows you to set options such as buffer size and logger factory for encoding operations.
+- markdown: >-
+    <p>
+
+    This class allows you to configure various aspects of polyline encoding, including:
+
+    </p>
+
+    <ul><li>The <xref href="PolylineAlgorithm.PolylineEncodingOptions.Precision" data-throw-if-not-resolved="false"></xref> level for coordinate encoding</li><li>The <xref href="PolylineAlgorithm.PolylineEncodingOptions.StackAllocLimit" data-throw-if-not-resolved="false"></xref> for memory allocation strategy</li><li>The <xref href="PolylineAlgorithm.PolylineEncodingOptions.LoggerFactory" data-throw-if-not-resolved="false"></xref> for diagnostic logging</li></ul>
+
+    <p>
+
+    All properties have internal setters and should be configured through a builder or factory pattern.
+
+    </p>
 - h2: Properties
 - api3: LoggerFactory
   id: PolylineAlgorithm_PolylineEncodingOptions_LoggerFactory
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L26
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L41
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptions.LoggerFactory
     commentId: P:PolylineAlgorithm.PolylineEncodingOptions.LoggerFactory
-- markdown: Gets logger factory.
+- markdown: Gets the logger factory used for diagnostic logging during encoding operations.
 - code: public ILoggerFactory LoggerFactory { get; }
 - h4: Property Value
 - parameters:
@@ -53,14 +66,17 @@ body:
     - text: ILoggerFactory
       url: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory
 - h4: Remarks
-- markdown: The default logger factory is <xref href="Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory" data-throw-if-not-resolved="false"></xref>, which does not log any messages.
+- markdown: >-
+    The default logger factory is <xref href="Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory" data-throw-if-not-resolved="false"></xref>, which does not log any messages.
+
+    To enable logging, provide a custom <xref href="Microsoft.Extensions.Logging.ILoggerFactory" data-throw-if-not-resolved="false"></xref> implementation.
 - api3: Precision
   id: PolylineAlgorithm_PolylineEncodingOptions_Precision
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L43
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L60
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptions.Precision
     commentId: P:PolylineAlgorithm.PolylineEncodingOptions.Precision
-- markdown: Gets the precision used for polyline encoding.
+- markdown: Gets the precision level used for encoding coordinate values.
 - code: public uint Precision { get; }
 - h4: Property Value
 - parameters:
@@ -69,16 +85,30 @@ body:
       url: https://learn.microsoft.com/dotnet/api/system.uint32
 - h4: Remarks
 - markdown: >-
-    The precision determines the number of decimal places to use when encoding coordinates.
+    <p>
 
-    The default value is 5, which is commonly used for geographic coordinates.
+    The precision determines the number of decimal places to which each coordinate value (latitude or longitude)
+
+    is multiplied and truncated (not rounded) before encoding. For example, a precision of 5 means each coordinate is multiplied by 10^5
+
+    and truncated to an integer before encoding.
+
+    </p>
+
+    <p>
+
+    This setting does not directly correspond to a physical distance or accuracy in meters, but rather controls
+
+    the granularity of the encoded values.
+
+    </p>
 - api3: StackAllocLimit
   id: PolylineAlgorithm_PolylineEncodingOptions_StackAllocLimit
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L34
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L73
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptions.StackAllocLimit
     commentId: P:PolylineAlgorithm.PolylineEncodingOptions.StackAllocLimit
-- markdown: Gets stackalloc limit.
+- markdown: Gets the maximum buffer size (in characters) that can be allocated on the stack for encoding operations.
 - code: public int StackAllocLimit { get; }
 - h4: Property Value
 - parameters:
@@ -86,7 +116,12 @@ body:
     - text: int
       url: https://learn.microsoft.com/dotnet/api/system.int32
 - h4: Remarks
-- markdown: The default stack alloc limit is 512.
+- markdown: >-
+    When the required buffer size for encoding exceeds this limit, memory will be allocated on the heap instead of the stack.
+
+    This setting specifically applies to stack allocation of character arrays (<code>stackalloc char[]</code>) used during polyline encoding,
+
+    balancing performance and stack safety.
 languageId: csharp
 metadata:
-  description: Options for configuring polyline encoding.
+  description: Provides configuration options for polyline encoding operations.
