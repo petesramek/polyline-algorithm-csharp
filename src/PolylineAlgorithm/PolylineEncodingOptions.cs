@@ -8,6 +8,7 @@ namespace PolylineAlgorithm;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
 /// Provides configuration options for polyline encoding operations.
@@ -77,5 +78,6 @@ public sealed class PolylineEncodingOptions {
     /// <returns>
     /// A string containing the type name of the current <see cref="LoggerFactory"/> instance.
     /// </returns>
+    [ExcludeFromCodeCoverage]
     private string GetLoggerFactoryType() => LoggerFactory.GetType().Name;
 }

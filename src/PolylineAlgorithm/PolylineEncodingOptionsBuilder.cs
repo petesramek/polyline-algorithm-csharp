@@ -82,19 +82,16 @@ public sealed class PolylineEncodingOptionsBuilder {
     }
 
     /// <summary>
-    /// Sets the logger factory for logging during encoding operations.
+    /// Configures the <see cref="ILoggerFactory"/> to be used for logging during polyline encoding operations.
     /// </summary>
     /// <param name="loggerFactory">
-    /// The instance of a logger factory.
+    /// The <see cref="ILoggerFactory"/> instance to use for logging. If <see langword="null"/>, a <see cref="NullLoggerFactory"/> will be used instead.
     /// </param>
     /// <returns>
-    /// The current builder instance.
+    /// Returns the current <see cref="PolylineEncodingOptionsBuilder"/> instance for method chaining.
     /// </returns>
-    /// <exception cref="ArgumentNullException">
-    /// Thrown when <paramref name="loggerFactory"/> is <see langword="null"/>.
-    /// </exception>
     public PolylineEncodingOptionsBuilder WithLoggerFactory(ILoggerFactory loggerFactory) {
-        _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
+        _loggerFactory = loggerFactory ?? NullLoggerFactory.Instance;
 
         return this;
     }
