@@ -12,16 +12,14 @@ using System;
 /// <summary>
 /// Polyline decoder using NetTopologySuite.
 /// </summary>
-public sealed class NetTopologyPolylineDecoder : AbstractPolylineDecoder<string, Point>
-{
+public sealed class NetTopologyPolylineDecoder : AbstractPolylineDecoder<string, Point> {
     /// <summary>
     /// Creates a NetTopologySuite point from latitude and longitude.
     /// </summary>
     /// <param name="latitude">Latitude value.</param>
     /// <param name="longitude">Longitude value.</param>
     /// <returns>Point instance.</returns>
-    protected override Point CreateCoordinate(double latitude, double longitude)
-    {
+    protected override Point CreateCoordinate(double latitude, double longitude) {
         // NetTopologySuite Point: x = longitude, y = latitude
         return new Point(longitude, latitude);
     }
@@ -31,8 +29,7 @@ public sealed class NetTopologyPolylineDecoder : AbstractPolylineDecoder<string,
     /// </summary>
     /// <param name="polyline">Encoded polyline string.</param>
     /// <returns>ReadOnlyMemory of characters.</returns>
-    protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline)
-    {
+    protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) {
         return polyline.AsMemory();
     }
 }

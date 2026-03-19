@@ -61,7 +61,7 @@ public sealed class PolylineEncodingOptionsBuilder {
     public PolylineEncodingOptionsBuilder WithStackAllocLimit(int stackAllocLimit) {
         const int minStackAllocLimit = 1;
 
-        if(minStackAllocLimit >  stackAllocLimit) {
+        if (minStackAllocLimit > stackAllocLimit) {
             ExceptionGuard.StackAllocLimitMustBeEqualOrGreaterThan(minStackAllocLimit, nameof(stackAllocLimit));
         }
 

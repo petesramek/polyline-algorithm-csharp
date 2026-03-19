@@ -4,14 +4,11 @@
 //
 
 using Microsoft.Extensions.Logging;
-using PolylineAlgorithm;
 using PolylineAlgorithm.Diagnostics;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Internal.Diagnostics;
 using PolylineAlgorithm.Internal.Logging;
-using System;
 using System.Runtime.CompilerServices;
-using System.Threading;
 
 namespace PolylineAlgorithm.Abstraction {
     /// <summary>
@@ -33,14 +30,14 @@ namespace PolylineAlgorithm.Abstraction {
         /// <summary>
         /// Initializes a new instance of the <see cref="AbstractPolylineDecoder{TPolyline, TCoordinate}"/> class with the specified encoding options.
         /// </summary>
-        /// <param name="encodingOptions">
+        /// <param name="options">
         /// The <see cref="PolylineEncodingOptions"/> to use for encoding operations.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// Thrown when <paramref name="encodingOptions"/> is <see langword="null" />
+        /// Thrown when <paramref name="options"/> is <see langword="null" />
         /// </exception>
         protected AbstractPolylineDecoder(PolylineEncodingOptions options) {
-            if(options is null) {
+            if (options is null) {
                 ExceptionGuard.ThrowArgumentNull(nameof(options));
             }
 
@@ -110,7 +107,6 @@ namespace PolylineAlgorithm.Abstraction {
                         _logger?.LogOperationFailedDebug(OperationName);
                         _logger?.LogInvalidPolylineWarning(position);
 
-                        OnInvalidPolyline(position, sequence);
                         ExceptionGuard.ThrowInvalidPolylineFormat(position);
                     }
 
@@ -126,6 +122,16 @@ namespace PolylineAlgorithm.Abstraction {
             }
         }
 
+        /// <summary>
+        /// Validates that the provided polyline is not <see langword="null"/>.
+        /// Throws an <see cref="ArgumentNullException"/> if the polyline is <see langword="null"/>.
+        /// Optionally logs a warning if a logger is provided.
+        /// </summary>
+        /// <param name="polyline">The polyline instance to validate.</param>
+        /// <param name="logger">Optional logger for diagnostic messages.</param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="polyline"/> is <see langword="null"/>.
+        /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void ValidateNullPolyline(TPolyline polyline, ILogger? logger) {
             if (polyline is null) {
@@ -134,6 +140,16 @@ namespace PolylineAlgorithm.Abstraction {
             }
         }
 
+        /// <summary>
+        /// Validates that the polyline sequence meets the minimum required length.
+        /// Throws an <see cref="InvalidPolylineException"/> if the sequence is too short.
+        /// Optionally logs diagnostic messages if a logger is provided.
+        /// </summary>
+        /// <param name="polylineSequence">The polyline character sequence to validate.</param>
+        /// <param name="logger">Optional logger for diagnostic messages.</param>
+        /// <exception cref="InvalidPolylineException">
+        /// Thrown when <paramref name="polylineSequence"/> is shorter than the minimum allowed length.
+        /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void ValidateSequence(ReadOnlyMemory<char> polylineSequence, ILogger? logger) {
             if (polylineSequence.Length < Defaults.Polyline.Block.Length.Min) {
@@ -156,13 +172,6 @@ namespace PolylineAlgorithm.Abstraction {
 
                 throw;
             }
-        }
-
-        /// <summary>
-        /// Hook for subclasses to handle invalid polyline cases.
-        /// </summary>
-        protected virtual void OnInvalidPolyline(int position, ReadOnlyMemory<char> polylineSequence) {
-            // Subclasses can override for custom error handling/logging.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

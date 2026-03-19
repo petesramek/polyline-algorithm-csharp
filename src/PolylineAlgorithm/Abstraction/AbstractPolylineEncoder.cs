@@ -10,7 +10,6 @@ using PolylineAlgorithm;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Internal.Diagnostics;
 using PolylineAlgorithm.Internal.Logging;
-using PolylineAlgorithm.Properties;
 using System;
 using System.Buffers;
 using System.Diagnostics;
@@ -113,7 +112,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
                         .LogCannotWriteValueToBufferWarning(position, consumed);
 
                     ExceptionGuard.ThrowCouldNotWriteEncodedValueToBuffer();
-                    
+
                 }
 
                 consumed++;

@@ -5,10 +5,8 @@
 
 namespace PolylineAlgorithm.Diagnostics;
 
-using PolylineAlgorithm.Internal.Diagnostics;
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
 /// Exception thrown when a polyline is determined to be malformed or invalid during processing.
@@ -17,8 +15,7 @@ using System.Diagnostics.CodeAnalysis;
 /// This exception is used internally to indicate that a polyline string does not conform to the expected format or contains errors.
 /// </remarks>
 [DebuggerDisplay($"{nameof(InvalidPolylineException)}: {{ToString()}}")]
-public sealed class InvalidPolylineException : Exception
-{
+public sealed class InvalidPolylineException : Exception {
     /// <summary>
     /// Initializes a new instance of the <see cref="InvalidPolylineException"/> class.
     /// </summary>
