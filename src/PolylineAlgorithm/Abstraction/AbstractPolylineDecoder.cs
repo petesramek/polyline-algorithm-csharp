@@ -166,7 +166,7 @@ namespace PolylineAlgorithm.Abstraction {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected virtual void ValidateFormat(ReadOnlyMemory<char> sequence, ILogger? logger) {
             try {
-                PolylineEncoding.Validation.ValidateFormat(sequence.Span);
+                PolylineEncoding.ValidateFormat(sequence.Span);
             } catch (ArgumentException ex) {
                 logger?.LogInvalidPolylineFormatWarning(ex);
 
