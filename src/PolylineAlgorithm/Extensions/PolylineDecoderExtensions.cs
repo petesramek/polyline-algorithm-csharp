@@ -7,6 +7,7 @@ namespace PolylineAlgorithm.Extensions;
 
 using PolylineAlgorithm;
 using PolylineAlgorithm.Abstraction;
+using PolylineAlgorithm.Internal.Diagnostics;
 using System;
 using System.Collections.Generic;
 
@@ -31,7 +32,7 @@ public static class PolylineDecoderExtensions {
     /// </exception>
     public static IEnumerable<Coordinate> Decode(this IPolylineDecoder<Polyline, Coordinate> decoder, string polyline) {
         if (decoder is null) {
-            throw new ArgumentNullException(nameof(decoder));
+            ExceptionGuard.ThrowArgumentNull(nameof(decoder));
         }
 
         return decoder.Decode(Polyline.FromString(polyline));
@@ -54,7 +55,7 @@ public static class PolylineDecoderExtensions {
     /// </exception>
     public static IEnumerable<Coordinate> Decode(this IPolylineDecoder<Polyline, Coordinate> decoder, char[] polyline) {
         if (decoder is null) {
-            throw new ArgumentNullException(nameof(decoder));
+            ExceptionGuard.ThrowArgumentNull(nameof(decoder));
         }
 
         return decoder.Decode(Polyline.FromCharArray(polyline));
@@ -77,7 +78,7 @@ public static class PolylineDecoderExtensions {
     /// </exception>
     public static IEnumerable<Coordinate> Decode(this IPolylineDecoder<Polyline, Coordinate> decoder, ReadOnlyMemory<char> polyline) {
         if (decoder is null) {
-            throw new ArgumentNullException(nameof(decoder));
+            ExceptionGuard.ThrowArgumentNull(nameof(decoder));
         }
 
         return decoder.Decode(Polyline.FromMemory(polyline));

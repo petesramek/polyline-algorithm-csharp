@@ -60,9 +60,13 @@ public sealed class PolylineEncodingOptionsBuilder {
     /// </remarks>
     public PolylineEncodingOptionsBuilder WithStackAllocLimit(int stackAllocLimit) {
         const int minStackAllocLimit = 1;
-        _stackAllocLimit = stackAllocLimit >= minStackAllocLimit
-            ? stackAllocLimit
-            : throw new ArgumentOutOfRangeException(nameof(stackAllocLimit), ExceptionMessages.FormatStackAllocLimit(minStackAllocLimit));
+
+        if(minStackAllocLimit >  stackAllocLimit) {
+            ExceptionGuard.StackAllocLimitMustBeEqualOrGreaterThan(minStackAllocLimit, nameof(stackAllocLimit));
+        }
+
+        _stackAllocLimit = stackAllocLimit;
+
         return this;
     }
 

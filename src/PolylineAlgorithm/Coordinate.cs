@@ -9,6 +9,7 @@ using PolylineAlgorithm.Internal.Diagnostics;
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 /// <summary>
@@ -23,16 +24,14 @@ using System.Runtime.InteropServices;
 /// </remarks>
 [DebuggerDisplay("{ToString()}")]
 [StructLayout(LayoutKind.Auto)]
-public readonly struct Coordinate : IEquatable<Coordinate>      
-{
+public readonly struct Coordinate : IEquatable<Coordinate> {
     /// <summary>
     /// Initializes a new instance of the <see cref="Coordinate"/> struct with default values (0) for <see cref="Latitude"/> and <see cref="Longitude"/>.
     /// </summary>
     /// <remarks>
     /// The default value (0, 0) is a valid coordinate (Gulf of Guinea), but is also treated as the "default" value by <see cref="IsDefault"/>.
     /// </remarks>
-    public Coordinate()
-    {
+    public Coordinate() {
         Latitude = default;
         Longitude = default;
     }
@@ -50,10 +49,8 @@ public readonly struct Coordinate : IEquatable<Coordinate>
     /// Thrown when <paramref name="latitude"/> is less than -90 or greater than 90,
     /// or when <paramref name="longitude"/> is less than -180 or greater than 180.
     /// </exception>
-    public Coordinate(double latitude, double longitude)
-    {
-        Validation.ValidateLatitude(latitude);
-        Validation.ValidateLongitude(longitude);
+    public Coordinate(double latitude, double longitude) {
+        Validator.Validate(latitude, longitude);
 
         Latitude = latitude;
         Longitude = longitude;
@@ -86,8 +83,7 @@ public readonly struct Coordinate : IEquatable<Coordinate>
     public override bool Equals(object? obj) => obj is Coordinate coordinate && Equals(coordinate);
 
     /// <inheritdoc />
-    public bool Equals(Coordinate other)
-    {
+    public bool Equals(Coordinate other) {
         return Latitude.Equals(other.Latitude) &&
                Longitude.Equals(other.Longitude);
     }
@@ -113,8 +109,7 @@ public readonly struct Coordinate : IEquatable<Coordinate>
     /// <returns>
     /// A string representation of the coordinate.
     /// </returns>
-    public override string ToString()
-    {
+    public override string ToString() {
         return $"{{ {nameof(Latitude)}: {Latitude.ToString("G", CultureInfo.InvariantCulture)}, {nameof(Longitude)}: {Longitude.ToString("G", CultureInfo.InvariantCulture)} }}";
     }
 
@@ -139,38 +134,80 @@ public readonly struct Coordinate : IEquatable<Coordinate>
     public static bool operator !=(Coordinate left, Coordinate right) => !(left == right);
 
     /// <summary>
-    /// Provides validation methods for latitude and longitude values used in <see cref="Coordinate"/>.
+    /// Provides static methods for validating latitude and longitude values used in <see cref="Coordinate"/>.
     /// </summary>
-    internal static class Validation
-    {
+    /// <remarks>
+    /// The <c>Validator</c> class ensures that latitude and longitude values are within their valid ranges:
+    /// <list type="bullet">
+    /// <item>
+    /// <description>Latitude must be between -90 and 90 degrees.</description>
+    /// </item>
+    /// <item>
+    /// <description>Longitude must be between -180 and 180 degrees.</description>
+    /// </item>
+    /// </list>
+    /// If a value is out of range or not finite, an exception is thrown via <see cref="ExceptionGuard.ThrowCoordinateValueOutOfRange"/>.
+    /// </remarks>
+    public static class Validator {
         /// <summary>
-        /// Validates that the specified latitude is within the valid range of -90 to 90 degrees and is a finite value.
+        /// Validates that the specified latitude is within the valid range of -90 to 90 degrees.
         /// </summary>
         /// <param name="latitude">The latitude value to validate.</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown when <paramref name="latitude"/> is less than -90, greater than 90, or not a finite value.
+        /// Thrown if <paramref name="latitude"/> is less than -90, greater than 90, or not a finite number.
         /// </exception>
-        internal static void ValidateLatitude(double latitude)
-        {
-            if (latitude < -90 || latitude > 90 || !double.IsFinite(latitude))
-            {
-                throw new ArgumentOutOfRangeException(nameof(latitude), ExceptionMessages.FormatCoordinateValueMustBeBetween("latitude", -90, 90));
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void ValidateLatitude(double latitude) {
+            const double min = -90;
+            const double max = 90;
+
+            ValidateValue(latitude, min, max, nameof(latitude));
+        }
+
+        /// <summary>
+        /// Validates that the specified longitude is within the valid range of -180 to 180 degrees.
+        /// </summary>
+        /// <param name="longitude">The longitude value to validate.</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if <paramref name="longitude"/> is less than -180, greater than 180, or not a finite number.
+        /// </exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void ValidateLongitude(double longitude) {
+            const double min = -180;
+            const double max = 180;
+
+            ValidateValue(longitude, min, max, nameof(longitude));
+        }
+
+        /// <summary>
+        /// Validates that the specified value is finite and within the specified range.
+        /// </summary>
+        /// <param name="value">The value to validate.</param>
+        /// <param name="min">The minimum allowed value (inclusive).</param>
+        /// <param name="max">The maximum allowed value (inclusive).</param>
+        /// <param name="paramName">The name of the parameter being validated.</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if <paramref name="value"/> is not finite, less than <paramref name="min"/>, or greater than <paramref name="max"/>.
+        /// </exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void ValidateValue(double value, double min, double max, string paramName) {
+            if (!double.IsFinite(value) || value < min || value > max) {
+                ExceptionGuard.ThrowCoordinateValueOutOfRange(value, min, max, paramName);
             }
         }
 
         /// <summary>
-        /// Validates that the specified longitude is within the valid range of -180 to 180 degrees and is a finite value.
+        /// Validates both latitude and longitude values for a coordinate.
         /// </summary>
+        /// <param name="latitude">The latitude value to validate.</param>
         /// <param name="longitude">The longitude value to validate.</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown when <paramref name="longitude"/> is less than -180, greater than 180, or not a finite value.
+        /// Thrown if either <paramref name="latitude"/> or <paramref name="longitude"/> is out of range or not finite.
         /// </exception>
-        internal static void ValidateLongitude(double longitude)
-        {
-            if (longitude < -180 || longitude > 180 || !double.IsFinite(longitude))
-            {
-                throw new ArgumentOutOfRangeException(nameof(longitude), ExceptionMessages.FormatCoordinateValueMustBeBetween("Longitude", -180, 180));
-            }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void Validate(double latitude, double longitude) {
+            ValidateLatitude(latitude);
+            ValidateLongitude(longitude);
         }
     }
 }

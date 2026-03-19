@@ -68,11 +68,11 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// </exception>
     public void CopyTo(char[] destination) {
         if (destination is null) {
-            throw new ArgumentNullException(nameof(destination));
+            ExceptionGuard.ThrowArgumentNull(nameof(destination));
         }
 
         if (destination.Length < Length) {
-            throw new ArgumentException(ExceptionMessages.GetDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthMessage(), nameof(destination));
+            ExceptionGuard.ThrowDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLength(destination.Length, Length, nameof(destination));
         }
 
         Value.CopyTo(destination);
@@ -100,7 +100,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// </returns>
     [ExcludeFromCodeCoverage(
 #if NET5_0_OR_GREATER
-        Justification = "Only used during debugging."
+        Justification = "Only used for debugging."
 #endif
     )]
     private string ToDebugString() {
@@ -188,7 +188,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// </exception>
     public static Polyline FromCharArray(char[] polyline) {
         if (polyline is null) {
-            throw new ArgumentNullException(nameof(polyline));
+            ExceptionGuard.ThrowArgumentNull(nameof(polyline));
         }
 
         return FromMemory(polyline.AsMemory());
@@ -208,7 +208,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// </exception>
     public static Polyline FromString(string polyline) {
         if (polyline is null) {
-            throw new ArgumentNullException(nameof(polyline));
+            ExceptionGuard.ThrowArgumentNull(nameof(polyline));
         }
 
         return FromMemory(polyline.AsMemory());
@@ -229,30 +229,5 @@ public readonly struct Polyline : IEquatable<Polyline> {
         }
 
         return new Polyline(polyline);
-    }
-
-    /// <summary>
-    /// Copies the characters of this polyline to the specified destination array, starting at a specified index of the destination.
-    /// Only the first <see cref="Length"/> characters are written.
-    /// </summary>
-    /// <param name="destination">The destination array to copy the characters to.</param>
-    /// <param name="destinationIndex">The zero-based index in the destination array at which copying begins.</param>
-    /// <exception cref="ArgumentNullException">Thrown when <paramref name="destination"/> is <see langword="null" />.</exception>
-    /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="destinationIndex"/> is less than 0 or greater than the length of <paramref name="destination"/>.</exception>
-    /// <exception cref="ArgumentException">Thrown when the number of elements from <paramref name="destinationIndex"/> to the end of the array is less than the polyline's length.</exception>
-    public void CopyTo(char[] destination, int destinationIndex) {
-        if (destination is null) {
-            throw new ArgumentNullException(nameof(destination));
-        }
-
-        if (destinationIndex < 0 || destinationIndex > destination.Length) {
-            throw new ArgumentOutOfRangeException(nameof(destinationIndex));
-        }
-
-        if (destination.Length - destinationIndex < Value.Length) {
-            throw new ArgumentException(ExceptionMessages.GetDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthMessage(), nameof(destination));
-        }
-
-        Value.Span.CopyTo(destination.AsSpan(destinationIndex));
     }
 }

@@ -39,7 +39,11 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// </param>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="options"/> is <see langword="null" /></exception>
     protected AbstractPolylineEncoder(PolylineEncodingOptions options) {
-        Options = options ?? throw new ArgumentNullException(nameof(options));
+        if (options is null) {
+            ExceptionGuard.ThrowArgumentNull(nameof(options));
+        }
+
+        Options = options;
         _logger = Options
             .LoggerFactory
             .CreateLogger<AbstractPolylineEncoder<TCoordinate, TPolyline>>();
@@ -108,7 +112,8 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
                     _logger
                         .LogCannotWriteValueToBufferWarning(position, consumed);
 
-                    throw new InvalidOperationException(ExceptionMessages.GetCouldNotWriteEncodedValueToTheBuffer());
+                    ExceptionGuard.ThrowCouldNotWriteEncodedValueToBuffer();
+                    
                 }
 
                 consumed++;
@@ -143,7 +148,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
                 logger
                     .LogEmptyArgumentWarning(nameof(coordinates));
 
-                throw new ArgumentException(ExceptionMessages.GetArgumentCannotBeEmptyEnumerationMessage(), nameof(coordinates));
+                ExceptionGuard.ThrwoArgumentCannotBeEmptyEnumerationMessage(nameof(coordinates));
             }
         }
     }

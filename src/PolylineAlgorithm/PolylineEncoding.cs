@@ -71,7 +71,7 @@ public static class PolylineEncoding {
 
         // Validate that the value is finite and not NaN or Infinity.
         if (!double.IsFinite(value)) {
-            throw new ArgumentOutOfRangeException(nameof(value), ExceptionMessages.GetArgumentValueMustBeFiniteNumber());
+            ExceptionGuard.ThrowNotFiniteNumber(nameof(value));
         }
 
         // Fast return if precision is zero, return current value converted to Int32.
@@ -389,7 +389,7 @@ public static class PolylineEncoding {
                     for (int j = 0; j < vectorSize; j++) {
                         char character = polyline[i + j];
                         if (character < Min || character > Max) {
-                            throw new ArgumentException($"Polyline contains invalid character '{character}'.", nameof(polyline));
+                            ExceptionGuard.ThrowInvalidPolylineCharacter(character, i + j);
                         }
                     }
                 }
@@ -398,7 +398,7 @@ public static class PolylineEncoding {
             for (; i < length; i++) {
                 char character = polyline[i];
                 if (character < Min || character > Max) {
-                    throw new ArgumentException($"Polyline contains invalid character '{character}'.", nameof(polyline));
+                    ExceptionGuard.ThrowInvalidPolylineCharacter(character, i);
                 }
             }
         }
@@ -426,7 +426,7 @@ public static class PolylineEncoding {
                 if (polyline[i] < End) {
                     foundBlockEnd = true;
                     if (blockLen > 7) {
-                        throw new ArgumentException($"Block at position {i - blockLen + 1} exceeds 7 characters.", nameof(polyline));
+                        ExceptionGuard.ThrowPolylineBlockTooLong(i - blockLen + 1);
                     }
                     blockLen = 0;
                 } else {
@@ -435,7 +435,7 @@ public static class PolylineEncoding {
             }
 
             if (!foundBlockEnd) {
-                throw new ArgumentException("Polyline does not end with a valid block terminator.", nameof(polyline));
+                ExceptionGuard.ThrowInvalidPolylineBlockTerminator();
             }
         }
 

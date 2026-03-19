@@ -17,8 +17,8 @@ using System.Diagnostics.CodeAnalysis;
 /// This exception is used internally to indicate that a polyline string does not conform to the expected format or contains errors.
 /// </remarks>
 [DebuggerDisplay($"{nameof(InvalidPolylineException)}: {{ToString()}}")]
-[SuppressMessage("Roslynator", "RCS1194:Implement exception constructors", Justification = "Internal use only.")]
-[SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Internal use only.")]
+[SuppressMessage("Roslynator", "RCS1194:Implement exception constructors", Justification = "This exception is intended for use by consumers of the library, but additional constructors are not required for its intended usage.")]
+[SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Standard exception constructors are not necessary for the intended usage of this exception type.")]
 public sealed class InvalidPolylineException : Exception {
     /// <summary>
     /// Initializes a new instance of the <see cref="InvalidPolylineException"/> class with a specified error message.
@@ -26,7 +26,7 @@ public sealed class InvalidPolylineException : Exception {
     /// <param name="message">
     /// The error message that describes the reason for the exception.
     /// </param>
-    private InvalidPolylineException(string message)
+    internal InvalidPolylineException(string message)
         : base(message) { }
 
     /// <summary>
@@ -41,6 +41,6 @@ public sealed class InvalidPolylineException : Exception {
     internal static void Throw(long position) {
         Debug.Assert(position >= 0, "Position must be a non-negative value.");
 
-        throw new InvalidPolylineException(ExceptionMessages.FormatPolylineStringIsMalformed(position));
+        ExceptionGuard.ThrowInvalidPolyline(position);
     }
 }

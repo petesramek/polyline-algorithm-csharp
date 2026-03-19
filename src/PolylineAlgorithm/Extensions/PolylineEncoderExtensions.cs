@@ -6,6 +6,7 @@
 namespace PolylineAlgorithm.Extensions;
 
 using PolylineAlgorithm.Abstraction;
+using PolylineAlgorithm.Internal.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -33,11 +34,11 @@ public static class PolylineEncoderExtensions {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "MA0016:Prefer using collection abstraction instead of implementation", Justification = "We need a list as we do need to marshal it as span.")]
     public static TPolyline Encode<TCoordinate, TPolyline>(this IPolylineEncoder<TCoordinate, TPolyline> encoder, List<TCoordinate> coordinates) {
         if (encoder is null) {
-            throw new ArgumentNullException(nameof(encoder));
+            ExceptionGuard.ThrowArgumentNull(nameof(encoder));
         }
 
         if (coordinates is null) {
-            throw new ArgumentNullException(nameof(coordinates));
+            ExceptionGuard.ThrowArgumentNull(nameof(coordinates));
         }
 
 #if NET5_0_OR_GREATER
@@ -65,11 +66,11 @@ public static class PolylineEncoderExtensions {
     /// </exception>
     public static TPolyline Encode<TCoordinate, TPolyline>(this IPolylineEncoder<TCoordinate, TPolyline> encoder, TCoordinate[] coordinates) {
         if (encoder is null) {
-            throw new ArgumentNullException(nameof(encoder));
+            ExceptionGuard.ThrowArgumentNull(nameof(encoder));
         }
 
         if (coordinates is null) {
-            throw new ArgumentNullException(nameof(coordinates));
+            ExceptionGuard.ThrowArgumentNull(nameof(coordinates));
         }
 
         return encoder.Encode(coordinates.AsSpan());

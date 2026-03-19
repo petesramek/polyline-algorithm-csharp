@@ -23,12 +23,15 @@ internal static partial class LogWarningExtensions {
     [LoggerMessage(EVENT_ID_BASE + 4, LOG_LEVEL, "Cannot write to internal buffer at position {position}. Current coordinate is at index {coordinateIndex}.")]
     internal static partial void LogCannotWriteValueToBufferWarning(this ILogger logger, int position, int coordinateIndex);
 
-    [LoggerMessage(EVENT_ID_BASE + 5, LOG_LEVEL, "Argument {argumentName} is too short. Minimal length is {minimumLength}. Actual length is {actualLength}.")]
-    internal static partial void LogPolylineCannotBeShorterThanWarning(this ILogger logger, string argumentName, int actualLength, int minimumLength);
+    [LoggerMessage(EVENT_ID_BASE + 5, LOG_LEVEL, "Polyline is too short. Minimal length is {minimumLength}. Actual length is {actualLength}.")]
+    internal static partial void LogPolylineCannotBeShorterThanWarning(this ILogger logger, int actualLength, int minimumLength);
 
     [LoggerMessage(EVENT_ID_BASE + 6, LOG_LEVEL, "Requested buffer size of {requestedBufferLength} exceeds maximum allowed buffer length of {maxBufferLength}.")]
     internal static partial void LogRequestedBufferSizeExceedsMaxBufferLengthWarning(this ILogger logger, int requestedBufferLength, int maxBufferLength);
 
     [LoggerMessage(EVENT_ID_BASE + 7, LOG_LEVEL, "Polyline is invalid or malformed at position {position}.")]
     internal static partial void LogInvalidPolylineWarning(this ILogger logger, int position);
+
+    [LoggerMessage(EVENT_ID_BASE + 8, LOG_LEVEL, "Polyline is invalid or malformed.")]
+    internal static partial void LogInvalidPolylineFormatWarning(this ILogger logger, Exception ex);
 }

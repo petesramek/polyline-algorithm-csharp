@@ -7,13 +7,13 @@ using Microsoft.Extensions.Logging;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Diagnostics;
 using PolylineAlgorithm.Internal;
+using PolylineAlgorithm.Internal.Diagnostics;
 using PolylineAlgorithm.Internal.Logging;
 using System;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
-namespace PolylineAlgorithm.Abstraction
-{
+namespace PolylineAlgorithm.Abstraction {
     /// <summary>
     /// Decodes encoded polyline strings into sequences of geographic coordinates.
     /// Implements the <see cref="IPolylineDecoder{TPolyline, TCoordinate}"/> interface.
@@ -21,8 +21,7 @@ namespace PolylineAlgorithm.Abstraction
     /// <remarks>
     /// This abstract class provides a base implementation for decoding polylines, allowing subclasses to define how to handle specific polyline formats.
     /// </remarks>
-    public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder<TPolyline, TCoordinate>
-    {
+    public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder<TPolyline, TCoordinate> {
         private readonly ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> _logger;
 
         /// <summary>
@@ -40,10 +39,15 @@ namespace PolylineAlgorithm.Abstraction
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="encodingOptions"/> is <see langword="null" />
         /// </exception>
-        protected AbstractPolylineDecoder(PolylineEncodingOptions encodingOptions)
-        {
-            Options = encodingOptions ?? throw new ArgumentNullException(nameof(encodingOptions));
-            _logger = Options.LoggerFactory.CreateLogger<AbstractPolylineDecoder<TPolyline, TCoordinate>>();
+        protected AbstractPolylineDecoder(PolylineEncodingOptions options) {
+            if(options is null) {
+                ExceptionGuard.ThrowArgumentNull(nameof(options));
+            }
+
+            Options = options;
+            _logger = Options
+                .LoggerFactory
+                .CreateLogger<AbstractPolylineDecoder<TPolyline, TCoordinate>>();
         }
 
         /// <summary>
@@ -81,74 +85,62 @@ namespace PolylineAlgorithm.Abstraction
         /// <exception cref="ArgumentNullException"/>
         /// <exception cref="ArgumentException"/>
         /// <exception cref="InvalidPolylineException"/>
-        public IEnumerable<TCoordinate> Decode(TPolyline polyline, CancellationToken cancellationToken)
-        {
+        public IEnumerable<TCoordinate> Decode(TPolyline polyline, CancellationToken cancellationToken) {
             const string OperationName = nameof(Decode);
 
             _logger?.LogOperationStartedDebug(OperationName);
 
             ValidateNullPolyline(polyline, _logger);
 
-            ReadOnlyMemory<char> polylineSequence = GetReadOnlyMemory(in polyline);
+            ReadOnlyMemory<char> sequence = GetReadOnlyMemory(in polyline);
 
-            ValidateEmptySequence(polylineSequence, _logger);
-            ValidateFormat(polylineSequence, _logger);
+            ValidateSequence(sequence, _logger);
+            ValidateFormat(sequence, _logger);
 
-            int currentPosition = 0;
+            int position = 0;
             int encodedLatitude = 0;
             int encodedLongitude = 0;
 
-            try
-            {
-                while (currentPosition < polylineSequence.Length)
-                {
+            try {
+                while (position < sequence.Length) {
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    if (!PolylineEncoding.TryReadValue(ref encodedLatitude, polylineSequence, ref currentPosition)
-                        || !PolylineEncoding.TryReadValue(ref encodedLongitude, polylineSequence, ref currentPosition))
-                    {
+                    if (!PolylineEncoding.TryReadValue(ref encodedLatitude, sequence, ref position)
+                        || !PolylineEncoding.TryReadValue(ref encodedLongitude, sequence, ref position)) {
                         _logger?.LogOperationFailedDebug(OperationName);
-                        _logger?.LogInvalidPolylineWarning(currentPosition);
+                        _logger?.LogInvalidPolylineWarning(position);
 
-                        OnInvalidPolyline(currentPosition, polylineSequence);
-                        InvalidPolylineException.Throw(currentPosition);
+                        OnInvalidPolyline(position, sequence);
+                        ExceptionGuard.ThrowInvalidPolylineFormat(position);
                     }
 
                     double decodedLatitude = PolylineEncoding.Denormalize(encodedLatitude, Options.Precision);
                     double decodedLongitude = PolylineEncoding.Denormalize(encodedLongitude, Options.Precision);
 
-                    _logger?.LogDecodedCoordinateDebug(decodedLatitude, decodedLongitude, currentPosition);
+                    _logger?.LogDecodedCoordinateDebug(decodedLatitude, decodedLongitude, position);
 
                     yield return CreateCoordinate(decodedLatitude, decodedLongitude);
                 }
-            }
-            finally
-            {
+            } finally {
                 _logger?.LogOperationFinishedDebug(OperationName);
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void ValidateNullPolyline(TPolyline polyline, ILogger logger)
-        {
-            if (polyline is null)
-            {
+        private static void ValidateNullPolyline(TPolyline polyline, ILogger? logger) {
+            if (polyline is null) {
                 logger?.LogNullArgumentWarning(nameof(polyline));
-                throw new ArgumentNullException(nameof(polyline), "Polyline argument cannot be null.");
+                ExceptionGuard.ThrowArgumentNull(nameof(polyline));
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void ValidateEmptySequence(ReadOnlyMemory<char> polylineSequence, ILogger logger)
-        {
-            if (polylineSequence.Length < Defaults.Polyline.Block.Length.Min)
-            {
+        private static void ValidateSequence(ReadOnlyMemory<char> polylineSequence, ILogger? logger) {
+            if (polylineSequence.Length < Defaults.Polyline.Block.Length.Min) {
                 logger?.LogOperationFailedDebug(nameof(Decode));
-                logger?.LogPolylineCannotBeShorterThanWarning(nameof(polylineSequence), polylineSequence.Length, Defaults.Polyline.Block.Length.Min);
+                logger?.LogPolylineCannotBeShorterThanWarning(polylineSequence.Length, Defaults.Polyline.Block.Length.Min);
 
-                throw new ArgumentException(
-                    $"Polyline must be at least {Defaults.Polyline.Block.Length.Min} characters long, but was {polylineSequence.Length}.",
-                    nameof(polylineSequence));
+                ExceptionGuard.ThrowInvalidPolylineLength(polylineSequence.Length, Defaults.Polyline.Block.Length.Min);
             }
         }
 
@@ -156,15 +148,12 @@ namespace PolylineAlgorithm.Abstraction
         /// Validates the polyline format for allowed characters.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected virtual void ValidateFormat(ReadOnlyMemory<char> polylineSequence, ILogger logger)
-        {
-            try
-            {
-                PolylineEncoding.Validation.ValidateFormat(polylineSequence.Span);
-            }
-            catch (ArgumentException ex)
-            {
-                logger?.LogWarning(ex.Message);
+        protected virtual void ValidateFormat(ReadOnlyMemory<char> sequence, ILogger? logger) {
+            try {
+                PolylineEncoding.Validation.ValidateFormat(sequence.Span);
+            } catch (ArgumentException ex) {
+                logger?.LogInvalidPolylineFormatWarning(ex);
+
                 throw;
             }
         }
@@ -172,8 +161,7 @@ namespace PolylineAlgorithm.Abstraction
         /// <summary>
         /// Hook for subclasses to handle invalid polyline cases.
         /// </summary>
-        protected virtual void OnInvalidPolyline(int position, ReadOnlyMemory<char> polylineSequence)
-        {
+        protected virtual void OnInvalidPolyline(int position, ReadOnlyMemory<char> polylineSequence) {
             // Subclasses can override for custom error handling/logging.
         }
 

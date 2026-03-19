@@ -61,29 +61,20 @@ namespace PolylineAlgorithm.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Argument cannot be CoordinateValueType.{0}..
+        ///   Looks up a localized string similar to Argument cannot be an empty..
         /// </summary>
-        internal static string ArgumentCannotBeCoordinateValueTypeMessageFormat {
+        internal static string ArgumentCannotBeEmptyMessage {
             get {
-                return ResourceManager.GetString("ArgumentCannotBeCoordinateValueTypeMessageFormat", resourceCulture);
+                return ResourceManager.GetString("ArgumentCannotBeEmptyMessage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Argument cannot be an empty enumeration..
+        ///   Looks up a localized string similar to  Value {0} is out of range. Expected range between {1} and {2}..
         /// </summary>
-        internal static string ArgumentCannotBeEmptyEnumerationMessage {
+        internal static string ArgumentOutOfRangeFormat {
             get {
-                return ResourceManager.GetString("ArgumentCannotBeEmptyEnumerationMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Value is out of range for the specified type {0}..
-        /// </summary>
-        internal static string ArgumentOutOfRangeForSpecifiedCoordinateValueTypeMessageFormat {
-            get {
-                return ResourceManager.GetString("ArgumentOutOfRangeForSpecifiedCoordinateValueTypeMessageFormat", resourceCulture);
+                return ResourceManager.GetString("ArgumentOutOfRangeFormat", resourceCulture);
             }
         }
         
@@ -99,54 +90,90 @@ namespace PolylineAlgorithm.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} must be between {1} and {2}..
         /// </summary>
-        internal static string CoordinateValueMustBeBetweenValuesMessageFormat {
+        internal static string CoordinateValueMustBeBetweenValuesFormat {
             get {
-                return ResourceManager.GetString("CoordinateValueMustBeBetweenValuesMessageFormat", resourceCulture);
+                return ResourceManager.GetString("CoordinateValueMustBeBetweenValuesFormat", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Encoded values couldn&apos;t be written to the buffer. Please, report a bug on GitHub with reproducible sample. Thank you, Pete..
+        ///   Looks up a localized string similar to Encoded values couldn&apos;t be written to the buffer..
         /// </summary>
-        internal static string CouldNotWriteEncodedValueToTheBuffer {
+        internal static string CouldNotWriteEncodedValueToTheBufferMessage {
             get {
-                return ResourceManager.GetString("CouldNotWriteEncodedValueToTheBuffer", resourceCulture);
+                return ResourceManager.GetString("CouldNotWriteEncodedValueToTheBufferMessage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Destination array length must be greater than the polyline length..
+        ///   Looks up a localized string similar to Destination array length {0} must be greater than the polyline length {1}..
         /// </summary>
-        internal static string DestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthMessage {
+        internal static string DestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthFormat {
             get {
-                return ResourceManager.GetString("DestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthMessage", resourceCulture);
+                return ResourceManager.GetString("DestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthFormat", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Argument cannot be shorten than {1} characters. Actual length: {0}..
+        ///   Looks up a localized string similar to Polyline does not end with a valid block terminator..
         /// </summary>
-        internal static string PolylineCannotBeShorterThanExceptionMessage {
+        internal static string InvalidPolylineBlockTerminatorMessage {
             get {
-                return ResourceManager.GetString("PolylineCannotBeShorterThanExceptionMessage", resourceCulture);
+                return ResourceManager.GetString("InvalidPolylineBlockTerminatorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Polyline contains invalid character &apos;{0}&apos; at position {1}..
+        /// </summary>
+        internal static string InvalidPolylineCharacterFormat {
+            get {
+                return ResourceManager.GetString("InvalidPolylineCharacterFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Polyline must be at least {1} characters long, but was {0}..
+        /// </summary>
+        internal static string InvalidPolylineLengthFormat {
+            get {
+                return ResourceManager.GetString("InvalidPolylineLengthFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Block at position {0} exceeds 7 characters..
+        /// </summary>
+        internal static string PolylineBlockTooLongFormat {
+            get {
+                return ResourceManager.GetString("PolylineBlockTooLongFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Argument cannot be shorten than {1} characters. Value: {0}..
+        /// </summary>
+        internal static string PolylineCannotBeShorterThanFormat {
+            get {
+                return ResourceManager.GetString("PolylineCannotBeShorterThanFormat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Polyline is malformed at position {0}..
         /// </summary>
-        internal static string PolylineStringIsMalformedMessage {
+        internal static string PolylineIsMalformedAtFormat {
             get {
-                return ResourceManager.GetString("PolylineStringIsMalformedMessage", resourceCulture);
+                return ResourceManager.GetString("PolylineIsMalformedAtFormat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Stack alloc limit must be equal or greater than {0}..
         /// </summary>
-        internal static string StackAllocLimitMustBeEqualOrGreaterThanMessageFormat {
+        internal static string StackAllocLimitMustBeEqualOrGreaterThanFormat {
             get {
-                return ResourceManager.GetString("StackAllocLimitMustBeEqualOrGreaterThanMessageFormat", resourceCulture);
+                return ResourceManager.GetString("StackAllocLimitMustBeEqualOrGreaterThanFormat", resourceCulture);
             }
         }
     }
