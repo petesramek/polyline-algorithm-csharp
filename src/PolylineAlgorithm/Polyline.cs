@@ -5,6 +5,7 @@
 
 namespace PolylineAlgorithm;
 
+using PolylineAlgorithm.Internal.Diagnostics;
 using PolylineAlgorithm.Properties;
 using System;
 using System.Diagnostics;
@@ -71,7 +72,7 @@ public readonly struct Polyline : IEquatable<Polyline> {
         }
 
         if (destination.Length < Length) {
-            throw new ArgumentException(ExceptionMessageResource.DestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthMessage, nameof(destination));
+            throw new ArgumentException(ExceptionMessages.GetDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthMessage(), nameof(destination));
         }
 
         Value.CopyTo(destination);
@@ -240,12 +241,18 @@ public readonly struct Polyline : IEquatable<Polyline> {
     /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="destinationIndex"/> is less than 0 or greater than the length of <paramref name="destination"/>.</exception>
     /// <exception cref="ArgumentException">Thrown when the number of elements from <paramref name="destinationIndex"/> to the end of the array is less than the polyline's length.</exception>
     public void CopyTo(char[] destination, int destinationIndex) {
-        if (destination is null)
+        if (destination is null) {
             throw new ArgumentNullException(nameof(destination));
-        if (destinationIndex < 0 || destinationIndex > destination.Length)
+        }
+
+        if (destinationIndex < 0 || destinationIndex > destination.Length) {
             throw new ArgumentOutOfRangeException(nameof(destinationIndex));
-        if (destination.Length - destinationIndex < Value.Length)
-            throw new ArgumentException(ExceptionMessageResource.DestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthMessage, nameof(destination));
+        }
+
+        if (destination.Length - destinationIndex < Value.Length) {
+            throw new ArgumentException(ExceptionMessages.GetDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthMessage(), nameof(destination));
+        }
+
         Value.Span.CopyTo(destination.AsSpan(destinationIndex));
     }
 }

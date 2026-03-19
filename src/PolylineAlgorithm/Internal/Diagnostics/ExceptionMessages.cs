@@ -32,6 +32,15 @@ internal static class ExceptionMessages
     internal static string FormatCoordinateValueMustBeBetween(string name, double min, double max) =>
         string.Format(CultureInfo.InvariantCulture, CoordinateValueMustBeBetweenFormat, name, min, max);
 
-    internal static string ArgumentValueMustBeFiniteNumber =>
+    internal static string GetArgumentValueMustBeFiniteNumber() =>
         ExceptionMessageResource.ArgumentValueMustBeFiniteNumber;
+
+    internal static string GetCouldNotWriteEncodedValueToTheBuffer() =>
+        ExceptionMessageResource.CouldNotWriteEncodedValueToTheBuffer;
+
+    internal static string GetArgumentCannotBeEmptyEnumerationMessage() =>
+        ExceptionMessageResource.ArgumentCannotBeEmptyEnumerationMessage;
+
+    internal static string GetDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthMessage() =>
+        ExceptionMessageResource.DestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthMessage;
 }

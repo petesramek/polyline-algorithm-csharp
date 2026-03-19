@@ -6,6 +6,7 @@
 namespace PolylineAlgorithm;
 
 using PolylineAlgorithm.Internal;
+using PolylineAlgorithm.Internal.Diagnostics;
 using PolylineAlgorithm.Properties;
 
 using System;
@@ -70,7 +71,7 @@ public static class PolylineEncoding {
 
         // Validate that the value is finite and not NaN or Infinity.
         if (!double.IsFinite(value)) {
-            throw new ArgumentOutOfRangeException(nameof(value), ExceptionMessageResource.ArgumentValueMustBeFiniteNumber);
+            throw new ArgumentOutOfRangeException(nameof(value), ExceptionMessages.GetArgumentValueMustBeFiniteNumber());
         }
 
         // Fast return if precision is zero, return current value converted to Int32.

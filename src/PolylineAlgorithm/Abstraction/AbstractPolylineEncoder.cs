@@ -8,6 +8,7 @@ namespace PolylineAlgorithm.Abstraction;
 using Microsoft.Extensions.Logging;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Internal;
+using PolylineAlgorithm.Internal.Diagnostics;
 using PolylineAlgorithm.Internal.Logging;
 using PolylineAlgorithm.Properties;
 using System;
@@ -92,7 +93,6 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
         try {
             for (var i = 0; i < coordinates.Length; i++) {
 
-
                 delta
                     .Next(
                         PolylineEncoding.Normalize(GetLatitude(coordinates[i]), Options.Precision),
@@ -108,7 +108,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
                     _logger
                         .LogCannotWriteValueToBufferWarning(position, consumed);
 
-                    throw new InvalidOperationException(ExceptionMessageResource.CouldNotWriteEncodedValueToTheBuffer);
+                    throw new InvalidOperationException(ExceptionMessages.GetCouldNotWriteEncodedValueToTheBuffer());
                 }
 
                 consumed++;
@@ -143,7 +143,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
                 logger
                     .LogEmptyArgumentWarning(nameof(coordinates));
 
-                throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeEmptyEnumerationMessage, nameof(coordinates));
+                throw new ArgumentException(ExceptionMessages.GetArgumentCannotBeEmptyEnumerationMessage(), nameof(coordinates));
             }
         }
     }
