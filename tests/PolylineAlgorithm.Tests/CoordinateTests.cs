@@ -910,7 +910,7 @@ public class CoordinateTests {
         double latitude = -90.0;
 
         // Act & Assert
-        Coordinate.Validator.ValidateLatitude(latitude);
+        Coordinate.Validation.ValidateLatitude(latitude);
     }
 
     /// <summary>
@@ -922,7 +922,7 @@ public class CoordinateTests {
         double latitude = 90.0;
 
         // Act & Assert
-        Coordinate.Validator.ValidateLatitude(latitude);
+        Coordinate.Validation.ValidateLatitude(latitude);
     }
 
     /// <summary>
@@ -934,7 +934,7 @@ public class CoordinateTests {
         double latitude = 45.0;
 
         // Act & Assert
-        Coordinate.Validator.ValidateLatitude(latitude);
+        Coordinate.Validation.ValidateLatitude(latitude);
     }
 
     /// <summary>
@@ -946,7 +946,7 @@ public class CoordinateTests {
         double latitude = 0.0;
 
         // Act & Assert
-        Coordinate.Validator.ValidateLatitude(latitude);
+        Coordinate.Validation.ValidateLatitude(latitude);
     }
 
     /// <summary>
@@ -958,7 +958,7 @@ public class CoordinateTests {
         double latitude = -90.1;
 
         // Act & Assert
-        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validator.ValidateLatitude(latitude));
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validation.ValidateLatitude(latitude));
     }
 
     /// <summary>
@@ -970,7 +970,7 @@ public class CoordinateTests {
         double latitude = 90.1;
 
         // Act & Assert
-        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validator.ValidateLatitude(latitude));
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validation.ValidateLatitude(latitude));
     }
 
     /// <summary>
@@ -982,7 +982,7 @@ public class CoordinateTests {
         double latitude = double.NaN;
 
         // Act & Assert
-        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validator.ValidateLatitude(latitude));
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validation.ValidateLatitude(latitude));
     }
 
     /// <summary>
@@ -994,7 +994,7 @@ public class CoordinateTests {
         double latitude = double.PositiveInfinity;
 
         // Act & Assert
-        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validator.ValidateLatitude(latitude));
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validation.ValidateLatitude(latitude));
     }
 
     /// <summary>
@@ -1006,7 +1006,7 @@ public class CoordinateTests {
         double latitude = double.NegativeInfinity;
 
         // Act & Assert
-        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validator.ValidateLatitude(latitude));
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validation.ValidateLatitude(latitude));
     }
 
     /// <summary>
@@ -1018,7 +1018,7 @@ public class CoordinateTests {
         double longitude = -180.0;
 
         // Act & Assert
-        Coordinate.Validator.ValidateLongitude(longitude);
+        Coordinate.Validation.ValidateLongitude(longitude);
     }
 
     /// <summary>
@@ -1030,7 +1030,7 @@ public class CoordinateTests {
         double longitude = 180.0;
 
         // Act & Assert
-        Coordinate.Validator.ValidateLongitude(longitude);
+        Coordinate.Validation.ValidateLongitude(longitude);
     }
 
     /// <summary>
@@ -1042,7 +1042,7 @@ public class CoordinateTests {
         double longitude = 90.0;
 
         // Act & Assert
-        Coordinate.Validator.ValidateLongitude(longitude);
+        Coordinate.Validation.ValidateLongitude(longitude);
     }
 
     /// <summary>
@@ -1054,7 +1054,7 @@ public class CoordinateTests {
         double longitude = 0.0;
 
         // Act & Assert
-        Coordinate.Validator.ValidateLongitude(longitude);
+        Coordinate.Validation.ValidateLongitude(longitude);
     }
 
     /// <summary>
@@ -1066,7 +1066,7 @@ public class CoordinateTests {
         double longitude = -180.1;
 
         // Act & Assert
-        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validator.ValidateLongitude(longitude));
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validation.ValidateLongitude(longitude));
     }
 
     /// <summary>
@@ -1078,7 +1078,7 @@ public class CoordinateTests {
         double longitude = 180.1;
 
         // Act & Assert
-        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validator.ValidateLongitude(longitude));
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validation.ValidateLongitude(longitude));
     }
 
     /// <summary>
@@ -1090,7 +1090,7 @@ public class CoordinateTests {
         double longitude = double.NaN;
 
         // Act & Assert
-        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validator.ValidateLongitude(longitude));
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validation.ValidateLongitude(longitude));
     }
 
     /// <summary>
@@ -1102,7 +1102,7 @@ public class CoordinateTests {
         double longitude = double.PositiveInfinity;
 
         // Act & Assert
-        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validator.ValidateLongitude(longitude));
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validation.ValidateLongitude(longitude));
     }
 
     /// <summary>
@@ -1114,7 +1114,7 @@ public class CoordinateTests {
         double longitude = double.NegativeInfinity;
 
         // Act & Assert
-        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validator.ValidateLongitude(longitude));
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Coordinate.Validation.ValidateLongitude(longitude));
     }
 
     /// <summary>

@@ -1,30 +1,37 @@
-﻿namespace PolylineAlgorithm.Internal;
+﻿namespace PolylineAlgorithm.Internal.Diagnostics;
 
 using PolylineAlgorithm.Properties;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-
 #if NET8_0_OR_GREATER
 using System.Text;
-using static PolylineAlgorithm.Internal.Defaults.Polyline.Block;
 #endif
 
-
-[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Usage and readability.")]
-internal static class ExceptionMessages {
+internal static class ExceptionMessages
+{
 #if NET8_0_OR_GREATER
-    private static readonly CompositeFormat StackAllocLimitMustBeEqualOrGreaterThanMessageFormat = CompositeFormat.Parse(ExceptionMessageResource.StackAllocLimitMustBeEqualOrGreaterThanMessageFormat);
-    private static readonly CompositeFormat PolylineCannotBeShorterThanExceptionMessage = CompositeFormat.Parse(ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage);
+    private static readonly CompositeFormat StackAllocLimitFormat = CompositeFormat.Parse(ExceptionMessageResource.StackAllocLimitMustBeEqualOrGreaterThanMessageFormat);
+    private static readonly CompositeFormat PolylineCannotBeShorterThanFormat = CompositeFormat.Parse(ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage);
+    private static readonly CompositeFormat PolylineStringIsMalformedFormat = CompositeFormat.Parse(ExceptionMessageResource.PolylineStringIsMalformedMessage);
+    private static readonly CompositeFormat CoordinateValueMustBeBetweenFormat = CompositeFormat.Parse(ExceptionMessageResource.CoordinateValueMustBeBetweenValuesMessageFormat);
 #else
-    private static readonly string StackAllocLimitMustBeEqualOrGreaterThanMessageFormat = ExceptionMessageResource.StackAllocLimitMustBeEqualOrGreaterThanMessageFormat;
-    private static readonly string PolylineCannotBeShorterThanExceptionMessage = ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage;
+    private static readonly string StackAllocLimitFormat = ExceptionMessageResource.StackAllocLimitMustBeEqualOrGreaterThanMessageFormat;
+    private static readonly string PolylineCannotBeShorterThanFormat = ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage;
+    private static readonly string PolylineStringIsMalformedFormat = ExceptionMessageResource.PolylineStringIsMalformedMessage;
+    private static readonly string CoordinateValueMustBeBetweenFormat = ExceptionMessageResource.CoordinateValueMustBeBetweenValuesMessageFormat;
 #endif
 
-    internal static string GetPolylineCannotBeShorterThanExceptionMessage(int length, int minLength) {
-        return string.Format(CultureInfo.InvariantCulture, PolylineCannotBeShorterThanExceptionMessage, length, minLength);
-    }
+    internal static string FormatStackAllocLimit(int minValue) =>
+        string.Format(CultureInfo.InvariantCulture, StackAllocLimitFormat, minValue);
 
-    internal static string GetPolylineCannotBeShorterThanExceptionMessage(int minStackAllocLimit) {
-        return string.Format(CultureInfo.InvariantCulture, StackAllocLimitMustBeEqualOrGreaterThanMessageFormat, minStackAllocLimit);
-    }
+    internal static string FormatPolylineCannotBeShorterThan(int length, int minLength) =>
+        string.Format(CultureInfo.InvariantCulture, PolylineCannotBeShorterThanFormat, length, minLength);
+
+    internal static string FormatPolylineStringIsMalformed(long position) =>
+        string.Format(CultureInfo.InvariantCulture, PolylineStringIsMalformedFormat, position);
+
+    internal static string FormatCoordinateValueMustBeBetween(string name, double min, double max) =>
+        string.Format(CultureInfo.InvariantCulture, CoordinateValueMustBeBetweenFormat, name, min, max);
+
+    internal static string ArgumentValueMustBeFiniteNumber =>
+        ExceptionMessageResource.ArgumentValueMustBeFiniteNumber;
 }

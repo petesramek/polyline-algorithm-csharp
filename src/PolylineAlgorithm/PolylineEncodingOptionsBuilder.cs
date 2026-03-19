@@ -7,12 +7,7 @@ namespace PolylineAlgorithm;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using PolylineAlgorithm.Diagnostics;
-using PolylineAlgorithm.Internal;
-using System.Globalization;
-#if NET8_0_OR_GREATER
-using System.Text;
-#endif
+using PolylineAlgorithm.Internal.Diagnostics;
 
 /// <summary>
 /// Provides a builder for configuring options for polyline encoding operations.
@@ -67,9 +62,7 @@ public sealed class PolylineEncodingOptionsBuilder {
         const int minStackAllocLimit = 1;
         _stackAllocLimit = stackAllocLimit >= minStackAllocLimit
             ? stackAllocLimit
-            : throw new ArgumentOutOfRangeException(
-                nameof(stackAllocLimit),
-                ExceptionMessages.GetPolylineCannotBeShorterThanExceptionMessage(minStackAllocLimit));
+            : throw new ArgumentOutOfRangeException(nameof(stackAllocLimit), ExceptionMessages.FormatStackAllocLimit(minStackAllocLimit));
         return this;
     }
 

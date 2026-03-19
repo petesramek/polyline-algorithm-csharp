@@ -5,14 +5,12 @@
 
 namespace PolylineAlgorithm;
 
+using PolylineAlgorithm.Internal.Diagnostics;
 using PolylineAlgorithm.Properties;
 using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
-#if NET8_0_OR_GREATER
-using System.Text;
-#endif
 
 /// <summary>
 /// Represents a geographic coordinate as a pair of latitude and longitude values.
@@ -26,7 +24,7 @@ using System.Text;
 /// </remarks>
 [DebuggerDisplay("{ToString()}")]
 [StructLayout(LayoutKind.Auto)]
-public readonly struct Coordinate : IEquatable<Coordinate>
+public readonly struct Coordinate : IEquatable<Coordinate>      
 {
 #if NET8_0_OR_GREATER
     private static readonly CompositeFormat _coordinateValueMustBeBetweenValuesMessageFormat = CompositeFormat.Parse(ExceptionMessageResource.CoordinateValueMustBeBetweenValuesMessageFormat);
@@ -61,8 +59,8 @@ public readonly struct Coordinate : IEquatable<Coordinate>
     /// </exception>
     public Coordinate(double latitude, double longitude)
     {
-        Validator.ValidateLatitude(latitude);
-        Validator.ValidateLongitude(longitude);
+        Validation.ValidateLatitude(latitude);
+        Validation.ValidateLongitude(longitude);
 
         Latitude = latitude;
         Longitude = longitude;
@@ -150,7 +148,7 @@ public readonly struct Coordinate : IEquatable<Coordinate>
     /// <summary>
     /// Provides validation methods for latitude and longitude values used in <see cref="Coordinate"/>.
     /// </summary>
-    internal static class Validator
+    internal static class Validation
     {
         /// <summary>
         /// Validates that the specified latitude is within the valid range of -90 to 90 degrees and is a finite value.
@@ -163,7 +161,7 @@ public readonly struct Coordinate : IEquatable<Coordinate>
         {
             if (latitude < -90 || latitude > 90 || !double.IsFinite(latitude))
             {
-                throw new ArgumentOutOfRangeException(nameof(latitude), string.Format(CultureInfo.InvariantCulture, _coordinateValueMustBeBetweenValuesMessageFormat, "Latitude", -90, 90));
+                throw new ArgumentOutOfRangeException(nameof(latitude), ExceptionMessages.FormatCoordinateValueMustBeBetween("latitude", -90, 90));
             }
         }
 
@@ -178,7 +176,7 @@ public readonly struct Coordinate : IEquatable<Coordinate>
         {
             if (longitude < -180 || longitude > 180 || !double.IsFinite(longitude))
             {
-                throw new ArgumentOutOfRangeException(nameof(longitude), string.Format(CultureInfo.InvariantCulture, _coordinateValueMustBeBetweenValuesMessageFormat, "Longitude", -180, 180));
+                throw new ArgumentOutOfRangeException(nameof(longitude), ExceptionMessages.FormatCoordinateValueMustBeBetween("Longitude", -180, 180));
             }
         }
     }
