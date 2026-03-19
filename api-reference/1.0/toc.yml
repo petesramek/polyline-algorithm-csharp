@@ -3,20 +3,20 @@
   href: PolylineAlgorithm.yml
   items:
   - name: Classes
+  - name: Coordinate.Validator
+    href: PolylineAlgorithm.Coordinate.Validator.yml
   - name: PolylineDecoder
     href: PolylineAlgorithm.PolylineDecoder.yml
   - name: PolylineEncoder
     href: PolylineAlgorithm.PolylineEncoder.yml
   - name: PolylineEncoding
     href: PolylineAlgorithm.PolylineEncoding.yml
-  - name: PolylineEncoding.Validator
-    href: PolylineAlgorithm.PolylineEncoding.Validator.yml
+  - name: PolylineEncoding.Validation
+    href: PolylineAlgorithm.PolylineEncoding.Validation.yml
   - name: PolylineEncodingOptions
     href: PolylineAlgorithm.PolylineEncodingOptions.yml
   - name: PolylineEncodingOptionsBuilder
     href: PolylineAlgorithm.PolylineEncodingOptionsBuilder.yml
-  - name: Pow10
-    href: PolylineAlgorithm.Pow10.yml
   - name: Structs
   - name: Coordinate
     href: PolylineAlgorithm.Coordinate.yml

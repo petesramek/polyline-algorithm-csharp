@@ -3,7 +3,7 @@ title: Struct Coordinate
 body:
 - api1: Struct Coordinate
   id: PolylineAlgorithm_Coordinate
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L27
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L25
   metadata:
     uid: PolylineAlgorithm.Coordinate
     commentId: T:PolylineAlgorithm.Coordinate
@@ -47,7 +47,7 @@ body:
 - h2: Constructors
 - api3: Coordinate()
   id: PolylineAlgorithm_Coordinate__ctor
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L43
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L34
   metadata:
     uid: PolylineAlgorithm.Coordinate.#ctor
     commentId: M:PolylineAlgorithm.Coordinate.#ctor
@@ -57,7 +57,7 @@ body:
 - markdown: The default value (0, 0) is a valid coordinate (Gulf of Guinea), but is also treated as the "default" value by <xref href="PolylineAlgorithm.Coordinate.IsDefault" data-throw-if-not-resolved="false"></xref>.
 - api3: Coordinate(double, double)
   id: PolylineAlgorithm_Coordinate__ctor_System_Double_System_Double_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L62
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L52
   metadata:
     uid: PolylineAlgorithm.Coordinate.#ctor(System.Double,System.Double)
     commentId: M:PolylineAlgorithm.Coordinate.#ctor(System.Double,System.Double)
@@ -87,7 +87,7 @@ body:
 - h2: Properties
 - api3: Latitude
   id: PolylineAlgorithm_Coordinate_Latitude
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L74
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L62
   metadata:
     uid: PolylineAlgorithm.Coordinate.Latitude
     commentId: P:PolylineAlgorithm.Coordinate.Latitude
@@ -100,7 +100,7 @@ body:
       url: https://learn.microsoft.com/dotnet/api/system.double
 - api3: Longitude
   id: PolylineAlgorithm_Coordinate_Longitude
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L79
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L67
   metadata:
     uid: PolylineAlgorithm.Coordinate.Longitude
     commentId: P:PolylineAlgorithm.Coordinate.Longitude
@@ -114,7 +114,7 @@ body:
 - h2: Methods
 - api3: Equals(object?)
   id: PolylineAlgorithm_Coordinate_Equals_System_Object_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L95
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L83
   metadata:
     uid: PolylineAlgorithm.Coordinate.Equals(System.Object)
     commentId: M:PolylineAlgorithm.Coordinate.Equals(System.Object)
@@ -136,7 +136,7 @@ body:
     description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if <code class="paramref">obj</code> and this instance are the same type and represent the same value; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
 - api3: Equals(Coordinate)
   id: PolylineAlgorithm_Coordinate_Equals_PolylineAlgorithm_Coordinate_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L98
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L86
   metadata:
     uid: PolylineAlgorithm.Coordinate.Equals(PolylineAlgorithm.Coordinate)
     commentId: M:PolylineAlgorithm.Coordinate.Equals(PolylineAlgorithm.Coordinate)
@@ -157,7 +157,7 @@ body:
     description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the current object is equal to the <code class="paramref">other</code> parameter; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
 - api3: Equals(Coordinate, double)
   id: PolylineAlgorithm_Coordinate_Equals_PolylineAlgorithm_Coordinate_System_Double_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L112
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L99
   metadata:
     uid: PolylineAlgorithm.Coordinate.Equals(PolylineAlgorithm.Coordinate,System.Double)
     commentId: M:PolylineAlgorithm.Coordinate.Equals(PolylineAlgorithm.Coordinate,System.Double)
@@ -183,7 +183,7 @@ body:
     description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if both latitude and longitude differ by less than <code class="paramref">tolerance</code>; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
 - api3: GetHashCode()
   id: PolylineAlgorithm_Coordinate_GetHashCode
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L117
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L104
   metadata:
     uid: PolylineAlgorithm.Coordinate.GetHashCode
     commentId: M:PolylineAlgorithm.Coordinate.GetHashCode
@@ -197,7 +197,7 @@ body:
     description: A 32-bit signed integer that is the hash code for this instance.
 - api3: IsDefault()
   id: PolylineAlgorithm_Coordinate_IsDefault
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L90
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L78
   metadata:
     uid: PolylineAlgorithm.Coordinate.IsDefault
     commentId: M:PolylineAlgorithm.Coordinate.IsDefault
@@ -213,7 +213,7 @@ body:
 - markdown: The value (0, 0) is a valid coordinate (Gulf of Guinea), but is also treated as the "default" value by this method.
 - api3: ToString()
   id: PolylineAlgorithm_Coordinate_ToString
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L125
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L112
   metadata:
     uid: PolylineAlgorithm.Coordinate.ToString
     commentId: M:PolylineAlgorithm.Coordinate.ToString
@@ -228,7 +228,7 @@ body:
 - h2: Operators
 - api3: operator ==(Coordinate, Coordinate)
   id: PolylineAlgorithm_Coordinate_op_Equality_PolylineAlgorithm_Coordinate_PolylineAlgorithm_Coordinate_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L138
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L124
   metadata:
     uid: PolylineAlgorithm.Coordinate.op_Equality(PolylineAlgorithm.Coordinate,PolylineAlgorithm.Coordinate)
     commentId: M:PolylineAlgorithm.Coordinate.op_Equality(PolylineAlgorithm.Coordinate,PolylineAlgorithm.Coordinate)
@@ -254,7 +254,7 @@ body:
     description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if both coordinates are equal; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
 - api3: operator !=(Coordinate, Coordinate)
   id: PolylineAlgorithm_Coordinate_op_Inequality_PolylineAlgorithm_Coordinate_PolylineAlgorithm_Coordinate_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L148
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Coordinate.cs#L134
   metadata:
     uid: PolylineAlgorithm.Coordinate.op_Inequality(PolylineAlgorithm.Coordinate,PolylineAlgorithm.Coordinate)
     commentId: M:PolylineAlgorithm.Coordinate.op_Inequality(PolylineAlgorithm.Coordinate,PolylineAlgorithm.Coordinate)

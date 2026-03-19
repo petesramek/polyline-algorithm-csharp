@@ -43,18 +43,18 @@ body:
   - type:
       text: PolylineEncodingOptions
       url: PolylineAlgorithm.PolylineEncodingOptions.html
-    description: Options for configuring polyline encoding.
+    description: Provides configuration options for polyline encoding operations.
   - type:
       text: PolylineEncodingOptionsBuilder
       url: PolylineAlgorithm.PolylineEncodingOptionsBuilder.html
     description: Provides a builder for configuring options for polyline encoding operations.
   - type:
-      text: Pow10
-      url: PolylineAlgorithm.Pow10.html
-    description: Provides optimized calculation of powers of 10 for precision-based operations.
+      text: PolylineEncoding.Validation
+      url: PolylineAlgorithm.PolylineEncoding.Validation.html
   - type:
-      text: PolylineEncoding.Validator
-      url: PolylineAlgorithm.PolylineEncoding.Validator.html
+      text: Coordinate.Validator
+      url: PolylineAlgorithm.Coordinate.Validator.html
+    description: Provides static methods for validating latitude and longitude values used in <xref href="PolylineAlgorithm.Coordinate" data-throw-if-not-resolved="false"></xref>.
 - h3: Structs
 - parameters:
   - type:

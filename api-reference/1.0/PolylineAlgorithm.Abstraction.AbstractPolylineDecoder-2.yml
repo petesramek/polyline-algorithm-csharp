@@ -54,7 +54,7 @@ body:
 - h2: Constructors
 - api3: AbstractPolylineDecoder()
   id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2__ctor
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L31
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L30
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor
@@ -62,19 +62,18 @@ body:
 - code: protected AbstractPolylineDecoder()
 - api3: AbstractPolylineDecoder(PolylineEncodingOptions)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2__ctor_PolylineAlgorithm_PolylineEncodingOptions_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L43
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L42
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
 - markdown: Initializes a new instance of the <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineDecoder%602" data-throw-if-not-resolved="false"></xref> class with the specified encoding options.
-- code: protected AbstractPolylineDecoder(PolylineEncodingOptions encodingOptions)
+- code: protected AbstractPolylineDecoder(PolylineEncodingOptions options)
 - h4: Parameters
 - parameters:
-  - name: encodingOptions
+  - name: options
     type:
     - text: PolylineEncodingOptions
       url: PolylineAlgorithm.PolylineEncodingOptions.html
-    description: The <xref href="PolylineAlgorithm.PolylineEncodingOptions" data-throw-if-not-resolved="false"></xref> to use for encoding operations.
 - h4: Exceptions
 - parameters:
   - type:
@@ -84,7 +83,7 @@ body:
 - h2: Properties
 - api3: Options
   id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_Options
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L52
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L56
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Options
     commentId: P:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Options
@@ -98,7 +97,7 @@ body:
 - h2: Methods
 - api3: CreateCoordinate(double, double)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_CreateCoordinate_System_Double_System_Double_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L183
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L171
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.CreateCoordinate(System.Double,System.Double)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.CreateCoordinate(System.Double,System.Double)
@@ -119,7 +118,7 @@ body:
     - TCoordinate
 - api3: Decode(TPolyline)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_Decode__0_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L72
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L76
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Decode(`0)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Decode(`0)
@@ -156,7 +155,7 @@ body:
     description: Thrown when the polyline format is invalid or malformed at a specific position.
 - api3: Decode(TPolyline, CancellationToken)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_Decode__0_System_Threading_CancellationToken_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L84
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L88
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Decode(`0,System.Threading.CancellationToken)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Decode(`0,System.Threading.CancellationToken)
@@ -198,7 +197,7 @@ body:
     description: ''
 - api3: GetReadOnlyMemory(in TPolyline)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_GetReadOnlyMemory__0__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L180
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L168
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.GetReadOnlyMemory(`0@)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.GetReadOnlyMemory(`0@)
@@ -219,7 +218,7 @@ body:
     - '>'
 - api3: OnInvalidPolyline(int, ReadOnlyMemory<char>)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_OnInvalidPolyline_System_Int32_System_ReadOnlyMemory_System_Char__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L175
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L164
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.OnInvalidPolyline(System.Int32,System.ReadOnlyMemory{System.Char})
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.OnInvalidPolyline(System.Int32,System.ReadOnlyMemory{System.Char})
@@ -239,17 +238,17 @@ body:
     - text: char
       url: https://learn.microsoft.com/dotnet/api/system.char
     - '>'
-- api3: ValidateFormat(ReadOnlyMemory<char>, ILogger)
+- api3: ValidateFormat(ReadOnlyMemory<char>, ILogger?)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_ValidateFormat_System_ReadOnlyMemory_System_Char__Microsoft_Extensions_Logging_ILogger_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L158
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L150
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.ValidateFormat(System.ReadOnlyMemory{System.Char},Microsoft.Extensions.Logging.ILogger)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.ValidateFormat(System.ReadOnlyMemory{System.Char},Microsoft.Extensions.Logging.ILogger)
 - markdown: Validates the polyline format for allowed characters.
-- code: protected virtual void ValidateFormat(ReadOnlyMemory<char> polylineSequence, ILogger logger)
+- code: protected virtual void ValidateFormat(ReadOnlyMemory<char> sequence, ILogger? logger)
 - h4: Parameters
 - parameters:
-  - name: polylineSequence
+  - name: sequence
     type:
     - text: ReadOnlyMemory
       url: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
@@ -261,6 +260,7 @@ body:
     type:
     - text: ILogger
       url: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+    - '?'
 languageId: csharp
 metadata:
   description: >-
