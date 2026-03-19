@@ -6,7 +6,6 @@
 namespace PolylineAlgorithm;
 
 using PolylineAlgorithm.Internal.Diagnostics;
-using PolylineAlgorithm.Properties;
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -26,12 +25,6 @@ using System.Runtime.InteropServices;
 [StructLayout(LayoutKind.Auto)]
 public readonly struct Coordinate : IEquatable<Coordinate>      
 {
-#if NET8_0_OR_GREATER
-    private static readonly CompositeFormat _coordinateValueMustBeBetweenValuesMessageFormat = CompositeFormat.Parse(ExceptionMessageResource.CoordinateValueMustBeBetweenValuesMessageFormat);
-#else
-    private static readonly string _coordinateValueMustBeBetweenValuesMessageFormat = ExceptionMessageResource.CoordinateValueMustBeBetweenValuesMessageFormat;
-#endif
-
     /// <summary>
     /// Initializes a new instance of the <see cref="Coordinate"/> struct with default values (0) for <see cref="Latitude"/> and <see cref="Longitude"/>.
     /// </summary>
