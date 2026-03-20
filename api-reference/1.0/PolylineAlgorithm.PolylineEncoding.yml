@@ -3,7 +3,7 @@ title: Class PolylineEncoding
 body:
 - api1: Class PolylineEncoding
   id: PolylineAlgorithm_PolylineEncoding
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L24
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L23
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding
     commentId: T:PolylineAlgorithm.PolylineEncoding
@@ -50,7 +50,7 @@ body:
 - h2: Methods
 - api3: Denormalize(int, uint)
   id: PolylineAlgorithm_PolylineEncoding_Denormalize_System_Int32_System_UInt32_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L129
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L121
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.Denormalize(System.Int32,System.UInt32)
     commentId: M:PolylineAlgorithm.PolylineEncoding.Denormalize(System.Int32,System.UInt32)
@@ -117,7 +117,7 @@ body:
     description: Thrown if the arithmetic operation overflows during conversion.
 - api3: GetRequiredBufferSize(int)
   id: PolylineAlgorithm_PolylineEncoding_GetRequiredBufferSize_System_Int32_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L305
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L297
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.GetRequiredBufferSize(System.Int32)
     commentId: M:PolylineAlgorithm.PolylineEncoding.GetRequiredBufferSize(System.Int32)
@@ -200,7 +200,7 @@ body:
     - )
 - api3: Normalize(double, uint)
   id: PolylineAlgorithm_PolylineEncoding_Normalize_System_Double_System_UInt32_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L66
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L61
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.Normalize(System.Double,System.UInt32)
     commentId: M:PolylineAlgorithm.PolylineEncoding.Normalize(System.Double,System.UInt32)
@@ -268,7 +268,7 @@ body:
     description: Thrown when the normalized result exceeds the range of a 32-bit signed integer during the conversion from double to int.
 - api3: TryReadValue(ref int, ReadOnlyMemory<char>, ref int)
   id: PolylineAlgorithm_PolylineEncoding_TryReadValue_System_Int32__System_ReadOnlyMemory_System_Char__System_Int32__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L176
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L168
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.TryReadValue(System.Int32@,System.ReadOnlyMemory{System.Char},System.Int32@)
     commentId: M:PolylineAlgorithm.PolylineEncoding.TryReadValue(System.Int32@,System.ReadOnlyMemory{System.Char},System.Int32@)
@@ -328,7 +328,7 @@ body:
     </p>
 - api3: TryWriteValue(int, Span<char>, ref int)
   id: PolylineAlgorithm_PolylineEncoding_TryWriteValue_System_Int32_System_Span_System_Char__System_Int32__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L244
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L236
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.TryWriteValue(System.Int32,System.Span{System.Char},System.Int32@)
     commentId: M:PolylineAlgorithm.PolylineEncoding.TryWriteValue(System.Int32,System.Span{System.Char},System.Int32@)
@@ -405,6 +405,122 @@ body:
     This method is the inverse of <xref href="PolylineAlgorithm.PolylineEncoding.TryReadValue(System.Int32%40%2cSystem.ReadOnlyMemory%7bSystem.Char%7d%2cSystem.Int32%40)" data-throw-if-not-resolved="false"></xref> and can be used to encode coordinate deltas for polyline serialization.
 
     </p>
+- api3: ValidateBlockLength(ReadOnlySpan<char>)
+  id: PolylineAlgorithm_PolylineEncoding_ValidateBlockLength_System_ReadOnlySpan_System_Char__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L437
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncoding.ValidateBlockLength(System.ReadOnlySpan{System.Char})
+    commentId: M:PolylineAlgorithm.PolylineEncoding.ValidateBlockLength(System.ReadOnlySpan{System.Char})
+- markdown: Validates the block structure of a polyline segment, ensuring each encoded value does not exceed 7 characters and the polyline ends correctly.
+- code: public static void ValidateBlockLength(ReadOnlySpan<char> polyline)
+- h4: Parameters
+- parameters:
+  - name: polyline
+    type:
+    - text: ReadOnlySpan
+      url: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+    - <
+    - text: char
+      url: https://learn.microsoft.com/dotnet/api/system.char
+    - '>'
+    description: A span representing the polyline segment to validate.
+- h4: Remarks
+- markdown: >-
+    <p>
+
+    Iterates through the polyline, counting the length of each block (a sequence of characters representing an encoded value).
+
+    Throws an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> if any block exceeds 7 characters or if the polyline does not end with a valid block terminator.
+
+    </p>
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentexception
+    description: Thrown when a block exceeds 7 characters or the polyline does not end with a valid block terminator.
+- api3: ValidateCharRange(ReadOnlySpan<char>)
+  id: PolylineAlgorithm_PolylineEncoding_ValidateCharRange_System_ReadOnlySpan_System_Char__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L391
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncoding.ValidateCharRange(System.ReadOnlySpan{System.Char})
+    commentId: M:PolylineAlgorithm.PolylineEncoding.ValidateCharRange(System.ReadOnlySpan{System.Char})
+- markdown: Validates that all characters in the polyline segment are within the allowed ASCII range for polyline encoding.
+- code: public static void ValidateCharRange(ReadOnlySpan<char> polyline)
+- h4: Parameters
+- parameters:
+  - name: polyline
+    type:
+    - text: ReadOnlySpan
+      url: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+    - <
+    - text: char
+      url: https://learn.microsoft.com/dotnet/api/system.char
+    - '>'
+    description: A span representing the polyline segment to validate.
+- h4: Remarks
+- markdown: >-
+    <p>
+
+    Uses SIMD vectorization for efficient validation of large spans. Falls back to scalar checks for any block where an invalid character is detected.
+
+    </p>
+
+    <p>
+
+    The valid range is from '?' (63) to '_' (95), inclusive. If an invalid character is found, an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> is thrown.
+
+    </p>
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentexception
+    description: Thrown when an invalid character is found in the polyline segment.
+- api3: ValidateFormat(ReadOnlySpan<char>)
+  id: PolylineAlgorithm_PolylineEncoding_ValidateFormat_System_ReadOnlySpan_System_Char__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncoding.cs#L369
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncoding.ValidateFormat(System.ReadOnlySpan{System.Char})
+    commentId: M:PolylineAlgorithm.PolylineEncoding.ValidateFormat(System.ReadOnlySpan{System.Char})
+- markdown: Validates the format of a polyline segment, ensuring all characters are valid and block structure is correct.
+- code: public static void ValidateFormat(ReadOnlySpan<char> polyline)
+- h4: Parameters
+- parameters:
+  - name: polyline
+    type:
+    - text: ReadOnlySpan
+      url: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+    - <
+    - text: char
+      url: https://learn.microsoft.com/dotnet/api/system.char
+    - '>'
+    description: A span representing the polyline segment to validate.
+- h4: Remarks
+- markdown: >-
+    <p>
+
+    This method performs two levels of validation on the provided polyline segment:
+
+    </p>
+
+    <ol><li>
+          <b>Character Range Validation:</b> Checks that every character in the polyline is within the valid ASCII range for polyline encoding ('?' [63] to '_' [95], inclusive).
+          Uses SIMD acceleration for efficient validation of large segments.
+        </li><li>
+          <b>Block Structure Validation:</b> Ensures that each encoded value (block) does not exceed 7 characters and that the polyline ends with a valid block terminator.
+        </li></ol>
+    <p>
+
+    If an invalid character or block structure is detected, an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> is thrown with details about the error.
+
+    </p>
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentexception
+    description: Thrown when an invalid character is found or the block structure is invalid.
 languageId: csharp
 metadata:
   description: >-
