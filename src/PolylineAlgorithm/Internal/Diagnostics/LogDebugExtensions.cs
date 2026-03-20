@@ -3,7 +3,7 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm.Internal.Logging;
+namespace PolylineAlgorithm.Internal.Diagnostics;
 
 using Microsoft.Extensions.Logging;
 

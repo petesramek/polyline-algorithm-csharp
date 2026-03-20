@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Internal.Diagnostics;
-using PolylineAlgorithm.Internal.Logging;
+using PolylineAlgorithm.Internal.Diagnostics;
 using System;
 using System.Buffers;
 using System.Diagnostics;
@@ -132,7 +132,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
         static int GetMaxBufferLength(int count) {
             Debug.Assert(count > 0, "Count must be greater than zero.");
 
-            int requestedBufferLength = count * Defaults.Polyline.Block.Length.Max;
+            int requestedBufferLength = count * 2 * Defaults.Polyline.Block.Length.Max;
 
             Debug.Assert(requestedBufferLength > 0, "Requested buffer length must be greater than zero.");
 

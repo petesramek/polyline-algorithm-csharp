@@ -69,5 +69,4 @@ internal struct CoordinateDelta {
     public override readonly string ToString() =>
         $"{{ Coordinate: {{ Latitude: {_current.Latitude}, Longitude: {_current.Longitude} }}, " +
         $"Delta: {{ Latitude: {Latitude}, Longitude: {Longitude} }} }}";
-
 }

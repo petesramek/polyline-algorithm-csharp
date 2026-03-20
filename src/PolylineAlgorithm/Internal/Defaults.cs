@@ -101,12 +101,12 @@ internal static class Defaults {
                 /// <summary>
                 /// The minimum number of characters required to represent an encoded value.
                 /// </summary>
-                internal const int Min = 2;
+                internal const int Min = 1;
 
                 /// <summary>
                 /// The maximum number of characters allowed to represent an encoded value.
                 /// </summary>
-                internal const int Max = 14;
+                internal const int Max = 7;
             }
         }
     }

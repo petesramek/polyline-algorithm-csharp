@@ -443,7 +443,7 @@ public static class PolylineEncoding {
 
             if (polyline[i] < End) {
                 foundBlockEnd = true;
-                if (blockLen > 7) {
+                if (blockLen > Defaults.Polyline.Block.Length.Max) {
                     ExceptionGuard.ThrowPolylineBlockTooLong(i - blockLen + 1);
                 }
                 blockLen = 0;
