@@ -7,6 +7,8 @@ namespace PolylineAlgorithm;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Properties;
 using System;
+using System.Buffers;
+using System.IO.Pipelines;
 
 /// <summary>
 /// Provides methods for encoding and decoding polyline data, as well as utilities for normalizing and de-normalizing
@@ -249,4 +251,82 @@ public static class PolylineEncoding {
         (CoordinateValueType.Longitude, double denormalized) when denormalized >= Defaults.Coordinate.Longitude.Min && denormalized <= Defaults.Coordinate.Longitude.Max => true,
         _ => false,
     };
+
+    /// <summary>
+    /// Attempts to read a single encoded value from a <see cref="SequenceReader{T}"/> of bytes and updates the
+    /// variance. This overload enables zero-allocation decoding when the source is a pipe buffer.
+    /// </summary>
+    /// <remarks>
+    /// The polyline encoding characters are all in the ASCII range, so each encoded byte maps directly to the
+    /// equivalent <see cref="char"/> value used by <see cref="TryReadValue(ref int, ref ReadOnlyMemory{char}, ref int)"/>.
+    /// If the reader reaches the end of the buffer before a complete value has been decoded, the variance is left
+    /// unchanged and the caller should wait for more data.
+    /// </remarks>
+    /// <param name="variance">
+    /// A reference to the integer that will be updated based on the value read from the buffer.
+    /// </param>
+    /// <param name="reader">
+    /// A reference to the <see cref="SequenceReader{T}"/> over the pipe buffer. The reader's position is advanced
+    /// only for each byte that belongs to a completely decoded value.
+    /// </param>
+    /// <returns>
+    /// <see langword="true"/> if a complete value was successfully decoded; <see langword="false"/> if the buffer
+    /// ended before the value was fully read (partial data — the caller should supply more bytes).
+    /// </returns>
+    internal static bool TryReadValue(ref int variance, ref SequenceReader<byte> reader) {
+        int chunk = 0;
+        int sum = 0;
+        int shifter = 0;
+
+        while (reader.TryRead(out byte b)) {
+            chunk = b - Defaults.Algorithm.QuestionMark;
+            sum |= (chunk & Defaults.Algorithm.UnitSeparator) << shifter;
+            shifter += Defaults.Algorithm.ShiftLength;
+
+            if (chunk < Defaults.Algorithm.Space) {
+                variance += (sum & 1) == 1 ? ~(sum >> 1) : sum >> 1;
+                return true;
+            }
+        }
+
+        // Buffer ended before a terminating byte was found — incomplete value.
+        return false;
+    }
+
+    /// <summary>
+    /// Writes a single encoded value derived from <paramref name="variance"/> directly into an
+    /// <see cref="IBufferWriter{T}"/> of bytes. This overload enables zero-allocation encoding when the
+    /// destination is a pipe writer.
+    /// </summary>
+    /// <remarks>
+    /// The method requests a span of up to 6 bytes from the writer (the maximum size of one encoded value),
+    /// writes the encoded bytes, and then advances the writer by the number of bytes actually used.
+    /// </remarks>
+    /// <param name="variance">
+    /// The integer value used to calculate the output bytes to be written.
+    /// </param>
+    /// <param name="writer">
+    /// The <see cref="IBufferWriter{T}"/> to which the encoded bytes are written.
+    /// </param>
+    internal static void WriteValue(int variance, IBufferWriter<byte> writer) {
+        // Maximum encoded size per value is 6 bytes.
+        Span<byte> span = writer.GetSpan(6);
+
+        int rem = variance << 1;
+
+        if (variance < 0) {
+            rem = ~rem;
+        }
+
+        int written = 0;
+
+        while (rem >= Defaults.Algorithm.Space) {
+            span[written++] = (byte)((Defaults.Algorithm.Space | rem & Defaults.Algorithm.UnitSeparator) + Defaults.Algorithm.QuestionMark);
+            rem >>= Defaults.Algorithm.ShiftLength;
+        }
+
+        span[written++] = (byte)(rem + Defaults.Algorithm.QuestionMark);
+
+        writer.Advance(written);
+    }
 }

@@ -11,7 +11,13 @@ using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Internal.Logging;
 using PolylineAlgorithm.Properties;
 using System;
+using System.Buffers;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO.Pipelines;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 /// <summary>
 /// Decodes encoded polyline strings into sequences of geographic coordinates.
@@ -20,7 +26,7 @@ using System.Diagnostics.CodeAnalysis;
 /// <remarks>
 /// This abstract class provides a base implementation for decoding polylines, allowing subclasses to define how to handle specific polyline formats.
 /// </remarks>
-public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder<TPolyline, TCoordinate> {
+public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder<TPolyline, TCoordinate>, IAsyncPolylineDecoder<TPolyline, TCoordinate>, IPolylinePipeDecoder<TCoordinate> {
     /// <summary>
     /// Initializes a new instance of the <see cref="AbstractPolylineDecoder{TPolyline, TCoordinate}"/> class with default encoding options.
     /// </summary>
@@ -137,6 +143,135 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     /// A <see cref="ReadOnlyMemory{T}"/> representing the encoded polyline data.
     /// </returns>
     protected abstract ReadOnlyMemory<char> GetReadOnlyMemory(TPolyline polyline);
+
+    /// <summary>
+    /// Asynchronously decodes the specified encoded polyline into a sequence of geographic coordinates by
+    /// iterating the synchronous <see cref="Decode"/> implementation and checking the cancellation token
+    /// between each yielded coordinate.
+    /// </summary>
+    /// <param name="polyline">
+    /// The <typeparamref name="TPolyline"/> instance containing the encoded polyline string to decode.
+    /// </param>
+    /// <param name="cancellationToken">
+    /// A <see cref="CancellationToken"/> to observe while iterating.
+    /// </param>
+    /// <returns>
+    /// An <see cref="IAsyncEnumerable{T}"/> of <typeparamref name="TCoordinate"/> representing the decoded
+    /// latitude and longitude pairs.
+    /// </returns>
+    public async IAsyncEnumerable<TCoordinate> DecodeAsync(
+        TPolyline polyline,
+        [EnumeratorCancellation] CancellationToken cancellationToken) {
+
+        foreach (TCoordinate coordinate in Decode(polyline)) {
+            cancellationToken.ThrowIfCancellationRequested();
+            yield return coordinate;
+        }
+
+        await Task.CompletedTask.ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Asynchronously decodes encoded polyline bytes read from <paramref name="reader"/> into a sequence of
+    /// geographic coordinates with zero intermediate allocations.
+    /// </summary>
+    /// <remarks>
+    /// The method processes the pipe in chunks using <see cref="SequenceReader{T}"/> to handle multi-segment
+    /// <see cref="ReadOnlySequence{T}"/> buffers transparently. The pipe reader is not completed by this method.
+    /// </remarks>
+    /// <param name="reader">
+    /// The <see cref="PipeReader"/> from which the encoded polyline bytes are consumed.
+    /// </param>
+    /// <param name="cancellationToken">
+    /// A <see cref="CancellationToken"/> to observe while waiting for data from the pipe.
+    /// </param>
+    /// <returns>
+    /// An <see cref="IAsyncEnumerable{T}"/> of <typeparamref name="TCoordinate"/> representing the decoded
+    /// latitude and longitude pairs.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when <paramref name="reader"/> is <see langword="null"/>.
+    /// </exception>
+    public async IAsyncEnumerable<TCoordinate> DecodeAsync(
+        PipeReader reader,
+        [EnumeratorCancellation] CancellationToken cancellationToken) {
+
+        if (reader is null) {
+            throw new ArgumentNullException(nameof(reader));
+        }
+
+        int latitude = 0;
+        int longitude = 0;
+        bool firstRead = true;
+
+        while (true) {
+            ReadResult result = await reader.ReadAsync(cancellationToken).ConfigureAwait(false);
+            ReadOnlySequence<byte> buffer = result.Buffer;
+
+            if (firstRead && buffer.IsEmpty && result.IsCompleted) {
+                throw new ArgumentException(
+                    string.Format(ExceptionMessageResource.PolylineCannotBeShorterThanExceptionMessage, 0),
+                    nameof(reader));
+            }
+
+            firstRead = false;
+
+            // Process the buffer synchronously so that the SequenceReader<byte> (a ref struct) never lives
+            // across a yield boundary.
+            var decoded = new List<TCoordinate>();
+            (SequencePosition consumed, latitude, longitude) = ProcessPipeBuffer(buffer, latitude, longitude, decoded);
+
+            foreach (TCoordinate coordinate in decoded) {
+                yield return coordinate;
+            }
+
+            // Tell the pipe how far we have consumed and examined.
+            reader.AdvanceTo(consumed, buffer.End);
+
+            if (result.IsCompleted) {
+                break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Synchronously processes a <see cref="ReadOnlySequence{T}"/> pipe buffer, decoding as many complete
+    /// coordinate pairs as possible and returning the updated variance state and the consumed position.
+    /// <see cref="System.Buffers.SequenceReader{T}"/> is used here because this method is not an async iterator
+    /// and therefore the ref-struct constraint does not apply.
+    /// </summary>
+    private (SequencePosition consumed, int latitude, int longitude) ProcessPipeBuffer(
+        ReadOnlySequence<byte> buffer,
+        int latitude,
+        int longitude,
+        List<TCoordinate> results) {
+
+        var sequenceReader = new SequenceReader<byte>(buffer);
+        SequencePosition consumed = buffer.Start;
+
+        while (!sequenceReader.End) {
+            // Save state before attempting to decode a coordinate pair so we can roll back if only
+            // part of the pair is available in the current buffer.
+            SequencePosition pairStart = sequenceReader.Position;
+            int savedLatitude = latitude;
+            int savedLongitude = longitude;
+
+            if (!PolylineEncoding.TryReadValue(ref latitude, ref sequenceReader)
+                || !PolylineEncoding.TryReadValue(ref longitude, ref sequenceReader)) {
+
+                latitude = savedLatitude;
+                longitude = savedLongitude;
+                break;
+            }
+
+            consumed = sequenceReader.Position;
+            results.Add(CreateCoordinate(
+                PolylineEncoding.Denormalize(latitude, CoordinateValueType.Latitude),
+                PolylineEncoding.Denormalize(longitude, CoordinateValueType.Longitude)));
+        }
+
+        return (consumed, latitude, longitude);
+    }
 
     /// <summary>
     /// Creates a coordinate instance from the given latitude and longitude values.

@@ -1,1 +1,79 @@
 ﻿#nullable enable
+PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>
+PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.AbstractPolylineDecoder() -> void
+PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.AbstractPolylineDecoder(PolylineAlgorithm.PolylineEncodingOptions! options) -> void
+PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.Decode(TPolyline polyline) -> System.Collections.Generic.IEnumerable<TCoordinate>!
+PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.Options.get -> PolylineAlgorithm.PolylineEncodingOptions!
+PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>
+PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.AbstractPolylineEncoder() -> void
+PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.AbstractPolylineEncoder(PolylineAlgorithm.PolylineEncodingOptions! options) -> void
+PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.Encode(System.Collections.Generic.IEnumerable<TCoordinate>! coordinates) -> TPolyline
+PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.Options.get -> PolylineAlgorithm.PolylineEncodingOptions!
+PolylineAlgorithm.Abstraction.IPolylineDecoder<TPolyline, TCoordinate>
+PolylineAlgorithm.Abstraction.IPolylineDecoder<TPolyline, TCoordinate>.Decode(TPolyline polyline) -> System.Collections.Generic.IEnumerable<TCoordinate>!
+PolylineAlgorithm.Abstraction.IPolylineEncoder<TCoordinate, TPolyline>
+PolylineAlgorithm.Abstraction.IPolylineEncoder<TCoordinate, TPolyline>.Encode(System.Collections.Generic.IEnumerable<TCoordinate>! coordinates) -> TPolyline
+PolylineAlgorithm.Coordinate
+PolylineAlgorithm.Coordinate.Coordinate() -> void
+PolylineAlgorithm.Coordinate.Coordinate(double latitude, double longitude) -> void
+PolylineAlgorithm.Coordinate.Equals(PolylineAlgorithm.Coordinate other) -> bool
+PolylineAlgorithm.Coordinate.IsDefault() -> bool
+PolylineAlgorithm.Coordinate.Latitude.get -> double
+PolylineAlgorithm.Coordinate.Longitude.get -> double
+PolylineAlgorithm.CoordinateValueType
+PolylineAlgorithm.CoordinateValueType.Latitude = 1 -> PolylineAlgorithm.CoordinateValueType
+PolylineAlgorithm.CoordinateValueType.Longitude = 2 -> PolylineAlgorithm.CoordinateValueType
+PolylineAlgorithm.CoordinateValueType.None = 0 -> PolylineAlgorithm.CoordinateValueType
+PolylineAlgorithm.Extensions.PolylineDecoderExtensions
+PolylineAlgorithm.Extensions.PolylineEncoderExtensions
+PolylineAlgorithm.InvalidPolylineException
+PolylineAlgorithm.Polyline
+PolylineAlgorithm.Polyline.CopyTo(char[]! destination) -> void
+PolylineAlgorithm.Polyline.Equals(PolylineAlgorithm.Polyline other) -> bool
+PolylineAlgorithm.Polyline.IsEmpty.get -> bool
+PolylineAlgorithm.Polyline.Length.get -> long
+PolylineAlgorithm.Polyline.Polyline() -> void
+PolylineAlgorithm.PolylineDecoder
+PolylineAlgorithm.PolylineDecoder.PolylineDecoder() -> void
+PolylineAlgorithm.PolylineDecoder.PolylineDecoder(PolylineAlgorithm.PolylineEncodingOptions! options) -> void
+PolylineAlgorithm.PolylineEncoder
+PolylineAlgorithm.PolylineEncoder.PolylineEncoder() -> void
+PolylineAlgorithm.PolylineEncoder.PolylineEncoder(PolylineAlgorithm.PolylineEncodingOptions! options) -> void
+PolylineAlgorithm.PolylineEncoding
+PolylineAlgorithm.PolylineEncodingOptions
+PolylineAlgorithm.PolylineEncodingOptions.LoggerFactory.get -> Microsoft.Extensions.Logging.ILoggerFactory!
+PolylineAlgorithm.PolylineEncodingOptions.MaxBufferSize.get -> int
+PolylineAlgorithm.PolylineEncodingOptions.PolylineEncodingOptions() -> void
+PolylineAlgorithm.PolylineEncodingOptionsBuilder
+PolylineAlgorithm.PolylineEncodingOptionsBuilder.Build() -> PolylineAlgorithm.PolylineEncodingOptions!
+PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithLoggerFactory(Microsoft.Extensions.Logging.ILoggerFactory! loggerFactory) -> PolylineAlgorithm.PolylineEncodingOptionsBuilder!
+PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithMaxBufferSize(int bufferSize) -> PolylineAlgorithm.PolylineEncodingOptionsBuilder!
+abstract PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.CreateCoordinate(double latitude, double longitude) -> TCoordinate
+abstract PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.GetReadOnlyMemory(TPolyline polyline) -> System.ReadOnlyMemory<char>
+abstract PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.CreatePolyline(System.ReadOnlyMemory<char> polyline) -> TPolyline
+abstract PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.GetLatitude(TCoordinate current) -> double
+abstract PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.GetLongitude(TCoordinate current) -> double
+override PolylineAlgorithm.Coordinate.Equals(object? obj) -> bool
+override PolylineAlgorithm.Coordinate.GetHashCode() -> int
+override PolylineAlgorithm.Coordinate.ToString() -> string!
+override PolylineAlgorithm.Polyline.Equals(object! obj) -> bool
+override PolylineAlgorithm.Polyline.GetHashCode() -> int
+override PolylineAlgorithm.Polyline.ToString() -> string!
+static PolylineAlgorithm.Coordinate.operator !=(PolylineAlgorithm.Coordinate left, PolylineAlgorithm.Coordinate right) -> bool
+static PolylineAlgorithm.Coordinate.operator ==(PolylineAlgorithm.Coordinate left, PolylineAlgorithm.Coordinate right) -> bool
+static PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode(this PolylineAlgorithm.Abstraction.IPolylineDecoder<PolylineAlgorithm.Polyline, PolylineAlgorithm.Coordinate>! decoder, System.ReadOnlyMemory<char> polyline) -> System.Collections.Generic.IEnumerable<PolylineAlgorithm.Coordinate>!
+static PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode(this PolylineAlgorithm.Abstraction.IPolylineDecoder<PolylineAlgorithm.Polyline, PolylineAlgorithm.Coordinate>! decoder, char[]! polyline) -> System.Collections.Generic.IEnumerable<PolylineAlgorithm.Coordinate>!
+static PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode(this PolylineAlgorithm.Abstraction.IPolylineDecoder<PolylineAlgorithm.Polyline, PolylineAlgorithm.Coordinate>! decoder, string! polyline) -> System.Collections.Generic.IEnumerable<PolylineAlgorithm.Coordinate>!
+static PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode(this PolylineAlgorithm.Abstraction.IPolylineEncoder<PolylineAlgorithm.Coordinate, PolylineAlgorithm.Polyline>! encoder, PolylineAlgorithm.Coordinate[]! coordinates) -> PolylineAlgorithm.Polyline
+static PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode(this PolylineAlgorithm.Abstraction.IPolylineEncoder<PolylineAlgorithm.Coordinate, PolylineAlgorithm.Polyline>! encoder, System.Collections.Generic.ICollection<PolylineAlgorithm.Coordinate>! coordinates) -> PolylineAlgorithm.Polyline
+static PolylineAlgorithm.Polyline.FromCharArray(char[]! polyline) -> PolylineAlgorithm.Polyline
+static PolylineAlgorithm.Polyline.FromMemory(System.ReadOnlyMemory<char> polyline) -> PolylineAlgorithm.Polyline
+static PolylineAlgorithm.Polyline.FromString(string! polyline) -> PolylineAlgorithm.Polyline
+static PolylineAlgorithm.Polyline.operator !=(PolylineAlgorithm.Polyline left, PolylineAlgorithm.Polyline right) -> bool
+static PolylineAlgorithm.Polyline.operator ==(PolylineAlgorithm.Polyline left, PolylineAlgorithm.Polyline right) -> bool
+static PolylineAlgorithm.PolylineEncoding.Denormalize(int value, PolylineAlgorithm.CoordinateValueType type) -> double
+static PolylineAlgorithm.PolylineEncoding.GetCharCount(int variance) -> int
+static PolylineAlgorithm.PolylineEncoding.Normalize(double value, PolylineAlgorithm.CoordinateValueType type) -> int
+static PolylineAlgorithm.PolylineEncoding.TryReadValue(ref int variance, ref System.ReadOnlyMemory<char> buffer, ref int position) -> bool
+static PolylineAlgorithm.PolylineEncoding.TryWriteValue(int variance, ref System.Span<char> buffer, ref int position) -> bool
+static PolylineAlgorithm.PolylineEncodingOptionsBuilder.Create() -> PolylineAlgorithm.PolylineEncodingOptionsBuilder!

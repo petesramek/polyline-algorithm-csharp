@@ -14,6 +14,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO.Pipelines;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 /// <summary>
 /// Provides functionality to encode a collection of geographic coordinates into an encoded polyline string.
@@ -22,7 +26,7 @@ using System.Diagnostics;
 /// <remarks>
 /// This abstract class serves as a base for specific polyline encoders, allowing customization of the encoding process.
 /// </remarks>
-public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder<TCoordinate, TPolyline> {
+public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder<TCoordinate, TPolyline>, IAsyncPolylineEncoder<TCoordinate, TPolyline>, IPolylinePipeEncoder<TCoordinate> {
     /// <summary>
     /// Initializes a new instance of the <see cref="AbstractPolylineEncoder{TCoordinate, TPolyline}"/> class with default encoding options.
     /// </summary>
@@ -217,5 +221,90 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// </returns>
 
     protected abstract double GetLatitude(TCoordinate current);
+
+    /// <summary>
+    /// Asynchronously encodes a sequence of geographic coordinates into an encoded polyline by collecting all
+    /// coordinates from the <see cref="IAsyncEnumerable{T}"/> and then encoding them synchronously.
+    /// </summary>
+    /// <param name="coordinates">
+    /// The asynchronous collection of <typeparamref name="TCoordinate"/> instances to encode.
+    /// </param>
+    /// <param name="cancellationToken">
+    /// A <see cref="CancellationToken"/> to observe while collecting coordinates.
+    /// </param>
+    /// <returns>
+    /// A <see cref="ValueTask{TResult}"/> containing the encoded <typeparamref name="TPolyline"/>.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when <paramref name="coordinates"/> is <see langword="null"/>.
+    /// </exception>
+    public async ValueTask<TPolyline> EncodeAsync(
+        IAsyncEnumerable<TCoordinate> coordinates,
+        CancellationToken cancellationToken) {
+
+        if (coordinates is null) {
+            throw new ArgumentNullException(nameof(coordinates));
+        }
+
+        var list = new List<TCoordinate>();
+
+        await foreach (TCoordinate coordinate in coordinates.WithCancellation(cancellationToken).ConfigureAwait(false)) {
+            list.Add(coordinate);
+        }
+
+        return Encode(list);
+    }
+
+    /// <summary>
+    /// Asynchronously encodes a sequence of geographic coordinates and writes the encoded polyline bytes directly
+    /// into <paramref name="writer"/> with zero intermediate allocations.
+    /// </summary>
+    /// <remarks>
+    /// Each coordinate pair is encoded directly into the <see cref="PipeWriter"/>'s buffer using
+    /// <see cref="PolylineEncoding.WriteValue(int, System.Buffers.IBufferWriter{byte})"/>,
+    /// avoiding intermediate string or character-array allocations. The writer is flushed periodically
+    /// but is not completed by this method.
+    /// </remarks>
+    /// <param name="coordinates">
+    /// The asynchronous collection of <typeparamref name="TCoordinate"/> instances to encode.
+    /// </param>
+    /// <param name="writer">
+    /// The <see cref="PipeWriter"/> to which the encoded bytes are written.
+    /// </param>
+    /// <param name="cancellationToken">
+    /// A <see cref="CancellationToken"/> to observe while iterating coordinates.
+    /// </param>
+    /// <returns>
+    /// A <see cref="ValueTask"/> representing the asynchronous encode-and-write operation.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when <paramref name="coordinates"/> or <paramref name="writer"/> is <see langword="null"/>.
+    /// </exception>
+    public async ValueTask EncodeAsync(
+        IAsyncEnumerable<TCoordinate> coordinates,
+        PipeWriter writer,
+        CancellationToken cancellationToken) {
+
+        if (coordinates is null) {
+            throw new ArgumentNullException(nameof(coordinates));
+        }
+
+        if (writer is null) {
+            throw new ArgumentNullException(nameof(writer));
+        }
+
+        CoordinateVariance variance = new();
+
+        await foreach (TCoordinate coordinate in coordinates.WithCancellation(cancellationToken).ConfigureAwait(false)) {
+            variance.Next(
+                PolylineEncoding.Normalize(GetLatitude(coordinate), CoordinateValueType.Latitude),
+                PolylineEncoding.Normalize(GetLongitude(coordinate), CoordinateValueType.Longitude));
+
+            PolylineEncoding.WriteValue(variance.Latitude, writer);
+            PolylineEncoding.WriteValue(variance.Longitude, writer);
+        }
+
+        await writer.FlushAsync(cancellationToken).ConfigureAwait(false);
+    }
 }
 

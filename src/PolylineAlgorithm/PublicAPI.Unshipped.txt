@@ -1,1 +1,19 @@
 ﻿#nullable enable
+PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.DecodeAsync(System.IO.Pipelines.PipeReader! reader, System.Threading.CancellationToken cancellationToken) -> System.Collections.Generic.IAsyncEnumerable<TCoordinate>!
+PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.DecodeAsync(TPolyline polyline, System.Threading.CancellationToken cancellationToken) -> System.Collections.Generic.IAsyncEnumerable<TCoordinate>!
+PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.EncodeAsync(System.Collections.Generic.IAsyncEnumerable<TCoordinate>! coordinates, System.IO.Pipelines.PipeWriter! writer, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
+PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.EncodeAsync(System.Collections.Generic.IAsyncEnumerable<TCoordinate>! coordinates, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<TPolyline>
+PolylineAlgorithm.Abstraction.IAsyncPolylineDecoder<TPolyline, TCoordinate>
+PolylineAlgorithm.Abstraction.IAsyncPolylineDecoder<TPolyline, TCoordinate>.DecodeAsync(TPolyline polyline, System.Threading.CancellationToken cancellationToken) -> System.Collections.Generic.IAsyncEnumerable<TCoordinate>!
+PolylineAlgorithm.Abstraction.IAsyncPolylineEncoder<TCoordinate, TPolyline>
+PolylineAlgorithm.Abstraction.IAsyncPolylineEncoder<TCoordinate, TPolyline>.EncodeAsync(System.Collections.Generic.IAsyncEnumerable<TCoordinate>! coordinates, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<TPolyline>
+PolylineAlgorithm.Abstraction.IPolylinePipeDecoder<TCoordinate>
+PolylineAlgorithm.Abstraction.IPolylinePipeDecoder<TCoordinate>.DecodeAsync(System.IO.Pipelines.PipeReader! reader, System.Threading.CancellationToken cancellationToken) -> System.Collections.Generic.IAsyncEnumerable<TCoordinate>!
+PolylineAlgorithm.Abstraction.IPolylinePipeEncoder<TCoordinate>
+PolylineAlgorithm.Abstraction.IPolylinePipeEncoder<TCoordinate>.EncodeAsync(System.Collections.Generic.IAsyncEnumerable<TCoordinate>! coordinates, System.IO.Pipelines.PipeWriter! writer, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
+PolylineAlgorithm.Extensions.AsyncPolylineDecoderExtensions
+static PolylineAlgorithm.Extensions.AsyncPolylineDecoderExtensions.DecodeAsync(this PolylineAlgorithm.Abstraction.IAsyncPolylineDecoder<PolylineAlgorithm.Polyline, PolylineAlgorithm.Coordinate>! decoder, System.ReadOnlyMemory<char> polyline, System.Threading.CancellationToken cancellationToken) -> System.Collections.Generic.IAsyncEnumerable<PolylineAlgorithm.Coordinate>!
+static PolylineAlgorithm.Extensions.AsyncPolylineDecoderExtensions.DecodeAsync(this PolylineAlgorithm.Abstraction.IAsyncPolylineDecoder<PolylineAlgorithm.Polyline, PolylineAlgorithm.Coordinate>! decoder, char[]! polyline, System.Threading.CancellationToken cancellationToken) -> System.Collections.Generic.IAsyncEnumerable<PolylineAlgorithm.Coordinate>!
+static PolylineAlgorithm.Extensions.AsyncPolylineDecoderExtensions.DecodeAsync(this PolylineAlgorithm.Abstraction.IAsyncPolylineDecoder<PolylineAlgorithm.Polyline, PolylineAlgorithm.Coordinate>! decoder, string! polyline, System.Threading.CancellationToken cancellationToken) -> System.Collections.Generic.IAsyncEnumerable<PolylineAlgorithm.Coordinate>!
+PolylineAlgorithm.Extensions.AsyncPolylineEncoderExtensions
+static PolylineAlgorithm.Extensions.AsyncPolylineEncoderExtensions.EncodeAsync(this PolylineAlgorithm.Abstraction.IAsyncPolylineEncoder<PolylineAlgorithm.Coordinate, PolylineAlgorithm.Polyline>! encoder, System.Collections.Generic.IEnumerable<PolylineAlgorithm.Coordinate>! coordinates, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<PolylineAlgorithm.Polyline>
