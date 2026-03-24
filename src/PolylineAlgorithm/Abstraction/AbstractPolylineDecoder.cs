@@ -167,8 +167,6 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
             cancellationToken.ThrowIfCancellationRequested();
             yield return coordinate;
         }
-
-        await Task.CompletedTask.ConfigureAwait(false);
     }
 
     /// <summary>

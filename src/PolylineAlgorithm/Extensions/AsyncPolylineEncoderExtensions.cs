@@ -59,7 +59,5 @@ public static class AsyncPolylineEncoderExtensions {
             cancellationToken.ThrowIfCancellationRequested();
             yield return item;
         }
-
-        await System.Threading.Tasks.Task.CompletedTask.ConfigureAwait(false);
     }
 }

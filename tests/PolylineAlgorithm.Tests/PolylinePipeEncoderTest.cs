@@ -133,7 +133,5 @@ public class PolylinePipeEncoderTest {
         foreach (var item in source) {
             yield return item;
         }
-
-        await Task.CompletedTask;
     }
 }

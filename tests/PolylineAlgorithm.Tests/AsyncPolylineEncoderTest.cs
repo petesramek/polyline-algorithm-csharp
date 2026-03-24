@@ -144,7 +144,5 @@ public class AsyncPolylineEncoderTest {
         foreach (var item in source) {
             yield return item;
         }
-
-        await Task.CompletedTask;
     }
 }
