@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright © Pete Sramek. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
@@ -8,7 +8,6 @@ namespace PolylineAlgorithm.Abstraction;
 using Microsoft.Extensions.Logging;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Internal;
-using PolylineAlgorithm.Internal.Diagnostics;
 using PolylineAlgorithm.Internal.Diagnostics;
 using System;
 using System.Buffers;
@@ -71,29 +70,33 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// <exception cref="InternalBufferOverflowException"></exception>
     /// <exception cref="InvalidOperationException"></exception>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "MA0051:Method is too long", Justification = "Method contains local methods. Actual method only 55 lines.")]
-    public TPolyline Encode(ReadOnlySpan<TCoordinate> coordinates) {
+    public TPolyline Encode(ReadOnlySpan<TCoordinate> coordinates, CancellationToken cancellationToken = default) {
         const string OperationName = nameof(Encode);
 
-        _logger
-            .LogOperationStartedDebug(OperationName);
-
-        Debug.Assert(coordinates.Length >= 0, "Count must be non-negative.");
-
-        ValidateEmptyCoordinates(ref coordinates, _logger);
-
-        CoordinateDelta delta = new();
-
-        int position = 0;
-        int consumed = 0;
-        int length = GetMaxBufferLength(coordinates.Length);
-
-        char[]? temp = length <= Options.StackAllocLimit
-            ? null
-            : ArrayPool<char>.Shared.Rent(length);
-
-        Span<char> buffer = temp is null ? stackalloc char[length] : temp.AsSpan(0, length);
+        char[]? temp = null;
 
         try {
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            _logger
+                .LogOperationStartedDebug(OperationName);
+
+            Debug.Assert(coordinates.Length >= 0, "Count must be non-negative.");
+
+            ValidateEmptyCoordinates(ref coordinates, _logger);
+
+            CoordinateDelta delta = new();
+
+            int position = 0;
+            int consumed = 0;
+            int length = GetMaxBufferLength(coordinates.Length);
+
+            temp = length <= Options.StackAllocLimit
+                ? null
+                : ArrayPool<char>.Shared.Rent(length);
+
+            Span<char> buffer = temp is null ? stackalloc char[length] : temp.AsSpan(0, length);
             for (var i = 0; i < coordinates.Length; i++) {
 
                 delta
@@ -117,17 +120,16 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
                 consumed++;
             }
+
+            _logger
+                .LogOperationFinishedDebug(OperationName);
+
+            return CreatePolyline(buffer[..position].ToString().AsMemory());
         } finally {
             if (temp is not null) {
                 ArrayPool<char>.Shared.Return(temp);
             }
         }
-
-        _logger
-            .LogOperationFinishedDebug(OperationName);
-
-        return CreatePolyline(buffer[..position].ToString().AsMemory());
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static int GetMaxBufferLength(int count) {
             Debug.Assert(count > 0, "Count must be greater than zero.");

@@ -82,7 +82,7 @@ public sealed class PolylineTests {
     [TestCategory(Category.Unit)]
     public void Length_NonEmptyPolyline_ReturnsCorrectLength() {
         // Arrange
-        string testString = "test";
+        const string testString = "test";
         Polyline polyline = Polyline.FromString(testString);
 
         // Act
@@ -128,7 +128,7 @@ public sealed class PolylineTests {
     [TestCategory(Category.Unit)]
     public void CopyTo_ExactLengthDestination_CopiesCharacters() {
         // Arrange
-        string testString = "test";
+        const string testString = "test";
         Polyline polyline = Polyline.FromString(testString);
         char[] destination = new char[testString.Length];
 
@@ -146,7 +146,7 @@ public sealed class PolylineTests {
     [TestCategory(Category.Unit)]
     public void CopyTo_LargerDestination_CopiesCharacters() {
         // Arrange
-        string testString = "test";
+        const string testString = "test";
         Polyline polyline = Polyline.FromString(testString);
         char[] destination = new char[testString.Length + 5];
 
@@ -199,7 +199,7 @@ public sealed class PolylineTests {
     [TestCategory(Category.Unit)]
     public void ToString_NonEmptyPolyline_ReturnsCorrectString() {
         // Arrange
-        string testString = "test";
+        const string testString = "test";
         Polyline polyline = Polyline.FromString(testString);
 
         // Act
@@ -216,7 +216,7 @@ public sealed class PolylineTests {
     [TestCategory(Category.Unit)]
     public void ToString_PolylineWithSpecialCharacters_ReturnsCorrectString() {
         // Arrange
-        string testString = "~`@!#$%";
+        const string testString = "~`@!#$%";
         Polyline polyline = Polyline.FromString(testString);
 
         // Act
@@ -532,7 +532,7 @@ public sealed class PolylineTests {
     [TestCategory(Category.Unit)]
     public void FromString_ValidString_CreatesPolyline() {
         // Arrange
-        string testString = "test";
+        const string testString = "test";
 
         // Act
         Polyline polyline = Polyline.FromString(testString);
@@ -577,7 +577,7 @@ public sealed class PolylineTests {
     [TestCategory(Category.Unit)]
     public void FromString_SpecialCharacters_CreatesPolyline() {
         // Arrange
-        string testString = "~`@!#$%";
+        const string testString = "~`@!#$%";
 
         // Act
         Polyline polyline = Polyline.FromString(testString);
@@ -646,7 +646,7 @@ public sealed class PolylineTests {
     [TestCategory(Category.Unit)]
     public void FromMemory_SpecialCharacters_CreatesPolyline() {
         // Arrange
-        string testString = "~`@!#$%";
+        const string testString = "~`@!#$%";
         ReadOnlyMemory<char> memory = testString.AsMemory();
 
         // Act
@@ -682,7 +682,7 @@ public sealed class PolylineTests {
     [TestCategory(Category.Unit)]
     public void FromMemory_MemorySlice_CreatesPolyline() {
         // Arrange
-        string testString = "testing123";
+        const string testString = "testing123";
         ReadOnlyMemory<char> memory = testString.AsMemory(0, 4);
 
         // Act

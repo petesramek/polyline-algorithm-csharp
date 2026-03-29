@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright © Pete Sramek. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
@@ -21,7 +21,8 @@ public sealed class LogWarningExtensionsTests
     {
         public List<(LogLevel Level, EventId EventId, string Message, Exception? Exception)> Logs { get; } = new();
 
-        public IDisposable BeginScope<TState>(TState state) => NullScope.Instance;
+        public IDisposable BeginScope<TState>(TState state)
+            where TState : notnull => NullScope.Instance;
         public bool IsEnabled(LogLevel logLevel) => true;
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
@@ -97,6 +98,6 @@ public sealed class LogWarningExtensionsTests
         var logger = new TestLogger();
         var ex = new Exception("fail");
         logger.LogInvalidPolylineFormatWarning(ex);
-        Assert.IsTrue(logger.Logs.Exists(l => l.Message.Contains("Polyline is invalid or malformed.") && l.Exception == ex));
+        Assert.IsTrue(logger.Logs.Exists(l => l.Message.Contains("Polyline is invalid or malformed.", StringComparison.Ordinal) && l.Exception == ex));
     }
 }

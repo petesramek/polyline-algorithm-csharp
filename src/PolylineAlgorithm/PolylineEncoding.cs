@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright © Pete Sramek. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
@@ -123,7 +123,7 @@ public static class PolylineEncoding {
             return default;
         }
 
-        // Fast return if precision is zero, return current value converted to Int32.
+        // Fast return if precision is zero, return current value converted to double.
         if (precision == default) {
             return value;
         }

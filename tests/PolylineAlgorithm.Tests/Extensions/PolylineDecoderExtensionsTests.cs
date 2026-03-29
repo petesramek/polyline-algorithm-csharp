@@ -29,7 +29,7 @@ public sealed class PolylineDecoderExtensionsTests
             _coordinatesToReturn = coordinatesToReturn;
         }
 
-        public IEnumerable<Coordinate> Decode(Polyline polyline)
+        public IEnumerable<Coordinate> Decode(Polyline polyline, CancellationToken cancellationToken = default)
         {
             LastPolyline = polyline;
             return _coordinatesToReturn;
@@ -45,7 +45,7 @@ public sealed class PolylineDecoderExtensionsTests
     {
         // Arrange
         IPolylineDecoder<Polyline, Coordinate>? decoder = null;
-        string polyline = "test";
+        const string polyline = "test";
 
         // Act & Assert
         ArgumentNullException exception = Assert.ThrowsExactly<ArgumentNullException>(() => PolylineDecoderExtensions.Decode(decoder!, polyline));
@@ -60,7 +60,7 @@ public sealed class PolylineDecoderExtensionsTests
     public void Decode_StringWithValidDecoder_CallsDecoderWithPolylineFromString()
     {
         // Arrange
-        string polylineString = "_p~iF~ps|U_ulLnnqC_mqNvxq`@";
+        const string polylineString = "_p~iF~ps|U_ulLnnqC_mqNvxq`@";
         Coordinate[] expectedCoordinates =
         [
             new Coordinate(38.5, -120.2),

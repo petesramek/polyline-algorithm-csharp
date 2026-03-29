@@ -22,8 +22,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Normalize_ZeroValue_ReturnsZero() {
         // Arrange
-        double value = 0.0;
-        uint precision = 5;
+        const double value = 0.0;
+        const uint precision = 5;
 
         // Act
         int result = PolylineEncoding.Normalize(value, precision);
@@ -39,8 +39,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Normalize_NaNValue_ThrowsArgumentOutOfRangeException() {
         // Arrange
-        double value = double.NaN;
-        uint precision = 5;
+        const double value = double.NaN;
+        const uint precision = 5;
 
         // Act & Assert
         Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => PolylineEncoding.Normalize(value, precision));
@@ -53,8 +53,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Normalize_PositiveInfinity_ThrowsArgumentOutOfRangeException() {
         // Arrange
-        double value = double.PositiveInfinity;
-        uint precision = 5;
+        const double value = double.PositiveInfinity;
+        const uint precision = 5;
 
         // Act & Assert
         Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => PolylineEncoding.Normalize(value, precision));
@@ -67,8 +67,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Normalize_NegativeInfinity_ThrowsArgumentOutOfRangeException() {
         // Arrange
-        double value = double.NegativeInfinity;
-        uint precision = 5;
+        const double value = double.NegativeInfinity;
+        const uint precision = 5;
 
         // Act & Assert
         Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => PolylineEncoding.Normalize(value, precision));
@@ -81,8 +81,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Normalize_ZeroPrecision_ReturnsTruncatedValue() {
         // Arrange
-        double value = 37.78903;
-        uint precision = 0;
+        const double value = 37.78903;
+        const uint precision = 0;
 
         // Act
         int result = PolylineEncoding.Normalize(value, precision);
@@ -98,8 +98,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Normalize_ZeroPrecisionNegative_ReturnsTruncatedValue() {
         // Arrange
-        double value = -122.4123;
-        uint precision = 0;
+        const double value = -122.4123;
+        const uint precision = 0;
 
         // Act
         int result = PolylineEncoding.Normalize(value, precision);
@@ -115,8 +115,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Normalize_DefaultPrecisionPositive_ReturnsNormalizedValue() {
         // Arrange
-        double value = 37.78903;
-        uint precision = 5;
+        const double value = 37.78903;
+        const uint precision = 5;
 
         // Act
         int result = PolylineEncoding.Normalize(value, precision);
@@ -132,8 +132,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Normalize_DefaultPrecisionNegative_ReturnsNormalizedValue() {
         // Arrange
-        double value = -122.4123;
-        uint precision = 5;
+        const double value = -122.4123;
+        const uint precision = 5;
 
         // Act
         int result = PolylineEncoding.Normalize(value, precision);
@@ -149,8 +149,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Normalize_Precision1_ReturnsNormalizedValue() {
         // Arrange
-        double value = 37.78903;
-        uint precision = 1;
+        const double value = 37.78903;
+        const uint precision = 1;
 
         // Act
         int result = PolylineEncoding.Normalize(value, precision);
@@ -166,8 +166,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Normalize_Precision6_ReturnsNormalizedValue() {
         // Arrange
-        double value = 37.789034;
-        uint precision = 6;
+        const double value = 37.789034;
+        const uint precision = 6;
 
         // Act
         int result = PolylineEncoding.Normalize(value, precision);
@@ -183,8 +183,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Normalize_ValueWithFractionalPart_TruncatesFractionalPart() {
         // Arrange
-        double value = 37.789999;
-        uint precision = 5;
+        const double value = 37.789999;
+        const uint precision = 5;
 
         // Act
         int result = PolylineEncoding.Normalize(value, precision);
@@ -200,8 +200,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Normalize_VerySmallValue_ReturnsNormalizedValue() {
         // Arrange
-        double value = 0.00001;
-        uint precision = 5;
+        const double value = 0.00001;
+        const uint precision = 5;
 
         // Act
         int result = PolylineEncoding.Normalize(value, precision);
@@ -217,8 +217,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Normalize_NegativeVerySmallValue_ReturnsNormalizedValue() {
         // Arrange
-        double value = -0.00001;
-        uint precision = 5;
+        const double value = -0.00001;
+        const uint precision = 5;
 
         // Act
         int result = PolylineEncoding.Normalize(value, precision);
@@ -238,8 +238,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Denormalize_ZeroValue_ReturnsZero() {
         // Arrange
-        int value = 0;
-        uint precision = 5;
+        const int value = 0;
+        const uint precision = 5;
 
         // Act
         double result = PolylineEncoding.Denormalize(value, precision);
@@ -255,8 +255,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Denormalize_ZeroPrecision_ReturnsSameValue() {
         // Arrange
-        int value = 37;
-        uint precision = 0;
+        const int value = 37;
+        const uint precision = 0;
 
         // Act
         double result = PolylineEncoding.Denormalize(value, precision);
@@ -272,8 +272,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Denormalize_ZeroPrecisionNegative_ReturnsSameValue() {
         // Arrange
-        int value = -122;
-        uint precision = 0;
+        const int value = -122;
+        const uint precision = 0;
 
         // Act
         double result = PolylineEncoding.Denormalize(value, precision);
@@ -289,8 +289,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Denormalize_DefaultPrecisionPositive_ReturnsDenormalizedValue() {
         // Arrange
-        int value = 3778903;
-        uint precision = 5;
+        const int value = 3778903;
+        const uint precision = 5;
 
         // Act
         double result = PolylineEncoding.Denormalize(value, precision);
@@ -306,8 +306,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Denormalize_DefaultPrecisionNegative_ReturnsDenormalizedValue() {
         // Arrange
-        int value = -12241230;
-        uint precision = 5;
+        const int value = -12241230;
+        const uint precision = 5;
 
         // Act
         double result = PolylineEncoding.Denormalize(value, precision);
@@ -323,8 +323,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Denormalize_Precision1_ReturnsDenormalizedValue() {
         // Arrange
-        int value = 377;
-        uint precision = 1;
+        const int value = 377;
+        const uint precision = 1;
 
         // Act
         double result = PolylineEncoding.Denormalize(value, precision);
@@ -340,8 +340,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Denormalize_Precision6_ReturnsDenormalizedValue() {
         // Arrange
-        int value = 37789034;
-        uint precision = 6;
+        const int value = 37789034;
+        const uint precision = 6;
 
         // Act
         double result = PolylineEncoding.Denormalize(value, precision);
@@ -357,8 +357,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Denormalize_VerySmallValue_ReturnsDenormalizedValue() {
         // Arrange
-        int value = 1;
-        uint precision = 5;
+        const int value = 1;
+        const uint precision = 5;
 
         // Act
         double result = PolylineEncoding.Denormalize(value, precision);
@@ -374,8 +374,8 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void Denormalize_NegativeVerySmallValue_ReturnsDenormalizedValue() {
         // Arrange
-        int value = -1;
-        uint precision = 5;
+        const int value = -1;
+        const uint precision = 5;
 
         // Act
         double result = PolylineEncoding.Denormalize(value, precision);
@@ -455,7 +455,7 @@ public sealed class PolylineEncodingTests {
         // Arrange
         Span<char> buffer = stackalloc char[10];
         int writePosition = 0;
-        int expectedDelta = 3778903;
+        const int expectedDelta = 3778903;
         
         // First write the value to get the correct encoding
         PolylineEncoding.TryWriteValue(expectedDelta, buffer, ref writePosition);
@@ -482,7 +482,7 @@ public sealed class PolylineEncodingTests {
         // Arrange
         Span<char> buffer = stackalloc char[10];
         int writePosition = 0;
-        int expectedDelta = -12241230;
+        const int expectedDelta = -12241230;
         
         // First write the value to get the correct encoding
         PolylineEncoding.TryWriteValue(expectedDelta, buffer, ref writePosition);
@@ -509,7 +509,7 @@ public sealed class PolylineEncodingTests {
         // Arrange
         Span<char> buffer = stackalloc char[10];
         int writePosition = 0;
-        int valueDelta = 3778903;
+        const int valueDelta = 3778903;
         
         // First write the value to get the correct encoding
         PolylineEncoding.TryWriteValue(valueDelta, buffer, ref writePosition);
@@ -535,8 +535,8 @@ public sealed class PolylineEncodingTests {
         // Arrange
         Span<char> buffer = stackalloc char[20];
         int writePosition = 0;
-        int expectedDelta1 = 3778903;
-        int expectedDelta2 = -12241230;
+        const int expectedDelta1 = 3778903;
+        const int expectedDelta2 = -12241230;
         
         // Write both values
         PolylineEncoding.TryWriteValue(expectedDelta1, buffer, ref writePosition);
@@ -592,8 +592,8 @@ public sealed class PolylineEncodingTests {
         // Arrange
         Span<char> buffer = stackalloc char[20];
         int writePosition = 0;
-        int expectedDelta1 = 3778903;
-        int expectedDelta2 = -12241230;
+        const int expectedDelta1 = 3778903;
+        const int expectedDelta2 = -12241230;
         
         // Write both values
         PolylineEncoding.TryWriteValue(expectedDelta1, buffer, ref writePosition);
@@ -625,7 +625,7 @@ public sealed class PolylineEncodingTests {
     public void TryWriteValue_BufferTooSmall_ReturnsFalse() {
         // Arrange
         Span<char> buffer = stackalloc char[2];
-        int delta = 3778903;
+        const int delta = 3778903;
         int position = 0;
 
         // Act
@@ -644,7 +644,7 @@ public sealed class PolylineEncodingTests {
     public void TryWriteValue_RemainingBufferTooSmall_ReturnsFalse() {
         // Arrange
         Span<char> buffer = stackalloc char[10];
-        int delta = 3778903;
+        const int delta = 3778903;
         int position = 8; // Only 2 chars remaining, need 5
 
         // Act
@@ -663,7 +663,7 @@ public sealed class PolylineEncodingTests {
     public void TryWriteValue_ZeroValue_WritesCorrectly() {
         // Arrange
         Span<char> buffer = stackalloc char[10];
-        int delta = 0;
+        const int delta = 0;
         int position = 0;
 
         // Act
@@ -683,7 +683,7 @@ public sealed class PolylineEncodingTests {
     public void TryWriteValue_PositiveValue_WritesCorrectly() {
         // Arrange
         Span<char> buffer = stackalloc char[10];
-        int delta = 3778903;
+        const int delta = 3778903;
         int position = 0;
 
         // Act
@@ -711,7 +711,7 @@ public sealed class PolylineEncodingTests {
     public void TryWriteValue_NegativeValue_WritesCorrectly() {
         // Arrange
         Span<char> buffer = stackalloc char[10];
-        int delta = -12241230;
+        const int delta = -12241230;
         int position = 0;
 
         // Act
@@ -740,8 +740,8 @@ public sealed class PolylineEncodingTests {
         // Arrange
         Span<char> buffer = stackalloc char[20];
         int position = 0;
-        int delta1 = 3778903;
-        int delta2 = -12241230;
+        const int delta1 = 3778903;
+        const int delta2 = -12241230;
 
         // Act
         bool result1 = PolylineEncoding.TryWriteValue(delta1, buffer, ref position);
@@ -773,7 +773,7 @@ public sealed class PolylineEncodingTests {
     public void TryWriteValue_SmallPositiveValue_WritesCorrectly() {
         // Arrange
         Span<char> buffer = stackalloc char[10];
-        int delta = 1;
+        const int delta = 1;
         int position = 0;
 
         // Act
@@ -799,7 +799,7 @@ public sealed class PolylineEncodingTests {
     public void TryWriteValue_SmallNegativeValue_WritesCorrectly() {
         // Arrange
         Span<char> buffer = stackalloc char[10];
-        int delta = -1;
+        const int delta = -1;
         int position = 0;
 
         // Act
@@ -827,7 +827,7 @@ public sealed class PolylineEncodingTests {
         Span<char> buffer = stackalloc char[10];
         buffer[0] = 'X';
         buffer[1] = 'Y';
-        int delta = 0;
+        const int delta = 0;
         int position = 2;
 
         // Act
@@ -849,7 +849,7 @@ public sealed class PolylineEncodingTests {
     public void TryWriteValue_LargePositiveValue_WritesCorrectly() {
         // Arrange
         Span<char> buffer = stackalloc char[10];
-        int delta = int.MaxValue / 2;
+        const int delta = int.MaxValue / 2;
         int position = 0;
 
         // Act
@@ -868,7 +868,7 @@ public sealed class PolylineEncodingTests {
     public void TryWriteValue_LargeNegativeValue_WritesCorrectly() {
         // Arrange
         Span<char> buffer = stackalloc char[10];
-        int delta = int.MinValue / 2;
+        const int delta = int.MinValue / 2;
         int position = 0;
 
         // Act
@@ -890,7 +890,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void GetRequiredBufferSize_ZeroValue_ReturnsOne() {
         // Arrange
-        int delta = 0;
+        const int delta = 0;
 
         // Act
         int size = PolylineEncoding.GetRequiredBufferSize(delta);
@@ -906,7 +906,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void GetRequiredBufferSize_SmallPositiveValue_ReturnsOne() {
         // Arrange
-        int delta = 1;
+        const int delta = 1;
 
         // Act
         int size = PolylineEncoding.GetRequiredBufferSize(delta);
@@ -922,7 +922,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void GetRequiredBufferSize_SmallNegativeValue_ReturnsOne() {
         // Arrange
-        int delta = -1;
+        const int delta = -1;
 
         // Act
         int size = PolylineEncoding.GetRequiredBufferSize(delta);
@@ -938,7 +938,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void GetRequiredBufferSize_LargePositiveValue_ReturnsCorrectSize() {
         // Arrange
-        int delta = 3778903;
+        const int delta = 3778903;
 
         // Act
         int size = PolylineEncoding.GetRequiredBufferSize(delta);
@@ -954,7 +954,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void GetRequiredBufferSize_LargeNegativeValue_ReturnsCorrectSize() {
         // Arrange
-        int delta = -12241230;
+        const int delta = -12241230;
 
         // Act
         int size = PolylineEncoding.GetRequiredBufferSize(delta);
@@ -970,7 +970,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void GetRequiredBufferSize_MaxInt_ReturnsCorrectSize() {
         // Arrange
-        int delta = int.MaxValue;
+        const int delta = int.MaxValue;
 
         // Act
         int size = PolylineEncoding.GetRequiredBufferSize(delta);
@@ -987,7 +987,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void GetRequiredBufferSize_MinInt_ReturnsCorrectSize() {
         // Arrange
-        int delta = int.MinValue;
+        const int delta = int.MinValue;
 
         // Act
         int size = PolylineEncoding.GetRequiredBufferSize(delta);
@@ -1004,7 +1004,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void GetRequiredBufferSize_ConsistentWithTryWriteValue_MatchesActualSize() {
         // Arrange
-        int delta = 3778903;
+        const int delta = 3778903;
         int expectedSize = PolylineEncoding.GetRequiredBufferSize(delta);
         Span<char> buffer = stackalloc char[expectedSize];
         int position = 0;
@@ -1024,7 +1024,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void GetRequiredBufferSize_UndersizedBuffer_CausesTryWriteValueToFail() {
         // Arrange
-        int delta = 3778903;
+        const int delta = 3778903;
         int requiredSize = PolylineEncoding.GetRequiredBufferSize(delta);
         Span<char> buffer = stackalloc char[requiredSize - 1]; // One char too small
         int position = 0;
@@ -1044,7 +1044,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void GetRequiredBufferSize_BoundaryValue15_ReturnsOne() {
         // Arrange
-        int delta = 15; // 15 << 1 = 30, which is less than 32 (Space)
+        const int delta = 15; // 15 << 1 = 30, which is less than 32 (Space)
 
         // Act
         int size = PolylineEncoding.GetRequiredBufferSize(delta);
@@ -1060,7 +1060,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void GetRequiredBufferSize_BoundaryValue16_ReturnsTwo() {
         // Arrange
-        int delta = 16; // 16 << 1 = 32, which equals Space
+        const int delta = 16; // 16 << 1 = 32, which equals Space
 
         // Act
         int size = PolylineEncoding.GetRequiredBufferSize(delta);
@@ -1080,7 +1080,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateFormat_ValidPolyline_DoesNotThrow() {
         // Arrange
-        string polyline = "_p~iF~ps|U_ulLnnqC_mqNvxq`@";
+        const string polyline = "_p~iF~ps|U_ulLnnqC_mqNvxq`@";
 
         // Act & Assert
         PolylineEncoding.ValidateFormat(polyline);
@@ -1093,7 +1093,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateFormat_InvalidCharacter_ThrowsInvalidPolylineException() {
         // Arrange
-        string polyline = "_p~iF!ps|U";
+        const string polyline = "_p~iF!ps|U";
 
         // Act & Assert
         Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateFormat(polyline));
@@ -1106,7 +1106,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateFormat_InvalidBlockStructure_ThrowsInvalidPolylineException() {
         // Arrange
-        string polyline = "________"; // All continuation characters, no block terminator
+        const string polyline = "________"; // All continuation characters, no block terminator
 
         // Act & Assert
         Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateFormat(polyline));
@@ -1119,7 +1119,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateFormat_EmptyPolylineWithTerminator_DoesNotThrow() {
         // Arrange
-        string polyline = "?"; // Single terminator character
+        const string polyline = "?"; // Single terminator character
 
         // Act & Assert
         PolylineEncoding.ValidateFormat(polyline);
@@ -1132,7 +1132,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateFormat_BlockTooLong_ThrowsInvalidPolylineException() {
         // Arrange
-        string polyline = "________?"; // 8 characters in block (max is 7)
+        const string polyline = "________?"; // 8 characters in block (max is 7)
 
         // Act & Assert
         Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateFormat(polyline));
@@ -1149,7 +1149,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateCharRange_AllValidCharacters_DoesNotThrow() {
         // Arrange
-        string polyline = "_p~iF~ps|U_ulLnnqC_mqNvxq`@";
+        const string polyline = "_p~iF~ps|U_ulLnnqC_mqNvxq`@";
 
         // Act & Assert
         PolylineEncoding.ValidateCharRange(polyline);
@@ -1162,7 +1162,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateCharRange_MinimumValidCharacter_DoesNotThrow() {
         // Arrange
-        string polyline = "?"; // ASCII 63 (Min)
+        const string polyline = "?"; // ASCII 63 (Min)
 
         // Act & Assert
         PolylineEncoding.ValidateCharRange(polyline);
@@ -1175,7 +1175,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateCharRange_MaximumValidCharacter_DoesNotThrow() {
         // Arrange
-        string polyline = "~"; // ASCII 126 (Max)
+        const string polyline = "~"; // ASCII 126 (Max)
 
         // Act & Assert
         PolylineEncoding.ValidateCharRange(polyline);
@@ -1188,7 +1188,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateCharRange_CharacterBelowMinimum_ThrowsInvalidPolylineException() {
         // Arrange
-        string polyline = ">"; // ASCII 62 (below Min of 63)
+        const string polyline = ">"; // ASCII 62 (below Min of 63)
 
         // Act & Assert
         Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateCharRange(polyline));
@@ -1201,7 +1201,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateCharRange_CharacterAboveMaximum_ThrowsInvalidPolylineException() {
         // Arrange
-        string polyline = "\u007F"; // ASCII 127 (above Max of 126)
+        const string polyline = "\u007F"; // ASCII 127 (above Max of 126)
 
         // Act & Assert
         Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateCharRange(polyline));
@@ -1214,7 +1214,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateCharRange_InvalidCharacterInMiddle_ThrowsInvalidPolylineException() {
         // Arrange
-        string polyline = "_p~iF!ps|U"; // '!' is ASCII 33 (below Min)
+        const string polyline = "_p~iF!ps|U"; // '!' is ASCII 33 (below Min)
 
         // Act & Assert
         Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateCharRange(polyline));
@@ -1227,7 +1227,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateCharRange_EmptyPolyline_DoesNotThrow() {
         // Arrange
-        string polyline = "";
+        const string polyline = "";
 
         // Act & Assert
         PolylineEncoding.ValidateCharRange(polyline);
@@ -1240,7 +1240,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateCharRange_InvalidCharacterAtEnd_ThrowsInvalidPolylineException() {
         // Arrange
-        string polyline = "_p~iF~ps|U!"; // '!' at end
+        const string polyline = "_p~iF~ps|U!"; // '!' at end
 
         // Act & Assert
         Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateCharRange(polyline));
@@ -1254,7 +1254,7 @@ public sealed class PolylineEncodingTests {
     public void ValidateCharRange_LongPolyline_DoesNotThrow() {
         // Arrange
         // Create a string long enough to trigger SIMD vectorization (typically 8-16 chars depending on platform)
-        string polyline = "????????????????????????????????";
+        const string polyline = "????????????????????????????????";
 
         // Act & Assert
         PolylineEncoding.ValidateCharRange(polyline);
@@ -1268,7 +1268,7 @@ public sealed class PolylineEncodingTests {
     public void ValidateCharRange_InvalidCharacterInSimdSection_ThrowsInvalidPolylineException() {
         // Arrange
         // Create a long string with invalid character to trigger SIMD path detection
-        string polyline = "????????!???????????????????????";
+        const string polyline = "????????!???????????????????????";
 
         // Act & Assert
         Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateCharRange(polyline));
@@ -1282,7 +1282,7 @@ public sealed class PolylineEncodingTests {
     public void ValidateCharRange_InvalidCharacterInScalarRemainder_ThrowsInvalidPolylineException() {
         // Arrange
         // Create a string that leaves remainder after SIMD processing
-        string polyline = "????????????????\u007F"; // Valid chars + one invalid at end
+        const string polyline = "????????????????\u007F"; // Valid chars + one invalid at end
 
         // Act & Assert
         Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateCharRange(polyline));
@@ -1299,7 +1299,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateBlockLength_SingleBlock_DoesNotThrow() {
         // Arrange
-        string polyline = "?"; // Single terminator
+        const string polyline = "?"; // Single terminator
 
         // Act & Assert
         PolylineEncoding.ValidateBlockLength(polyline);
@@ -1312,7 +1312,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateBlockLength_MultipleBlocks_DoesNotThrow() {
         // Arrange
-        string polyline = "_p~iF~ps|U"; // Multiple blocks
+        const string polyline = "_p~iF~ps|U"; // Multiple blocks
 
         // Act & Assert
         PolylineEncoding.ValidateBlockLength(polyline);
@@ -1325,7 +1325,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateBlockLength_MaximumLengthBlock_DoesNotThrow() {
         // Arrange
-        string polyline = "______?"; // 6 continuation chars + terminator (max length is 7 total)
+        const string polyline = "______?"; // 6 continuation chars + terminator (max length is 7 total)
 
         // Act & Assert
         PolylineEncoding.ValidateBlockLength(polyline);
@@ -1338,7 +1338,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateBlockLength_BlockExceedsMaximumLength_ThrowsInvalidPolylineException() {
         // Arrange
-        string polyline = "________?"; // 8 chars in block (exceeds max of 7)
+        const string polyline = "________?"; // 8 chars in block (exceeds max of 7)
 
         // Act & Assert
         Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateBlockLength(polyline));
@@ -1351,7 +1351,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateBlockLength_NoBlockTerminator_ThrowsInvalidPolylineException() {
         // Arrange
-        string polyline = "________"; // All continuation characters, no terminator
+        const string polyline = "________"; // All continuation characters, no terminator
 
         // Act & Assert
         Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateBlockLength(polyline));
@@ -1364,7 +1364,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateBlockLength_EmptyPolyline_ThrowsInvalidPolylineException() {
         // Arrange
-        string polyline = "";
+        const string polyline = "";
 
         // Act & Assert
         Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateBlockLength(polyline));
@@ -1377,7 +1377,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateBlockLength_TooLongBlockInMiddle_ThrowsInvalidPolylineException() {
         // Arrange
-        string polyline = "?________?"; // Valid block, then too-long block
+        const string polyline = "?________?"; // Valid block, then too-long block
 
         // Act & Assert
         Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateBlockLength(polyline));
@@ -1390,7 +1390,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateBlockLength_ConsecutiveTerminators_DoesNotThrow() {
         // Arrange
-        string polyline = "??"; // Two consecutive terminators (two 1-char blocks)
+        const string polyline = "??"; // Two consecutive terminators (two 1-char blocks)
 
         // Act & Assert
         PolylineEncoding.ValidateBlockLength(polyline);
@@ -1403,7 +1403,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateBlockLength_MixedBlockLengths_DoesNotThrow() {
         // Arrange
-        string polyline = "?__?_____?"; // Blocks of length 1, 2, and 5
+        const string polyline = "?__?_____?"; // Blocks of length 1, 2, and 5
 
         // Act & Assert
         PolylineEncoding.ValidateBlockLength(polyline);
@@ -1416,7 +1416,7 @@ public sealed class PolylineEncodingTests {
     [TestCategory(Category.Unit)]
     public void ValidateBlockLength_SecondToLastBlockTooLong_ThrowsInvalidPolylineException() {
         // Arrange
-        string polyline = "________?_?"; // First block is 8 chars (too long)
+        const string polyline = "________?_?"; // First block is 8 chars (too long)
 
         // Act & Assert
         Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateBlockLength(polyline));

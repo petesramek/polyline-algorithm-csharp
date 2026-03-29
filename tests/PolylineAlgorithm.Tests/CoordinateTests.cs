@@ -461,10 +461,10 @@ public sealed class CoordinateTests {
     
     public void Validate_Value_With_Valid_Value_Does_Not_Throw() {
         // Arrange
-        double value = 50.0;
-        double min = 0.0;
-        double max = 100.0;
-        string paramName = "testParam";
+        const double value = 50.0;
+        const double min = 0.0;
+        const double max = 100.0;
+        const string paramName = "testParam";
 
         // Act & Assert
         Coordinate.Validator.ValidateValue(value, min, max, paramName);
@@ -477,10 +477,10 @@ public sealed class CoordinateTests {
     
     public void ValidateValue_With_Minimum_Boundary_Does_Not_Throw() {
         // Arrange
-        double value = 0.0;
-        double min = 0.0;
-        double max = 100.0;
-        string paramName = "testParam";
+        const double value = 0.0;
+        const double min = 0.0;
+        const double max = 100.0;
+        const string paramName = "testParam";
 
         // Act & Assert
         Coordinate.Validator.ValidateValue(value, min, max, paramName);
@@ -493,10 +493,10 @@ public sealed class CoordinateTests {
     
     public void ValidateValue_With_Maximum_Boundary_Does_Not_Throw() {
         // Arrange
-        double value = 100.0;
-        double min = 0.0;
-        double max = 100.0;
-        string paramName = "testParam";
+        const double value = 100.0;
+        const double min = 0.0;
+        const double max = 100.0;
+        const string paramName = "testParam";
 
         // Act & Assert
         Coordinate.Validator.ValidateValue(value, min, max, paramName);
@@ -509,10 +509,10 @@ public sealed class CoordinateTests {
     
     public void ValidateValue_With_Value_Below_Minimum_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double value = -0.1;
-        double min = 0.0;
-        double max = 100.0;
-        string paramName = "testParam";
+        const double value = -0.1;
+        const double min = 0.0;
+        const double max = 100.0;
+        const string paramName = "testParam";
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -527,10 +527,10 @@ public sealed class CoordinateTests {
     
     public void ValidateValue_With_Value_Above_Maximum_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double value = 100.1;
-        double min = 0.0;
-        double max = 100.0;
-        string paramName = "testParam";
+        const double value = 100.1;
+        const double min = 0.0;
+        const double max = 100.0;
+        const string paramName = "testParam";
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -545,10 +545,10 @@ public sealed class CoordinateTests {
     
     public void ValidateValue_With_NaN_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double value = double.NaN;
-        double min = 0.0;
-        double max = 100.0;
-        string paramName = "testParam";
+        const double value = double.NaN;
+        const double min = 0.0;
+        const double max = 100.0;
+        const string paramName = "testParam";
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -563,10 +563,10 @@ public sealed class CoordinateTests {
     
     public void ValidateValue_With_Positive_Infinity_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double value = double.PositiveInfinity;
-        double min = 0.0;
-        double max = 100.0;
-        string paramName = "testParam";
+        const double value = double.PositiveInfinity;
+        const double min = 0.0;
+        const double max = 100.0;
+        const string paramName = "testParam";
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -581,10 +581,10 @@ public sealed class CoordinateTests {
     
     public void ValidateValue_With_Negative_Infinity_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double value = double.NegativeInfinity;
-        double min = 0.0;
-        double max = 100.0;
-        string paramName = "testParam";
+        const double value = double.NegativeInfinity;
+        const double min = 0.0;
+        const double max = 100.0;
+        const string paramName = "testParam";
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -599,10 +599,10 @@ public sealed class CoordinateTests {
     
     public void ValidateValue_With_Negative_Value_In_Negative_Range_Does_Not_Throw() {
         // Arrange
-        double value = -50.0;
-        double min = -100.0;
-        double max = -10.0;
-        string paramName = "testParam";
+        const double value = -50.0;
+        const double min = -100.0;
+        const double max = -10.0;
+        const string paramName = "testParam";
 
         // Act & Assert
         Coordinate.Validator.ValidateValue(value, min, max, paramName);
@@ -615,8 +615,8 @@ public sealed class CoordinateTests {
     
     public void Validate_With_Valid_Latitude_And_Longitude_Does_Not_Throw() {
         // Arrange
-        double latitude = 45.5;
-        double longitude = -122.5;
+        const double latitude = 45.5;
+        const double longitude = -122.5;
 
         // Act & Assert
         Coordinate.Validator.Validate(latitude, longitude);
@@ -629,8 +629,8 @@ public sealed class CoordinateTests {
     
     public void Validate_With_Boundary_Values_Does_Not_Throw() {
         // Arrange
-        double latitude = 90.0;
-        double longitude = 180.0;
+        const double latitude = 90.0;
+        const double longitude = 180.0;
 
         // Act & Assert
         Coordinate.Validator.Validate(latitude, longitude);
@@ -643,8 +643,8 @@ public sealed class CoordinateTests {
     
     public void Validate_With_Minimum_Boundary_Values_Does_Not_Throw() {
         // Arrange
-        double latitude = -90.0;
-        double longitude = -180.0;
+        const double latitude = -90.0;
+        const double longitude = -180.0;
 
         // Act & Assert
         Coordinate.Validator.Validate(latitude, longitude);
@@ -657,8 +657,8 @@ public sealed class CoordinateTests {
     
     public void Validate_With_Invalid_Latitude_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double invalidLatitude = 91.0;
-        double validLongitude = 0.0;
+        const double invalidLatitude = 91.0;
+        const double validLongitude = 0.0;
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -673,8 +673,8 @@ public sealed class CoordinateTests {
     
     public void Validate_With_Invalid_Longitude_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double validLatitude = 0.0;
-        double invalidLongitude = 181.0;
+        const double validLatitude = 0.0;
+        const double invalidLongitude = 181.0;
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -689,8 +689,8 @@ public sealed class CoordinateTests {
     
     public void Validate_With_Latitude_NaN_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double invalidLatitude = double.NaN;
-        double validLongitude = 0.0;
+        const double invalidLatitude = double.NaN;
+        const double validLongitude = 0.0;
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -705,8 +705,8 @@ public sealed class CoordinateTests {
     
     public void Validate_With_Longitude_NaN_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double validLatitude = 0.0;
-        double invalidLongitude = double.NaN;
+        const double validLatitude = 0.0;
+        const double invalidLongitude = double.NaN;
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -721,7 +721,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLatitude_With_Valid_Latitude_Does_Not_Throw() {
         // Arrange
-        double validLatitude = 45.5;
+        const double validLatitude = 45.5;
 
         // Act & Assert
         Coordinate.Validator.ValidateLatitude(validLatitude);
@@ -734,7 +734,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLatitude_With_Minimum_Boundary_Does_Not_Throw() {
         // Arrange
-        double validLatitude = -90.0;
+        const double validLatitude = -90.0;
 
         // Act & Assert
         Coordinate.Validator.ValidateLatitude(validLatitude);
@@ -747,7 +747,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLatitude_With_Maximum_Boundary_Does_Not_Throw() {
         // Arrange
-        double validLatitude = 90.0;
+        const double validLatitude = 90.0;
 
         // Act & Assert
         Coordinate.Validator.ValidateLatitude(validLatitude);
@@ -760,7 +760,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLatitude_With_Latitude_Greater_Than_90_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double invalidLatitude = 91.0;
+        const double invalidLatitude = 91.0;
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -775,7 +775,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLatitude_With_Latitude_Less_Than_Negative_90_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double invalidLatitude = -91.0;
+        const double invalidLatitude = -91.0;
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -790,7 +790,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLatitude_With_NaN_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double invalidLatitude = double.NaN;
+        const double invalidLatitude = double.NaN;
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -805,7 +805,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLatitude_With_Positive_Infinity_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double invalidLatitude = double.PositiveInfinity;
+        const double invalidLatitude = double.PositiveInfinity;
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -820,7 +820,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLatitude_With_Negative_Infinity_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double invalidLatitude = double.NegativeInfinity;
+        const double invalidLatitude = double.NegativeInfinity;
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -835,7 +835,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLongitude_With_Valid_Longitude_Does_Not_Throw() {
         // Arrange
-        double validLongitude = -122.5;
+        const double validLongitude = -122.5;
 
         // Act & Assert
         Coordinate.Validator.ValidateLongitude(validLongitude);
@@ -848,7 +848,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLongitude_With_Minimum_Boundary_Does_Not_Throw() {
         // Arrange
-        double validLongitude = -180.0;
+        const double validLongitude = -180.0;
 
         // Act & Assert
         Coordinate.Validator.ValidateLongitude(validLongitude);
@@ -861,7 +861,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLongitude_With_Maximum_Boundary_Does_Not_Throw() {
         // Arrange
-        double validLongitude = 180.0;
+        const double validLongitude = 180.0;
 
         // Act & Assert
         Coordinate.Validator.ValidateLongitude(validLongitude);
@@ -874,7 +874,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLongitude_With_Longitude_Greater_Than_180_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double invalidLongitude = 181.0;
+        const double invalidLongitude = 181.0;
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -889,7 +889,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLongitude_With_Longitude_Less_Than_Negative_180_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double invalidLongitude = -181.0;
+        const double invalidLongitude = -181.0;
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -904,7 +904,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLongitude_With_NaN_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double invalidLongitude = double.NaN;
+        const double invalidLongitude = double.NaN;
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -919,7 +919,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLongitude_With_Positive_Infinity_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double invalidLongitude = double.PositiveInfinity;
+        const double invalidLongitude = double.PositiveInfinity;
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -934,7 +934,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLongitude_With_Negative_Infinity_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double invalidLongitude = double.NegativeInfinity;
+        const double invalidLongitude = double.NegativeInfinity;
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -951,7 +951,7 @@ public sealed class CoordinateTests {
         // Arrange
         Coordinate coordinate1 = new(45.5, -122.5);
         Coordinate coordinate2 = new(45.5, -122.5);
-        double tolerance = 0.0;
+        const double tolerance = 0.0;
 
         // Act
         bool result = coordinate1.Equals(coordinate2, tolerance);
@@ -969,7 +969,7 @@ public sealed class CoordinateTests {
         // Arrange
         Coordinate coordinate1 = new(45.5, -122.5);
         Coordinate coordinate2 = new(45.5000001, -122.5);
-        double tolerance = 0.0;
+        const double tolerance = 0.0;
 
         // Act
         bool result = coordinate1.Equals(coordinate2, tolerance);
@@ -987,7 +987,7 @@ public sealed class CoordinateTests {
         // Arrange
         Coordinate coordinate1 = new(45.5, -122.5);
         Coordinate coordinate2 = new(45.501, -122.5);
-        double tolerance = 0.001;
+        const double tolerance = 0.001;
 
         // Act
         bool result = coordinate1.Equals(coordinate2, tolerance);
@@ -1005,7 +1005,7 @@ public sealed class CoordinateTests {
         // Arrange
         Coordinate coordinate1 = new(45.5, -122.5);
         Coordinate coordinate2 = new(45.5, -122.5);
-        double tolerance = -0.001;
+        const double tolerance = -0.001;
 
         // Act
         bool result = coordinate1.Equals(coordinate2, tolerance);
@@ -1023,7 +1023,7 @@ public sealed class CoordinateTests {
         // Arrange
         Coordinate coordinate1 = new(45.5, -122.5);
         Coordinate coordinate2 = new(50.0, -120.0);
-        double tolerance = 10.0;
+        const double tolerance = 10.0;
 
         // Act
         bool result = coordinate1.Equals(coordinate2, tolerance);
@@ -1041,7 +1041,7 @@ public sealed class CoordinateTests {
         // Arrange
         Coordinate coordinate1 = new(90.0, 0.0);
         Coordinate coordinate2 = new(89.9991, 0.0);
-        double tolerance = 0.001;
+        const double tolerance = 0.001;
 
         // Act
         bool result = coordinate1.Equals(coordinate2, tolerance);
@@ -1059,7 +1059,7 @@ public sealed class CoordinateTests {
         // Arrange
         Coordinate coordinate1 = new(0.0, 180.0);
         Coordinate coordinate2 = new(0.0, 179.9991);
-        double tolerance = 0.001;
+        const double tolerance = 0.001;
 
         // Act
         bool result = coordinate1.Equals(coordinate2, tolerance);
@@ -1179,7 +1179,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLatitude_With_Zero_Does_Not_Throw() {
         // Arrange
-        double validLatitude = 0.0;
+        const double validLatitude = 0.0;
 
         // Act & Assert
         Coordinate.Validator.ValidateLatitude(validLatitude);
@@ -1192,7 +1192,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLatitude_With_Value_Just_Beyond_Maximum_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double invalidLatitude = 90.000001;
+        const double invalidLatitude = 90.000001;
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -1207,7 +1207,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLatitude_With_Value_Just_Beyond_Minimum_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double invalidLatitude = -90.000001;
+        const double invalidLatitude = -90.000001;
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -1222,7 +1222,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLongitude_With_Zero_Does_Not_Throw() {
         // Arrange
-        double validLongitude = 0.0;
+        const double validLongitude = 0.0;
 
         // Act & Assert
         Coordinate.Validator.ValidateLongitude(validLongitude);
@@ -1235,7 +1235,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLongitude_With_Value_Just_Beyond_Maximum_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double invalidLongitude = 180.000001;
+        const double invalidLongitude = 180.000001;
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
@@ -1250,7 +1250,7 @@ public sealed class CoordinateTests {
     
     public void ValidateLongitude_With_Value_Just_Beyond_Minimum_Throws_ArgumentOutOfRangeException() {
         // Arrange
-        double invalidLongitude = -180.000001;
+        const double invalidLongitude = -180.000001;
 
         // Act & Assert
         ArgumentOutOfRangeException exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
