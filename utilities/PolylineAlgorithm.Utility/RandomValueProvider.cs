@@ -1,22 +1,22 @@
-﻿//
+//
 // Copyright © Pete Sramek. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
 namespace PolylineAlgorithm.Utility;
 
-using PolylineAlgorithm;
-using PolylineAlgorithm.Abstraction;
+using PolylineAlgorithm.Gps.Abstraction;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 /// <summary>
 /// Provides random generation and caching of coordinate collections and their encoded polyline representations.
 /// Useful for testing and benchmarking polyline algorithms with reproducible random data.
 /// </summary>
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA5394:Do not use insecure randomness", Justification = "Internal use only.")]
+[SuppressMessage("Security", "CA5394:Do not use insecure randomness", Justification = "Internal use only.")]
 internal static class RandomValueProvider {
     private static readonly Random _random = new(DateTime.Now.Millisecond);
     private static readonly ConcurrentDictionary<int, PolylineCoordinateCollectionPair> _cache = new();

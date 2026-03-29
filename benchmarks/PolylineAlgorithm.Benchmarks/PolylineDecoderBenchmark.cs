@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright © Pete Sramek. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
@@ -7,8 +7,8 @@ namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
-using PolylineAlgorithm;
-using PolylineAlgorithm.Extensions;
+using PolylineAlgorithm.Gps;
+using PolylineAlgorithm.Gps.Extensions;
 using PolylineAlgorithm.Utility;
 
 /// <summary>

@@ -15,10 +15,8 @@ using System.Collections.Generic;
 /// Tests for <see cref="LogDebugExtensions"/>.
 /// </summary>
 [TestClass]
-public sealed class LogDebugExtensionsTests
-{
-    private sealed class TestLogger : ILogger
-    {
+public sealed class LogDebugExtensionsTests {
+    private sealed class TestLogger : ILogger {
         public List<(LogLevel Level, EventId EventId, string Message, Exception? Exception)> Logs { get; } = [];
 
         public IDisposable BeginScope<TState>(TState state)
@@ -26,22 +24,19 @@ public sealed class LogDebugExtensionsTests
 
         public bool IsEnabled(LogLevel logLevel) => true;
 
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
-        {
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter) {
             Logs.Add((logLevel, eventId, formatter(state, exception), exception));
         }
 
-        private sealed class NullScope : IDisposable
-        {
+        private sealed class NullScope : IDisposable {
             public static NullScope Instance { get; } = new();
             public void Dispose() { }
         }
     }
 
     [TestMethod]
-    [TestCategory(Category.Unit)]
-    public void LogOperationStartedDebug_WithOperationName_LogsStartedMessage()
-    {
+
+    public void LogOperationStartedDebug_WithOperationName_LogsStartedMessage() {
         var logger = new TestLogger();
         const string operationName = "TestOperation";
 
@@ -53,9 +48,8 @@ public sealed class LogDebugExtensionsTests
     }
 
     [TestMethod]
-    [TestCategory(Category.Unit)]
-    public void LogOperationFailedDebug_WithOperationName_LogsFailedMessage()
-    {
+
+    public void LogOperationFailedDebug_WithOperationName_LogsFailedMessage() {
         var logger = new TestLogger();
         const string operationName = "TestOperation";
 
@@ -67,9 +61,8 @@ public sealed class LogDebugExtensionsTests
     }
 
     [TestMethod]
-    [TestCategory(Category.Unit)]
-    public void LogOperationFinishedDebug_WithOperationName_LogsFinishedMessage()
-    {
+
+    public void LogOperationFinishedDebug_WithOperationName_LogsFinishedMessage() {
         var logger = new TestLogger();
         const string operationName = "TestOperation";
 
@@ -81,9 +74,8 @@ public sealed class LogDebugExtensionsTests
     }
 
     [TestMethod]
-    [TestCategory(Category.Unit)]
-    public void LogDecodedCoordinateDebug_WithCoordinatesAndPosition_LogsDecodedCoordinateMessage()
-    {
+
+    public void LogDecodedCoordinateDebug_WithCoordinatesAndPosition_LogsDecodedCoordinateMessage() {
         var logger = new TestLogger();
         const double latitude = 38.5;
         const double longitude = -120.2;
@@ -97,9 +89,8 @@ public sealed class LogDebugExtensionsTests
     }
 
     [TestMethod]
-    [TestCategory(Category.Unit)]
-    public void LogOperationStartedDebug_WithNullOperationName_LogsMessage()
-    {
+
+    public void LogOperationStartedDebug_WithNullOperationName_LogsMessage() {
         var logger = new TestLogger();
         const string? operationName = null;
 
@@ -111,9 +102,8 @@ public sealed class LogDebugExtensionsTests
     }
 
     [TestMethod]
-    [TestCategory(Category.Unit)]
-    public void LogOperationFailedDebug_WithNullOperationName_LogsMessage()
-    {
+
+    public void LogOperationFailedDebug_WithNullOperationName_LogsMessage() {
         var logger = new TestLogger();
         const string? operationName = null;
 
@@ -125,9 +115,8 @@ public sealed class LogDebugExtensionsTests
     }
 
     [TestMethod]
-    [TestCategory(Category.Unit)]
-    public void LogOperationFinishedDebug_WithNullOperationName_LogsMessage()
-    {
+
+    public void LogOperationFinishedDebug_WithNullOperationName_LogsMessage() {
         var logger = new TestLogger();
         const string? operationName = null;
 
@@ -139,9 +128,8 @@ public sealed class LogDebugExtensionsTests
     }
 
     [TestMethod]
-    [TestCategory(Category.Unit)]
-    public void LogDecodedCoordinateDebug_WithZeroCoordinates_LogsMessage()
-    {
+
+    public void LogDecodedCoordinateDebug_WithZeroCoordinates_LogsMessage() {
         var logger = new TestLogger();
         const double latitude = 0.0;
         const double longitude = 0.0;
@@ -155,9 +143,8 @@ public sealed class LogDebugExtensionsTests
     }
 
     [TestMethod]
-    [TestCategory(Category.Unit)]
-    public void LogDecodedCoordinateDebug_WithNegativeCoordinates_LogsMessage()
-    {
+
+    public void LogDecodedCoordinateDebug_WithNegativeCoordinates_LogsMessage() {
         var logger = new TestLogger();
         const double latitude = -90.0;
         const double longitude = -180.0;
@@ -171,9 +158,8 @@ public sealed class LogDebugExtensionsTests
     }
 
     [TestMethod]
-    [TestCategory(Category.Unit)]
-    public void LogOperationStartedDebug_WithEmptyOperationName_LogsMessage()
-    {
+
+    public void LogOperationStartedDebug_WithEmptyOperationName_LogsMessage() {
         var logger = new TestLogger();
         string operationName = string.Empty;
 
@@ -185,9 +171,8 @@ public sealed class LogDebugExtensionsTests
     }
 
     [TestMethod]
-    [TestCategory(Category.Unit)]
-    public void LogOperationFailedDebug_WithEmptyOperationName_LogsMessage()
-    {
+
+    public void LogOperationFailedDebug_WithEmptyOperationName_LogsMessage() {
         var logger = new TestLogger();
         string operationName = string.Empty;
 
@@ -199,9 +184,8 @@ public sealed class LogDebugExtensionsTests
     }
 
     [TestMethod]
-    [TestCategory(Category.Unit)]
-    public void LogOperationFinishedDebug_WithEmptyOperationName_LogsMessage()
-    {
+
+    public void LogOperationFinishedDebug_WithEmptyOperationName_LogsMessage() {
         var logger = new TestLogger();
         string operationName = string.Empty;
 

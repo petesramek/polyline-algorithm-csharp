@@ -6,8 +6,6 @@
 namespace PolylineAlgorithm.Tests.Internal;
 
 using PolylineAlgorithm.Gps.Internal;
-using PolylineAlgorithm.Internal;
-using PolylineAlgorithm.Tests.Properties;
 
 /// <summary>
 /// Tests for <see cref="CoordinateDelta"/>.

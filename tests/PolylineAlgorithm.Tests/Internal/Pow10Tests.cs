@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright © Pete Sramek. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
@@ -17,7 +17,7 @@ public sealed class Pow10Tests {
     /// Tests that GetFactor with precision 0 returns 1.
     /// </summary>
     [TestMethod]
-    [TestCategory(Category.Unit)]
+
     public void GetFactor_With_Precision_Zero_Returns_One() {
         // Act
         uint result = Pow10.GetFactor(0);
@@ -30,7 +30,7 @@ public sealed class Pow10Tests {
     /// Tests that GetFactor with precision 1 returns 10.
     /// </summary>
     [TestMethod]
-    [TestCategory(Category.Unit)]
+
     public void GetFactor_With_Precision_One_Returns_Ten() {
         // Act
         uint result = Pow10.GetFactor(1);
@@ -43,7 +43,7 @@ public sealed class Pow10Tests {
     /// Tests that GetFactor with precision 2 returns 100.
     /// </summary>
     [TestMethod]
-    [TestCategory(Category.Unit)]
+
     public void GetFactor_With_Precision_Two_Returns_One_Hundred() {
         // Act
         uint result = Pow10.GetFactor(2);
@@ -56,7 +56,7 @@ public sealed class Pow10Tests {
     /// Tests that GetFactor with precision 3 returns 1000.
     /// </summary>
     [TestMethod]
-    [TestCategory(Category.Unit)]
+
     public void GetFactor_With_Precision_Three_Returns_One_Thousand() {
         // Act
         uint result = Pow10.GetFactor(3);
@@ -69,7 +69,7 @@ public sealed class Pow10Tests {
     /// Tests that GetFactor with precision 4 returns 10000.
     /// </summary>
     [TestMethod]
-    [TestCategory(Category.Unit)]
+
     public void GetFactor_With_Precision_Four_Returns_Ten_Thousand() {
         // Act
         uint result = Pow10.GetFactor(4);
@@ -82,7 +82,7 @@ public sealed class Pow10Tests {
     /// Tests that GetFactor with precision 5 returns 100000.
     /// </summary>
     [TestMethod]
-    [TestCategory(Category.Unit)]
+
     public void GetFactor_With_Precision_Five_Returns_One_Hundred_Thousand() {
         // Act
         uint result = Pow10.GetFactor(5);
@@ -95,7 +95,7 @@ public sealed class Pow10Tests {
     /// Tests that GetFactor with precision 6 returns 1000000.
     /// </summary>
     [TestMethod]
-    [TestCategory(Category.Unit)]
+
     public void GetFactor_With_Precision_Six_Returns_One_Million() {
         // Act
         uint result = Pow10.GetFactor(6);
@@ -108,7 +108,7 @@ public sealed class Pow10Tests {
     /// Tests that GetFactor with precision 7 returns 10000000.
     /// </summary>
     [TestMethod]
-    [TestCategory(Category.Unit)]
+
     public void GetFactor_With_Precision_Seven_Returns_Ten_Million() {
         // Act
         uint result = Pow10.GetFactor(7);
@@ -121,7 +121,7 @@ public sealed class Pow10Tests {
     /// Tests that GetFactor with precision 8 returns 100000000.
     /// </summary>
     [TestMethod]
-    [TestCategory(Category.Unit)]
+
     public void GetFactor_With_Precision_Eight_Returns_One_Hundred_Million() {
         // Act
         uint result = Pow10.GetFactor(8);
@@ -134,7 +134,7 @@ public sealed class Pow10Tests {
     /// Tests that GetFactor with precision 9 returns 1000000000.
     /// </summary>
     [TestMethod]
-    [TestCategory(Category.Unit)]
+
     public void GetFactor_With_Precision_Nine_Returns_One_Billion() {
         // Act
         uint result = Pow10.GetFactor(9);
@@ -147,7 +147,7 @@ public sealed class Pow10Tests {
     /// Tests that GetFactor with precision causing overflow throws OverflowException.
     /// </summary>
     [TestMethod]
-    [TestCategory(Category.Unit)]
+
     public void GetFactor_With_Precision_Causing_Overflow_Throws_OverflowException() {
         // Act & Assert
         Assert.ThrowsExactly<OverflowException>(() => Pow10.GetFactor(15));
@@ -157,7 +157,7 @@ public sealed class Pow10Tests {
     /// Tests that GetFactor with large precision causing overflow throws OverflowException.
     /// </summary>
     [TestMethod]
-    [TestCategory(Category.Unit)]
+
     public void GetFactor_With_Large_Precision_Causing_Overflow_Throws_OverflowException() {
         // Act & Assert
         Assert.ThrowsExactly<OverflowException>(() => Pow10.GetFactor(20));
@@ -167,7 +167,7 @@ public sealed class Pow10Tests {
     /// Tests that GetFactor with maximum uint precision throws OverflowException.
     /// </summary>
     [TestMethod]
-    [TestCategory(Category.Unit)]
+
     public void GetFactor_With_Maximum_Uint_Precision_Throws_OverflowException() {
         // Act & Assert
         Assert.ThrowsExactly<OverflowException>(() => Pow10.GetFactor(uint.MaxValue));

@@ -13,7 +13,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\PolylineAlgorithm\PolylineAlgorithm.csproj" />
+	  <ProjectReference Include="..\..\src\PolylineAlgorithm.Gps\PolylineAlgorithm.Gps.csproj" />
 	</ItemGroup>
 
 </Project>

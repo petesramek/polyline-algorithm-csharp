@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright © Pete Sramek. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
@@ -6,7 +6,7 @@
 namespace PolylineAlgorithm.NetTopologySuite.Sample;
 
 using global::NetTopologySuite.Geometries;
-using PolylineAlgorithm.Abstraction;
+using PolylineAlgorithm.Gps.Abstraction;
 using System;
 
 /// <summary>
