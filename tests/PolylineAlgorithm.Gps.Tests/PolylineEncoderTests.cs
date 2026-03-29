@@ -30,7 +30,6 @@ public sealed class PolylineEncoderTests {
     /// Tests that default constructor creates encoder with default precision.
     /// </summary>
     [TestMethod]
-
     public void PolylineEncoder_DefaultConstructor_CreatesEncoderWithDefaultPrecision() {
         // Arrange & Act
         PolylineEncoder encoder = new PolylineEncoder();
@@ -43,7 +42,6 @@ public sealed class PolylineEncoderTests {
     /// Tests that default constructor creates encoder with default stack alloc limit.
     /// </summary>
     [TestMethod]
-
     public void PolylineEncoder_DefaultConstructor_CreatesEncoderWithDefaultStackAllocLimit() {
         // Arrange & Act
         PolylineEncoder encoder = new PolylineEncoder();
@@ -56,7 +54,6 @@ public sealed class PolylineEncoderTests {
     /// Tests that parameterized constructor creates encoder with specified options.
     /// </summary>
     [TestMethod]
-
     public void PolylineEncoder_WithOptions_CreatesEncoderWithSpecifiedOptions() {
         // Arrange
         PolylineEncodingOptions options = new PolylineEncodingOptions {
@@ -76,7 +73,6 @@ public sealed class PolylineEncoderTests {
     /// Tests that parameterized constructor preserves custom precision.
     /// </summary>
     [TestMethod]
-
     public void PolylineEncoder_WithCustomPrecision_PreservesCustomPrecision() {
         // Arrange
         PolylineEncodingOptions options = new PolylineEncodingOptions {
@@ -94,7 +90,6 @@ public sealed class PolylineEncoderTests {
     /// Tests that parameterized constructor preserves custom stack alloc limit.
     /// </summary>
     [TestMethod]
-
     public void PolylineEncoder_WithCustomStackAllocLimit_PreservesCustomStackAllocLimit() {
         // Arrange
         PolylineEncodingOptions options = new PolylineEncodingOptions {
@@ -112,7 +107,6 @@ public sealed class PolylineEncoderTests {
     /// Tests that parameterized constructor throws ArgumentNullException when options is null.
     /// </summary>
     [TestMethod]
-
     public void PolylineEncoder_WithNullOptions_ThrowsArgumentNullException() {
         // Arrange
         PolylineEncodingOptions? options = null;
@@ -127,7 +121,6 @@ public sealed class PolylineEncoderTests {
     /// Tests that Encode encodes a collection of coordinates into a polyline string.
     /// </summary>
     [TestMethod]
-
     public void PolylineEncoder_Encode_EncodesCoordinatesToPolyline() {
         // Arrange
         var encoder = new PolylineEncoder();
@@ -149,7 +142,6 @@ public sealed class PolylineEncoderTests {
     /// Tests that Encode throws ArgumentNullException when coordinates is null.
     /// </summary>
     [TestMethod]
-
     public void PolylineEncoder_Encode_NullCoordinates_ThrowsArgumentException() {
         // Arrange
         var encoder = new PolylineEncoder();
@@ -163,7 +155,6 @@ public sealed class PolylineEncoderTests {
     /// Tests that Encode throws ArgumentException when coordinates is empty.
     /// </summary>
     [TestMethod]
-
     public void PolylineEncoder_Encode_EmptyCoordinates_ThrowsArgumentException() {
         // Arrange
         var encoder = new PolylineEncoder();
@@ -177,7 +168,6 @@ public sealed class PolylineEncoderTests {
     /// Tests that Encode encodes a single coordinate correctly.
     /// </summary>
     [TestMethod]
-
     public void PolylineEncoder_Encode_SingleCoordinate_EncodesCorrectly() {
         // Arrange
         var encoder = new PolylineEncoder();
@@ -194,7 +184,6 @@ public sealed class PolylineEncoderTests {
     /// Tests that Encode encodes two coordinates correctly.
     /// </summary>
     [TestMethod]
-
     public void PolylineEncoder_Encode_TwoCoordinates_EncodesCorrectly() {
         // Arrange
         var encoder = new PolylineEncoder();
@@ -215,7 +204,6 @@ public sealed class PolylineEncoderTests {
     /// Tests that Encode works with negative and zero coordinates.
     /// </summary>
     [TestMethod]
-
     public void PolylineEncoder_Encode_NegativeAndZeroCoordinates_EncodesCorrectly() {
         // Arrange
         var encoder = new PolylineEncoder();

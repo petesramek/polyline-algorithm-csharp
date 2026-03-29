@@ -32,4 +32,3 @@ public sealed class PolylineEncoder : AbstractPolylineEncoder<Coordinate, Polyli
         return Polyline.FromMemory(polyline);
     }
 }
-

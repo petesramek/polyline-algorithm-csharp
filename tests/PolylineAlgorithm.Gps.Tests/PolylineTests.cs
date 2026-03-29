@@ -21,7 +21,7 @@ public sealed class PolylineTests {
 
     public void Polyline_DefaultConstructor_CreatesEmptyPolyline() {
         // Arrange & Act
-        Polyline polyline = new Polyline();
+        Polyline polyline = new();
 
         // Assert
         Assert.IsTrue(polyline.IsEmpty);
@@ -33,9 +33,9 @@ public sealed class PolylineTests {
     /// </summary>
     [TestMethod]
 
-    public void IsEmpty_DefaultConstructedPolyline_ReturnsTrue() {
+    public void IsEmpty_Default_Polyline_Returns_True() {
         // Arrange
-        Polyline polyline = new Polyline();
+        Polyline polyline = new();
 
         // Act
         bool isEmpty = polyline.IsEmpty;
@@ -49,7 +49,7 @@ public sealed class PolylineTests {
     /// </summary>
     [TestMethod]
 
-    public void IsEmpty_NonEmptyPolyline_ReturnsFalse() {
+    public void IsEmpty_Non_Empty_Polyline_Returns_False() {
         // Arrange
         Polyline polyline = Polyline.FromString("test");
 
@@ -65,7 +65,7 @@ public sealed class PolylineTests {
     /// </summary>
     [TestMethod]
 
-    public void Length_DefaultConstructedPolyline_ReturnsZero() {
+    public void Length_Default_Polyline_Returns_Zero() {
         // Arrange
         Polyline polyline = new Polyline();
 
@@ -81,16 +81,16 @@ public sealed class PolylineTests {
     /// </summary>
     [TestMethod]
 
-    public void Length_NonEmptyPolyline_ReturnsCorrectLength() {
+    public void Length_Non_Empty_Polyline_Returns_Correct_Length() {
         // Arrange
-        const string testString = "test";
-        Polyline polyline = Polyline.FromString(testString);
+        const string value = "test";
+        Polyline polyline = Polyline.FromString(value);
 
         // Act
         int length = polyline.Length;
 
         // Assert
-        Assert.AreEqual(testString.Length, length);
+        Assert.AreEqual(value.Length, length);
     }
 
     /// <summary>
@@ -98,7 +98,7 @@ public sealed class PolylineTests {
     /// </summary>
     [TestMethod]
 
-    public void CopyTo_NullDestination_ThrowsArgumentNullException() {
+    public void CopyTo_Null_Destination_Throws_ArgumentNullException() {
         // Arrange
         Polyline polyline = Polyline.FromString("test");
 
@@ -112,7 +112,7 @@ public sealed class PolylineTests {
     /// </summary>
     [TestMethod]
 
-    public void CopyTo_DestinationTooSmall_ThrowsArgumentException() {
+    public void CopyTo_Destination_Too_Small_Throws_ArgumentException() {
         // Arrange
         Polyline polyline = Polyline.FromString("test");
         char[] destination = new char[2];
@@ -127,17 +127,17 @@ public sealed class PolylineTests {
     /// </summary>
     [TestMethod]
 
-    public void CopyTo_ExactLengthDestination_CopiesCharacters() {
+    public void CopyTo_Exact_Length_Destination_Copies_Characters() {
         // Arrange
-        const string testString = "test";
-        Polyline polyline = Polyline.FromString(testString);
-        char[] destination = new char[testString.Length];
+        const string value = "test";
+        Polyline polyline = Polyline.FromString(value);
+        char[] destination = new char[value.Length];
 
         // Act
         polyline.CopyTo(destination);
 
         // Assert
-        Assert.AreEqual(testString, new string(destination));
+        Assert.AreEqual(value, new string(destination));
     }
 
     /// <summary>
@@ -145,19 +145,17 @@ public sealed class PolylineTests {
     /// </summary>
     [TestMethod]
 
-    public void CopyTo_LargerDestination_CopiesCharacters() {
+    public void CopyTo_Larger_Destination_Copies_Characters() {
         // Arrange
-        const string testString = "test";
-        Polyline polyline = Polyline.FromString(testString);
-        char[] destination = new char[testString.Length + 5];
+        const string value = "test";
+        Polyline polyline = Polyline.FromString(value);
+        char[] destination = new char[value.Length + 5];
 
         // Act
         polyline.CopyTo(destination);
 
         // Assert
-        for (int i = 0; i < testString.Length; i++) {
-            Assert.AreEqual(testString[i], destination[i]);
-        }
+        CollectionAssert.AreEqual(value.ToArray(), destination);
     }
 
     /// <summary>
@@ -174,7 +172,7 @@ public sealed class PolylineTests {
         polyline.CopyTo(destination);
 
         // Assert
-        Assert.AreEqual(0, destination.Length);
+        Assert.IsEmpty(destination);
     }
 
     /// <summary>
@@ -200,14 +198,14 @@ public sealed class PolylineTests {
 
     public void ToString_NonEmptyPolyline_ReturnsCorrectString() {
         // Arrange
-        const string testString = "test";
-        Polyline polyline = Polyline.FromString(testString);
+        const string value = "test";
+        Polyline polyline = Polyline.FromString(value);
 
         // Act
         string result = polyline.ToString();
 
         // Assert
-        Assert.AreEqual(testString, result);
+        Assert.AreEqual(value, result);
     }
 
     /// <summary>
@@ -217,14 +215,14 @@ public sealed class PolylineTests {
 
     public void ToString_PolylineWithSpecialCharacters_ReturnsCorrectString() {
         // Arrange
-        const string testString = "~`@!#$%";
-        Polyline polyline = Polyline.FromString(testString);
+        const string value = "~`@!#$%";
+        Polyline polyline = Polyline.FromString(value);
 
         // Act
         string result = polyline.ToString();
 
         // Assert
-        Assert.AreEqual(testString, result);
+        Assert.AreEqual(value, result);
     }
 
     /// <summary>
@@ -334,7 +332,7 @@ public sealed class PolylineTests {
     /// </summary>
     [TestMethod]
 
-    public void EqualsObject_IdenticalPolylines_ReturnsTrue() {
+    public void Equals_Object_Identical_Polylines_Returns_True() {
         // Arrange
         Polyline polyline1 = Polyline.FromString("test");
         object polyline2 = Polyline.FromString("test");
@@ -351,7 +349,7 @@ public sealed class PolylineTests {
     /// </summary>
     [TestMethod]
 
-    public void EqualsObject_DifferentPolylines_ReturnsFalse() {
+    public void Equals_Object_Different_Polylines_Returns_False() {
         // Arrange
         Polyline polyline1 = Polyline.FromString("test1");
         object polyline2 = Polyline.FromString("test2");
@@ -533,14 +531,14 @@ public sealed class PolylineTests {
 
     public void FromString_ValidString_CreatesPolyline() {
         // Arrange
-        const string testString = "test";
+        const string value = "test";
 
         // Act
-        Polyline polyline = Polyline.FromString(testString);
+        Polyline polyline = Polyline.FromString(value);
 
         // Assert
         Assert.AreEqual(4, polyline.Length);
-        Assert.AreEqual(testString, polyline.ToString());
+        Assert.AreEqual(value, polyline.ToString());
     }
 
     /// <summary>
@@ -550,10 +548,10 @@ public sealed class PolylineTests {
 
     public void FromString_EmptyString_CreatesEmptyPolyline() {
         // Arrange
-        string testString = string.Empty;
+        string value = string.Empty;
 
         // Act
-        Polyline polyline = Polyline.FromString(testString);
+        Polyline polyline = Polyline.FromString(value);
 
         // Assert
         Assert.IsTrue(polyline.IsEmpty);
@@ -578,14 +576,14 @@ public sealed class PolylineTests {
 
     public void FromString_SpecialCharacters_CreatesPolyline() {
         // Arrange
-        const string testString = "~`@!#$%";
+        const string value = "~`@!#$%";
 
         // Act
-        Polyline polyline = Polyline.FromString(testString);
+        Polyline polyline = Polyline.FromString(value);
 
         // Assert
-        Assert.AreEqual(testString.Length, polyline.Length);
-        Assert.AreEqual(testString, polyline.ToString());
+        Assert.AreEqual(value.Length, polyline.Length);
+        Assert.AreEqual(value, polyline.ToString());
     }
 
     /// <summary>
@@ -647,15 +645,15 @@ public sealed class PolylineTests {
 
     public void FromMemory_SpecialCharacters_CreatesPolyline() {
         // Arrange
-        const string testString = "~`@!#$%";
-        ReadOnlyMemory<char> memory = testString.AsMemory();
+        const string value = "~`@!#$%";
+        ReadOnlyMemory<char> memory = value.AsMemory();
 
         // Act
         Polyline polyline = Polyline.FromMemory(memory);
 
         // Assert
-        Assert.AreEqual(testString.Length, polyline.Length);
-        Assert.AreEqual(testString, polyline.ToString());
+        Assert.AreEqual(value.Length, polyline.Length);
+        Assert.AreEqual(value, polyline.ToString());
     }
 
     /// <summary>
@@ -683,8 +681,8 @@ public sealed class PolylineTests {
 
     public void FromMemory_MemorySlice_CreatesPolyline() {
         // Arrange
-        const string testString = "testing123";
-        ReadOnlyMemory<char> memory = testString.AsMemory(0, 4);
+        const string value = "testing123";
+        ReadOnlyMemory<char> memory = value.AsMemory(0, 4);
 
         // Act
         Polyline polyline = Polyline.FromMemory(memory);

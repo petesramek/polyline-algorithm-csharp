@@ -231,4 +231,3 @@ public abstract class AbstractPolylineEncoder<TValue, TPolyline> : IPolylineEnco
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected abstract double GetLatitude(TValue current);
 }
-

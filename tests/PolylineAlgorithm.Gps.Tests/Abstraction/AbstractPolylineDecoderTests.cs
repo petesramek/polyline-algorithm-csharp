@@ -3,17 +3,16 @@ using PolylineAlgorithm.Gps.Abstraction;
 
 namespace PolylineAlgorithm.Tests.Abstraction {
     [TestClass]
-    public sealed class AbstractPolylineDecoderMoreTests {
-        private sealed class FakeStringDecoder : AbstractPolylineDecoder<string, Coordinate> {
+    public sealed class AbstractPolylineDecoderTests {
+        private sealed class TestStringDecoder : AbstractPolylineDecoder<string, Coordinate> {
             protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
-
             protected override Coordinate CreateCoordinate(double latitude, double longitude) => new(latitude, longitude);
         }
 
         [TestMethod]
-        public void Decode_NullString_ThrowsArgumentNullException() {
+        public void Decode_Null_Polyline_Throws_ArgumentNullException() {
             // Arrange
-            var decoder = new FakeStringDecoder();
+            var decoder = new TestStringDecoder();
 
             // Act & Assert
             var ex = Assert.ThrowsExactly<ArgumentNullException>(() => decoder.Decode((string?)null!).ToList());
@@ -21,18 +20,18 @@ namespace PolylineAlgorithm.Tests.Abstraction {
         }
 
         [TestMethod]
-        public void Decode_EmptyString_ThrowsInvalidPolylineException() {
+        public void Decode_Empty_Polyline_Throws_InvalidPolylineException() {
             // Arrange
-            var decoder = new FakeStringDecoder();
+            var decoder = new TestStringDecoder();
 
             // Act & Assert - empty string is too short (min block length = 1)
             Assert.ThrowsExactly<InvalidPolylineException>(() => decoder.Decode(string.Empty).ToList());
         }
 
         [TestMethod]
-        public void Decode_InvalidCharacter_ThrowsInvalidPolylineException() {
+        public void Decode_Invalid_Character_Polyline_Throws_InvalidPolylineException() {
             // Arrange
-            var decoder = new FakeStringDecoder();
+            var decoder = new TestStringDecoder();
 
             // '!' (33) is below allowed range ('?' == 63) and should trigger invalid polyline character
             Assert.ThrowsExactly<InvalidPolylineException>(() => decoder.Decode("!").ToList());
