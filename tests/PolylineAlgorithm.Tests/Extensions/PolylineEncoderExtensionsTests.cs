@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright © Pete Sramek. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
@@ -30,7 +30,7 @@ public sealed class PolylineEncoderExtensionsTests
         List<Coordinate> coordinates = [new Coordinate(38.5, -120.2)];
 
         // Act & Assert
-        ArgumentNullException exception = Assert.ThrowsExactly<ArgumentNullException>(() => encoder!.Encode(coordinates));
+        ArgumentNullException exception = Assert.ThrowsExactly<ArgumentNullException>(() => PolylineEncoderExtensions.Encode(encoder!, coordinates));
         Assert.AreEqual("encoder", exception.ParamName);
     }
 
@@ -46,7 +46,7 @@ public sealed class PolylineEncoderExtensionsTests
         List<Coordinate>? coordinates = null;
 
         // Act & Assert
-        ArgumentNullException exception = Assert.ThrowsExactly<ArgumentNullException>(() => encoder.Encode(coordinates!));
+        ArgumentNullException exception = Assert.ThrowsExactly<ArgumentNullException>(() => PolylineEncoderExtensions.Encode(encoder, coordinates!));
         Assert.AreEqual("coordinates", exception.ParamName);
     }
 
@@ -68,7 +68,7 @@ public sealed class PolylineEncoderExtensionsTests
         PolylineEncoder encoder = new();
 
         // Act
-        Polyline result = encoder.Encode(coordinates);
+        Polyline result = PolylineEncoderExtensions.Encode(encoder, coordinates);
 
         // Assert
         Assert.AreEqual(expectedPolyline, result);
@@ -83,14 +83,10 @@ public sealed class PolylineEncoderExtensionsTests
     {
         // Arrange
         List<Coordinate> coordinates = [];
-        Polyline expectedPolyline = Polyline.FromString("");
         PolylineEncoder encoder = new();
 
-        // Act
-        Polyline result = encoder.Encode(coordinates);
-
-        // Assert
-        Assert.AreEqual(expectedPolyline, result);
+        // Act & Assert
+        Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoderExtensions.Encode(encoder, coordinates));
     }
 
     /// <summary>
@@ -105,7 +101,7 @@ public sealed class PolylineEncoderExtensionsTests
         Coordinate[] coordinates = [new Coordinate(38.5, -120.2)];
 
         // Act & Assert
-        ArgumentNullException exception = Assert.ThrowsExactly<ArgumentNullException>(() => encoder!.Encode(coordinates));
+        ArgumentNullException exception = Assert.ThrowsExactly<ArgumentNullException>(() => PolylineEncoderExtensions.Encode(encoder!, coordinates));
         Assert.AreEqual("encoder", exception.ParamName);
     }
 
@@ -137,13 +133,13 @@ public sealed class PolylineEncoderExtensionsTests
         [
             new Coordinate(38.5, -120.2),
             new Coordinate(40.7, -120.95),
-            new Coordinate(43.252, -126.453)
+            new Coordinate(43.252, -126.453),
         ];
         Polyline expectedPolyline = Polyline.FromString("_p~iF~ps|U_ulLnnqC_mqNvxq`@");
         PolylineEncoder encoder = new();
 
         // Act
-        Polyline result = encoder.Encode(coordinates);
+        Polyline result = PolylineEncoderExtensions.Encode(encoder, coordinates);
 
         // Assert
         Assert.AreEqual(expectedPolyline, result);
@@ -158,13 +154,9 @@ public sealed class PolylineEncoderExtensionsTests
     {
         // Arrange
         Coordinate[] coordinates = [];
-        Polyline expectedPolyline = Polyline.FromString("");
         PolylineEncoder encoder = new();
 
-        // Act
-        Polyline result = encoder.Encode(coordinates);
-
-        // Assert
-        Assert.AreEqual(expectedPolyline, result);
+        // Act & Assert
+        Assert.ThrowsExactly<ArgumentException>(() => PolylineEncoderExtensions.Encode(encoder, coordinates));
     }
 }

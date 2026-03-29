@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright © Pete Sramek. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
@@ -48,7 +48,7 @@ public sealed class PolylineDecoderExtensionsTests
         string polyline = "test";
 
         // Act & Assert
-        ArgumentNullException exception = Assert.ThrowsExactly<ArgumentNullException>(() => decoder!.Decode(polyline));
+        ArgumentNullException exception = Assert.ThrowsExactly<ArgumentNullException>(() => PolylineDecoderExtensions.Decode(decoder!, polyline));
         Assert.AreEqual("decoder", exception.ParamName);
     }
 
@@ -65,18 +65,18 @@ public sealed class PolylineDecoderExtensionsTests
         [
             new Coordinate(38.5, -120.2),
             new Coordinate(40.7, -120.95),
-            new Coordinate(43.252, -126.453)
+            new Coordinate(43.252, -126.453),
         ];
         var decoder = new TestPolylineDecoder(expectedCoordinates);
 
         // Act
-        IEnumerable<Coordinate> result = decoder.Decode(polylineString);
+        IEnumerable<Coordinate> result = PolylineDecoderExtensions.Decode(decoder, polylineString);
 
         // Assert
         Assert.IsNotNull(result);
         Coordinate[] coordinates = result.ToArray();
-        Assert.AreEqual(3, coordinates.Length);
-        Assert.AreSame(decoder.LastPolyline, Polyline.FromString(polylineString));
+        Assert.HasCount(3, coordinates);
+        Assert.AreEqual(decoder.LastPolyline, Polyline.FromString(polylineString));
     }
 
     /// <summary>
@@ -91,7 +91,7 @@ public sealed class PolylineDecoderExtensionsTests
         char[] polyline = ['t', 'e', 's', 't'];
 
         // Act & Assert
-        ArgumentNullException exception = Assert.ThrowsExactly<ArgumentNullException>(() => decoder!.Decode(polyline));
+        ArgumentNullException exception = Assert.ThrowsExactly<ArgumentNullException>(() => PolylineDecoderExtensions.Decode(decoder!, polyline));
         Assert.AreEqual("decoder", exception.ParamName);
     }
 
@@ -111,7 +111,7 @@ public sealed class PolylineDecoderExtensionsTests
         var decoder = new TestPolylineDecoder(expectedCoordinates);
 
         // Act
-        IEnumerable<Coordinate> result = decoder.Decode(polylineChars);
+        IEnumerable<Coordinate> result = PolylineDecoderExtensions.Decode(decoder, polylineChars);
 
         // Assert
         Assert.IsNotNull(result);
@@ -132,7 +132,7 @@ public sealed class PolylineDecoderExtensionsTests
         ReadOnlyMemory<char> polyline = "test".AsMemory();
 
         // Act & Assert
-        ArgumentNullException exception = Assert.ThrowsExactly<ArgumentNullException>(() => decoder!.Decode(polyline));
+        ArgumentNullException exception = Assert.ThrowsExactly<ArgumentNullException>(() => PolylineDecoderExtensions.Decode(decoder!, polyline));
         Assert.AreEqual("decoder", exception.ParamName);
     }
 
@@ -152,7 +152,7 @@ public sealed class PolylineDecoderExtensionsTests
         var decoder = new TestPolylineDecoder(expectedCoordinates);
 
         // Act
-        IEnumerable<Coordinate> result = decoder.Decode(polylineMemory);
+        IEnumerable<Coordinate> result = PolylineDecoderExtensions.Decode(decoder, polylineMemory);
 
         // Assert
         Assert.IsNotNull(result);
