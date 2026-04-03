@@ -1,4 +1,4 @@
-﻿name: 'Promote branch'
+name: 'Promote branch'
 
 on:
   workflow_dispatch:
@@ -21,7 +21,6 @@ permissions:
   id-token: write
   contents: write
   pull-requests: write
-  administration: write
 
 concurrency:
     group: 'promote-branch-${{ inputs.promotion-type }}-${{github.ref_name }}'

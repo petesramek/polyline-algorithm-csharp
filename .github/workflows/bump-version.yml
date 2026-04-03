@@ -15,7 +15,6 @@ permissions:
   actions: read
   contents: write
   pull-requests: write
-  administration: write
 
 concurrency:
   group: bump-version
