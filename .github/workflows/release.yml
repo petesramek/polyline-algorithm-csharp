@@ -13,6 +13,7 @@ permissions:
   pages: write
   id-token: write
   contents: write
+  administration: write
 
 concurrency: 
   group: release-${{ github.head_ref || github.ref }}      
