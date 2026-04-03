@@ -9,11 +9,11 @@ using Microsoft.Extensions.Logging;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Internal.Diagnostics;
-using PolylineAlgorithm.Internal.Diagnostics;
 using System;
 using System.Buffers;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 /// <summary>
 /// Provides a base implementation for encoding sequences of geographic coordinates into encoded polyline strings.
@@ -74,7 +74,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// Thrown when the internal encoding buffer cannot accommodate the encoded value.
     /// </exception>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "MA0051:Method is too long", Justification = "Method contains local methods. Actual method only 55 lines.")]
-    public TPolyline Encode(ReadOnlySpan<TCoordinate> coordinates) {
+    public TPolyline Encode(ReadOnlySpan<TCoordinate> coordinates, CancellationToken cancellationToken) {
         const string OperationName = nameof(Encode);
 
         _logger
@@ -98,6 +98,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
         try {
             for (var i = 0; i < coordinates.Length; i++) {
+                cancellationToken.ThrowIfCancellationRequested();
 
                 delta
                     .Next(
