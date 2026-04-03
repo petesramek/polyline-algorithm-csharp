@@ -28,7 +28,7 @@ public static class PolylineDecoderExtensions {
     /// An <see cref="IEnumerable{Coordinate}"/> containing the decoded latitude and longitude pairs.
     /// </returns>
     /// <exception cref="ArgumentNullException">
-    /// Thrown when <paramref name="decoder"/> is <see langword="null"/>.
+    /// Thrown when <paramref name="decoder"/> or <paramref name="polyline"/> is <see langword="null"/>.
     /// </exception>
     public static IEnumerable<Coordinate> Decode(this IPolylineDecoder<Polyline, Coordinate> decoder, string polyline) {
         if (decoder is null) {
@@ -51,7 +51,7 @@ public static class PolylineDecoderExtensions {
     /// An <see cref="IEnumerable{Coordinate}"/> containing the decoded latitude and longitude pairs.
     /// </returns>
     /// <exception cref="ArgumentNullException">
-    /// Thrown when <paramref name="decoder"/> is <see langword="null"/>.
+    /// Thrown when <paramref name="decoder"/> or <paramref name="polyline"/> is <see langword="null"/>.
     /// </exception>
     public static IEnumerable<Coordinate> Decode(this IPolylineDecoder<Polyline, Coordinate> decoder, char[] polyline) {
         if (decoder is null) {

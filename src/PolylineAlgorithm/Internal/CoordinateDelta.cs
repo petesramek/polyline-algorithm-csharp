@@ -10,8 +10,10 @@ using System.Runtime.InteropServices;
 
 /// <summary>
 /// Represents the difference (delta) in latitude and longitude between consecutive geographic coordinates.
-/// This struct is used to compute and store the change in coordinate values as integer deltas.
 /// </summary>
+/// <remarks>
+/// This struct computes and stores the change in coordinate values as integer deltas between successive coordinates.
+/// </remarks>
 [DebuggerDisplay("{ToString(),nq}")]
 [StructLayout(LayoutKind.Auto)]
 internal struct CoordinateDelta {
@@ -39,7 +41,6 @@ internal struct CoordinateDelta {
     /// </summary>
     /// <param name="latitude">The next latitude value.</param>
     /// <param name="longitude">The next longitude value.</param>
-
     public void Next(int latitude, int longitude) {
         Latitude = Delta(_current.Latitude, latitude);
         Longitude = Delta(_current.Longitude, longitude);
@@ -57,7 +58,6 @@ internal struct CoordinateDelta {
     /// <param name="initial">The previous coordinate value.</param>
     /// <param name="next">The next coordinate value.</param>
     /// <returns>The computed delta between <paramref name="initial"/> and <paramref name="next"/>.</returns>
-
     private static int Delta(int initial, int next) => next - initial;
 
     /// <summary>
