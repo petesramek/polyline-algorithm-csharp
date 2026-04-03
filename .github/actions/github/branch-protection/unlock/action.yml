@@ -1,0 +1,18 @@
+name: 'Unlock branch'
+author: 'Pete Sramek'
+description: 'Remove branch protection to allow a workflow to push directly. Always re-lock after the operation.'
+inputs:
+  branch:
+    description: 'Branch name to unlock.'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: 'Unlock branch ${{ inputs.branch }}'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        gh api --method DELETE /repos/${{ github.repository }}/branches/${{ inputs.branch }}/protection || true
+        echo "🔓 Branch protection removed from '${{ inputs.branch }}'." >> $GITHUB_STEP_SUMMARY
