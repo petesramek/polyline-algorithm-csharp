@@ -11,15 +11,18 @@ using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Utility;
 
 /// <summary>
-/// Benchmarks for <see cref="PolylineDecoder"/>.
+/// Benchmarks for <see cref="AbstractPolylineDecoder{TPolyline, TValue}"/>.
 /// </summary>
-public class PolylineDecoderBenchmark {
+public class AbstractPolylineDecoderBenchmark {
     private readonly Consumer _consumer = new();
 
+    /// <summary>
+    /// Number of coordinates used to generate the test polyline.
+    /// </summary>
     [Params(1, 100, 1_000)]
     public int CoordinatesCount { get; set; }
 
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor.
     /// <summary>
     /// Encoded polyline as string.
     /// </summary>
@@ -34,8 +37,7 @@ public class PolylineDecoderBenchmark {
     /// Encoded polyline as read-only memory.
     /// </summary>
     public ReadOnlyMemory<char> Memory { get; private set; }
-
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+#pragma warning restore CS8618
 
     /// <summary>
     /// String polyline decoder instance.
@@ -48,7 +50,7 @@ public class PolylineDecoderBenchmark {
     private readonly CharArrayPolylineDecoder _charArrayDecoder = new();
 
     /// <summary>
-    /// String polyline decoder instance.
+    /// Read-only memory polyline decoder instance.
     /// </summary>
     private readonly MemoryCharPolylineDecoder _memoryCharDecoder = new();
 
@@ -63,30 +65,30 @@ public class PolylineDecoderBenchmark {
     }
 
     /// <summary>
-    /// Benchmark: decode from string.
+    /// Benchmark: decode polyline from string.
     /// </summary>
-    [Benchmark]
-    public void PolylineDecoder_Decode_String() {
+    [Benchmark(Baseline = true)]
+    public void AbstractPolylineDecoder_Decode_String() {
         _stringDecoder
             .Decode(String)
             .Consume(_consumer);
     }
 
     /// <summary>
-    /// Benchmark: decode from char array.
+    /// Benchmark: decode polyline from char array.
     /// </summary>
     [Benchmark]
-    public void PolylineDecoder_Decode_CharArray() {
+    public void AbstractPolylineDecoder_Decode_CharArray() {
         _charArrayDecoder
             .Decode(CharArray)
             .Consume(_consumer);
     }
 
     /// <summary>
-    /// Benchmark: decode from memory.
+    /// Benchmark: decode polyline from read-only memory.
     /// </summary>
     [Benchmark]
-    public void PolylineDecoder_Decode_Memory() {
+    public void AbstractPolylineDecoder_Decode_Memory() {
         _memoryCharDecoder
             .Decode(Memory)
             .Consume(_consumer);
