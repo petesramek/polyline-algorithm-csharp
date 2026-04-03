@@ -14,7 +14,6 @@ In-depth developer guides are in the [`/docs`](./docs/README.md) folder:
 - [Branch Strategy](./docs/branch-strategy.md) — branch lifecycle and environments
 - [Versioning](./docs/versioning.md) — branch naming and the version pipeline
 - [API Documentation](./docs/api-documentation.md) — DocFX and the API reference site
-- [Extensibility](./docs/extensibility.md) — how to add new encoding algorithms
 
 ## Guidelines
 

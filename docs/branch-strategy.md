@@ -7,8 +7,10 @@ This document describes the branch model, the purpose of each branch type, and h
 | Pattern | Purpose | Protected |
 |---|---|---|
 | `main` | Latest stable source of truth | ✅ Yes |
-| `develop/**` | Active feature development | ❌ No |
-| `support/**` | Maintenance / backport development | ❌ No |
+| `develop/X.Y` | Active feature development sink for version X.Y | ✅ Yes (PR only) |
+| `support/X.Y` | Maintenance / backport development sink for version X.Y | ✅ Yes (PR only) |
+| `feature/<id>-<description>` | Individual feature work, merged into `develop/X.Y` via PR | ❌ No |
+| `bugfix/<id>-<description>` | Bug fix work, merged into `support/X.Y` via PR | ❌ No |
 | `preview/X.Y` | Pre-release stabilization | ✅ Yes (1 approval required) |
 | `release/X.Y` | Release stabilization | ✅ Yes (1 approval required) |
 
@@ -16,23 +18,28 @@ This document describes the branch model, the purpose of each branch type, and h
 
 ```
 1. Feature work
-   └─ develop/my-feature  (or support/my-fix for backports)
+   └─ feature/123-my-feature
           │
-          │  push to src/ → [build.yml] runs: format, compile, test, pack, publish-dev
+          │  PR → develop/X.Y
           │
-2. Promote to preview
-   └─ promote-branch.yml (manual) → creates preview/X.Y + PR: develop → preview/X.Y
+2. Bug fix work
+   └─ bugfix/124-my-fix
+          │
+          │  PR → support/X.Y
+          │
+3. Promote to preview
+   └─ promote-branch.yml (manual) → creates preview/X.Y + PR: develop/X.Y → preview/X.Y
           │
           │  PR open → [pull-request.yml]: compile, test, pack, benchmark (optional)
           │  PR merged → [release.yml]: compile, test, pack, publish-NuGet (pre-release), GitHub release, docs
           │
-3. Promote to release
+4. Promote to release
    └─ promote-branch.yml (manual) → creates release/X.Y + PR: preview/X.Y → release/X.Y
           │
           │  PR open → [pull-request.yml]
-          │  PR merged → [release.yml]: publish-NuGet (stable), GitHub release, docs
+          │  PR merged → [release.yml]: publish-NuGet (stable), GitHub release, docs, creates support/X.Y
           │
-4. Back-merge (optional)
+5. Back-merge (optional)
    └─ Manual PR: release/X.Y → main
 ```
 
@@ -45,17 +52,31 @@ This document describes the branch model, the purpose of each branch type, and h
 - Updated by merging from `release/X.Y` after a stable release.
 - The `build.yml` workflow does **not** trigger on `main` pushes (branch-ignore pattern excludes `preview/**` and `release/**`, and `main` does not match `src/**` changes by default in the context of the ignore rules — check the workflow for current specifics).
 
-### `develop/**`
+### `develop/X.Y`
 
-- Naming convention: `develop/<description>` (e.g. `develop/async-decoder`, `develop/1.2`).
+- Naming convention: `develop/<major>.<minor>` (e.g. `develop/1.2`).
+- Protected: all changes are merged via pull request from `feature/**` branches.
 - The `build.yml` CI pipeline runs on every push to `src/`.
 - When ready for stabilization, use `promote-branch.yml` to create a `preview/X.Y` branch and open a PR.
 
-### `support/**`
+### `support/X.Y`
 
-- Used for backport and maintenance work against older versions.
-- Same CI behavior as `develop/**`.
+- Naming convention: `support/<major>.<minor>` (e.g. `support/1.0`).
+- Auto-created when the first stable release from `release/X.Y` is published.
+- Protected: all changes are merged via pull request from `bugfix/**` branches.
 - Can be promoted to `preview/X.Y` for a patch release.
+
+### `feature/<id>-<description>`
+
+- Short-lived branch for individual feature work (e.g. `feature/123-async-decoder`).
+- Merged into the appropriate `develop/X.Y` via pull request.
+- Not protected — deleted after merging.
+
+### `bugfix/<id>-<description>`
+
+- Short-lived branch for bug fixes (e.g. `bugfix/124-decode-overflow`).
+- Merged into the appropriate `support/X.Y` via pull request.
+- Not protected — deleted after merging.
 
 ### `preview/X.Y`
 
@@ -70,6 +91,7 @@ This document describes the branch model, the purpose of each branch type, and h
 - Created automatically by `promote-branch.yml` from `preview/X.Y`.
 - Locked immediately: requires at least one PR approval.
 - On merge, `release.yml` publishes a **stable** NuGet package and a GitHub release.
+- After the first stable release, a corresponding `support/X.Y` branch is auto-created.
 
 ## Version in Branch Names
 
@@ -84,4 +106,4 @@ The `X.Y` in `preview/X.Y` and `release/X.Y` drives the version pipeline. See [V
 
 ## Locking and Unlocking Branches
 
-`preview/**` and `release/**` branches are locked via the [`github/branch-protection/lock`](./composite-actions.md#githubbranch-protectionlock) composite action when created. The [`github/branch-protection/unlock`](./composite-actions.md#githubbranch-protectionunlock) action temporarily removes protection when a workflow needs to push directly (e.g., `bump-version.yml`). Branches are always re-locked immediately after.
+`preview/**` and `release/**` branches are locked via the [`github/branch-protection/lock`](./composite-actions.md#githubbranch-protectionlock) composite action when created. `develop/X.Y` and `support/X.Y` branches must be manually configured as protected in repository settings (PR required, no direct pushes). The [`github/branch-protection/unlock`](./composite-actions.md#githubbranch-protectionunlock) action temporarily removes protection when a workflow needs to push directly (e.g., `bump-version.yml`). Branches are always re-locked immediately after.
