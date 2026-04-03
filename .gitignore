@@ -265,3 +265,6 @@ __pycache__/
 
 # GitHub Copilot Testing folder
 /.codetesting
+
+# DocFX build output
+api-reference/_docs/

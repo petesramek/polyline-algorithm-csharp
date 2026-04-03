@@ -14,20 +14,6 @@
         "exclude": [
           "_docs/**"
         ]
-      },
-      {
-        "dest": "",
-        "files": [ "*.yml" ],
-        "group": "v1.0",
-        "src": "1.0",
-        "rootTocPath": "~/toc.html"
-      },
-      {
-        "dest": "",
-        "files": [ "*.yml" ],
-        "group": "v1.1",
-        "src": "1.1",
-        "rootTocPath": "~/toc.html"
       }
     ],
     "resource": [
@@ -38,10 +24,6 @@
         ]
       }
     ],
-    "groups": {
-      "v1.0": { "dest": "1.0" },
-      "v1.1": { "dest": "1.1" }
-    },
     "output": "_docs",
     "template": [
       "default",
