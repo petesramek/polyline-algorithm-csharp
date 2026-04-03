@@ -55,27 +55,6 @@ namespace PolylineAlgorithm.Abstraction {
         public PolylineEncodingOptions Options { get; }
 
         /// <summary>
-        /// Decodes an encoded <typeparamref name="TPolyline"/> into a sequence of <typeparamref name="TCoordinate"/> instances.
-        /// </summary>
-        /// <param name="polyline">
-        /// The <typeparamref name="TPolyline"/> instance containing the encoded polyline string to decode.
-        /// </param>
-        /// <returns>
-        /// An <see cref="IEnumerable{T}"/> of <typeparamref name="TCoordinate"/> representing the decoded latitude and longitude pairs.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when <paramref name="polyline"/> is <see langword="null"/>.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// Thrown when <paramref name="polyline"/> is empty.
-        /// </exception>
-        /// <exception cref="InvalidPolylineException">
-        /// Thrown when the polyline format is invalid or malformed at a specific position.
-        /// </exception>
-        public IEnumerable<TCoordinate> Decode(TPolyline polyline)
-            => Decode(polyline, CancellationToken.None);
-
-        /// <summary>
         /// Decodes an encoded <typeparamref name="TPolyline"/> into a sequence of <typeparamref name="TCoordinate"/> instances,
         /// with support for cancellation.
         /// </summary>
