@@ -38,10 +38,10 @@ runs:
           exit 1
 
     - name: 'Checkout ${{ github.head_ref || github.ref }}'
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - name: Download package artifact
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v8
       with:
         name: ${{ inputs.package-artifact-name }}
 

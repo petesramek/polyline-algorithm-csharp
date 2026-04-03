@@ -28,7 +28,7 @@ runs:
   using: "composite"
   steps:
     - name: 'Checkout ${{ github.head_ref || github.ref }}'
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - name: Dotnet Setup
       uses: actions/setup-dotnet@v4
@@ -37,7 +37,7 @@ runs:
 
     - name: Download a single artifact
       if: ${{ inputs.artifact-name != '' }}
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: ${{ inputs.artifact-name }}
         path: ${{ inputs.working-directory }}

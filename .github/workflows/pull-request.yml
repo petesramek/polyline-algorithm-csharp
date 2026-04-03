@@ -55,7 +55,7 @@ jobs:
         release-version: ${{ steps.format-version.outputs.release-version }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
         uses: actions/setup-dotnet@v5
         with:
@@ -109,7 +109,7 @@ jobs:
 
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: 'Compile source code'
         uses: ./.github/actions/source/compile
@@ -126,7 +126,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: 'Setup .NET'
         uses: actions/setup-dotnet@v5
@@ -136,7 +136,7 @@ jobs:
       - name: 'Run tests'
         uses: ./.github/actions/testing/test
         with:
-          project-path: '**/PolylineAlgorithm.Tests.csproj'
+          project-path: './tests/PolylineAlgorithm.Tests/PolylineAlgorithm.Tests.csproj'
           test-results-directory: '${{ runner.temp }}/${{ env.test-result-directory }}/'
           code-coverage-settings-file: '${{ github.workspace}}/code-coverage-settings.xml'
 
@@ -172,7 +172,7 @@ jobs:
         package-artifact-name: ${{ env.package-artifact-name }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
@@ -180,7 +180,7 @@ jobs:
           dotnet-version: ${{ env.dotnet-sdk-version }}
 
       - name: Download Build
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: build
 
@@ -189,7 +189,7 @@ jobs:
           dotnet pack ${{ vars.SRC_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} /p:Platform="${{ env.build-platform }}" /p:PackageVersion=${{ env.release-version }} /p:Version=${{ env.assembly-version }} /p:AssemblyInformationalVersion=${{ env.assembly-informational-version }} /p:FileVersion=${{ env.file-version }} --output ${{ runner.temp }}/${{ env.nuget-packages-directory }}
       
       - name: Upload Package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.package-artifact-name }}
           path: |
@@ -205,7 +205,7 @@ jobs:
     environment: 'Development'
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
@@ -232,7 +232,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Install .NET SDK
         uses: actions/setup-dotnet@v5
         with:
@@ -240,14 +240,14 @@ jobs:
             8.x
             10.x
       - name: Download Build
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: build
       - name: Benchmark
         working-directory: ${{ vars.BENCHMARKDOTNET_WORKING_DIRECTORY }}
         run: dotnet run --configuration ${{ env.build-configuration }} /p:Platform=${{ env.build-platform }} --framework ${{ vars.DEFAULT_BUILD_FRAMEWORK }} --runtimes ${{ vars.BENCHMARKDOTNET_RUNTIMES }} --filter ${{ vars.BENCHMARKDOTNET_FILTER }} --artifacts ${{ runner.temp }}/benchmarks/ --exporters GitHub --memory --iterationTime 100 --join
       - name: Upload Benchmark Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: benchmark-${{ matrix.os }}
           path: |

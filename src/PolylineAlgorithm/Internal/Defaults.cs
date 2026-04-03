@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright © Pete Sramek. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
@@ -9,8 +9,10 @@ using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
 /// Provides default values and constants used throughout the Polyline Algorithm.
-/// Organizes defaults for algorithm parameters, polyline encoding, and geographic coordinates into nested static classes.
 /// </summary>
+/// <remarks>
+/// Organizes defaults for algorithm parameters, polyline encoding, and geographic coordinates into nested static classes.
+/// </remarks>
 [ExcludeFromCodeCoverage]
 internal static class Defaults {
     /// <summary>
@@ -18,7 +20,7 @@ internal static class Defaults {
     /// </summary>
     internal static class Logging {
         /// <summary>
-        /// Log level multiplier used to distinguish event identification for each log level
+        /// Log level multiplier used to distinguish event identification for each log level.
         /// </summary>
         internal const int LogLevelMultiplier = 100;
     }
@@ -26,10 +28,6 @@ internal static class Defaults {
     /// Contains default values and constants specific to the polyline encoding algorithm.
     /// </summary>
     internal static class Algorithm {
-        /// <summary>
-        /// The precision factor used to round coordinate values during polyline encoding.
-        /// </summary>
-        internal const int Precision = 100_000;
 
         /// <summary>
         /// The number of bits to shift during polyline encoding.
@@ -52,6 +50,9 @@ internal static class Defaults {
         internal const byte UnitSeparator = 31;
     }
 
+    /// <summary>
+    /// Contains default values and constants for geographic coordinate validation.
+    /// </summary>
     internal static class Coordinate {
         /// <summary>
         /// Provides constants representing latitude values, including the default, minimum, and maximum valid values.
@@ -69,20 +70,6 @@ internal static class Defaults {
             /// The maximum valid latitude value.
             /// </summary>
             internal const double Max = 90.00000;
-
-            /// <summary>
-            /// Contains constants related to normalized latitude values.
-            /// </summary>
-            internal static class Normalized {
-                /// <summary>
-                /// The minimum normalized latitude value.
-                /// </summary>
-                internal const int Min = (int)(Latitude.Min * Algorithm.Precision);
-                /// <summary>
-                /// The maximum normalized latitude value.
-                /// </summary>
-                internal const int Max = (int)(Latitude.Max * Algorithm.Precision);
-            }
         }
 
         /// <summary>
@@ -101,20 +88,6 @@ internal static class Defaults {
             /// The maximum valid longitude value.
             /// </summary>
             internal const double Max = 180.00000;
-
-            /// <summary>
-            /// Contains constants related to normalized longitude values.
-            /// </summary>
-            internal static class Normalized {
-                /// <summary>
-                /// The minimum normalized latitude value.
-                /// </summary>
-                internal const int Min = (int)(Longitude.Min * Algorithm.Precision);
-                /// <summary>
-                /// The maximum normalized latitude value.
-                /// </summary>
-                internal const int Max = (int)(Longitude.Max * Algorithm.Precision);
-            }
         }
     }
 
@@ -127,18 +100,18 @@ internal static class Defaults {
         /// </summary>
         internal static class Block {
             /// <summary>
-            /// Contains constants related to the length of encoded coordinates in polyline encoding.
+            /// Contains constants related to the length of encoded values in polyline encoding.
             /// </summary>
             internal static class Length {
                 /// <summary>
-                /// The minimum number of characters required to represent an encoded coordinate.
+                /// The minimum number of characters required to represent an encoded value.
                 /// </summary>
-                internal const int Min = 2;
+                internal const int Min = 1;
 
                 /// <summary>
-                /// The maximum number of characters allowed to represent an encoded coordinate.
+                /// The maximum number of characters allowed to represent an encoded value.
                 /// </summary>
-                internal const int Max = 12;
+                internal const int Max = 7;
             }
         }
     }

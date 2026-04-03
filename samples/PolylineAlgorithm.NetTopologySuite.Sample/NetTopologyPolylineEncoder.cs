@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright © Pete Sramek. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
@@ -9,18 +9,14 @@ using global::NetTopologySuite.Geometries;
 using PolylineAlgorithm.Abstraction;
 
 /// <summary>
-/// Encodes a collection of geographic coordinates into an encoded polyline string using NetTopologySuite's Point type.
+/// Polyline encoder using NetTopologySuite's Point type.
 /// </summary>
 public sealed class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point, string> {
     /// <summary>
-    /// Creates a string representation of the provided polyline.
+    /// Creates encoded polyline string from memory.
     /// </summary>
-    /// <param name="polyline">
-    /// The polyline to encode as a string.
-    /// </param>
-    /// <returns>
-    /// An encoded polyline string representation of the provided polyline.
-    /// </returns>
+    /// <param name="polyline">Polyline memory.</param>
+    /// <returns>Encoded polyline string.</returns>
     protected override string CreatePolyline(ReadOnlyMemory<char> polyline) {
         if (polyline.IsEmpty) {
             return string.Empty;
@@ -30,32 +26,30 @@ public sealed class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point, 
     }
 
     /// <summary>
-    /// Extracts the latitude value from the specified coordinate.
+    /// Gets latitude from point.
     /// </summary>
-    /// <param name="current">
-    /// The coordinate from which to extract the latitude value. This should be a not null <see cref="Point"/> instance.
-    /// </param>
-    /// <returns>
-    /// The latitude value as a <see cref="double"/>.
-    /// </returns>
+    /// <param name="current">Point instance.</param>
+    /// <returns>Latitude value.</returns>
     protected override double GetLatitude(Point current) {
-        // Validate parameter
+        if (current is null) {
+            throw new ArgumentNullException(nameof(current));
+        }
 
-        return current.X;
+        // NetTopologySuite Point: Y = latitude
+        return current.Y;
     }
 
     /// <summary>
-    /// Extracts the longitude value from the specified coordinate.
+    /// Gets longitude from point.
     /// </summary>
-    /// <param name="current">
-    /// The coordinate from which to extract the longitude value. This should be a not null <see cref="Point"/> instance.
-    /// </param>
-    /// <returns>
-    /// The longitude value as a <see cref="double"/>.
-    /// </returns>
+    /// <param name="current">Point instance.</param>
+    /// <returns>Longitude value.</returns>
     protected override double GetLongitude(Point current) {
-        // Validate parameter
+        if (current is null) {
+            throw new ArgumentNullException(nameof(current));
+        }
 
-        return current.Y;
+        // NetTopologySuite Point: X = longitude
+        return current.X;
     }
 }

@@ -21,6 +21,7 @@ permissions:
   id-token: write
   contents: write
   pull-requests: write
+  administration: write
 
 concurrency:
     group: 'promote-branch-${{ inputs.promotion-type }}-${{github.ref_name }}'
@@ -30,6 +31,7 @@ env:
   dotnet-sdk-version: '10.x'
   is-development-branch: ${{ startsWith(github.ref_name, 'develop') }}
   is-maintenance-branch: ${{ startsWith(github.ref_name, 'support') }}
+  is-preview-branch: ${{ startsWith(github.ref_name, 'preview') }}
 
 jobs:
   versioning:
@@ -39,7 +41,7 @@ jobs:
         friendly-version: ${{ steps.extract-version.outputs.version }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
         uses: actions/setup-dotnet@v5
         with:
@@ -153,16 +155,21 @@ jobs:
         target-branch: ${{ env.target-branch }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: 'Check promotion type'
         if: ${{ (env.promotion-type != 'release') && (env.promotion-type != 'preview') }}
         run: |
           echo "Invalid promotion type ${{ inputs.promotion-type }}"
           exit 1
-      - name: 'Validate current branch'
-        if: ${{ (env.is-development-branch == 'false') && (env.is-maintenance-branch == 'false') }}
+      - name: 'Validate source branch for preview promotion'
+        if: ${{ env.promotion-type == 'preview' && (env.is-development-branch == 'false') && (env.is-maintenance-branch == 'false') }}
         run: |
-          echo "Invalid current branch '${{ github.ref_name }}'"
+          echo "Preview promotion requires a 'develop/**' or 'support/**' source branch. Current branch: '${{ github.ref_name }}'"
+          exit 1
+      - name: 'Validate source branch for release promotion'
+        if: ${{ env.promotion-type == 'release' && env.is-preview-branch == 'false' }}
+        run: |
+          echo "Release promotion requires a 'preview/**' source branch. Current branch: '${{ github.ref_name }}'"
           exit 1
       - name: 'Validate default and current branch'
         if: ${{ env.base-branch == env.current-branch }}
@@ -192,7 +199,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
         uses: actions/setup-dotnet@v5
         with:
@@ -206,6 +213,11 @@ jobs:
           git switch ${{ needs.workflow-variables.outputs.base-branch }}
           git checkout -b ${{ needs.workflow-variables.outputs.target-branch }} origin/${{ needs.workflow-variables.outputs.target-branch }} || git checkout -b ${{ needs.workflow-variables.outputs.target-branch }}
           git push --set-upstream origin ${{ needs.workflow-variables.outputs.target-branch }}
+      - name: 'Lock target branch'
+        if: ${{ needs.workflow-variables.outputs.target-branch-exists == 'false' }}
+        uses: './.github/actions/github/branch-protection/lock'
+        with:
+          branch: ${{ needs.workflow-variables.outputs.target-branch }}
       - name: 'Create PR: "Promote ${{ env.current-branch }} to ${{ env.target-branch }}"'
         if: ${{ needs.workflow-variables.outputs.pull-request-exists == 'false' }}
         env:

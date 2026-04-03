@@ -5,4 +5,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "Ignored in test asemblies.")]
+[assembly: SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "Tests.")]
+[assembly: SuppressMessage("Maintainability", "CA1515:Consider making public types internal", Justification = "Tests.")]
+[assembly: SuppressMessage("Roslynator", "RCS1196:Call extension method as instance method", Justification = "Tests.")]

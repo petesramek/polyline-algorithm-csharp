@@ -26,7 +26,7 @@ runs:
   using: composite
   steps:
     - name: 'Checkout ${{ github.head_ref || github.ref }}'
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
     - name: Dotnet Setup
       uses: actions/setup-dotnet@v4
       with:
@@ -59,7 +59,7 @@ runs:
         mkdir -p ${{ inputs.output-directory }}
         cp -r ${{ inputs.temporary-directory }}/* ${{ inputs.output-directory }}
     - name: 'Upload artifact'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
          name: ${{ inputs.artifact-name }}
          path: ${{ inputs.output-directory }}

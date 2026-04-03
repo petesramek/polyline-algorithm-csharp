@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/.build/">
+    <File Path="Directory.Build.props" />
+  </Folder>
   <Folder Name="/benchmarks/">
     <Project Path="benchmarks/PolylineAlgorithm.Benchmarks/PolylineAlgorithm.Benchmarks.csproj" />
   </Folder>

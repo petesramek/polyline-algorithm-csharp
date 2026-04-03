@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright © Pete Sramek. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
@@ -6,64 +6,87 @@
 namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
-using PolylineAlgorithm;
+using BenchmarkDotNet.Engines;
+using PolylineAlgorithm.Abstraction;
+using PolylineAlgorithm.Extensions;
 using PolylineAlgorithm.Utility;
 using System.Collections.Generic;
 
 /// <summary>
-/// Benchmarks for the <see cref="PolylineEncoder"/> class.
+/// Benchmarks for <see cref="AbstractPolylineEncoder{TCoordinate, TPolyline}"/>.
 /// </summary>
 public class PolylineEncoderBenchmark {
+    private readonly Consumer _consumer = new();
+
+    /// <summary>
+    /// Number of coordinates for benchmarks.
+    /// </summary>
     [Params(1, 100, 1_000)]
-    public int Count;
+    public int CoordinatesCount { get; set; }
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     /// <summary>
-    /// Gets the enumeration of coordinates to be encoded.
+    /// Coordinates as list.
     /// </summary>
-    public IEnumerable<Coordinate> Enumeration { get; private set; }
+    public List<(double Latitude, double Longitude)> List { get; private set; }
 
     /// <summary>
-    /// Gets the list of coordinates to be encoded.
+    /// Coordinates as array.
     /// </summary>
-    public List<Coordinate> List { get; private set; }
+    public (double Latitude, double Longitude)[] Array { get; private set; }
+
+    /// <summary>
+    /// Coordinates as read-only memory.
+    /// </summary>
+    public ReadOnlyMemory<(double Latitude, double Longitude)> Memory { get; private set; }
+
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
     /// <summary>
-    /// The polyline encoder instance.
+    /// Polyline encoder instance.
     /// </summary>
-    public PolylineEncoder Encoder = new();
+    private readonly StringPolylineEncoder _encoder = new();
 
     /// <summary>
-    /// Sets up the data for the benchmarks.
+    /// Sets up benchmark data.
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        Enumeration = RandomValueProvider.GetCoordinates(Count).Select(c => new Coordinate(c.Latitude, c.Longitude));
-        List = [.. Enumeration];
+        List = [.. RandomValueProvider.GetCoordinates(CoordinatesCount)];
+        Array = [.. List];
+        Memory = Array.AsMemory();
     }
 
     /// <summary>
-    /// Benchmarks the encoding of a list of coordinates into a polyline.
+    /// Benchmark: encode coordinates from span.
     /// </summary>
-    /// <returns>The encoded polyline.</returns>
     [Benchmark]
-    public Polyline PolylineEncoder_Encode_List() {
-        var polyline = Encoder
-            .Encode(List!);
-
-        return polyline;
+    public void PolylineEncoder_Encode_Span() {
+        var polyline = _encoder.Encode(Memory.Span);
+        _consumer.Consume(polyline);
     }
 
     /// <summary>
-    /// Benchmarks the encoding of an enumeration of coordinates into a polyline.
+    /// Benchmark: encode coordinates from array.
     /// </summary>
-    /// <returns>The encoded polyline.</returns>
     [Benchmark]
-    public Polyline PolylineEncoder_Encode_Enumerator() {
-        var polyline = Encoder
-            .Encode(Enumeration!);
+    public void PolylineEncoder_Encode_Array() {
+        var polyline = _encoder.Encode(Array);
+        _consumer.Consume(polyline);
+    }
 
-        return polyline;
+    /// <summary>
+    /// Benchmark: encode coordinates from list.
+    /// </summary>
+    [Benchmark]
+    public void PolylineEncoder_Encode_List() {
+        var polyline = _encoder.Encode(List);
+        _consumer.Consume(polyline);
+    }
+
+    private sealed class StringPolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
+        protected override string CreatePolyline(ReadOnlyMemory<char> polyline) => polyline.ToString();
+        protected override double GetLatitude((double Latitude, double Longitude) current) => current.Latitude;
+        protected override double GetLongitude((double Latitude, double Longitude) current) => current.Longitude;
     }
 }

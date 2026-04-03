@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright © Pete Sramek. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
@@ -7,13 +7,14 @@ namespace PolylineAlgorithm;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using PolylineAlgorithm.Properties;
+using PolylineAlgorithm.Internal.Diagnostics;
 
 /// <summary>
 /// Provides a builder for configuring options for polyline encoding operations.
 /// </summary>
-public class PolylineEncodingOptionsBuilder {
-    private int _bufferSize = 64_000;
+public sealed class PolylineEncodingOptionsBuilder {
+    private uint _precision = 5;
+    private int _stackAllocLimit = 512;
     private ILoggerFactory _loggerFactory = NullLoggerFactory.Instance;
 
     private PolylineEncodingOptionsBuilder() { }
@@ -36,41 +37,65 @@ public class PolylineEncodingOptionsBuilder {
     /// </returns>
     public PolylineEncodingOptions Build() {
         return new PolylineEncodingOptions {
-            MaxBufferSize = _bufferSize,
-            LoggerFactory = _loggerFactory
+            Precision = _precision,
+            StackAllocLimit = _stackAllocLimit,
+            LoggerFactory = _loggerFactory,
         };
     }
 
     /// <summary>
-    /// Sets the buffer size for encoding operations.
+    /// Configures the buffer size used for stack allocation during polyline encoding operations.
     /// </summary>
-    /// <param name="bufferSize">
-    /// The maximum buffer size. Must be greater than 11.
+    /// <param name="stackAllocLimit">
+    /// The maximum buffer size to use for stack allocation. Must be greater than or equal to 1.
     /// </param>
     /// <returns>
-    /// The current builder instance.
+    /// The current <see cref="PolylineEncodingOptionsBuilder"/> instance for method chaining.
     /// </returns>
-    /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="bufferSize"/> is less than or equal to 11.</exception>
-    public PolylineEncodingOptionsBuilder WithMaxBufferSize(int bufferSize) {
-        _bufferSize = bufferSize > 11 ? bufferSize : throw new ArgumentOutOfRangeException(nameof(bufferSize), string.Format(ExceptionMessageResource.BufferSizeMustBeGreaterThanMessageFormat, 11));
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if <paramref name="stackAllocLimit"/> is less than 1.
+    /// </exception>
+    /// <remarks>
+    /// This method allows customization of the internal buffer size for encoding, which can impact performance and memory usage.
+    /// </remarks>
+    public PolylineEncodingOptionsBuilder WithStackAllocLimit(int stackAllocLimit) {
+        const int minStackAllocLimit = 1;
+
+        if (minStackAllocLimit > stackAllocLimit) {
+            ExceptionGuard.StackAllocLimitMustBeEqualOrGreaterThan(minStackAllocLimit, nameof(stackAllocLimit));
+        }
+
+        _stackAllocLimit = stackAllocLimit;
 
         return this;
     }
 
     /// <summary>
-    /// Sets the logger factory for logging during encoding operations.
+    /// Sets the coordinate encoding precision.
     /// </summary>
-    /// <param name="loggerFactory">
-    /// The instance of a logger factory.
+    /// <param name="precision">
+    /// The number of decimal places to use for encoding coordinate values. Default is 5.
     /// </param>
     /// <returns>
-    /// The current builder instance.
+    /// The current <see cref="PolylineEncodingOptionsBuilder"/> instance for method chaining.
     /// </returns>
-    /// <exception cref="ArgumentNullException">
-    /// Thrown when <paramref name="loggerFactory"/> is <see langword="null"/>.
-    /// </exception>
+    public PolylineEncodingOptionsBuilder WithPrecision(uint precision) {
+        _precision = precision;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Configures the <see cref="ILoggerFactory"/> to be used for logging during polyline encoding operations.
+    /// </summary>
+    /// <param name="loggerFactory">
+    /// The <see cref="ILoggerFactory"/> instance to use for logging. If <see langword="null"/>, a <see cref="NullLoggerFactory"/> will be used instead.
+    /// </param>
+    /// <returns>
+    /// The current <see cref="PolylineEncodingOptionsBuilder"/> instance for method chaining.
+    /// </returns>
     public PolylineEncodingOptionsBuilder WithLoggerFactory(ILoggerFactory loggerFactory) {
-        _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
+        _loggerFactory = loggerFactory ?? NullLoggerFactory.Instance;
 
         return this;
     }

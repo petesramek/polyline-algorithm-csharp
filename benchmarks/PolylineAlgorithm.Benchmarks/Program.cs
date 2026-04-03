@@ -8,13 +8,13 @@ namespace PolylineAlgorithm.Benchmarks;
 using BenchmarkDotNet.Running;
 
 /// <summary>
-/// The main entry point for the benchmark application.
+/// Main entry point for benchmarks.
 /// </summary>
-internal class Program {
+internal static class Program {
     /// <summary>
-    /// The main method that runs the benchmarks.
+    /// Runs the benchmarks.
     /// </summary>
-    /// <param name="args">The command-line arguments.</param>
+    /// <param name="args">Command-line arguments.</param>
     static void Main(string[] args) {
         BenchmarkSwitcher
             .FromAssembly(typeof(Program).Assembly)

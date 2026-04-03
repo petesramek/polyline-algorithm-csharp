@@ -3,7 +3,7 @@ title: Class AbstractPolylineEncoder<TCoordinate, TPolyline>
 body:
 - api1: Class AbstractPolylineEncoder<TCoordinate, TPolyline>
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L25
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L27
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2
     commentId: T:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2
@@ -14,15 +14,14 @@ body:
       url: PolylineAlgorithm.Abstraction.html
   - name: Assembly
     value: PolylineAlgorithm.dll
-- markdown: >-
-    Provides functionality to encode a collection of geographic coordinates into an encoded polyline string.
-
-    Implements the <xref href="PolylineAlgorithm.Abstraction.IPolylineEncoder%602" data-throw-if-not-resolved="false"></xref> interface.
+- markdown: Provides a base implementation for encoding sequences of geographic coordinates into encoded polyline strings.
 - code: 'public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder<TCoordinate, TPolyline>'
 - h4: Type Parameters
 - parameters:
   - name: TCoordinate
+    description: The type that represents a geographic coordinate to encode.
   - name: TPolyline
+    description: The type that represents the encoded polyline output.
 - h4: Inheritance
 - inheritance:
   - text: object
@@ -49,12 +48,21 @@ body:
     url: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
   - text: object.ToString()
     url: https://learn.microsoft.com/dotnet/api/system.object.tostring
+- h4: Extension Methods
+- list:
+  - text: PolylineEncoderExtensions.Encode<TCoordinate, TPolyline>(IPolylineEncoder<TCoordinate, TPolyline>, List<TCoordinate>)
+    url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1__System_Collections_Generic_List___0__
+  - text: PolylineEncoderExtensions.Encode<TCoordinate, TPolyline>(IPolylineEncoder<TCoordinate, TPolyline>, TCoordinate[])
+    url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1____0___
 - h2: Remarks
-- markdown: This abstract class serves as a base for specific polyline encoders, allowing customization of the encoding process.
+- markdown: >-
+    Derive from this class to implement an encoder for a specific coordinate and polyline type. Override
+
+    <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.GetLatitude(%600)" data-throw-if-not-resolved="false"></xref>, <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.GetLongitude(%600)" data-throw-if-not-resolved="false"></xref>, and <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.CreatePolyline(System.ReadOnlyMemory%7bSystem.Char%7d)" data-throw-if-not-resolved="false"></xref> to provide type-specific behavior.
 - h2: Constructors
 - api3: AbstractPolylineEncoder()
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2__ctor
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L29
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L33
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor
@@ -62,7 +70,7 @@ body:
 - code: protected AbstractPolylineEncoder()
 - api3: AbstractPolylineEncoder(PolylineEncodingOptions)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2__ctor_PolylineAlgorithm_PolylineEncodingOptions_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L39
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L43
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
@@ -84,7 +92,7 @@ body:
 - h2: Properties
 - api3: Options
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_Options
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L46
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L57
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Options
     commentId: P:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Options
@@ -98,7 +106,7 @@ body:
 - h2: Methods
 - api3: CreatePolyline(ReadOnlyMemory<char>)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_CreatePolyline_System_ReadOnlyMemory_System_Char__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L199
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L174
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.CreatePolyline(System.ReadOnlyMemory{System.Char})
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.CreatePolyline(System.ReadOnlyMemory{System.Char})
@@ -120,32 +128,38 @@ body:
   - type:
     - TPolyline
     description: An instance of <code class="typeparamref">TPolyline</code> representing the encoded polyline.
-- api3: Encode(IEnumerable<TCoordinate>)
-  id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_Encode_System_Collections_Generic_IEnumerable__0__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L64
+- api3: Encode(ReadOnlySpan<TCoordinate>, CancellationToken)
+  id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_Encode_System_ReadOnlySpan__0__System_Threading_CancellationToken_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L80
   metadata:
-    uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Encode(System.Collections.Generic.IEnumerable{`0})
-    commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Encode(System.Collections.Generic.IEnumerable{`0})
+    uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Encode(System.ReadOnlySpan{`0},System.Threading.CancellationToken)
+    commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Encode(System.ReadOnlySpan{`0},System.Threading.CancellationToken)
 - markdown: Encodes a collection of <code class="typeparamref">TCoordinate</code> instances into an encoded <code class="typeparamref">TPolyline</code> string.
-- code: public TPolyline Encode(IEnumerable<TCoordinate> coordinates)
+- code: >-
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "Method contains local methods. Actual method only 55 lines.")]
+
+    public TPolyline Encode(ReadOnlySpan<TCoordinate> coordinates, CancellationToken cancellationToken = default)
 - h4: Parameters
 - parameters:
   - name: coordinates
     type:
-    - text: IEnumerable
-      url: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+    - text: ReadOnlySpan
+      url: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
     - <
     - TCoordinate
     - '>'
     description: The collection of <code class="typeparamref">TCoordinate</code> objects to encode.
+  - name: cancellationToken
+    type:
+    - text: CancellationToken
+      url: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+    description: A <xref href="System.Threading.CancellationToken" data-throw-if-not-resolved="false"></xref> that can be used to cancel the encoding operation.
+    optional: true
 - h4: Returns
 - parameters:
   - type:
     - TPolyline
-    description: >-
-      An instance of <code class="typeparamref">TPolyline</code> representing the encoded coordinates.
-
-      Returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/default">default</a> if the input collection is empty or null.
+    description: An instance of <code class="typeparamref">TPolyline</code> representing the encoded coordinates.
 - h4: Exceptions
 - parameters:
   - type:
@@ -156,9 +170,13 @@ body:
     - text: ArgumentException
       url: https://learn.microsoft.com/dotnet/api/system.argumentexception
     description: Thrown when <code class="paramref">coordinates</code> is an empty enumeration.
+  - type:
+    - text: InvalidOperationException
+      url: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+    description: Thrown when the internal encoding buffer cannot accommodate the encoded value.
 - api3: GetLatitude(TCoordinate)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_GetLatitude__0_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L219
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L194
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLatitude(`0)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLatitude(`0)
@@ -178,7 +196,7 @@ body:
     description: The latitude value as a <xref href="System.Double" data-throw-if-not-resolved="false"></xref>.
 - api3: GetLongitude(TCoordinate)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_GetLongitude__0_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/preview/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L209
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L184
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLongitude(`0)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLongitude(`0)
@@ -198,7 +216,4 @@ body:
     description: The longitude value as a <xref href="System.Double" data-throw-if-not-resolved="false"></xref>.
 languageId: csharp
 metadata:
-  description: >-
-    Provides functionality to encode a collection of geographic coordinates into an encoded polyline string.
-
-    Implements the  interface.
+  description: Provides a base implementation for encoding sequences of geographic coordinates into encoded polyline strings.

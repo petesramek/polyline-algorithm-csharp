@@ -8,21 +8,25 @@ namespace PolylineAlgorithm.Abstraction;
 using Microsoft.Extensions.Logging;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Internal;
-using PolylineAlgorithm.Internal.Logging;
-using PolylineAlgorithm.Properties;
+using PolylineAlgorithm.Internal.Diagnostics;
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.Buffers;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Threading;
 
 /// <summary>
-/// Provides functionality to encode a collection of geographic coordinates into an encoded polyline string.
-/// Implements the <see cref="IPolylineEncoder{TCoordinate, TPolyline}"/> interface.
+/// Provides a base implementation for encoding sequences of geographic coordinates into encoded polyline strings.
 /// </summary>
 /// <remarks>
-/// This abstract class serves as a base for specific polyline encoders, allowing customization of the encoding process.
+/// Derive from this class to implement an encoder for a specific coordinate and polyline type. Override
+/// <see cref="GetLatitude"/>, <see cref="GetLongitude"/>, and <see cref="CreatePolyline"/> to provide type-specific behavior.
 /// </remarks>
+/// <typeparam name="TCoordinate">The type that represents a geographic coordinate to encode.</typeparam>
+/// <typeparam name="TPolyline">The type that represents the encoded polyline output.</typeparam>
 public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder<TCoordinate, TPolyline> {
+    private readonly ILogger<AbstractPolylineEncoder<TCoordinate, TPolyline>> _logger;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="AbstractPolylineEncoder{TCoordinate, TPolyline}"/> class with default encoding options.
     /// </summary>
@@ -37,7 +41,14 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// </param>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="options"/> is <see langword="null" /></exception>
     protected AbstractPolylineEncoder(PolylineEncodingOptions options) {
-        Options = options ?? throw new ArgumentNullException(nameof(options));
+        if (options is null) {
+            ExceptionGuard.ThrowArgumentNull(nameof(options));
+        }
+
+        Options = options;
+        _logger = Options
+            .LoggerFactory
+            .CreateLogger<AbstractPolylineEncoder<TCoordinate, TPolyline>>();
     }
 
     /// <summary>
@@ -51,9 +62,11 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// <param name="coordinates">
     /// The collection of <typeparamref name="TCoordinate"/> objects to encode.
     /// </param>
+    /// <param name="cancellationToken">
+    /// A <see cref="CancellationToken"/> that can be used to cancel the encoding operation.
+    /// </param>
     /// <returns>
     /// An instance of <typeparamref name="TPolyline"/> representing the encoded coordinates.
-    /// Returns <see langword="default"/> if the input collection is empty or null.
     /// </returns>
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="coordinates"/> is <see langword="null"/>.
@@ -61,129 +74,92 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// <exception cref="ArgumentException">
     /// Thrown when <paramref name="coordinates"/> is an empty enumeration.
     /// </exception>
-    public TPolyline Encode(IEnumerable<TCoordinate> coordinates) {
-        var logger = Options
-            .LoggerFactory
-            .CreateLogger<AbstractPolylineDecoder<TPolyline, TCoordinate>>();
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when the internal encoding buffer cannot accommodate the encoded value.
+    /// </exception>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "MA0051:Method is too long", Justification = "Method contains local methods. Actual method only 55 lines.")]
+    public TPolyline Encode(ReadOnlySpan<TCoordinate> coordinates, CancellationToken cancellationToken = default) {
+        const string OperationName = nameof(Encode);
 
-        logger
-            .LogOperationStartedInfo(nameof(Encode));
+        _logger
+            .LogOperationStartedDebug(OperationName);
 
-        Debug.Assert(coordinates is not null, "Coordinates cannot be null.");
+        Debug.Assert(coordinates.Length >= 0, "Count must be non-negative.");
 
-        ValidateNullCoordinates(coordinates, logger);
+        ValidateEmptyCoordinates(ref coordinates, _logger);
 
-        int count = GetCount(coordinates);
-
-        Debug.Assert(count >= 0, "Count must be non-negative.");
-
-        ValidateEmptyCoordinates(logger, count);
-
-        CoordinateVariance variance = new();
+        CoordinateDelta delta = new();
 
         int position = 0;
         int consumed = 0;
-        int length = GetMaxBufferLength(count);
+        int length = GetMaxBufferLength(coordinates.Length);
 
-        Span<char> buffer = stackalloc char[length];
+        char[]? temp = length <= Options.StackAllocLimit
+            ? null
+            : ArrayPool<char>.Shared.Rent(length);
 
-        using var enumerator = coordinates.GetEnumerator();
+        Span<char> buffer = temp is null ? stackalloc char[length] : temp.AsSpan(0, length);
 
-        while (enumerator.MoveNext()) {
-            variance
-                .Next(
-                    PolylineEncoding.Normalize(GetLatitude(enumerator.Current), CoordinateValueType.Latitude),
-                    PolylineEncoding.Normalize(GetLongitude(enumerator.Current), CoordinateValueType.Longitude)
-                );
+        string encodedResult;
 
-            ValidateBuffer(logger, variance, position, buffer);
+        try {
+            for (var i = 0; i < coordinates.Length; i++) {
+                cancellationToken.ThrowIfCancellationRequested();
 
-            if (!PolylineEncoding.TryWriteValue(variance.Latitude, ref buffer, ref position)
-                || !PolylineEncoding.TryWriteValue(variance.Longitude, ref buffer, ref position)
-            ) {
-                // This shouldn't happen, but if it does, log the error and throw an exception.
-                logger
-                    .LogCannotWriteValueToBufferWarning(position, consumed);
-                logger
-                    .LogOperationFailedInfo(nameof(Encode));
+                delta
+                    .Next(
+                        PolylineEncoding.Normalize(GetLatitude(coordinates[i]), Options.Precision),
+                        PolylineEncoding.Normalize(GetLongitude(coordinates[i]), Options.Precision)
+                    );
 
-                throw new InvalidOperationException(ExceptionMessageResource.CouldNotWriteEncodedValueToTheBuffer);
+                if (!PolylineEncoding.TryWriteValue(delta.Latitude, buffer, ref position)
+                    || !PolylineEncoding.TryWriteValue(delta.Longitude, buffer, ref position)
+                ) {
+                    // This shouldn't happen, but if it does, log the error and throw an exception.
+                    _logger
+                        .LogOperationFailedDebug(OperationName);
+                    _logger
+                        .LogCannotWriteValueToBufferWarning(position, consumed);
+
+                    ExceptionGuard.ThrowCouldNotWriteEncodedValueToBuffer();
+
+                }
+
+                consumed++;
             }
 
-            consumed++;
+            encodedResult = buffer[..position].ToString();
+        } finally {
+            if (temp is not null) {
+                ArrayPool<char>.Shared.Return(temp);
+            }
         }
 
-        logger
-            .LogOperationFinishedInfo(nameof(Encode));
+        _logger
+            .LogOperationFinishedDebug(OperationName);
 
-        return CreatePolyline(buffer[..position].ToString().AsMemory());
+        return CreatePolyline(encodedResult.AsMemory());
 
-        static int GetCount(IEnumerable<TCoordinate> coordinates) => coordinates switch {
-            ICollection collection => collection.Count,
-            _ => coordinates.Count(),
-        };
-
-        static int GetRequiredLength(CoordinateVariance variance) =>
-            PolylineEncoding.GetCharCount(variance.Latitude) + PolylineEncoding.GetCharCount(variance.Longitude);
-
-        static int GetRemainingBufferSize(int position, int length) {
-            Debug.Assert(length > 0, "Buffer length must be greater than zero.");
-            Debug.Assert(position >= 0, "Position must be non-negative.");
-            Debug.Assert(position < length, "Position must be less than buffer length.");
-            Debug.Assert(length - position >= 0, "Remaining length must be non-negative.");
-
-            return length - position;
-        }
-
-        int GetMaxBufferLength(int count) {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static int GetMaxBufferLength(int count) {
             Debug.Assert(count > 0, "Count must be greater than zero.");
 
-            int requestedBufferLength = count * Defaults.Polyline.Block.Length.Max;
+            int requestedBufferLength = count * 2 * Defaults.Polyline.Block.Length.Max;
 
-            Debug.Assert(Options.MaxBufferLength > 0, "Max buffer length must be greater than zero.");
             Debug.Assert(requestedBufferLength > 0, "Requested buffer length must be greater than zero.");
-
-            if (requestedBufferLength > Options.MaxBufferLength) {
-                logger
-                    .LogRequestedBufferSizeExceedsMaxBufferLengthWarning(requestedBufferLength, Options.MaxBufferLength);
-
-                return Options.MaxBufferLength;
-            }
 
             return requestedBufferLength;
         }
 
-        static void ValidateNullCoordinates(IEnumerable<TCoordinate> coordinates, ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> logger) {
-            if (coordinates is null) {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static void ValidateEmptyCoordinates(ref ReadOnlySpan<TCoordinate> coordinates, ILogger logger) {
+            if (coordinates.Length < 1) {
                 logger
-                    .LogNullArgumentWarning(nameof(coordinates));
-                logger
-                    .LogOperationFailedInfo(nameof(Encode));
-
-                throw new ArgumentNullException(nameof(coordinates));
-            }
-        }
-
-        static void ValidateEmptyCoordinates(ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> logger, int count) {
-            if (count < 1) {
+                    .LogOperationFailedDebug(OperationName);
                 logger
                     .LogEmptyArgumentWarning(nameof(coordinates));
-                logger
-                    .LogOperationFailedInfo(nameof(Encode));
 
-                throw new ArgumentException(ExceptionMessageResource.ArgumentCannotBeEmptyEnumerationMessage, nameof(coordinates));
-            }
-        }
-
-        static void ValidateBuffer(ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> logger, CoordinateVariance variance, int position, Span<char> buffer) {
-            if (GetRemainingBufferSize(position, buffer.Length) < GetRequiredLength(variance)) {
-                logger
-                    .LogInternalBufferOverflowWarning(position, buffer.Length, GetRequiredLength(variance));
-                logger
-                    .LogOperationFailedInfo(nameof(Encode));
-
-
-                throw new InternalBufferOverflowException();
+                ExceptionGuard.ThrowArgumentCannotBeEmptyEnumerationMessage(nameof(coordinates));
             }
         }
     }
@@ -195,7 +171,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// <returns>
     /// An instance of <typeparamref name="TPolyline"/> representing the encoded polyline.
     /// </returns>
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected abstract TPolyline CreatePolyline(ReadOnlyMemory<char> polyline);
 
     /// <summary>
@@ -205,7 +181,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// <returns>
     /// The longitude value as a <see cref="double"/>.
     /// </returns>
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected abstract double GetLongitude(TCoordinate current);
 
     /// <summary>
@@ -215,7 +191,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// <returns>
     /// The latitude value as a <see cref="double"/>.
     /// </returns>
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected abstract double GetLatitude(TCoordinate current);
 }
 

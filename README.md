@@ -1,29 +1,188 @@
-# PolylineAlgorithm for .NET
+﻿# PolylineAlgorithm for .NET
 
-[![NuGet](https://img.shields.io/nuget/v/PolylineAlgorithm.svg)](https://www.nuget.org/packages/PolylineAlgorithm/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build](https://github.com/sramekpete/polyline-algorithm-csharp/actions/workflows/build.yml/badge.svg)](https://github.com/sramekpete/polyline-algorithm-csharp/actions/workflows/build.yml)
+Lightweight .NET Standard 2.1 library implementing Google-compliant Encoded Polyline Algorithm with strong input validation, modern API patterns, and extensibility for custom coordinate types.
 
-Lightweight .NET Standard 2.1 library implementing Google Encoded Polyline Algorithm.
-Package should be primarily used as baseline for libraries that implement polyline encoding/decoding functionality.
+## Table of Contents
 
-More info about the algorithm can be found at [Google Developers](https://developers.google.com/maps/documentation/utilities/polylinealgorithm).
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Reference](#api-reference)
+- [Benchmarks](#benchmarks)
+- [FAQ](#faq)
+- [Contributing](#contributing)
+- [Support](#support)
+- [License](#license)
 
-## Prerequisites
+## Features
 
-PolylineAlgorithm for .NET is available as a NuGet package targeting .NET Standard 2.1.
+- Fully compliant Google Encoded Polyline Algorithm for .NET Standard 2.1+
+- Extensible encoding and decoding APIs for custom coordinate and polyline types (`IPolylineEncoder<TCoordinate, TPolyline>`, `IPolylineDecoder<TPolyline, TCoordinate>`, `AbstractPolylineEncoder<TCoordinate, TPolyline>`, `AbstractPolylineDecoder<TPolyline, TCoordinate>`)
+- Extension methods for encoding from `List<T>` and arrays (`PolylineEncoderExtensions`)
+- Robust input validation with descriptive exceptions for malformed/invalid data
+- Advanced configuration via `PolylineEncodingOptions` (precision, buffer size, logging)
+- Logging and diagnostic support for CI/CD and developer diagnostics via `Microsoft.Extensions.Logging`
+- Low-level utilities for normalization, validation, encoding and decoding via static `PolylineEncoding` class
+- Thorough unit tests and benchmarks for correctness and performance
+- Auto-generated API documentation ([API Reference](https://petesramek.github.io/polyline-algorithm-csharp/))
+- Support for .NET Core, .NET 5+, Xamarin, Unity, Blazor, and other platforms supporting `netstandard2.1`
 
-.NET CLI: `dotnet add package PolylineAlgorithm`
+## Installation
 
-Package Manager Console: `Install-Package PolylineAlgorithm`
+Using dotnet tool
 
-## How to use it
+```shell
+dotnet add package PolylineAlgorithm
+```
 
-In the majority of cases you would like to inherit `AbstractPolylineDecoder<TPolyline, TCoordinate>` and `AbstractPolylineEncoder<TCoordinate, TPolyline>` classes and implement abstract methods that are mainly responsible for extracting data from your coordinate and polyline types and creating new instances of them.
+or via NuGet
 
-In some cases you may want to implement your own decoder and encoder from scratch.
-In that case you can use `PolylineEncoding` static class that offers static methods for encoding and decoding polyline segments.
+```powershell
+Install-Package PolylineAlgorithm
+```
 
-## Documentation
+## Usage
 
-Documentation is can be found at [https://sramekpete.github.io/polyline-algorithm-csharp/](https://sramekpete.github.io/polyline-algorithm-csharp/).
+The library provides abstract base classes to implement your own encoder and decoder for any coordinate and polyline type.
+
+### Custom encoder and decoder
+
+#### Encoding
+
+Custom encoder implementation.
+
+```csharp
+using PolylineAlgorithm;
+using PolylineAlgorithm.Abstraction;
+
+public sealed class MyPolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
+    public MyPolylineEncoder()
+        : base() { }
+
+    public MyPolylineEncoder(PolylineEncodingOptions options)
+        : base(options) { }
+
+    protected override double GetLatitude((double Latitude, double Longitude) coordinate) {
+        return coordinate.Latitude;
+    }
+
+    protected override double GetLongitude((double Latitude, double Longitude) coordinate) {
+        return coordinate.Longitude;
+    }
+
+    protected override string CreatePolyline(ReadOnlyMemory<char> polyline) {
+        return polyline.ToString();
+    }
+}
+```
+
+Custom encoder usage.
+
+```csharp
+using PolylineAlgorithm.Extensions;
+
+var coordinates = new List<(double Latitude, double Longitude)>
+{
+    (48.858370, 2.294481),
+    (51.500729, -0.124625)
+};
+
+var encoder = new MyPolylineEncoder();
+string encoded = encoder.Encode(coordinates); // extension method for List<T>
+
+Console.WriteLine(encoded);
+```
+
+#### Decoding
+
+Custom decoder implementation.
+
+```csharp
+using PolylineAlgorithm;
+using PolylineAlgorithm.Abstraction;
+
+public sealed class MyPolylineDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
+    public MyPolylineDecoder()
+        : base() { }
+
+    public MyPolylineDecoder(PolylineEncodingOptions options)
+        : base(options) { }
+
+    protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) {
+        return (latitude, longitude);
+    }
+
+    protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) {
+        return polyline.AsMemory();
+    }
+}
+```
+
+Custom decoder usage.
+
+```csharp
+string encoded = "yseiHoc_MwacOjnwM";
+
+var decoder = new MyPolylineDecoder();
+IEnumerable<(double Latitude, double Longitude)> decoded = decoder.Decode(encoded);
+```
+
+> **Note:**
+> If you need low-level utilities for normalization, validation, encoding and decoding, use static methods from the `PolylineEncoding` class.
+
+## API Reference
+
+Full API docs and guides (auto-generated from source) are available at [API Reference](https://petesramek.github.io/polyline-algorithm-csharp/)
+
+## Benchmarks
+
+- See `/benchmarks` in the repo for performance evaluation.
+- Contributors: Update benchmarks and document results for performance-impacting PRs.
+
+## FAQ
+
+**Q: What coordinate ranges are valid?**  
+A: Latitude must be -90..90; longitude -180..180. Out-of-range input throws `ArgumentOutOfRangeException`.
+
+**Q: Which .NET versions are supported?**  
+A: All platforms supporting `netstandard2.1` (including .NET Core and .NET 5+).
+
+**Q: What happens if I pass invalid or malformed input to the decoder?**
+A: The decoder will throw descriptive exceptions (`InvalidPolylineException`) for malformed polyline strings. Check exception handling in your application.
+
+**Q: How do I customize encoding options (e.g., precision, buffer size, logging)?**
+A: Use `PolylineEncodingOptionsBuilder` to set custom options and pass the built `PolylineEncodingOptions` to the encoder or decoder constructor.
+
+**Q: Is the library thread-safe?**
+A: Yes, the main encoding and decoding APIs are stateless and thread-safe. If using mutable shared resources, manage synchronization in your code.
+
+**Q: Can the library be used in Unity, Xamarin, Blazor, or other .NET-compatible platforms?**
+A: Yes! Any environment supporting `netstandard2.1` can use this library.
+
+**Q: Where can I report bugs or request features?**
+A: Open a GitHub issue using the provided templates in the repository and tag @petesramek.
+
+**Q: Is there support for elevation, time stamps, or third coordinate values?**
+A: Not currently, not planned to be added, but you can extend by implementing your own encoder/decoder using `PolylineEncoding` class methods.
+
+**Q: How do I contribute documentation improvements?**
+A: Update XML doc comments in the codebase and submit a PR; all public APIs require XML documentation. To improve guides, update the relevant markdown file in the `/api-reference/guide` folder.
+
+**Q: Does the library support streaming or incremental decoding of polylines?**
+A: Currently, only batch encode/decode is supported. For streaming scenarios, implement custom logic using `PolylineEncoding` utility functions.
+
+## Contributing
+
+- Follow code style and PR instructions in [AGENTS.md](./AGENTS.md).
+- Ensure all features are covered by tests and XML doc comments.
+- For questions or suggestions, open an issue and use the provided templates.
+
+## Support
+
+Have a question, bug, or feature request? [Open an issue!](https://github.com/petesramek/polyline-algorithm-csharp/issues)
+
+---
+
+## License
+
+MIT License &copy; Pete Sramek
