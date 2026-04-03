@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Advanced Usage | PolylineAlgorithm for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Advanced Usage | PolylineAlgorithm for .NET ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-doc-generation-process/api-reference/guide/advanced-scenarios.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="PolylineAlgorithm for .NET">
+            PolylineAlgorithm for .NET
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+            <div id="version-picker-container" class="ms-auto d-flex align-items-center px-2">
+              <select id="version-picker" class="form-select form-select-sm" style="width:auto" aria-label="Select version"></select>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="advanced-usage">Advanced Usage</h1>
+
+<p>PolylineAlgorithm is designed for extensibility and integration with advanced .NET scenarios.<br>
+This guide covers custom types, integrations, and best practices for power users.</p>
+<hr>
+<h2 id="custom-coordinate-and-polyline-types">Custom Coordinate and Polyline Types</h2>
+<p>You can encode and decode custom coordinate or polyline representations by extending the abstract base classes:</p>
+<ul>
+<li><code>AbstractPolylineEncoder&lt;TCoordinate, TPolyline&gt;</code></li>
+<li><code>AbstractPolylineDecoder&lt;TPolyline, TCoordinate&gt;</code></li>
+</ul>
+<h3 id="example-custom-encoder">Example: Custom Encoder</h3>
+<pre><code class="lang-csharp">public sealed class MyPolylineEncoder : AbstractPolylineEncoder&lt;(double Latitude, double Longitude), string&gt;
+{
+    public MyPolylineEncoder() : base() { }
+
+    public MyPolylineEncoder(PolylineEncodingOptions options)
+        : base(options) { }
+
+    protected override double GetLatitude((double Latitude, double Longitude) coordinate)
+        =&gt; coordinate.Latitude;
+
+    protected override double GetLongitude((double Latitude, double Longitude) coordinate)
+        =&gt; coordinate.Longitude;
+
+    protected override string CreatePolyline(ReadOnlyMemory&lt;char&gt; polyline)
+        =&gt; polyline.ToString();
+}
+</code></pre>
+<hr>
+<h2 id="example-custom-decoder">Example: Custom Decoder</h2>
+<pre><code class="lang-csharp">public sealed class MyPolylineDecoder : AbstractPolylineDecoder&lt;string, (double Latitude, double Longitude)&gt;
+{
+    public MyPolylineDecoder() : base() { }
+
+    public MyPolylineDecoder(PolylineEncodingOptions options)
+        : base(options) { }
+
+    protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude)
+        =&gt; (latitude, longitude);
+
+    protected override ReadOnlyMemory&lt;char&gt; GetReadOnlyMemory(ref string polyline)
+        =&gt; polyline.AsMemory();
+}
+</code></pre>
+<hr>
+<h1 id="registering-custom-encoder-and-decoder-with-iservicecollection">Registering Custom Encoder and Decoder with <code>IServiceCollection</code></h1>
+<p>For ASP.NET Core or DI-enabled .NET applications, you can easily register your custom polyline encoder and decoder as services with <code>IServiceCollection</code> by defining an extension method. This enables constructor injection and central DI management.</p>
+<hr>
+<h2 id="example-register-custom-polyline-encoderdecoder">Example: Register Custom Polyline Encoder/Decoder</h2>
+<p>Suppose you have the following custom encoder and decoder (see <a href="./advanced.md">Advanced Usage</a>):</p>
+<pre><code class="lang-csharp">public sealed class MyPolylineEncoder : AbstractPolylineEncoder&lt;(double Latitude, double Longitude), string&gt;
+{
+    public MyPolylineEncoder(PolylineEncodingOptions options = null)
+        : base(options) { }
+
+    // ... override required members ...
+}
+
+public sealed class MyPolylineDecoder : AbstractPolylineDecoder&lt;string, (double Latitude, double Longitude)&gt;
+{
+    public MyPolylineDecoder(PolylineEncodingOptions options = null)
+        : base(options) { }
+
+    // ... override required members ...
+}
+</code></pre>
+<hr>
+<h2 id="iservicecollection-extension-method">IServiceCollection Extension Method</h2>
+<pre><code class="lang-csharp">using Microsoft.Extensions.DependencyInjection;
+using PolylineAlgorithm;
+
+public static class PolylineServiceCollectionExtensions
+{
+    public static IServiceCollection AddMyPolylineEncoderDecoder(
+        this IServiceCollection services,
+        PolylineEncodingOptions options = null)
+    {
+        // Register encoder and decoder as singletons (adjust lifetime as needed)
+        services.AddSingleton&lt;IPolylineEncoder&lt;(double Latitude, double Longitude), string&gt;&gt;(
+            _ =&gt; new MyPolylineEncoder(options));
+        services.AddSingleton&lt;IPolylineDecoder&lt;string, (double Latitude, double Longitude)&gt;&gt;(
+            _ =&gt; new MyPolylineDecoder(options));
+        return services;
+    }
+}
+</code></pre>
+<hr>
+<h2 id="usage">Usage</h2>
+<p>In your application startup (e.g., <code>Program.cs</code> or <code>Startup.cs</code>):</p>
+<pre><code class="lang-csharp">using PolylineAlgorithm;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddMyPolylineEncoderDecoder(
+    PolylineEncodingOptionsBuilder.Create()
+        .SetMaxBufferSize(10000)
+        .Build()
+);
+
+// Now you can inject IPolylineEncoder&lt;(double, double), string&gt; and IPolylineDecoder&lt;string, (double, double)&gt;
+</code></pre>
+<hr>
+<h2 id="benefits">Benefits</h2>
+<ul>
+<li><strong>Central DI management</strong> for polyline components</li>
+<li>Plug-and-play integration with ASP.NET Core and modern .NET project styles</li>
+<li>Easily swap out or configure encoders/decoders for different environments</li>
+</ul>
+<hr>
+<blockquote>
+<p><strong>Tip:</strong><br>
+You can generalize the extension method for different encoder/decoder types or include multiple algorithms by adding extra parameters.</p>
+</blockquote>
+<hr>
+<h2 id="integration-guidance">Integration Guidance</h2>
+<ul>
+<li><strong>Batch or incremental processing:</strong><br>
+For large datasets, control buffer sizes via <code>PolylineEncodingOptions</code>.</li>
+<li><strong>Thread safety:</strong><br>
+Default encoders/decoders are stateless and thread-safe. If extending for mutable types, ensure synchronization.</li>
+<li><strong>Logging:</strong><br>
+Integrate with .NET's <code>ILoggerFactory</code> when diagnostics or audit trails are needed.</li>
+</ul>
+<hr>
+<h2 id="best-practices">Best Practices</h2>
+<ul>
+<li>Always validate input data—leverage built-in validation or extend for custom rules.</li>
+<li>Document all public APIs using XML comments for seamless integration with the auto-generated docs.</li>
+<li>For non-standard coordinate systems or precision, clearly specify semantics in your custom encoder/decoder.</li>
+</ul>
+<hr>
+<h2 id="more-resources">More Resources</h2>
+<ul>
+<li><a href="configuration.html">Configuration</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="https://petesramek.github.io/polyline-algorithm-csharp/">API Reference</a></li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-doc-generation-process/api-reference/guide/advanced-scenarios.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+    <script src="./../public/version-switcher.js"></script>
+  </body>
+</html>

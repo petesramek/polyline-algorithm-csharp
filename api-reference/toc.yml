@@ -4,5 +4,7 @@
 - name: Reference
   dropdown: true
   items:
+  - name: v1.1 (latest)
+    href: 1.1/PolylineAlgorithm.html
   - name: v1.0
     href: 1.0/PolylineAlgorithm.html

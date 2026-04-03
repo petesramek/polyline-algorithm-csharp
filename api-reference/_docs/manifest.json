@@ -1,0 +1,453 @@
+{
+  "source_base_path": "/home/runner/work/polyline-algorithm-csharp/polyline-algorithm-csharp/api-reference",
+  "xrefmap": [
+    "xrefmap.yml",
+    "v1.0.xrefmap.yml"
+  ],
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.Abstraction.AbstractPolylineDecoder-2.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.Abstraction.IPolylineDecoder-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.Abstraction.IPolylineEncoder-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.Abstraction.IPolylineEncoder-2.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.Abstraction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.Abstraction.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.Coordinate.Validator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.Coordinate.Validator.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.Coordinate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.Coordinate.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.CoordinateValueType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.CoordinateValueType.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.Diagnostics.InvalidPolylineException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.Diagnostics.InvalidPolylineException.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.Diagnostics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.Diagnostics.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.Extensions.PolylineDecoderExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.Extensions.PolylineDecoderExtensions.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.Extensions.PolylineEncoderExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.Extensions.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.Internal.Diagnostics.ExceptionGuard.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.Internal.Diagnostics.ExceptionGuard.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.Internal.Diagnostics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.Internal.Diagnostics.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.InvalidPolylineException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.InvalidPolylineException.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.Polyline.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.Polyline.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.PolylineDecoder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.PolylineDecoder.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.PolylineEncoder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.PolylineEncoder.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.PolylineEncoding.Validation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.PolylineEncoding.Validation.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.PolylineEncoding.Validator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.PolylineEncoding.Validator.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.PolylineEncoding.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.PolylineEncoding.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.PolylineEncodingOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.PolylineEncodingOptions.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.PolylineEncodingOptionsBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.PolylineEncodingOptionsBuilder.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.Pow10.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.Pow10.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "ApiPage",
+      "source_relative_path": "1.0/PolylineAlgorithm.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/PolylineAlgorithm.html"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "1.0/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "1.0/toc.html"
+        },
+        ".json": {
+          "relative_path": "1.0/toc.json"
+        }
+      },
+      "version": "v1.0",
+      "group": "v1.0"
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "guide/advanced-scenarios.md",
+      "output": {
+        ".html": {
+          "relative_path": "guide/advanced-scenarios.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "guide/configuration.md",
+      "output": {
+        ".html": {
+          "relative_path": "guide/configuration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "guide/faq.md",
+      "output": {
+        ".html": {
+          "relative_path": "guide/faq.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "guide/getting-started.md",
+      "output": {
+        ".html": {
+          "relative_path": "guide/getting-started.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "guide/introduction.md",
+      "output": {
+        ".html": {
+          "relative_path": "guide/introduction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "guide/sample.md",
+      "output": {
+        ".html": {
+          "relative_path": "guide/sample.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "guide/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "guide/toc.html"
+        },
+        ".json": {
+          "relative_path": "guide/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/polyline-algorithm-50x46.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/polyline-algorithm-50x46.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/polyline-algorithm.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/polyline-algorithm.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "versions.json",
+      "output": {
+        "resource": {
+          "relative_path": "versions.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    },
+    {
+      "name": "v1.0",
+      "dest": "1.0",
+      "xrefmap": "v1.0.xrefmap.yml"
+    }
+  ]
+}
