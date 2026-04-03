@@ -552,7 +552,7 @@ public sealed class PolylineEncodingTests {
         // Arrange
         const int delta = 3778903;
         int requiredSize = PolylineEncoding.GetRequiredBufferSize(delta);
-        Span<char> buffer = stackalloc char[requiredSize - 1]; // one char too small
+        Span<char> buffer = stackalloc char[requiredSize - 1]; // One char too small
         int position = 0;
 
         // Act
