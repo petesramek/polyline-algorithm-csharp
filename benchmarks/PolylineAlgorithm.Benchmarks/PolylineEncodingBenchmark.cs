@@ -33,7 +33,7 @@ public class PolylineEncodingBenchmark {
     /// <summary>
     /// Number of coordinates used to build the test polyline. Set by BenchmarkDotNet.
     /// </summary>
-    [Params(1, 100, 1_000, 10_000)]
+    [Params(1, 100, 1_000)]
     public int CoordinatesCount { get; set; }
 
     /// <summary>
