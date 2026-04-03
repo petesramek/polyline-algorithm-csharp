@@ -1,4 +1,4 @@
-﻿# Remove the line below if you want to inherit .editorconfig settings from higher directories
+# Remove the line below if you want to inherit .editorconfig settings from higher directories
 root = true
 
 # All files
@@ -270,3 +270,7 @@ dotnet_naming_style.underscore_camel_case.required_prefix = _
 dotnet_naming_style.underscore_camel_case.required_suffix = 
 dotnet_naming_style.underscore_camel_case.word_separator = 
 dotnet_naming_style.underscore_camel_case.capitalization = camel_case
+
+# Public API analyzer
+
+dotnet_public_api_analyzer.require_api_files = true

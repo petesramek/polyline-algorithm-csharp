@@ -1,7 +1,7 @@
-namespace PolylineAlgorithm.Gps.Extensions;
+namespace PolylineAlgorithm.Extensions;
 
+using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Diagnostics;
-using PolylineAlgorithm.Gps.Abstraction;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;

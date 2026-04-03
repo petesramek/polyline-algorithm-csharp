@@ -1,8 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.1;net8.0;net9.0;net10.0;</TargetFrameworks>
+		<TargetFramework>netstandard2.1</TargetFramework>
 	</PropertyGroup>
+
+	<!--<PropertyGroup>
+		<RunCodeAnalysis>true</RunCodeAnalysis>
+		<AnalysisMode>Recommended</AnalysisMode>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<WarningLevel>4</WarningLevel>
+		<AnalysisLevel>latest</AnalysisLevel>
+	</PropertyGroup>-->
 
 	<PropertyGroup>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>

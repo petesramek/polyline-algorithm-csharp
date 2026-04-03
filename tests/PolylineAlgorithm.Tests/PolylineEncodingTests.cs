@@ -6,7 +6,6 @@
 namespace PolylineAlgorithm.Tests;
 
 using PolylineAlgorithm;
-using PolylineAlgorithm.Tests.Properties;
 
 /// <summary>
 /// Tests for <see cref="PolylineEncoding"/>.
@@ -691,7 +690,7 @@ public sealed class PolylineEncodingTests {
 
         // Assert
         Assert.IsTrue(result);
-        Assert.IsTrue(position > 0);
+        Assert.IsGreaterThan(0, position);
 
         // Verify by reading back
         ReadOnlyMemory<char> readBuffer = new string(buffer[..position]).AsMemory();
@@ -719,7 +718,7 @@ public sealed class PolylineEncodingTests {
 
         // Assert
         Assert.IsTrue(result);
-        Assert.IsTrue(position > 0);
+        Assert.IsGreaterThan(0, position);
 
         // Verify by reading back
         ReadOnlyMemory<char> readBuffer = new string(buffer[..position]).AsMemory();
@@ -751,7 +750,7 @@ public sealed class PolylineEncodingTests {
         // Assert
         Assert.IsTrue(result1);
         Assert.IsTrue(result2);
-        Assert.IsTrue(position > midPosition);
+        Assert.IsGreaterThan(midPosition, position);
 
         // Verify by reading back both values
         ReadOnlyMemory<char> readBuffer = new string(buffer[..position]).AsMemory();
@@ -857,7 +856,7 @@ public sealed class PolylineEncodingTests {
 
         // Assert
         Assert.IsTrue(result);
-        Assert.IsTrue(position > 0);
+        Assert.IsGreaterThan(0, position);
     }
 
     /// <summary>
@@ -876,7 +875,7 @@ public sealed class PolylineEncodingTests {
 
         // Assert
         Assert.IsTrue(result);
-        Assert.IsTrue(position > 0);
+        Assert.IsGreaterThan(0, position);
     }
 
     #endregion
@@ -976,8 +975,8 @@ public sealed class PolylineEncodingTests {
         int size = PolylineEncoding.GetRequiredBufferSize(delta);
 
         // Assert
-        Assert.IsTrue(size > 0);
-        Assert.IsTrue(size <= 7); // Maximum size for int32
+        Assert.IsGreaterThan(0, size);
+        Assert.IsLessThanOrEqualTo(7, size); // Maximum size for int32
     }
 
     /// <summary>
@@ -993,8 +992,8 @@ public sealed class PolylineEncodingTests {
         int size = PolylineEncoding.GetRequiredBufferSize(delta);
 
         // Assert
-        Assert.IsTrue(size > 0);
-        Assert.IsTrue(size <= 7); // Maximum size for int32
+        Assert.IsGreaterThan(0, size);
+        Assert.IsLessThanOrEqualTo(7, size); // Maximum size for int32
     }
 
     /// <summary>

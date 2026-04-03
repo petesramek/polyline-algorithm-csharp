@@ -5,28 +5,30 @@
 
 using Microsoft.Extensions.Logging;
 using PolylineAlgorithm.Diagnostics;
-using PolylineAlgorithm.Gps.Internal;
-using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Internal.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace PolylineAlgorithm.Gps.Abstraction {
+namespace PolylineAlgorithm.Abstraction {
     /// <summary>
     /// Decodes encoded polyline strings into sequences of geographic coordinates.
     /// Implements the <see cref="IPolylineDecoder{TPolyline, TValue}"/> interface.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// This abstract class provides a base implementation for decoding polylines, allowing subclasses
     /// to define how to handle specific polyline input types and how decoded coordinates are represented.
-    ///
+    /// </para>
+    /// <para>
     /// The <see cref="Decode(TPolyline, CancellationToken)"/> method uses deferred execution and yields
     /// coordinates as they are decoded. Consumers should be aware that decoding occurs during enumeration;
     /// any exceptions (format errors, cancellations) are thrown when the returned <see cref="IEnumerable{T}"/>
     /// is iterated.
-    ///
+    /// </para>
+    /// <para>
     /// The class is safe to use concurrently for decoding different inputs, provided the concrete
     /// implementations of <see cref="GetReadOnlyMemory(in TPolyline)"/> and <see cref="CreateCoordinate(double, double)"/>
     /// are themselves thread-safe.
+    /// </para>
     /// </remarks>
     public abstract class AbstractPolylineDecoder<TPolyline, TValue> : IPolylineDecoder<TPolyline, TValue> {
         private readonly ILogger<AbstractPolylineDecoder<TPolyline, TValue>> _logger;

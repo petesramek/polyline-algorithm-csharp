@@ -7,7 +7,7 @@ namespace PolylineAlgorithm.Tests;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using PolylineAlgorithm.Gps;
+using PolylineAlgorithm;
 using System;
 
 /// <summary>
@@ -97,7 +97,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     [TestMethod]
     public void Build_WithCustomLoggerFactory_ReturnsOptionsWithCustomLoggerFactory() {
         // Arrange
-        ILoggerFactory loggerFactory = LoggerFactory.Create(builder => { });
+        ILoggerFactory loggerFactory = LoggerFactory.Create(_ => { });
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create()
             .WithLoggerFactory(loggerFactory);
 
@@ -117,7 +117,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     [TestMethod]
     public void Build_WithAllCustomValues_ReturnsOptionsWithAllCustomValues() {
         // Arrange
-        ILoggerFactory loggerFactory = LoggerFactory.Create(builder => { });
+        ILoggerFactory loggerFactory = LoggerFactory.Create(_ => { });
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create()
             .WithPrecision(10)
             .WithStackAllocLimit(2048)
@@ -329,7 +329,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     public void WithLoggerFactory_ValidFactory_SetsValueAndReturnsSelf() {
         // Arrange
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
-        ILoggerFactory loggerFactory = LoggerFactory.Create(builder => { });
+        ILoggerFactory loggerFactory = LoggerFactory.Create(_ => { });
 
         // Act
         PolylineEncodingOptionsBuilder result = builder.WithLoggerFactory(loggerFactory);
@@ -366,8 +366,8 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     [TestMethod]
     public void WithLoggerFactory_ReplacePreviousFactory_UpdatesValue() {
         // Arrange
-        ILoggerFactory firstFactory = LoggerFactory.Create(builder => { });
-        ILoggerFactory secondFactory = LoggerFactory.Create(builder => { });
+        ILoggerFactory firstFactory = LoggerFactory.Create(_ => { });
+        ILoggerFactory secondFactory = LoggerFactory.Create(_ => { });
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create()
             .WithLoggerFactory(firstFactory);
 
@@ -389,7 +389,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     [TestMethod]
     public void WithLoggerFactory_NullAfterFactory_UsesNullLoggerFactory() {
         // Arrange
-        ILoggerFactory factory = LoggerFactory.Create(builder => { });
+        ILoggerFactory factory = LoggerFactory.Create(_ => { });
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create()
             .WithLoggerFactory(factory);
 
@@ -410,7 +410,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     [TestMethod]
     public void MethodChaining_AllMethods_ReturnsBuilderForChaining() {
         // Arrange
-        ILoggerFactory loggerFactory = LoggerFactory.Create(builder => { });
+        ILoggerFactory loggerFactory = LoggerFactory.Create(_ => { });
 
         // Act
         PolylineEncodingOptions result = PolylineEncodingOptionsBuilder.Create()

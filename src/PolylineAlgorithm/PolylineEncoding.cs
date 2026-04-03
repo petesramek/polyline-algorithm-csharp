@@ -32,13 +32,15 @@ public static class PolylineEncoding {
     /// polyline encoding.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// The method multiplies <paramref name="value"/> by 10^<paramref name="precision"/> and then truncates toward zero to
     /// produce the integer representation. A precision of 5 is the common default for polyline encodings (for example, 37.78903 -> 3778903).
-    ///
+    /// </para>
+    /// <para>
     /// The method does not accept non-finite values (NaN or Infinity) and will invoke the library's validation helpers if such a value is passed.
     /// If <paramref name="precision"/> is zero, the value is truncated to an integer without scaling.
-    ///
-    /// Implementation note: <see cref="Math.Truncate(double)"/> is used to produce a deterministic integer result.
+    /// </para>
+    /// <para>Implementation note: <see cref="Math.Truncate(double)"/> is used to produce a deterministic integer result.</para>
     /// </remarks>
     /// <param name="value">Floating-point coordinate value to normalize. Must be finite (not NaN or Infinity).</param>
     /// <param name="precision">Number of decimal places to preserve. Default is 5.</param>
@@ -73,10 +75,11 @@ public static class PolylineEncoding {
     /// Convert an integer normalized coordinate back into its floating-point representation using the given precision.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// This is the inverse of <see cref="Normalize"/>. The method divides <paramref name="value"/> by 10^<paramref name="precision"/>
     /// and returns a <see cref="double"/>. If <paramref name="precision"/> is zero the integer value is returned as a double unchanged.
-    ///
-    /// Arithmetic is performed in a <c>checked</c> context so that any overflow is surfaced as an <see cref="OverflowException"/>.
+    /// </para>
+    /// <para>Arithmetic is performed in a <c>checked</c> context so that any overflow is surfaced as an <see cref="OverflowException"/>.</para>
     /// </remarks>
     /// <param name="value">Integer normalized coordinate (typically produced by <see cref="Normalize"/>).</param>
     /// <param name="precision">Number of decimal places that were used when normalizing. Default is 5.</param>
@@ -104,13 +107,16 @@ public static class PolylineEncoding {
     /// Decode a single polyline-encoded integer from <paramref name="buffer"/> starting at <paramref name="position"/>.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// The method reads one encoded integer (a delta) from the polyline character buffer using the polyline decoding algorithm:
     /// it accumulates 5-bit chunks from successive characters, stops when a chunk with the continuation bit cleared is seen,
     /// and then reconstructs the signed integer using zig-zag decoding. The decoded value is added to <paramref name="delta"/>.
-    ///
+    /// </para>
+    /// <para>
     /// The <paramref name="position"/> argument is advanced to the character after the last character consumed for the value.
     /// If the buffer ends before a complete encoded value is available the method returns <c>false</c> and <paramref name="position"/>
     /// will point to the buffer end.
+    /// </para>
     /// </remarks>
     /// <param name="delta">Reference to the accumulator; the decoded value will be added to this parameter.</param>
     /// <param name="buffer">Read-only memory containing polyline-encoded characters.</param>
@@ -151,13 +157,16 @@ public static class PolylineEncoding {
     /// Encode a single integer delta value into polyline character format and write it into <paramref name="buffer"/>.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// The method applies zig-zag encoding (value &lt;&lt; 1, invert if negative) and then writes the value as a sequence of 5-bit
     /// chunks. Each output character encodes 5 bits plus a continuation-bit; characters are offset by the configured question-mark
     /// base value to make them ASCII-safe.
-    ///
+    /// </para>
+    /// <para>
     /// Before writing the method checks that there is sufficient space in the destination span by calling
     /// <see cref="GetRequiredBufferSize(int)"/>. If there is not enough space the method returns <c>false</c> without modifying
     /// the buffer or position.
+    /// </para>
     /// </remarks>
     /// <param name="delta">The integer value to encode (typically a coordinate delta).</param>
     /// <param name="buffer">Destination character span to write the encoded characters into.</param>

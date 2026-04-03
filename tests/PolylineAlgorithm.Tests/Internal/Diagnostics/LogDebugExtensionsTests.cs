@@ -7,7 +7,6 @@ namespace PolylineAlgorithm.Tests.Internal.Diagnostics;
 
 using Microsoft.Extensions.Logging;
 using PolylineAlgorithm.Internal.Diagnostics;
-using PolylineAlgorithm.Tests.Properties;
 using System;
 using System.Collections.Generic;
 

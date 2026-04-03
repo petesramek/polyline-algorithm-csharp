@@ -3,7 +3,7 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm.Gps.Abstraction;
+namespace PolylineAlgorithm.Abstraction;
 /// <summary>
 /// Contract for encoding a sequence of geographic coordinates into an encoded polyline representation.
 /// Implementations interpret the generic <typeparamref name="TValue"/> type and produce an encoded
@@ -14,12 +14,12 @@ namespace PolylineAlgorithm.Gps.Abstraction;
 /// <c>Latitude</c> and <c>Longitude</c> values). Implementations must document the expected shape,
 /// units (typically decimal degrees), and any required fields for <typeparamref name="TValue"/>.
 /// Common shapes:
-/// - A struct or class with two <c>double</c> properties named <c>Latitude</c> and <c>Longitude</c>.
+/// - A struct or class with two <see langword="double"/> properties named <c>Latitude</c> and <c>Longitude</c>.
 /// - A tuple-like type (for example <c>ValueTuple&lt;double,double&gt;</c>) where the encoder documents
 ///   which element represents latitude and longitude.
 /// </typeparam>
 /// <typeparam name="TPolyline">
-/// The encoded polyline representation returned by the encoder (for example <c>string</c>,
+/// The encoded polyline representation returned by the encoder (for example <see langword="string"/>,
 /// <c>ReadOnlyMemory&lt;char&gt;</c>, or a custom wrapper type). Concrete implementations should document
 /// the chosen representation and any memory / ownership expectations.
 /// </typeparam>
@@ -41,7 +41,7 @@ public interface IPolylineEncoder<TValue, TPolyline> {
     /// <param name="coordinates">
     /// The collection of <typeparamref name="TValue"/> instances to encode into a polyline.
     /// The span may be empty; implementations should return an appropriate empty encoded representation
-    /// (for example an empty string or an empty memory slice) rather than <c>null</c>.
+    /// (for example an empty string or an empty memory slice) rather than <see langword="null"/>.
     /// </param>
     /// <param name="cancellationToken">
     /// A <see cref="System.Threading.CancellationToken"/> that can be used to cancel the encoding operation.

@@ -6,7 +6,6 @@
 namespace PolylineAlgorithm.Tests.Internal.Diagnostics;
 
 using PolylineAlgorithm.Diagnostics;
-using PolylineAlgorithm.Tests.Properties;
 using System;
 
 /// <summary>
@@ -235,7 +234,7 @@ public sealed class ExceptionGuardTests {
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.IsTrue(result.Contains('5'));
+        Assert.IsTrue(result.Contains('5', StringComparison.Ordinal));
         Assert.IsTrue(result.Contains("10", StringComparison.Ordinal));
     }
 
@@ -270,7 +269,7 @@ public sealed class ExceptionGuardTests {
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.IsTrue(result.Contains('0'));
+        Assert.IsTrue(result.Contains('0', StringComparison.Ordinal));
     }
 
     /// <summary>
@@ -345,7 +344,7 @@ public sealed class ExceptionGuardTests {
         // Assert
         Assert.IsNotNull(result);
         Assert.IsTrue(result.Contains("longitude", StringComparison.Ordinal));
-        Assert.IsTrue(result.Contains('0'));
+        Assert.IsTrue(result.Contains('0', StringComparison.Ordinal));
         Assert.IsTrue(result.Contains("180", StringComparison.Ordinal));
     }
 
@@ -399,7 +398,7 @@ public sealed class ExceptionGuardTests {
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.IsTrue(result.Contains('0'));
+        Assert.IsTrue(result.Contains('0', StringComparison.Ordinal));
     }
 
     /// <summary>
@@ -434,7 +433,7 @@ public sealed class ExceptionGuardTests {
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.IsTrue(result.Contains('!'));
+        Assert.IsTrue(result.Contains('!', StringComparison.Ordinal));
         Assert.IsTrue(result.Contains("10", StringComparison.Ordinal));
     }
 
@@ -453,8 +452,8 @@ public sealed class ExceptionGuardTests {
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.IsTrue(result.Contains('Z'));
-        Assert.IsTrue(result.Contains('5'));
+        Assert.IsTrue(result.Contains('Z', StringComparison.Ordinal));
+        Assert.IsTrue(result.Contains('5', StringComparison.Ordinal));
     }
 
     /// <summary>
@@ -472,8 +471,8 @@ public sealed class ExceptionGuardTests {
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.IsTrue(result.Contains('@'));
-        Assert.IsTrue(result.Contains('0'));
+        Assert.IsTrue(result.Contains('@', StringComparison.Ordinal));
+        Assert.IsTrue(result.Contains('0', StringComparison.Ordinal));
     }
 
     /// <summary>
@@ -491,7 +490,7 @@ public sealed class ExceptionGuardTests {
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.IsTrue(result.Contains('5'));
+        Assert.IsTrue(result.Contains('5', StringComparison.Ordinal));
         Assert.IsTrue(result.Contains("10", StringComparison.Ordinal));
     }
 
@@ -510,7 +509,7 @@ public sealed class ExceptionGuardTests {
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.IsTrue(result.Contains('0'));
+        Assert.IsTrue(result.Contains('0', StringComparison.Ordinal));
         Assert.IsTrue(result.Contains("100", StringComparison.Ordinal));
     }
 
@@ -548,7 +547,7 @@ public sealed class ExceptionGuardTests {
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.IsTrue(result.Contains('5'));
+        Assert.IsTrue(result.Contains('5', StringComparison.Ordinal));
         Assert.IsTrue(result.Contains("10", StringComparison.Ordinal));
     }
 
@@ -567,8 +566,8 @@ public sealed class ExceptionGuardTests {
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.IsTrue(result.Contains('0'));
-        Assert.IsTrue(result.Contains('1'));
+        Assert.IsTrue(result.Contains('0', StringComparison.Ordinal));
+        Assert.IsTrue(result.Contains('1', StringComparison.Ordinal));
     }
 
     /// <summary>
@@ -587,7 +586,7 @@ public sealed class ExceptionGuardTests {
         // Assert
         Assert.IsNotNull(result);
         Assert.IsTrue(result.Contains("-5", StringComparison.Ordinal));
-        Assert.IsTrue(result.Contains('0'));
+        Assert.IsTrue(result.Contains('0', StringComparison.Ordinal));
     }
 
     /// <summary>

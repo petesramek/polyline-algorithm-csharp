@@ -9,11 +9,9 @@
     <Project Path="samples/PolylineAlgorithm.NetTopologySuite.Sample/PolylineAlgorithm.NetTopologySuite.Sample.csproj" Id="27a8fc47-0a3c-49c7-af5e-530514827785" />
   </Folder>
   <Folder Name="/src/">
-    <Project Path="src/PolylineAlgorithm.Gps/PolylineAlgorithm.Gps.csproj" Id="816a7001-8faf-472e-8927-86286149a8d1" />
     <Project Path="src/PolylineAlgorithm/PolylineAlgorithm.csproj" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="tests/PolylineAlgorithm.Gps.Tests/PolylineAlgorithm.Gps.Tests.csproj" />
     <Project Path="tests/PolylineAlgorithm.Tests/PolylineAlgorithm.Tests.csproj" />
   </Folder>
   <Folder Name="/utilities/" Id="02ea681e-c7d8-13c7-8484-4ac65e1b71e8">

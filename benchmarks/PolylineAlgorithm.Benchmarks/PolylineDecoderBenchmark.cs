@@ -7,8 +7,7 @@ namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
-using PolylineAlgorithm.Gps;
-using PolylineAlgorithm.Gps.Extensions;
+using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Utility;
 
 /// <summary>
@@ -21,11 +20,6 @@ public class PolylineDecoderBenchmark {
     public int CoordinatesCount { get; set; }
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-    /// <summary>
-    /// Polyline instance for benchmarks.
-    /// </summary>
-    public Polyline Polyline { get; private set; }
-
     /// <summary>
     /// Encoded polyline as string.
     /// </summary>
@@ -44,29 +38,28 @@ public class PolylineDecoderBenchmark {
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
     /// <summary>
-    /// Polyline decoder instance.
+    /// String polyline decoder instance.
     /// </summary>
-    private readonly PolylineDecoder _decoder = new();
+    private readonly StringPolylineDecoder _stringDecoder = new();
+
+    /// <summary>
+    /// Char array polyline decoder instance.
+    /// </summary>
+    private readonly CharArrayPolylineDecoder _charArrayDecoder = new();
+
+    /// <summary>
+    /// String polyline decoder instance.
+    /// </summary>
+    private readonly MemoryCharPolylineDecoder _memoryCharDecoder = new();
 
     /// <summary>
     /// Sets up benchmark data.
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        Polyline = Polyline.FromString(RandomValueProvider.GetPolyline(CoordinatesCount));
         String = RandomValueProvider.GetPolyline(CoordinatesCount);
         CharArray = RandomValueProvider.GetPolyline(CoordinatesCount).ToCharArray();
         Memory = RandomValueProvider.GetPolyline(CoordinatesCount).AsMemory();
-    }
-
-    /// <summary>
-    /// Benchmark: decode polyline instance.
-    /// </summary>
-    [Benchmark]
-    public void PolylineDecoder_Decode_Polyline() {
-        _decoder
-            .Decode(Polyline)
-            .Consume(_consumer);
     }
 
     /// <summary>
@@ -74,7 +67,7 @@ public class PolylineDecoderBenchmark {
     /// </summary>
     [Benchmark]
     public void PolylineDecoder_Decode_String() {
-        _decoder
+        _stringDecoder
             .Decode(String)
             .Consume(_consumer);
     }
@@ -84,7 +77,7 @@ public class PolylineDecoderBenchmark {
     /// </summary>
     [Benchmark]
     public void PolylineDecoder_Decode_CharArray() {
-        _decoder
+        _charArrayDecoder
             .Decode(CharArray)
             .Consume(_consumer);
     }
@@ -94,8 +87,38 @@ public class PolylineDecoderBenchmark {
     /// </summary>
     [Benchmark]
     public void PolylineDecoder_Decode_Memory() {
-        _decoder
+        _memoryCharDecoder
             .Decode(Memory)
             .Consume(_consumer);
+    }
+
+    private sealed class StringPolylineDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
+        protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) {
+            return (latitude, longitude);
+        }
+
+        protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) {
+            return polyline?.AsMemory() ?? Memory<char>.Empty;
+        }
+    }
+
+    private sealed class CharArrayPolylineDecoder : AbstractPolylineDecoder<char[], (double Latitude, double Longitude)> {
+        protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) {
+            return (latitude, longitude);
+        }
+
+        protected override ReadOnlyMemory<char> GetReadOnlyMemory(in char[] polyline) {
+            return polyline?.AsMemory() ?? Memory<char>.Empty;
+        }
+    }
+
+    private sealed class MemoryCharPolylineDecoder : AbstractPolylineDecoder<ReadOnlyMemory<char>, (double Latitude, double Longitude)> {
+        protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) {
+            return (latitude, longitude);
+        }
+
+        protected override ReadOnlyMemory<char> GetReadOnlyMemory(in ReadOnlyMemory<char> polyline) {
+            return polyline;
+        }
     }
 }

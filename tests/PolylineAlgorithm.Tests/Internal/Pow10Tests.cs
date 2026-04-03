@@ -6,7 +6,6 @@
 namespace PolylineAlgorithm.Tests.Internal;
 
 using PolylineAlgorithm.Internal;
-using PolylineAlgorithm.Tests.Properties;
 
 /// <summary>
 /// Tests for <see cref="Pow10"/>.

@@ -3,13 +3,11 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-namespace PolylineAlgorithm.Gps.Abstraction;
+namespace PolylineAlgorithm.Abstraction;
 
 using Microsoft.Extensions.Logging;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Diagnostics;
-using PolylineAlgorithm.Gps;
-using PolylineAlgorithm.Gps.Internal;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Internal.Diagnostics;
 using System;
@@ -23,18 +21,22 @@ using System.Runtime.CompilerServices;
 /// Implements the <see cref="IPolylineEncoder{TValue, TPolyline}"/> interface.
 /// </summary>
 /// <remarks>
+/// <para>
 /// This abstract class serves as a base for specific polyline encoders, allowing customization of the encoding process.
 /// Implementations supply how to extract latitude/longitude from a coordinate type (<typeparamref name="TValue"/>)
 /// and how to produce a polyline representation (<typeparamref name="TPolyline"/>).
-///
+/// </para>
+/// <para>
 /// The encoder is designed to be efficient for typical usage patterns:
 /// - It normalizes coordinates using <see cref="PolylineEncoding.Normalize(double, uint)"/> and encodes delta values.
 /// - It writes encoded characters into a temporary char buffer which is either stack-allocated or rented from <see cref="ArrayPool{T}"/>.
 /// - Logging is performed through the configured <see cref="PolylineEncodingOptions.LoggerFactory"/>.
-///
+/// </para>
+/// <para>
 /// Thread-safety: instances may be used concurrently only if the concrete implementation of <see cref="CreatePolyline(ReadOnlyMemory{char})"/>
 /// and the provided <typeparamref name="TValue"/> handling are themselves thread-safe. The encoder does not store per-encode state
 /// across calls (state is local to the call).
+/// </para>
 /// </remarks>
 public abstract class AbstractPolylineEncoder<TValue, TPolyline> : IPolylineEncoder<TValue, TPolyline> {
     private readonly ILogger<AbstractPolylineEncoder<TValue, TPolyline>> _logger;
@@ -100,7 +102,7 @@ public abstract class AbstractPolylineEncoder<TValue, TPolyline> : IPolylineEnco
     /// Implementation notes:
     /// - Coordinates are first normalized to integer values based on <see cref="PolylineEncoding.Normalize(double,uint)"/> and the configured precision.
     /// - Deltas between consecutive coordinates are encoded; latitude and longitude deltas are written sequentially.
-    /// - To avoid excessive heap allocations, a char buffer is created either on the stack using <c>stackalloc</c> when the requested
+    /// - To avoid excessive heap allocations, a char buffer is created either on the stack using <see langword="stackalloc"/> when the requested
     ///   buffer length is less than or equal to <see cref="PolylineEncodingOptions.StackAllocLimit"/>, or rented from the shared
     ///   <see cref="ArrayPool{T}"/> otherwise. Rented buffers are returned in a finally block to ensure they are always returned.
     /// - Detailed operation start/finish and error conditions are logged at debug level using the configured logger.

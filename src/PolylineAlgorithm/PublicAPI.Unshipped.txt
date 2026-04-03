@@ -1,1 +1,40 @@
 ﻿#nullable enable
+PolylineAlgorithm.Diagnostics.ExceptionGuard
+PolylineAlgorithm.Diagnostics.ExceptionGuard.ExceptionMessage
+PolylineAlgorithm.InvalidPolylineException
+PolylineAlgorithm.InvalidPolylineException.InvalidPolylineException() -> void
+PolylineAlgorithm.InvalidPolylineException.InvalidPolylineException(string! message, System.Exception! innerException) -> void
+PolylineAlgorithm.PolylineEncoding
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ExceptionMessage.FormatCoordinateValueMustBeBetween(string! name, double min, double max) -> string!
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ExceptionMessage.FormatDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLength(int destinationLength, int polylineLength) -> string!
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ExceptionMessage.FormatInvalidPolylineCharacter(char character, int position) -> string!
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ExceptionMessage.FormatInvalidPolylineLength(int length, int min) -> string!
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ExceptionMessage.FormatMalformedPolyline(long position) -> string!
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ExceptionMessage.FormatPolylineBlockTooLong(int position) -> string!
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ExceptionMessage.FormatPolylineCannotBeShorterThan(int length, int minLength) -> string!
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ExceptionMessage.FormatStackAllocLimitMustBeEqualOrGreaterThan(int minValue) -> string!
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ExceptionMessage.GetArgumentCannotBeEmpty() -> string!
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ExceptionMessage.GetArgumentValueMustBeFiniteNumber() -> string!
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ExceptionMessage.GetCouldNotWriteEncodedValueToTheBuffer() -> string!
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ExceptionMessage.GetInvalidPolylineBlockTerminator() -> string!
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.StackAllocLimitMustBeEqualOrGreaterThan(int minValue, string! paramName) -> void
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ThrowArgumentCannotBeEmptyEnumerationMessage(string! paramName) -> void
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ThrowArgumentNull(string! paramName) -> void
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ThrowBufferOverflow(string! message) -> void
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ThrowCoordinateValueOutOfRange(double value, double min, double max, string! paramName) -> void
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ThrowCouldNotWriteEncodedValueToBuffer() -> void
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ThrowDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLength(int destinationLength, int polylineLength, string! paramName) -> void
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ThrowInvalidPolylineBlockTerminator() -> void
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ThrowInvalidPolylineCharacter(char character, int position) -> void
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ThrowInvalidPolylineFormat(long position) -> void
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ThrowInvalidPolylineLength(int length, int min) -> void
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ThrowNotFiniteNumber(string! paramName) -> void
+static PolylineAlgorithm.Diagnostics.ExceptionGuard.ThrowPolylineBlockTooLong(int position) -> void
+static PolylineAlgorithm.PolylineEncoding.Denormalize(int value, uint precision = 5) -> double
+static PolylineAlgorithm.PolylineEncoding.GetRequiredBufferSize(int delta) -> int
+static PolylineAlgorithm.PolylineEncoding.Normalize(double value, uint precision = 5) -> int
+static PolylineAlgorithm.PolylineEncoding.TryReadValue(ref int delta, System.ReadOnlyMemory<char> buffer, ref int position) -> bool
+static PolylineAlgorithm.PolylineEncoding.TryWriteValue(int delta, System.Span<char> buffer, ref int position) -> bool
+static PolylineAlgorithm.PolylineEncoding.ValidateBlockLength(System.ReadOnlySpan<char> polyline) -> void
+static PolylineAlgorithm.PolylineEncoding.ValidateCharRange(System.ReadOnlySpan<char> polyline) -> void
+static PolylineAlgorithm.PolylineEncoding.ValidateFormat(System.ReadOnlySpan<char> polyline) -> void

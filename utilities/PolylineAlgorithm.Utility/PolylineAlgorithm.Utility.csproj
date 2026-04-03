@@ -9,7 +9,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\PolylineAlgorithm.Gps\PolylineAlgorithm.Gps.csproj" />
 		<ProjectReference Include="..\..\src\PolylineAlgorithm\PolylineAlgorithm.csproj" />
 	</ItemGroup>
 

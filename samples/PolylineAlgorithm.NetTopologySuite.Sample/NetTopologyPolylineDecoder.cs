@@ -6,7 +6,7 @@
 namespace PolylineAlgorithm.NetTopologySuite.Sample;
 
 using global::NetTopologySuite.Geometries;
-using PolylineAlgorithm.Gps.Abstraction;
+using PolylineAlgorithm.Abstraction;
 using System;
 
 /// <summary>

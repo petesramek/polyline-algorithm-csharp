@@ -25,7 +25,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\PolylineAlgorithm.Gps\PolylineAlgorithm.Gps.csproj" />
 		<ProjectReference Include="..\..\src\PolylineAlgorithm\PolylineAlgorithm.csproj" />
 		<ProjectReference Include="..\..\utilities\PolylineAlgorithm.Utility\PolylineAlgorithm.Utility.csproj" />
 	</ItemGroup>
