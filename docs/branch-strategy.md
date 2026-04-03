@@ -39,17 +39,20 @@ This document describes the branch model, the purpose of each branch type, and h
           │  PR open → [pull-request.yml]
           │  PR merged → [release.yml]: publish-NuGet (stable), GitHub release, docs, creates support/X.Y (first time only)
           │
-5. Back-merge (optional)
-   └─ Manual PR: release/X.Y → main
+5. Back-merge to main (automatic, highest version only)
+   └─ [release.yml] creates PR: release/X.Y → main (only when X.Y is the highest release branch)
+          │
+          │  PR merged → main is updated to the latest stable source
 ```
 
 ## Rules Per Branch Type
 
 ### `main`
 
-- Represents the current stable release.
+- Represents the latest stable release — always in sync with the highest released version.
 - Direct pushes are not allowed (protected).
-- Updated by merging from `release/X.Y` after a stable release.
+- Updated automatically via a PR created by `release.yml` whenever the highest `release/X.Y` branch publishes a stable release.
+- Serves as the baseline for version bumps: new development versions are derived from the state of `main` at the point the previous release left off.
 - The `build.yml` workflow does **not** trigger on `main` pushes (branch-ignore pattern excludes `preview/**` and `release/**`, and `main` does not match `src/**` changes by default in the context of the ignore rules — check the workflow for current specifics).
 
 ### `develop/X.Y`
@@ -92,6 +95,7 @@ This document describes the branch model, the purpose of each branch type, and h
 - Locked immediately: requires at least one PR approval.
 - On merge, `release.yml` publishes a **stable** NuGet package and a GitHub release.
 - After the first stable release, a corresponding `support/X.Y` branch is auto-created.
+- When `X.Y` is the highest release branch, `release.yml` automatically opens a PR to merge back into `main`, keeping `main` in sync with the latest stable state.
 
 ## Version in Branch Names
 
