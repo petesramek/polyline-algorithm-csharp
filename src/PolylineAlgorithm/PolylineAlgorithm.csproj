@@ -4,14 +4,6 @@
 		<TargetFramework>netstandard2.1</TargetFramework>
 	</PropertyGroup>
 
-	<!--<PropertyGroup>
-		<RunCodeAnalysis>true</RunCodeAnalysis>
-		<AnalysisMode>Recommended</AnalysisMode>
-		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<WarningLevel>4</WarningLevel>
-		<AnalysisLevel>latest</AnalysisLevel>
-	</PropertyGroup>-->
-
 	<PropertyGroup>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
@@ -52,7 +44,6 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="[6.0.0,11.0.0)" />
-		<PackageReference Include="System.Text.Json" Version="10.0.5" />
 	</ItemGroup>
 
 	<ItemGroup>

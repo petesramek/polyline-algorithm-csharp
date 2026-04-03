@@ -61,20 +61,11 @@ namespace PolylineAlgorithm.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Argument cannot be an empty..
+        ///   Looks up a localized string similar to Argument cannot be empty..
         /// </summary>
         internal static string ArgumentCannotBeEmptyMessage {
             get {
                 return ResourceManager.GetString("ArgumentCannotBeEmptyMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to  Value {0} is out of range. Expected range between {1} and {2}..
-        /// </summary>
-        internal static string ArgumentOutOfRangeFormat {
-            get {
-                return ResourceManager.GetString("ArgumentOutOfRangeFormat", resourceCulture);
             }
         }
         

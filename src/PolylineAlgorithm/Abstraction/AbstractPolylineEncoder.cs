@@ -26,6 +26,7 @@ using System.Threading;
 /// <typeparam name="TPolyline">The type that represents the encoded polyline output.</typeparam>
 public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder<TCoordinate, TPolyline> {
     private readonly ILogger<AbstractPolylineEncoder<TCoordinate, TPolyline>> _logger;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="AbstractPolylineEncoder{TCoordinate, TPolyline}"/> class with default encoding options.
     /// </summary>
@@ -99,6 +100,8 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
         Span<char> buffer = temp is null ? stackalloc char[length] : temp.AsSpan(0, length);
 
+        string encodedResult;
+
         try {
             for (var i = 0; i < coordinates.Length; i++) {
                 cancellationToken.ThrowIfCancellationRequested();
@@ -124,6 +127,8 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
                 consumed++;
             }
+
+            encodedResult = buffer[..position].ToString();
         } finally {
             if (temp is not null) {
                 ArrayPool<char>.Shared.Return(temp);
@@ -133,7 +138,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
         _logger
             .LogOperationFinishedDebug(OperationName);
 
-        return CreatePolyline(buffer[..position].ToString().AsMemory());
+        return CreatePolyline(encodedResult.AsMemory());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static int GetMaxBufferLength(int count) {

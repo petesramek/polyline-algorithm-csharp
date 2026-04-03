@@ -1,10 +1,20 @@
+//
+// Copyright © Pete Sramek. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+
 namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
 using PolylineAlgorithm.Utility;
 
+/// <summary>
+/// Benchmarks for the polyline encoding validation methods in <see cref="PolylineEncoding"/>.
+/// </summary>
 public class PolylineEncodingBenchmark {
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     private string polyline;
+#pragma warning restore CS8618
 
     /// <summary>
     /// Number of coordinates for benchmarks. Set by BenchmarkDotNet.

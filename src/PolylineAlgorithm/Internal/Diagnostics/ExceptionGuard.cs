@@ -206,6 +206,12 @@ public static class ExceptionGuard {
     /// <summary>
     /// Throws an <see cref="InvalidPolylineException"/> when the polyline block terminator is invalid.
     /// </summary>
+#if NET6_0_OR_GREATER
+    [StackTraceHidden]
+#else
+    [MethodImpl(MethodImplOptions.NoInlining)]
+#endif
+    [DoesNotReturn]
     public static void ThrowInvalidPolylineBlockTerminator() {
         throw new InvalidPolylineException(ExceptionMessage.GetInvalidPolylineBlockTerminator());
     }
@@ -240,6 +246,7 @@ public static class ExceptionGuard {
 #endif
 
         private static readonly string ArgumentCannotBeEmptyMessage = ExceptionMessageResource.ArgumentCannotBeEmptyMessage;
+        private static readonly string ArgumentValueMustBeFiniteNumberMessage = ExceptionMessageResource.ArgumentValueMustBeFiniteNumber;
         private static readonly string CouldNotWriteEncodedValueToTheBufferMessage = ExceptionMessageResource.CouldNotWriteEncodedValueToTheBufferMessage;
         private static readonly string InvalidPolylineBlockTerminatorMessage = ExceptionMessageResource.InvalidPolylineBlockTerminatorMessage;
 
@@ -295,7 +302,7 @@ public static class ExceptionGuard {
         /// Gets the message used when a numeric argument must be finite.
         /// </summary>
         public static string GetArgumentValueMustBeFiniteNumber() =>
-            ArgumentCannotBeEmptyMessage;
+            ArgumentValueMustBeFiniteNumberMessage;
 
         /// <summary>
         /// Gets the message used when the library could not write an encoded value to a buffer.

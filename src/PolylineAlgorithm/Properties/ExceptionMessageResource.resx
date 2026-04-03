@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ArgumentCannotBeEmptyMessage" xml:space="preserve">
-    <value>Argument cannot be an empty.</value>
+    <value>Argument cannot be empty.</value>
   </data>
   <data name="PolylineIsMalformedAtFormat" xml:space="preserve">
     <value>Polyline is malformed at position {0}.</value>
@@ -128,9 +128,6 @@
   </data>
   <data name="ArgumentValueMustBeFiniteNumber" xml:space="preserve">
     <value>Value must be a finite number.</value>
-  </data>
-  <data name="ArgumentOutOfRangeFormat" xml:space="preserve">
-    <value> Value {0} is out of range. Expected range between {1} and {2}.</value>
   </data>
   <data name="StackAllocLimitMustBeEqualOrGreaterThanFormat" xml:space="preserve">
     <value>Stack alloc limit must be equal or greater than {0}.</value>

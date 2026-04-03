@@ -35,7 +35,8 @@ public sealed class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point, 
             throw new ArgumentNullException(nameof(current));
         }
 
-        return current.X;
+        // NetTopologySuite Point: Y = latitude
+        return current.Y;
     }
 
     /// <summary>
@@ -48,6 +49,7 @@ public sealed class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point, 
             throw new ArgumentNullException(nameof(current));
         }
 
-        return current.Y;
+        // NetTopologySuite Point: X = longitude
+        return current.X;
     }
 }

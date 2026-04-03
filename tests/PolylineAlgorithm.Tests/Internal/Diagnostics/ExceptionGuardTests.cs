@@ -86,10 +86,10 @@ public sealed class ExceptionGuardTests {
     }
 
     /// <summary>
-    /// Tests that ThrwoArgumentCannotBeEmptyEnumerationMessage throws ArgumentException with correct parameter name.
+    /// Tests that ThrowArgumentCannotBeEmptyEnumerationMessage throws ArgumentException with correct parameter name.
     /// </summary>
     [TestMethod]
-    public void ThrwoArgumentCannotBeEmptyEnumerationMessage_WithParamName_ThrowsArgumentException() {
+    public void ThrowArgumentCannotBeEmptyEnumerationMessage_WithParamName_ThrowsArgumentException() {
         // Arrange
         const string paramName = "collection";
 
