@@ -4,9 +4,7 @@
 //
 
 using Microsoft.Extensions.Logging;
-using PolylineAlgorithm.Diagnostics;
 using PolylineAlgorithm.Internal;
-using PolylineAlgorithm.Internal.Diagnostics;
 using PolylineAlgorithm.Internal.Diagnostics;
 using System.Runtime.CompilerServices;
 
@@ -79,7 +77,7 @@ namespace PolylineAlgorithm.Abstraction {
         /// <exception cref="OperationCanceledException">
         /// Thrown when <paramref name="cancellationToken"/> is canceled during decoding.
         /// </exception>
-        public IEnumerable<TCoordinate> Decode(TPolyline polyline, CancellationToken cancellationToken) {
+        public IEnumerable<TCoordinate> Decode(TPolyline polyline, CancellationToken cancellationToken = default) {
             const string OperationName = nameof(Decode);
 
             _logger?.LogOperationStartedDebug(OperationName);

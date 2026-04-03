@@ -151,7 +151,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
                 logger
                     .LogEmptyArgumentWarning(nameof(coordinates));
 
-                ExceptionGuard.ThrwoArgumentCannotBeEmptyEnumerationMessage(nameof(coordinates));
+                ExceptionGuard.ThrowArgumentCannotBeEmptyEnumerationMessage(nameof(coordinates));
             }
         }
     }
