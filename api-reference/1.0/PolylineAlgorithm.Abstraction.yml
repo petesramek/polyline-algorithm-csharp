@@ -19,11 +19,16 @@ body:
 - h3: Interfaces
 - parameters:
   - type:
-      text: IPolylineDecoder<TPolyline, TCoordinate>
+      text: IPolylineDecoder<TPolyline, TValue>
       url: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html
     description: Defines a contract for decoding an encoded polyline into a sequence of geographic coordinates.
   - type:
-      text: IPolylineEncoder<TCoordinate, TPolyline>
+      text: IPolylineEncoder<TValue, TPolyline>
       url: PolylineAlgorithm.Abstraction.IPolylineEncoder-2.html
-    description: Defines a contract for encoding a sequence of geographic coordinates into an encoded polyline string.
+    description: >-
+      Contract for encoding a sequence of geographic coordinates into an encoded polyline representation.
+
+      Implementations interpret the generic <code class="typeparamref">TValue</code> type and produce an encoded
+
+      representation of those coordinates as <code class="typeparamref">TPolyline</code>.
 languageId: csharp

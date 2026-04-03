@@ -12,21 +12,14 @@ body:
       text: PolylineAlgorithm.Abstraction
       url: PolylineAlgorithm.Abstraction.html
   - type:
-      text: PolylineAlgorithm.Diagnostics
-      url: PolylineAlgorithm.Diagnostics.html
-  - type:
       text: PolylineAlgorithm.Extensions
       url: PolylineAlgorithm.Extensions.html
 - h3: Classes
 - parameters:
   - type:
-      text: PolylineDecoder
-      url: PolylineAlgorithm.PolylineDecoder.html
-    description: Provides a base implementation for decoding encoded polyline strings into sequences of geographic coordinates.
-  - type:
-      text: PolylineEncoder
-      url: PolylineAlgorithm.PolylineEncoder.html
-    description: Provides a base implementation for encoding sequences of geographic coordinates into encoded polyline strings.
+      text: InvalidPolylineException
+      url: PolylineAlgorithm.InvalidPolylineException.html
+    description: Exception thrown when a polyline is determined to be malformed or invalid during processing.
   - type:
       text: PolylineEncoding
       url: PolylineAlgorithm.PolylineEncoding.html
@@ -42,21 +35,4 @@ body:
       text: PolylineEncodingOptionsBuilder
       url: PolylineAlgorithm.PolylineEncodingOptionsBuilder.html
     description: Provides a builder for configuring options for polyline encoding operations.
-  - type:
-      text: Coordinate.Validator
-      url: PolylineAlgorithm.Coordinate.Validator.html
-    description: Provides static methods for validating latitude and longitude values used in <xref href="PolylineAlgorithm.Coordinate" data-throw-if-not-resolved="false"></xref>.
-- h3: Structs
-- parameters:
-  - type:
-      text: Coordinate
-      url: PolylineAlgorithm.Coordinate.html
-    description: Represents a geographic coordinate as a pair of latitude and longitude values.
-  - type:
-      text: Polyline
-      url: PolylineAlgorithm.Polyline.html
-    description: >-
-      Represents an immutable, read-only encoded polyline string.
-
-      Provides methods for creation, inspection, and conversion of polyline data from various character sources.
 languageId: csharp

@@ -1,9 +1,9 @@
 ### YamlMime:ApiPage
-title: Interface IPolylineDecoder<TPolyline, TCoordinate>
+title: Interface IPolylineDecoder<TPolyline, TValue>
 body:
-- api1: Interface IPolylineDecoder<TPolyline, TCoordinate>
+- api1: Interface IPolylineDecoder<TPolyline, TValue>
   id: PolylineAlgorithm_Abstraction_IPolylineDecoder_2
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/IPolylineDecoder.cs#L13
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/IPolylineDecoder.cs#L22
   metadata:
     uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2
     commentId: T:PolylineAlgorithm.Abstraction.IPolylineDecoder`2
@@ -15,35 +15,76 @@ body:
   - name: Assembly
     value: PolylineAlgorithm.dll
 - markdown: Defines a contract for decoding an encoded polyline into a sequence of geographic coordinates.
-- code: public interface IPolylineDecoder<TPolyline, out TCoordinate>
+- code: public interface IPolylineDecoder<TPolyline, out TValue>
 - h4: Type Parameters
 - parameters:
   - name: TPolyline
-  - name: TCoordinate
+    description: >-
+      The type that represents the encoded polyline input. Common implementations use <xref href="System.String" data-throw-if-not-resolved="false"></xref>,
+
+      but custom wrapper types are allowed to carry additional metadata.
+  - name: TValue
+    description: >-
+      The coordinate type returned by the decoder. Typical implementations return a struct or class that
+
+      contains latitude and longitude (for example a <code>LatLng</code> type or a <code>ValueTuple&lt;double,double&gt;</code>).
 - h2: Methods
-- api3: Decode(TPolyline)
-  id: PolylineAlgorithm_Abstraction_IPolylineDecoder_2_Decode__0_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/IPolylineDecoder.cs#L23
+- api3: Decode(TPolyline, CancellationToken)
+  id: PolylineAlgorithm_Abstraction_IPolylineDecoder_2_Decode__0_System_Threading_CancellationToken_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/IPolylineDecoder.cs#L48
   metadata:
-    uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2.Decode(`0)
-    commentId: M:PolylineAlgorithm.Abstraction.IPolylineDecoder`2.Decode(`0)
-- markdown: Decodes the specified encoded polyline into a sequence of geographic coordinates.
-- code: IEnumerable<out TCoordinate> Decode(TPolyline polyline)
+    uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2.Decode(`0,System.Threading.CancellationToken)
+    commentId: M:PolylineAlgorithm.Abstraction.IPolylineDecoder`2.Decode(`0,System.Threading.CancellationToken)
+- markdown: >-
+    Decodes the specified encoded polyline into an ordered sequence of geographic coordinates.
+
+    The sequence preserves the original vertex order encoded by the <code class="paramref">polyline</code>.
+- code: IEnumerable<out TValue> Decode(TPolyline polyline, CancellationToken cancellationToken = default)
 - h4: Parameters
 - parameters:
   - name: polyline
     type:
     - TPolyline
-    description: The <code class="typeparamref">TPolyline</code> instance containing the encoded polyline string to decode.
+    description: >-
+      The <code class="typeparamref">TPolyline</code> instance containing the encoded polyline to decode.
+
+      Implementations SHOULD validate the input and may throw <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref>
+
+      or <xref href="System.FormatException" data-throw-if-not-resolved="false"></xref> for invalid formats.
+  - name: cancellationToken
+    type:
+    - text: CancellationToken
+      url: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+    description: >-
+      A <xref href="System.Threading.CancellationToken" data-throw-if-not-resolved="false"></xref> to observe while decoding. If cancellation is requested,
+
+      implementations SHOULD stop work and throw an <xref href="System.OperationCanceledException" data-throw-if-not-resolved="false"></xref>.
+    optional: true
 - h4: Returns
 - parameters:
   - type:
     - text: IEnumerable
       url: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
     - <
-    - TCoordinate
+    - TValue
     - '>'
-    description: An <xref href="System.Collections.Generic.IEnumerable%601" data-throw-if-not-resolved="false"></xref> of <code class="typeparamref">TCoordinate</code> representing the decoded latitude and longitude pairs.
+    description: >-
+      An <xref href="System.Collections.Generic.IEnumerable%601" data-throw-if-not-resolved="false"></xref> of <code class="typeparamref">TValue</code> representing the decoded
+
+      latitude/longitude pairs (or equivalent coordinates) in the same order they were encoded.
+- h4: Remarks
+- markdown: >-
+    Implementations commonly follow the Google Encoded Polyline Algorithm Format, but this interface
+
+    does not mandate a specific encoding. Consumers should rely on a concrete decoder's documentation
+
+    to understand the exact encoding supported.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: OperationCanceledException
+      url: https://learn.microsoft.com/dotnet/api/system.operationcanceledexception
+    description: Thrown when the provided <code class="paramref">cancellationToken</code> requests cancellation.
 languageId: csharp
 metadata:
   description: Defines a contract for decoding an encoded polyline into a sequence of geographic coordinates.

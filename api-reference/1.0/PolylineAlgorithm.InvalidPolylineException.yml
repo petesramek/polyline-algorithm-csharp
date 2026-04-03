@@ -3,7 +3,7 @@ title: Class InvalidPolylineException
 body:
 - api1: Class InvalidPolylineException
   id: PolylineAlgorithm_InvalidPolylineException
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/InvalidPolylineException.cs#L23
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/InvalidPolylineException.cs#L17
   metadata:
     uid: PolylineAlgorithm.InvalidPolylineException
     commentId: T:PolylineAlgorithm.InvalidPolylineException
@@ -15,12 +15,7 @@ body:
   - name: Assembly
     value: PolylineAlgorithm.dll
 - markdown: Exception thrown when a polyline is determined to be malformed or invalid during processing.
-- code: >-
-    [SuppressMessage("Roslynator", "RCS1194:Implement exception constructors", Justification = "Internal use only.")]
-
-    [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "Internal use only.")]
-
-    public sealed class InvalidPolylineException : Exception, ISerializable
+- code: 'public sealed class InvalidPolylineException : Exception, ISerializable'
 - h4: Inheritance
 - inheritance:
   - text: object
@@ -73,6 +68,35 @@ body:
     url: https://learn.microsoft.com/dotnet/api/system.object.tostring
 - h2: Remarks
 - markdown: This exception is used internally to indicate that a polyline string does not conform to the expected format or contains errors.
+- h2: Constructors
+- api3: InvalidPolylineException()
+  id: PolylineAlgorithm_InvalidPolylineException__ctor
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/InvalidPolylineException.cs#L22
+  metadata:
+    uid: PolylineAlgorithm.InvalidPolylineException.#ctor
+    commentId: M:PolylineAlgorithm.InvalidPolylineException.#ctor
+- markdown: Initializes a new instance of the <xref href="PolylineAlgorithm.InvalidPolylineException" data-throw-if-not-resolved="false"></xref> class.
+- code: public InvalidPolylineException()
+- api3: InvalidPolylineException(string, Exception)
+  id: PolylineAlgorithm_InvalidPolylineException__ctor_System_String_System_Exception_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/InvalidPolylineException.cs#L43
+  metadata:
+    uid: PolylineAlgorithm.InvalidPolylineException.#ctor(System.String,System.Exception)
+    commentId: M:PolylineAlgorithm.InvalidPolylineException.#ctor(System.String,System.Exception)
+- markdown: Initializes a new instance of the <xref href="PolylineAlgorithm.InvalidPolylineException" data-throw-if-not-resolved="false"></xref> class with a specified error message and a reference to the inner exception that is the cause of this exception.
+- code: public InvalidPolylineException(string message, Exception innerException)
+- h4: Parameters
+- parameters:
+  - name: message
+    type:
+    - text: string
+      url: https://learn.microsoft.com/dotnet/api/system.string
+    description: The error message that explains the reason for the exception.
+  - name: innerException
+    type:
+    - text: Exception
+      url: https://learn.microsoft.com/dotnet/api/system.exception
+    description: The exception that is the cause of the current exception, or a null reference if no inner exception is specified.
 languageId: csharp
 metadata:
   description: Exception thrown when a polyline is determined to be malformed or invalid during processing.
