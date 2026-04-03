@@ -5,6 +5,9 @@ inputs:
   branch:
     description: 'Branch name to lock.'
     required: true
+  token:
+    description: 'GitHub token with administration:write (repo admin) permission. Use a PAT; GITHUB_TOKEN cannot call the branch protection API.'
+    required: true
 
 runs:
   using: composite
@@ -12,7 +15,7 @@ runs:
     - name: 'Lock branch ${{ inputs.branch }}'
       shell: bash
       env:
-        GH_TOKEN: ${{ github.token }}
+        GH_TOKEN: ${{ inputs.token }}
       run: |
         if ! gh api --method PUT /repos/${{ github.repository }}/branches/${{ inputs.branch }}/protection \
           --input - << 'EOF'

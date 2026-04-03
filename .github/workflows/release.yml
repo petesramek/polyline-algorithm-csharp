@@ -357,6 +357,7 @@ jobs:
         uses: './.github/actions/github/branch-protection/lock'
         with:
           branch: ${{ steps.resolve-support-branch.outputs.support-branch }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
 
       - name: 'Write support branch summary'
         run: |
