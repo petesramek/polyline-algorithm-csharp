@@ -1,0 +1,155 @@
+name: 'Bump version'
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump-type:
+        type: choice
+        options:
+          - 'minor'
+          - 'major'
+        description: 'Version bump type. Use ''minor'' to add features (keeps API files), ''major'' for breaking changes (resets API files).'
+        required: true
+
+permissions:
+  actions: read
+  contents: write
+  pull-requests: write
+  administration: write
+
+concurrency:
+  group: bump-version
+  cancel-in-progress: false
+
+env:
+  dotnet-sdk-version: '10.x'
+
+jobs:
+  detect-version:
+    name: 'Detect current version and calculate next'
+    runs-on: ubuntu-latest
+    outputs:
+      current-version: ${{ steps.detect.outputs.current-version }}
+      next-version: ${{ steps.calculate.outputs.next-version }}
+      target-branch: ${{ steps.calculate.outputs.target-branch }}
+    steps:
+      - name: 'Checkout main'
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: 'Detect highest release branch'
+        id: detect
+        run: |
+          git fetch origin
+          latest=$(git ls-remote --heads origin 'release/*' | grep -oP 'release/\K\d+\.\d+' | sort -V | tail -1)
+          if [[ -z "$latest" ]]; then
+            latest="0.0"
+          fi
+          echo "Detected current version: $latest"
+          echo "current-version=$latest" >> $GITHUB_OUTPUT
+
+      - name: 'Calculate next version'
+        id: calculate
+        run: |
+          current="${{ steps.detect.outputs.current-version }}"
+          major="${current%%.*}"
+          minor="${current##*.}"
+          if [[ "${{ inputs.bump-type }}" == "major" ]]; then
+            next_major=$((major + 1))
+            next_version="${next_major}.0"
+          else
+            next_minor=$((minor + 1))
+            next_version="${major}.${next_minor}"
+          fi
+          echo "Next version: $next_version"
+          echo "next-version=$next_version" >> $GITHUB_OUTPUT
+          echo "target-branch=develop/${next_version}" >> $GITHUB_OUTPUT
+
+  validate:
+    name: 'Validate bump'
+    needs: [detect-version]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Validate workflow is running from main'
+        if: ${{ github.ref_name != 'main' }}
+        run: |
+          echo "This workflow must be run from the 'main' branch. Current branch: '${{ github.ref_name }}'."
+          exit 1
+
+      - name: 'Validate target branch does not exist'
+        run: |
+          set +e
+          git ls-remote --exit-code --heads origin "${{ needs.detect-version.outputs.target-branch }}"
+          if [[ $? -eq 0 ]]; then
+            echo "Target branch '${{ needs.detect-version.outputs.target-branch }}' already exists."
+            exit 1
+          fi
+          set -e
+
+  create-branch:
+    name: 'Create ${{ needs.detect-version.outputs.target-branch }}'
+    needs: [detect-version, validate]
+    runs-on: ubuntu-latest
+    env:
+      next-version: ${{ needs.detect-version.outputs.next-version }}
+      target-branch: ${{ needs.detect-version.outputs.target-branch }}
+    steps:
+      - name: 'Checkout main'
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+
+      - name: 'Configure git'
+        run: |
+          git config user.name "$(git log -n 1 --pretty=format:%an)"
+          git config user.email "$(git log -n 1 --pretty=format:%ae)"
+
+      - name: 'Create develop branch from main'
+        run: |
+          git checkout -b ${{ env.target-branch }}
+
+      - name: 'Reset PublicAPI files for major bump'
+        if: ${{ inputs.bump-type == 'major' }}
+        run: |
+          find . -name "PublicAPI.Shipped.txt" | while read file; do
+            printf '\xef\xbb\xbf#nullable enable\n' > "$file"
+            echo "Reset: $file"
+          done
+          find . -name "PublicAPI.Unshipped.txt" | while read file; do
+            printf '\xef\xbb\xbf#nullable enable\n' > "$file"
+            echo "Reset: $file"
+          done
+
+      - name: 'Commit API file reset'
+        if: ${{ inputs.bump-type == 'major' }}
+        run: |
+          git add .
+          git diff --staged --quiet || git commit -m "Reset PublicAPI files for major version ${{ env.next-version }}"
+
+      - name: 'Push develop branch'
+        run: |
+          git push --set-upstream origin ${{ env.target-branch }}
+
+      - name: 'Write summary'
+        run: |
+          echo "## ✅ Branch created: \`${{ env.target-branch }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| | |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Bump type** | ${{ inputs.bump-type }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Previous version** | ${{ needs.detect-version.outputs.current-version }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **New version** | ${{ env.next-version }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Target branch** | \`${{ env.target-branch }}\` |" >> $GITHUB_STEP_SUMMARY
+          if [[ "${{ inputs.bump-type }}" == "major" ]]; then
+            echo "| **API files** | Reset (major bump) |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| **API files** | Preserved (minor bump) |" >> $GITHUB_STEP_SUMMARY
+          fi

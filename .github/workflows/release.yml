@@ -257,3 +257,59 @@ jobs:
           release-version: ${{ env.release-version }}
           is-preview: ${{ env.is-preview }}
           notes-start-tag: ${{ steps.determine-notes-start-tag.outputs.notes-start-tag }}
+
+  merge-to-main:
+    name: 'Merge ${{ github.ref_name }} into main'
+    needs: [workflow-variables, release, versioning]
+    if: ${{ needs.workflow-variables.outputs.is-release == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      current-branch: ${{ github.ref_name }}
+      current-version: ${{ needs.versioning.outputs.friendly-version }}
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: 'Detect if current branch is the latest release'
+        id: detect-latest
+        run: |
+          git fetch origin
+          latest_version=$(git ls-remote --heads origin 'release/*' | grep -oP 'release/\K\d+\.\d+' | sort -V | tail -1)
+          echo "Latest release branch version: $latest_version"
+          echo "Current version: ${{ env.current-version }}"
+          if [[ "$latest_version" == "${{ env.current-version }}" ]]; then
+            echo "is-latest=true" >> $GITHUB_OUTPUT
+          else
+            echo "is-latest=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 'Check if PR to main already exists'
+        id: check-pr
+        if: ${{ steps.detect-latest.outputs.is-latest == 'true' }}
+        run: |
+          pr_count=$(gh pr list --head "${{ env.current-branch }}" --base main --state open --limit 1 --json id --jq '. | length')
+          if [[ $pr_count -gt 0 ]]; then
+            echo "pr-exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "pr-exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 'Create PR: Merge ${{ env.current-branch }} into main'
+        if: ${{ steps.detect-latest.outputs.is-latest == 'true' && steps.check-pr.outputs.pr-exists == 'false' }}
+        run: |
+          gh pr create \
+            --title "Merge ${{ env.current-branch }} into main" \
+            --fill \
+            --base main \
+            --head "${{ env.current-branch }}"
+
+      - name: 'Write merge summary'
+        run: |
+          if [[ "${{ steps.detect-latest.outputs.is-latest }}" == "true" ]]; then
+            echo "✅ PR created to merge **${{ env.current-branch }}** into **main**." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⏭️ Skipped merge to main: **${{ env.current-branch }}** is not the highest release branch." >> $GITHUB_STEP_SUMMARY
+          fi

@@ -1,0 +1,33 @@
+name: 'Lock branch'
+author: 'Pete Sramek'
+description: 'Apply branch protection to prevent direct pushes. Requires PRs with at least one approval.'
+inputs:
+  branch:
+    description: 'Branch name to lock.'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: 'Lock branch ${{ inputs.branch }}'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        gh api --method PUT /repos/${{ github.repository }}/branches/${{ inputs.branch }}/protection \
+          --input - << 'EOF'
+        {
+          "required_status_checks": null,
+          "enforce_admins": false,
+          "required_pull_request_reviews": {
+            "dismiss_stale_reviews": true,
+            "require_code_owner_reviews": false,
+            "required_approving_review_count": 1
+          },
+          "restrictions": null,
+          "allow_force_pushes": false,
+          "allow_deletions": false,
+          "lock_branch": false
+        }
+        EOF
+        echo "🔒 Branch '${{ inputs.branch }}' is now protected." >> $GITHUB_STEP_SUMMARY
