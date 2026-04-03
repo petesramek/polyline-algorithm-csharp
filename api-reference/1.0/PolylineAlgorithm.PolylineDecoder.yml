@@ -14,10 +14,7 @@ body:
       url: PolylineAlgorithm.html
   - name: Assembly
     value: PolylineAlgorithm.dll
-- markdown: >-
-    Decodes encoded polyline strings into sequences of geographic coordinates.
-
-    Implements the <xref href="PolylineAlgorithm.Abstraction.IPolylineDecoder%602" data-throw-if-not-resolved="false"></xref> interface.
+- markdown: Provides a base implementation for decoding encoded polyline strings into sequences of geographic coordinates.
 - code: 'public sealed class PolylineDecoder : AbstractPolylineDecoder<Polyline, Coordinate>, IPolylineDecoder<Polyline, Coordinate>'
 - h4: Inheritance
 - inheritance:
@@ -60,7 +57,10 @@ body:
   - text: PolylineDecoderExtensions.Decode(IPolylineDecoder<Polyline, Coordinate>, ReadOnlyMemory<char>)
     url: PolylineAlgorithm.Extensions.PolylineDecoderExtensions.html#PolylineAlgorithm_Extensions_PolylineDecoderExtensions_Decode_PolylineAlgorithm_Abstraction_IPolylineDecoder_PolylineAlgorithm_Polyline_PolylineAlgorithm_Coordinate__System_ReadOnlyMemory_System_Char__
 - h2: Remarks
-- markdown: This abstract class provides a base implementation for decoding polylines, allowing subclasses to define how to handle specific polyline formats.
+- markdown: >-
+    Derive from this class to implement a decoder for a specific polyline type. Override <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineDecoder%602.GetReadOnlyMemory(%600%40)" data-throw-if-not-resolved="false"></xref>
+
+    and <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineDecoder%602.CreateCoordinate(System.Double%2cSystem.Double)" data-throw-if-not-resolved="false"></xref> to provide type-specific behavior.
 - h2: Constructors
 - api3: PolylineDecoder()
   id: PolylineAlgorithm_PolylineDecoder__ctor
@@ -90,7 +90,7 @@ body:
   - type:
     - text: ArgumentNullException
       url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
-    description: Thrown when <code class="paramref">options</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>
+    description: Thrown when <code class="paramref">options</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 - h2: Methods
 - api3: CreateCoordinate(double, double)
   id: PolylineAlgorithm_PolylineDecoder_CreateCoordinate_System_Double_System_Double_
@@ -98,6 +98,7 @@ body:
   metadata:
     uid: PolylineAlgorithm.PolylineDecoder.CreateCoordinate(System.Double,System.Double)
     commentId: M:PolylineAlgorithm.PolylineDecoder.CreateCoordinate(System.Double,System.Double)
+- markdown: Creates a <xref href="PolylineAlgorithm.Coordinate" data-throw-if-not-resolved="false"></xref> instance from the specified latitude and longitude values.
 - code: protected override Coordinate CreateCoordinate(double latitude, double longitude)
 - h4: Parameters
 - parameters:
@@ -105,21 +106,25 @@ body:
     type:
     - text: double
       url: https://learn.microsoft.com/dotnet/api/system.double
+    description: The latitude component of the coordinate, in degrees.
   - name: longitude
     type:
     - text: double
       url: https://learn.microsoft.com/dotnet/api/system.double
+    description: The longitude component of the coordinate, in degrees.
 - h4: Returns
 - parameters:
   - type:
     - text: Coordinate
       url: PolylineAlgorithm.Coordinate.html
+    description: A <xref href="PolylineAlgorithm.Coordinate" data-throw-if-not-resolved="false"></xref> instance representing the specified geographic coordinate.
 - api3: GetReadOnlyMemory(in Polyline)
   id: PolylineAlgorithm_PolylineDecoder_GetReadOnlyMemory_PolylineAlgorithm_Polyline__
   src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineDecoder.cs#L26
   metadata:
     uid: PolylineAlgorithm.PolylineDecoder.GetReadOnlyMemory(PolylineAlgorithm.Polyline@)
     commentId: M:PolylineAlgorithm.PolylineDecoder.GetReadOnlyMemory(PolylineAlgorithm.Polyline@)
+- markdown: Extracts the underlying read-only memory region of characters from the specified polyline instance.
 - code: protected override ReadOnlyMemory<char> GetReadOnlyMemory(in Polyline polyline)
 - h4: Parameters
 - parameters:
@@ -127,6 +132,7 @@ body:
     type:
     - text: Polyline
       url: PolylineAlgorithm.Polyline.html
+    description: The <xref href="PolylineAlgorithm.Polyline" data-throw-if-not-resolved="false"></xref> instance from which to extract the character sequence.
 - h4: Returns
 - parameters:
   - type:
@@ -136,9 +142,7 @@ body:
     - text: char
       url: https://learn.microsoft.com/dotnet/api/system.char
     - '>'
+    description: A <xref href="System.ReadOnlyMemory%601" data-throw-if-not-resolved="false"></xref> of <xref href="System.Char" data-throw-if-not-resolved="false"></xref> representing the encoded polyline characters.
 languageId: csharp
 metadata:
-  description: >-
-    Decodes encoded polyline strings into sequences of geographic coordinates.
-
-    Implements the  interface.
+  description: Provides a base implementation for decoding encoded polyline strings into sequences of geographic coordinates.

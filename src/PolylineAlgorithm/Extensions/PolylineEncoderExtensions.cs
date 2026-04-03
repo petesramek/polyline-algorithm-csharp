@@ -1,37 +1,42 @@
+﻿//
+// Copyright © Pete Sramek. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+
 namespace PolylineAlgorithm.Extensions;
 
 using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal.Diagnostics;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 #if NET5_0_OR_GREATER
 using System.Runtime.InteropServices;
 #endif
 
 /// <summary>
-/// Provides extension methods for the <see cref="IPolylineEncoder{TValue, TPolyline}"/> interface to facilitate encoding geographic coordinates into polylines.
+/// Provides extension methods for the <see cref="IPolylineEncoder{TCoordinate, TPolyline}"/> interface to facilitate encoding geographic coordinates into polylines.
 /// </summary>
 public static class PolylineEncoderExtensions {
     /// <summary>
-    /// Encodes a collection of <see cref="TValue"/> instances into an encoded polyline.
+    /// Encodes a <see cref="List{T}"/> of <typeparamref name="TCoordinate"/> instances into an encoded polyline.
     /// </summary>
+    /// <typeparam name="TCoordinate">The type that represents a geographic coordinate to encode.</typeparam>
+    /// <typeparam name="TPolyline">The type that represents the encoded polyline output.</typeparam>
     /// <param name="encoder">
-    /// The <see cref="IPolylineEncoder{TValue, TPolyline}"/> instance used to perform the encoding operation.
+    /// The <see cref="IPolylineEncoder{TCoordinate, TPolyline}"/> instance used to perform the encoding operation.
     /// </param>
     /// <param name="coordinates">
-    /// The sequence of <see cref="Coordinate"/> objects to encode.
+    /// The list of <typeparamref name="TCoordinate"/> objects to encode.
     /// </param>
     /// <returns>
-    /// A <see cref="Polyline"/> representing the encoded polyline string for the provided coordinates.
+    /// A <typeparamref name="TPolyline"/> instance representing the encoded polyline for the provided coordinates.
     /// </returns>
     /// <exception cref="ArgumentNullException">
-    /// Thrown when <paramref name="encoder"/> is <see langword="null"/>.
+    /// Thrown when <paramref name="encoder"/> or <paramref name="coordinates"/> is <see langword="null"/>.
     /// </exception>
-    [SuppressMessage("Design", "CA1002:Do not expose generic lists", Justification = "We need a list as we do need to marshal it as span.")]
-    [SuppressMessage("Design", "MA0016:Prefer using collection abstraction instead of implementation", Justification = "We need a list as we do need to marshal it as span.")]
-    [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Method ExceptionGuard.ThrowArgumentNull(string) throws ArgumentNullException.")]
-    public static TPolyline Encode<TValue, TPolyline>(this IPolylineEncoder<TValue, TPolyline> encoder, List<TValue> coordinates) {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1002:Do not expose generic lists", Justification = "We need a list as we do need to marshal it as span.")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "MA0016:Prefer using collection abstraction instead of implementation", Justification = "We need a list as we do need to marshal it as span.")]
+    public static TPolyline Encode<TCoordinate, TPolyline>(this IPolylineEncoder<TCoordinate, TPolyline> encoder, List<TCoordinate> coordinates) {
         if (encoder is null) {
             ExceptionGuard.ThrowArgumentNull(nameof(encoder));
         }
@@ -49,23 +54,23 @@ public static class PolylineEncoderExtensions {
 
 
     /// <summary>
-    /// Encodes an array of <see cref="Coordinate"/> instances into an encoded polyline.
+    /// Encodes an array of <typeparamref name="TCoordinate"/> instances into an encoded polyline.
     /// </summary>
+    /// <typeparam name="TCoordinate">The type that represents a geographic coordinate to encode.</typeparam>
+    /// <typeparam name="TPolyline">The type that represents the encoded polyline output.</typeparam>
     /// <param name="encoder">
-    /// The <see cref="IPolylineEncoder{TValue, TPolyline}"/> instance used to perform the encoding operation.
+    /// The <see cref="IPolylineEncoder{TCoordinate, TPolyline}"/> instance used to perform the encoding operation.
     /// </param>
     /// <param name="coordinates">
-    /// The array of <see cref="Coordinate"/> objects to encode.
+    /// The array of <typeparamref name="TCoordinate"/> objects to encode.
     /// </param>
     /// <returns>
-    /// A <see cref="Polyline"/> representing the encoded polyline string for the provided coordinates.
+    /// A <typeparamref name="TPolyline"/> instance representing the encoded polyline for the provided coordinates.
     /// </returns>
     /// <exception cref="ArgumentNullException">
-    /// Thrown when <paramref name="encoder"/> is <see langword="null"/>.
+    /// Thrown when <paramref name="encoder"/> or <paramref name="coordinates"/> is <see langword="null"/>.
     /// </exception>
-
-    [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Method ExceptionGuard.ThrowArgumentNull(string) throws ArgumentNullException.")]
-    public static TPolyline Encode<TValue, TPolyline>(this IPolylineEncoder<TValue, TPolyline> encoder, TValue[] coordinates) {
+    public static TPolyline Encode<TCoordinate, TPolyline>(this IPolylineEncoder<TCoordinate, TPolyline> encoder, TCoordinate[] coordinates) {
         if (encoder is null) {
             ExceptionGuard.ThrowArgumentNull(nameof(encoder));
         }

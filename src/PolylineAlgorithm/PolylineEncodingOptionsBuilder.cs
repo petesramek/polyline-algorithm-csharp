@@ -50,7 +50,7 @@ public sealed class PolylineEncodingOptionsBuilder {
     /// The maximum buffer size to use for stack allocation. Must be greater than or equal to 1.
     /// </param>
     /// <returns>
-    /// Returns the current <see cref="PolylineEncodingOptionsBuilder"/> instance for method chaining.
+    /// The current <see cref="PolylineEncodingOptionsBuilder"/> instance for method chaining.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if <paramref name="stackAllocLimit"/> is less than 1.
@@ -71,13 +71,13 @@ public sealed class PolylineEncodingOptionsBuilder {
     }
 
     /// <summary>
-    /// Sets the precision for encoding values.
+    /// Sets the coordinate encoding precision.
     /// </summary>
     /// <param name="precision">
-    /// The number of decimal places to use for encoding values. Default is 5.
+    /// The number of decimal places to use for encoding coordinate values. Default is 5.
     /// </param>
     /// <returns>
-    /// The current builder instance.
+    /// The current <see cref="PolylineEncodingOptionsBuilder"/> instance for method chaining.
     /// </returns>
     public PolylineEncodingOptionsBuilder WithPrecision(uint precision) {
         _precision = precision;
@@ -92,7 +92,7 @@ public sealed class PolylineEncodingOptionsBuilder {
     /// The <see cref="ILoggerFactory"/> instance to use for logging. If <see langword="null"/>, a <see cref="NullLoggerFactory"/> will be used instead.
     /// </param>
     /// <returns>
-    /// Returns the current <see cref="PolylineEncodingOptionsBuilder"/> instance for method chaining.
+    /// The current <see cref="PolylineEncodingOptionsBuilder"/> instance for method chaining.
     /// </returns>
     public PolylineEncodingOptionsBuilder WithLoggerFactory(ILoggerFactory loggerFactory) {
         _loggerFactory = loggerFactory ?? NullLoggerFactory.Instance;

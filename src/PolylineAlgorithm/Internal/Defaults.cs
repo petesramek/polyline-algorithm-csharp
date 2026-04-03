@@ -9,8 +9,10 @@ using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
 /// Provides default values and constants used throughout the Polyline Algorithm.
-/// Organizes defaults for algorithm parameters, polyline encoding, and geographic coordinates into nested static classes.
 /// </summary>
+/// <remarks>
+/// Organizes defaults for algorithm parameters, polyline encoding, and geographic coordinates into nested static classes.
+/// </remarks>
 [ExcludeFromCodeCoverage]
 internal static class Defaults {
     /// <summary>
@@ -18,7 +20,7 @@ internal static class Defaults {
     /// </summary>
     internal static class Logging {
         /// <summary>
-        /// Log level multiplier used to distinguish event identification for each log level
+        /// Log level multiplier used to distinguish event identification for each log level.
         /// </summary>
         internal const int LogLevelMultiplier = 100;
     }
@@ -48,6 +50,9 @@ internal static class Defaults {
         internal const byte UnitSeparator = 31;
     }
 
+    /// <summary>
+    /// Contains default values and constants for geographic coordinate validation.
+    /// </summary>
     internal static class Coordinate {
         /// <summary>
         /// Provides constants representing latitude values, including the default, minimum, and maximum valid values.
@@ -95,7 +100,7 @@ internal static class Defaults {
         /// </summary>
         internal static class Block {
             /// <summary>
-            /// Contains constants related to the length of encoded vakues in polyline encoding.
+            /// Contains constants related to the length of encoded values in polyline encoding.
             /// </summary>
             internal static class Length {
                 /// <summary>

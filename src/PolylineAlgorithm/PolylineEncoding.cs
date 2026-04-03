@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright © Pete Sramek. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
@@ -7,45 +7,57 @@ namespace PolylineAlgorithm;
 
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Internal.Diagnostics;
+
 using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
 
 /// <summary>
-/// Static helper API for working with Google-style polyline encoded data and for converting geographic coordinate values
-/// between their floating-point representation and the integer "normalized" representation used by the encoding algorithm.
+/// Provides methods for encoding and decoding polyline data, as well as utilities for normalizing and de-normalizing
+/// geographic coordinate values.
 /// </summary>
-/// <remarks>
-/// The <see cref="PolylineEncoding"/> type contains three groups of capabilities:
-/// <list type="bullet">
-/// <item><description>Normalization/denormalization: Convert between double coordinates and the integer representation used by polyline encoding.</description></item>
-/// <item><description>Low-level read/write primitives: Encode and decode individual integer delta values to/from polyline character buffers.</description></item>
-/// <item><description>Validation helpers: Verify that a polyline character sequence contains only valid characters and that each encoded block is well-formed.</description></item>
-/// </list>
-/// The implementation uses zig-zag encoding for signed values and 5-bit chunk output for ASCII-safe characters. Validation
-/// methods are provided to fail early when input contains invalid characters or invalid block structure.
-/// </remarks>
+/// <remarks>The <see cref="PolylineEncoding"/> class includes functionality for working with encoded polyline
+/// data, such as reading and writing encoded values, as well as methods for normalizing and de-normalizing geographic
+/// coordinates. It also provides validation utilities to ensure values conform to expected ranges for latitude and
+/// longitude.</remarks>
 public static class PolylineEncoding {
     /// <summary>
-    /// Convert a floating-point geographic coordinate (latitude or longitude) into the integer "normalized" form used by
-    /// polyline encoding.
+    /// Normalizes a geographic coordinate value to an integer representation based on the specified precision.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The method multiplies <paramref name="value"/> by 10^<paramref name="precision"/> and then truncates toward zero to
-    /// produce the integer representation. A precision of 5 is the common default for polyline encodings (for example, 37.78903 -> 3778903).
+    /// This method converts a floating-point coordinate value into a normalized integer by multiplying it by 10 raised
+    /// to the power of the specified precision, then truncating the result to an integer.
     /// </para>
     /// <para>
-    /// The method does not accept non-finite values (NaN or Infinity) and will invoke the library's validation helpers if such a value is passed.
-    /// If <paramref name="precision"/> is zero, the value is truncated to an integer without scaling.
+    /// For example, with the default precision of 5:
+    /// <list type="bullet">
+    /// <item><description>A value of 37.78903 becomes 3778903</description></item>
+    /// <item><description>A value of -122.4123 becomes -12241230</description></item>
+    /// </list>
     /// </para>
-    /// <para>Implementation note: <see cref="Math.Truncate(double)"/> is used to produce a deterministic integer result.</para>
+    /// <para>
+    /// The method validates that the input value is finite (not NaN or infinity) before performing normalization.
+    /// If the precision is 0, the value is rounded without multiplication.
+    /// </para>
     /// </remarks>
-    /// <param name="value">Floating-point coordinate value to normalize. Must be finite (not NaN or Infinity).</param>
-    /// <param name="precision">Number of decimal places to preserve. Default is 5.</param>
-    /// <returns>Integer representation of the coordinate at the requested precision.</returns>
-    /// <exception cref="ArgumentOutOfRangeException">Thrown via internal validation if <paramref name="value"/> is not a finite number.</exception>
-    /// <exception cref="OverflowException">Thrown when the checked conversion to <see cref="int"/> overflows.</exception>
+    /// <param name="value">
+    /// The numeric value to normalize. Must be a finite number (not NaN or infinity).
+    /// </param>
+    /// <param name="precision">
+    /// The number of decimal places of precision to preserve in the normalized value. 
+    /// The value is multiplied by 10^<paramref name="precision"/> before rounding. 
+    /// Default is 5, which is standard for polyline encoding.
+    /// </param>
+    /// <returns>
+    /// An integer representing the normalized value. Returns <c>0</c> if the input <paramref name="value"/> is <c>0.0</c>.
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when <paramref name="value"/> is not a finite number (NaN or infinity).
+    /// </exception>
+    /// <exception cref="OverflowException">
+    /// Thrown when the normalized result exceeds the range of a 32-bit signed integer during the conversion from double to int.
+    /// </exception>
     public static int Normalize(double value, uint precision = 5) {
         // Fast return if the value is zero, return 0 as the normalized value.
         if (value.Equals(default)) {
@@ -71,25 +83,47 @@ public static class PolylineEncoding {
     }
 
     /// <summary>
-    /// Convert an integer normalized coordinate back into its floating-point representation using the given precision.
+    /// Converts a normalized integer coordinate value back to its floating-point representation based on the specified precision.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This is the inverse of <see cref="Normalize"/>. The method divides <paramref name="value"/> by 10^<paramref name="precision"/>
-    /// and returns a <see cref="double"/>. If <paramref name="precision"/> is zero the integer value is returned as a double unchanged.
+    /// This method reverses the normalization performed by <see cref="Normalize"/>. It takes an integer value and converts it
+    /// to a double by dividing it by 10 raised to the power of the specified precision. If <paramref name="precision"/> is 0,
+    /// the value is returned as a double without division.
     /// </para>
-    /// <para>Arithmetic is performed in a <see langword="checked"/> context so that any overflow is surfaced as an <see cref="OverflowException"/>.</para>
+    /// <para>
+    /// The calculation is performed inside a <see langword="checked"/> block to ensure that any arithmetic overflow is detected
+    /// and an <see cref="OverflowException"/> is thrown.
+    /// </para>
+    /// <para>
+    /// For example, with a precision of 5:
+    /// <list type="bullet">
+    /// <item><description>A value of 3778903 becomes 37.78903</description></item>
+    /// <item><description>A value of -12241230 becomes -122.4123</description></item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// If the input <paramref name="value"/> is <c>0</c>, the method returns <c>0.0</c> immediately.
+    /// </para>
     /// </remarks>
-    /// <param name="value">Integer normalized coordinate (typically produced by <see cref="Normalize"/>).</param>
-    /// <param name="precision">Number of decimal places that were used when normalizing. Default is 5.</param>
-    /// <returns>Denormalized floating-point coordinate.</returns>
-    /// <exception cref="OverflowException">If arithmetic overflows during conversion.</exception>
+    /// <param name="value">
+    /// The integer value to denormalize. Typically produced by the <see cref="Normalize"/> method.
+    /// </param>
+    /// <param name="precision">
+    /// The number of decimal places used during normalization. Default is 5, matching standard polyline encoding precision.
+    /// </param>
+    /// <returns>
+    /// The denormalized floating-point coordinate value.
+    /// </returns>
+    /// <exception cref="OverflowException">
+    /// Thrown if the arithmetic operation overflows during conversion.
+    /// </exception>
     public static double Denormalize(int value, uint precision = 5) {
         if (value.Equals(default)) {
             return default;
         }
 
-        // Fast return if precision is zero, return current value converted to double.
+        // Fast return if precision is zero, return current value converted to Int32.
         if (precision == default) {
             return value;
         }
@@ -103,24 +137,34 @@ public static class PolylineEncoding {
     }
 
     /// <summary>
-    /// Decode a single polyline-encoded integer from <paramref name="buffer"/> starting at <paramref name="position"/>.
+    /// Attempts to read an encoded integer value from a polyline buffer, updating the specified delta and position.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The method reads one encoded integer (a delta) from the polyline character buffer using the polyline decoding algorithm:
-    /// it accumulates 5-bit chunks from successive characters, stops when a chunk with the continuation bit cleared is seen,
-    /// and then reconstructs the signed integer using zig-zag decoding. The decoded value is added to <paramref name="delta"/>.
+    /// This method decodes a value from a polyline-encoded character buffer, starting at the given position. It reads
+    /// characters sequentially, applying the polyline decoding algorithm, and updates the <paramref name="delta"/> with
+    /// the decoded value. The position is advanced as characters are processed.
     /// </para>
     /// <para>
-    /// The <paramref name="position"/> argument is advanced to the character after the last character consumed for the value.
-    /// If the buffer ends before a complete encoded value is available the method returns <see langword="false"/> and <paramref name="position"/>
-    /// will point to the buffer end.
+    /// The decoding process continues until a character with a value less than the algorithm's space constant is encountered,
+    /// which signals the end of the encoded value. If the buffer is exhausted before a complete value is read, the method returns <see langword="false"/>.
+    /// </para>
+    /// <para>
+    /// The decoded value is added to <paramref name="delta"/> using zigzag decoding, which handles both positive and negative values.
     /// </para>
     /// </remarks>
-    /// <param name="delta">Reference to the accumulator; the decoded value will be added to this parameter.</param>
-    /// <param name="buffer">Read-only memory containing polyline-encoded characters.</param>
-    /// <param name="position">Reference to the current index in <paramref name="buffer"/>; advanced as characters are read.</param>
-    /// <returns><see langword="true"/> if a full value was decoded; <see langword="false"/> if the buffer ended before the value was complete.</returns>
+    /// <param name="delta">
+    /// Reference to the integer accumulator that will be updated with the decoded value.
+    /// </param>
+    /// <param name="buffer">
+    /// The buffer containing polyline-encoded characters.
+    /// </param>
+    /// <param name="position">
+    /// Reference to the current position in the buffer. This value is updated as characters are read.
+    /// </param>
+    /// <returns>
+    /// <see langword="true"/> if a value was successfully read and decoded; <see langword="false"/> if the buffer ended before a complete value was read.
+    /// </returns>
     public static bool TryReadValue(ref int delta, ReadOnlyMemory<char> buffer, ref int position) {
         // Validate that the position is within the bounds of the buffer.
         if (position >= buffer.Length) {
@@ -153,24 +197,42 @@ public static class PolylineEncoding {
 
 
     /// <summary>
-    /// Encode a single integer delta value into polyline character format and write it into <paramref name="buffer"/>.
+    /// Attempts to write an encoded integer value to a polyline buffer, updating the specified position.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The method applies zig-zag encoding (value &lt;&lt; 1, invert if negative) and then writes the value as a sequence of 5-bit
-    /// chunks. Each output character encodes 5 bits plus a continuation-bit; characters are offset by the configured question-mark
-    /// base value to make them ASCII-safe.
+    /// This method encodes an integer delta value into a polyline-encoded format and writes it to the provided character buffer,
+    /// starting at the given position. It applies zigzag encoding followed by the polyline encoding algorithm to represent
+    /// both positive and negative values efficiently.
     /// </para>
     /// <para>
-    /// Before writing the method checks that there is sufficient space in the destination span by calling
-    /// <see cref="GetRequiredBufferSize(int)"/>. If there is not enough space the method returns <see langword="false"/> without modifying
-    /// the buffer or position.
+    /// The encoding process first converts the value using zigzag encoding (left shift by 1, with bitwise inversion for negative values),
+    /// then writes it as a sequence of characters. Each character encodes 5 bits of data, with continuation bits indicating whether
+    /// more characters follow. The position is advanced as characters are written.
+    /// </para>
+    /// <para>
+    /// Before writing, the method validates that sufficient space is available in the buffer by calling <see cref="GetRequiredBufferSize"/>.
+    /// If the buffer does not have enough remaining capacity, the method returns <see langword="false"/> without modifying the buffer or position.
+    /// </para>
+    /// <para>
+    /// This method is the inverse of <see cref="TryReadValue"/> and can be used to encode coordinate deltas for polyline serialization.
     /// </para>
     /// </remarks>
-    /// <param name="delta">The integer value to encode (typically a coordinate delta).</param>
-    /// <param name="buffer">Destination character span to write the encoded characters into.</param>
-    /// <param name="position">Reference to the current write index in <paramref name="buffer"/>; advanced as characters are written.</param>
-    /// <returns><see langword="true"/> if the value was encoded and written; <see langword="false"/> if the buffer did not have sufficient space.</returns>
+    /// <param name="delta">
+    /// The integer value to encode and write to the buffer. This value typically represents the difference between consecutive
+    /// coordinate values in polyline encoding.
+    /// </param>
+    /// <param name="buffer">
+    /// The destination buffer where the encoded characters will be written. Must have sufficient capacity to hold the encoded value.
+    /// </param>
+    /// <param name="position">
+    /// Reference to the current position in the buffer. This value is updated as characters are written to reflect the new position
+    /// after encoding is complete.
+    /// </param>
+    /// <returns>
+    /// <see langword="true"/> if the value was successfully encoded and written to the buffer; <see langword="false"/> if the buffer
+    /// does not have sufficient remaining capacity to hold the encoded value.
+    /// </returns>
     public static bool TryWriteValue(int delta, Span<char> buffer, ref int position) {
         // Validate that the position and required space for write is within the bounds of the buffer.
         if (buffer[position..].Length < GetRequiredBufferSize(delta)) {
@@ -200,15 +262,38 @@ public static class PolylineEncoding {
     }
 
     /// <summary>
-    /// Compute the number of characters required to encode the given integer delta in polyline format.
+    /// Calculates the number of characters required to encode a delta value in polyline format.
     /// </summary>
     /// <remarks>
-    /// The method performs the same zig-zag transformation used by <see cref="TryWriteValue(int, Span{char}, ref int)"/>
-    /// and then counts how many 5-bit output chunks are needed. Each chunk maps to one character; the minimum required size is 1.
+    /// <para>
+    /// This method determines how many characters will be needed to represent an integer delta value when encoded
+    /// using the polyline encoding algorithm. It performs the same zigzag encoding transformation as <see cref="TryWriteValue"/>
+    /// but only calculates the required buffer size without actually writing any data.
+    /// </para>
+    /// <para>
+    /// The calculation process:
+    /// <list type="number">
+    /// <item><description>Applies zigzag encoding: left-shifts the value by 1 bit, then inverts all bits if the original value was negative</description></item>
+    /// <item><description>Counts how many 5-bit chunks are needed to represent the encoded value</description></item>
+    /// <item><description>Each chunk requires one character, with a minimum of 1 character for any value</description></item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// This method is useful for pre-allocating buffers of the correct size before encoding polyline data, helping to avoid
+    /// buffer overflow checks during the actual encoding process.
+    /// </para>
+    /// <para>
+    /// The method uses a <see langword="long"/> internally to prevent overflow during the left-shift operation on large negative values.
+    /// </para>
     /// </remarks>
-    /// <param name="delta">Integer delta value.</param>
-    /// <returns>Number of characters required to encode <paramref name="delta"/>.</returns>
-    /// <seealso cref="TryWriteValue(int, Span{char}, ref int)"/>
+    /// <param name="delta">
+    /// The integer delta value to calculate the encoded size for. This value typically represents the difference between
+    /// consecutive coordinate values in polyline encoding.
+    /// </param>
+    /// <returns>
+    /// The number of characters required to encode the specified delta value. The minimum return value is 1.
+    /// </returns>
+    /// <seealso cref="TryWriteValue"/>
     public static int GetRequiredBufferSize(int delta) {
         long rem = (long)delta << 1;
 
@@ -229,47 +314,58 @@ public static class PolylineEncoding {
     #region Validation
 
     /// <summary>
-    /// Minimum base character value used by the algorithm (ASCII code of the configured question-mark offset).
+    /// The minimum valid character value for polyline encoding, corresponding to the ASCII value of '?' (63).
     /// </summary>
     private const ushort Min = Defaults.Algorithm.QuestionMark;
 
     /// <summary>
-    /// Maximum character value accepted by the character-range validation logic (computed from the configured constants).
+    /// The maximum valid character value for polyline encoding, calculated as the sum of two question mark values ('?' + '?', or 63 + 63 = 126).
     /// </summary>
-    /// <remarks>
-    /// This value is derived from the library's algorithm constants; it represents the upper inclusive bound that
-    /// <see cref="ValidateCharRange(ReadOnlySpan{char})"/> will accept. The concrete numeric value depends on the
-    /// <see cref="Defaults.Algorithm.QuestionMark"/> constant used by the project.
-    /// </remarks>
     private const ushort Max = (Defaults.Algorithm.QuestionMark + Defaults.Algorithm.QuestionMark);
 
     /// <summary>
-    /// The numeric threshold used to identify a block terminator (characters with value lower than this mark end an encoded block).
+    /// The character value that marks the end of a polyline block, calculated as the sum of the question mark value and the space value ('?' + ' ', or 63 + 32 = 95).
     /// </summary>
     private const ushort End = (Defaults.Algorithm.QuestionMark + Defaults.Algorithm.Space);
 
     /// <summary>
-    /// SIMD vector populated with the minimum allowed character value to accelerate vectorized range checks.
+    /// SIMD vector containing the minimum valid character value for efficient range validation of polyline segments.
     /// </summary>
     private static readonly Vector<ushort> MinVector = new(Min);
 
     /// <summary>
-    /// SIMD vector populated with the maximum allowed character value to accelerate vectorized range checks.
+    /// SIMD vector containing the maximum valid character value for efficient range validation of polyline segments.
     /// </summary>
     private static readonly Vector<ushort> MaxVector = new(Max);
 
     /// <summary>
-    /// Validate the overall format of a polyline character sequence.
+    /// Validates the format of a polyline segment, ensuring all characters are valid and block structure is correct.
     /// </summary>
     /// <remarks>
-    /// This validation performs two checks:
+    /// <para>
+    /// This method performs two levels of validation on the provided polyline segment:
+    /// </para>
     /// <list type="number">
-    /// <item><description>Character range check: ensure every character's numeric code is inside the allowed range (between <see cref="Min"/> and <see cref="Max"/>, inclusive).</description></item>
-    /// <item><description>Block structure check: ensure each encoded value (block) terminates within the configured maximum block length and that the sequence ends on a block terminator.</description></item>
+    ///   <item>
+    ///     <description>
+    ///       <b>Character Range Validation:</b> Checks that every character in the polyline is within the valid ASCII range for polyline encoding ('?' [63] to '_' [95], inclusive).
+    ///       Uses SIMD acceleration for efficient validation of large segments.
+    ///     </description>
+    ///   </item>
+    ///   <item>
+    ///     <description>
+    ///       <b>Block Structure Validation:</b> Ensures that each encoded value (block) does not exceed 7 characters and that the polyline ends with a valid block terminator.
+    ///     </description>
+    ///   </item>
     /// </list>
-    /// If a problem is detected an <see cref="ArgumentException"/> (via internal exception helpers) is thrown describing the violation.
+    /// <para>
+    /// If an invalid character or block structure is detected, an <see cref="ArgumentException"/> is thrown with details about the error.
+    /// </para>
     /// </remarks>
-    /// <param name="polyline">Span of characters representing the encoded polyline segment to validate.</param>
+    /// <param name="polyline">A span representing the polyline segment to validate.</param>
+    /// <exception cref="ArgumentException">
+    /// Thrown when an invalid character is found or the block structure is invalid.
+    /// </exception>
     public static void ValidateFormat(ReadOnlySpan<char> polyline) {
         // 1. SIMD character check (reuse existing method)
         ValidateCharRange(polyline);
@@ -281,11 +377,17 @@ public static class PolylineEncoding {
     /// Validates that all characters in the polyline segment are within the allowed ASCII range for polyline encoding.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// Uses SIMD vectorization for efficient validation of large spans. Falls back to scalar checks for any block where an invalid character is detected.
-    /// The valid numeric range is from '?' (configured question-mark offset) up to the computed <see cref="Max"/> inclusive.
+    /// </para>
+    /// <para>
+    /// The valid range is from '?' (63) to '_' (95), inclusive. If an invalid character is found, an <see cref="ArgumentException"/> is thrown.
+    /// </para>
     /// </remarks>
     /// <param name="polyline">A span representing the polyline segment to validate.</param>
-    /// <exception cref="ArgumentException">Thrown via internal helpers when an invalid character is found in the polyline segment.</exception>
+    /// <exception cref="ArgumentException">
+    /// Thrown when an invalid character is found in the polyline segment.
+    /// </exception>
     public static void ValidateCharRange(ReadOnlySpan<char> polyline) {
         int length = polyline.Length;
         int vectorSize = Vector<ushort>.Count;
@@ -320,15 +422,18 @@ public static class PolylineEncoding {
     }
 
     /// <summary>
-    /// Validates the block structure of a polyline segment, ensuring each encoded value does not exceed the configured maximum length and the polyline ends correctly.
+    /// Validates the block structure of a polyline segment, ensuring each encoded value does not exceed 7 characters and the polyline ends correctly.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// Iterates through the polyline, counting the length of each block (a sequence of characters representing an encoded value).
-    /// Throws an <see cref="ArgumentException"/> (via internal helpers) if any block exceeds the configured maximum number of characters
-    /// or if the polyline does not end with a block terminator.
+    /// Throws an <see cref="ArgumentException"/> if any block exceeds 7 characters or if the polyline does not end with a valid block terminator.
+    /// </para>
     /// </remarks>
     /// <param name="polyline">A span representing the polyline segment to validate.</param>
-    /// <exception cref="ArgumentException">Thrown via internal helpers when a block exceeds the maximum length or when a block terminator is missing.</exception>
+    /// <exception cref="ArgumentException">
+    /// Thrown when a block exceeds 7 characters or the polyline does not end with a valid block terminator.
+    /// </exception>
     public static void ValidateBlockLength(ReadOnlySpan<char> polyline) {
         int blockLen = 0;
         bool foundBlockEnd = false;

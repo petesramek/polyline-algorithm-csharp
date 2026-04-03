@@ -85,14 +85,14 @@ body:
   - type:
     - text: PolylineEncodingOptionsBuilder
       url: PolylineAlgorithm.PolylineEncodingOptionsBuilder.html
-    description: Returns the current <xref href="PolylineAlgorithm.PolylineEncodingOptionsBuilder" data-throw-if-not-resolved="false"></xref> instance for method chaining.
+    description: The current <xref href="PolylineAlgorithm.PolylineEncodingOptionsBuilder" data-throw-if-not-resolved="false"></xref> instance for method chaining.
 - api3: WithPrecision(uint)
   id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_WithPrecision_System_UInt32_
   src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L82
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithPrecision(System.UInt32)
     commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithPrecision(System.UInt32)
-- markdown: Sets the precision for encoding values.
+- markdown: Sets the coordinate encoding precision.
 - code: public PolylineEncodingOptionsBuilder WithPrecision(uint precision)
 - h4: Parameters
 - parameters:
@@ -100,13 +100,13 @@ body:
     type:
     - text: uint
       url: https://learn.microsoft.com/dotnet/api/system.uint32
-    description: The number of decimal places to use for encoding values. Default is 5.
+    description: The number of decimal places to use for encoding coordinate values. Default is 5.
 - h4: Returns
 - parameters:
   - type:
     - text: PolylineEncodingOptionsBuilder
       url: PolylineAlgorithm.PolylineEncodingOptionsBuilder.html
-    description: The current builder instance.
+    description: The current <xref href="PolylineAlgorithm.PolylineEncodingOptionsBuilder" data-throw-if-not-resolved="false"></xref> instance for method chaining.
 - api3: WithStackAllocLimit(int)
   id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_WithStackAllocLimit_System_Int32_
   src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L61
@@ -127,7 +127,7 @@ body:
   - type:
     - text: PolylineEncodingOptionsBuilder
       url: PolylineAlgorithm.PolylineEncodingOptionsBuilder.html
-    description: Returns the current <xref href="PolylineAlgorithm.PolylineEncodingOptionsBuilder" data-throw-if-not-resolved="false"></xref> instance for method chaining.
+    description: The current <xref href="PolylineAlgorithm.PolylineEncodingOptionsBuilder" data-throw-if-not-resolved="false"></xref> instance for method chaining.
 - h4: Remarks
 - markdown: This method allows customization of the internal buffer size for encoding, which can impact performance and memory usage.
 - h4: Exceptions

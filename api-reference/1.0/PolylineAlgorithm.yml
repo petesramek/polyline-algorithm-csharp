@@ -22,17 +22,11 @@ body:
   - type:
       text: PolylineDecoder
       url: PolylineAlgorithm.PolylineDecoder.html
-    description: >-
-      Decodes encoded polyline strings into sequences of geographic coordinates.
-
-      Implements the <xref href="PolylineAlgorithm.Abstraction.IPolylineDecoder%602" data-throw-if-not-resolved="false"></xref> interface.
+    description: Provides a base implementation for decoding encoded polyline strings into sequences of geographic coordinates.
   - type:
       text: PolylineEncoder
       url: PolylineAlgorithm.PolylineEncoder.html
-    description: >-
-      Provides functionality to encode a collection of geographic coordinates into an encoded polyline string.
-
-      Implements the <xref href="PolylineAlgorithm.Abstraction.IPolylineEncoder%602" data-throw-if-not-resolved="false"></xref> interface.
+    description: Provides a base implementation for encoding sequences of geographic coordinates into encoded polyline strings.
   - type:
       text: PolylineEncoding
       url: PolylineAlgorithm.PolylineEncoding.html
