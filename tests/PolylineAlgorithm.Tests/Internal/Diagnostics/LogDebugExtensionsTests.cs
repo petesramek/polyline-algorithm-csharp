@@ -34,8 +34,10 @@ public sealed class LogDebugExtensionsTests {
         }
     }
 
+    /// <summary>
+    /// Tests that LogOperationStartedDebug WithOperationName LogsStartedMessage.
+    /// </summary>
     [TestMethod]
-
     public void LogOperationStartedDebug_WithOperationName_LogsStartedMessage() {
         var logger = new TestLogger();
         const string operationName = "TestOperation";
@@ -47,8 +49,10 @@ public sealed class LogDebugExtensionsTests {
         Assert.Contains($"Operation {operationName} has started.", logger.Logs[0].Message, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Tests that LogOperationFailedDebug WithOperationName LogsFailedMessage.
+    /// </summary>
     [TestMethod]
-
     public void LogOperationFailedDebug_WithOperationName_LogsFailedMessage() {
         var logger = new TestLogger();
         const string operationName = "TestOperation";
@@ -60,8 +64,10 @@ public sealed class LogDebugExtensionsTests {
         Assert.Contains($"Operation {operationName} has failed.", logger.Logs[0].Message, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Tests that LogOperationFinishedDebug WithOperationName LogsFinishedMessage.
+    /// </summary>
     [TestMethod]
-
     public void LogOperationFinishedDebug_WithOperationName_LogsFinishedMessage() {
         var logger = new TestLogger();
         const string operationName = "TestOperation";
@@ -73,8 +79,10 @@ public sealed class LogDebugExtensionsTests {
         Assert.Contains($"Operation {operationName} has finished.", logger.Logs[0].Message, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Tests that LogDecodedCoordinateDebug WithCoordinatesAndPosition LogsDecodedCoordinateMessage.
+    /// </summary>
     [TestMethod]
-
     public void LogDecodedCoordinateDebug_WithCoordinatesAndPosition_LogsDecodedCoordinateMessage() {
         var logger = new TestLogger();
         const double latitude = 38.5;
@@ -88,8 +96,10 @@ public sealed class LogDebugExtensionsTests {
         Assert.Contains(string.Create(CultureInfo.InvariantCulture, $"Decoded coordinate: (Latitude: {latitude}, Longitude: {longitude}) at position {position}."), logger.Logs[0].Message, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Tests that LogOperationStartedDebug WithNullOperationName LogsMessage.
+    /// </summary>
     [TestMethod]
-
     public void LogOperationStartedDebug_WithNullOperationName_LogsMessage() {
         var logger = new TestLogger();
         const string? operationName = null;
@@ -101,8 +111,10 @@ public sealed class LogDebugExtensionsTests {
         Assert.Contains("Operation", logger.Logs[0].Message, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Tests that LogOperationFailedDebug WithNullOperationName LogsMessage.
+    /// </summary>
     [TestMethod]
-
     public void LogOperationFailedDebug_WithNullOperationName_LogsMessage() {
         var logger = new TestLogger();
         const string? operationName = null;
@@ -114,8 +126,10 @@ public sealed class LogDebugExtensionsTests {
         Assert.Contains("Operation", logger.Logs[0].Message, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Tests that LogOperationFinishedDebug WithNullOperationName LogsMessage.
+    /// </summary>
     [TestMethod]
-
     public void LogOperationFinishedDebug_WithNullOperationName_LogsMessage() {
         var logger = new TestLogger();
         const string? operationName = null;
@@ -127,8 +141,10 @@ public sealed class LogDebugExtensionsTests {
         Assert.Contains("Operation", logger.Logs[0].Message, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Tests that LogDecodedCoordinateDebug WithZeroCoordinates LogsMessage.
+    /// </summary>
     [TestMethod]
-
     public void LogDecodedCoordinateDebug_WithZeroCoordinates_LogsMessage() {
         var logger = new TestLogger();
         const double latitude = 0.0;
@@ -142,8 +158,10 @@ public sealed class LogDebugExtensionsTests {
         Assert.Contains("Decoded coordinate", logger.Logs[0].Message, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Tests that LogDecodedCoordinateDebug WithNegativeCoordinates LogsMessage.
+    /// </summary>
     [TestMethod]
-
     public void LogDecodedCoordinateDebug_WithNegativeCoordinates_LogsMessage() {
         var logger = new TestLogger();
         const double latitude = -90.0;
@@ -157,8 +175,10 @@ public sealed class LogDebugExtensionsTests {
         Assert.Contains(string.Create(CultureInfo.InvariantCulture, $"Latitude: {latitude}, Longitude: {longitude}"), logger.Logs[0].Message, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Tests that LogOperationStartedDebug WithEmptyOperationName LogsMessage.
+    /// </summary>
     [TestMethod]
-
     public void LogOperationStartedDebug_WithEmptyOperationName_LogsMessage() {
         var logger = new TestLogger();
         string operationName = string.Empty;
@@ -170,8 +190,10 @@ public sealed class LogDebugExtensionsTests {
         Assert.Contains("Operation", logger.Logs[0].Message, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Tests that LogOperationFailedDebug WithEmptyOperationName LogsMessage.
+    /// </summary>
     [TestMethod]
-
     public void LogOperationFailedDebug_WithEmptyOperationName_LogsMessage() {
         var logger = new TestLogger();
         string operationName = string.Empty;
@@ -183,8 +205,10 @@ public sealed class LogDebugExtensionsTests {
         Assert.Contains("Operation", logger.Logs[0].Message, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Tests that LogOperationFinishedDebug WithEmptyOperationName LogsMessage.
+    /// </summary>
     [TestMethod]
-
     public void LogOperationFinishedDebug_WithEmptyOperationName_LogsMessage() {
         var logger = new TestLogger();
         string operationName = string.Empty;

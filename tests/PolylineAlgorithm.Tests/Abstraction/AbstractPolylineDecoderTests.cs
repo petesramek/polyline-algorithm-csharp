@@ -1,39 +1,144 @@
+//
+// Copyright © Pete Sramek. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+
+namespace PolylineAlgorithm.Tests.Abstraction;
+
 using PolylineAlgorithm.Abstraction;
+using PolylineAlgorithm.Utility;
+using System;
+using System.Collections.Generic;
 
-namespace PolylineAlgorithm.Tests.Abstraction {
-    [TestClass]
-    public sealed class AbstractPolylineDecoderTests {
-        private sealed class TestStringDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-            protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
-            protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) => (latitude, longitude);
+/// <summary>
+/// Tests for <see cref="AbstractPolylineDecoder{TPolyline, TCoordinate}"/>.
+/// </summary>
+[TestClass]
+public sealed class AbstractPolylineDecoderTests {
+    private sealed class TestStringDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
+        protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
+        protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) => (latitude, longitude);
+    }
+
+    private sealed class TestStringDecoderWithOptions : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
+        public TestStringDecoderWithOptions(PolylineEncodingOptions options)
+            : base(options) { }
+
+        protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
+        protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) => (latitude, longitude);
+    }
+
+    /// <summary>
+    /// Tests that Decode with a null polyline throws <see cref="ArgumentNullException"/>.
+    /// </summary>
+    [TestMethod]
+    public void Decode_With_Null_Polyline_Throws_ArgumentNullException() {
+        // Arrange
+        TestStringDecoder decoder = new();
+
+        // Act & Assert
+        ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(() => decoder.Decode((string?)null!).ToList());
+        Assert.AreEqual("polyline", ex.ParamName);
+    }
+
+    /// <summary>
+    /// Tests that Decode with an empty polyline throws <see cref="InvalidPolylineException"/>.
+    /// </summary>
+    [TestMethod]
+    public void Decode_With_Empty_Polyline_Throws_InvalidPolylineException() {
+        // Arrange
+        TestStringDecoder decoder = new();
+
+        // Act & Assert
+        Assert.ThrowsExactly<InvalidPolylineException>(() => decoder.Decode(string.Empty).ToList());
+    }
+
+    /// <summary>
+    /// Tests that Decode with a polyline containing an invalid character throws <see cref="InvalidPolylineException"/>.
+    /// </summary>
+    [TestMethod]
+    public void Decode_With_Invalid_Character_Polyline_Throws_InvalidPolylineException() {
+        // Arrange
+        TestStringDecoder decoder = new();
+
+        // '!' (33) is below allowed range ('?' == 63)
+        // Act & Assert
+        Assert.ThrowsExactly<InvalidPolylineException>(() => decoder.Decode("!").ToList());
+    }
+
+    /// <summary>
+    /// Tests that Decode with a valid polyline returns the expected coordinates.
+    /// </summary>
+    [TestMethod]
+    public void Decode_ValidPolyline_ReturnsExpectedCoordinates() {
+        // Arrange
+        TestStringDecoder decoder = new();
+        string polyline = StaticValueProvider.Valid.GetPolyline();
+        (double Latitude, double Longitude)[] expected = [.. StaticValueProvider.Valid.GetCoordinates()];
+
+        // Act
+        (double Latitude, double Longitude)[] result = [.. decoder.Decode(polyline)];
+
+        // Assert
+        Assert.AreEqual(expected.Length, result.Length);
+        for (int i = 0; i < expected.Length; i++) {
+            Assert.AreEqual(expected[i].Latitude, result[i].Latitude, 1e-5);
+            Assert.AreEqual(expected[i].Longitude, result[i].Longitude, 1e-5);
         }
+    }
 
-        [TestMethod]
-        public void Decode_Null_Polyline_Throws_ArgumentNullException() {
-            // Arrange
-            var decoder = new TestStringDecoder();
+    /// <summary>
+    /// Tests that the options constructor with null throws <see cref="ArgumentNullException"/>.
+    /// </summary>
+    [TestMethod]
+    public void Constructor_WithNullOptions_ThrowsArgumentNullException() {
+        // Act & Assert
+        ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(() => new TestStringDecoderWithOptions(null!));
+        Assert.AreEqual("options", ex.ParamName);
+    }
 
-            // Act & Assert
-            var ex = Assert.ThrowsExactly<ArgumentNullException>(() => decoder.Decode((string?)null!).ToList());
-            Assert.AreEqual("polyline", ex.ParamName);
-        }
+    /// <summary>
+    /// Tests that the Options property returns the configured options.
+    /// </summary>
+    [TestMethod]
+    public void Options_Default_ReturnsDefaultOptions() {
+        // Arrange
+        TestStringDecoder decoder = new();
 
-        [TestMethod]
-        public void Decode_Empty_Polyline_Throws_InvalidPolylineException() {
-            // Arrange
-            var decoder = new TestStringDecoder();
+        // Assert
+        Assert.IsNotNull(decoder.Options);
+        Assert.AreEqual(5u, decoder.Options.Precision);
+    }
 
-            // Act & Assert - empty string is too short (min block length = 1)
-            Assert.ThrowsExactly<InvalidPolylineException>(() => decoder.Decode(string.Empty).ToList());
-        }
+    /// <summary>
+    /// Tests that the options constructor stores the provided options.
+    /// </summary>
+    [TestMethod]
+    public void Constructor_WithOptions_StoresOptions() {
+        // Arrange
+        PolylineEncodingOptions options = PolylineEncodingOptionsBuilder.Create()
+            .WithPrecision(7)
+            .Build();
 
-        [TestMethod]
-        public void Decode_Invalid_Character_Polyline_Throws_InvalidPolylineException() {
-            // Arrange
-            var decoder = new TestStringDecoder();
+        // Act
+        TestStringDecoderWithOptions decoder = new(options);
 
-            // '!' (33) is below allowed range ('?' == 63) and should trigger invalid polyline character
-            Assert.ThrowsExactly<InvalidPolylineException>(() => decoder.Decode("!").ToList());
-        }
+        // Assert
+        Assert.AreSame(options, decoder.Options);
+    }
+
+    /// <summary>
+    /// Tests that Decode with a pre-cancelled token throws <see cref="OperationCanceledException"/>.
+    /// </summary>
+    [TestMethod]
+    public void Decode_PreCancelledToken_ThrowsOperationCanceledException() {
+        // Arrange
+        TestStringDecoder decoder = new();
+        string polyline = StaticValueProvider.Valid.GetPolyline();
+        using CancellationTokenSource cts = new();
+        cts.Cancel();
+
+        // Act & Assert
+        Assert.ThrowsExactly<OperationCanceledException>(() => decoder.Decode(polyline, cts.Token).ToList());
     }
 }

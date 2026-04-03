@@ -17,7 +17,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that ThrowNotFiniteNumber throws ArgumentOutOfRangeException with correct parameter name.
     /// </summary>
     [TestMethod]
-
     public void ThrowNotFiniteNumber_WithParamName_ThrowsArgumentOutOfRangeException() {
         // Arrange
         const string paramName = "value";
@@ -32,7 +31,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that ThrowArgumentNull throws ArgumentNullException with correct parameter name.
     /// </summary>
     [TestMethod]
-
     public void ThrowArgumentNull_WithParamName_ThrowsArgumentNullException() {
         // Arrange
         const string paramName = "input";
@@ -46,7 +44,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that ThrowBufferOverflow throws OverflowException with correct message.
     /// </summary>
     [TestMethod]
-
     public void ThrowBufferOverflow_WithMessage_ThrowsOverflowException() {
         // Arrange
         const string message = "Buffer overflow occurred.";
@@ -60,7 +57,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that ThrowCoordinateValueOutOfRange throws ArgumentOutOfRangeException with correct parameter name.
     /// </summary>
     [TestMethod]
-
     public void ThrowCoordinateValueOutOfRange_WithParameters_ThrowsArgumentOutOfRangeException() {
         // Arrange
         const double value = 100.0;
@@ -78,7 +74,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that StackAllocLimitMustBeEqualOrGreaterThan throws ArgumentOutOfRangeException with correct parameter name.
     /// </summary>
     [TestMethod]
-
     public void StackAllocLimitMustBeEqualOrGreaterThan_WithParameters_ThrowsArgumentOutOfRangeException() {
         // Arrange
         const int minValue = 10;
@@ -94,7 +89,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that ThrwoArgumentCannotBeEmptyEnumerationMessage throws ArgumentException with correct parameter name.
     /// </summary>
     [TestMethod]
-
     public void ThrwoArgumentCannotBeEmptyEnumerationMessage_WithParamName_ThrowsArgumentException() {
         // Arrange
         const string paramName = "collection";
@@ -109,7 +103,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that ThrowCouldNotWriteEncodedValueToBuffer throws InvalidOperationException with correct message.
     /// </summary>
     [TestMethod]
-
     public void ThrowCouldNotWriteEncodedValueToBuffer_ThrowsInvalidOperationException() {
         // Act & Assert
         var ex = Assert.ThrowsExactly<InvalidOperationException>(() => ExceptionGuard.ThrowCouldNotWriteEncodedValueToBuffer());
@@ -120,7 +113,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that ThrowDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLength throws ArgumentException with correct parameter name.
     /// </summary>
     [TestMethod]
-
     public void ThrowDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLength_WithParameters_ThrowsArgumentException() {
         // Arrange
         const int destinationLength = 5;
@@ -137,7 +129,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that ThrowInvalidPolylineLength throws InvalidPolylineException with correct message.
     /// </summary>
     [TestMethod]
-
     public void ThrowInvalidPolylineLength_WithParameters_ThrowsInvalidPolylineException() {
         // Arrange
         const int length = 5;
@@ -152,7 +143,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that ThrowInvalidPolylineCharacter throws InvalidPolylineException with correct message.
     /// </summary>
     [TestMethod]
-
     public void ThrowInvalidPolylineCharacter_WithParameters_ThrowsInvalidPolylineException() {
         // Arrange
         const char character = '!';
@@ -167,7 +157,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that ThrowPolylineBlockTooLong throws InvalidPolylineException with correct message.
     /// </summary>
     [TestMethod]
-
     public void ThrowPolylineBlockTooLong_WithPosition_ThrowsInvalidPolylineException() {
         // Arrange
         const int position = 42;
@@ -181,7 +170,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that ThrowInvalidPolylineFormat throws InvalidPolylineException with correct message.
     /// </summary>
     [TestMethod]
-
     public void ThrowInvalidPolylineFormat_WithPosition_ThrowsInvalidPolylineException() {
         // Arrange
         const long position = 100L;
@@ -195,7 +183,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that ThrowInvalidPolylineBlockTerminator throws InvalidPolylineException with correct message.
     /// </summary>
     [TestMethod]
-
     public void ThrowInvalidPolylineBlockTerminator_ThrowsInvalidPolylineException() {
         // Act & Assert
         var ex = Assert.ThrowsExactly<InvalidPolylineException>(() => ExceptionGuard.ThrowInvalidPolylineBlockTerminator());
@@ -206,7 +193,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatStackAllocLimitMustBeEqualOrGreaterThan returns formatted message with specified value.
     /// </summary>
     [TestMethod]
-
     public void FormatStackAllocLimitMustBeEqualOrGreaterThan_WithMinValue_ReturnsFormattedMessage() {
         // Arrange
         const int minValue = 10;
@@ -223,7 +209,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatPolylineCannotBeShorterThan returns formatted message with specified values.
     /// </summary>
     [TestMethod]
-
     public void FormatPolylineCannotBeShorterThan_WithLengthAndMinLength_ReturnsFormattedMessage() {
         // Arrange
         const int length = 5;
@@ -242,7 +227,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatMalformedPolyline returns formatted message with position.
     /// </summary>
     [TestMethod]
-
     public void FormatMalformedPolyline_WithPosition_ReturnsFormattedMessage() {
         // Arrange
         const long position = 42L;
@@ -259,7 +243,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatMalformedPolyline with zero position returns formatted message.
     /// </summary>
     [TestMethod]
-
     public void FormatMalformedPolyline_WithZeroPosition_ReturnsFormattedMessage() {
         // Arrange
         const long position = 0L;
@@ -276,7 +259,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatMalformedPolyline with negative position returns formatted message.
     /// </summary>
     [TestMethod]
-
     public void FormatMalformedPolyline_WithNegativePosition_ReturnsFormattedMessage() {
         // Arrange
         const long position = -10L;
@@ -293,7 +275,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatMalformedPolyline with large position returns formatted message.
     /// </summary>
     [TestMethod]
-
     public void FormatMalformedPolyline_WithLargePosition_ReturnsFormattedMessage() {
         // Arrange
         const long position = long.MaxValue;
@@ -310,7 +291,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatCoordinateValueMustBeBetween returns formatted message with all parameters.
     /// </summary>
     [TestMethod]
-
     public void FormatCoordinateValueMustBeBetween_WithParameters_ReturnsFormattedMessage() {
         // Arrange
         const string name = "latitude";
@@ -331,7 +311,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatCoordinateValueMustBeBetween with positive values returns formatted message.
     /// </summary>
     [TestMethod]
-
     public void FormatCoordinateValueMustBeBetween_WithPositiveValues_ReturnsFormattedMessage() {
         // Arrange
         const string name = "longitude";
@@ -352,7 +331,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatCoordinateValueMustBeBetween with fractional values returns formatted message.
     /// </summary>
     [TestMethod]
-
     public void FormatCoordinateValueMustBeBetween_WithFractionalValues_ReturnsFormattedMessage() {
         // Arrange
         const string name = "value";
@@ -371,7 +349,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatPolylineBlockTooLong returns formatted message with position.
     /// </summary>
     [TestMethod]
-
     public void FormatPolylineBlockTooLong_WithPosition_ReturnsFormattedMessage() {
         // Arrange
         const int position = 15;
@@ -388,7 +365,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatPolylineBlockTooLong with zero position returns formatted message.
     /// </summary>
     [TestMethod]
-
     public void FormatPolylineBlockTooLong_WithZeroPosition_ReturnsFormattedMessage() {
         // Arrange
         const int position = 0;
@@ -405,7 +381,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatPolylineBlockTooLong with large position returns formatted message.
     /// </summary>
     [TestMethod]
-
     public void FormatPolylineBlockTooLong_WithLargePosition_ReturnsFormattedMessage() {
         // Arrange
         const int position = int.MaxValue;
@@ -422,7 +397,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatInvalidPolylineCharacter returns formatted message with character and position.
     /// </summary>
     [TestMethod]
-
     public void FormatInvalidPolylineCharacter_WithCharacterAndPosition_ReturnsFormattedMessage() {
         // Arrange
         const char character = '!';
@@ -441,7 +415,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatInvalidPolylineCharacter with letter character returns formatted message.
     /// </summary>
     [TestMethod]
-
     public void FormatInvalidPolylineCharacter_WithLetterCharacter_ReturnsFormattedMessage() {
         // Arrange
         const char character = 'Z';
@@ -460,7 +433,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatInvalidPolylineCharacter with special character returns formatted message.
     /// </summary>
     [TestMethod]
-
     public void FormatInvalidPolylineCharacter_WithSpecialCharacter_ReturnsFormattedMessage() {
         // Arrange
         const char character = '@';
@@ -479,7 +451,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLength returns formatted message.
     /// </summary>
     [TestMethod]
-
     public void FormatDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLength_WithLengths_ReturnsFormattedMessage() {
         // Arrange
         const int destinationLength = 5;
@@ -498,7 +469,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLength with zero destination length returns formatted message.
     /// </summary>
     [TestMethod]
-
     public void FormatDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLength_WithZeroDestinationLength_ReturnsFormattedMessage() {
         // Arrange
         const int destinationLength = 0;
@@ -517,7 +487,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLength with large values returns formatted message.
     /// </summary>
     [TestMethod]
-
     public void FormatDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLength_WithLargeValues_ReturnsFormattedMessage() {
         // Arrange
         const int destinationLength = 1000;
@@ -536,7 +505,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatInvalidPolylineLength returns formatted message with length and min values.
     /// </summary>
     [TestMethod]
-
     public void FormatInvalidPolylineLength_WithLengthAndMin_ReturnsFormattedMessage() {
         // Arrange
         const int length = 5;
@@ -555,7 +523,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatInvalidPolylineLength with zero length returns formatted message.
     /// </summary>
     [TestMethod]
-
     public void FormatInvalidPolylineLength_WithZeroLength_ReturnsFormattedMessage() {
         // Arrange
         const int length = 0;
@@ -574,7 +541,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that FormatInvalidPolylineLength with negative values returns formatted message.
     /// </summary>
     [TestMethod]
-
     public void FormatInvalidPolylineLength_WithNegativeValues_ReturnsFormattedMessage() {
         // Arrange
         const int length = -5;
@@ -593,7 +559,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that GetArgumentValueMustBeFiniteNumber returns non-null message.
     /// </summary>
     [TestMethod]
-
     public void GetArgumentValueMustBeFiniteNumber_ReturnsNonNullMessage() {
         // Act
         string result = ExceptionGuard.ExceptionMessage.GetArgumentValueMustBeFiniteNumber();
@@ -607,7 +572,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that GetCouldNotWriteEncodedValueToTheBuffer returns non-null message.
     /// </summary>
     [TestMethod]
-
     public void GetCouldNotWriteEncodedValueToTheBuffer_ReturnsNonNullMessage() {
         // Act
         string result = ExceptionGuard.ExceptionMessage.GetCouldNotWriteEncodedValueToTheBuffer();
@@ -621,7 +585,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that GetArgumentCannotBeEmpty returns non-null message.
     /// </summary>
     [TestMethod]
-
     public void GetArgumentCannotBeEmpty_ReturnsNonNullMessage() {
         // Act
         string result = ExceptionGuard.ExceptionMessage.GetArgumentCannotBeEmpty();
@@ -635,7 +598,6 @@ public sealed class ExceptionGuardTests {
     /// Tests that GetInvalidPolylineBlockTerminator returns non-null message.
     /// </summary>
     [TestMethod]
-
     public void GetInvalidPolylineBlockTerminator_ReturnsNonNullMessage() {
         // Act
         string result = ExceptionGuard.ExceptionMessage.GetInvalidPolylineBlockTerminator();

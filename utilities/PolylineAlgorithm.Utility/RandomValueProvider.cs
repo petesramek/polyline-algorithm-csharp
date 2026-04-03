@@ -23,11 +23,11 @@ internal static class RandomValueProvider {
     private static readonly PolylineEncoder _encoder = new();
 
     /// <summary>
-    /// Gets a collection of random <see cref="Coordinate"/> instances of the specified count.
+    /// Gets a collection of random latitude/longitude tuples of the specified count.
     /// The same collection is cached and reused for the same count value.
     /// </summary>
     /// <param name="count">The number of coordinates to generate.</param>
-    /// <returns>An enumerable collection of random <see cref="Coordinate"/> objects.</returns>
+    /// <returns>An enumerable collection of random latitude/longitude tuples.</returns>
     public static IEnumerable<(double Latitude, double Longitude)> GetCoordinates(int count) {
         var entry = GetCaheEntry(count);
 
@@ -39,11 +39,11 @@ internal static class RandomValueProvider {
     }
 
     /// <summary>
-    /// Gets a <see cref="Polyline"/> representing the encoded polyline for a random collection of coordinates of the specified count.
+    /// Gets the encoded polyline string for a random collection of coordinates of the specified count.
     /// The same polyline is cached and reused for the same count value.
     /// </summary>
     /// <param name="count">The number of coordinates to generate and encode.</param>
-    /// <returns>A <see cref="Polyline"/> representing the encoded polyline.</returns>
+    /// <returns>A <see cref="string"/> representing the encoded polyline.</returns>
     public static string GetPolyline(int count) {
         var entry = GetCaheEntry(count);
 

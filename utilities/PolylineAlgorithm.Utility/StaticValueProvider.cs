@@ -18,7 +18,7 @@ internal static class StaticValueProvider {
         private const string Polyline = "???_gsia@_cidP??~fsia@?~fsia@~bidP?~bidP??_gsia@";
 
         /// <summary>
-        /// A predefined collection of <see cref="Coordinate"/> instances representing a closed path around the globe.
+        /// A predefined collection of latitude/longitude tuples representing a closed path around the globe.
         /// </summary>
         private static readonly IEnumerable<(double Latitude, double Longitude)> _coordinates = [
             new (0, 0),
@@ -32,17 +32,17 @@ internal static class StaticValueProvider {
         ];
 
         /// <summary>
-        /// Gets the predefined collection of <see cref="Coordinate"/> instances.
+        /// Gets the predefined collection of latitude/longitude tuples.
         /// </summary>
-        /// <returns>An <see cref="IEnumerable{Coordinate}"/> containing the static coordinates.</returns>
+        /// <returns>An <see cref="IEnumerable{T}"/> of latitude/longitude tuples containing the static coordinates.</returns>
         public static IEnumerable<(double Latitude, double Longitude)> GetCoordinates() {
             return _coordinates;
         }
 
         /// <summary>
-        /// Gets the predefined <see cref="PolylineAlgorithm.Polyline"/> instance.
+        /// Gets the predefined encoded polyline string.
         /// </summary>
-        /// <returns>The static <see cref="PolylineAlgorithm.Polyline"/> value.</returns>
+        /// <returns>The static encoded polyline string.</returns>
         public static string GetPolyline() {
             return Polyline;
         }
