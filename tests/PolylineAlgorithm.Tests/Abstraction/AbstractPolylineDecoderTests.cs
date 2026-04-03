@@ -70,7 +70,7 @@ public sealed class AbstractPolylineDecoderTests {
     /// Tests that Decode with a valid polyline returns the expected coordinates.
     /// </summary>
     [TestMethod]
-    public void Decode_ValidPolyline_ReturnsExpectedCoordinates() {
+    public void Decode_With_Valid_Polyline_Returns_Expected_Coordinates() {
         // Arrange
         TestStringDecoder decoder = new();
         string polyline = StaticValueProvider.Valid.GetPolyline();
@@ -91,7 +91,7 @@ public sealed class AbstractPolylineDecoderTests {
     /// Tests that the options constructor with null throws <see cref="ArgumentNullException"/>.
     /// </summary>
     [TestMethod]
-    public void Constructor_WithNullOptions_ThrowsArgumentNullException() {
+    public void Constructor_With_Null_Options_Throws_ArgumentNullException() {
         // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(() => new TestStringDecoderWithOptions(null!));
         Assert.AreEqual("options", ex.ParamName);
@@ -101,7 +101,7 @@ public sealed class AbstractPolylineDecoderTests {
     /// Tests that the Options property returns the configured options.
     /// </summary>
     [TestMethod]
-    public void Options_Default_ReturnsDefaultOptions() {
+    public void Options_With_Default_Returns_Default_Options() {
         // Arrange
         TestStringDecoder decoder = new();
 
@@ -114,7 +114,7 @@ public sealed class AbstractPolylineDecoderTests {
     /// Tests that the options constructor stores the provided options.
     /// </summary>
     [TestMethod]
-    public void Constructor_WithOptions_StoresOptions() {
+    public void Constructor_With_Options_Stores_Options() {
         // Arrange
         PolylineEncodingOptions options = PolylineEncodingOptionsBuilder.Create()
             .WithPrecision(7)
@@ -131,7 +131,7 @@ public sealed class AbstractPolylineDecoderTests {
     /// Tests that Decode with a pre-cancelled token throws <see cref="OperationCanceledException"/>.
     /// </summary>
     [TestMethod]
-    public void Decode_PreCancelledToken_ThrowsOperationCanceledException() {
+    public void Decode_With_Pre_Cancelled_Token_Throws_OperationCanceledException() {
         // Arrange
         TestStringDecoder decoder = new();
         string polyline = StaticValueProvider.Valid.GetPolyline();

@@ -38,7 +38,7 @@ public sealed class LogDebugExtensionsTests {
     /// Tests that LogOperationStartedDebug WithOperationName LogsStartedMessage.
     /// </summary>
     [TestMethod]
-    public void LogOperationStartedDebug_WithOperationName_LogsStartedMessage() {
+    public void LogOperationStartedDebug_With_Operation_Name_Logs_Started_Message() {
         var logger = new TestLogger();
         const string operationName = "TestOperation";
 
@@ -53,7 +53,7 @@ public sealed class LogDebugExtensionsTests {
     /// Tests that LogOperationFailedDebug WithOperationName LogsFailedMessage.
     /// </summary>
     [TestMethod]
-    public void LogOperationFailedDebug_WithOperationName_LogsFailedMessage() {
+    public void LogOperationFailedDebug_With_Operation_Name_Logs_Failed_Message() {
         var logger = new TestLogger();
         const string operationName = "TestOperation";
 
@@ -68,7 +68,7 @@ public sealed class LogDebugExtensionsTests {
     /// Tests that LogOperationFinishedDebug WithOperationName LogsFinishedMessage.
     /// </summary>
     [TestMethod]
-    public void LogOperationFinishedDebug_WithOperationName_LogsFinishedMessage() {
+    public void LogOperationFinishedDebug_With_Operation_Name_Logs_Finished_Message() {
         var logger = new TestLogger();
         const string operationName = "TestOperation";
 
@@ -83,7 +83,7 @@ public sealed class LogDebugExtensionsTests {
     /// Tests that LogDecodedCoordinateDebug WithCoordinatesAndPosition LogsDecodedCoordinateMessage.
     /// </summary>
     [TestMethod]
-    public void LogDecodedCoordinateDebug_WithCoordinatesAndPosition_LogsDecodedCoordinateMessage() {
+    public void LogDecodedCoordinateDebug_With_Coordinates_And_Position_Logs_Decoded_Coordinate_Message() {
         var logger = new TestLogger();
         const double latitude = 38.5;
         const double longitude = -120.2;
@@ -100,7 +100,7 @@ public sealed class LogDebugExtensionsTests {
     /// Tests that LogOperationStartedDebug WithNullOperationName LogsMessage.
     /// </summary>
     [TestMethod]
-    public void LogOperationStartedDebug_WithNullOperationName_LogsMessage() {
+    public void LogOperationStartedDebug_With_Null_Operation_Name_Logs_Message() {
         var logger = new TestLogger();
         const string? operationName = null;
 
@@ -115,7 +115,7 @@ public sealed class LogDebugExtensionsTests {
     /// Tests that LogOperationFailedDebug WithNullOperationName LogsMessage.
     /// </summary>
     [TestMethod]
-    public void LogOperationFailedDebug_WithNullOperationName_LogsMessage() {
+    public void LogOperationFailedDebug_With_Null_Operation_Name_Logs_Message() {
         var logger = new TestLogger();
         const string? operationName = null;
 
@@ -130,7 +130,7 @@ public sealed class LogDebugExtensionsTests {
     /// Tests that LogOperationFinishedDebug WithNullOperationName LogsMessage.
     /// </summary>
     [TestMethod]
-    public void LogOperationFinishedDebug_WithNullOperationName_LogsMessage() {
+    public void LogOperationFinishedDebug_With_Null_Operation_Name_Logs_Message() {
         var logger = new TestLogger();
         const string? operationName = null;
 
@@ -145,7 +145,7 @@ public sealed class LogDebugExtensionsTests {
     /// Tests that LogDecodedCoordinateDebug WithZeroCoordinates LogsMessage.
     /// </summary>
     [TestMethod]
-    public void LogDecodedCoordinateDebug_WithZeroCoordinates_LogsMessage() {
+    public void LogDecodedCoordinateDebug_With_Zero_Coordinates_Logs_Message() {
         var logger = new TestLogger();
         const double latitude = 0.0;
         const double longitude = 0.0;
@@ -162,7 +162,7 @@ public sealed class LogDebugExtensionsTests {
     /// Tests that LogDecodedCoordinateDebug WithNegativeCoordinates LogsMessage.
     /// </summary>
     [TestMethod]
-    public void LogDecodedCoordinateDebug_WithNegativeCoordinates_LogsMessage() {
+    public void LogDecodedCoordinateDebug_With_Negative_Coordinates_Logs_Message() {
         var logger = new TestLogger();
         const double latitude = -90.0;
         const double longitude = -180.0;
@@ -179,7 +179,7 @@ public sealed class LogDebugExtensionsTests {
     /// Tests that LogOperationStartedDebug WithEmptyOperationName LogsMessage.
     /// </summary>
     [TestMethod]
-    public void LogOperationStartedDebug_WithEmptyOperationName_LogsMessage() {
+    public void LogOperationStartedDebug_With_Empty_Operation_Name_Logs_Message() {
         var logger = new TestLogger();
         string operationName = string.Empty;
 
@@ -194,7 +194,7 @@ public sealed class LogDebugExtensionsTests {
     /// Tests that LogOperationFailedDebug WithEmptyOperationName LogsMessage.
     /// </summary>
     [TestMethod]
-    public void LogOperationFailedDebug_WithEmptyOperationName_LogsMessage() {
+    public void LogOperationFailedDebug_With_Empty_Operation_Name_Logs_Message() {
         var logger = new TestLogger();
         string operationName = string.Empty;
 
@@ -209,7 +209,7 @@ public sealed class LogDebugExtensionsTests {
     /// Tests that LogOperationFinishedDebug WithEmptyOperationName LogsMessage.
     /// </summary>
     [TestMethod]
-    public void LogOperationFinishedDebug_WithEmptyOperationName_LogsMessage() {
+    public void LogOperationFinishedDebug_With_Empty_Operation_Name_Logs_Message() {
         var logger = new TestLogger();
         string operationName = string.Empty;
 

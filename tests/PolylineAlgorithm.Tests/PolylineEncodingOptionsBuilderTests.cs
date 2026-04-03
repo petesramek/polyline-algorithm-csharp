@@ -19,7 +19,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that Create returns a new builder instance.
     /// </summary>
     [TestMethod]
-    public void Create_ReturnsNewBuilder() {
+    public void Create_Returns_New_Builder() {
         // Act
         PolylineEncodingOptionsBuilder result = PolylineEncodingOptionsBuilder.Create();
 
@@ -31,7 +31,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that Create returns different instances on multiple calls.
     /// </summary>
     [TestMethod]
-    public void Create_MultipleInvocations_ReturnsDifferentInstances() {
+    public void Create_With_Multiple_Invocations_Returns_Different_Instances() {
         // Act
         PolylineEncodingOptionsBuilder first = PolylineEncodingOptionsBuilder.Create();
         PolylineEncodingOptionsBuilder second = PolylineEncodingOptionsBuilder.Create();
@@ -44,7 +44,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that Build returns options with default values.
     /// </summary>
     [TestMethod]
-    public void Build_WithDefaults_ReturnsOptionsWithDefaultValues() {
+    public void Build_With_Defaults_Returns_Options_With_Default_Values() {
         // Arrange
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
@@ -63,7 +63,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that Build returns options with configured precision.
     /// </summary>
     [TestMethod]
-    public void Build_WithCustomPrecision_ReturnsOptionsWithCustomPrecision() {
+    public void Build_With_Custom_Precision_Returns_Options_With_Custom_Precision() {
         // Arrange
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create()
             .WithPrecision(7);
@@ -79,7 +79,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that Build returns options with configured stack alloc limit.
     /// </summary>
     [TestMethod]
-    public void Build_WithCustomStackAllocLimit_ReturnsOptionsWithCustomStackAllocLimit() {
+    public void Build_With_Custom_Stack_Alloc_Limit_Returns_Options_With_Custom_Stack_Alloc_Limit() {
         // Arrange
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create()
             .WithStackAllocLimit(1024);
@@ -95,7 +95,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that Build returns options with configured logger factory.
     /// </summary>
     [TestMethod]
-    public void Build_WithCustomLoggerFactory_ReturnsOptionsWithCustomLoggerFactory() {
+    public void Build_With_Custom_Logger_Factory_Returns_Options_With_Custom_Logger_Factory() {
         // Arrange
         ILoggerFactory loggerFactory = LoggerFactory.Create(_ => { });
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create()
@@ -115,7 +115,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that Build returns options with all custom values.
     /// </summary>
     [TestMethod]
-    public void Build_WithAllCustomValues_ReturnsOptionsWithAllCustomValues() {
+    public void Build_With_All_Custom_Values_Returns_Options_With_All_Custom_Values() {
         // Arrange
         ILoggerFactory loggerFactory = LoggerFactory.Create(_ => { });
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create()
@@ -139,7 +139,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that Build can be called multiple times on the same builder.
     /// </summary>
     [TestMethod]
-    public void Build_MultipleInvocations_ReturnsDifferentInstancesWithSameValues() {
+    public void Build_With_Multiple_Invocations_Returns_Different_Instances_With_Same_Values() {
         // Arrange
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create()
             .WithPrecision(6);
@@ -158,7 +158,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that WithStackAllocLimit sets the value and returns the builder.
     /// </summary>
     [TestMethod]
-    public void WithStackAllocLimit_ValidValue_SetsValueAndReturnsSelf() {
+    public void WithStackAllocLimit_With_Valid_Value_Sets_Value_And_Returns_Self() {
         // Arrange
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
@@ -175,7 +175,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that WithStackAllocLimit accepts minimum value of 1.
     /// </summary>
     [TestMethod]
-    public void WithStackAllocLimit_MinimumValue_SetsValue() {
+    public void WithStackAllocLimit_With_Minimum_Value_Sets_Value() {
         // Arrange
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
@@ -191,7 +191,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that WithStackAllocLimit throws ArgumentOutOfRangeException for zero.
     /// </summary>
     [TestMethod]
-    public void WithStackAllocLimit_Zero_ThrowsArgumentOutOfRangeException() {
+    public void WithStackAllocLimit_With_Zero_Throws_ArgumentOutOfRangeException() {
         // Arrange
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
@@ -206,7 +206,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that WithStackAllocLimit throws ArgumentOutOfRangeException for negative value.
     /// </summary>
     [TestMethod]
-    public void WithStackAllocLimit_NegativeValue_ThrowsArgumentOutOfRangeException() {
+    public void WithStackAllocLimit_With_Negative_Value_Throws_ArgumentOutOfRangeException() {
         // Arrange
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
@@ -221,7 +221,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that WithStackAllocLimit accepts large value.
     /// </summary>
     [TestMethod]
-    public void WithStackAllocLimit_LargeValue_SetsValue() {
+    public void WithStackAllocLimit_With_Large_Value_Sets_Value() {
         // Arrange
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
@@ -238,7 +238,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that WithStackAllocLimit can be called multiple times.
     /// </summary>
     [TestMethod]
-    public void WithStackAllocLimit_MultipleCalls_LastValueWins() {
+    public void WithStackAllocLimit_With_Multiple_Calls_Last_Value_Wins() {
         // Arrange
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
@@ -256,7 +256,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that WithPrecision sets the value and returns the builder.
     /// </summary>
     [TestMethod]
-    public void WithPrecision_ValidValue_SetsValueAndReturnsSelf() {
+    public void WithPrecision_With_Valid_Value_Sets_Value_And_Returns_Self() {
         // Arrange
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
@@ -274,7 +274,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that WithPrecision accepts zero value.
     /// </summary>
     [TestMethod]
-    public void WithPrecision_Zero_SetsValue() {
+    public void WithPrecision_With_Zero_Sets_Value() {
         // Arrange
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
@@ -291,7 +291,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that WithPrecision accepts maximum uint value.
     /// </summary>
     [TestMethod]
-    public void WithPrecision_MaxValue_SetsValue() {
+    public void WithPrecision_With_Max_Value_Sets_Value() {
         // Arrange
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
@@ -308,7 +308,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that WithPrecision can be called multiple times.
     /// </summary>
     [TestMethod]
-    public void WithPrecision_MultipleCalls_LastValueWins() {
+    public void WithPrecision_With_Multiple_Calls_Last_Value_Wins() {
         // Arrange
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
@@ -327,7 +327,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that WithLoggerFactory sets the factory and returns the builder.
     /// </summary>
     [TestMethod]
-    public void WithLoggerFactory_ValidFactory_SetsValueAndReturnsSelf() {
+    public void WithLoggerFactory_With_Valid_Factory_Sets_Value_And_Returns_Self() {
         // Arrange
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
         ILoggerFactory loggerFactory = LoggerFactory.Create(_ => { });
@@ -349,7 +349,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that WithLoggerFactory with null uses NullLoggerFactory.
     /// </summary>
     [TestMethod]
-    public void WithLoggerFactory_Null_UsesNullLoggerFactory() {
+    public void WithLoggerFactory_With_Null_Uses_Null_LoggerFactory() {
         // Arrange
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
@@ -367,7 +367,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that WithLoggerFactory can replace a previously set factory.
     /// </summary>
     [TestMethod]
-    public void WithLoggerFactory_ReplacePreviousFactory_UpdatesValue() {
+    public void WithLoggerFactory_With_Replace_Previous_Factory_Updates_Value() {
         // Arrange
         using ILoggerFactory firstFactory = LoggerFactory.Create(_ => { });
         using ILoggerFactory secondFactory = LoggerFactory.Create(_ => { });
@@ -387,7 +387,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that WithLoggerFactory can be set to null after setting a factory.
     /// </summary>
     [TestMethod]
-    public void WithLoggerFactory_NullAfterFactory_UsesNullLoggerFactory() {
+    public void WithLoggerFactory_With_Null_After_Factory_Uses_Null_LoggerFactory() {
         // Arrange
         using ILoggerFactory factory = LoggerFactory.Create(_ => { });
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create()
@@ -405,7 +405,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// Tests that builder supports method chaining for all methods.
     /// </summary>
     [TestMethod]
-    public void MethodChaining_AllMethods_ReturnsBuilderForChaining() {
+    public void MethodChaining_With_All_Methods_Returns_Builder_For_Chaining() {
         // Arrange
         using ILoggerFactory loggerFactory = LoggerFactory.Create(_ => { });
 

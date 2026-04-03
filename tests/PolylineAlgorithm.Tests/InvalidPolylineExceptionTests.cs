@@ -16,7 +16,7 @@ public sealed class InvalidPolylineExceptionTests {
     /// Tests that the default constructor creates an instance with a null message.
     /// </summary>
     [TestMethod]
-    public void Constructor_Default_CreatesInstance() {
+    public void Constructor_With_Default_Creates_Instance() {
         // Act
         InvalidPolylineException ex = new();
 
@@ -29,7 +29,7 @@ public sealed class InvalidPolylineExceptionTests {
     /// Tests that the message and inner exception constructor stores both values.
     /// </summary>
     [TestMethod]
-    public void Constructor_WithMessageAndInnerException_StoresBoth() {
+    public void Constructor_With_Message_And_Inner_Exception_Stores_Both() {
         // Arrange
         const string message = "polyline is malformed";
         Exception inner = new InvalidOperationException("inner");
