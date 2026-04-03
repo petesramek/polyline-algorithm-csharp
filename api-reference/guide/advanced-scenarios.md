@@ -120,7 +120,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMyPolylineEncoderDecoder(
     PolylineEncodingOptionsBuilder.Create()
-        .SetMaxBufferSize(10000)
+        .WithStackAllocLimit(1024)
         .Build()
 );
 
@@ -145,7 +145,7 @@ builder.Services.AddMyPolylineEncoderDecoder(
 ## Integration Guidance
 
 - **Batch or incremental processing:**  
-  For large datasets, control buffer sizes via `PolylineEncodingOptions`.
+  For large datasets, control the stack allocation limit via `PolylineEncodingOptions.StackAllocLimit`.
 - **Thread safety:**  
   Default encoders/decoders are stateless and thread-safe. If extending for mutable types, ensure synchronization.
 - **Logging:**  

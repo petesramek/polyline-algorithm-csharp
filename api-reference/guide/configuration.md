@@ -8,13 +8,13 @@ PolylineAlgorithm offers flexible configuration for encoding and decoding polyli
 
 Most configuration is handled via the `PolylineEncodingOptions` object, which you can build using the fluent `PolylineEncodingOptionsBuilder`.
 
-### Example: Customizing Buffer Size
+### Example: Customizing Stack Alloc Limit
 
 ```csharp
 using PolylineAlgorithm;
 
 var options = PolylineEncodingOptionsBuilder.Create()
-    .SetMaxBufferSize(10000) // Set custom buffer size
+    .WithStackAllocLimit(1024) // Set stack allocation threshold (bytes)
     .Build();
 
 var encoder = new PolylineEncoder(options);
@@ -47,7 +47,7 @@ For custom validation (e.g., for custom coordinate types), extend the provided i
 
 When using `PolylineEncodingOptionsBuilder`, you may set:
 
-- **Buffer sizes:** Configure allocation for large or streaming polylines
+- **Stack alloc limit:** Configure the threshold below which buffers are stack-allocated vs. rented from `ArrayPool<char>`
 - **Logging hooks:** Integrate your logger for troubleshooting/instrumentation
 - **(Future)** Custom precision, additional metadata (as needed)
 
@@ -59,8 +59,8 @@ See the XML API documentation for all available builder methods.
 
 ```csharp
 var options = PolylineEncodingOptionsBuilder.Create()
-    .SetMaxBufferSize(5000)
-    // .EnableLogging(myLogger) // (if applicable)
+    .WithStackAllocLimit(512)
+    .WithLoggerFactory(myLoggerFactory)
     .Build();
 
 var encoder = new PolylineEncoder(options);
