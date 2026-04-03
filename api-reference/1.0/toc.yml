@@ -28,6 +28,8 @@
   href: PolylineAlgorithm.Extensions.yml
   items:
   - name: Classes
+  - name: PolylineDecoderExtensions
+    href: PolylineAlgorithm.Extensions.PolylineDecoderExtensions.yml
   - name: PolylineEncoderExtensions
     href: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.yml
 - name: PolylineAlgorithm.Internal.Diagnostics

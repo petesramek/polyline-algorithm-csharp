@@ -199,12 +199,15 @@ body:
     description: Name of the parameter representing the destination array.
 - api3: ThrowInvalidPolylineBlockTerminator()
   id: PolylineAlgorithm_Internal_Diagnostics_ExceptionGuard_ThrowInvalidPolylineBlockTerminator
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Internal/Diagnostics/ExceptionGuard.cs#L209
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Internal/Diagnostics/ExceptionGuard.cs#L212
   metadata:
     uid: PolylineAlgorithm.Internal.Diagnostics.ExceptionGuard.ThrowInvalidPolylineBlockTerminator
     commentId: M:PolylineAlgorithm.Internal.Diagnostics.ExceptionGuard.ThrowInvalidPolylineBlockTerminator
 - markdown: Throws an <xref href="PolylineAlgorithm.InvalidPolylineException" data-throw-if-not-resolved="false"></xref> when the polyline block terminator is invalid.
-- code: public static void ThrowInvalidPolylineBlockTerminator()
+- code: >-
+    [DoesNotReturn]
+
+    public static void ThrowInvalidPolylineBlockTerminator()
 - api3: ThrowInvalidPolylineCharacter(char, int)
   id: PolylineAlgorithm_Internal_Diagnostics_ExceptionGuard_ThrowInvalidPolylineCharacter_System_Char_System_Int32_
   src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Internal/Diagnostics/ExceptionGuard.cs#L171
