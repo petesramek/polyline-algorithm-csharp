@@ -18,6 +18,9 @@ concurrency:
   group: publish-docs-${{ github.head_ref || github.ref }}      
   cancel-in-progress: true
 
+env:
+  dotnet-sdk-version: '10.x'
+
 jobs:
   validate-branch:
     name: 'Validate branch'
@@ -49,7 +52,7 @@ jobs:
     needs: [workflow-variables]
     runs-on: ubuntu-latest
     outputs:
-        friendly-version: ${{ steps.versioning.outputs.friendly-version }}
+        friendly-version: ${{ steps.versioning.outputs.version }}
 
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
@@ -76,12 +79,80 @@ jobs:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v6
 
-      - name: 'Generate documentation'
-        uses: ./.github/actions/documentation/docfx-build
+      - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
+        uses: actions/setup-dotnet@v5
         with:
-          artifact-name: 'documentation'
-          docfx-json-manifest: './api-reference/api-reference.json'
-          output-directory: './api-reference/_docs'
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+
+      - name: 'Install docfx'
+        shell: bash
+        run: dotnet tool update -g docfx
+
+      - name: 'Regenerate API metadata for v${{ env.friendly-version }}'
+        shell: bash
+        run: |
+          rm -rf api-reference/${{ env.friendly-version }}
+          cd api-reference
+          docfx metadata assembly-metadata.json
+          mv temp ${{ env.friendly-version }}
+
+      - name: 'Discover all versions'
+        id: discover-versions
+        shell: bash
+        run: |
+          versions=$(ls api-reference/ | grep -E '^\d+\.\d+$' | sort -V | paste -sd ',' -)
+          latest=$(ls api-reference/ | grep -E '^\d+\.\d+$' | sort -V | tail -1)
+          echo "versions=$versions" >> $GITHUB_OUTPUT
+          echo "latest=$latest" >> $GITHUB_OUTPUT
+
+      - name: 'Update versions.json'
+        shell: bash
+        run: |
+          versions_array=$(echo "${{ steps.discover-versions.outputs.versions }}" | tr ',' '\n' | jq -R . | jq -s .)
+          jq --arg latest "${{ steps.discover-versions.outputs.latest }}" \
+             --argjson versions "$versions_array" \
+             '.latest = $latest | .versions = $versions' \
+             api-reference/versions.json > /tmp/versions.json
+          mv /tmp/versions.json api-reference/versions.json
+
+      - name: 'Update api-reference.json with version groups'
+        shell: bash
+        run: |
+          cp api-reference/api-reference.json /tmp/api-reference.json
+          for ver in $(echo "${{ steps.discover-versions.outputs.versions }}" | tr ',' ' '); do
+            jq --arg ver "$ver" --arg group "v${ver}" \
+               '.build.content += [{"dest": "", "files": ["*.yml"], "group": $group, "src": $ver, "rootTocPath": "~/toc.html"}] |
+                .build.groups = (.build.groups // {}) |
+                .build.groups[$group] = {"dest": $ver}' \
+               /tmp/api-reference.json > /tmp/api-reference-new.json
+            mv /tmp/api-reference-new.json /tmp/api-reference.json
+          done
+          mv /tmp/api-reference.json api-reference/api-reference.json
+
+      - name: 'Update toc.yml with Reference dropdown'
+        shell: bash
+        run: |
+          latest="${{ steps.discover-versions.outputs.latest }}"
+          {
+            echo "### YamlMime:TableOfContent"
+            echo "- name: Guide"
+            echo "  href: guide/"
+            echo "- name: Reference"
+            echo "  dropdown: true"
+            echo "  items:"
+            for ver in $(echo "${{ steps.discover-versions.outputs.versions }}" | tr ',' '\n' | sort -Vr); do
+              if [ "$ver" = "$latest" ]; then
+                echo "  - name: v${ver} (latest)"
+              else
+                echo "  - name: v${ver}"
+              fi
+              echo "    href: ${ver}/PolylineAlgorithm.html"
+            done
+          } > api-reference/toc.yml
+
+      - name: 'Build documentation'
+        shell: bash
+        run: docfx build api-reference/api-reference.json
 
       - name: 'Upload artifact'
         uses: actions/upload-pages-artifact@v4

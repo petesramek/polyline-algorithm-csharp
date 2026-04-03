@@ -21,12 +21,10 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: 'Checkout ${{ github.head_ref || github.ref }}'
-      uses: actions/checkout@v6
     - name: Dotnet Setup
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ env.dotnet-sdk-version }}
+        dotnet-version: ${{ inputs.dotnet_sdk_version }}
     - name: 'testing variables'
       shell: bash
       run: |
