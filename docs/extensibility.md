@@ -1,6 +1,6 @@
 # Extensibility
 
-This guide explains how to add new coordinate types, polyline representations, and encoding schemes to PolylineAlgorithm.
+This guide explains how to use PolylineAlgorithm with your own coordinate types and polyline representations.
 
 ## Design Overview
 
@@ -105,14 +105,6 @@ public sealed class TuplePolylineDecoder : AbstractPolylineDecoder<string, (doub
 }
 ```
 
-## Supporting a Different Polyline Format
-
-The encoding algorithm itself (Google's encoded polyline algorithm) is implemented in `AbstractPolylineEncoder` and `AbstractPolylineDecoder`. If you need a completely different algorithm:
-
-1. Create a new class in its own file — do **not** modify the existing abstract base classes.
-2. Implement `IPolylineEncoder<TCoordinate, TPolyline>` and/or `IPolylineDecoder<TPolyline, TCoordinate>` directly.
-3. If the new algorithm shares coordinate-type logic with an existing encoder/decoder, consider extracting that logic into a shared helper in the `PolylineAlgorithm.Utility` project.
-
 ## Encoding Options
 
 `PolylineEncodingOptions` controls shared behavior. Configure it via `PolylineEncodingOptionsBuilder`:
@@ -134,13 +126,3 @@ var decoder = new TuplePolylineDecoder(options);
 ## Extension Methods
 
 The library provides extension methods for `IPolylineEncoder` and `IPolylineDecoder` to support common collection types (`IEnumerable<T>`, arrays, `ReadOnlyMemory<T>`). These are in `PolylineAlgorithm.Extensions`. Your custom implementations automatically benefit from these extension methods as long as you implement the interfaces.
-
-## Checklist for a New Encoding Scheme
-
-- [ ] Create the encoder class in a new file (one class per file).
-- [ ] Create the decoder class in a new file.
-- [ ] Add XML doc comments to all public members.
-- [ ] Add unit tests in `tests/PolylineAlgorithm.Tests/` following the [testing conventions](./testing.md).
-- [ ] Add benchmarks in `benchmarks/PolylineAlgorithm.Benchmarks/` following the [benchmarking guide](./benchmarks.md).
-- [ ] Update `PublicAPI.Unshipped.txt` with any new public API surface.
-- [ ] Add usage samples in `samples/` if the new type is intended for end users.

@@ -2,6 +2,12 @@
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - 'release/**'
+    paths:
+      - 'src/**'
+      - 'api-reference/**'
 
 permissions:
   actions: read
@@ -13,8 +19,20 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  validate-branch:
+    name: 'Validate branch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Ensure documentation is published from a release branch'
+        if: ${{ !startsWith(github.ref_name, 'release/') }}
+        run: |
+          echo "Documentation should only be published from 'release/**' branches."
+          echo "Current branch: '${{ github.ref_name }}'"
+          exit 1
+
   workflow-variables:
     name: 'Workflow variables'
+    needs: [validate-branch]
     runs-on: ubuntu-latest
 
     outputs:

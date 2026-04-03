@@ -25,7 +25,6 @@ Benchmarks use [BenchmarkDotNet](https://benchmarkdotnet.org/). Key packages:
 | Package | Purpose |
 |---|---|
 | `BenchmarkDotNet` | Core benchmarking framework |
-| `BenchmarkDotNet.Diagnostics.Windows` | Windows-specific diagnostics (ETW) |
 
 ## Writing a New Benchmark
 

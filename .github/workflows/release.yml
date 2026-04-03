@@ -13,6 +13,7 @@ permissions:
   pages: write
   id-token: write
   contents: write
+  administration: write
 
 concurrency: 
   group: release-${{ github.head_ref || github.ref }}      
@@ -313,4 +314,55 @@ jobs:
             echo "✅ PR created to merge **${{ env.current-branch }}** into **main**." >> $GITHUB_STEP_SUMMARY
           else
             echo "⏭️ Skipped merge to main: **${{ env.current-branch }}** is not the highest release branch." >> $GITHUB_STEP_SUMMARY
+          fi
+
+  create-support-branch:
+    name: 'Create support branch for ${{ github.ref_name }}'
+    needs: [workflow-variables, release, versioning]
+    if: ${{ needs.workflow-variables.outputs.is-release == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      current-version: ${{ needs.versioning.outputs.friendly-version }}
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: 'Resolve support branch name'
+        id: resolve-support-branch
+        run: |
+          major_minor=$(echo "${{ env.current-version }}" | grep -oP '^\d+\.\d+')
+          echo "support-branch=support/$major_minor" >> $GITHUB_OUTPUT
+
+      - name: 'Check if support branch already exists'
+        id: check-support-branch
+        run: |
+          git fetch origin
+          if git ls-remote --exit-code --heads origin "${{ steps.resolve-support-branch.outputs.support-branch }}" > /dev/null 2>&1; then
+            echo "support-branch-exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "support-branch-exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 'Create support branch'
+        if: ${{ steps.check-support-branch.outputs.support-branch-exists == 'false' }}
+        run: |
+          git config user.name "$(git log -n 1 --pretty=format:%an)"
+          git config user.email "$(git log -n 1 --pretty=format:%ae)"
+          git checkout -b "${{ steps.resolve-support-branch.outputs.support-branch }}"
+          git push --set-upstream origin "${{ steps.resolve-support-branch.outputs.support-branch }}"
+
+      - name: 'Lock support branch'
+        if: ${{ steps.check-support-branch.outputs.support-branch-exists == 'false' }}
+        uses: './.github/actions/github/branch-protection/lock'
+        with:
+          branch: ${{ steps.resolve-support-branch.outputs.support-branch }}
+
+      - name: 'Write support branch summary'
+        run: |
+          if [[ "${{ steps.check-support-branch.outputs.support-branch-exists }}" == "false" ]]; then
+            echo "✅ Created and locked support branch **${{ steps.resolve-support-branch.outputs.support-branch }}**." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⏭️ Support branch **${{ steps.resolve-support-branch.outputs.support-branch }}** already exists." >> $GITHUB_STEP_SUMMARY
           fi

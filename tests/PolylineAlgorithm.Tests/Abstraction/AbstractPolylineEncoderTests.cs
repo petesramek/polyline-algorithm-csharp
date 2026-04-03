@@ -30,7 +30,7 @@ public sealed class AbstractPolylineEncoderTests {
     /// Tests that the default constructor creates an instance with default options.
     /// </summary>
     [TestMethod]
-    public void Constructor_Default_CreatesInstanceWithDefaultOptions() {
+    public void Constructor_With_Default_Options_Creates_Instance() {
         // Act
         TestStringEncoder encoder = new();
 
@@ -45,7 +45,7 @@ public sealed class AbstractPolylineEncoderTests {
     /// Tests that the options constructor with null throws <see cref="ArgumentNullException"/>.
     /// </summary>
     [TestMethod]
-    public void Constructor_WithNullOptions_ThrowsArgumentNullException() {
+    public void Constructor_With_Null_Options_Throws_ArgumentNullException() {
         // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(() => new TestStringEncoder(null!));
         Assert.AreEqual("options", ex.ParamName);
@@ -55,7 +55,7 @@ public sealed class AbstractPolylineEncoderTests {
     /// Tests that the options constructor stores the provided options.
     /// </summary>
     [TestMethod]
-    public void Constructor_WithOptions_StoresOptions() {
+    public void Constructor_With_Options_Stores_Options() {
         // Arrange
         PolylineEncodingOptions options = PolylineEncodingOptionsBuilder.Create()
             .WithPrecision(7)
@@ -72,7 +72,7 @@ public sealed class AbstractPolylineEncoderTests {
     /// Tests that Encode with an empty span throws <see cref="ArgumentException"/>.
     /// </summary>
     [TestMethod]
-    public void Encode_EmptySpan_ThrowsArgumentException() {
+    public void Encode_With_Empty_Span_Throws_ArgumentException() {
         // Arrange
         TestStringEncoder encoder = new();
 
@@ -84,7 +84,7 @@ public sealed class AbstractPolylineEncoderTests {
     /// Tests that Encode with a single valid coordinate returns a non-empty string.
     /// </summary>
     [TestMethod]
-    public void Encode_SingleCoordinate_ReturnsNonEmptyString() {
+    public void Encode_With_Single_Coordinate_Returns_Non_Empty_String() {
         // Arrange
         TestStringEncoder encoder = new();
         (double, double)[] coordinates = [(0.0, 0.0)];
@@ -101,7 +101,7 @@ public sealed class AbstractPolylineEncoderTests {
     /// Tests that Encode with known coordinates returns the expected polyline string.
     /// </summary>
     [TestMethod]
-    public void Encode_KnownCoordinates_ReturnsExpectedPolyline() {
+    public void Encode_With_Known_Coordinates_Returns_Expected_Polyline() {
         // Arrange
         TestStringEncoder encoder = new();
         (double Latitude, double Longitude)[] coordinates = [.. StaticValueProvider.Valid.GetCoordinates()];
@@ -118,7 +118,7 @@ public sealed class AbstractPolylineEncoderTests {
     /// Tests that Encode with a pre-cancelled token throws <see cref="OperationCanceledException"/>.
     /// </summary>
     [TestMethod]
-    public void Encode_PreCancelledToken_ThrowsOperationCanceledException() {
+    public void Encode_With_Pre_Cancelled_Token_Throws_OperationCanceledException() {
         // Arrange
         TestStringEncoder encoder = new();
         using CancellationTokenSource cts = new();
@@ -134,7 +134,7 @@ public sealed class AbstractPolylineEncoderTests {
     /// limit, forcing heap allocation via <see cref="System.Buffers.ArrayPool{T}"/>.
     /// </summary>
     [TestMethod]
-    public void Encode_WithSmallStackAllocLimit_UsesHeapAllocationAndProducesCorrectResult() {
+    public void Encode_With_Small_Stack_Alloc_Limit_Uses_Heap_Allocation_And_Produces_Correct_Result() {
         // Arrange — force heap path by making stackAllocLimit smaller than any real encoding needs
         PolylineEncodingOptions options = PolylineEncodingOptionsBuilder.Create()
             .WithStackAllocLimit(1)

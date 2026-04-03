@@ -28,7 +28,7 @@ public sealed class PolylineEncoderExtensionsTests {
     /// Tests that Encode with a null encoder throws <see cref="ArgumentNullException"/>.
     /// </summary>
     [TestMethod]
-    public void Encode_List_NullEncoder_ThrowsArgumentNullException() {
+    public void Encode_With_List_Null_Encoder_Throws_ArgumentNullException() {
         // Arrange — use interface type so the extension method is resolved
         IPolylineEncoder<(double, double), string>? encoder = null;
         List<(double, double)> coordinates = [(0.0, 0.0)];
@@ -43,7 +43,7 @@ public sealed class PolylineEncoderExtensionsTests {
     /// Tests that Encode with a null list throws <see cref="ArgumentNullException"/>.
     /// </summary>
     [TestMethod]
-    public void Encode_List_NullCoordinates_ThrowsArgumentNullException() {
+    public void Encode_With_List_Null_Coordinates_Throws_ArgumentNullException() {
         // Arrange
         TestStringEncoder encoder = new();
         List<(double, double)>? coordinates = null;
@@ -58,7 +58,7 @@ public sealed class PolylineEncoderExtensionsTests {
     /// Tests that Encode with a valid list returns the expected polyline.
     /// </summary>
     [TestMethod]
-    public void Encode_List_ValidCoordinates_ReturnsExpectedPolyline() {
+    public void Encode_With_List_Valid_Coordinates_Returns_Expected_Polyline() {
         // Arrange
         TestStringEncoder encoder = new();
         List<(double Latitude, double Longitude)> coordinates = [.. StaticValueProvider.Valid.GetCoordinates()];
@@ -77,7 +77,7 @@ public sealed class PolylineEncoderExtensionsTests {
     /// Tests that Encode with a null encoder throws <see cref="ArgumentNullException"/>.
     /// </summary>
     [TestMethod]
-    public void Encode_Array_NullEncoder_ThrowsArgumentNullException() {
+    public void Encode_With_Array_Null_Encoder_Throws_ArgumentNullException() {
         // Arrange — call the extension method explicitly because IPolylineEncoder.Encode(ReadOnlySpan<T>)
         // would be preferred over the extension when calling through method syntax with an array argument.
         IPolylineEncoder<(double, double), string>? encoder = null;
@@ -93,7 +93,7 @@ public sealed class PolylineEncoderExtensionsTests {
     /// Tests that Encode with a null array throws <see cref="ArgumentNullException"/>.
     /// </summary>
     [TestMethod]
-    public void Encode_Array_NullCoordinates_ThrowsArgumentNullException() {
+    public void Encode_With_Array_Null_Coordinates_Throws_ArgumentNullException() {
         // Arrange — call the extension method explicitly (same reasoning as above).
         IPolylineEncoder<(double, double), string> encoder = new TestStringEncoder();
         (double, double)[]? coordinates = null;
@@ -108,7 +108,7 @@ public sealed class PolylineEncoderExtensionsTests {
     /// Tests that Encode with a valid array returns the expected polyline.
     /// </summary>
     [TestMethod]
-    public void Encode_Array_ValidCoordinates_ReturnsExpectedPolyline() {
+    public void Encode_With_Array_Valid_Coordinates_Returns_Expected_Polyline() {
         // Arrange
         TestStringEncoder encoder = new();
         (double Latitude, double Longitude)[] coordinates = [.. StaticValueProvider.Valid.GetCoordinates()];

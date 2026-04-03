@@ -39,13 +39,13 @@ Key NuGet packages:
 
 ## Naming Conventions
 
-Follow the existing pattern: `{Subject}_{Scenario}_{ExpectedResult}`.
+Follow the pattern: `{Subject}_{With_Context}_{Expected_Result}` — every word separated by an underscore.
 
 Examples:
 
 ```
 Decode_With_Null_Polyline_Throws_ArgumentNullException
-Normalize_ZeroValue_ReturnsZero
+Normalize_With_Zero_Value_Returns_Zero
 Normalize_With_Value_And_Precision_Returns_Expected_Normalized_Value
 ```
 
@@ -75,7 +75,7 @@ public sealed class MyClassTests {
     /// Tests that <see cref="MyClass.MyMethod"/> returns the expected result.
     /// </summary>
     [TestMethod]
-    public void MyMethod_WithValidInput_ReturnsExpected() {
+    public void MyMethod_With_Valid_Input_Returns_Expected() {
         // Arrange
         var sut = new MyClass();
 

@@ -18,7 +18,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that Normalize returns zero when value is zero.
     /// </summary>
     [TestMethod]
-    public void Normalize_ZeroValue_ReturnsZero() {
+    public void Normalize_With_Zero_Value_Returns_Zero() {
         // Act
         int result = PolylineEncoding.Normalize(0.0);
 
@@ -67,7 +67,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that Denormalize returns zero when value is zero.
     /// </summary>
     [TestMethod]
-    public void Denormalize_ZeroValue_ReturnsZero() {
+    public void Denormalize_With_Zero_Value_Returns_Zero() {
         // Act
         double result = PolylineEncoding.Denormalize(0);
 
@@ -103,7 +103,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that TryReadValue returns false when position is at buffer length.
     /// </summary>
     [TestMethod]
-    public void TryReadValue_PositionAtBufferLength_ReturnsFalse() {
+    public void TryReadValue_With_Position_At_Buffer_Length_Returns_False() {
         // Arrange
         ReadOnlyMemory<char> buffer = "_p~iF~ps|U".AsMemory();
         int delta = 0;
@@ -121,7 +121,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that TryReadValue returns false when position exceeds buffer length.
     /// </summary>
     [TestMethod]
-    public void TryReadValue_PositionExceedsBufferLength_ReturnsFalse() {
+    public void TryReadValue_With_Position_Exceeds_Buffer_Length_Returns_False() {
         // Arrange
         ReadOnlyMemory<char> buffer = "_p~iF~ps|U".AsMemory();
         int delta = 0;
@@ -139,7 +139,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that TryReadValue reads a positive single-character encoded value.
     /// </summary>
     [TestMethod]
-    public void TryReadValue_PositiveSingleChar_ReadsValueAndReturnsTrue() {
+    public void TryReadValue_With_Positive_Single_Char_Reads_Value_And_Returns_True() {
         // Arrange
         // Encode value 5: zigzag = 10 = 0x0A; char = 10 + 63 = 73 = 'I'
         ReadOnlyMemory<char> buffer = "I".AsMemory(); // Single char encoding of value 5
@@ -159,7 +159,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that TryReadValue reads a positive multi-character encoded value.
     /// </summary>
     [TestMethod]
-    public void TryReadValue_PositiveMultiChar_ReadsValueAndReturnsTrue() {
+    public void TryReadValue_With_Positive_Multi_Char_Reads_Value_And_Returns_True() {
         // Arrange
         // _p~iF encodes latitude 38.5 (normalized = 3850000, zigzag = 7700000)
         ReadOnlyMemory<char> buffer = "_p~iF".AsMemory();
@@ -179,7 +179,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that TryReadValue reads a negative encoded value.
     /// </summary>
     [TestMethod]
-    public void TryReadValue_NegativeValue_ReadsValueAndReturnsTrue() {
+    public void TryReadValue_With_Negative_Value_Reads_Value_And_Returns_True() {
         // Arrange
         // ~ps|U encodes longitude -120.2 (normalized = -12020000, zigzag encodes negative)
         ReadOnlyMemory<char> buffer = "~ps|U".AsMemory();
@@ -199,7 +199,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that TryReadValue accumulates into existing delta.
     /// </summary>
     [TestMethod]
-    public void TryReadValue_WithExistingDelta_AccumulatesDelta() {
+    public void TryReadValue_With_Existing_Delta_Accumulates_Delta() {
         // Arrange
         ReadOnlyMemory<char> buffer = "I".AsMemory(); // encodes 5
         int delta = 10; // existing delta
@@ -217,7 +217,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that TryReadValue reads multiple values sequentially from the buffer.
     /// </summary>
     [TestMethod]
-    public void TryReadValue_MultipleValues_ReadsSequentially() {
+    public void TryReadValue_With_Multiple_Values_Reads_Sequentially() {
         // Arrange - "_p~iF~ps|U" encodes lat 38.5 then delta lon -120.2
         ReadOnlyMemory<char> buffer = "_p~iF~ps|U".AsMemory();
         int delta = 0;
@@ -241,7 +241,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that TryReadValue returns false when buffer ends mid-value.
     /// </summary>
     [TestMethod]
-    public void TryReadValue_BufferEndsMidValue_ReturnsFalse() {
+    public void TryReadValue_With_Buffer_Ends_Mid_Value_Returns_False() {
         // Arrange - truncate a multi-char encoding
         ReadOnlyMemory<char> buffer = "_p~".AsMemory(); // incomplete multi-char encoding
         int delta = 0;
@@ -258,7 +258,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that TryReadValue correctly reads from a non-zero starting position.
     /// </summary>
     [TestMethod]
-    public void TryReadValue_StartingFromMiddle_ReadsCorrectly() {
+    public void TryReadValue_Starting_From_Middle_Reads_Correctly() {
         // Arrange - "_p~iF~ps|U": start at position 5 to read the longitude value
         ReadOnlyMemory<char> buffer = "_p~iF~ps|U".AsMemory();
         int delta = 0;
@@ -281,7 +281,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that TryWriteValue returns false when the buffer is too small.
     /// </summary>
     [TestMethod]
-    public void TryWriteValue_BufferTooSmall_ReturnsFalse() {
+    public void TryWriteValue_With_Buffer_Too_Small_Returns_False() {
         // Arrange
         Span<char> buffer = [];
         int position = 0;
@@ -298,7 +298,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that TryWriteValue returns false when the remaining buffer is too small.
     /// </summary>
     [TestMethod]
-    public void TryWriteValue_RemainingBufferTooSmall_ReturnsFalse() {
+    public void TryWriteValue_With_Remaining_Buffer_Too_Small_Returns_False() {
         // Arrange - need 5 chars for 3850000, but only 3 remain
         Span<char> buffer = new char[3];
         int position = 0;
@@ -315,7 +315,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that TryWriteValue correctly encodes zero.
     /// </summary>
     [TestMethod]
-    public void TryWriteValue_ZeroValue_WritesCorrectly() {
+    public void TryWriteValue_With_Zero_Value_Writes_Correctly() {
         // Arrange
         Span<char> buffer = new char[10];
         int position = 0;
@@ -333,7 +333,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that TryWriteValue correctly encodes a positive value.
     /// </summary>
     [TestMethod]
-    public void TryWriteValue_PositiveValue_WritesCorrectly() {
+    public void TryWriteValue_With_Positive_Value_Writes_Correctly() {
         // Arrange
         Span<char> buffer = new char[10];
         int position = 0;
@@ -351,7 +351,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that TryWriteValue correctly encodes a negative value.
     /// </summary>
     [TestMethod]
-    public void TryWriteValue_NegativeValue_WritesCorrectly() {
+    public void TryWriteValue_With_Negative_Value_Writes_Correctly() {
         // Arrange
         Span<char> buffer = new char[10];
         int position = 0;
@@ -369,7 +369,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that TryWriteValue correctly encodes multiple values sequentially.
     /// </summary>
     [TestMethod]
-    public void TryWriteValue_MultipleValues_WritesSequentially() {
+    public void TryWriteValue_With_Multiple_Values_Writes_Sequentially() {
         // Arrange
         Span<char> buffer = new char[20];
         int position = 0;
@@ -388,7 +388,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that TryWriteValue correctly encodes a small positive value.
     /// </summary>
     [TestMethod]
-    public void TryWriteValue_SmallPositiveValue_WritesCorrectly() {
+    public void TryWriteValue_With_Small_Positive_Value_Writes_Correctly() {
         // Arrange
         Span<char> buffer = new char[10];
         int position = 0;
@@ -406,7 +406,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that TryWriteValue correctly encodes a small negative value.
     /// </summary>
     [TestMethod]
-    public void TryWriteValue_SmallNegativeValue_WritesCorrectly() {
+    public void TryWriteValue_With_Small_Negative_Value_Writes_Correctly() {
         // Arrange
         Span<char> buffer = new char[10];
         int position = 0;
@@ -424,7 +424,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that TryWriteValue writes at the correct non-zero starting position.
     /// </summary>
     [TestMethod]
-    public void TryWriteValue_NonZeroStartPosition_WritesAtCorrectPosition() {
+    public void TryWriteValue_With_Non_Zero_Start_Position_Writes_At_Correct_Position() {
         // Arrange
         Span<char> buffer = new char[20];
         int position = 5;
@@ -442,7 +442,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that TryWriteValue correctly encodes a large positive value.
     /// </summary>
     [TestMethod]
-    public void TryWriteValue_LargePositiveValue_WritesCorrectly() {
+    public void TryWriteValue_With_Large_Positive_Value_Writes_Correctly() {
         // Arrange
         Span<char> buffer = new char[10];
         int position = 0;
@@ -461,7 +461,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that TryWriteValue correctly encodes a large negative value.
     /// </summary>
     [TestMethod]
-    public void TryWriteValue_LargeNegativeValue_WritesCorrectly() {
+    public void TryWriteValue_With_Large_Negative_Value_Writes_Correctly() {
         // Arrange
         Span<char> buffer = new char[10];
         int position = 0;
@@ -503,7 +503,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that GetRequiredBufferSize returns a valid size for the maximum positive integer.
     /// </summary>
     [TestMethod]
-    public void GetRequiredBufferSize_MaxInt_ReturnsCorrectSize() {
+    public void GetRequiredBufferSize_With_Max_Int_Returns_Correct_Size() {
         // Act
         int size = PolylineEncoding.GetRequiredBufferSize(int.MaxValue);
 
@@ -516,7 +516,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that GetRequiredBufferSize returns a valid size for the minimum negative integer.
     /// </summary>
     [TestMethod]
-    public void GetRequiredBufferSize_MinInt_ReturnsCorrectSize() {
+    public void GetRequiredBufferSize_With_Min_Int_Returns_Correct_Size() {
         // Act
         int size = PolylineEncoding.GetRequiredBufferSize(int.MinValue);
 
@@ -529,7 +529,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that GetRequiredBufferSize is consistent with the actual bytes written by TryWriteValue.
     /// </summary>
     [TestMethod]
-    public void GetRequiredBufferSize_ConsistentWithTryWriteValue_MatchesActualSize() {
+    public void GetRequiredBufferSize_Consistent_With_TryWriteValue_Matches_Actual_Size() {
         // Arrange
         const int delta = 3778903;
         int expectedSize = PolylineEncoding.GetRequiredBufferSize(delta);
@@ -548,7 +548,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that an undersized buffer causes TryWriteValue to fail.
     /// </summary>
     [TestMethod]
-    public void GetRequiredBufferSize_UndersizedBuffer_CausesTryWriteValueToFail() {
+    public void GetRequiredBufferSize_With_Undersized_Buffer_Causes_TryWriteValue_To_Fail() {
         // Arrange
         const int delta = 3778903;
         int requiredSize = PolylineEncoding.GetRequiredBufferSize(delta);
@@ -571,7 +571,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that ValidateFormat succeeds with a valid polyline.
     /// </summary>
     [TestMethod]
-    public void ValidateFormat_ValidPolyline_DoesNotThrow() {
+    public void ValidateFormat_With_Valid_Polyline_Does_Not_Throw() {
         // Act & Assert
         PolylineEncoding.ValidateFormat("_p~iF~ps|U_ulLnnqC_mqNvxq`@");
     }
@@ -580,7 +580,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that ValidateFormat throws when polyline contains an invalid character.
     /// </summary>
     [TestMethod]
-    public void ValidateFormat_InvalidCharacter_ThrowsInvalidPolylineException() {
+    public void ValidateFormat_With_Invalid_Character_Throws_InvalidPolylineException() {
         // Act & Assert
         Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateFormat("_p~iF!ps|U"));
     }
@@ -589,7 +589,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that ValidateFormat throws when polyline has invalid block structure.
     /// </summary>
     [TestMethod]
-    public void ValidateFormat_InvalidBlockStructure_ThrowsInvalidPolylineException() {
+    public void ValidateFormat_With_Invalid_Block_Structure_Throws_InvalidPolylineException() {
         // Act & Assert
         Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateFormat("________")); // all continuation chars, no terminator
     }
@@ -598,7 +598,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that ValidateFormat succeeds with a single terminator character.
     /// </summary>
     [TestMethod]
-    public void ValidateFormat_SingleTerminator_DoesNotThrow() {
+    public void ValidateFormat_With_Single_Terminator_Does_Not_Throw() {
         // Act & Assert
         PolylineEncoding.ValidateFormat("?");
     }
@@ -607,7 +607,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that ValidateFormat throws when a block exceeds maximum length.
     /// </summary>
     [TestMethod]
-    public void ValidateFormat_BlockTooLong_ThrowsInvalidPolylineException() {
+    public void ValidateFormat_With_Block_Too_Long_Throws_InvalidPolylineException() {
         // Act & Assert
         Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateFormat("________?")); // 8-char block (max is 7)
     }
