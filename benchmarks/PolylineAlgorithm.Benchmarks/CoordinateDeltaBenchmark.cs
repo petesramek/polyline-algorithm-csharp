@@ -17,7 +17,7 @@ public class CoordinateDeltaBenchmark {
     /// <summary>
     /// Number of coordinate pairs iterated per benchmark invocation.
     /// </summary>
-    [Params(1, 100, 1_000)]
+    [Params(8, 64, 128, 1024, 4096, 20480, 102400)]
     public int CoordinatesCount { get; set; }
 
     private (int Latitude, int Longitude)[] _normalized = default!;

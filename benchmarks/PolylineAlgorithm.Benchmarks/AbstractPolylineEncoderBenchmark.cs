@@ -20,7 +20,7 @@ public class AbstractPolylineEncoderBenchmark {
     /// <summary>
     /// Number of coordinates used to generate test data.
     /// </summary>
-    [Params(1, 100, 1_000)]
+    [Params(8, 64, 128, 1024, 4096, 20480, 102400)]
     public int CoordinatesCount { get; set; }
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor.
