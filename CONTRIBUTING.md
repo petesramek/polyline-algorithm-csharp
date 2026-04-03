@@ -2,6 +2,20 @@
 
 Thank you for your interest in improving this library!
 
+## Developer Documentation
+
+In-depth developer guides are in the [`/docs`](./docs/README.md) folder:
+
+- [Local Development](./docs/local-development.md) — build, test, and format commands
+- [Testing](./docs/testing.md) — how to write unit tests
+- [Benchmarks](./docs/benchmarks.md) — how to write and run benchmarks
+- [Composite Actions](./docs/composite-actions.md) — reusable CI actions catalogue
+- [Workflows](./docs/workflows.md) — CI/CD pipeline overview
+- [Branch Strategy](./docs/branch-strategy.md) — branch lifecycle and environments
+- [Versioning](./docs/versioning.md) — branch naming and the version pipeline
+- [API Documentation](./docs/api-documentation.md) — DocFX and the API reference site
+- [Extensibility](./docs/extensibility.md) — how to add new encoding algorithms
+
 ## Guidelines
 
 - **Follow code style:** Use `.editorconfig` and run `dotnet format`.
