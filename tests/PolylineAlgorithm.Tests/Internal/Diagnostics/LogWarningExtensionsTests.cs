@@ -32,6 +32,9 @@ public sealed class LogWarningExtensionsTests {
         }
     }
 
+    /// <summary>
+    /// Tests that LogNullArgumentWarning LogsExpectedMessage.
+    /// </summary>
     [TestMethod]
     public void LogNullArgumentWarning_LogsExpectedMessage() {
         var logger = new TestLogger();
@@ -39,6 +42,9 @@ public sealed class LogWarningExtensionsTests {
         Assert.IsTrue(logger.Logs.Exists(l => l.Message.Contains("Argument foo is null.", StringComparison.Ordinal)));
     }
 
+    /// <summary>
+    /// Tests that LogEmptyArgumentWarning LogsExpectedMessage.
+    /// </summary>
     [TestMethod]
     public void LogEmptyArgumentWarning_LogsExpectedMessage() {
         var logger = new TestLogger();
@@ -46,6 +52,9 @@ public sealed class LogWarningExtensionsTests {
         Assert.IsTrue(logger.Logs.Exists(l => l.Message.Contains("Argument bar is empty.", StringComparison.Ordinal)));
     }
 
+    /// <summary>
+    /// Tests that LogInternalBufferOverflowWarning LogsExpectedMessage.
+    /// </summary>
     [TestMethod]
     public void LogInternalBufferOverflowWarning_LogsExpectedMessage() {
         var logger = new TestLogger();
@@ -53,6 +62,9 @@ public sealed class LogWarningExtensionsTests {
         Assert.IsTrue(logger.Logs.Exists(l => l.Message.Contains("Internal buffer has size of 2. At position 1 is required additional 3 space.", StringComparison.Ordinal)));
     }
 
+    /// <summary>
+    /// Tests that LogCannotWriteValueToBufferWarning LogsExpectedMessage.
+    /// </summary>
     [TestMethod]
     public void LogCannotWriteValueToBufferWarning_LogsExpectedMessage() {
         var logger = new TestLogger();
@@ -60,6 +72,9 @@ public sealed class LogWarningExtensionsTests {
         Assert.IsTrue(logger.Logs.Exists(l => l.Message.Contains("Cannot write to internal buffer at position 4. Current coordinate is at index 5.", StringComparison.Ordinal)));
     }
 
+    /// <summary>
+    /// Tests that LogPolylineCannotBeShorterThanWarning LogsExpectedMessage.
+    /// </summary>
     [TestMethod]
     public void LogPolylineCannotBeShorterThanWarning_LogsExpectedMessage() {
         var logger = new TestLogger();
@@ -67,6 +82,9 @@ public sealed class LogWarningExtensionsTests {
         Assert.IsTrue(logger.Logs.Exists(l => l.Message.Contains("Polyline is too short. Minimal length is 7. Actual length is 6.", StringComparison.Ordinal)));
     }
 
+    /// <summary>
+    /// Tests that LogRequestedBufferSizeExceedsMaxBufferLengthWarning LogsExpectedMessage.
+    /// </summary>
     [TestMethod]
     public void LogRequestedBufferSizeExceedsMaxBufferLengthWarning_LogsExpectedMessage() {
         var logger = new TestLogger();
@@ -74,6 +92,9 @@ public sealed class LogWarningExtensionsTests {
         Assert.IsTrue(logger.Logs.Exists(l => l.Message.Contains("Requested buffer size of 8 exceeds maximum allowed buffer length of 9.", StringComparison.Ordinal)));
     }
 
+    /// <summary>
+    /// Tests that LogInvalidPolylineWarning LogsExpectedMessage.
+    /// </summary>
     [TestMethod]
     public void LogInvalidPolylineWarning_LogsExpectedMessage() {
         var logger = new TestLogger();
@@ -81,6 +102,9 @@ public sealed class LogWarningExtensionsTests {
         Assert.IsTrue(logger.Logs.Exists(l => l.Message.Contains("Polyline is invalid or malformed at position 10.", StringComparison.Ordinal)));
     }
 
+    /// <summary>
+    /// Tests that LogInvalidPolylineFormatWarning LogsExpectedMessage.
+    /// </summary>
     [TestMethod]
     [SuppressMessage("Usage", "CA2201:Do not raise reserved exception types", Justification = "No need to be strict in tests.")]
     public void LogInvalidPolylineFormatWarning_LogsExpectedMessage() {

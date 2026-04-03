@@ -13,162 +13,37 @@ using PolylineAlgorithm.Internal;
 [TestClass]
 public sealed class Pow10Tests {
     /// <summary>
-    /// Tests that GetFactor with precision 0 returns 1.
+    /// Tests that GetFactor returns the correct power-of-ten factor for the given precision.
     /// </summary>
     [TestMethod]
-
-    public void GetFactor_With_Precision_Zero_Returns_One() {
+    [DataRow(0u, 1u)]
+    [DataRow(1u, 10u)]
+    [DataRow(2u, 100u)]
+    [DataRow(3u, 1000u)]
+    [DataRow(4u, 10000u)]
+    [DataRow(5u, 100000u)]
+    [DataRow(6u, 1000000u)]
+    [DataRow(7u, 10000000u)]
+    [DataRow(8u, 100000000u)]
+    [DataRow(9u, 1000000000u)]
+    public void GetFactor_With_Valid_Precision_Returns_Expected_Value(uint precision, uint expected) {
         // Act
-        uint result = Pow10.GetFactor(0);
+        uint result = Pow10.GetFactor(precision);
 
         // Assert
-        Assert.AreEqual(1u, result);
+        Assert.AreEqual(expected, result);
     }
 
     /// <summary>
-    /// Tests that GetFactor with precision 1 returns 10.
+    /// Tests that GetFactor throws <see cref="OverflowException"/> when precision causes overflow.
     /// </summary>
     [TestMethod]
-
-    public void GetFactor_With_Precision_One_Returns_Ten() {
-        // Act
-        uint result = Pow10.GetFactor(1);
-
-        // Assert
-        Assert.AreEqual(10u, result);
-    }
-
-    /// <summary>
-    /// Tests that GetFactor with precision 2 returns 100.
-    /// </summary>
-    [TestMethod]
-
-    public void GetFactor_With_Precision_Two_Returns_One_Hundred() {
-        // Act
-        uint result = Pow10.GetFactor(2);
-
-        // Assert
-        Assert.AreEqual(100u, result);
-    }
-
-    /// <summary>
-    /// Tests that GetFactor with precision 3 returns 1000.
-    /// </summary>
-    [TestMethod]
-
-    public void GetFactor_With_Precision_Three_Returns_One_Thousand() {
-        // Act
-        uint result = Pow10.GetFactor(3);
-
-        // Assert
-        Assert.AreEqual(1000u, result);
-    }
-
-    /// <summary>
-    /// Tests that GetFactor with precision 4 returns 10000.
-    /// </summary>
-    [TestMethod]
-
-    public void GetFactor_With_Precision_Four_Returns_Ten_Thousand() {
-        // Act
-        uint result = Pow10.GetFactor(4);
-
-        // Assert
-        Assert.AreEqual(10000u, result);
-    }
-
-    /// <summary>
-    /// Tests that GetFactor with precision 5 returns 100000.
-    /// </summary>
-    [TestMethod]
-
-    public void GetFactor_With_Precision_Five_Returns_One_Hundred_Thousand() {
-        // Act
-        uint result = Pow10.GetFactor(5);
-
-        // Assert
-        Assert.AreEqual(100000u, result);
-    }
-
-    /// <summary>
-    /// Tests that GetFactor with precision 6 returns 1000000.
-    /// </summary>
-    [TestMethod]
-
-    public void GetFactor_With_Precision_Six_Returns_One_Million() {
-        // Act
-        uint result = Pow10.GetFactor(6);
-
-        // Assert
-        Assert.AreEqual(1000000u, result);
-    }
-
-    /// <summary>
-    /// Tests that GetFactor with precision 7 returns 10000000.
-    /// </summary>
-    [TestMethod]
-
-    public void GetFactor_With_Precision_Seven_Returns_Ten_Million() {
-        // Act
-        uint result = Pow10.GetFactor(7);
-
-        // Assert
-        Assert.AreEqual(10000000u, result);
-    }
-
-    /// <summary>
-    /// Tests that GetFactor with precision 8 returns 100000000.
-    /// </summary>
-    [TestMethod]
-
-    public void GetFactor_With_Precision_Eight_Returns_One_Hundred_Million() {
-        // Act
-        uint result = Pow10.GetFactor(8);
-
-        // Assert
-        Assert.AreEqual(100000000u, result);
-    }
-
-    /// <summary>
-    /// Tests that GetFactor with precision 9 returns 1000000000.
-    /// </summary>
-    [TestMethod]
-
-    public void GetFactor_With_Precision_Nine_Returns_One_Billion() {
-        // Act
-        uint result = Pow10.GetFactor(9);
-
-        // Assert
-        Assert.AreEqual(1000000000u, result);
-    }
-
-    /// <summary>
-    /// Tests that GetFactor with precision causing overflow throws OverflowException.
-    /// </summary>
-    [TestMethod]
-
-    public void GetFactor_With_Precision_Causing_Overflow_Throws_OverflowException() {
+    [DataRow(10u)]
+    [DataRow(15u)]
+    [DataRow(20u)]
+    [DataRow(uint.MaxValue)]
+    public void GetFactor_With_Overflowing_Precision_Throws_OverflowException(uint precision) {
         // Act & Assert
-        Assert.ThrowsExactly<OverflowException>(() => Pow10.GetFactor(15));
-    }
-
-    /// <summary>
-    /// Tests that GetFactor with large precision causing overflow throws OverflowException.
-    /// </summary>
-    [TestMethod]
-
-    public void GetFactor_With_Large_Precision_Causing_Overflow_Throws_OverflowException() {
-        // Act & Assert
-        Assert.ThrowsExactly<OverflowException>(() => Pow10.GetFactor(20));
-    }
-
-    /// <summary>
-    /// Tests that GetFactor with maximum uint precision throws OverflowException.
-    /// </summary>
-    [TestMethod]
-
-    public void GetFactor_With_Maximum_Uint_Precision_Throws_OverflowException() {
-        // Act & Assert
-        Assert.ThrowsExactly<OverflowException>(() => Pow10.GetFactor(uint.MaxValue));
+        Assert.ThrowsExactly<OverflowException>(() => Pow10.GetFactor(precision));
     }
 }
