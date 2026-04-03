@@ -61,6 +61,9 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// <param name="coordinates">
     /// The collection of <typeparamref name="TCoordinate"/> objects to encode.
     /// </param>
+    /// <param name="cancellationToken">
+    /// A <see cref="CancellationToken"/> that can be used to cancel the encoding operation.
+    /// </param>
     /// <returns>
     /// An instance of <typeparamref name="TPolyline"/> representing the encoded coordinates.
     /// </returns>
