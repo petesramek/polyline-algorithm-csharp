@@ -16,12 +16,14 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 /// <summary>
-/// Provides functionality to encode a collection of geographic coordinates into an encoded polyline string.
-/// Implements the <see cref="IPolylineEncoder{TCoordinate, TPolyline}"/> interface.
+/// Provides a base implementation for encoding sequences of geographic coordinates into encoded polyline strings.
 /// </summary>
 /// <remarks>
-/// This abstract class serves as a base for specific polyline encoders, allowing customization of the encoding process.
+/// Derive from this class to implement an encoder for a specific coordinate and polyline type. Override
+/// <see cref="GetLatitude"/>, <see cref="GetLongitude"/>, and <see cref="CreatePolyline"/> to provide type-specific behavior.
 /// </remarks>
+/// <typeparam name="TCoordinate">The type that represents a geographic coordinate to encode.</typeparam>
+/// <typeparam name="TPolyline">The type that represents the encoded polyline output.</typeparam>
 public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder<TCoordinate, TPolyline> {
     private readonly ILogger<AbstractPolylineEncoder<TCoordinate, TPolyline>> _logger;
     /// <summary>
@@ -68,8 +70,9 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// <exception cref="ArgumentException">
     /// Thrown when <paramref name="coordinates"/> is an empty enumeration.
     /// </exception>
-    /// <exception cref="InternalBufferOverflowException"></exception>
-    /// <exception cref="InvalidOperationException"></exception>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when the internal encoding buffer cannot accommodate the encoded value.
+    /// </exception>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "MA0051:Method is too long", Justification = "Method contains local methods. Actual method only 55 lines.")]
     public TPolyline Encode(ReadOnlySpan<TCoordinate> coordinates) {
         const string OperationName = nameof(Encode);

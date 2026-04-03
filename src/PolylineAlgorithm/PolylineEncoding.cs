@@ -27,7 +27,7 @@ public static class PolylineEncoding {
     /// <remarks>
     /// <para>
     /// This method converts a floating-point coordinate value into a normalized integer by multiplying it by 10 raised
-    /// to the power of the specified precision, then rounding the result using the specified <paramref name="rounding"/> strategy.
+    /// to the power of the specified precision, then truncating the result to an integer.
     /// </para>
     /// <para>
     /// For example, with the default precision of 5:
@@ -211,7 +211,7 @@ public static class PolylineEncoding {
     /// more characters follow. The position is advanced as characters are written.
     /// </para>
     /// <para>
-    /// Before writing, the method validates that sufficient space is available in the buffer by calling <see cref="GetCharCount"/>.
+    /// Before writing, the method validates that sufficient space is available in the buffer by calling <see cref="GetRequiredBufferSize"/>.
     /// If the buffer does not have enough remaining capacity, the method returns <see langword="false"/> without modifying the buffer or position.
     /// </para>
     /// <para>

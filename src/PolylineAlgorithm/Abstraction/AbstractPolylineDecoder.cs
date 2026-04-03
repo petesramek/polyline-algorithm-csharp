@@ -12,12 +12,14 @@ using System.Runtime.CompilerServices;
 
 namespace PolylineAlgorithm.Abstraction {
     /// <summary>
-    /// Decodes encoded polyline strings into sequences of geographic coordinates.
-    /// Implements the <see cref="IPolylineDecoder{TPolyline, TCoordinate}"/> interface.
+    /// Provides a base implementation for decoding encoded polyline strings into sequences of geographic coordinates.
     /// </summary>
     /// <remarks>
-    /// This abstract class provides a base implementation for decoding polylines, allowing subclasses to define how to handle specific polyline formats.
+    /// Derive from this class to implement a decoder for a specific polyline type. Override <see cref="GetReadOnlyMemory"/>
+    /// and <see cref="CreateCoordinate"/> to provide type-specific behavior.
     /// </remarks>
+    /// <typeparam name="TPolyline">The type that represents the encoded polyline input.</typeparam>
+    /// <typeparam name="TCoordinate">The type that represents a decoded geographic coordinate.</typeparam>
     public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder<TPolyline, TCoordinate> {
         private readonly ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> _logger;
 
@@ -34,7 +36,7 @@ namespace PolylineAlgorithm.Abstraction {
         /// The <see cref="PolylineEncodingOptions"/> to use for encoding operations.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// Thrown when <paramref name="options"/> is <see langword="null" />
+        /// Thrown when <paramref name="options"/> is <see langword="null"/>.
         /// </exception>
         protected AbstractPolylineDecoder(PolylineEncodingOptions options) {
             if (options is null) {
@@ -74,14 +76,30 @@ namespace PolylineAlgorithm.Abstraction {
             => Decode(polyline, CancellationToken.None);
 
         /// <summary>
-        /// Decodes an encoded polyline with cancellation support.
+        /// Decodes an encoded <typeparamref name="TPolyline"/> into a sequence of <typeparamref name="TCoordinate"/> instances,
+        /// with support for cancellation.
         /// </summary>
-        /// <param name="polyline">The encoded polyline.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>Decoded coordinates.</returns>
-        /// <exception cref="ArgumentNullException"/>
-        /// <exception cref="ArgumentException"/>
-        /// <exception cref="InvalidPolylineException"/>
+        /// <param name="polyline">
+        /// The <typeparamref name="TPolyline"/> instance containing the encoded polyline string to decode.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// A <see cref="CancellationToken"/> that can be used to cancel the decoding operation.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IEnumerable{T}"/> of <typeparamref name="TCoordinate"/> representing the decoded latitude and longitude pairs.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="polyline"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown when <paramref name="polyline"/> is empty.
+        /// </exception>
+        /// <exception cref="InvalidPolylineException">
+        /// Thrown when the polyline format is invalid or malformed at a specific position.
+        /// </exception>
+        /// <exception cref="OperationCanceledException">
+        /// Thrown when <paramref name="cancellationToken"/> is canceled during decoding.
+        /// </exception>
         public IEnumerable<TCoordinate> Decode(TPolyline polyline, CancellationToken cancellationToken) {
             const string OperationName = nameof(Decode);
 
@@ -124,11 +142,9 @@ namespace PolylineAlgorithm.Abstraction {
 
         /// <summary>
         /// Validates that the provided polyline is not <see langword="null"/>.
-        /// Throws an <see cref="ArgumentNullException"/> if the polyline is <see langword="null"/>.
-        /// Optionally logs a warning if a logger is provided.
         /// </summary>
         /// <param name="polyline">The polyline instance to validate.</param>
-        /// <param name="logger">Optional logger for diagnostic messages.</param>
+        /// <param name="logger">An optional <see cref="ILogger"/> used to log a warning when validation fails.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="polyline"/> is <see langword="null"/>.
         /// </exception>
@@ -141,12 +157,10 @@ namespace PolylineAlgorithm.Abstraction {
         }
 
         /// <summary>
-        /// Validates that the polyline sequence meets the minimum required length.
-        /// Throws an <see cref="InvalidPolylineException"/> if the sequence is too short.
-        /// Optionally logs diagnostic messages if a logger is provided.
+        /// Validates that the polyline character sequence meets the minimum required length.
         /// </summary>
         /// <param name="polylineSequence">The polyline character sequence to validate.</param>
-        /// <param name="logger">Optional logger for diagnostic messages.</param>
+        /// <param name="logger">An optional <see cref="ILogger"/> used to log diagnostic messages when validation fails.</param>
         /// <exception cref="InvalidPolylineException">
         /// Thrown when <paramref name="polylineSequence"/> is shorter than the minimum allowed length.
         /// </exception>
@@ -161,8 +175,17 @@ namespace PolylineAlgorithm.Abstraction {
         }
 
         /// <summary>
-        /// Validates the polyline format for allowed characters.
+        /// Validates the format of the polyline character sequence, ensuring all characters are within the allowed range.
         /// </summary>
+        /// <param name="sequence">
+        /// The read-only memory region of characters representing the polyline to validate.
+        /// </param>
+        /// <param name="logger">
+        /// An optional <see cref="ILogger"/> used to log a warning when format validation fails.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// Thrown when the polyline contains characters outside the valid encoding range or has an invalid block structure.
+        /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected virtual void ValidateFormat(ReadOnlyMemory<char> sequence, ILogger? logger) {
             try {
@@ -174,9 +197,30 @@ namespace PolylineAlgorithm.Abstraction {
             }
         }
 
+        /// <summary>
+        /// Extracts the underlying read-only memory region of characters from the specified polyline instance.
+        /// </summary>
+        /// <param name="polyline">
+        /// The <typeparamref name="TPolyline"/> instance from which to extract the character sequence.
+        /// </param>
+        /// <returns>
+        /// A <see cref="ReadOnlyMemory{T}"/> of <see cref="char"/> representing the encoded polyline characters.
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected abstract ReadOnlyMemory<char> GetReadOnlyMemory(in TPolyline polyline);
 
+        /// <summary>
+        /// Creates a <typeparamref name="TCoordinate"/> instance from the specified latitude and longitude values.
+        /// </summary>
+        /// <param name="latitude">
+        /// The latitude component of the coordinate, in degrees.
+        /// </param>
+        /// <param name="longitude">
+        /// The longitude component of the coordinate, in degrees.
+        /// </param>
+        /// <returns>
+        /// A <typeparamref name="TCoordinate"/> instance representing the specified geographic coordinate.
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected abstract TCoordinate CreateCoordinate(double latitude, double longitude);
     }
