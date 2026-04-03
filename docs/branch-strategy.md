@@ -37,7 +37,7 @@ This document describes the branch model, the purpose of each branch type, and h
    └─ promote-branch.yml (manual) → creates release/X.Y + PR: preview/X.Y → release/X.Y
           │
           │  PR open → [pull-request.yml]
-          │  PR merged → [release.yml]: publish-NuGet (stable), GitHub release, docs, creates support/X.Y
+          │  PR merged → [release.yml]: publish-NuGet (stable), GitHub release, docs, creates support/X.Y (first time only)
           │
 5. Back-merge (optional)
    └─ Manual PR: release/X.Y → main
