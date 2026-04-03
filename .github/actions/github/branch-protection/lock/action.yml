@@ -14,7 +14,7 @@ runs:
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
-        gh api --method PUT /repos/${{ github.repository }}/branches/${{ inputs.branch }}/protection \
+        if ! gh api --method PUT /repos/${{ github.repository }}/branches/${{ inputs.branch }}/protection \
           --input - << 'EOF'
         {
           "required_status_checks": null,
@@ -30,4 +30,8 @@ runs:
           "lock_branch": false
         }
         EOF
+        then
+          echo "::error::Failed to apply branch protection to '${{ inputs.branch }}'. Ensure the token has 'administration: write' permission and the branch exists."
+          exit 1
+        fi
         echo "🔒 Branch '${{ inputs.branch }}' is now protected." >> $GITHUB_STEP_SUMMARY

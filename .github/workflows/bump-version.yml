@@ -72,6 +72,12 @@ jobs:
     needs: [detect-version]
     runs-on: ubuntu-latest
     steps:
+      - name: 'Checkout main'
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 1
+
       - name: 'Validate workflow is running from main'
         if: ${{ github.ref_name != 'main' }}
         run: |
@@ -119,11 +125,7 @@ jobs:
       - name: 'Reset PublicAPI files for major bump'
         if: ${{ inputs.bump-type == 'major' }}
         run: |
-          find . -name "PublicAPI.Shipped.txt" | while read file; do
-            printf '\xef\xbb\xbf#nullable enable\n' > "$file"
-            echo "Reset: $file"
-          done
-          find . -name "PublicAPI.Unshipped.txt" | while read file; do
+          find . \( -name "PublicAPI.Shipped.txt" -o -name "PublicAPI.Unshipped.txt" \) | while read file; do
             printf '\xef\xbb\xbf#nullable enable\n' > "$file"
             echo "Reset: $file"
           done

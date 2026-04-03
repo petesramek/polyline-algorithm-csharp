@@ -278,9 +278,10 @@ jobs:
         run: |
           git fetch origin
           latest_version=$(git ls-remote --heads origin 'release/*' | grep -oP 'release/\K\d+\.\d+' | sort -V | tail -1)
+          current_version=$(echo "${{ env.current-version }}" | grep -oP '^\d+\.\d+')
           echo "Latest release branch version: $latest_version"
-          echo "Current version: ${{ env.current-version }}"
-          if [[ "$latest_version" == "${{ env.current-version }}" ]]; then
+          echo "Current version (normalized): $current_version"
+          if [[ "$latest_version" == "$current_version" ]]; then
             echo "is-latest=true" >> $GITHUB_OUTPUT
           else
             echo "is-latest=false" >> $GITHUB_OUTPUT
