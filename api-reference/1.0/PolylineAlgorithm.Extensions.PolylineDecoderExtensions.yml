@@ -82,7 +82,7 @@ body:
   - type:
     - text: ArgumentNullException
       url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
-    description: Thrown when <code class="paramref">decoder</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+    description: Thrown when <code class="paramref">decoder</code> or <code class="paramref">polyline</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 - api3: Decode(IPolylineDecoder<Polyline, Coordinate>, char[])
   id: PolylineAlgorithm_Extensions_PolylineDecoderExtensions_Decode_PolylineAlgorithm_Abstraction_IPolylineDecoder_PolylineAlgorithm_Polyline_PolylineAlgorithm_Coordinate__System_Char___
   src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Extensions/PolylineDecoderExtensions.cs#L56
@@ -128,7 +128,7 @@ body:
   - type:
     - text: ArgumentNullException
       url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
-    description: Thrown when <code class="paramref">decoder</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+    description: Thrown when <code class="paramref">decoder</code> or <code class="paramref">polyline</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 - api3: Decode(IPolylineDecoder<Polyline, Coordinate>, ReadOnlyMemory<char>)
   id: PolylineAlgorithm_Extensions_PolylineDecoderExtensions_Decode_PolylineAlgorithm_Abstraction_IPolylineDecoder_PolylineAlgorithm_Polyline_PolylineAlgorithm_Coordinate__System_ReadOnlyMemory_System_Char__
   src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Extensions/PolylineDecoderExtensions.cs#L79

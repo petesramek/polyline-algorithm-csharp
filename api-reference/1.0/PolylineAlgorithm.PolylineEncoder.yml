@@ -14,10 +14,7 @@ body:
       url: PolylineAlgorithm.html
   - name: Assembly
     value: PolylineAlgorithm.dll
-- markdown: >-
-    Provides functionality to encode a collection of geographic coordinates into an encoded polyline string.
-
-    Implements the <xref href="PolylineAlgorithm.Abstraction.IPolylineEncoder%602" data-throw-if-not-resolved="false"></xref> interface.
+- markdown: Provides a base implementation for encoding sequences of geographic coordinates into encoded polyline strings.
 - code: 'public sealed class PolylineEncoder : AbstractPolylineEncoder<Coordinate, Polyline>, IPolylineEncoder<Coordinate, Polyline>'
 - h4: Inheritance
 - inheritance:
@@ -56,7 +53,10 @@ body:
   - text: PolylineEncoderExtensions.Encode<Coordinate, Polyline>(IPolylineEncoder<Coordinate, Polyline>, Coordinate[])
     url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1____0___
 - h2: Remarks
-- markdown: This abstract class serves as a base for specific polyline encoders, allowing customization of the encoding process.
+- markdown: >-
+    Derive from this class to implement an encoder for a specific coordinate and polyline type. Override
+
+    <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.GetLatitude(%600)" data-throw-if-not-resolved="false"></xref>, <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.GetLongitude(%600)" data-throw-if-not-resolved="false"></xref>, and <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.CreatePolyline(System.ReadOnlyMemory%7bSystem.Char%7d)" data-throw-if-not-resolved="false"></xref> to provide type-specific behavior.
 - h2: Constructors
 - api3: PolylineEncoder()
   id: PolylineAlgorithm_PolylineEncoder__ctor
@@ -155,7 +155,4 @@ body:
     description: The longitude value as a <xref href="System.Double" data-throw-if-not-resolved="false"></xref>.
 languageId: csharp
 metadata:
-  description: >-
-    Provides functionality to encode a collection of geographic coordinates into an encoded polyline string.
-
-    Implements the  interface.
+  description: Provides a base implementation for encoding sequences of geographic coordinates into encoded polyline strings.

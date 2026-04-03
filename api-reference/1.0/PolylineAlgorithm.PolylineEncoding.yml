@@ -236,7 +236,7 @@ body:
 
     This method converts a floating-point coordinate value into a normalized integer by multiplying it by 10 raised
 
-    to the power of the specified precision, then rounding the result using the specified <code class="paramref">rounding</code> strategy.
+    to the power of the specified precision, then truncating the result to an integer.
 
     </p>
 
@@ -394,7 +394,7 @@ body:
 
     <p>
 
-    Before writing, the method validates that sufficient space is available in the buffer by calling GetCharCount.
+    Before writing, the method validates that sufficient space is available in the buffer by calling <xref href="PolylineAlgorithm.PolylineEncoding.GetRequiredBufferSize(System.Int32)" data-throw-if-not-resolved="false"></xref>.
 
     If the buffer does not have enough remaining capacity, the method returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> without modifying the buffer or position.
 
