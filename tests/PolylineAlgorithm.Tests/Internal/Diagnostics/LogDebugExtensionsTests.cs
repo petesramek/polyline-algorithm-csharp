@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using PolylineAlgorithm.Internal.Diagnostics;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 /// <summary>
 /// Tests for <see cref="LogDebugExtensions"/>.
@@ -84,7 +85,7 @@ public sealed class LogDebugExtensionsTests {
 
         Assert.HasCount(1, logger.Logs);
         Assert.AreEqual(LogLevel.Debug, logger.Logs[0].Level);
-        Assert.Contains($"Decoded coordinate: (Latitude: {latitude}, Longitude: {longitude}) at position {position}.", logger.Logs[0].Message, StringComparison.Ordinal);
+        Assert.Contains(string.Create(CultureInfo.InvariantCulture, $"Decoded coordinate: (Latitude: {latitude}, Longitude: {longitude}) at position {position}."), logger.Logs[0].Message, StringComparison.Ordinal);
     }
 
     [TestMethod]
@@ -153,7 +154,7 @@ public sealed class LogDebugExtensionsTests {
 
         Assert.HasCount(1, logger.Logs);
         Assert.AreEqual(LogLevel.Debug, logger.Logs[0].Level);
-        Assert.Contains($"Latitude: {latitude}, Longitude: {longitude}", logger.Logs[0].Message, StringComparison.Ordinal);
+        Assert.Contains(string.Create(CultureInfo.InvariantCulture, $"Latitude: {latitude}, Longitude: {longitude}"), logger.Logs[0].Message, StringComparison.Ordinal);
     }
 
     [TestMethod]

@@ -1,4 +1,4 @@
-﻿namespace PolylineAlgorithm.Internal;
+namespace PolylineAlgorithm.Internal;
 
 using System;
 
@@ -13,7 +13,7 @@ internal static class Pow10 {
     /// <summary>
     /// Pre-computed powers of 10 from 10^0 to 10^9.
     /// </summary>
-    private static readonly uint[] _pow10 = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
+    private static readonly uint[] _pow10 = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000];
 
     /// <summary>
     /// Returns the power of 10 for the specified precision level.

@@ -1,4 +1,4 @@
-namespace PolylineAlgorithm.Diagnostics;
+namespace PolylineAlgorithm.Internal.Diagnostics;
 
 using PolylineAlgorithm;
 using PolylineAlgorithm.Properties;
@@ -218,7 +218,7 @@ public static class ExceptionGuard {
     /// resource strings. This class is public because messages are only used by the guard methods.
     /// </remarks>
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Internal use only.")]
-    public static class ExceptionMessage {
+    internal static class ExceptionMessage {
 #if NET8_0_OR_GREATER
         private static readonly CompositeFormat StackAllocLimitMustBeEqualOrGreaterThanFormat = CompositeFormat.Parse(ExceptionMessageResource.StackAllocLimitMustBeEqualOrGreaterThanFormat);
         private static readonly CompositeFormat PolylineCannotBeShorterThanFormat = CompositeFormat.Parse(ExceptionMessageResource.PolylineCannotBeShorterThanFormat);

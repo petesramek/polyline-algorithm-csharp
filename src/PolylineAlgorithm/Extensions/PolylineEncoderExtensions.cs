@@ -1,7 +1,7 @@
 namespace PolylineAlgorithm.Extensions;
 
 using PolylineAlgorithm.Abstraction;
-using PolylineAlgorithm.Diagnostics;
+using PolylineAlgorithm.Internal.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 /// </summary>
 public static class PolylineEncoderExtensions {
     /// <summary>
-    /// Encodes a collection of <see cref="Coordinate"/> instances into an encoded polyline.
+    /// Encodes a collection of <see cref="TValue"/> instances into an encoded polyline.
     /// </summary>
     /// <param name="encoder">
     /// The <see cref="IPolylineEncoder{TValue, TPolyline}"/> instance used to perform the encoding operation.

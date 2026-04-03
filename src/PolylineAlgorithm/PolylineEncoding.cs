@@ -5,9 +5,8 @@
 
 namespace PolylineAlgorithm;
 
-using PolylineAlgorithm.Diagnostics;
 using PolylineAlgorithm.Internal;
-
+using PolylineAlgorithm.Internal.Diagnostics;
 using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -79,7 +78,7 @@ public static class PolylineEncoding {
     /// This is the inverse of <see cref="Normalize"/>. The method divides <paramref name="value"/> by 10^<paramref name="precision"/>
     /// and returns a <see cref="double"/>. If <paramref name="precision"/> is zero the integer value is returned as a double unchanged.
     /// </para>
-    /// <para>Arithmetic is performed in a <c>checked</c> context so that any overflow is surfaced as an <see cref="OverflowException"/>.</para>
+    /// <para>Arithmetic is performed in a <see langword="checked"/> context so that any overflow is surfaced as an <see cref="OverflowException"/>.</para>
     /// </remarks>
     /// <param name="value">Integer normalized coordinate (typically produced by <see cref="Normalize"/>).</param>
     /// <param name="precision">Number of decimal places that were used when normalizing. Default is 5.</param>
@@ -114,14 +113,14 @@ public static class PolylineEncoding {
     /// </para>
     /// <para>
     /// The <paramref name="position"/> argument is advanced to the character after the last character consumed for the value.
-    /// If the buffer ends before a complete encoded value is available the method returns <c>false</c> and <paramref name="position"/>
+    /// If the buffer ends before a complete encoded value is available the method returns <see langword="false"/> and <paramref name="position"/>
     /// will point to the buffer end.
     /// </para>
     /// </remarks>
     /// <param name="delta">Reference to the accumulator; the decoded value will be added to this parameter.</param>
     /// <param name="buffer">Read-only memory containing polyline-encoded characters.</param>
     /// <param name="position">Reference to the current index in <paramref name="buffer"/>; advanced as characters are read.</param>
-    /// <returns><c>true</c> if a full value was decoded; <c>false</c> if the buffer ended before the value was complete.</returns>
+    /// <returns><see langword="true"/> if a full value was decoded; <see langword="false"/> if the buffer ended before the value was complete.</returns>
     public static bool TryReadValue(ref int delta, ReadOnlyMemory<char> buffer, ref int position) {
         // Validate that the position is within the bounds of the buffer.
         if (position >= buffer.Length) {
@@ -164,14 +163,14 @@ public static class PolylineEncoding {
     /// </para>
     /// <para>
     /// Before writing the method checks that there is sufficient space in the destination span by calling
-    /// <see cref="GetRequiredBufferSize(int)"/>. If there is not enough space the method returns <c>false</c> without modifying
+    /// <see cref="GetRequiredBufferSize(int)"/>. If there is not enough space the method returns <see langword="false"/> without modifying
     /// the buffer or position.
     /// </para>
     /// </remarks>
     /// <param name="delta">The integer value to encode (typically a coordinate delta).</param>
     /// <param name="buffer">Destination character span to write the encoded characters into.</param>
     /// <param name="position">Reference to the current write index in <paramref name="buffer"/>; advanced as characters are written.</param>
-    /// <returns><c>true</c> if the value was encoded and written; <c>false</c> if the buffer did not have sufficient space.</returns>
+    /// <returns><see langword="true"/> if the value was encoded and written; <see langword="false"/> if the buffer did not have sufficient space.</returns>
     public static bool TryWriteValue(int delta, Span<char> buffer, ref int position) {
         // Validate that the position and required space for write is within the bounds of the buffer.
         if (buffer[position..].Length < GetRequiredBufferSize(delta)) {

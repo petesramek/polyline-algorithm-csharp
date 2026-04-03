@@ -195,13 +195,11 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         // Arrange
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
-        // Act & Assert
-        try {
-            builder.WithStackAllocLimit(0);
-            Assert.Fail("Expected ArgumentOutOfRangeException was not thrown.");
-        } catch (ArgumentOutOfRangeException ex) {
-            Assert.AreEqual("stackAllocLimit", ex.ParamName);
-        }
+        // Act
+        var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => builder.WithStackAllocLimit(0));
+
+        // Assert
+        Assert.AreEqual("stackAllocLimit", exception.ParamName);
     }
 
     /// <summary>
@@ -212,13 +210,11 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         // Arrange
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
-        // Act & Assert
-        try {
-            builder.WithStackAllocLimit(-10);
-            Assert.Fail("Expected ArgumentOutOfRangeException was not thrown.");
-        } catch (ArgumentOutOfRangeException ex) {
-            Assert.AreEqual("stackAllocLimit", ex.ParamName);
-        }
+        // Act
+        var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => builder.WithStackAllocLimit(-10));
+
+        // Assert
+        Assert.AreEqual("stackAllocLimit", exception.ParamName);
     }
 
     /// <summary>
@@ -230,8 +226,9 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
         // Act
-        builder.WithStackAllocLimit(100000);
-        PolylineEncodingOptions result = builder.Build();
+        PolylineEncodingOptions result = builder
+            .WithStackAllocLimit(100000)
+            .Build();
 
         // Assert
         Assert.AreEqual(100000, result.StackAllocLimit);
@@ -246,10 +243,10 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
         // Act
-        builder.WithStackAllocLimit(100)
+        PolylineEncodingOptions result = builder.WithStackAllocLimit(100)
                .WithStackAllocLimit(200)
-               .WithStackAllocLimit(300);
-        PolylineEncodingOptions result = builder.Build();
+               .WithStackAllocLimit(300)
+               .Build();
 
         // Assert
         Assert.AreEqual(300, result.StackAllocLimit);
@@ -264,11 +261,12 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
         // Act
-        PolylineEncodingOptionsBuilder result = builder.WithPrecision(8);
+        PolylineEncodingOptionsBuilder result = builder
+            .WithPrecision(8);
+        PolylineEncodingOptions options = builder.Build();
 
         // Assert
         Assert.AreSame(builder, result);
-        PolylineEncodingOptions options = builder.Build();
         Assert.AreEqual(8u, options.Precision);
     }
 
@@ -281,8 +279,9 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
         // Act
-        builder.WithPrecision(0);
-        PolylineEncodingOptions result = builder.Build();
+        PolylineEncodingOptions result = builder
+            .WithPrecision(0)
+            .Build();
 
         // Assert
         Assert.AreEqual(0u, result.Precision);
@@ -297,8 +296,9 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
         // Act
-        builder.WithPrecision(uint.MaxValue);
-        PolylineEncodingOptions result = builder.Build();
+        PolylineEncodingOptions result = builder
+            .WithPrecision(uint.MaxValue)
+            .Build();
 
         // Assert
         Assert.AreEqual(uint.MaxValue, result.Precision);
@@ -313,10 +313,11 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
         // Act
-        builder.WithPrecision(5)
-               .WithPrecision(7)
-               .WithPrecision(9);
-        PolylineEncodingOptions result = builder.Build();
+        PolylineEncodingOptions result = builder
+            .WithPrecision(5)
+            .WithPrecision(7)
+            .WithPrecision(9)
+            .Build();
 
         // Assert
         Assert.AreEqual(9u, result.Precision);
@@ -332,11 +333,12 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         ILoggerFactory loggerFactory = LoggerFactory.Create(_ => { });
 
         // Act
-        PolylineEncodingOptionsBuilder result = builder.WithLoggerFactory(loggerFactory);
+        PolylineEncodingOptionsBuilder result = builder
+            .WithLoggerFactory(loggerFactory);
+        PolylineEncodingOptions options = builder.Build();
 
         // Assert
         Assert.AreSame(builder, result);
-        PolylineEncodingOptions options = builder.Build();
         Assert.AreSame(loggerFactory, options.LoggerFactory);
 
         // Cleanup
@@ -352,8 +354,9 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
 
         // Act
-        builder.WithLoggerFactory(null!);
-        PolylineEncodingOptions result = builder.Build();
+        PolylineEncodingOptions result = builder
+            .WithLoggerFactory(null!)
+            .Build();
 
         // Assert
         Assert.IsNotNull(result.LoggerFactory);
@@ -366,21 +369,18 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     [TestMethod]
     public void WithLoggerFactory_ReplacePreviousFactory_UpdatesValue() {
         // Arrange
-        ILoggerFactory firstFactory = LoggerFactory.Create(_ => { });
-        ILoggerFactory secondFactory = LoggerFactory.Create(_ => { });
+        using ILoggerFactory firstFactory = LoggerFactory.Create(_ => { });
+        using ILoggerFactory secondFactory = LoggerFactory.Create(_ => { });
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create()
             .WithLoggerFactory(firstFactory);
 
         // Act
-        builder.WithLoggerFactory(secondFactory);
-        PolylineEncodingOptions result = builder.Build();
+        PolylineEncodingOptions result = builder
+            .WithLoggerFactory(secondFactory)
+            .Build();
 
         // Assert
         Assert.AreSame(secondFactory, result.LoggerFactory);
-
-        // Cleanup
-        firstFactory.Dispose();
-        secondFactory.Dispose();
     }
 
     /// <summary>
@@ -389,7 +389,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     [TestMethod]
     public void WithLoggerFactory_NullAfterFactory_UsesNullLoggerFactory() {
         // Arrange
-        ILoggerFactory factory = LoggerFactory.Create(_ => { });
+        using ILoggerFactory factory = LoggerFactory.Create(_ => { });
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create()
             .WithLoggerFactory(factory);
 
@@ -399,9 +399,6 @@ public sealed class PolylineEncodingOptionsBuilderTests {
 
         // Assert
         Assert.IsInstanceOfType<NullLoggerFactory>(result.LoggerFactory);
-
-        // Cleanup
-        factory.Dispose();
     }
 
     /// <summary>
@@ -410,7 +407,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     [TestMethod]
     public void MethodChaining_AllMethods_ReturnsBuilderForChaining() {
         // Arrange
-        ILoggerFactory loggerFactory = LoggerFactory.Create(_ => { });
+        using ILoggerFactory loggerFactory = LoggerFactory.Create(_ => { });
 
         // Act
         PolylineEncodingOptions result = PolylineEncodingOptionsBuilder.Create()
@@ -424,8 +421,5 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         Assert.AreEqual(6u, result.Precision);
         Assert.AreEqual(1024, result.StackAllocLimit);
         Assert.AreSame(loggerFactory, result.LoggerFactory);
-
-        // Cleanup
-        loggerFactory.Dispose();
     }
 }

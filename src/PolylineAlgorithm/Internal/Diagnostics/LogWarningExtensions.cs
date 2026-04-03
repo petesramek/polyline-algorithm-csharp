@@ -27,7 +27,7 @@ internal static partial class LogWarningExtensions {
     /// Base value for event ids used by the <see cref="LoggerMessageAttribute"/> annotations.
     /// Computed as <c>(int)LOG_LEVEL * 100</c>.
     /// </summary>
-    private const int EVENT_ID_BASE = (int)LOG_LEVEL * 100;
+    private const int EVENT_ID_BASE = (int)LOG_LEVEL * Defaults.Logging.LogLevelMultiplier;
 
     /// <summary>
     /// Logs a warning when a method argument is <c>null</c>.

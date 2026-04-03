@@ -4,7 +4,6 @@
 //
 
 using Microsoft.Extensions.Logging;
-using PolylineAlgorithm.Diagnostics;
 using PolylineAlgorithm.Internal.Diagnostics;
 using System.Runtime.CompilerServices;
 

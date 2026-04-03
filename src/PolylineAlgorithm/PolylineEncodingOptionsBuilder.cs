@@ -7,7 +7,7 @@ namespace PolylineAlgorithm;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using PolylineAlgorithm.Diagnostics;
+using PolylineAlgorithm.Internal.Diagnostics;
 
 /// <summary>
 /// Provides a builder for configuring options for polyline encoding operations.

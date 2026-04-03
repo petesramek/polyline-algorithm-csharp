@@ -7,7 +7,6 @@ namespace PolylineAlgorithm.Abstraction;
 
 using Microsoft.Extensions.Logging;
 using PolylineAlgorithm;
-using PolylineAlgorithm.Diagnostics;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Internal.Diagnostics;
 using System;

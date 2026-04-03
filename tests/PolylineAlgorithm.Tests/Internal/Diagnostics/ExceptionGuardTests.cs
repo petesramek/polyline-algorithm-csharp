@@ -5,7 +5,7 @@
 
 namespace PolylineAlgorithm.Tests.Internal.Diagnostics;
 
-using PolylineAlgorithm.Diagnostics;
+using PolylineAlgorithm.Internal.Diagnostics;
 using System;
 
 /// <summary>
