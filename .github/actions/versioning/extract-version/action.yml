@@ -22,7 +22,7 @@ inputs:
 outputs:
   version:
     description: 'Version extracted from the branch name.'
-    value: ${{ steps.regex-match.outputs.match }}
+    value: ${{ steps.resolve-version.outputs.version }}
     
 runs:  
   using: "composite"
@@ -43,14 +43,9 @@ runs:
         regex: ${{ inputs.version-format }}
         flags: 'g'
 
-    - name: 'Set extracted version output'
-      if: steps.regex-match.outputs.match != ''
+    - name: 'Resolve version'
+      id: resolve-version
       shell: bash
       run: |
-        echo "version=${{ steps.regex-match.outputs.match }}" >> $GITHUB_OUTPUT
-    
-    - name: 'Set default version output'
-      if: steps.regex-match.outputs.match == ''
-      shell: bash
-      run: |
-        echo "version=${{ inputs.default-version }}" >> $GITHUB_OUTPUT
+        VERSION="${{ steps.regex-match.outputs.match }}"
+        echo "version=${VERSION:-${{ inputs.default-version }}}" >> $GITHUB_OUTPUT

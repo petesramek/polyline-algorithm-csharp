@@ -17,13 +17,12 @@ Lightweight .NET Standard 2.1 library implementing Google-compliant Encoded Poly
 ## Features
 
 - Fully compliant Google Encoded Polyline Algorithm for .NET Standard 2.1+
-- Immutable, strongly-typed coordinate and polyline data structures
-- Predefined encoder and decoder types for quick usage, extensibility for custom coordinate types
+- Extensible encoding and decoding APIs for custom coordinate and polyline types (`IPolylineEncoder<TCoordinate, TPolyline>`, `IPolylineDecoder<TPolyline, TCoordinate>`, `AbstractPolylineEncoder<TCoordinate, TPolyline>`, `AbstractPolylineDecoder<TPolyline, TCoordinate>`)
+- Extension methods for encoding from `List<T>` and arrays (`PolylineEncoderExtensions`)
 - Robust input validation with descriptive exceptions for malformed/invalid data
-- Simple, extensible encoding and decoding APIs (`IPolylineEncoder<TCoordinate, TPolyline>`, `IPolylineDecoder<TPolyline, TCoordinate>`, `AbstractPolylineEncoder<TCoordinate, TPolyline>`, `AbstractPolylineDecoder<TPolyline, TCoordinate>`)
-- Default encoding and decoding implementations (`PolylineEncoder`, `PolylineDecoder`)
-- Advanced configuration via `PolylineEncodingOptions` (buffer size, logging, etc.)
-- Internal logging and diagnostic supports logging for CI/CD and developer diagnostics
+- Advanced configuration via `PolylineEncodingOptions` (precision, buffer size, logging)
+- Logging and diagnostic support for CI/CD and developer diagnostics via `Microsoft.Extensions.Logging`
+- Low-level utilities for normalization, validation, encoding and decoding via static `PolylineEncoding` class
 - Thorough unit tests and benchmarks for correctness and performance
 - Auto-generated API documentation ([API Reference](https://petesramek.github.io/polyline-algorithm-csharp/))
 - Support for .NET Core, .NET 5+, Xamarin, Unity, Blazor, and other platforms supporting `netstandard2.1`
@@ -44,48 +43,23 @@ Install-Package PolylineAlgorithm
 
 ## Usage
 
-### PolylineEncoder and PolylineDecoder (predefined `Coordinate` and `Polyline` types)
+The library provides abstract base classes to implement your own encoder and decoder for any coordinate and polyline type.
 
-#### Encoding
-
-```csharp
-using PolylineAlgorithm;
-
-var coordinates = new List<Coordinate>
-{
-    new Coordinate(48.858370, 2.294481),
-    new Coordinate(51.500729, -0.124625)
-};
-
-var encoder = new PolylineEncoder();
-Polyline encoded = encoder.Encode(coordinates);
-
-Console.WriteLine(encoded.ToString());
-```
-
-#### Decoding
-
-```csharp
-using PolylineAlgorithm;
-
-Polyline polyline = Polyline.FromString("yseiHoc_MwacOjnwM");
-
-var decoder = new PolylineDecoder();
-IEnumerable<Coordinate> decoded = decoder.Decode(polyline);
-```
-
-### Custom encoder and decoder (user-defined coordinate and polyline types)
+### Custom encoder and decoder
 
 #### Encoding
 
 Custom encoder implementation.
 
 ```csharp
+using PolylineAlgorithm;
+using PolylineAlgorithm.Abstraction;
+
 public sealed class MyPolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
-    public PolylineEncoder()
+    public MyPolylineEncoder()
         : base() { }
 
-    public PolylineEncoder(PolylineEncodingOptions options)
+    public MyPolylineEncoder(PolylineEncodingOptions options)
         : base(options) { }
 
     protected override double GetLatitude((double Latitude, double Longitude) coordinate) {
@@ -105,7 +79,7 @@ public sealed class MyPolylineEncoder : AbstractPolylineEncoder<(double Latitude
 Custom encoder usage.
 
 ```csharp
-using PolylineAlgorithm;
+using PolylineAlgorithm.Extensions;
 
 var coordinates = new List<(double Latitude, double Longitude)>
 {
@@ -114,9 +88,9 @@ var coordinates = new List<(double Latitude, double Longitude)>
 };
 
 var encoder = new MyPolylineEncoder();
-string encoded = encoder.Encode(coordinates);
+string encoded = encoder.Encode(coordinates); // extension method for List<T>
 
-Console.WriteLine(encoded.ToString());
+Console.WriteLine(encoded);
 ```
 
 #### Decoding
@@ -124,18 +98,21 @@ Console.WriteLine(encoded.ToString());
 Custom decoder implementation.
 
 ```csharp
+using PolylineAlgorithm;
+using PolylineAlgorithm.Abstraction;
+
 public sealed class MyPolylineDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-    public PolylineDecoder()
+    public MyPolylineDecoder()
         : base() { }
 
-    public PolylineDecoder(PolylineEncodingOptions options)
+    public MyPolylineDecoder(PolylineEncodingOptions options)
         : base(options) { }
 
     protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) {
         return (latitude, longitude);
     }
 
-    protected override ReadOnlyMemory<char> GetReadOnlyMemory(ref string polyline) {
+    protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) {
         return polyline.AsMemory();
     }
 }
@@ -144,8 +121,6 @@ public sealed class MyPolylineDecoder : AbstractPolylineDecoder<string, (double 
 Custom decoder usage.
 
 ```csharp
-using PolylineAlgorithm;
-
 string encoded = "yseiHoc_MwacOjnwM";
 
 var decoder = new MyPolylineDecoder();
@@ -173,16 +148,16 @@ A: Latitude must be -90..90; longitude -180..180. Out-of-range input throws `Arg
 A: All platforms supporting `netstandard2.1` (including .NET Core and .NET 5+).
 
 **Q: What happens if I pass invalid or malformed input to the decoder?**
-A: The decoder will throw descriptive exceptions for malformed polyline strings. Check exception handling in your application.
+A: The decoder will throw descriptive exceptions (`InvalidPolylineException`) for malformed polyline strings. Check exception handling in your application.
 
-**Q: How do I customize encoding options (e.g., buffer size, logging)?**
-A: Use the PolylineEncodingOptionsBuilder to set custom options and pass to the PolylineEncoder constructor.
+**Q: How do I customize encoding options (e.g., precision, buffer size, logging)?**
+A: Use `PolylineEncodingOptionsBuilder` to set custom options and pass the built `PolylineEncodingOptions` to the encoder or decoder constructor.
 
 **Q: Is the library thread-safe?**
 A: Yes, the main encoding and decoding APIs are stateless and thread-safe. If using mutable shared resources, manage synchronization in your code.
 
 **Q: Can the library be used in Unity, Xamarin, Blazor, or other .NET-compatible platforms?**
-A: Yes! Any environment supporting netstandard2.1 can use this library.
+A: Yes! Any environment supporting `netstandard2.1` can use this library.
 
 **Q: Where can I report bugs or request features?**
 A: Open a GitHub issue using the provided templates in the repository and tag @petesramek.
@@ -191,7 +166,7 @@ A: Open a GitHub issue using the provided templates in the repository and tag @p
 A: Not currently, not planned to be added, but you can extend by implementing your own encoder/decoder using `PolylineEncoding` class methods.
 
 **Q: How do I contribute documentation improvements?**
-A: Update XML doc comments in the codebase and submit a PR; all public APIs require XML documentation. In case, you would like to improve guides you have to updage relevant markdown file in `/api-reference/guide` folder.
+A: Update XML doc comments in the codebase and submit a PR; all public APIs require XML documentation. To improve guides, update the relevant markdown file in the `/api-reference/guide` folder.
 
 **Q: Does the library support streaming or incremental decoding of polylines?**
 A: Currently, only batch encode/decode is supported. For streaming scenarios, implement custom logic using `PolylineEncoding` utility functions.
