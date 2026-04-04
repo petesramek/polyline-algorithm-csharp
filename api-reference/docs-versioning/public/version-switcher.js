@@ -13,7 +13,7 @@
 
   function getSiteRoot() {
     var meta = document.querySelector('meta[name="docfx:rel"]');
-    return meta ? meta.getAttribute('content') : './';
+    return meta ? (meta.getAttribute('content') || './') : './';
   }
 
   var VERSION_PATTERN = /\/\d+(\.\d+)*\//;
@@ -83,7 +83,7 @@
         );
       } else {
         var siteRootPath = new URL(getSiteRoot(), window.location.href).pathname.replace(/\/$/, '');
-        newPathname = siteRootPath + '/' + targetVersion + '/PolylineAlgorithm.html';
+        newPathname = siteRootPath + '/' + targetVersion + '/guide/getting-started.html';
       }
 
       window.location.pathname = newPathname;

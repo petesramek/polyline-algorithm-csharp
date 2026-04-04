@@ -139,7 +139,7 @@ jobs:
           {
             echo "### YamlMime:TableOfContent"
             echo "- name: Guide"
-            echo "  href: ${latest}/guide/introduction.html"
+            echo "  href: ${latest}/guide/getting-started.html"
             echo "- name: API Reference"
             echo "  href: ${latest}/PolylineAlgorithm.html"
           } > api-reference/toc.yml
@@ -159,7 +159,7 @@ jobs:
               else
                 label="v${ver}"
               fi
-              echo "| ${label} | [Guide](${ver}/guide/introduction.html) | [API Reference](${ver}/PolylineAlgorithm.html) |"
+              echo "| ${label} | [Guide](${ver}/guide/getting-started.html) | [API Reference](${ver}/PolylineAlgorithm.html) |"
             done
           } > /tmp/versions_section.md
           awk '/{versions_section}/{while((getline line < "/tmp/versions_section.md") > 0) print line; close("/tmp/versions_section.md"); next} {print}' \
