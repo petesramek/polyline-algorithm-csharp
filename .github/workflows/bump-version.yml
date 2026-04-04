@@ -113,9 +113,7 @@ jobs:
           dotnet-version: ${{ env.dotnet-sdk-version }}
 
       - name: 'Configure git'
-        run: |
-          git config user.name "$(git log -n 1 --pretty=format:%an)"
-          git config user.email "$(git log -n 1 --pretty=format:%ae)"
+        uses: './.github/actions/git/configure-identity'
 
       - name: 'Create develop branch from main'
         run: |

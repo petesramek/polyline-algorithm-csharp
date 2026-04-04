@@ -87,12 +87,14 @@ runs:
         set -e
       working-directory: ${{ inputs.working-directory }}
 
+    - name: Configure git identity
+      if: ${{ fromJSON(steps.validate.outputs.has-changes) == '1' }}
+      uses: './.github/actions/git/configure-identity'
+
     - name: Push changes to ${{ github.head_ref || github.ref }}
       if: ${{ fromJSON(steps.validate.outputs.has-changes) == '1' }}
       shell: bash
       run: |
-        git config user.name "$(git log -n 1 --pretty=format:%an)"
-        git config user.email "$(git log -n 1 --pretty=format:%ae)"
         git commit -m '${{ inputs.commit-message }}'
         git pull --rebase origin ${{ github.head_ref || github.ref }}
         git push
