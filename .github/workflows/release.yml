@@ -243,12 +243,14 @@ jobs:
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v6
+        with:
+          fetch-tags: true
 
       - name: 'Determine notes start tag'
         id: determine-notes-start-tag
         run: |
-          notes-start-tag=$(git describe --abbrev=0 --tags)
-          echo "notes-start-tag=$notes-start-tag" >> $GITHUB_OUTPUT
+          notes_start_tag=$(git describe --abbrev=0 --tags 2>/dev/null || echo "")
+          echo "notes-start-tag=$notes_start_tag" >> $GITHUB_OUTPUT
         shell: bash
       
       - name: 'Create GitHub Release'
