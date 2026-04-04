@@ -87,6 +87,14 @@ jobs:
           token: ${{ secrets.GH_ADMIN_TOKEN }}
           lock-branch: 'true'
 
+      - name: 'Unlock preview branch for merge'
+        if: ${{ steps.targets.outputs.preview-branch != '' }}
+        uses: './.github/actions/github/branch-protection/lock'
+        with:
+          branch: ${{ steps.targets.outputs.preview-branch }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+          lock-branch: 'false'
+
       - name: 'Backtrack: merge ${{ github.base_ref }} into ${{ steps.targets.outputs.preview-branch }}'
         if: ${{ steps.targets.outputs.preview-branch != '' }}
         env:
@@ -96,6 +104,14 @@ jobs:
             --field base="${{ steps.targets.outputs.preview-branch }}" \
             --field head="${{ github.base_ref }}" \
             --field commit_message="Backtrack: merge ${{ github.base_ref }} into ${{ steps.targets.outputs.preview-branch }}"
+
+      - name: 'Unlock develop branch for merge'
+        if: ${{ steps.check-develop.outputs.exists == 'true' }}
+        uses: './.github/actions/github/branch-protection/lock'
+        with:
+          branch: ${{ steps.targets.outputs.develop-branch }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+          lock-branch: 'false'
 
       - name: 'Backtrack: merge ${{ steps.targets.outputs.merge-source }} into ${{ steps.targets.outputs.develop-branch }}'
         if: ${{ steps.check-develop.outputs.exists == 'true' }}
