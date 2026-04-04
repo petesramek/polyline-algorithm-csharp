@@ -61,6 +61,15 @@ jobs:
             echo "::warning::Develop branch '${{ steps.targets.outputs.develop-branch }}' not found, skipping backtrack."
           fi
 
+      - name: 'Lock preview branch'
+        id: lock-preview
+        if: ${{ steps.targets.outputs.preview-branch != '' }}
+        uses: './.github/actions/github/branch-protection/lock'
+        with:
+          branch: ${{ steps.targets.outputs.preview-branch }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+          lock-branch: 'true'
+
       - name: 'Lock develop branch'
         id: lock-develop
         if: ${{ steps.check-develop.outputs.exists == 'true' }}
@@ -68,6 +77,7 @@ jobs:
         with:
           branch: ${{ steps.targets.outputs.develop-branch }}
           token: ${{ secrets.GH_ADMIN_TOKEN }}
+          lock-branch: 'true'
 
       - name: 'Backtrack: merge ${{ github.base_ref }} into ${{ steps.targets.outputs.preview-branch }}'
         if: ${{ steps.targets.outputs.preview-branch != '' }}
@@ -88,6 +98,22 @@ jobs:
             --field base="${{ steps.targets.outputs.develop-branch }}" \
             --field head="${{ steps.targets.outputs.merge-source }}" \
             --field commit_message="Backtrack: merge ${{ steps.targets.outputs.merge-source }} into ${{ steps.targets.outputs.develop-branch }}"
+
+      - name: 'Restore protection: preview branch'
+        if: ${{ always() && steps.lock-preview.outcome == 'success' }}
+        uses: './.github/actions/github/branch-protection/lock'
+        with:
+          branch: ${{ steps.targets.outputs.preview-branch }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+          lock-branch: 'false'
+
+      - name: 'Restore protection: develop branch'
+        if: ${{ always() && steps.lock-develop.outcome == 'success' }}
+        uses: './.github/actions/github/branch-protection/lock'
+        with:
+          branch: ${{ steps.targets.outputs.develop-branch }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+          lock-branch: 'false'
 
       - name: 'Write backtrack summary'
         if: ${{ always() }}
