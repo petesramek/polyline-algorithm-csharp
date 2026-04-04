@@ -1,0 +1,107 @@
+name: 'Backtrack'
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - 'preview/**'
+      - 'release/**'
+
+permissions:
+  actions: read
+  contents: write
+
+concurrency:
+  group: backtrack-${{ github.base_ref }}
+  cancel-in-progress: false
+
+jobs:
+  backtrack:
+    name: 'Backtrack changes from ${{ github.base_ref }}'
+    if: ${{ github.event.pull_request.merged == true }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout ${{ github.base_ref }}'
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.base_ref }}
+          fetch-depth: 0
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+
+      - name: 'Configure git'
+        run: |
+          git config user.name "$(git log -n 1 --pretty=format:%an)"
+          git config user.email "$(git log -n 1 --pretty=format:%ae)"
+
+      - name: 'Resolve backtrack targets'
+        id: targets
+        run: |
+          base_ref="${{ github.base_ref }}"
+          if [[ "$base_ref" == preview/* ]]; then
+            version="${base_ref#preview/}"
+            echo "preview-branch=" >> $GITHUB_OUTPUT
+            echo "develop-branch=develop/$version" >> $GITHUB_OUTPUT
+            echo "merge-source=$base_ref" >> $GITHUB_OUTPUT
+          elif [[ "$base_ref" == release/* ]]; then
+            version="${base_ref#release/}"
+            echo "preview-branch=preview/$version" >> $GITHUB_OUTPUT
+            echo "develop-branch=develop/$version" >> $GITHUB_OUTPUT
+            echo "merge-source=preview/$version" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 'Check if develop branch exists'
+        id: check-develop
+        run: |
+          git fetch origin
+          if git ls-remote --exit-code --heads origin "${{ steps.targets.outputs.develop-branch }}" > /dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "::warning::Develop branch '${{ steps.targets.outputs.develop-branch }}' not found, skipping backtrack."
+          fi
+
+      - name: 'Lock develop branch'
+        id: lock-develop
+        if: ${{ steps.check-develop.outputs.exists == 'true' }}
+        uses: './.github/actions/github/branch-protection/lock'
+        with:
+          branch: ${{ steps.targets.outputs.develop-branch }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+
+      - name: 'Backtrack: merge ${{ github.base_ref }} into ${{ steps.targets.outputs.preview-branch }}'
+        if: ${{ steps.targets.outputs.preview-branch != '' }}
+        run: |
+          git fetch origin
+          git checkout -B ${{ steps.targets.outputs.preview-branch }} origin/${{ steps.targets.outputs.preview-branch }}
+          git merge --no-ff origin/${{ github.base_ref }} -m "Backtrack: merge ${{ github.base_ref }} into ${{ steps.targets.outputs.preview-branch }}"
+          git push origin ${{ steps.targets.outputs.preview-branch }}
+
+      - name: 'Backtrack: merge ${{ steps.targets.outputs.merge-source }} into ${{ steps.targets.outputs.develop-branch }}'
+        if: ${{ steps.check-develop.outputs.exists == 'true' }}
+        run: |
+          git fetch origin
+          git checkout -B ${{ steps.targets.outputs.develop-branch }} origin/${{ steps.targets.outputs.develop-branch }}
+          git merge --no-ff origin/${{ steps.targets.outputs.merge-source }} -m "Backtrack: merge ${{ steps.targets.outputs.merge-source }} into ${{ steps.targets.outputs.develop-branch }}"
+          git push origin ${{ steps.targets.outputs.develop-branch }}
+
+      - name: 'Unlock develop branch'
+        if: ${{ always() && steps.check-develop.outputs.exists == 'true' }}
+        uses: './.github/actions/github/branch-protection/unlock'
+        with:
+          branch: ${{ steps.targets.outputs.develop-branch }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+
+      - name: 'Write backtrack summary'
+        if: ${{ always() }}
+        run: |
+          echo "## 🔁 Backtrack Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Branch | Merged from |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------------|" >> $GITHUB_STEP_SUMMARY
+          if [[ "${{ steps.targets.outputs.preview-branch }}" != "" ]]; then
+            echo "| \`${{ steps.targets.outputs.preview-branch }}\` | \`${{ github.base_ref }}\` |" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [[ "${{ steps.check-develop.outputs.exists }}" == "true" ]]; then
+            echo "| \`${{ steps.targets.outputs.develop-branch }}\` | \`${{ steps.targets.outputs.merge-source }}\` |" >> $GITHUB_STEP_SUMMARY
+          fi
