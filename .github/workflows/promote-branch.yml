@@ -205,12 +205,6 @@ jobs:
         run: |
           git fetch origin
           git push origin origin/${{ env.base-branch }}:refs/heads/${{ env.target-branch }}
-      - name: 'Lock target branch'
-        if: ${{ needs.workflow-variables.outputs.target-branch-exists == 'false' }}
-        uses: './.github/actions/github/branch-protection/lock'
-        with:
-          branch: ${{ needs.workflow-variables.outputs.target-branch }}
-          token: ${{ secrets.GH_ADMIN_TOKEN }}
       - name: 'Create PR: "Promote ${{ env.current-branch }} to ${{ env.target-branch }}"'
         if: ${{ needs.workflow-variables.outputs.pull-request-exists == 'false' }}
         env:
