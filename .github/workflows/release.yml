@@ -206,9 +206,20 @@ jobs:
             ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.nupkg
             ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.snupkg
 
+  publish-documentation:
+    name: 'Publish documentation'
+    needs: [pack, validate-release, workflow-variables]
+    if: ${{ needs.workflow-variables.outputs.is-release == 'true' }}
+    uses: ./.github/workflows/publish-documentation.yml
+    permissions:
+      actions: read
+      pages: write
+      id-token: write
+
   publish-package:
     name: 'Publish package'
-    needs: [pack, validate-release]
+    needs: [pack, validate-release, publish-documentation]
+    if: ${{ always() && needs.pack.result == 'success' && needs.validate-release.result == 'success' && (needs.publish-documentation.result == 'success' || needs.publish-documentation.result == 'skipped') }}
     env:
       package-artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
     runs-on: ubuntu-latest
