@@ -28,6 +28,10 @@ inputs:
     description: 'When true, sets required_pull_request_reviews to null (removes PR review requirement). Use temporarily before automated merges so the merge API is not blocked. When false (default), PR reviews are required as configured.'
     required: false
     default: 'false'
+  required-linear-history:
+    description: 'When true, enforces linear history (no merge commits). When false (default), merge commits are allowed. Set to false before automated merges that create merge commits.'
+    required: false
+    default: 'false'
 
 runs:
   using: composite
@@ -48,6 +52,7 @@ runs:
           --argjson enforce_admins "$ENFORCE_ADMINS" \
           --argjson lock_branch '${{ inputs.lock-branch }}' \
           --argjson skip_reviews '${{ inputs.skip-pull-request-reviews }}' \
+          --argjson required_linear_history '${{ inputs.required-linear-history }}' \
           '{
             "required_status_checks": null,
             "enforce_admins": $enforce_admins,
@@ -59,7 +64,8 @@ runs:
             "restrictions": null,
             "allow_force_pushes": false,
             "allow_deletions": false,
-            "lock_branch": $lock_branch
+            "lock_branch": $lock_branch,
+            "required_linear_history": $required_linear_history
           }')
 
         if ! echo "$PAYLOAD" | gh api --method PUT /repos/${{ github.repository }}/branches/${{ inputs.branch }}/protection --input -; then
