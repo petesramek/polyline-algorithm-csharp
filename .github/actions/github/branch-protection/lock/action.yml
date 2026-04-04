@@ -8,6 +8,10 @@ inputs:
   token:
     description: 'GitHub token with administration:write (repo admin) permission. Use a PAT; GITHUB_TOKEN cannot call the branch protection API.'
     required: true
+  lock-branch:
+    description: 'When true, sets lock_branch to prevent even PR merges (use during automated operations). When false (default), only direct pushes are blocked; PRs with required reviews can still be merged.'
+    required: false
+    default: 'false'
 
 runs:
   using: composite
@@ -30,7 +34,7 @@ runs:
           "restrictions": null,
           "allow_force_pushes": false,
           "allow_deletions": false,
-          "lock_branch": false
+          "lock_branch": ${{ inputs.lock-branch }}
         }
         EOF
         then
