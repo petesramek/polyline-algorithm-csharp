@@ -53,7 +53,8 @@
           '/' + targetVersion + '/'
         );
       } else {
-        newPathname = window.location.pathname.replace(/\/$/, '') + '/' + targetVersion + '/';
+        var siteRootPath = new URL(getSiteRoot(), window.location.href).pathname.replace(/\/$/, '');
+        newPathname = siteRootPath + '/' + targetVersion + '/PolylineAlgorithm.html';
       }
 
       window.location.pathname = newPathname;

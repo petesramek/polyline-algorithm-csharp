@@ -8,8 +8,7 @@
       {
         "files": [
           "index.md",
-          "toc.yml",
-          "guide/*.{md,yml}"
+          "toc.yml"
         ],
         "exclude": [
           "_docs/**"
