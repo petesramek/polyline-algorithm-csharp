@@ -40,7 +40,7 @@ jobs:
           base_ref="${{ github.base_ref }}"
           if [[ "$base_ref" == preview/* ]]; then
             version="${base_ref#preview/}"
-            echo "preview-branch=" >> $GITHUB_OUTPUT
+            echo "preview-branch=" >> $GITHUB_OUTPUT  # no intermediate branch; merge directly into develop
             echo "develop-branch=develop/$version" >> $GITHUB_OUTPUT
             echo "merge-source=$base_ref" >> $GITHUB_OUTPUT
           elif [[ "$base_ref" == release/* ]]; then
@@ -86,7 +86,7 @@ jobs:
           git push origin ${{ steps.targets.outputs.develop-branch }}
 
       - name: 'Unlock develop branch'
-        if: ${{ always() && steps.check-develop.outputs.exists == 'true' }}
+        if: ${{ always() && steps.lock-develop.outcome != 'skipped' }}
         uses: './.github/actions/github/branch-protection/unlock'
         with:
           branch: ${{ steps.targets.outputs.develop-branch }}
