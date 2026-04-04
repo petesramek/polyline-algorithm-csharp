@@ -1,6 +1,6 @@
 name: 'Lock branch'
 author: 'Pete Sramek'
-description: 'Apply branch protection to prevent direct pushes. Requires PRs with configurable approval count; optional bypass actors let trusted users merge without a review.'
+description: 'Apply branch protection to prevent direct pushes. Requires PRs with configurable approval count; admins can optionally bypass all restrictions.'
 inputs:
   branch:
     description: 'Branch name to lock.'
@@ -20,10 +20,10 @@ inputs:
     description: 'When true, approved reviews are dismissed when new commits are pushed to the branch.'
     required: false
     default: 'true'
-  bypass-users:
-    description: 'Comma-separated list of GitHub user logins that are allowed to bypass pull request requirements (e.g. "petesramek,bot-user").'
+  bypass-admins:
+    description: 'When true, repository admins are exempt from all branch protection rules (enforce_admins is disabled). When false (default), admins are also subject to the rules.'
     required: false
-    default: ''
+    default: 'false'
 
 runs:
   using: composite
@@ -33,28 +33,23 @@ runs:
       env:
         GH_TOKEN: ${{ inputs.token }}
       run: |
-        BYPASS_USERS_JSON="[]"
-        if [ -n "${{ inputs.bypass-users }}" ]; then
-          BYPASS_USERS_JSON=$(echo "${{ inputs.bypass-users }}" | tr ',' '\n' | sed 's/^ *//;s/ *$//' | jq -R . | jq -s .)
+        ENFORCE_ADMINS=true
+        if [ '${{ inputs.bypass-admins }}' = 'true' ]; then
+          ENFORCE_ADMINS=false
         fi
 
         PAYLOAD=$(jq -n \
           --argjson review_count '${{ inputs.required-approving-review-count }}' \
           --argjson dismiss_stale '${{ inputs.dismiss-stale-reviews }}' \
-          --argjson bypass_users "$BYPASS_USERS_JSON" \
+          --argjson enforce_admins "$ENFORCE_ADMINS" \
           --argjson lock_branch '${{ inputs.lock-branch }}' \
           '{
             "required_status_checks": null,
-            "enforce_admins": false,
+            "enforce_admins": $enforce_admins,
             "required_pull_request_reviews": {
               "dismiss_stale_reviews": $dismiss_stale,
               "require_code_owner_reviews": false,
-              "required_approving_review_count": $review_count,
-              "bypass_pull_request_allowances": {
-                "users": $bypass_users,
-                "teams": [],
-                "apps": []
-              }
+              "required_approving_review_count": $review_count
             },
             "restrictions": null,
             "allow_force_pushes": false,
