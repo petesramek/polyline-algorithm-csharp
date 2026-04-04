@@ -1,18 +1,20 @@
 ﻿# PolylineAlgorithm API Reference
 
 Welcome! This documentation provides guides, configuration options, examples, and FAQs for the PolylineAlgorithm library.  
-For detailed class and method docs, see the [auto-generated API documentation](https://petesramek.github.io/polyline-algorithm-csharp/).
+For detailed class and method docs, see the versioned [API Reference]({version}/PolylineAlgorithm.html).
 
 ## Contents
 
-- [Quick Start Guide](./guide.md)
-- [Configuration Options](./configuration.md)
-- [Advanced Usage](./advanced.md)
-- [Examples](./examples.md)
-- [FAQ](./faq.md)
+- [Introduction]({version}/guide/introduction.html)
+- [Getting Started]({version}/guide/getting-started.html)
+- [Configuration Options]({version}/guide/configuration.html)
+- [Advanced Scenarios]({version}/guide/advanced-scenarios.html)
+- [Samples]({version}/guide/sample.html)
+- [FAQ]({version}/guide/faq.html)
+
+{versions_section}
 
 ## Links
 
-- [API Reference Site](https://petesramek.github.io/polyline-algorithm-csharp/)
-- [Contributing Guidelines](../CONTRIBUTING.md)
-- [Changelog](./changelog.md) (if provided)
+- [API Reference]({version}/PolylineAlgorithm.html)
+- [Contributing Guidelines](https://github.com/petesramek/polyline-algorithm-csharp/blob/main/CONTRIBUTING.md)
