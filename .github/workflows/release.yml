@@ -277,6 +277,9 @@ jobs:
     needs: [workflow-variables, release, versioning]
     if: ${{ needs.workflow-variables.outputs.is-release == 'true' }}
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
     env:
       GH_TOKEN: ${{ github.token }}
       current-branch: ${{ github.ref_name }}
