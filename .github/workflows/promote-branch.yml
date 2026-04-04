@@ -220,4 +220,5 @@ jobs:
           current-branch: ${{ github.ref_name }}
           target-branch: ${{ needs.workflow-variables.outputs.target-branch }}
         run: |
+            git fetch origin ${{ env.target-branch }}
             gh pr create --title "Promote ${{ env.current-branch }} to ${{ env.target-branch }}" --fill --base ${{ env.target-branch }} --head ${{ env.current-branch }}
