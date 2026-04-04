@@ -153,10 +153,28 @@ jobs:
             done
           } > api-reference/toc.yml
 
-      - name: 'Inject latest version into index.md'
+      - name: 'Inject latest version and released versions table into index.md'
         shell: bash
         run: |
-          sed -i "s|{version}|${{ steps.discover-versions.outputs.latest }}|g" api-reference/index.md
+          latest="${{ steps.discover-versions.outputs.latest }}"
+          {
+            echo "## Released Versions"
+            echo ""
+            echo "| Version | Guide | API Reference |"
+            echo "|---------|-------|---------------|"
+            for ver in $(echo "${{ steps.discover-versions.outputs.versions }}" | tr ',' '\n' | sort -Vr); do
+              if [ "$ver" = "$latest" ]; then
+                label="v${ver} (latest)"
+              else
+                label="v${ver}"
+              fi
+              echo "| ${label} | [Guide](${ver}/guide/introduction.html) | [API Reference](${ver}/PolylineAlgorithm.html) |"
+            done
+          } > /tmp/versions_section.md
+          awk '/{versions_section}/{while((getline line < "/tmp/versions_section.md") > 0) print line; close("/tmp/versions_section.md"); next} {print}' \
+            api-reference/index.md > /tmp/index.md
+          mv /tmp/index.md api-reference/index.md
+          sed -i "s|{version}|${latest}|g" api-reference/index.md
 
       - name: 'Build documentation'
         shell: bash

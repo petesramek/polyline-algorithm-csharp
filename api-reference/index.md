@@ -12,6 +12,8 @@ For detailed class and method docs, see the versioned [API Reference]({version}/
 - [Samples]({version}/guide/sample.html)
 - [FAQ]({version}/guide/faq.html)
 
+{versions_section}
+
 ## Links
 
 - [API Reference]({version}/PolylineAlgorithm.html)
