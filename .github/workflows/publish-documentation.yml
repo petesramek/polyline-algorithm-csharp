@@ -132,7 +132,7 @@ jobs:
           done
           mv /tmp/api-reference.json api-reference/api-reference.json
 
-      - name: 'Update toc.yml with Reference dropdown'
+      - name: 'Update toc.yml with navigation links'
         shell: bash
         run: |
           latest="${{ steps.discover-versions.outputs.latest }}"
@@ -140,17 +140,8 @@ jobs:
             echo "### YamlMime:TableOfContent"
             echo "- name: Guide"
             echo "  href: ${latest}/guide/introduction.html"
-            echo "- name: Reference"
-            echo "  dropdown: true"
-            echo "  items:"
-            for ver in $(echo "${{ steps.discover-versions.outputs.versions }}" | tr ',' '\n' | sort -Vr); do
-              if [ "$ver" = "$latest" ]; then
-                echo "  - name: v${ver} (latest)"
-              else
-                echo "  - name: v${ver}"
-              fi
-              echo "    href: ${ver}/PolylineAlgorithm.html"
-            done
+            echo "- name: API Reference"
+            echo "  href: ${latest}/PolylineAlgorithm.html"
           } > api-reference/toc.yml
 
       - name: 'Inject latest version and released versions table into index.md'
