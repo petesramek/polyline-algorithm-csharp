@@ -1,0 +1,258 @@
+﻿name: Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore:
+      - 'preview/**'
+      - 'release/**'
+    paths:
+      - 'src/**'
+
+permissions:
+  actions: read
+  pages: write
+  id-token: write
+  contents: write
+
+concurrency: 
+  group: build-${{ github.head_ref || github.ref }}      
+  cancel-in-progress: false
+
+env:
+  dotnet-sdk-version: '10.x'
+  build-configuration: 'Release'
+  build-platform: 'Any CPU'
+  git-version: '6.0.x'
+  test-result-directory: 'test-results'
+  nuget-packages-directory: 'nuget-packages'
+
+jobs:
+  workflow-variables:
+    name: 'Set workflow variables'
+    runs-on: ubuntu-latest
+
+    outputs:
+      is-release: ${{ startsWith(github.ref_name, 'release') }}
+      is-preview: ${{ startsWith(github.ref_name, 'preview') }}
+
+    steps:
+      - name: 'Set workflow variables'
+        id: github
+        run: |
+          echo "is-release:${{ startsWith(github.ref_name, 'release') }}"
+          echo "is-preview:${{ startsWith(github.ref_name, 'preview') }}"
+
+  versioning:
+    name: 'Extract version'
+    runs-on: ubuntu-latest
+    outputs:
+        friendly-version: ${{ steps.format-version.outputs.friendly-version }}
+        assembly-version: ${{ steps.format-version.outputs.assembly-version }}
+        assembly-informational-version: ${{ steps.format-version.outputs.assembly-informational-version }}
+        file-version: ${{ steps.format-version.outputs.file-version }}
+        release-version: ${{ steps.format-version.outputs.release-version }}
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v6
+      - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+      - name: 'Extract version from branch name'
+        id: extract-version
+        uses: './.github/actions/versioning/extract-version'
+        with:
+          branch-name: ${{ github.ref_name }}
+      - name: 'Create build number'
+        shell: bash
+        id: create-build-number
+        run: |
+          git fetch --unshallow --filter=tree:0
+          build_number=$(git rev-list --count origin/${{ github.ref_name }} ^origin/main)
+          echo "build-number=$build_number" >> $GITHUB_OUTPUT
+      - name: 'Create pre-release tag'
+        shell: bash
+        id: create-pre-release-tag
+        env:
+          build-number: ${{ steps.create-build-number.outputs.build-number }}
+        run: |
+          if [[ '${{ needs.workflow-variables.outputs.is-release }}' == 'true' ]]; then
+            echo "pre-release-tag=" >> $GITHUB_OUTPUT
+          elif [[ '${{ needs.workflow-variables.outputs.is-preview }}' == 'true' ]]; then
+            pre_release_tag='preview'
+            echo "pre-release-tag=$pre_release_tag" >> $GITHUB_OUTPUT
+          else
+            pre_release_tag=$(echo ${{ github.ref_name }} | tr '/' '-' | tr '.' '-'| tr '_' '-')
+            echo "pre-release-tag=$pre_release_tag" >> $GITHUB_OUTPUT
+          fi
+      - name: 'Format version'
+        id: format-version
+        uses: ./.github/actions/versioning/format-version
+        with:
+          version: ${{ steps.extract-version.outputs.version }}
+          patch: ${{ github.run_number }}
+          build-number: ${{ steps.create-build-number.outputs.build-number }}
+          sha: ${{ github.sha }}
+          pre-release-tag: ${{ steps.create-pre-release-tag.outputs.pre-release-tag }}
+
+  format:
+    name: 'Format source code'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v6
+
+      - name: 'Format source code'
+        uses: ./.github/actions/source/format
+        with:
+          project-path: '**/PolylineAlgorithm.csproj'
+
+  build:
+    name: 'Compile source code'
+    needs: [workflow-variables, versioning, format]
+    runs-on: ubuntu-latest
+
+    env:
+      assembly-version: ${{ needs.versioning.outputs.assembly-version }}
+      assembly-informational-version: ${{ needs.versioning.outputs.assembly-informational-version }}
+      file-version: ${{ needs.versioning.outputs.file-version }}
+
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v6
+
+      - name: 'Compile source code'
+        uses: ./.github/actions/source/compile
+        with:
+          project-path: '**/PolylineAlgorithm.csproj'
+          assembly-version: ${{ env.assembly-version }}
+          assembly-informational-version: ${{ env.assembly-informational-version }}
+          file-version: ${{ env.file-version }}
+          treat-warnins-as-error: ${{ needs.workflow-variables.outputs.is-release }}
+
+  test:
+    name: 'Run tests'
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v6
+
+      - name: 'Setup .NET'
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+
+      - name: 'Run tests'
+        uses: ./.github/actions/testing/test
+        with:
+          project-path: './tests/PolylineAlgorithm.Tests/PolylineAlgorithm.Tests.csproj'
+          test-results-directory: '${{ runner.temp }}/${{ env.test-result-directory }}/'
+          code-coverage-settings-file: '${{ github.workspace}}/code-coverage-settings.xml'
+
+      - name: 'Generate test report'
+        uses: ./.github/actions/testing/test-report
+        id: test-report
+        with:
+          test-result-folder: '${{ runner.temp }}/${{ env.test-result-directory }}/'
+
+      - name: Write test report summary
+        run: cat ${{ steps.test-report.outputs.test-report-file }} >> $GITHUB_STEP_SUMMARY
+
+      - name: 'Generate code coverage'
+        uses: ./.github/actions/testing/code-coverage
+        id: code-coverage-report
+        with:
+          test-result-folder: '${{ runner.temp }}/${{ env.test-result-directory }}/'
+
+      - name: Write code coverage report summary
+        run: cat ${{ steps.code-coverage-report.outputs.code-coverage-report-file }} >> $GITHUB_STEP_SUMMARY
+
+  pack:
+    name: 'Package binaries'
+    needs: [versioning, build]
+    runs-on: ubuntu-latest
+    env:
+      assembly-version: ${{ needs.versioning.outputs.assembly-version }}
+      assembly-informational-version: ${{ needs.versioning.outputs.assembly-informational-version }}
+      file-version: ${{ needs.versioning.outputs.file-version }}
+      release-version: ${{ needs.versioning.outputs.release-version }}
+      package-artifact-name: package
+    outputs:
+        package-artifact-name: ${{ env.package-artifact-name }}
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+
+      - name: Download Build
+        uses: actions/download-artifact@v8
+        with:
+          name: build
+
+      - name: Pack with .NET
+        run: |
+          dotnet pack ${{ vars.SRC_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} /p:Platform="${{ env.build-platform }}" /p:PackageVersion=${{ env.release-version }} /p:Version=${{ env.assembly-version }} /p:AssemblyInformationalVersion=${{ env.assembly-informational-version }} /p:FileVersion=${{ env.file-version }} --output ${{ runner.temp }}/${{ env.nuget-packages-directory }}
+      
+      - name: Upload Package
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ env.package-artifact-name }}
+          path: |
+            ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.nupkg
+            ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.snupkg
+
+  publish-package:
+    name: 'Publish development package'
+    needs: [pack]
+    env:
+      package-artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
+    runs-on: ubuntu-latest
+    environment: 'Development'
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+
+      - name: 'Publish package to Azure Artifact feed'
+        uses: ./.github/actions/nuget/publish-package
+        with:
+          package-artifact-name: ${{ env.package-artifact-name }}
+          nuget-feed-url: ${{ vars.NUGET_PACKAGE_FEED_URL }}
+          nuget-feed-api-key: ${{ secrets.NUGET_PACKAGE_FEED_API_KEY }}
+          nuget-feed-server: 'AzureArtifacts'
+          working-directory: ${{ runner.temp }}/${{ env.nuget-packages-directory }}
+          dotnet-sdk-version: ${{ env.dotnet-sdk-version }}'
+
+  generate-assembly-metadata:
+    name: 'Generate assembly metadata'
+    needs: [versioning, build]
+    env:
+      friendly-version: ${{ needs.versioning.outputs.friendly-version }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v6 
+      - name: 'Generate assembly metadata'
+        uses: ./.github/actions/documentation/docfx-metadata
+        with:
+          artifact-name: 'assembly-metadata'
+          docfx-json-manifest: './api-reference/assembly-metadata.json'
+          temporary-directory: './api-reference/temp'
+          output-directory: './api-reference/${{ env.friendly-version }}'
+      - name: 'Push assembly metadata artifact'
+        uses: ./.github/actions/git/push-changes
+        with:
+          artifact-name: 'assembly-metadata'
+          commit-message: 'Updated docs for version ${{ env.friendly-version }}'
+          working-directory: './api-reference/${{ env.friendly-version }}'

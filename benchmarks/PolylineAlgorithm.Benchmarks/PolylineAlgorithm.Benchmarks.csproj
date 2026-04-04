@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<DebugType>pdbonly</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="BenchmarkDotNet" Version="0.15.8" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\PolylineAlgorithm\PolylineAlgorithm.csproj" />
+		<ProjectReference Include="..\..\utilities\PolylineAlgorithm.Utility\PolylineAlgorithm.Utility.csproj" />
+	</ItemGroup>
+
+</Project>

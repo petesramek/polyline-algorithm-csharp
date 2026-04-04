@@ -1,0 +1,99 @@
+﻿name: 'Push Changes'
+author: 'Pete Sramek'
+description: 'Push changes to a specified branch in the repository.'
+inputs:
+  # Required
+  commit-message:
+    description: 'The commit message to use when pushing changes.'
+    required: true
+# Optional
+  dotnet_sdk_version:
+    description: '.NET SDK version. Default: 10.x'
+    required: false
+    default: '10.x'
+  artifact-name:
+    description: 'Name of the artifact to download before pushing changes. Default: '''''
+    required: false
+    default: ''
+  working-directory:
+    description: 'The working directory where the changes will be pushed from. Default ''.'''
+    required: false
+    default: '.'
+  target-branch:
+    description: 'The branch to push changes to.. Default: '''''
+    required: false
+    default: ''
+
+runs:  
+  using: "composite"
+  steps:
+    - name: 'Checkout ${{ github.head_ref || github.ref }}'
+      uses: actions/checkout@v6
+
+    - name: Dotnet Setup
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.dotnet-sdk-version }}
+
+    - name: Download a single artifact
+      if: ${{ inputs.artifact-name != '' }}
+      uses: actions/download-artifact@v8
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ inputs.working-directory }}
+
+    - name: Stage changes in ${{ inputs.working-directory }}
+      shell: bash
+      run: |
+        git add .
+      working-directory: ${{ inputs.working-directory }}
+
+    - if: runner.os == 'Windows'
+      shell: bash
+      run: |
+        git config --global core.autocrlf false
+        git config --global core.eol lf
+
+    - if: runner.os != 'Windows'
+      shell: bash
+      run: |
+        git config --global core.autocrlf true
+        git config --global core.eol lf
+
+    - name: Create or switch to ${{ inputs.target-branch }}
+      if: ${{ inputs.target-branch != '' }}
+      shell: bash
+      run: |
+        git fetch origin
+        git stash push --keep-index
+        if git show-ref --verify --quiet refs/heads/${{ inputs.target-branch }}; then
+          echo "Branch ${{ inputs.target-branch }} already exists, switching to it."
+          git checkout ${{ inputs.target-branch }} --force
+          git pull origin ${{ inputs.target-branch }}
+        else
+          echo "Branch ${{ inputs.target-branch }} does not exist, creating it."
+          git checkout -b ${{ inputs.target-branch }} origin/${{ inputs.target-branch }} --force || git checkout -b ${{ inputs.target-branch }} --force
+          git pull origin ${{ inputs.target-branch }}
+        fi
+        git stash apply
+
+    - name: Validate changes
+      id: validate
+      shell: bash
+      run: |
+        set +e
+        git diff --quiet --exit-code --cached
+        echo has-changes="$?" >> $GITHUB_OUTPUT
+        set -e
+      working-directory: ${{ inputs.working-directory }}
+
+    - name: Push changes to ${{ github.head_ref || github.ref }}
+      if: ${{ fromJSON(steps.validate.outputs.has-changes) == '1' }}
+      shell: bash
+      run: |
+        git config user.name "$(git log -n 1 --pretty=format:%an)"
+        git config user.email "$(git log -n 1 --pretty=format:%ae)"
+        git commit -m '${{ inputs.commit-message }}'
+        git pull --rebase origin ${{ github.head_ref || github.ref }}
+        git push
+      working-directory: ${{ inputs.working-directory }}

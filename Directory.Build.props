@@ -1,0 +1,25 @@
+﻿<Project>
+
+	<PropertyGroup>
+		<LangVersion>14.0</LangVersion>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<NeutralLanguage>en</NeutralLanguage>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<AnalysisLevel>latest</AnalysisLevel>
+		<AnalysisMode>All</AnalysisMode>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Roslynator.Analyzers" Version="4.*" PrivateAssets="all" />
+		<PackageReference Include="Meziantou.Analyzer" Version="3.*" PrivateAssets="all" />
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="10.*" PrivateAssets="all" />
+		<PackageReference Include="SmartAnalyzers.ExceptionAnalyzer" Version="1.*" PrivateAssets="all" />
+	</ItemGroup>
+
+</Project>

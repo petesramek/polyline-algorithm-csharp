@@ -1,0 +1,191 @@
+﻿name: 'Publish documentation'
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  actions: read
+  pages: write
+  id-token: write
+
+concurrency: 
+  group: publish-docs-${{ github.head_ref || github.ref }}      
+  cancel-in-progress: true
+
+env:
+  dotnet-sdk-version: '10.x'
+
+jobs:
+  validate-branch:
+    name: 'Validate branch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Ensure documentation is published from a release branch'
+        if: ${{ !startsWith(github.ref_name, 'release/') }}
+        run: |
+          echo "Documentation should only be published from 'release/**' branches."
+          echo "Current branch: '${{ github.ref_name }}'"
+          exit 1
+
+  workflow-variables:
+    name: 'Workflow variables'
+    needs: [validate-branch]
+    runs-on: ubuntu-latest
+
+    outputs:
+      github-run-number: ${{ github.run_number }}
+
+    steps:
+      - name: 'Workflow variables'
+        id: github
+        run: |
+          echo "github-run-number:${{ github.run_number }}"
+
+  versioning:
+    name: 'Extract version'
+    needs: [workflow-variables]
+    runs-on: ubuntu-latest
+    outputs:
+        friendly-version: ${{ steps.versioning.outputs.version }}
+
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0 # Ensure the full git history is available for versioning
+      - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+      - name: 'Extract version from branch name'
+        id: versioning
+        uses: './.github/actions/versioning/extract-version'
+        with:
+          branch-name: ${{ github.ref_name }}
+
+  generate-docs:
+    name: 'Generate documentation'
+    needs: [workflow-variables, versioning]
+    runs-on: ubuntu-latest
+    env:
+      friendly-version: ${{ needs.versioning.outputs.friendly-version }}
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v6
+
+      - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+
+      - name: 'Install docfx'
+        shell: bash
+        run: dotnet tool update -g docfx
+
+      - name: 'Regenerate API metadata for v${{ env.friendly-version }}'
+        shell: bash
+        run: |
+          rm -rf api-reference/${{ env.friendly-version }}
+          cd api-reference
+          docfx metadata assembly-metadata.json
+          mv temp ${{ env.friendly-version }}
+
+      - name: 'Snapshot guide for v${{ env.friendly-version }}'
+        shell: bash
+        run: |
+          cp -r api-reference/guide api-reference/${{ env.friendly-version }}/guide
+
+      - name: 'Discover all versions'
+        id: discover-versions
+        shell: bash
+        run: |
+          versions=$(ls api-reference/ | grep -E '^[0-9]+\.[0-9]+$' | sort -V | paste -sd ',' -)
+          latest=$(ls api-reference/ | grep -E '^[0-9]+\.[0-9]+$' | sort -V | tail -1)
+          echo "versions=$versions" >> $GITHUB_OUTPUT
+          echo "latest=$latest" >> $GITHUB_OUTPUT
+
+      - name: 'Update versions.json'
+        shell: bash
+        run: |
+          versions_array=$(echo "${{ steps.discover-versions.outputs.versions }}" | tr ',' '\n' | jq -R . | jq -s .)
+          jq --arg latest "${{ steps.discover-versions.outputs.latest }}" \
+             --argjson versions "$versions_array" \
+             '.latest = $latest | .versions = $versions' \
+             api-reference/versions.json > /tmp/versions.json
+          mv /tmp/versions.json api-reference/versions.json
+
+      - name: 'Update api-reference.json with version groups'
+        shell: bash
+        run: |
+          cp api-reference/api-reference.json /tmp/api-reference.json
+          for ver in $(echo "${{ steps.discover-versions.outputs.versions }}" | tr ',' ' '); do
+            jq --arg ver "$ver" --arg group "v${ver}" \
+               '.build.content += [
+                  {"dest": "",      "files": ["*.yml"],          "group": $group, "src": $ver,               "rootTocPath": "~/toc.html"},
+                  {"dest": "guide", "files": ["*.{md,yml}"], "group": $group, "src": ($ver + "/guide"), "rootTocPath": "~/toc.html"}
+               ] |
+                .build.groups = (.build.groups // {}) |
+                .build.groups[$group] = {"dest": $ver}' \
+               /tmp/api-reference.json > /tmp/api-reference-new.json
+            mv /tmp/api-reference-new.json /tmp/api-reference.json
+          done
+          mv /tmp/api-reference.json api-reference/api-reference.json
+
+      - name: 'Update toc.yml with navigation links'
+        shell: bash
+        run: |
+          latest="${{ steps.discover-versions.outputs.latest }}"
+          {
+            echo "### YamlMime:TableOfContent"
+            echo "- name: Guide"
+            echo "  href: ${latest}/guide/getting-started.html"
+            echo "- name: API Reference"
+            echo "  href: ${latest}/PolylineAlgorithm.html"
+          } > api-reference/toc.yml
+
+      - name: 'Inject latest version and released versions table into index.md'
+        shell: bash
+        run: |
+          latest="${{ steps.discover-versions.outputs.latest }}"
+          {
+            echo "## Released Versions"
+            echo ""
+            echo "| Version | Guide | API Reference |"
+            echo "|---------|-------|---------------|"
+            for ver in $(echo "${{ steps.discover-versions.outputs.versions }}" | tr ',' '\n' | sort -Vr); do
+              if [ "$ver" = "$latest" ]; then
+                label="v${ver} (latest)"
+              else
+                label="v${ver}"
+              fi
+              echo "| ${label} | [Guide](${ver}/guide/getting-started.html) | [API Reference](${ver}/PolylineAlgorithm.html) |"
+            done
+          } > /tmp/versions_section.md
+          awk '/{versions_section}/{while((getline line < "/tmp/versions_section.md") > 0) print line; close("/tmp/versions_section.md"); next} {print}' \
+            api-reference/index.md > /tmp/index.md
+          mv /tmp/index.md api-reference/index.md
+          sed -i "s|{version}|${latest}|g" api-reference/index.md
+
+      - name: 'Build documentation'
+        shell: bash
+        run: docfx build api-reference/api-reference.json
+
+      - name: 'Upload artifact'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          name: github-pages
+          path: './api-reference/_docs'
+
+  publish-docs:
+    name: 'Publish documentation'
+    needs: [workflow-variables, versioning, generate-docs]
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+
+      - name: 'Deploy to GitHub Pages'
+        id: deployment
+        uses: actions/deploy-pages@v5
