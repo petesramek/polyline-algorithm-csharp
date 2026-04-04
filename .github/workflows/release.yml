@@ -1,0 +1,368 @@
+name: 'Release'
+
+on:
+  push:
+    branches:
+      - 'preview/**'
+      - 'release/**'
+    paths:
+      - 'src/**'
+
+permissions:
+  actions: read
+  pages: write
+  id-token: write
+  contents: write
+
+concurrency: 
+  group: release-${{ github.head_ref || github.ref }}      
+  cancel-in-progress: false
+
+env:
+  dotnet-sdk-version: '10.x'
+  build-configuration: 'Release'
+  build-platform: 'Any CPU'
+  git-version: '6.0.x'
+  test-result-directory: 'test-results'
+  nuget-packages-directory: 'nuget-packages'
+
+jobs:
+  workflow-variables:
+    name: 'Set workflow variables'
+    runs-on: ubuntu-latest
+
+    outputs:
+      is-release: ${{ startsWith(github.ref_name, 'release') }}
+      is-preview: ${{ startsWith(github.ref_name, 'preview') }}
+
+    steps:
+      - name: 'Set workflow variables'
+        id: github
+        run: |
+          echo "is-release:${{ startsWith(github.ref_name, 'release') }}"
+          echo "is-preview:${{ startsWith(github.ref_name, 'preview') }}"
+
+  validate-release:
+    name: 'Validate release'
+    needs: [workflow-variables]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Validate release branch'
+        if: ${{ needs.workflow-variables.outputs.is-release != 'true' && needs.workflow-variables.outputs.is-preview != 'true' }}
+        run: |
+          echo "This workflow can only be run on 'release/**' or 'preview/**' branches."
+          exit 1
+
+  versioning:
+    name: 'Extract version from branch'
+    runs-on: ubuntu-latest
+    needs: [workflow-variables, validate-release]
+    outputs:
+        friendly-version: ${{ steps.format-version.outputs.friendly-version }}
+        assembly-version: ${{ steps.format-version.outputs.assembly-version }}
+        assembly-informational-version: ${{ steps.format-version.outputs.assembly-informational-version }}
+        file-version: ${{ steps.format-version.outputs.file-version }}
+        release-version: ${{ steps.format-version.outputs.release-version }}
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v6
+      - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+      - name: 'Extract version from branch name'
+        id: extract-version
+        uses: './.github/actions/versioning/extract-version'
+        with:
+          branch-name: ${{ github.ref_name }}
+      - name: 'Create build number'
+        shell: bash
+        id: create-build-number
+        run: |
+          git fetch --unshallow --filter=tree:0
+          build_number=$(git rev-list --count origin/${{ github.ref_name }} ^origin/main)
+          echo "build-number=$build_number" >> $GITHUB_OUTPUT
+      - name: 'Create pre-release tag'
+        shell: bash
+        id: create-pre-release-tag
+        env:
+          build-number: ${{ steps.create-build-number.outputs.build-number }}
+        run: |
+          if [[ '${{ needs.workflow-variables.outputs.is-release }}' == 'true' ]]; then
+            echo "pre-release-tag=" >> $GITHUB_OUTPUT
+          elif [[ '${{ needs.workflow-variables.outputs.is-preview }}' == 'true' ]]; then
+            pre_release_tag='preview'
+            echo "pre-release-tag=$pre_release_tag" >> $GITHUB_OUTPUT
+          else
+            pre_release_tag=$(echo ${{ github.ref_name }} | tr '/' '-' | tr '.' '-'| tr '_' '-')
+            echo "pre-release-tag=$pre_release_tag" >> $GITHUB_OUTPUT
+          fi
+      - name: 'Format version'
+        id: format-version
+        uses: ./.github/actions/versioning/format-version
+        with:
+          version: ${{ steps.extract-version.outputs.version }}
+          patch: ${{ github.run_number }}
+          build-number: ${{ steps.create-build-number.outputs.build-number }}
+          sha: ${{ github.sha }}
+          pre-release-tag: ${{ steps.create-pre-release-tag.outputs.pre-release-tag }}
+
+  build:
+    name: 'Compile source code'
+    needs: [workflow-variables, versioning, validate-release]
+    runs-on: ubuntu-latest
+
+    env:
+      assembly-version: ${{ needs.versioning.outputs.assembly-version }}
+      assembly-informational-version: ${{ needs.versioning.outputs.assembly-informational-version }}
+      file-version: ${{ needs.versioning.outputs.file-version }}
+
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v6
+
+      - name: 'Compile source code'
+        uses: ./.github/actions/source/compile
+        with:
+          project-path: '**/PolylineAlgorithm.csproj'
+          assembly-version: ${{ env.assembly-version }}
+          assembly-informational-version: ${{ env.assembly-informational-version }}
+          file-version: ${{ env.file-version }}
+          treat-warnins-as-error: ${{ needs.workflow-variables.outputs.is-release }}
+
+  test:
+    name: 'Run tests'
+    needs: [build, validate-release]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v6
+
+      - name: 'Setup .NET'
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+
+      - name: 'Run tests'
+        uses: ./.github/actions/testing/test
+        with:
+          project-path: './tests/PolylineAlgorithm.Tests/PolylineAlgorithm.Tests.csproj'
+          test-results-directory: '${{ runner.temp }}/${{ env.test-result-directory }}/'
+          code-coverage-settings-file: '${{ github.workspace}}/code-coverage-settings.xml'
+
+      - name: 'Generate test report'
+        uses: ./.github/actions/testing/test-report
+        id: test-report
+        with:
+          test-result-folder: '${{ runner.temp }}/${{ env.test-result-directory }}/'
+
+      - name: Write test report summary
+        run: cat ${{ steps.test-report.outputs.test-report-file }} >> $GITHUB_STEP_SUMMARY
+
+      - name: 'Generate code coverage'
+        uses: ./.github/actions/testing/code-coverage
+        id: code-coverage-report
+        with:
+          test-result-folder: '${{ runner.temp }}/${{ env.test-result-directory }}/'
+
+      - name: Write code coverage report summary
+        run: cat ${{ steps.code-coverage-report.outputs.code-coverage-report-file }} >> $GITHUB_STEP_SUMMARY
+
+  pack:
+    name: 'Package binaries'
+    needs: [versioning, build, test, validate-release]
+    runs-on: ubuntu-latest
+    env:
+      assembly-version: ${{ needs.versioning.outputs.assembly-version }}
+      assembly-informational-version: ${{ needs.versioning.outputs.assembly-informational-version }}
+      file-version: ${{ needs.versioning.outputs.file-version }}
+      release-version: ${{ needs.versioning.outputs.release-version }}
+      package-artifact-name: package
+    outputs:
+        package-artifact-name: ${{ env.package-artifact-name }}
+    steps:
+      - name: 'Checkout ${{ github.base_ref }}'
+        uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+
+      - name: Download Build
+        uses: actions/download-artifact@v8
+        with:
+          name: build
+
+      - name: Pack with .NET
+        run: |
+          dotnet pack ${{ vars.SRC_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} /p:Platform="${{ env.build-platform }}" /p:PackageVersion=${{ env.release-version }} /p:Version=${{ env.assembly-version }} /p:AssemblyInformationalVersion=${{ env.assembly-informational-version }} /p:FileVersion=${{ env.file-version }} --output ${{ runner.temp }}/${{ env.nuget-packages-directory }}
+      
+      - name: Upload Package
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ env.package-artifact-name }}
+          path: |
+            ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.nupkg
+            ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.snupkg
+
+  publish-package:
+    name: 'Publish package'
+    needs: [pack, validate-release]
+    env:
+      package-artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
+    runs-on: ubuntu-latest
+    environment: 'NuGet'
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+
+      - name: 'Publish package to Azure Artifact feed'
+        uses: ./.github/actions/nuget/publish-package
+        with:
+          package-artifact-name: ${{ env.package-artifact-name }}
+          nuget-feed-url: ${{ vars.NUGET_PACKAGE_FEED_URL }}
+          nuget-feed-api-key: ${{ secrets.NUGET_PACKAGE_FEED_API_KEY }}
+          nuget-feed-server: 'NuGet'
+          working-directory: ${{ runner.temp }}/${{ env.nuget-packages-directory }}
+          dotnet-sdk-version: ${{ env.dotnet-sdk-version }}'
+
+  release:
+    name: 'Create release'
+    needs: [workflow-variables, publish-package, validate-release, versioning]
+    runs-on: ubuntu-latest
+    env:
+      release-version: ${{ needs.versioning.outputs.release-version }}
+      is-preview: ${{ needs.workflow-variables.outputs.is-preview }}
+      notes-start-tag: ${{ needs.workflow-variables.outputs.notes-start-tag }}
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v6
+
+      - name: 'Determine notes start tag'
+        id: determine-notes-start-tag
+        run: |
+          notes-start-tag=$(git describe --abbrev=0 --tags)
+          echo "notes-start-tag=$notes-start-tag" >> $GITHUB_OUTPUT
+        shell: bash
+      
+      - name: 'Create GitHub Release'
+        uses: ./.github/actions/github/create-release
+        with:
+          release-version: ${{ env.release-version }}
+          is-preview: ${{ env.is-preview }}
+          notes-start-tag: ${{ steps.determine-notes-start-tag.outputs.notes-start-tag }}
+
+  merge-to-main:
+    name: 'Merge ${{ github.ref_name }} into main'
+    needs: [workflow-variables, release, versioning]
+    if: ${{ needs.workflow-variables.outputs.is-release == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      current-branch: ${{ github.ref_name }}
+      current-version: ${{ needs.versioning.outputs.friendly-version }}
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: 'Detect if current branch is the latest release'
+        id: detect-latest
+        run: |
+          git fetch origin
+          latest_version=$(git ls-remote --heads origin 'release/*' | grep -oP 'release/\K\d+\.\d+' | sort -V | tail -1)
+          current_version=$(echo "${{ env.current-version }}" | grep -oP '^\d+\.\d+')
+          echo "Latest release branch version: $latest_version"
+          echo "Current version (normalized): $current_version"
+          if [[ "$latest_version" == "$current_version" ]]; then
+            echo "is-latest=true" >> $GITHUB_OUTPUT
+          else
+            echo "is-latest=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 'Check if PR to main already exists'
+        id: check-pr
+        if: ${{ steps.detect-latest.outputs.is-latest == 'true' }}
+        run: |
+          pr_count=$(gh pr list --head "${{ env.current-branch }}" --base main --state open --limit 1 --json id --jq '. | length')
+          if [[ $pr_count -gt 0 ]]; then
+            echo "pr-exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "pr-exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 'Create PR: Merge ${{ env.current-branch }} into main'
+        if: ${{ steps.detect-latest.outputs.is-latest == 'true' && steps.check-pr.outputs.pr-exists == 'false' }}
+        run: |
+          gh pr create \
+            --title "Merge ${{ env.current-branch }} into main" \
+            --fill \
+            --base main \
+            --head "${{ env.current-branch }}"
+
+      - name: 'Write merge summary'
+        run: |
+          if [[ "${{ steps.detect-latest.outputs.is-latest }}" == "true" ]]; then
+            echo "✅ PR created to merge **${{ env.current-branch }}** into **main**." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⏭️ Skipped merge to main: **${{ env.current-branch }}** is not the highest release branch." >> $GITHUB_STEP_SUMMARY
+          fi
+
+  create-support-branch:
+    name: 'Create support branch for ${{ github.ref_name }}'
+    needs: [workflow-variables, release, versioning]
+    if: ${{ needs.workflow-variables.outputs.is-release == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      current-version: ${{ needs.versioning.outputs.friendly-version }}
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: 'Resolve support branch name'
+        id: resolve-support-branch
+        run: |
+          major_minor=$(echo "${{ env.current-version }}" | grep -oP '^\d+\.\d+')
+          echo "support-branch=support/$major_minor" >> $GITHUB_OUTPUT
+
+      - name: 'Check if support branch already exists'
+        id: check-support-branch
+        run: |
+          git fetch origin
+          if git ls-remote --exit-code --heads origin "${{ steps.resolve-support-branch.outputs.support-branch }}" > /dev/null 2>&1; then
+            echo "support-branch-exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "support-branch-exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 'Create support branch'
+        if: ${{ steps.check-support-branch.outputs.support-branch-exists == 'false' }}
+        run: |
+          git config user.name "$(git log -n 1 --pretty=format:%an)"
+          git config user.email "$(git log -n 1 --pretty=format:%ae)"
+          git checkout -b "${{ steps.resolve-support-branch.outputs.support-branch }}"
+          git push --set-upstream origin "${{ steps.resolve-support-branch.outputs.support-branch }}"
+
+      - name: 'Lock support branch'
+        if: ${{ steps.check-support-branch.outputs.support-branch-exists == 'false' }}
+        uses: './.github/actions/github/branch-protection/lock'
+        with:
+          branch: ${{ steps.resolve-support-branch.outputs.support-branch }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+
+      - name: 'Write support branch summary'
+        run: |
+          if [[ "${{ steps.check-support-branch.outputs.support-branch-exists }}" == "false" ]]; then
+            echo "✅ Created and locked support branch **${{ steps.resolve-support-branch.outputs.support-branch }}**." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⏭️ Support branch **${{ steps.resolve-support-branch.outputs.support-branch }}** already exists." >> $GITHUB_STEP_SUMMARY
+          fi

@@ -1,0 +1,84 @@
+﻿name: 'Test with .NET CLI'
+author: 'Pete Sramek'
+description: 'Run tests, collects code coverage, logs test results, uploads test artifacts'
+inputs:
+# Required
+  project-path:
+    description: 'Search pattern for test projects.'
+    required: true
+# Optional
+  dotnet_sdk_version:
+    description: '.NET SDK version. Default: 10.x'
+    required: false
+    default: '10.x'
+  build-configuration:
+    description: 'Build configuration. Default: Release'
+    required: false
+    default: 'Release'
+  use-trf-logger:
+    description: 'Use TRX logger. Default: true'
+    required: false
+    default: 'true'
+  collect-code-coverage:
+    description: 'Collect code coverage. Default: true'
+    required: false
+    default: 'true'
+  code-coverage-output-format:
+    description: 'Code coverage output format. Default: cobertura'
+    required: false
+    default: 'cobertura'
+  code-coverage-settings-file:
+    description: 'Code coverage settings file. Default: ""'
+    required: false
+    default: ''
+  upload-test-artifacts:
+    description: 'Upload test artifacts, Default: true'
+    required: false
+    default: 'true'
+  test-results-directory:
+    description: 'Search pattern for test artifacts. Default: "test-results"'
+    required: false
+    default: 'test-results'
+  test-artifacts-name:
+    description: 'Test artifacts name, Default: "test-results"'
+    required: false
+    default: 'test-results'
+
+runs:
+  using: composite
+  steps:
+    - name: 'Checkout ${{ github.head_ref || github.ref }}'
+      uses: actions/checkout@v6
+    
+    - name: 'Setup .NET ${{ inputs.dotnet_sdk_version }}'
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ inputs.dotnet_sdk_version }}
+
+    - if: ${{ inputs.use-trf-logger == 'true' }}
+      name: 'Set TRX_LOGGER_ARGS environment variable'
+      shell: bash
+      run: echo "TRX_LOGGER_ARGS=--report-trx" >> $GITHUB_ENV
+
+    - if: ${{ inputs.collect-code-coverage == 'true' }}
+      name: 'Set CODE_COVERAGE_ARGS environment variable'
+      shell: bash
+      run: |
+        echo "CODE_COVERAGE_ARGS=--coverage --coverage-output-format ${{ inputs.code-coverage-output-format}}" >> $GITHUB_ENV
+
+    - if: ${{ inputs.collect-code-coverage == 'true' && inputs.code-coverage-settings-file != ''}}
+      name: 'Set CODE_COVERAGE_ARGS environment variable'
+      shell: bash
+      run: |
+        echo "CODE_COVERAGE_ARGS=${{ env.CODE_COVERAGE_ARGS }} --coverage-settings ${{ inputs.code-coverage-settings-file }}" >> $GITHUB_ENV
+      
+    - name: 'Test with .NET CLI'
+      shell: bash
+      run: dotnet test --project ${{ inputs.project-path }} --configuration ${{ inputs.build-configuration }} ${{ env.CODE_COVERAGE_ARGS }} ${{ env.TRX_LOGGER_ARGS }} --results-directory ${{ inputs.test-results-directory }}
+
+    - name: 'Upload test results'
+      if: ${{ inputs.upload-test-artifacts == 'true' }}
+      uses: actions/upload-artifact@v7
+      with:
+        name: '${{ inputs.test-artifacts-name }}'
+        path: '${{ inputs.test-results-directory }}*'

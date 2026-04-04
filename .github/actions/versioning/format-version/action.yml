@@ -1,0 +1,66 @@
+﻿name: 'Format version'
+author: 'Pete Sramek'
+description: 'Formats versions.'
+inputs:
+# Required
+  version:
+    description: 'Version to use.'
+    required: true
+  patch:
+    description: 'Patch version to append to the formatted version.'
+    required: true
+  build-number:
+    description: 'Build number to append to the formatted version.'
+    required: true
+  sha:
+    description: 'Commit SHA to append to the formatted version.'
+    required: true
+  pre-release-tag:
+    description: 'Pre-release tag to append to the formatted version.'
+    required: true
+# Optional
+  dotnet_sdk_version:
+    description: '.NET SDK version. Default: ''10.x'''
+    required: false
+    default: '10.x'
+
+outputs:
+  friendly-version:
+    description: 'Formatted friendly version.'
+    value: ${{ steps.format-version.outputs.friendly-version }}
+  assembly-version:
+    description: 'Formatted assembly version.'
+    value: ${{ steps.format-version.outputs.assembly-version }}
+  assembly-informational-version:
+    description: 'Formatted assembly informational version.'
+    value: ${{ steps.format-version.outputs.assembly-informational-version }}
+  file-version:
+    description: 'Formatted file version.'
+    value: ${{ steps.format-version.outputs.file-version }}
+  release-version:
+    description: 'Formatted release version.'
+    value: ${{ steps.format-version.outputs.release-version }}
+
+runs:  
+  using: "composite"
+  steps:
+    - name: 'Checkout ${{ github.head_ref || github.ref }}'
+      uses: actions/checkout@v6
+    
+    - name: 'Setup .NET ${{ inputs.dotnet_sdk_version }}'
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ inputs.dotnet_sdk_version }}
+    - name: 'Format version'
+      shell: bash
+      id: format-version
+      run: |
+        echo "friendly-version=${{ inputs.version }}" >> $GITHUB_OUTPUT
+        echo "assembly-version=${{ inputs.version }}.${{ inputs.patch }}.${{ inputs.build-number }}" >> $GITHUB_OUTPUT
+        echo "assembly-informational-version=${{ inputs.version }}.${{ inputs.patch }}+${{ inputs.sha }}" >> $GITHUB_OUTPUT
+        echo "file-version=${{ inputs.version }}.${{ inputs.patch }}.${{ inputs.build-number }}" >> $GITHUB_OUTPUT
+        if [ -n "${{ inputs.pre-release-tag }}" ]; then
+          echo "release-version=${{ inputs.version }}.${{ inputs.patch }}-${{ inputs.pre-release-tag }}.${{ inputs.build-number }}" >> $GITHUB_OUTPUT
+        else
+          echo "release-version=${{ inputs.version }}.${{ inputs.patch }}.${{ inputs.build-number }}" >> $GITHUB_OUTPUT
+        fi

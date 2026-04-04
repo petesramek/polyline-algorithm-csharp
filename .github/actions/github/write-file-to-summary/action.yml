@@ -1,0 +1,25 @@
+﻿name: 'Write file to step summary'
+author: 'Pete Sramek'
+description: 'Writes file contents to step summary.'
+inputs:
+# Required
+  file-glob-pattern:
+    description: 'Search pattern for files to write.'
+    required: true
+
+# Optional
+  working-directory: 
+    description: 'Working directory to search for file.'
+    required: false
+    default: ${{ github.workspace }}
+
+runs:
+  using: composite
+  steps:
+    - name: 'Checkout ${{ github.head_ref || github.ref }}'
+      uses: actions/checkout@v6
+    
+    - name: Writing ${{ inputs.file }} to step summary
+      shell: bash
+      run: cat ${{ inputs.file }} >> $GITHUB_STEP_SUMMARY
+      working-directory: ${{ inputs.working-directory }}

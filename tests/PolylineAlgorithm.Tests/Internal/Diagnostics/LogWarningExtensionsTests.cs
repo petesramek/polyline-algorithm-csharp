@@ -1,0 +1,116 @@
+//
+// Copyright © Pete Sramek. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+
+namespace PolylineAlgorithm.Tests.Internal.Diagnostics;
+
+using Microsoft.Extensions.Logging;
+using PolylineAlgorithm.Internal.Diagnostics;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+
+/// <summary>
+/// Tests for <see cref="LogWarningExtensions"/>.
+/// </summary>
+[TestClass]
+public sealed class LogWarningExtensionsTests {
+    private sealed class TestLogger : ILogger {
+        public List<(LogLevel Level, EventId EventId, string Message, Exception? Exception)> Logs { get; } = [];
+
+        public IDisposable BeginScope<TState>(TState state)
+            where TState : notnull => NullScope.Instance;
+        public bool IsEnabled(LogLevel logLevel) => true;
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter) {
+            Logs.Add((logLevel, eventId, formatter(state, exception), exception));
+        }
+
+        private sealed class NullScope : IDisposable {
+            public static NullScope Instance { get; } = new();
+            public void Dispose() { }
+        }
+    }
+
+    /// <summary>
+    /// Tests that LogNullArgumentWarning LogsExpectedMessage.
+    /// </summary>
+    [TestMethod]
+    public void LogNullArgumentWarning_Logs_Expected_Message() {
+        var logger = new TestLogger();
+        logger.LogNullArgumentWarning("foo");
+        Assert.IsTrue(logger.Logs.Exists(l => l.Message.Contains("Argument foo is null.", StringComparison.Ordinal)));
+    }
+
+    /// <summary>
+    /// Tests that LogEmptyArgumentWarning LogsExpectedMessage.
+    /// </summary>
+    [TestMethod]
+    public void LogEmptyArgumentWarning_Logs_Expected_Message() {
+        var logger = new TestLogger();
+        logger.LogEmptyArgumentWarning("bar");
+        Assert.IsTrue(logger.Logs.Exists(l => l.Message.Contains("Argument bar is empty.", StringComparison.Ordinal)));
+    }
+
+    /// <summary>
+    /// Tests that LogInternalBufferOverflowWarning LogsExpectedMessage.
+    /// </summary>
+    [TestMethod]
+    public void LogInternalBufferOverflowWarning_Logs_Expected_Message() {
+        var logger = new TestLogger();
+        logger.LogInternalBufferOverflowWarning(1, 2, 3);
+        Assert.IsTrue(logger.Logs.Exists(l => l.Message.Contains("Internal buffer has size of 2. At position 1 is required additional 3 space.", StringComparison.Ordinal)));
+    }
+
+    /// <summary>
+    /// Tests that LogCannotWriteValueToBufferWarning LogsExpectedMessage.
+    /// </summary>
+    [TestMethod]
+    public void LogCannotWriteValueToBufferWarning_Logs_Expected_Message() {
+        var logger = new TestLogger();
+        logger.LogCannotWriteValueToBufferWarning(4, 5);
+        Assert.IsTrue(logger.Logs.Exists(l => l.Message.Contains("Cannot write to internal buffer at position 4. Current coordinate is at index 5.", StringComparison.Ordinal)));
+    }
+
+    /// <summary>
+    /// Tests that LogPolylineCannotBeShorterThanWarning LogsExpectedMessage.
+    /// </summary>
+    [TestMethod]
+    public void LogPolylineCannotBeShorterThanWarning_Logs_Expected_Message() {
+        var logger = new TestLogger();
+        logger.LogPolylineCannotBeShorterThanWarning(6, 7);
+        Assert.IsTrue(logger.Logs.Exists(l => l.Message.Contains("Polyline is too short. Minimal length is 7. Actual length is 6.", StringComparison.Ordinal)));
+    }
+
+    /// <summary>
+    /// Tests that LogRequestedBufferSizeExceedsMaxBufferLengthWarning LogsExpectedMessage.
+    /// </summary>
+    [TestMethod]
+    public void LogRequestedBufferSizeExceedsMaxBufferLengthWarning_Logs_Expected_Message() {
+        var logger = new TestLogger();
+        logger.LogRequestedBufferSizeExceedsMaxBufferLengthWarning(8, 9);
+        Assert.IsTrue(logger.Logs.Exists(l => l.Message.Contains("Requested buffer size of 8 exceeds maximum allowed buffer length of 9.", StringComparison.Ordinal)));
+    }
+
+    /// <summary>
+    /// Tests that LogInvalidPolylineWarning LogsExpectedMessage.
+    /// </summary>
+    [TestMethod]
+    public void LogInvalidPolylineWarning_Logs_Expected_Message() {
+        var logger = new TestLogger();
+        logger.LogInvalidPolylineWarning(10);
+        Assert.IsTrue(logger.Logs.Exists(l => l.Message.Contains("Polyline is invalid or malformed at position 10.", StringComparison.Ordinal)));
+    }
+
+    /// <summary>
+    /// Tests that LogInvalidPolylineFormatWarning LogsExpectedMessage.
+    /// </summary>
+    [TestMethod]
+    [SuppressMessage("Usage", "CA2201:Do not raise reserved exception types", Justification = "No need to be strict in tests.")]
+    public void LogInvalidPolylineFormatWarning_Logs_Expected_Message() {
+        var logger = new TestLogger();
+        var ex = new Exception("fail");
+        logger.LogInvalidPolylineFormatWarning(ex);
+        Assert.IsTrue(logger.Logs.Exists(l => l.Message.Contains("Polyline is invalid or malformed.", StringComparison.Ordinal) && l.Exception == ex));
+    }
+}

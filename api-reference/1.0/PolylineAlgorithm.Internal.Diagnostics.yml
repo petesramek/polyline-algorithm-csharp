@@ -1,0 +1,15 @@
+### YamlMime:ApiPage
+title: Namespace PolylineAlgorithm.Internal.Diagnostics
+body:
+- api1: Namespace PolylineAlgorithm.Internal.Diagnostics
+  id: PolylineAlgorithm_Internal_Diagnostics
+  metadata:
+    uid: PolylineAlgorithm.Internal.Diagnostics
+    commentId: N:PolylineAlgorithm.Internal.Diagnostics
+- h3: Classes
+- parameters:
+  - type:
+      text: ExceptionGuard
+      url: PolylineAlgorithm.Internal.Diagnostics.ExceptionGuard.html
+    description: Centralizes exception throwing for common validation and error scenarios used across the library.
+languageId: csharp

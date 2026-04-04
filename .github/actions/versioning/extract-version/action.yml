@@ -1,0 +1,51 @@
+﻿name: 'Extract version'
+author: 'Pete Sramek'
+description: 'Determines versions for the build.'
+inputs:
+# Required
+  branch-name:
+    description: 'Branch name.'
+    required: true
+# Optional
+  default-version:
+    description: 'Default version to use if no match is found. Default: ''0.0'''
+    required: false
+    default: '0.0'
+  version-format:
+    description: 'Version format. Default: ''(\d+).(\d+)'''
+    required: false
+    default: '(\d+).(\d+)'
+  dotnet_sdk_version:
+    description: '.NET SDK version. Default: ''10.x'''
+    required: false
+    default: '10.x'
+outputs:
+  version:
+    description: 'Version extracted from the branch name.'
+    value: ${{ steps.resolve-version.outputs.version }}
+    
+runs:  
+  using: "composite"
+  steps:
+    - name: 'Checkout ${{ github.head_ref || github.ref }}'
+      uses: actions/checkout@v6
+    
+    - name: 'Setup .NET ${{ inputs.dotnet_sdk_version }}'
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ inputs.dotnet_sdk_version }}
+    
+    - name: 'Extract version from branch name'
+      id: regex-match
+      uses: actions-ecosystem/action-regex-match@v2
+      with:
+        text: ${{ inputs.branch-name }}
+        regex: ${{ inputs.version-format }}
+        flags: 'g'
+
+    - name: 'Resolve version'
+      id: resolve-version
+      shell: bash
+      run: |
+        VERSION="${{ steps.regex-match.outputs.match }}"
+        echo "version=${VERSION:-${{ inputs.default-version }}}" >> $GITHUB_OUTPUT
