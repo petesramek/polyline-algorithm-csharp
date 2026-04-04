@@ -61,6 +61,14 @@ jobs:
             echo "::warning::Develop branch '${{ steps.targets.outputs.develop-branch }}' not found, skipping backtrack."
           fi
 
+      - name: 'Lock base branch'
+        id: lock-base
+        uses: './.github/actions/github/branch-protection/lock'
+        with:
+          branch: ${{ github.base_ref }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+          lock-branch: 'true'
+
       - name: 'Lock preview branch'
         id: lock-preview
         if: ${{ steps.targets.outputs.preview-branch != '' }}
@@ -98,6 +106,14 @@ jobs:
             --field base="${{ steps.targets.outputs.develop-branch }}" \
             --field head="${{ steps.targets.outputs.merge-source }}" \
             --field commit_message="Backtrack: merge ${{ steps.targets.outputs.merge-source }} into ${{ steps.targets.outputs.develop-branch }}"
+
+      - name: 'Restore protection: base branch'
+        if: ${{ always() && steps.lock-base.outcome == 'success' }}
+        uses: './.github/actions/github/branch-protection/lock'
+        with:
+          branch: ${{ github.base_ref }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+          lock-branch: 'false'
 
       - name: 'Restore protection: preview branch'
         if: ${{ always() && steps.lock-preview.outcome == 'success' }}
