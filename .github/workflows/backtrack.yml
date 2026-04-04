@@ -127,27 +127,27 @@ jobs:
 
       - name: 'Restore protection: base branch'
         if: ${{ always() && steps.lock-base.outcome == 'success' }}
-        uses: './.github/actions/github/branch-protection/lock'
+        uses: './.github/actions/github/branch-protection/unlock'
         with:
           branch: ${{ github.base_ref }}
           token: ${{ secrets.GH_ADMIN_TOKEN }}
-          lock-branch: 'false'
+          fail-on-error: 'true'
 
       - name: 'Restore protection: preview branch'
         if: ${{ always() && steps.lock-preview.outcome == 'success' }}
-        uses: './.github/actions/github/branch-protection/lock'
+        uses: './.github/actions/github/branch-protection/unlock'
         with:
           branch: ${{ steps.targets.outputs.preview-branch }}
           token: ${{ secrets.GH_ADMIN_TOKEN }}
-          lock-branch: 'false'
+          fail-on-error: 'true'
 
       - name: 'Restore protection: develop branch'
         if: ${{ always() && steps.lock-develop.outcome == 'success' }}
-        uses: './.github/actions/github/branch-protection/lock'
+        uses: './.github/actions/github/branch-protection/unlock'
         with:
           branch: ${{ steps.targets.outputs.develop-branch }}
           token: ${{ secrets.GH_ADMIN_TOKEN }}
-          lock-branch: 'false'
+          fail-on-error: 'true'
 
       - name: 'Write backtrack summary'
         if: ${{ always() }}
