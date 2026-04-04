@@ -32,9 +32,3 @@
     href: PolylineAlgorithm.Extensions.PolylineDecoderExtensions.yml
   - name: PolylineEncoderExtensions
     href: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.yml
-- name: PolylineAlgorithm.Internal.Diagnostics
-  href: PolylineAlgorithm.Internal.Diagnostics.yml
-  items:
-  - name: Classes
-  - name: ExceptionGuard
-    href: PolylineAlgorithm.Internal.Diagnostics.ExceptionGuard.yml
