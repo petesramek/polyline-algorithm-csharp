@@ -26,7 +26,7 @@ using System.Text;
 /// attributes to avoid polluting callers' stack traces (__StackTraceHidden__ on supported targets)
 /// or to prevent inlining on older targets.
 /// </remarks>
-public static class ExceptionGuard {
+internal static class ExceptionGuard {
     /// <summary>
     /// Throws an <see cref="ArgumentOutOfRangeException"/> when a numeric argument is not a finite value.
     /// </summary>
@@ -37,7 +37,7 @@ public static class ExceptionGuard {
     [MethodImpl(MethodImplOptions.NoInlining)]
 #endif
     [DoesNotReturn]
-    public static void ThrowNotFiniteNumber(string paramName) {
+    internal static void ThrowNotFiniteNumber(string paramName) {
         throw new ArgumentOutOfRangeException(paramName, ExceptionMessage.GetArgumentValueMustBeFiniteNumber());
     }
 
@@ -51,7 +51,7 @@ public static class ExceptionGuard {
     [MethodImpl(MethodImplOptions.NoInlining)]
 #endif
     [DoesNotReturn]
-    public static void ThrowArgumentNull(string paramName) {
+    internal static void ThrowArgumentNull(string paramName) {
         throw new ArgumentNullException(paramName);
     }
 
@@ -65,7 +65,7 @@ public static class ExceptionGuard {
     [MethodImpl(MethodImplOptions.NoInlining)]
 #endif
     [DoesNotReturn]
-    public static void ThrowBufferOverflow(string message) {
+    internal static void ThrowBufferOverflow(string message) {
         throw new OverflowException(message);
     }
 
@@ -82,7 +82,7 @@ public static class ExceptionGuard {
     [MethodImpl(MethodImplOptions.NoInlining)]
 #endif
     [DoesNotReturn]
-    public static void ThrowCoordinateValueOutOfRange(double value, double min, double max, string paramName) {
+    internal static void ThrowCoordinateValueOutOfRange(double value, double min, double max, string paramName) {
         throw new ArgumentOutOfRangeException(paramName, ExceptionMessage.FormatCoordinateValueMustBeBetween(paramName, min, max));
     }
 
@@ -97,7 +97,7 @@ public static class ExceptionGuard {
     [MethodImpl(MethodImplOptions.NoInlining)]
 #endif
     [DoesNotReturn]
-    public static void StackAllocLimitMustBeEqualOrGreaterThan(int minValue, string paramName) {
+    internal static void StackAllocLimitMustBeEqualOrGreaterThan(int minValue, string paramName) {
         throw new ArgumentOutOfRangeException(paramName, ExceptionMessage.FormatStackAllocLimitMustBeEqualOrGreaterThan(minValue));
     }
 
@@ -111,7 +111,7 @@ public static class ExceptionGuard {
     [MethodImpl(MethodImplOptions.NoInlining)]
 #endif
     [DoesNotReturn]
-    public static void ThrowArgumentCannotBeEmptyEnumerationMessage(string paramName) {
+    internal static void ThrowArgumentCannotBeEmptyEnumerationMessage(string paramName) {
         throw new ArgumentException(ExceptionMessage.GetArgumentCannotBeEmpty(), paramName);
     }
 
@@ -124,7 +124,7 @@ public static class ExceptionGuard {
     [MethodImpl(MethodImplOptions.NoInlining)]
 #endif
     [DoesNotReturn]
-    public static void ThrowCouldNotWriteEncodedValueToBuffer() {
+    internal static void ThrowCouldNotWriteEncodedValueToBuffer() {
         throw new InvalidOperationException(ExceptionMessage.GetCouldNotWriteEncodedValueToTheBuffer());
     }
 
@@ -140,7 +140,7 @@ public static class ExceptionGuard {
     [MethodImpl(MethodImplOptions.NoInlining)]
 #endif
     [DoesNotReturn]
-    public static void ThrowDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLength(int destinationLength, int polylineLength, string paramName) {
+    internal static void ThrowDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLength(int destinationLength, int polylineLength, string paramName) {
 
         throw new ArgumentException(ExceptionMessage.FormatDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLength(destinationLength, polylineLength), paramName);
     }
@@ -156,7 +156,7 @@ public static class ExceptionGuard {
     [MethodImpl(MethodImplOptions.NoInlining)]
 #endif
     [DoesNotReturn]
-    public static void ThrowInvalidPolylineLength(int length, int min) {
+    internal static void ThrowInvalidPolylineLength(int length, int min) {
         throw new InvalidPolylineException(ExceptionMessage.FormatInvalidPolylineLength(length, min));
     }
 
@@ -171,7 +171,7 @@ public static class ExceptionGuard {
     [MethodImpl(MethodImplOptions.NoInlining)]
 #endif
     [DoesNotReturn]
-    public static void ThrowInvalidPolylineCharacter(char character, int position) {
+    internal static void ThrowInvalidPolylineCharacter(char character, int position) {
         throw new InvalidPolylineException(ExceptionMessage.FormatInvalidPolylineCharacter(character, position));
     }
 
@@ -185,7 +185,7 @@ public static class ExceptionGuard {
     [MethodImpl(MethodImplOptions.NoInlining)]
 #endif
     [DoesNotReturn]
-    public static void ThrowPolylineBlockTooLong(int position) {
+    internal static void ThrowPolylineBlockTooLong(int position) {
         throw new InvalidPolylineException(ExceptionMessage.FormatPolylineBlockTooLong(position));
     }
 
@@ -199,7 +199,7 @@ public static class ExceptionGuard {
     [MethodImpl(MethodImplOptions.NoInlining)]
 #endif
     [DoesNotReturn]
-    public static void ThrowInvalidPolylineFormat(long position) {
+    internal static void ThrowInvalidPolylineFormat(long position) {
         throw new InvalidPolylineException(ExceptionMessage.FormatMalformedPolyline(position));
     }
 
@@ -212,7 +212,7 @@ public static class ExceptionGuard {
     [MethodImpl(MethodImplOptions.NoInlining)]
 #endif
     [DoesNotReturn]
-    public static void ThrowInvalidPolylineBlockTerminator() {
+    internal static void ThrowInvalidPolylineBlockTerminator() {
         throw new InvalidPolylineException(ExceptionMessage.GetInvalidPolylineBlockTerminator());
     }
 
@@ -221,7 +221,7 @@ public static class ExceptionGuard {
     /// </summary>
     /// <remarks>
     /// Keeps message formatting centralized so exception text remains consistent and can reuse
-    /// resource strings. This class is public because messages are only used by the guard methods.
+    /// resource strings. This class is internal because messages are only used by the guard methods.
     /// </remarks>
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Internal use only.")]
     internal static class ExceptionMessage {
@@ -253,73 +253,73 @@ public static class ExceptionGuard {
         /// <summary>
         /// Formats the message for stack allocation limit violations.
         /// </summary>
-        public static string FormatStackAllocLimitMustBeEqualOrGreaterThan(int minValue) =>
+        internal static string FormatStackAllocLimitMustBeEqualOrGreaterThan(int minValue) =>
             string.Format(CultureInfo.InvariantCulture, StackAllocLimitMustBeEqualOrGreaterThanFormat, minValue);
 
         /// <summary>
         /// Formats the message when a polyline is shorter than the required minimum.
         /// </summary>
-        public static string FormatPolylineCannotBeShorterThan(int length, int minLength) =>
+        internal static string FormatPolylineCannotBeShorterThan(int length, int minLength) =>
             string.Format(CultureInfo.InvariantCulture, PolylineCannotBeShorterThanFormat, length, minLength);
 
         /// <summary>
         /// Formats a message indicating the polyline is malformed at a given position.
         /// </summary>
-        public static string FormatMalformedPolyline(long position) =>
+        internal static string FormatMalformedPolyline(long position) =>
             string.Format(CultureInfo.InvariantCulture, PolylineIsMalformedAtFormat, position);
 
         /// <summary>
         /// Formats a message indicating a coordinate parameter must be within a range.
         /// </summary>
-        public static string FormatCoordinateValueMustBeBetween(string name, double min, double max) =>
+        internal static string FormatCoordinateValueMustBeBetween(string name, double min, double max) =>
             string.Format(CultureInfo.InvariantCulture, CoordinateValueMustBeBetweenFormat, name, min, max);
 
         /// <summary>
         /// Formats a message for polyline blocks that exceed allowed length.
         /// </summary>
-        public static string FormatPolylineBlockTooLong(int position) =>
+        internal static string FormatPolylineBlockTooLong(int position) =>
             string.Format(CultureInfo.InvariantCulture, PolylineBlockTooLongFormat, position);
 
         /// <summary>
         /// Formats a message for invalid characters found in a polyline.
         /// </summary>
-        public static string FormatInvalidPolylineCharacter(char character, int position) =>
+        internal static string FormatInvalidPolylineCharacter(char character, int position) =>
             string.Format(CultureInfo.InvariantCulture, InvalidPolylineCharacterFormat, character, position);
 
         /// <summary>
         /// Formats a message when a destination array is too small for the polyline.
         /// </summary>
-        public static string FormatDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLength(int destinationLength, int polylineLength) =>
+        internal static string FormatDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLength(int destinationLength, int polylineLength) =>
             string.Format(CultureInfo.InvariantCulture, DestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthFormat, destinationLength, polylineLength);
 
         /// <summary>
         /// Formats an invalid polyline length message.
         /// </summary>
-        public static string FormatInvalidPolylineLength(int length, int min) =>
+        internal static string FormatInvalidPolylineLength(int length, int min) =>
             string.Format(CultureInfo.InvariantCulture, InvalidPolylineLengthFormat, length, min);
 
         /// <summary>
         /// Gets the message used when a numeric argument must be finite.
         /// </summary>
-        public static string GetArgumentValueMustBeFiniteNumber() =>
+        internal static string GetArgumentValueMustBeFiniteNumber() =>
             ArgumentValueMustBeFiniteNumberMessage;
 
         /// <summary>
         /// Gets the message used when the library could not write an encoded value to a buffer.
         /// </summary>
-        public static string GetCouldNotWriteEncodedValueToTheBuffer() =>
+        internal static string GetCouldNotWriteEncodedValueToTheBuffer() =>
             CouldNotWriteEncodedValueToTheBufferMessage;
 
         /// <summary>
         /// Gets the message used when an argument collection must not be empty.
         /// </summary>
-        public static string GetArgumentCannotBeEmpty() =>
+        internal static string GetArgumentCannotBeEmpty() =>
             ArgumentCannotBeEmptyMessage;
 
         /// <summary>
         /// Gets the message used when a polyline block terminator is invalid.
         /// </summary>
-        public static string GetInvalidPolylineBlockTerminator() =>
+        internal static string GetInvalidPolylineBlockTerminator() =>
             InvalidPolylineBlockTerminatorMessage;
     }
 }
