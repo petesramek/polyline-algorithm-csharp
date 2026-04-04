@@ -16,6 +16,29 @@
     return meta ? meta.getAttribute('content') : './';
   }
 
+  var VERSION_PATTERN = /\/\d+(\.\d+)*\//;
+
+  function updateNavLinks(version) {
+    var navbar = document.getElementById('navbar');
+    if (!navbar || !version) return;
+    if (!/^\d+(\.\d+)*$/.test(version)) return;
+
+    var links = navbar.querySelectorAll('a');
+    links.forEach(function (link) {
+      var absUrl;
+      try {
+        absUrl = new URL(link.href);
+      } catch (e) {
+        return;
+      }
+      if (absUrl.origin !== window.location.origin) return;
+      var newPathname = absUrl.pathname.replace(VERSION_PATTERN, '/' + version + '/');
+      if (newPathname !== absUrl.pathname) {
+        link.setAttribute('href', absUrl.origin + newPathname + absUrl.search + absUrl.hash);
+      }
+    });
+  }
+
   function initVersionPicker(versions, latest) {
     var select = document.getElementById('version-picker');
     if (!select) return;
@@ -42,9 +65,15 @@
       select.insertBefore(placeholder, select.firstChild);
     }
 
+    window.addEventListener('load', function () {
+      updateNavLinks(currentVersion || latest);
+    });
+
     select.addEventListener('change', function () {
       var targetVersion = select.value;
       if (!targetVersion) return;
+
+      updateNavLinks(targetVersion);
 
       var newPathname;
       if (currentVersion && relativePath) {
