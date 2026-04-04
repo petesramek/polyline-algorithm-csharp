@@ -31,6 +31,7 @@ runs:
       shell: bash
       run: |
         git tag -a ${{ inputs.release-version }} -m "${{ inputs.release-version }}"
+        git push origin ${{ inputs.release-version }}
     - name: 'Create GitHub release PolylineAlgorithm ${{ inputs.release-version }}'
       shell: bash
       env:
