@@ -71,6 +71,9 @@
             <i class="bi bi-three-dots"></i>
           </button>
           <div class="collapse navbar-collapse" id="navpanel">
+            <div id="version-picker-container" class="ms-auto d-flex align-items-center px-2">
+              <select id="version-picker" class="form-select form-select-sm" style="width:auto" aria-label="Select version"></select>
+            </div>
             <div id="navbar">
               {{#_enableSearch}}
               <form class="search" role="search" id="search">
@@ -78,9 +81,6 @@
                 <input class="form-control" id="search-query" type="search" disabled placeholder="{{__global.search}}" autocomplete="off" aria-label="Search">
               </form>
               {{/_enableSearch}}
-            </div>
-            <div id="version-picker-container" class="ms-auto d-flex align-items-center px-2">
-              <select id="version-picker" class="form-select form-select-sm" style="width:auto" aria-label="Select version"></select>
             </div>
           </div>
         </div>
