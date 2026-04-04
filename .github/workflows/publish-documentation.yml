@@ -2,12 +2,7 @@
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - 'release/**'
-    paths:
-      - 'src/**'
-      - 'api-reference/**'
+  workflow_call:
 
 permissions:
   actions: read
