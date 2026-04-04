@@ -25,6 +25,11 @@ runs:
         echo "notes-start-tag=${{ inputs.notes-start-tag }}"
         echo "notes-start-tag-argument=${{ inputs.notes-start-tag != '' && format('--notes-start-tag {0}', inputs.notes-start-tag) || '' }}"
       shell: bash
+    - name: 'Configure git identity'
+      shell: bash
+      run: |
+        git config user.name "$(git log -n 1 --pretty=format:%an)"
+        git config user.email "$(git log -n 1 --pretty=format:%ae)"
     - name: 'Create git tag ${{ inputs.release-version }}'
       shell: bash
       run: |
