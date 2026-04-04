@@ -1,0 +1,12 @@
+name: 'Configure git identity'
+author: 'Pete Sramek'
+description: 'Configures git user name and email from the last commit.'
+
+runs:
+  using: composite
+  steps:
+    - name: 'Configure git identity'
+      shell: bash
+      run: |
+        git config user.name "$(git log -n 1 --pretty=format:%an)"
+        git config user.email "$(git log -n 1 --pretty=format:%ae)"

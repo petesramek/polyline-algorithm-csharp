@@ -60,6 +60,8 @@ jobs:
         target-branch-exists: ${{ steps.check-target-branch-exists.outputs.target-branch-exists }}
         pull-request-exists: ${{ steps.check-pull-request-exists.outputs.pull-request-exists }}
     steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v6
       - name: 'Set target branch'
         id: set-target-branch
         run: |
@@ -211,12 +213,6 @@ jobs:
         run: |
           git fetch origin
           git push origin origin/${{ env.base-branch }}:refs/heads/${{ env.target-branch }}
-      - name: 'Lock target branch'
-        if: ${{ needs.workflow-variables.outputs.target-branch-exists == 'false' }}
-        uses: './.github/actions/github/branch-protection/lock'
-        with:
-          branch: ${{ needs.workflow-variables.outputs.target-branch }}
-          token: ${{ secrets.GH_ADMIN_TOKEN }}
       - name: 'Create PR: "Promote ${{ env.current-branch }} to ${{ env.target-branch }}"'
         if: ${{ needs.workflow-variables.outputs.pull-request-exists == 'false' }}
         env:
@@ -224,4 +220,5 @@ jobs:
           current-branch: ${{ github.ref_name }}
           target-branch: ${{ needs.workflow-variables.outputs.target-branch }}
         run: |
+            git fetch origin ${{ env.target-branch }}
             gh pr create --title "Promote ${{ env.current-branch }} to ${{ env.target-branch }}" --fill --base ${{ env.target-branch }} --head ${{ env.current-branch }}
