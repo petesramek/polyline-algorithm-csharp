@@ -8,6 +8,10 @@ inputs:
   token:
     description: 'GitHub token with administration:write (repo admin) permission. Use a PAT; GITHUB_TOKEN cannot call the branch protection API.'
     required: true
+  fail-on-error:
+    description: 'When true, the step fails if branch protection cannot be removed. When false (default), errors are silently ignored.'
+    required: false
+    default: 'false'
 
 runs:
   using: composite
@@ -17,5 +21,9 @@ runs:
       env:
         GH_TOKEN: ${{ inputs.token }}
       run: |
-        gh api --method DELETE /repos/${{ github.repository }}/branches/${{ inputs.branch }}/protection || true
+        if [ '${{ inputs.fail-on-error }}' = 'true' ]; then
+          gh api --method DELETE /repos/${{ github.repository }}/branches/${{ inputs.branch }}/protection
+        else
+          gh api --method DELETE /repos/${{ github.repository }}/branches/${{ inputs.branch }}/protection || true
+        fi
         echo "🔓 Branch protection removed from '${{ inputs.branch }}'." >> $GITHUB_STEP_SUMMARY
