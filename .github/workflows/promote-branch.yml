@@ -186,12 +186,6 @@ jobs:
           echo "Current branch is '${{ env.current-branch }}'"
           exit 1
 
-      - name: 'Validate pull request'
-        if: ${{ env.pull-request-exists == 'true' }}
-        run: |
-          echo "Pull request exists."
-          exit 1
-
   promote-branch:
     name: 'Promote branch ${{ github.ref_name }} to ${{ needs.workflow-variables.outputs.target-branch }}'
     needs: [ workflow-variables, validate-promotion ]
