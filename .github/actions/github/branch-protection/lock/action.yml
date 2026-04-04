@@ -1,6 +1,6 @@
 name: 'Lock branch'
 author: 'Pete Sramek'
-description: 'Apply branch protection to prevent direct pushes. Requires PRs but no approvals (solo-maintainer friendly).'
+description: 'Apply branch protection to prevent direct pushes. Requires PRs with configurable approval count; optional bypass actors let trusted users merge without a review.'
 inputs:
   branch:
     description: 'Branch name to lock.'
@@ -9,9 +9,21 @@ inputs:
     description: 'GitHub token with administration:write (repo admin) permission. Use a PAT; GITHUB_TOKEN cannot call the branch protection API.'
     required: true
   lock-branch:
-    description: 'When true, sets lock_branch to prevent even PR merges (use during automated operations). When false (default), only direct pushes are blocked; PRs with required reviews can still be merged.'
+    description: 'When true, sets lock_branch to prevent even PR merges (use during automated operations). When false (default), only direct pushes are blocked; PRs can still be merged.'
     required: false
     default: 'false'
+  required-approving-review-count:
+    description: 'Number of approving reviews required before a PR can be merged. Set to 0 to require PRs without requiring approvals.'
+    required: false
+    default: '1'
+  dismiss-stale-reviews:
+    description: 'When true, approved reviews are dismissed when new commits are pushed to the branch.'
+    required: false
+    default: 'true'
+  bypass-users:
+    description: 'Comma-separated list of GitHub user logins that are allowed to bypass pull request requirements (e.g. "petesramek,bot-user").'
+    required: false
+    default: ''
 
 runs:
   using: composite
@@ -21,23 +33,36 @@ runs:
       env:
         GH_TOKEN: ${{ inputs.token }}
       run: |
-        if ! gh api --method PUT /repos/${{ github.repository }}/branches/${{ inputs.branch }}/protection \
-          --input - << 'EOF'
-        {
-          "required_status_checks": null,
-          "enforce_admins": false,
-          "required_pull_request_reviews": {
-            "dismiss_stale_reviews": true,
-            "require_code_owner_reviews": false,
-            "required_approving_review_count": 0
-          },
-          "restrictions": null,
-          "allow_force_pushes": false,
-          "allow_deletions": false,
-          "lock_branch": ${{ inputs.lock-branch }}
-        }
-        EOF
-        then
+        BYPASS_USERS_JSON="[]"
+        if [ -n "${{ inputs.bypass-users }}" ]; then
+          BYPASS_USERS_JSON=$(echo "${{ inputs.bypass-users }}" | tr ',' '\n' | sed 's/^ *//;s/ *$//' | jq -R . | jq -s .)
+        fi
+
+        PAYLOAD=$(jq -n \
+          --argjson review_count '${{ inputs.required-approving-review-count }}' \
+          --argjson dismiss_stale '${{ inputs.dismiss-stale-reviews }}' \
+          --argjson bypass_users "$BYPASS_USERS_JSON" \
+          --argjson lock_branch '${{ inputs.lock-branch }}' \
+          '{
+            "required_status_checks": null,
+            "enforce_admins": false,
+            "required_pull_request_reviews": {
+              "dismiss_stale_reviews": $dismiss_stale,
+              "require_code_owner_reviews": false,
+              "required_approving_review_count": $review_count,
+              "bypass_pull_request_allowances": {
+                "users": $bypass_users,
+                "teams": [],
+                "apps": []
+              }
+            },
+            "restrictions": null,
+            "allow_force_pushes": false,
+            "allow_deletions": false,
+            "lock_branch": $lock_branch
+          }')
+
+        if ! echo "$PAYLOAD" | gh api --method PUT /repos/${{ github.repository }}/branches/${{ inputs.branch }}/protection --input -; then
           echo "::error::Failed to apply branch protection to '${{ inputs.branch }}'. Ensure the token has 'administration: write' permission and the branch exists."
           exit 1
         fi
