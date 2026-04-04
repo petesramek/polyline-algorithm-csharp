@@ -94,6 +94,7 @@ jobs:
           branch: ${{ steps.targets.outputs.preview-branch }}
           token: ${{ secrets.GH_ADMIN_TOKEN }}
           lock-branch: 'false'
+          skip-pull-request-reviews: 'true'
 
       - name: 'Backtrack: merge ${{ github.base_ref }} into ${{ steps.targets.outputs.preview-branch }}'
         if: ${{ steps.targets.outputs.preview-branch != '' }}
@@ -112,6 +113,7 @@ jobs:
           branch: ${{ steps.targets.outputs.develop-branch }}
           token: ${{ secrets.GH_ADMIN_TOKEN }}
           lock-branch: 'false'
+          skip-pull-request-reviews: 'true'
 
       - name: 'Backtrack: merge ${{ steps.targets.outputs.merge-source }} into ${{ steps.targets.outputs.develop-branch }}'
         if: ${{ steps.check-develop.outputs.exists == 'true' }}
