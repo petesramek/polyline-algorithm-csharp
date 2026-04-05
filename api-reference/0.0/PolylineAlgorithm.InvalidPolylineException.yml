@@ -3,7 +3,7 @@ title: Class InvalidPolylineException
 body:
 - api1: Class InvalidPolylineException
   id: PolylineAlgorithm_InvalidPolylineException
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/InvalidPolylineException.cs#L17
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/InvalidPolylineException.cs#L17
   metadata:
     uid: PolylineAlgorithm.InvalidPolylineException
     commentId: T:PolylineAlgorithm.InvalidPolylineException
@@ -71,7 +71,7 @@ body:
 - h2: Constructors
 - api3: InvalidPolylineException()
   id: PolylineAlgorithm_InvalidPolylineException__ctor
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/InvalidPolylineException.cs#L22
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/InvalidPolylineException.cs#L22
   metadata:
     uid: PolylineAlgorithm.InvalidPolylineException.#ctor
     commentId: M:PolylineAlgorithm.InvalidPolylineException.#ctor
@@ -79,7 +79,7 @@ body:
 - code: public InvalidPolylineException()
 - api3: InvalidPolylineException(string, Exception)
   id: PolylineAlgorithm_InvalidPolylineException__ctor_System_String_System_Exception_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/InvalidPolylineException.cs#L43
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/InvalidPolylineException.cs#L43
   metadata:
     uid: PolylineAlgorithm.InvalidPolylineException.#ctor(System.String,System.Exception)
     commentId: M:PolylineAlgorithm.InvalidPolylineException.#ctor(System.String,System.Exception)

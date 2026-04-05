@@ -3,7 +3,7 @@ title: Class PolylineEncoding
 body:
 - api1: Class PolylineEncoding
   id: PolylineAlgorithm_PolylineEncoding
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/PolylineEncoding.cs#L23
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncoding.cs#L23
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding
     commentId: T:PolylineAlgorithm.PolylineEncoding
@@ -50,7 +50,7 @@ body:
 - h2: Methods
 - api3: Denormalize(int, uint)
   id: PolylineAlgorithm_PolylineEncoding_Denormalize_System_Int32_System_UInt32_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/PolylineEncoding.cs#L122
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncoding.cs#L122
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.Denormalize(System.Int32,System.UInt32)
     commentId: M:PolylineAlgorithm.PolylineEncoding.Denormalize(System.Int32,System.UInt32)
@@ -117,7 +117,7 @@ body:
     description: Thrown if the arithmetic operation overflows during conversion.
 - api3: GetRequiredBufferSize(int)
   id: PolylineAlgorithm_PolylineEncoding_GetRequiredBufferSize_System_Int32_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/PolylineEncoding.cs#L298
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncoding.cs#L298
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.GetRequiredBufferSize(System.Int32)
     commentId: M:PolylineAlgorithm.PolylineEncoding.GetRequiredBufferSize(System.Int32)
@@ -200,7 +200,7 @@ body:
     - )
 - api3: Normalize(double, uint)
   id: PolylineAlgorithm_PolylineEncoding_Normalize_System_Double_System_UInt32_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/PolylineEncoding.cs#L61
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncoding.cs#L61
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.Normalize(System.Double,System.UInt32)
     commentId: M:PolylineAlgorithm.PolylineEncoding.Normalize(System.Double,System.UInt32)
@@ -268,7 +268,7 @@ body:
     description: Thrown when the normalized result exceeds the range of a 32-bit signed integer during the conversion from double to int.
 - api3: TryReadValue(ref int, ReadOnlyMemory<char>, ref int)
   id: PolylineAlgorithm_PolylineEncoding_TryReadValue_System_Int32__System_ReadOnlyMemory_System_Char__System_Int32__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/PolylineEncoding.cs#L169
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncoding.cs#L169
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.TryReadValue(System.Int32@,System.ReadOnlyMemory{System.Char},System.Int32@)
     commentId: M:PolylineAlgorithm.PolylineEncoding.TryReadValue(System.Int32@,System.ReadOnlyMemory{System.Char},System.Int32@)
@@ -328,7 +328,7 @@ body:
     </p>
 - api3: TryWriteValue(int, Span<char>, ref int)
   id: PolylineAlgorithm_PolylineEncoding_TryWriteValue_System_Int32_System_Span_System_Char__System_Int32__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/PolylineEncoding.cs#L237
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncoding.cs#L237
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.TryWriteValue(System.Int32,System.Span{System.Char},System.Int32@)
     commentId: M:PolylineAlgorithm.PolylineEncoding.TryWriteValue(System.Int32,System.Span{System.Char},System.Int32@)
@@ -407,7 +407,7 @@ body:
     </p>
 - api3: ValidateBlockLength(ReadOnlySpan<char>)
   id: PolylineAlgorithm_PolylineEncoding_ValidateBlockLength_System_ReadOnlySpan_System_Char__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/PolylineEncoding.cs#L438
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncoding.cs#L438
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.ValidateBlockLength(System.ReadOnlySpan{System.Char})
     commentId: M:PolylineAlgorithm.PolylineEncoding.ValidateBlockLength(System.ReadOnlySpan{System.Char})
@@ -441,7 +441,7 @@ body:
     description: Thrown when a block exceeds 7 characters or the polyline does not end with a valid block terminator.
 - api3: ValidateCharRange(ReadOnlySpan<char>)
   id: PolylineAlgorithm_PolylineEncoding_ValidateCharRange_System_ReadOnlySpan_System_Char__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/PolylineEncoding.cs#L392
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncoding.cs#L392
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.ValidateCharRange(System.ReadOnlySpan{System.Char})
     commentId: M:PolylineAlgorithm.PolylineEncoding.ValidateCharRange(System.ReadOnlySpan{System.Char})
@@ -479,7 +479,7 @@ body:
     description: Thrown when an invalid character is found in the polyline segment.
 - api3: ValidateFormat(ReadOnlySpan<char>)
   id: PolylineAlgorithm_PolylineEncoding_ValidateFormat_System_ReadOnlySpan_System_Char__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/PolylineEncoding.cs#L370
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncoding.cs#L370
   metadata:
     uid: PolylineAlgorithm.PolylineEncoding.ValidateFormat(System.ReadOnlySpan{System.Char})
     commentId: M:PolylineAlgorithm.PolylineEncoding.ValidateFormat(System.ReadOnlySpan{System.Char})

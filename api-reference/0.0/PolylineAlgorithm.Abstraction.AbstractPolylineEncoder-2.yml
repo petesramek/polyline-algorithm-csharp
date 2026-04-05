@@ -3,7 +3,7 @@ title: Class AbstractPolylineEncoder<TCoordinate, TPolyline>
 body:
 - api1: Class AbstractPolylineEncoder<TCoordinate, TPolyline>
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L27
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L27
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2
     commentId: T:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2
@@ -62,7 +62,7 @@ body:
 - h2: Constructors
 - api3: AbstractPolylineEncoder()
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2__ctor
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L33
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L33
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor
@@ -70,7 +70,7 @@ body:
 - code: protected AbstractPolylineEncoder()
 - api3: AbstractPolylineEncoder(PolylineEncodingOptions)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2__ctor_PolylineAlgorithm_PolylineEncodingOptions_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L43
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L43
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
@@ -92,7 +92,7 @@ body:
 - h2: Properties
 - api3: Options
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_Options
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L57
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L57
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Options
     commentId: P:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Options
@@ -106,7 +106,7 @@ body:
 - h2: Methods
 - api3: CreatePolyline(ReadOnlyMemory<char>)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_CreatePolyline_System_ReadOnlyMemory_System_Char__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L174
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L174
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.CreatePolyline(System.ReadOnlyMemory{System.Char})
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.CreatePolyline(System.ReadOnlyMemory{System.Char})
@@ -130,7 +130,7 @@ body:
     description: An instance of <code class="typeparamref">TPolyline</code> representing the encoded polyline.
 - api3: Encode(ReadOnlySpan<TCoordinate>, CancellationToken)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_Encode_System_ReadOnlySpan__0__System_Threading_CancellationToken_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L80
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L80
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Encode(System.ReadOnlySpan{`0},System.Threading.CancellationToken)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Encode(System.ReadOnlySpan{`0},System.Threading.CancellationToken)
@@ -176,7 +176,7 @@ body:
     description: Thrown when the internal encoding buffer cannot accommodate the encoded value.
 - api3: GetLatitude(TCoordinate)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_GetLatitude__0_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L194
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L194
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLatitude(`0)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLatitude(`0)
@@ -196,7 +196,7 @@ body:
     description: The latitude value as a <xref href="System.Double" data-throw-if-not-resolved="false"></xref>.
 - api3: GetLongitude(TCoordinate)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_GetLongitude__0_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L184
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L184
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLongitude(`0)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLongitude(`0)

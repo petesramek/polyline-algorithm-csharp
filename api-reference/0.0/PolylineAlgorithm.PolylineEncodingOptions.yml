@@ -3,7 +3,7 @@ title: Class PolylineEncodingOptions
 body:
 - api1: Class PolylineEncodingOptions
   id: PolylineAlgorithm_PolylineEncodingOptions
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L29
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L29
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptions
     commentId: T:PolylineAlgorithm.PolylineEncodingOptions
@@ -54,7 +54,7 @@ body:
 - h2: Properties
 - api3: LoggerFactory
   id: PolylineAlgorithm_PolylineEncodingOptions_LoggerFactory
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L41
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L41
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptions.LoggerFactory
     commentId: P:PolylineAlgorithm.PolylineEncodingOptions.LoggerFactory
@@ -72,7 +72,7 @@ body:
     To enable logging, provide a custom <xref href="Microsoft.Extensions.Logging.ILoggerFactory" data-throw-if-not-resolved="false"></xref> implementation.
 - api3: Precision
   id: PolylineAlgorithm_PolylineEncodingOptions_Precision
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L60
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L60
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptions.Precision
     commentId: P:PolylineAlgorithm.PolylineEncodingOptions.Precision
@@ -104,7 +104,7 @@ body:
     </p>
 - api3: StackAllocLimit
   id: PolylineAlgorithm_PolylineEncodingOptions_StackAllocLimit
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L73
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L73
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptions.StackAllocLimit
     commentId: P:PolylineAlgorithm.PolylineEncodingOptions.StackAllocLimit
