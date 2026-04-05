@@ -7,7 +7,9 @@
   </Folder>
   <Folder Name="/samples/">
     <Project Path="samples/PolylineAlgorithm.NetTopologySuite.Sample/PolylineAlgorithm.NetTopologySuite.Sample.csproj" Id="27a8fc47-0a3c-49c7-af5e-530514827785" />
-    <Project Path="samples/PolylineAlgorithm.SensorData.Sample/PolylineAlgorithm.SensorData.Sample.csproj" />
+    <Project Path="samples/PolylineAlgorithm.SensorData.Sample/PolylineAlgorithm.SensorData.Sample.csproj">
+      <Build Solution="Debug|*" Project="false" />
+    </Project>
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/PolylineAlgorithm/PolylineAlgorithm.csproj" />
