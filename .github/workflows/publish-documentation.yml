@@ -151,15 +151,15 @@ jobs:
           {
             echo "## Released Versions"
             echo ""
-            echo "| Version | Guide | API Reference |"
-            echo "|---------|-------|---------------|"
+            echo "| Version | Guide | API Reference | Release Notes |"
+            echo "|---------|-------|---------------|---------------|"
             for ver in $(echo "${{ steps.discover-versions.outputs.versions }}" | tr ',' '\n' | sort -Vr); do
               if [ "$ver" = "$latest" ]; then
                 label="v${ver} (latest)"
               else
                 label="v${ver}"
               fi
-              echo "| ${label} | [Guide](${ver}/guide/getting-started.html) | [API Reference](${ver}/PolylineAlgorithm.html) |"
+              echo "| ${label} | [Guide](${ver}/guide/getting-started.html) | [API Reference](${ver}/PolylineAlgorithm.html) | [Release Notes](https://github.com/petesramek/polyline-algorithm-csharp/releases/tag/v${ver}) |"
             done
           } > /tmp/versions_section.md
           awk '/{versions_section}/{while((getline line < "/tmp/versions_section.md") > 0) print line; close("/tmp/versions_section.md"); next} {print}' \
