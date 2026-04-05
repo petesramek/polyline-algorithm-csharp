@@ -17,12 +17,9 @@ using System.Collections.Generic;
 [TestClass]
 public sealed class PolylineEncoderExtensionsTests {
     private sealed class TestStringEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
-        protected override int ValuesPerItem => 2;
         protected override string CreatePolyline(ReadOnlyMemory<char> polyline) => polyline.ToString();
-        protected override void GetValues((double Latitude, double Longitude) item, Span<double> destination) {
-            destination[0] = item.Latitude;
-            destination[1] = item.Longitude;
-        }
+        protected override double GetLatitude((double Latitude, double Longitude) current) => current.Latitude;
+        protected override double GetLongitude((double Latitude, double Longitude) current) => current.Longitude;
     }
 
     // ----- Encode(List<T>) -----
