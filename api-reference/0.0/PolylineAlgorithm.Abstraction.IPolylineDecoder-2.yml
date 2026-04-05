@@ -3,7 +3,7 @@ title: Interface IPolylineDecoder<TPolyline, TValue>
 body:
 - api1: Interface IPolylineDecoder<TPolyline, TValue>
   id: PolylineAlgorithm_Abstraction_IPolylineDecoder_2
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/update-workflows-for-api-analyzers/src/PolylineAlgorithm/Abstraction/IPolylineDecoder.cs#L22
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/improve-readme-user-friendliness/src/PolylineAlgorithm/Abstraction/IPolylineDecoder.cs#L22
   metadata:
     uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2
     commentId: T:PolylineAlgorithm.Abstraction.IPolylineDecoder`2
@@ -31,7 +31,7 @@ body:
 - h2: Methods
 - api3: Decode(TPolyline, CancellationToken)
   id: PolylineAlgorithm_Abstraction_IPolylineDecoder_2_Decode__0_System_Threading_CancellationToken_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/update-workflows-for-api-analyzers/src/PolylineAlgorithm/Abstraction/IPolylineDecoder.cs#L48
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/improve-readme-user-friendliness/src/PolylineAlgorithm/Abstraction/IPolylineDecoder.cs#L48
   metadata:
     uid: PolylineAlgorithm.Abstraction.IPolylineDecoder`2.Decode(`0,System.Threading.CancellationToken)
     commentId: M:PolylineAlgorithm.Abstraction.IPolylineDecoder`2.Decode(`0,System.Threading.CancellationToken)
