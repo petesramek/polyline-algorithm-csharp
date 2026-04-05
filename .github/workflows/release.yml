@@ -129,7 +129,7 @@ jobs:
           assembly-version: ${{ env.assembly-version }}
           assembly-informational-version: ${{ env.assembly-informational-version }}
           file-version: ${{ env.file-version }}
-          treat-warnins-as-error: ${{ needs.workflow-variables.outputs.is-release }}
+          treat-warnings-as-error: ${{ needs.workflow-variables.outputs.is-release }}
 
   test:
     name: 'Run tests'
@@ -168,6 +168,89 @@ jobs:
 
       - name: Write code coverage report summary
         run: cat ${{ steps.code-coverage-report.outputs.code-coverage-report-file }} >> $GITHUB_STEP_SUMMARY
+
+  update-api-unshipped:
+    name: 'Update PublicAPI.Unshipped.txt'
+    needs: [workflow-variables, validate-release]
+    # Run even when build fails — the build may fail solely because a dropped preview API is still
+    # listed in Unshipped.txt (RS0017). This job fixes exactly that, so it must not be gated on build.
+    if: ${{ needs.workflow-variables.outputs.is-preview == 'true' && needs.validate-release.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout ${{ github.ref }}'
+        uses: actions/checkout@v6
+
+      - name: 'Setup .NET'
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+
+      - name: 'Snapshot PublicAPI.Shipped.txt'
+        shell: bash
+        run: cp src/PolylineAlgorithm/PublicAPI.Shipped.txt src/PolylineAlgorithm/PublicAPI.Shipped.txt.bak
+
+      - name: 'Sync PublicAPI.Unshipped.txt (add new + remove dropped preview APIs)'
+        shell: bash
+        run: dotnet format analyzers src/PolylineAlgorithm/PolylineAlgorithm.csproj --diagnostics RS0016 RS0017
+
+      - name: 'Guard against accidental shipped API removal'
+        shell: bash
+        run: |
+          SHIPPED="src/PolylineAlgorithm/PublicAPI.Shipped.txt"
+          if ! diff -q "$SHIPPED" "$SHIPPED.bak" > /dev/null 2>&1; then
+            echo "::error::Breaking change detected — a shipped API was removed from PublicAPI.Shipped.txt."
+            echo "::error::This requires a major version bump. Reverting the unintended change."
+            cp "$SHIPPED.bak" "$SHIPPED"
+            exit 1
+          fi
+          rm -f "$SHIPPED.bak"
+
+      - name: 'Configure git identity'
+        uses: './.github/actions/git/configure-identity'
+
+      - name: 'Commit and push updated API files'
+        shell: bash
+        run: |
+          git add src/PolylineAlgorithm/PublicAPI.Unshipped.txt
+          git diff --staged --quiet || (
+            git commit -m "Sync PublicAPI.Unshipped.txt (add new, remove dropped preview APIs)" &&
+            git pull --rebase origin ${{ github.ref_name }} &&
+            git push
+          )
+
+  promote-api-files:
+    name: 'Promote PublicAPI files (Unshipped -> Shipped)'
+    needs: [workflow-variables, test, validate-release]
+    if: ${{ needs.workflow-variables.outputs.is-release == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout ${{ github.ref }}'
+        uses: actions/checkout@v6
+
+      - name: 'Promote Unshipped.txt into Shipped.txt'
+        shell: bash
+        run: |
+          UNSHIPPED="src/PolylineAlgorithm/PublicAPI.Unshipped.txt"
+          SHIPPED="src/PolylineAlgorithm/PublicAPI.Shipped.txt"
+
+          # Append every non-blank, non-header line from Unshipped into Shipped
+          tail -n +2 "$UNSHIPPED" | grep -v '^[[:space:]]*$' >> "$SHIPPED" || true
+
+          # Reset Unshipped to just the nullable-enable header (with BOM to match convention)
+          printf '\xef\xbb\xbf#nullable enable\n' > "$UNSHIPPED"
+
+      - name: 'Configure git identity'
+        uses: './.github/actions/git/configure-identity'
+
+      - name: 'Commit and push promoted API files'
+        shell: bash
+        run: |
+          git add src/PolylineAlgorithm/PublicAPI.Shipped.txt src/PolylineAlgorithm/PublicAPI.Unshipped.txt
+          git diff --staged --quiet || (
+            git commit -m "Promote PublicAPI.Unshipped.txt into PublicAPI.Shipped.txt for release" &&
+            git pull --rebase origin ${{ github.ref_name }} &&
+            git push
+          )
 
   pack:
     name: 'Package binaries'
@@ -219,8 +302,14 @@ jobs:
 
   publish-package:
     name: 'Publish package'
-    needs: [pack, validate-release, publish-documentation]
-    if: ${{ always() && needs.pack.result == 'success' && needs.validate-release.result == 'success' && (needs.publish-documentation.result == 'success' || needs.publish-documentation.result == 'skipped') }}
+    needs: [pack, validate-release, publish-documentation, update-api-unshipped, promote-api-files]
+    if: |
+      always() &&
+      needs.pack.result == 'success' &&
+      needs.validate-release.result == 'success' &&
+      (needs.publish-documentation.result == 'success' || needs.publish-documentation.result == 'skipped') &&
+      (needs.promote-api-files.result == 'success' || needs.promote-api-files.result == 'skipped') &&
+      (needs.update-api-unshipped.result == 'success' || needs.update-api-unshipped.result == 'skipped')
     env:
       package-artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
     runs-on: ubuntu-latest
@@ -277,6 +366,9 @@ jobs:
     needs: [workflow-variables, release, versioning]
     if: ${{ needs.workflow-variables.outputs.is-release == 'true' }}
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
     env:
       GH_TOKEN: ${{ github.token }}
       current-branch: ${{ github.ref_name }}
@@ -368,17 +460,10 @@ jobs:
           git checkout -b "${{ steps.resolve-support-branch.outputs.support-branch }}"
           git push --set-upstream origin "${{ steps.resolve-support-branch.outputs.support-branch }}"
 
-      - name: 'Lock support branch'
-        if: ${{ steps.check-support-branch.outputs.support-branch-exists == 'false' }}
-        uses: './.github/actions/github/branch-protection/lock'
-        with:
-          branch: ${{ steps.resolve-support-branch.outputs.support-branch }}
-          token: ${{ secrets.GH_ADMIN_TOKEN }}
-
       - name: 'Write support branch summary'
         run: |
           if [[ "${{ steps.check-support-branch.outputs.support-branch-exists }}" == "false" ]]; then
-            echo "✅ Created and locked support branch **${{ steps.resolve-support-branch.outputs.support-branch }}**." >> $GITHUB_STEP_SUMMARY
+            echo "✅ Created support branch **${{ steps.resolve-support-branch.outputs.support-branch }}**." >> $GITHUB_STEP_SUMMARY
           else
             echo "⏭️ Support branch **${{ steps.resolve-support-branch.outputs.support-branch }}** already exists." >> $GITHUB_STEP_SUMMARY
           fi
