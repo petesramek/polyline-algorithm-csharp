@@ -34,11 +34,11 @@ Console.WriteLine();
 Console.WriteLine($"Encoded polyline: {encoded}");
 Console.WriteLine();
 
-// Decode (timestamps are not encoded, so they will be default)
+// Decode (timestamps and temperatures are both recovered)
 IEnumerable<SensorReading> decoded = decoder.Decode(encoded);
 
-Console.WriteLine("Decoded temperatures:");
+Console.WriteLine("Decoded readings:");
 foreach (SensorReading r in decoded)
 {
-    Console.WriteLine($"  {r.Temperature:F1} °C");
+    Console.WriteLine($"  [{r.Timestamp:HH:mm:ss}]  {r.Temperature:F1} °C");
 }

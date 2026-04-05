@@ -19,16 +19,12 @@ using System.Threading;
 /// scalar type, following the same structural pattern as <see cref="AbstractPolylineDecoder{TPolyline,TCoordinate}"/>.
 /// </para>
 /// <para>
-/// Because sensor data is one-dimensional (a single temperature per reading), the base class designed
-/// for two-dimensional coordinate pairs is not used. Instead, <see cref="PolylineEncoding"/> static
-/// helpers are called directly to read delta-encoded characters and denormalise the recovered values.
-/// </para>
-/// <para>
-/// Timestamps cannot be recovered from the encoded string.
-/// The decoded <see cref="SensorReading"/> instances will have <see cref="SensorReading.Timestamp"/>
-/// set to <see langword="default"/>.
+/// Each encoded pair consists of a delta-compressed Unix timestamp (seconds since Unix epoch, precision 0)
+/// followed by a delta-compressed temperature value (at <see cref="PolylineEncodingOptions.Precision"/>).
+/// Both are recovered and used to reconstruct the original <see cref="SensorReading"/>.
 /// </para>
 /// </remarks>
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Sonar", "S4456:Parameter validation in yielding methods should be wrapped", Justification = "Inlined by design to demonstrate a simple iterator without a wrapper method.")]
 internal sealed class SensorDataDecoder : IPolylineDecoder<string, SensorReading> {
     /// <summary>
     /// Initializes a new instance of the <see cref="SensorDataDecoder"/> class with default encoding options.
@@ -68,8 +64,8 @@ internal sealed class SensorDataDecoder : IPolylineDecoder<string, SensorReading
     /// </param>
     /// <returns>
     /// An <see cref="IEnumerable{T}"/> of <see cref="SensorReading"/> whose
-    /// <see cref="SensorReading.Temperature"/> values are recovered from the encoded string.
-    /// <see cref="SensorReading.Timestamp"/> will be <see langword="default"/> for every element.
+    /// <see cref="SensorReading.Timestamp"/> and <see cref="SensorReading.Temperature"/> values
+    /// are recovered from the encoded string.
     /// </returns>
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="polyline"/> is <see langword="null"/>.
@@ -87,23 +83,25 @@ internal sealed class SensorDataDecoder : IPolylineDecoder<string, SensorReading
             throw new ArgumentException("Encoded polyline must not be empty.", nameof(polyline));
         }
 
-        return DecodeIterator(polyline.AsMemory(), cancellationToken);
-    }
-
-    private IEnumerable<SensorReading> DecodeIterator(ReadOnlyMemory<char> memory, CancellationToken cancellationToken) {
+        ReadOnlyMemory<char> memory = polyline.AsMemory();
         int position = 0;
-        int accumulated = 0;
+        // Mirror the encoder's base epoch so the first delta decodes back to the correct Unix seconds.
+        int accumulatedTimestamp = SensorDataEncoder.TimestampBaseEpochSeconds;
+        int accumulatedTemperature = 0;
 
         while (position < memory.Length) {
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (!PolylineEncoding.TryReadValue(ref accumulated, memory, ref position)) {
+            // Read Unix timestamp delta (precision 0) then temperature delta.
+            if (!PolylineEncoding.TryReadValue(ref accumulatedTimestamp, memory, ref position)
+                || !PolylineEncoding.TryReadValue(ref accumulatedTemperature, memory, ref position)) {
                 yield break;
             }
 
-            double temperature = PolylineEncoding.Denormalize(accumulated, Options.Precision);
+            long unixSeconds = (long)PolylineEncoding.Denormalize(accumulatedTimestamp, precision: 0);
+            double temperature = PolylineEncoding.Denormalize(accumulatedTemperature, Options.Precision);
 
-            yield return new SensorReading(default, temperature);
+            yield return new SensorReading(DateTimeOffset.FromUnixTimeSeconds(unixSeconds), temperature);
         }
     }
 }
