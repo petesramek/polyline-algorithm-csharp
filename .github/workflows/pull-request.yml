@@ -18,8 +18,8 @@ permissions:
   id-token: write
   contents: write
 
-concurrency:
-  group: pull-request-${{ github.head_ref || github.ref }}
+concurrency: 
+  group: pull-request-${{ github.head_ref || github.ref }}      
   cancel-in-progress: true
 
 env:
@@ -120,7 +120,7 @@ jobs:
           assembly-version: ${{ env.assembly-version }}
           assembly-informational-version: ${{ env.assembly-informational-version }}
           file-version: ${{ env.file-version }}
-          treat-warnings-as-error: ${{ needs.workflow-variables.outputs.is-release }}
+          treat-warnins-as-error: ${{ needs.workflow-variables.outputs.is-release }}
 
   test:
     name: 'Run tests'
@@ -189,7 +189,7 @@ jobs:
       - name: Pack with .NET
         run: |
           dotnet pack ${{ vars.SRC_DEFAULT_GLOB_PATTERN }} --configuration ${{ env.build-configuration }} /p:Platform="${{ env.build-platform }}" /p:PackageVersion=${{ env.release-version }} /p:Version=${{ env.assembly-version }} /p:AssemblyInformationalVersion=${{ env.assembly-informational-version }} /p:FileVersion=${{ env.file-version }} --output ${{ runner.temp }}/${{ env.nuget-packages-directory }}
-
+      
       - name: Upload Package
         uses: actions/upload-artifact@v7
         with:
@@ -222,20 +222,39 @@ jobs:
           nuget-feed-api-key: ${{ secrets.NUGET_PACKAGE_FEED_API_KEY }}
           nuget-feed-server: 'AzureArtifacts'
           working-directory: ${{ runner.temp }}/${{ env.nuget-packages-directory }}
-          dotnet-sdk-version: ${{ env.dotnet-sdk-version }}
+          dotnet-sdk-version: ${{ env.dotnet-sdk-version }}'
 
-  security:
-    name: 'Check for vulnerable packages'
+  benchmark:
+    if: ${{ github.env.is_release || vars.BENCHMARKDOTNET_RUN_OVERRIDE == 'true' }}
+    name: Benchmark with .NET CLI on ${{ matrix.os }}
     needs: [build]
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
         uses: actions/checkout@v6
-
-      - name: 'Setup .NET'
+      - name: Install .NET SDK
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: ${{ env.dotnet-sdk-version }}
-
-      - name: 'Check for vulnerable packages'
-        run: dotnet list src/PolylineAlgorithm/PolylineAlgorithm.csproj package --vulnerable --include-transitive
+          dotnet-version: |
+            8.x
+            10.x
+      - name: Download Build
+        uses: actions/download-artifact@v8
+        with:
+          name: build
+      - name: Benchmark
+        working-directory: ${{ vars.BENCHMARKDOTNET_WORKING_DIRECTORY }}
+        run: dotnet run --configuration ${{ env.build-configuration }} /p:Platform=${{ env.build-platform }} --framework ${{ vars.DEFAULT_BUILD_FRAMEWORK }} --runtimes ${{ vars.BENCHMARKDOTNET_RUNTIMES }} --filter ${{ vars.BENCHMARKDOTNET_FILTER }} --artifacts ${{ runner.temp }}/benchmarks/ --exporters GitHub --memory --iterationTime 100 --join
+      - name: Upload Benchmark Results
+        uses: actions/upload-artifact@v7
+        with:
+          name: benchmark-${{ matrix.os }}
+          path: |
+            ${{ runner.temp }}/benchmarks/**/*-report-github.md
+      - name: Write Benchmark Summary 
+        shell: bash
+        run: cat **/*-report-github.md > $GITHUB_STEP_SUMMARY
+        working-directory: ${{ runner.temp }}/benchmarks/

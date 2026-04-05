@@ -87,7 +87,6 @@ Version bumping runs independently via `bump-version.yml` (manual trigger).
 | `pack` | `versioning`, `build` | Packages binaries |
 | `publish-package` | `pack` | Publishes to NuGet.org (Production environment) |
 | `create-release` | `versioning`, `publish-package` | Creates a git tag + GitHub release with auto-generated notes |
-| `update-changelog` | `release` | Fetches release notes and prepends a new entry to `CHANGELOG.md` — stable releases only |
 | `generate-docs` | `versioning` | Builds DocFX site |
 | `publish-docs` | `generate-docs` | Deploys to GitHub Pages |
 

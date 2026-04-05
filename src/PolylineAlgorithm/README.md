@@ -1,8 +1,6 @@
 ﻿# PolylineAlgorithm for .NET
 
-[![NuGet](https://img.shields.io/nuget/v/PolylineAlgorithm)](https://www.nuget.org/packages/PolylineAlgorithm)
-
-Google's Encoded Polyline Algorithm compresses sequences of geographic coordinates into a compact ASCII string, widely used in mapping APIs. This library provides a fully compliant .NET implementation with extensible, type-safe encoding and decoding APIs.
+A modern, fully compliant Google Encoded Polyline Algorithm library for .NET Standard 2.1+, supporting strong input validation, extensibility for custom coordinate types, and robust performance.
 
 ## Features
 
@@ -61,7 +59,6 @@ var encoder = new MyPolylineEncoder();
 string encoded = encoder.Encode(coordinates); // extension method for List<T>
 
 Console.WriteLine(encoded);
-// Output: "yseiHoc_MwacOjnwM"
 ```
 
 ### Implement a custom decoder
@@ -87,22 +84,8 @@ IEnumerable<(double Latitude, double Longitude)> decoded = decoder.Decode(encode
 
 ## Advanced Usage
 
-Use `PolylineEncodingOptionsBuilder` to customize precision, buffer size, and logging, then pass the built options to the encoder or decoder constructor:
-
-```csharp
-using Microsoft.Extensions.Logging;
-
-PolylineEncodingOptions options = PolylineEncodingOptionsBuilder.Create()
-    .WithPrecision(6)                        // 6 decimal places instead of the default 5
-    .WithStackAllocLimit(1024)               // increase stack-alloc buffer
-    .WithLoggerFactory(loggerFactory)        // plug in your ILoggerFactory
-    .Build();
-
-var encoder = new MyPolylineEncoder(options);
-var decoder = new MyPolylineDecoder(options);
-```
-
-Use static methods on `PolylineEncoding` for low-level normalization, validation, and bit-level read/write operations.
+- Pass a `PolylineEncodingOptions` (built via `PolylineEncodingOptionsBuilder`) to the encoder/decoder constructor for custom precision, stack-alloc limit, and logging.
+- Use static methods on `PolylineEncoding` for low-level normalization, validation, and bit-level read/write operations.
 
 > See [API Reference](https://petesramek.github.io/polyline-algorithm-csharp/) for full documentation.
 
@@ -110,19 +93,12 @@ Use static methods on `PolylineEncoding` for low-level normalization, validation
 
 - **What coordinate ranges are valid?**  
   Latitude: -90..90, Longitude: -180..180 (throws `ArgumentOutOfRangeException` for invalid input)
-- **What happens if I pass malformed input to the decoder?**  
-  The decoder throws `InvalidPolylineException` with a descriptive message. Wrap calls in a try/catch in your application.
 - **What .NET versions are supported?**  
   Any environment supporting `netstandard2.1`
 - **How do I customize encoder options?**  
   Use `PolylineEncodingOptionsBuilder` and pass the built options to the encoder or decoder constructor.
 - **Where can I get help?**  
   [GitHub issues](https://github.com/petesramek/polyline-algorithm-csharp/issues)
-
-## Resources
-
-- [GitHub Repository](https://github.com/petesramek/polyline-algorithm-csharp) — source code, issues, changelog, and samples
-- [API Reference](https://petesramek.github.io/polyline-algorithm-csharp/) — full auto-generated documentation
 
 ## License
 

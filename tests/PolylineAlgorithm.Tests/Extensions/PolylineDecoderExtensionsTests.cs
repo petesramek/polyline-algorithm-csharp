@@ -17,21 +17,13 @@ using System.Collections.Generic;
 [TestClass]
 public sealed class PolylineDecoderExtensionsTests {
     private sealed class TestStringDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-        protected override int ValuesPerItem => 2;
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
-        protected override (double Latitude, double Longitude) CreateItem(ReadOnlyMemory<double> values) {
-            ReadOnlySpan<double> span = values.Span;
-            return (span[0], span[1]);
-        }
+        protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) => (latitude, longitude);
     }
 
     private sealed class TestMemoryDecoder : AbstractPolylineDecoder<ReadOnlyMemory<char>, (double Latitude, double Longitude)> {
-        protected override int ValuesPerItem => 2;
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in ReadOnlyMemory<char> polyline) => polyline;
-        protected override (double Latitude, double Longitude) CreateItem(ReadOnlyMemory<double> values) {
-            ReadOnlySpan<double> span = values.Span;
-            return (span[0], span[1]);
-        }
+        protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) => (latitude, longitude);
     }
 
     // ----- Decode(char[]) for IPolylineDecoder<string, TValue> -----

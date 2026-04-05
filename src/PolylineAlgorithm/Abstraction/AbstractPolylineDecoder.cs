@@ -6,27 +6,19 @@
 using Microsoft.Extensions.Logging;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Internal.Diagnostics;
-using System.Buffers;
 using System.Runtime.CompilerServices;
 
 namespace PolylineAlgorithm.Abstraction;
 
 /// <summary>
-/// Provides a base implementation for decoding encoded polyline strings into sequences of items.
+/// Provides a base implementation for decoding encoded polyline strings into sequences of geographic coordinates.
 /// </summary>
 /// <remarks>
-/// Derive from this class to implement a decoder for a specific polyline type. Override
-/// <see cref="ValuesPerItem"/>, <see cref="GetReadOnlyMemory"/>, and <see cref="CreateItem"/> to provide
-/// type-specific behavior.
-/// <para>
-/// The polyline format encodes each item as a fixed-length run of <see cref="ValuesPerItem"/> delta-compressed
-/// values. All items in a single polyline must have the same number of values. For example, a 2D GPS decoder
-/// sets <see cref="ValuesPerItem"/> to 2 (latitude, longitude), while a 3D GPS decoder sets it to 3
-/// (latitude, longitude, altitude).
-/// </para>
+/// Derive from this class to implement a decoder for a specific polyline type. Override <see cref="GetReadOnlyMemory"/>
+/// and <see cref="CreateCoordinate"/> to provide type-specific behavior.
 /// </remarks>
 /// <typeparam name="TPolyline">The type that represents the encoded polyline input.</typeparam>
-/// <typeparam name="TCoordinate">The type that represents a decoded item.</typeparam>
+/// <typeparam name="TCoordinate">The type that represents a decoded geographic coordinate.</typeparam>
 public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder<TPolyline, TCoordinate> {
     private readonly ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> _logger;
 
@@ -62,16 +54,6 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     public PolylineEncodingOptions Options { get; }
 
     /// <summary>
-    /// Gets the number of encoded values that make up a single decoded item.
-    /// </summary>
-    /// <remarks>
-    /// Override this property to specify the arity of each item. For example, return <c>2</c> for
-    /// latitude/longitude pairs, <c>3</c> for latitude/longitude/altitude triples, or any other count
-    /// that matches the encoding scheme used to produce the polyline.
-    /// </remarks>
-    protected abstract int ValuesPerItem { get; }
-
-    /// <summary>
     /// Decodes an encoded <typeparamref name="TPolyline"/> into a sequence of <typeparamref name="TCoordinate"/> instances,
     /// with support for cancellation.
     /// </summary>
@@ -82,7 +64,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     /// A <see cref="CancellationToken"/> that can be used to cancel the decoding operation.
     /// </param>
     /// <returns>
-    /// An <see cref="IEnumerable{T}"/> of <typeparamref name="TCoordinate"/> representing the decoded items.
+    /// An <see cref="IEnumerable{T}"/> of <typeparamref name="TCoordinate"/> representing the decoded latitude and longitude pairs.
     /// </returns>
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="polyline"/> is <see langword="null"/>.
@@ -108,45 +90,30 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
         ValidateSequence(sequence, _logger);
         ValidateFormat(sequence, _logger);
 
-        int valuesPerItem = ValuesPerItem;
         int position = 0;
-
-        int[]? runningRent = ArrayPool<int>.Shared.Rent(valuesPerItem);
-        // Zero-initialize so delta decoding starts from 0 for all dimensions.
-        for (int j = 0; j < valuesPerItem; j++) {
-            runningRent[j] = 0;
-        }
+        int encodedLatitude = 0;
+        int encodedLongitude = 0;
 
         try {
             while (position < sequence.Length) {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                bool allRead = true;
-                for (int j = 0; j < valuesPerItem; j++) {
-                    if (!PolylineEncoding.TryReadValue(ref runningRent[j], sequence, ref position)) {
-                        allRead = false;
-                        break;
-                    }
-                }
-
-                if (!allRead) {
+                if (!PolylineEncoding.TryReadValue(ref encodedLatitude, sequence, ref position)
+                    || !PolylineEncoding.TryReadValue(ref encodedLongitude, sequence, ref position)) {
                     _logger?.LogOperationFailedDebug(OperationName);
                     _logger?.LogInvalidPolylineWarning(position);
 
                     ExceptionGuard.ThrowInvalidPolylineFormat(position);
                 }
 
-                double[] decoded = new double[valuesPerItem];
-                for (int j = 0; j < valuesPerItem; j++) {
-                    decoded[j] = PolylineEncoding.Denormalize(runningRent[j], Options.Precision);
-                }
+                double decodedLatitude = PolylineEncoding.Denormalize(encodedLatitude, Options.Precision);
+                double decodedLongitude = PolylineEncoding.Denormalize(encodedLongitude, Options.Precision);
 
-                _logger?.LogDecodedValuesDebug(valuesPerItem, position);
+                _logger?.LogDecodedCoordinateDebug(decodedLatitude, decodedLongitude, position);
 
-                yield return CreateItem(decoded.AsMemory());
+                yield return CreateCoordinate(decodedLatitude, decodedLongitude);
             }
         } finally {
-            ArrayPool<int>.Shared.Return(runningRent!);
             _logger?.LogOperationFinishedDebug(OperationName);
         }
     }
@@ -221,19 +188,17 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     protected abstract ReadOnlyMemory<char> GetReadOnlyMemory(in TPolyline polyline);
 
     /// <summary>
-    /// Creates a <typeparamref name="TCoordinate"/> instance from the specified decoded values.
+    /// Creates a <typeparamref name="TCoordinate"/> instance from the specified latitude and longitude values.
     /// </summary>
-    /// <param name="values">
-    /// A <see cref="ReadOnlyMemory{T}"/> of <see cref="double"/> containing exactly <see cref="ValuesPerItem"/>
-    /// decoded values for this item, in the same order they were encoded.
+    /// <param name="latitude">
+    /// The latitude component of the coordinate, in degrees.
+    /// </param>
+    /// <param name="longitude">
+    /// The longitude component of the coordinate, in degrees.
     /// </param>
     /// <returns>
-    /// A <typeparamref name="TCoordinate"/> instance representing the decoded item.
+    /// A <typeparamref name="TCoordinate"/> instance representing the specified geographic coordinate.
     /// </returns>
-    /// <remarks>
-    /// Implementations should read all required values from <paramref name="values"/> and construct the
-    /// <typeparamref name="TCoordinate"/> immediately. The memory is valid only for the duration of this call.
-    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected abstract TCoordinate CreateItem(ReadOnlyMemory<double> values);
+    protected abstract TCoordinate CreateCoordinate(double latitude, double longitude);
 }

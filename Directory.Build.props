@@ -6,8 +6,6 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<InvariantGlobalization>true</InvariantGlobalization>
 		<NeutralLanguage>en</NeutralLanguage>
-		<EmbedUntrackedSources>true</EmbedUntrackedSources>
-		<DebugType>embedded</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -22,7 +20,6 @@
 		<PackageReference Include="Meziantou.Analyzer" Version="3.*" PrivateAssets="all" />
 		<PackageReference Include="SonarAnalyzer.CSharp" Version="10.*" PrivateAssets="all" />
 		<PackageReference Include="SmartAnalyzers.ExceptionAnalyzer" Version="1.*" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.*" PrivateAssets="all" />
 	</ItemGroup>
 
 </Project>
