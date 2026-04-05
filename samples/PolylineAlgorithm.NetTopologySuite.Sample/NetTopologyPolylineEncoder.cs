@@ -7,11 +7,17 @@ namespace PolylineAlgorithm.NetTopologySuite.Sample;
 
 using global::NetTopologySuite.Geometries;
 using PolylineAlgorithm.Abstraction;
+using System;
 
 /// <summary>
 /// Polyline encoder using NetTopologySuite's Point type.
 /// </summary>
 internal sealed class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point, string> {
+    /// <summary>
+    /// Gets the number of values per item: latitude (index 0) and longitude (index 1).
+    /// </summary>
+    protected override int ValuesPerItem => 2;
+
     /// <summary>
     /// Creates encoded polyline string from memory.
     /// </summary>
@@ -26,26 +32,15 @@ internal sealed class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point
     }
 
     /// <summary>
-    /// Gets latitude from point.
+    /// Fills destination with latitude (index 0) and longitude (index 1) from the point.
     /// </summary>
-    /// <param name="current">Point instance.</param>
-    /// <returns>Latitude value.</returns>
-    protected override double GetLatitude(Point current) {
-        ArgumentNullException.ThrowIfNull(current);
+    /// <param name="item">Point instance.</param>
+    /// <param name="destination">Span of length 2 to fill.</param>
+    protected override void GetValues(Point item, Span<double> destination) {
+        ArgumentNullException.ThrowIfNull(item);
 
-        // NetTopologySuite Point: Y = latitude
-        return current.Y;
-    }
-
-    /// <summary>
-    /// Gets longitude from point.
-    /// </summary>
-    /// <param name="current">Point instance.</param>
-    /// <returns>Longitude value.</returns>
-    protected override double GetLongitude(Point current) {
-        ArgumentNullException.ThrowIfNull(current);
-
-        // NetTopologySuite Point: X = longitude
-        return current.X;
+        // NetTopologySuite Point: Y = latitude, X = longitude
+        destination[0] = item.Y;
+        destination[1] = item.X;
     }
 }

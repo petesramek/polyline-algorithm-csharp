@@ -93,8 +93,10 @@ public class PolylineDecoderBenchmark {
     }
 
     private sealed class StringPolylineDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-        protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) {
-            return (latitude, longitude);
+        protected override int ValuesPerItem => 2;
+        protected override (double Latitude, double Longitude) CreateItem(ReadOnlyMemory<double> values) {
+            ReadOnlySpan<double> span = values.Span;
+            return (span[0], span[1]);
         }
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) {
@@ -103,8 +105,10 @@ public class PolylineDecoderBenchmark {
     }
 
     private sealed class CharArrayPolylineDecoder : AbstractPolylineDecoder<char[], (double Latitude, double Longitude)> {
-        protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) {
-            return (latitude, longitude);
+        protected override int ValuesPerItem => 2;
+        protected override (double Latitude, double Longitude) CreateItem(ReadOnlyMemory<double> values) {
+            ReadOnlySpan<double> span = values.Span;
+            return (span[0], span[1]);
         }
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in char[] polyline) {
@@ -113,8 +117,10 @@ public class PolylineDecoderBenchmark {
     }
 
     private sealed class MemoryCharPolylineDecoder : AbstractPolylineDecoder<ReadOnlyMemory<char>, (double Latitude, double Longitude)> {
-        protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) {
-            return (latitude, longitude);
+        protected override int ValuesPerItem => 2;
+        protected override (double Latitude, double Longitude) CreateItem(ReadOnlyMemory<double> values) {
+            ReadOnlySpan<double> span = values.Span;
+            return (span[0], span[1]);
         }
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in ReadOnlyMemory<char> polyline) {

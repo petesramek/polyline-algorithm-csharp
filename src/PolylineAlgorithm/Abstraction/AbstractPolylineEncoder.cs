@@ -16,13 +16,19 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 
 /// <summary>
-/// Provides a base implementation for encoding sequences of geographic coordinates into encoded polyline strings.
+/// Provides a base implementation for encoding sequences of items into encoded polyline strings.
 /// </summary>
 /// <remarks>
-/// Derive from this class to implement an encoder for a specific coordinate and polyline type. Override
-/// <see cref="GetLatitude"/>, <see cref="GetLongitude"/>, and <see cref="CreatePolyline"/> to provide type-specific behavior.
+/// Derive from this class to implement an encoder for a specific item and polyline type. Override
+/// <see cref="ValuesPerItem"/>, <see cref="GetValues"/>, and <see cref="CreatePolyline"/> to provide type-specific behavior.
+/// <para>
+/// The polyline format encodes each item as a fixed-length run of <see cref="ValuesPerItem"/> delta-compressed
+/// values. All items in a single polyline must have the same number of values. For example, a 2D GPS encoder
+/// sets <see cref="ValuesPerItem"/> to 2 (latitude, longitude), while a 3D GPS encoder sets it to 3
+/// (latitude, longitude, altitude).
+/// </para>
 /// </remarks>
-/// <typeparam name="TCoordinate">The type that represents a geographic coordinate to encode.</typeparam>
+/// <typeparam name="TCoordinate">The type that represents an item to encode.</typeparam>
 /// <typeparam name="TPolyline">The type that represents the encoded polyline output.</typeparam>
 public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder<TCoordinate, TPolyline> {
     private readonly ILogger<AbstractPolylineEncoder<TCoordinate, TPolyline>> _logger;
@@ -57,6 +63,16 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     public PolylineEncodingOptions Options { get; }
 
     /// <summary>
+    /// Gets the number of values that make up a single encoded item.
+    /// </summary>
+    /// <remarks>
+    /// Override this property to specify the arity of each item. For example, return <c>2</c> for
+    /// latitude/longitude pairs, <c>3</c> for latitude/longitude/altitude triples, or any other count
+    /// that matches your encoding scheme.
+    /// </remarks>
+    protected abstract int ValuesPerItem { get; }
+
+    /// <summary>
     /// Encodes a collection of <typeparamref name="TCoordinate"/> instances into an encoded <typeparamref name="TPolyline"/> string.
     /// </summary>
     /// <param name="coordinates">
@@ -88,11 +104,12 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
         ValidateEmptyCoordinates(ref coordinates, _logger);
 
-        CoordinateDelta delta = new();
+        int valuesPerItem = ValuesPerItem;
+        CoordinateDelta delta = new(valuesPerItem);
 
         int position = 0;
         int consumed = 0;
-        int length = GetMaxBufferLength(coordinates.Length);
+        int length = GetMaxBufferLength(coordinates.Length, valuesPerItem);
 
         char[]? temp = length <= Options.StackAllocLimit
             ? null
@@ -100,29 +117,37 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
         Span<char> buffer = temp is null ? stackalloc char[length] : temp.AsSpan(0, length);
 
+        int[]? normalizedRent = ArrayPool<int>.Shared.Rent(valuesPerItem);
+        Span<int> normalized = normalizedRent.AsSpan(0, valuesPerItem);
+
+        double[]? valuesRent = ArrayPool<double>.Shared.Rent(valuesPerItem);
+        Span<double> values = valuesRent.AsSpan(0, valuesPerItem);
+
         string encodedResult;
 
         try {
             for (var i = 0; i < coordinates.Length; i++) {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                delta
-                    .Next(
-                        PolylineEncoding.Normalize(GetLatitude(coordinates[i]), Options.Precision),
-                        PolylineEncoding.Normalize(GetLongitude(coordinates[i]), Options.Precision)
-                    );
+                GetValues(coordinates[i], values);
 
-                if (!PolylineEncoding.TryWriteValue(delta.Latitude, buffer, ref position)
-                    || !PolylineEncoding.TryWriteValue(delta.Longitude, buffer, ref position)
-                ) {
-                    // This shouldn't happen, but if it does, log the error and throw an exception.
-                    _logger
-                        .LogOperationFailedDebug(OperationName);
-                    _logger
-                        .LogCannotWriteValueToBufferWarning(position, consumed);
+                for (int j = 0; j < valuesPerItem; j++) {
+                    normalized[j] = PolylineEncoding.Normalize(values[j], Options.Precision);
+                }
 
-                    ExceptionGuard.ThrowCouldNotWriteEncodedValueToBuffer();
+                delta.Next(normalized);
 
+                ReadOnlySpan<int> deltas = delta.Deltas;
+                for (int j = 0; j < deltas.Length; j++) {
+                    if (!PolylineEncoding.TryWriteValue(deltas[j], buffer, ref position)) {
+                        // This shouldn't happen, but if it does, log the error and throw an exception.
+                        _logger
+                            .LogOperationFailedDebug(OperationName);
+                        _logger
+                            .LogCannotWriteValueToBufferWarning(position, consumed);
+
+                        ExceptionGuard.ThrowCouldNotWriteEncodedValueToBuffer();
+                    }
                 }
 
                 consumed++;
@@ -130,6 +155,8 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
             encodedResult = buffer[..position].ToString();
         } finally {
+            ArrayPool<double>.Shared.Return(valuesRent!);
+            ArrayPool<int>.Shared.Return(normalizedRent!);
             if (temp is not null) {
                 ArrayPool<char>.Shared.Return(temp);
             }
@@ -141,10 +168,10 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
         return CreatePolyline(encodedResult.AsMemory());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int GetMaxBufferLength(int count) {
+        static int GetMaxBufferLength(int count, int perItem) {
             Debug.Assert(count > 0, "Count must be greater than zero.");
 
-            int requestedBufferLength = count * 2 * Defaults.Polyline.Block.Length.Max;
+            int requestedBufferLength = count * perItem * Defaults.Polyline.Block.Length.Max;
 
             Debug.Assert(requestedBufferLength > 0, "Requested buffer length must be greater than zero.");
 
@@ -175,23 +202,18 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     protected abstract TPolyline CreatePolyline(ReadOnlyMemory<char> polyline);
 
     /// <summary>
-    /// Extracts the longitude value from the specified coordinate.
+    /// Fills <paramref name="destination"/> with the values to encode for the specified item.
     /// </summary>
-    /// <param name="current">The coordinate from which to extract the longitude.</param>
-    /// <returns>
-    /// The longitude value as a <see cref="double"/>.
-    /// </returns>
+    /// <param name="item">The item from which to extract values.</param>
+    /// <param name="destination">
+    /// A <see cref="Span{T}"/> of length <see cref="ValuesPerItem"/> to fill with the item's values,
+    /// in the order they should be encoded.
+    /// </param>
+    /// <remarks>
+    /// Implementations should write exactly <see cref="ValuesPerItem"/> values into <paramref name="destination"/>.
+    /// For example, a 2D GPS encoder writes <c>destination[0] = latitude; destination[1] = longitude;</c>.
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected abstract double GetLongitude(TCoordinate current);
-
-    /// <summary>
-    /// Extracts the latitude value from the specified coordinate.
-    /// </summary>
-    /// <param name="current">The coordinate from which to extract the latitude.</param>
-    /// <returns>
-    /// The latitude value as a <see cref="double"/>.
-    /// </returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected abstract double GetLatitude(TCoordinate current);
+    protected abstract void GetValues(TCoordinate item, Span<double> destination);
 }
 
