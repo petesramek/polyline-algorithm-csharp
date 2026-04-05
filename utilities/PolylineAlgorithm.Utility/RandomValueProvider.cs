@@ -109,12 +109,11 @@ internal static class RandomValueProvider {
             return polyline.ToString();
         }
 
-        protected override double GetLatitude((double Latitude, double Longitude) current) {
-            return current.Latitude;
-        }
+        protected override int ValuesPerItem => 2;
 
-        protected override double GetLongitude((double Latitude, double Longitude) current) {
-            return current.Longitude;
+        protected override void GetValues((double Latitude, double Longitude) item, Span<double> values) {
+            values[0] = item.Latitude;
+            values[1] = item.Longitude;
         }
     }
 }

@@ -7,66 +7,79 @@ namespace PolylineAlgorithm.Internal;
 
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
 
 /// <summary>
-/// Represents the difference (delta) in latitude and longitude between consecutive geographic coordinates.
+/// Represents the differences (deltas) between consecutive sets of N encoded values.
 /// </summary>
 /// <remarks>
-/// This struct computes and stores the change in coordinate values as integer deltas between successive coordinates.
+/// This struct computes and stores the change in coordinate values as integer deltas between successive items.
+/// The number of values per item is fixed at construction time.
 /// </remarks>
 [DebuggerDisplay("{ToString(),nq}")]
 [StructLayout(LayoutKind.Auto)]
 internal struct CoordinateDelta {
-    private (int Latitude, int Longitude) _current;
+    private readonly int[] _current;
+    private readonly int[] _deltas;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="CoordinateDelta"/> struct with the default latitude and longitude deltas.
+    /// Initializes a new instance of the <see cref="CoordinateDelta"/> struct for items with the specified number of values.
     /// </summary>
-    public CoordinateDelta() {
-        _current = (default, default);
+    /// <param name="count">The number of values per item. Must be greater than zero.</param>
+    public CoordinateDelta(int count) {
+        Debug.Assert(count > 0, "Count must be greater than zero.");
+
+        _current = new int[count];
+        _deltas = new int[count];
     }
 
     /// <summary>
-    /// Gets the current delta in latitude between the most recent and previous coordinate.
+    /// Gets the current delta values between the most recent and previous item.
     /// </summary>
-    public int Latitude { get; private set; }
+    public ReadOnlySpan<int> Deltas => _deltas;
 
     /// <summary>
-    /// Gets the current delta in longitude between the most recent and previous coordinate.
+    /// Updates the delta values based on the next set of encoded values, and sets those values as the new baseline.
     /// </summary>
-    public int Longitude { get; private set; }
+    /// <param name="values">The next set of encoded integer values. Length must equal the count passed to the constructor.</param>
+    public void Next(ReadOnlySpan<int> values) {
+        Debug.Assert(values.Length == _current.Length, "Values length must match the count passed to the constructor.");
 
-    /// <summary>
-    /// Updates the delta values based on the next latitude and longitude, and sets the current coordinate as next delta baseline.
-    /// </summary>
-    /// <param name="latitude">The next latitude value.</param>
-    /// <param name="longitude">The next longitude value.</param>
-    public void Next(int latitude, int longitude) {
-        Latitude = Delta(_current.Latitude, latitude);
-        Longitude = Delta(_current.Longitude, longitude);
-
-        _current.Latitude = latitude;
-        _current.Longitude = longitude;
+        for (int i = 0; i < values.Length; i++) {
+            _deltas[i] = values[i] - _current[i];
+            _current[i] = values[i];
+        }
     }
-
-    /// <summary>
-    /// Calculates the delta between two coordinate values.
-    /// </summary>
-    /// <remarks>
-    /// This method computes the difference between two integer coordinate values, handling cases where the values may be positive or negative.
-    /// </remarks>
-    /// <param name="initial">The previous coordinate value.</param>
-    /// <param name="next">The next coordinate value.</param>
-    /// <returns>The computed delta between <paramref name="initial"/> and <paramref name="next"/>.</returns>
-    private static int Delta(int initial, int next) => next - initial;
 
     /// <summary>
     /// Returns a string representation of the current coordinate delta.
     /// </summary>
     /// <returns>
-    /// A string in the format <c>{ Coordinate:  { Latitude: [int], Longitude: [int] }, Delta: { Latitude: [int], Longitude: [int] } }</c> representing the current coordinate and deltas to previous coordinate.
+    /// A string in the format <c>{ Coordinate: [v0, v1, ...], Delta: [d0, d1, ...] }</c> representing the current values and their deltas to the previous item.
     /// </returns>
-    public override readonly string ToString() =>
-        $"{{ Coordinate: {{ Latitude: {_current.Latitude}, Longitude: {_current.Longitude} }}, " +
-        $"Delta: {{ Latitude: {Latitude}, Longitude: {Longitude} }} }}";
+    public override readonly string ToString() {
+        StringBuilder sb = new();
+
+        sb.Append("{ Coordinate: [");
+        for (int i = 0; i < _current.Length; i++) {
+            if (i > 0) {
+                sb.Append(", ");
+            }
+
+            sb.Append(_current[i]);
+        }
+
+        sb.Append("], Delta: [");
+        for (int i = 0; i < _deltas.Length; i++) {
+            if (i > 0) {
+                sb.Append(", ");
+            }
+
+            sb.Append(_deltas[i]);
+        }
+
+        sb.Append("] }");
+
+        return sb.ToString();
+    }
 }

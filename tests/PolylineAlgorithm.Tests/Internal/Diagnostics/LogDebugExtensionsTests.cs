@@ -9,7 +9,6 @@ using Microsoft.Extensions.Logging;
 using PolylineAlgorithm.Internal.Diagnostics;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 
 /// <summary>
 /// Tests for <see cref="LogDebugExtensions"/>.
@@ -80,20 +79,19 @@ public sealed class LogDebugExtensionsTests {
     }
 
     /// <summary>
-    /// Tests that LogDecodedCoordinateDebug WithCoordinatesAndPosition LogsDecodedCoordinateMessage.
+    /// Tests that LogDecodedItemDebug with values count and position logs a decoded item message.
     /// </summary>
     [TestMethod]
-    public void LogDecodedCoordinateDebug_With_Coordinates_And_Position_Logs_Decoded_Coordinate_Message() {
+    public void LogDecodedItemDebug_With_Values_Count_And_Position_Logs_Decoded_Item_Message() {
         var logger = new TestLogger();
-        const double latitude = 38.5;
-        const double longitude = -120.2;
+        const int valuesCount = 2;
         const int position = 42;
 
-        logger.LogDecodedCoordinateDebug(latitude, longitude, position);
+        logger.LogDecodedItemDebug(valuesCount, position);
 
         Assert.HasCount(1, logger.Logs);
         Assert.AreEqual(LogLevel.Debug, logger.Logs[0].Level);
-        Assert.Contains(string.Create(CultureInfo.InvariantCulture, $"Decoded coordinate: (Latitude: {latitude}, Longitude: {longitude}) at position {position}."), logger.Logs[0].Message, StringComparison.Ordinal);
+        Assert.Contains($"Decoded item with {valuesCount} values at position {position}.", logger.Logs[0].Message, StringComparison.Ordinal);
     }
 
     /// <summary>
@@ -142,37 +140,35 @@ public sealed class LogDebugExtensionsTests {
     }
 
     /// <summary>
-    /// Tests that LogDecodedCoordinateDebug WithZeroCoordinates LogsMessage.
+    /// Tests that LogDecodedItemDebug with zero count logs a message.
     /// </summary>
     [TestMethod]
-    public void LogDecodedCoordinateDebug_With_Zero_Coordinates_Logs_Message() {
+    public void LogDecodedItemDebug_With_Zero_Values_Count_Logs_Message() {
         var logger = new TestLogger();
-        const double latitude = 0.0;
-        const double longitude = 0.0;
+        const int valuesCount = 0;
         const int position = 0;
 
-        logger.LogDecodedCoordinateDebug(latitude, longitude, position);
+        logger.LogDecodedItemDebug(valuesCount, position);
 
         Assert.HasCount(1, logger.Logs);
         Assert.AreEqual(LogLevel.Debug, logger.Logs[0].Level);
-        Assert.Contains("Decoded coordinate", logger.Logs[0].Message, StringComparison.Ordinal);
+        Assert.Contains("Decoded item", logger.Logs[0].Message, StringComparison.Ordinal);
     }
 
     /// <summary>
-    /// Tests that LogDecodedCoordinateDebug WithNegativeCoordinates LogsMessage.
+    /// Tests that LogDecodedItemDebug with large values count logs a message.
     /// </summary>
     [TestMethod]
-    public void LogDecodedCoordinateDebug_With_Negative_Coordinates_Logs_Message() {
+    public void LogDecodedItemDebug_With_Large_Values_Count_Logs_Message() {
         var logger = new TestLogger();
-        const double latitude = -90.0;
-        const double longitude = -180.0;
+        const int valuesCount = 10;
         const int position = 100;
 
-        logger.LogDecodedCoordinateDebug(latitude, longitude, position);
+        logger.LogDecodedItemDebug(valuesCount, position);
 
         Assert.HasCount(1, logger.Logs);
         Assert.AreEqual(LogLevel.Debug, logger.Logs[0].Level);
-        Assert.Contains(string.Create(CultureInfo.InvariantCulture, $"Latitude: {latitude}, Longitude: {longitude}"), logger.Logs[0].Message, StringComparison.Ordinal);
+        Assert.Contains($"values at position {position}", logger.Logs[0].Message, StringComparison.Ordinal);
     }
 
     /// <summary>

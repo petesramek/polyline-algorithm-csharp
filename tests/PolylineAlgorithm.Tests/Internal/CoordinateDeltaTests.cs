@@ -14,16 +14,34 @@ using System.Globalization;
 [TestClass]
 public sealed class CoordinateDeltaTests {
     /// <summary>
-    /// Tests that the default constructor initializes delta values to zero.
+    /// Tests that the constructor with count 2 initializes delta values to zero.
     /// </summary>
     [TestMethod]
-    public void Constructor_Default_Initializes_Latitude_And_Longitude_To_Zero() {
+    public void Constructor_With_Count_Two_Initializes_Deltas_To_Zero() {
         // Act
-        CoordinateDelta delta = new();
+        CoordinateDelta delta = new(2);
 
         // Assert
-        Assert.AreEqual(0, delta.Latitude);
-        Assert.AreEqual(0, delta.Longitude);
+        ReadOnlySpan<int> deltas = delta.Deltas;
+        Assert.AreEqual(2, deltas.Length);
+        Assert.AreEqual(0, deltas[0]);
+        Assert.AreEqual(0, deltas[1]);
+    }
+
+    /// <summary>
+    /// Tests that the constructor with count 3 initializes delta values to zero.
+    /// </summary>
+    [TestMethod]
+    public void Constructor_With_Count_Three_Initializes_Deltas_To_Zero() {
+        // Act
+        CoordinateDelta delta = new(3);
+
+        // Assert
+        ReadOnlySpan<int> deltas = delta.Deltas;
+        Assert.AreEqual(3, deltas.Length);
+        for (int i = 0; i < deltas.Length; i++) {
+            Assert.AreEqual(0, deltas[i]);
+        }
     }
 
     /// <summary>
@@ -35,16 +53,17 @@ public sealed class CoordinateDeltaTests {
     [DataRow(0, 0, 0, 0)]
     [DataRow(int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue)]
     [DataRow(int.MinValue, int.MinValue, int.MinValue, int.MinValue)]
-    public void Next_Single_Call_From_Zero_Computes_Expected_Delta(int latitude, int longitude, int expectedLatitude, int expectedLongitude) {
+    public void Next_Single_Call_From_Zero_Computes_Expected_Delta(int first, int second, int expectedFirst, int expectedSecond) {
         // Arrange
-        CoordinateDelta delta = new();
+        CoordinateDelta delta = new(2);
 
         // Act
-        delta.Next(latitude, longitude);
+        delta.Next([first, second]);
 
         // Assert
-        Assert.AreEqual(expectedLatitude, delta.Latitude);
-        Assert.AreEqual(expectedLongitude, delta.Longitude);
+        ReadOnlySpan<int> deltas = delta.Deltas;
+        Assert.AreEqual(expectedFirst, deltas[0]);
+        Assert.AreEqual(expectedSecond, deltas[1]);
     }
 
     /// <summary>
@@ -56,28 +75,48 @@ public sealed class CoordinateDeltaTests {
     [DataRow(42, 84, 42, 84, 0, 0)]
     [DataRow(-50, 100, 25, -75, 75, -175)]
     public void Next_Sequential_Calls_Compute_Delta_From_Previous_Value(
-        int firstLatitude, int firstLongitude,
-        int secondLatitude, int secondLongitude,
-        int expectedLatitude, int expectedLongitude) {
+        int firstA, int firstB,
+        int secondA, int secondB,
+        int expectedA, int expectedB) {
         // Arrange
-        CoordinateDelta delta = new();
-        delta.Next(firstLatitude, firstLongitude);
+        CoordinateDelta delta = new(2);
+        delta.Next([firstA, firstB]);
 
         // Act
-        delta.Next(secondLatitude, secondLongitude);
+        delta.Next([secondA, secondB]);
 
         // Assert
-        Assert.AreEqual(expectedLatitude, delta.Latitude);
-        Assert.AreEqual(expectedLongitude, delta.Longitude);
+        ReadOnlySpan<int> deltas = delta.Deltas;
+        Assert.AreEqual(expectedA, deltas[0]);
+        Assert.AreEqual(expectedB, deltas[1]);
     }
 
     /// <summary>
-    /// Tests that ToString on a default instance returns a string containing expected structural keywords and a zero value.
+    /// Tests that Next works correctly for N-value items (N > 2).
     /// </summary>
     [TestMethod]
-    public void ToString_With_Default_Constructor_Returns_Formatted_String_With_Zeros() {
+    public void Next_With_Three_Values_Computes_Expected_Deltas() {
         // Arrange
-        CoordinateDelta delta = new();
+        CoordinateDelta delta = new(3);
+
+        // Act
+        delta.Next([10, 20, 30]);
+        delta.Next([15, 25, 35]);
+
+        // Assert
+        ReadOnlySpan<int> deltas = delta.Deltas;
+        Assert.AreEqual(5, deltas[0]);
+        Assert.AreEqual(5, deltas[1]);
+        Assert.AreEqual(5, deltas[2]);
+    }
+
+    /// <summary>
+    /// Tests that ToString on a new instance returns a string containing expected structural keywords and zero values.
+    /// </summary>
+    [TestMethod]
+    public void ToString_With_New_Instance_Returns_Formatted_String_With_Zeros() {
+        // Arrange
+        CoordinateDelta delta = new(2);
 
         // Act
         string result = delta.ToString();
@@ -86,8 +125,6 @@ public sealed class CoordinateDeltaTests {
         Assert.IsNotNull(result);
         Assert.IsTrue(result.Contains("Coordinate", StringComparison.Ordinal));
         Assert.IsTrue(result.Contains("Delta", StringComparison.Ordinal));
-        Assert.IsTrue(result.Contains("Latitude", StringComparison.Ordinal));
-        Assert.IsTrue(result.Contains("Longitude", StringComparison.Ordinal));
         Assert.Contains('0', result);
     }
 
@@ -99,18 +136,18 @@ public sealed class CoordinateDeltaTests {
     [DataRow(-100, -200)]
     [DataRow(int.MaxValue, int.MaxValue)]
     [DataRow(int.MinValue, int.MinValue)]
-    public void ToString_After_Next_Contains_Expected_Values(int latitude, int longitude) {
+    public void ToString_After_Next_Contains_Expected_Values(int first, int second) {
         // Arrange
-        CoordinateDelta delta = new();
-        delta.Next(latitude, longitude);
+        CoordinateDelta delta = new(2);
+        delta.Next([first, second]);
 
         // Act
         string result = delta.ToString();
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.IsTrue(result.Contains(latitude.ToString(CultureInfo.InvariantCulture), StringComparison.Ordinal));
-        Assert.IsTrue(result.Contains(longitude.ToString(CultureInfo.InvariantCulture), StringComparison.Ordinal));
+        Assert.IsTrue(result.Contains(first.ToString(CultureInfo.InvariantCulture), StringComparison.Ordinal));
+        Assert.IsTrue(result.Contains(second.ToString(CultureInfo.InvariantCulture), StringComparison.Ordinal));
     }
 
     /// <summary>
@@ -119,9 +156,9 @@ public sealed class CoordinateDeltaTests {
     [TestMethod]
     public void ToString_After_Multiple_Next_Calls_Returns_Formatted_String_With_Latest_Values() {
         // Arrange
-        CoordinateDelta delta = new();
-        delta.Next(10, 20);
-        delta.Next(30, 50);
+        CoordinateDelta delta = new(2);
+        delta.Next([10, 20]);
+        delta.Next([30, 50]);
 
         // Act
         string result = delta.ToString();

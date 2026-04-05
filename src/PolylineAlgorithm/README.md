@@ -40,8 +40,11 @@ using PolylineAlgorithm;
 using PolylineAlgorithm.Abstraction;
 
 public sealed class MyPolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
-    protected override double GetLatitude((double Latitude, double Longitude) coordinate) => coordinate.Latitude;
-    protected override double GetLongitude((double Latitude, double Longitude) coordinate) => coordinate.Longitude;
+    protected override int ValuesPerItem => 2;
+    protected override void GetValues((double Latitude, double Longitude) item, Span<double> values) {
+        values[0] = item.Latitude;
+        values[1] = item.Longitude;
+    }
     protected override string CreatePolyline(ReadOnlyMemory<char> polyline) => polyline.ToString();
 }
 ```
@@ -71,7 +74,11 @@ using PolylineAlgorithm;
 using PolylineAlgorithm.Abstraction;
 
 public sealed class MyPolylineDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-    protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) => (latitude, longitude);
+    protected override int ValuesPerItem => 2;
+    protected override (double Latitude, double Longitude) CreateItem(ReadOnlyMemory<double> values) {
+        ReadOnlySpan<double> span = values.Span;
+        return (span[0], span[1]);
+    }
     protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
 }
 ```

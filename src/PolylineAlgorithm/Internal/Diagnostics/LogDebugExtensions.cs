@@ -46,12 +46,11 @@ internal static partial class LogDebugExtensions {
     internal static partial void LogOperationFinishedDebug(this ILogger logger, string operationName);
 
     /// <summary>
-    /// Logs a debug message containing the decoded coordinate values and position.
+    /// Logs a debug message containing the count of decoded values and the current position in the buffer.
     /// </summary>
     /// <param name="logger">The <see cref="ILogger"/> used to write the log entry.</param>
-    /// <param name="latitude">The decoded latitude value.</param>
-    /// <param name="longitude">The decoded longitude value.</param>
-    /// <param name="position">The position in the polyline buffer at which the coordinate was decoded.</param>
-    [LoggerMessage(EVENT_ID_BASE + 4, LOG_LEVEL, "Decoded coordinate: (Latitude: {latitude}, Longitude: {longitude}) at position {position}.")]
-    internal static partial void LogDecodedCoordinateDebug(this ILogger logger, double latitude, double longitude, int position);
+    /// <param name="valuesCount">The number of values decoded for the current item.</param>
+    /// <param name="position">The position in the polyline buffer at which the item was decoded.</param>
+    [LoggerMessage(EVENT_ID_BASE + 4, LOG_LEVEL, "Decoded item with {valuesCount} values at position {position}.")]
+    internal static partial void LogDecodedItemDebug(this ILogger logger, int valuesCount, int position);
 }
