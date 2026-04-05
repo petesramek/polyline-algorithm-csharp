@@ -12,16 +12,23 @@ using System;
 /// <summary>
 /// Polyline decoder using NetTopologySuite.
 /// </summary>
-public sealed class NetTopologyPolylineDecoder : AbstractPolylineDecoder<string, Point> {
+internal sealed class NetTopologyPolylineDecoder : AbstractPolylineDecoder<string, Point> {
     /// <summary>
-    /// Creates a NetTopologySuite point from latitude and longitude.
+    /// Gets the number of encoded values per item: latitude (index 0) and longitude (index 1).
     /// </summary>
-    /// <param name="latitude">Latitude value.</param>
-    /// <param name="longitude">Longitude value.</param>
+    protected override int ValuesPerItem => 2;
+
+    /// <summary>
+    /// Creates a NetTopologySuite point from the decoded values.
+    /// </summary>
+    /// <param name="values">
+    /// A memory region containing two values: index 0 is latitude, index 1 is longitude.
+    /// </param>
     /// <returns>Point instance.</returns>
-    protected override Point CreateCoordinate(double latitude, double longitude) {
+    protected override Point CreateItem(ReadOnlyMemory<double> values) {
+        ReadOnlySpan<double> span = values.Span;
         // NetTopologySuite Point: x = longitude, y = latitude
-        return new Point(longitude, latitude);
+        return new Point(span[1], span[0]);
     }
 
     /// <summary>

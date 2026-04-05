@@ -16,16 +16,24 @@ using System.Collections.Generic;
 [TestClass]
 public sealed class AbstractPolylineDecoderTests {
     private sealed class TestStringDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
+        protected override int ValuesPerItem => 2;
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
-        protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) => (latitude, longitude);
+        protected override (double Latitude, double Longitude) CreateItem(ReadOnlyMemory<double> values) {
+            ReadOnlySpan<double> span = values.Span;
+            return (span[0], span[1]);
+        }
     }
 
     private sealed class TestStringDecoderWithOptions : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
         public TestStringDecoderWithOptions(PolylineEncodingOptions options)
             : base(options) { }
 
+        protected override int ValuesPerItem => 2;
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
-        protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) => (latitude, longitude);
+        protected override (double Latitude, double Longitude) CreateItem(ReadOnlyMemory<double> values) {
+            ReadOnlySpan<double> span = values.Span;
+            return (span[0], span[1]);
+        }
     }
 
     /// <summary>

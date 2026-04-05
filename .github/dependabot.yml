@@ -4,11 +4,23 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    labels:
+      - "dependencies"
+    assignees:
+      - "petesramek"
   - package-ecosystem: "nuget"
     directory: "/"
     schedule:
       interval: "weekly"
+    labels:
+      - "dependencies"
+    assignees:
+      - "petesramek"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+    labels:
+      - "dependencies"
+    assignees:
+      - "petesramek"

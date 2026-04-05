@@ -72,3 +72,24 @@ The CI `format` job also runs `dotnet format` automatically on every push to non
 ## Editor Configuration
 
 Code style rules are stored in `.editorconfig` at the repository root. Any compliant IDE (Visual Studio, VS Code with C# Dev Kit, Rider) will pick these up automatically.
+
+## Required Repository Secrets and Variables
+
+The CI/CD workflows rely on the following GitHub repository secrets and variables.
+
+### Secrets
+
+| Name | Description |
+|------|-------------|
+| `NUGET_PACKAGE_FEED_API_KEY` | API key for the Azure Artifacts NuGet feed |
+
+### Variables
+
+| Name | Description |
+|------|-------------|
+| `NUGET_PACKAGE_FEED_URL` | NuGet feed URL |
+| `BENCHMARKDOTNET_RUN_OVERRIDE` | Set to `true` to force benchmarks to run on non-release PRs |
+| `BENCHMARKDOTNET_RUNTIMES` | Runtimes to benchmark (e.g. `net8.0 net10.0`) |
+| `BENCHMARKDOTNET_FILTER` | Benchmark filter pattern (e.g. `*`) |
+| `DEFAULT_BUILD_FRAMEWORK` | Default target framework for builds (e.g. `net10.0`) |
+| `SRC_DEFAULT_GLOB_PATTERN` | Glob pattern for source project files (e.g. `**/PolylineAlgorithm.csproj`) |
