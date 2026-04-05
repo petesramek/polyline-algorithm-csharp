@@ -96,6 +96,32 @@ jobs:
         run: |
           cp -r api-reference/guide api-reference/${{ env.friendly-version }}/guide
 
+      - name: 'Run benchmarks for v${{ env.friendly-version }}'
+        shell: bash
+        env:
+          benchmarks-artifacts: /tmp/benchmarks
+        run: |
+          dotnet run \
+            --project benchmarks/PolylineAlgorithm.Benchmarks/PolylineAlgorithm.Benchmarks.csproj \
+            --configuration Release \
+            --framework ${{ vars.DEFAULT_BUILD_FRAMEWORK || 'net10.0' }} \
+            -- --filter ${{ vars.BENCHMARKDOTNET_FILTER || '*' }} \
+               --exporters GitHub \
+               --memory \
+               --iterationTime 100 \
+               --join \
+               --artifacts ${{ env.benchmarks-artifacts }}/
+
+      - name: 'Inject benchmark results into guide for v${{ env.friendly-version }}'
+        shell: bash
+        env:
+          benchmarks-artifacts: /tmp/benchmarks
+        run: |
+          find ${{ env.benchmarks-artifacts }} -name "*-report-github.md" | sort | xargs cat > /tmp/benchmark_results.md
+          awk '/{benchmarks_section}/{while((getline line < "/tmp/benchmark_results.md") > 0) print line; close("/tmp/benchmark_results.md"); next} {print}' \
+            "api-reference/${{ env.friendly-version }}/guide/benchmarks.md" > /tmp/benchmarks.md
+          mv /tmp/benchmarks.md "api-reference/${{ env.friendly-version }}/guide/benchmarks.md"
+
       - name: 'Discover all versions'
         id: discover-versions
         shell: bash
