@@ -29,7 +29,7 @@ using System.Threading;
 /// set to <see langword="default"/>.
 /// </para>
 /// </remarks>
-public sealed class SensorDataDecoder : IPolylineDecoder<string, SensorReading> {
+internal sealed class SensorDataDecoder : IPolylineDecoder<string, SensorReading> {
     /// <summary>
     /// Initializes a new instance of the <see cref="SensorDataDecoder"/> class with default encoding options.
     /// </summary>
@@ -47,9 +47,7 @@ public sealed class SensorDataDecoder : IPolylineDecoder<string, SensorReading> 
     /// Thrown when <paramref name="options"/> is <see langword="null"/>.
     /// </exception>
     public SensorDataDecoder(PolylineEncodingOptions options) {
-        if (options is null) {
-            throw new ArgumentNullException(nameof(options));
-        }
+        ArgumentNullException.ThrowIfNull(options);
 
         Options = options;
     }
@@ -83,15 +81,16 @@ public sealed class SensorDataDecoder : IPolylineDecoder<string, SensorReading> 
     /// Thrown when <paramref name="cancellationToken"/> requests cancellation.
     /// </exception>
     public IEnumerable<SensorReading> Decode(string polyline, CancellationToken cancellationToken = default) {
-        if (polyline is null) {
-            throw new ArgumentNullException(nameof(polyline));
-        }
+        ArgumentNullException.ThrowIfNull(polyline);
 
         if (polyline.Length < 1) {
             throw new ArgumentException("Encoded polyline must not be empty.", nameof(polyline));
         }
 
-        ReadOnlyMemory<char> memory = polyline.AsMemory();
+        return DecodeIterator(polyline.AsMemory(), cancellationToken);
+    }
+
+    private IEnumerable<SensorReading> DecodeIterator(ReadOnlyMemory<char> memory, CancellationToken cancellationToken) {
         int position = 0;
         int accumulated = 0;
 

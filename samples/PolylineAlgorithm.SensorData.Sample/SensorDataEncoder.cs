@@ -28,7 +28,7 @@ using System.Threading;
 /// will not be recovered on decoding.
 /// </para>
 /// </remarks>
-public sealed class SensorDataEncoder : IPolylineEncoder<SensorReading, string> {
+internal sealed class SensorDataEncoder : IPolylineEncoder<SensorReading, string> {
     /// <summary>
     /// Initializes a new instance of the <see cref="SensorDataEncoder"/> class with default encoding options.
     /// </summary>
@@ -45,9 +45,7 @@ public sealed class SensorDataEncoder : IPolylineEncoder<SensorReading, string> 
     /// Thrown when <paramref name="options"/> is <see langword="null"/>.
     /// </exception>
     public SensorDataEncoder(PolylineEncodingOptions options) {
-        if (options is null) {
-            throw new ArgumentNullException(nameof(options));
-        }
+        ArgumentNullException.ThrowIfNull(options);
 
         Options = options;
     }
