@@ -96,29 +96,17 @@ jobs:
         run: |
           cp -r api-reference/guide api-reference/${{ env.friendly-version }}/guide
 
-      - name: 'Run benchmarks for v${{ env.friendly-version }}'
-        shell: bash
-        env:
-          BENCHMARKS_ARTIFACTS: /tmp/benchmarks
-        run: |
-          dotnet run \
-            --project benchmarks/PolylineAlgorithm.Benchmarks/PolylineAlgorithm.Benchmarks.csproj \
-            --configuration Release \
-            /p:Platform="Any CPU" \
-            --framework ${{ vars.DEFAULT_BUILD_FRAMEWORK || 'net10.0' }} \
-            -- --filter ${{ vars.BENCHMARKDOTNET_FILTER || '*' }} \
-               --exporters GitHub \
-               --memory \
-               --iterationTime 100 \
-               --join \
-               --artifacts $BENCHMARKS_ARTIFACTS/
+      - name: 'Download benchmark results'
+        uses: actions/download-artifact@v8
+        with:
+          pattern: benchmark-*
+          path: /tmp/benchmarks
+          merge-multiple: true
 
       - name: 'Inject benchmark results into guide for v${{ env.friendly-version }}'
         shell: bash
-        env:
-          BENCHMARKS_ARTIFACTS: /tmp/benchmarks
         run: |
-          find "$BENCHMARKS_ARTIFACTS" -name "*-report-github.md" | sort | xargs -r cat > /tmp/benchmark_results.md
+          find /tmp/benchmarks -name "*-report-github.md" | sort | xargs -r cat > /tmp/benchmark_results.md
           awk '/{benchmarks_section}/{while((getline line < "/tmp/benchmark_results.md") > 0) print line; close("/tmp/benchmark_results.md"); next} {print}' \
             "api-reference/${{ env.friendly-version }}/guide/benchmarks.md" > /tmp/benchmarks.md
           mv /tmp/benchmarks.md "api-reference/${{ env.friendly-version }}/guide/benchmarks.md"
