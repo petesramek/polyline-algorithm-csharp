@@ -16,3 +16,4 @@
 - [ ] XML doc comments updated for all public API changes
 - [ ] `dotnet format` run with no issues
 - [ ] README and `/samples` updated — if public API changed
+- [ ] PR label added (`breaking` / `feat` / `fix` / `docs`) — for changelog categorization
