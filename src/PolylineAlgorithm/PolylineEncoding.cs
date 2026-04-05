@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright © Pete Sramek. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
@@ -76,10 +76,11 @@ public static class PolylineEncoding {
 
         uint factor = Pow10.GetFactor(precision);
 
-        checked {
-            return (int)(Math.Truncate(value * 10 * factor) / 10);
-        }
+        const double Epsilon = 1e-9;
 
+        checked {
+            return (int)Math.Truncate((value * factor) + (Epsilon * Math.Sign(value)));
+        }
     }
 
     /// <summary>
