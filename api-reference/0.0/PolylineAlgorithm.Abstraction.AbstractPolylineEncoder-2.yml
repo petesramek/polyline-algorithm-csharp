@@ -1,0 +1,219 @@
+### YamlMime:ApiPage
+title: Class AbstractPolylineEncoder<TCoordinate, TPolyline>
+body:
+- api1: Class AbstractPolylineEncoder<TCoordinate, TPolyline>
+  id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/update-workflows-for-api-analyzers/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L27
+  metadata:
+    uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2
+    commentId: T:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2
+- facts:
+  - name: Namespace
+    value:
+      text: PolylineAlgorithm.Abstraction
+      url: PolylineAlgorithm.Abstraction.html
+  - name: Assembly
+    value: PolylineAlgorithm.dll
+- markdown: Provides a base implementation for encoding sequences of geographic coordinates into encoded polyline strings.
+- code: 'public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder<TCoordinate, TPolyline>'
+- h4: Type Parameters
+- parameters:
+  - name: TCoordinate
+    description: The type that represents a geographic coordinate to encode.
+  - name: TPolyline
+    description: The type that represents the encoded polyline output.
+- h4: Inheritance
+- inheritance:
+  - text: object
+    url: https://learn.microsoft.com/dotnet/api/system.object
+  - text: AbstractPolylineEncoder<TCoordinate, TPolyline>
+    url: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder-2.html
+- h4: Implements
+- list:
+  - text: IPolylineEncoder<TCoordinate, TPolyline>
+    url: PolylineAlgorithm.Abstraction.IPolylineEncoder-2.html
+- h4: Inherited Members
+- list:
+  - text: object.Equals(object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - text: object.Equals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - text: object.GetHashCode()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - text: object.GetType()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - text: object.MemberwiseClone()
+    url: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - text: object.ReferenceEquals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - text: object.ToString()
+    url: https://learn.microsoft.com/dotnet/api/system.object.tostring
+- h4: Extension Methods
+- list:
+  - text: PolylineEncoderExtensions.Encode<TCoordinate, TPolyline>(IPolylineEncoder<TCoordinate, TPolyline>, List<TCoordinate>)
+    url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1__System_Collections_Generic_List___0__
+  - text: PolylineEncoderExtensions.Encode<TCoordinate, TPolyline>(IPolylineEncoder<TCoordinate, TPolyline>, TCoordinate[])
+    url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1____0___
+- h2: Remarks
+- markdown: >-
+    Derive from this class to implement an encoder for a specific coordinate and polyline type. Override
+
+    <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.GetLatitude(%600)" data-throw-if-not-resolved="false"></xref>, <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.GetLongitude(%600)" data-throw-if-not-resolved="false"></xref>, and <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.CreatePolyline(System.ReadOnlyMemory%7bSystem.Char%7d)" data-throw-if-not-resolved="false"></xref> to provide type-specific behavior.
+- h2: Constructors
+- api3: AbstractPolylineEncoder()
+  id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2__ctor
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/update-workflows-for-api-analyzers/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L33
+  metadata:
+    uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor
+    commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor
+- markdown: Initializes a new instance of the <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602" data-throw-if-not-resolved="false"></xref> class with default encoding options.
+- code: protected AbstractPolylineEncoder()
+- api3: AbstractPolylineEncoder(PolylineEncodingOptions)
+  id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2__ctor_PolylineAlgorithm_PolylineEncodingOptions_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/update-workflows-for-api-analyzers/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L43
+  metadata:
+    uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
+    commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
+- markdown: Initializes a new instance of the <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602" data-throw-if-not-resolved="false"></xref> class with the specified encoding options.
+- code: protected AbstractPolylineEncoder(PolylineEncodingOptions options)
+- h4: Parameters
+- parameters:
+  - name: options
+    type:
+    - text: PolylineEncodingOptions
+      url: PolylineAlgorithm.PolylineEncodingOptions.html
+    description: The <xref href="PolylineAlgorithm.PolylineEncodingOptions" data-throw-if-not-resolved="false"></xref> to use for encoding operations.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentNullException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+    description: Thrown when <code class="paramref">options</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>
+- h2: Properties
+- api3: Options
+  id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_Options
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/update-workflows-for-api-analyzers/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L57
+  metadata:
+    uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Options
+    commentId: P:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Options
+- markdown: Gets the encoding options used by this polyline encoder.
+- code: public PolylineEncodingOptions Options { get; }
+- h4: Property Value
+- parameters:
+  - type:
+    - text: PolylineEncodingOptions
+      url: PolylineAlgorithm.PolylineEncodingOptions.html
+- h2: Methods
+- api3: CreatePolyline(ReadOnlyMemory<char>)
+  id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_CreatePolyline_System_ReadOnlyMemory_System_Char__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/update-workflows-for-api-analyzers/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L174
+  metadata:
+    uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.CreatePolyline(System.ReadOnlyMemory{System.Char})
+    commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.CreatePolyline(System.ReadOnlyMemory{System.Char})
+- markdown: Creates a polyline instance from the provided read-only sequence of characters.
+- code: protected abstract TPolyline CreatePolyline(ReadOnlyMemory<char> polyline)
+- h4: Parameters
+- parameters:
+  - name: polyline
+    type:
+    - text: ReadOnlyMemory
+      url: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+    - <
+    - text: char
+      url: https://learn.microsoft.com/dotnet/api/system.char
+    - '>'
+    description: A <xref href="System.ReadOnlyMemory%601" data-throw-if-not-resolved="false"></xref> containing the encoded polyline characters.
+- h4: Returns
+- parameters:
+  - type:
+    - TPolyline
+    description: An instance of <code class="typeparamref">TPolyline</code> representing the encoded polyline.
+- api3: Encode(ReadOnlySpan<TCoordinate>, CancellationToken)
+  id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_Encode_System_ReadOnlySpan__0__System_Threading_CancellationToken_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/update-workflows-for-api-analyzers/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L80
+  metadata:
+    uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Encode(System.ReadOnlySpan{`0},System.Threading.CancellationToken)
+    commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Encode(System.ReadOnlySpan{`0},System.Threading.CancellationToken)
+- markdown: Encodes a collection of <code class="typeparamref">TCoordinate</code> instances into an encoded <code class="typeparamref">TPolyline</code> string.
+- code: >-
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "Method contains local methods. Actual method only 55 lines.")]
+
+    public TPolyline Encode(ReadOnlySpan<TCoordinate> coordinates, CancellationToken cancellationToken = default)
+- h4: Parameters
+- parameters:
+  - name: coordinates
+    type:
+    - text: ReadOnlySpan
+      url: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+    - <
+    - TCoordinate
+    - '>'
+    description: The collection of <code class="typeparamref">TCoordinate</code> objects to encode.
+  - name: cancellationToken
+    type:
+    - text: CancellationToken
+      url: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+    description: A <xref href="System.Threading.CancellationToken" data-throw-if-not-resolved="false"></xref> that can be used to cancel the encoding operation.
+    optional: true
+- h4: Returns
+- parameters:
+  - type:
+    - TPolyline
+    description: An instance of <code class="typeparamref">TPolyline</code> representing the encoded coordinates.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentNullException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+    description: Thrown when <code class="paramref">coordinates</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+  - type:
+    - text: ArgumentException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentexception
+    description: Thrown when <code class="paramref">coordinates</code> is an empty enumeration.
+  - type:
+    - text: InvalidOperationException
+      url: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+    description: Thrown when the internal encoding buffer cannot accommodate the encoded value.
+- api3: GetLatitude(TCoordinate)
+  id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_GetLatitude__0_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/update-workflows-for-api-analyzers/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L194
+  metadata:
+    uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLatitude(`0)
+    commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLatitude(`0)
+- markdown: Extracts the latitude value from the specified coordinate.
+- code: protected abstract double GetLatitude(TCoordinate current)
+- h4: Parameters
+- parameters:
+  - name: current
+    type:
+    - TCoordinate
+    description: The coordinate from which to extract the latitude.
+- h4: Returns
+- parameters:
+  - type:
+    - text: double
+      url: https://learn.microsoft.com/dotnet/api/system.double
+    description: The latitude value as a <xref href="System.Double" data-throw-if-not-resolved="false"></xref>.
+- api3: GetLongitude(TCoordinate)
+  id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_GetLongitude__0_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/update-workflows-for-api-analyzers/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L184
+  metadata:
+    uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLongitude(`0)
+    commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLongitude(`0)
+- markdown: Extracts the longitude value from the specified coordinate.
+- code: protected abstract double GetLongitude(TCoordinate current)
+- h4: Parameters
+- parameters:
+  - name: current
+    type:
+    - TCoordinate
+    description: The coordinate from which to extract the longitude.
+- h4: Returns
+- parameters:
+  - type:
+    - text: double
+      url: https://learn.microsoft.com/dotnet/api/system.double
+    description: The longitude value as a <xref href="System.Double" data-throw-if-not-resolved="false"></xref>.
+languageId: csharp
+metadata:
+  description: Provides a base implementation for encoding sequences of geographic coordinates into encoded polyline strings.
