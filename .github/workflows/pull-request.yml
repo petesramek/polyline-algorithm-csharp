@@ -8,8 +8,9 @@ on:
       - synchronize
       - reopened
     branches:
+      - 'develop/**'
       - 'preview/**'
-      - 'release/**' 
+      - 'release/**'
 
 permissions:
   actions: read

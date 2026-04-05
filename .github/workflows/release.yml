@@ -277,6 +277,9 @@ jobs:
     needs: [workflow-variables, release, versioning]
     if: ${{ needs.workflow-variables.outputs.is-release == 'true' }}
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
     env:
       GH_TOKEN: ${{ github.token }}
       current-branch: ${{ github.ref_name }}
@@ -358,11 +361,13 @@ jobs:
             echo "support-branch-exists=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: 'Configure git identity'
+        if: ${{ steps.check-support-branch.outputs.support-branch-exists == 'false' }}
+        uses: './.github/actions/git/configure-identity'
+
       - name: 'Create support branch'
         if: ${{ steps.check-support-branch.outputs.support-branch-exists == 'false' }}
         run: |
-          git config user.name "$(git log -n 1 --pretty=format:%an)"
-          git config user.email "$(git log -n 1 --pretty=format:%ae)"
           git checkout -b "${{ steps.resolve-support-branch.outputs.support-branch }}"
           git push --set-upstream origin "${{ steps.resolve-support-branch.outputs.support-branch }}"
 

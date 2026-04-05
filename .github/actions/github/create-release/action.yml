@@ -23,18 +23,21 @@ runs:
         echo "is-preview=${{ inputs.is-preview }}"
         echo "preview-argument=${{ inputs.is-preview == 'true' && '--prerelease' || '' }}"
         echo "notes-start-tag=${{ inputs.notes-start-tag }}"
-        echo "notes-start-tag-argument="${{ inputs.notes-start-tag != '' && '--notes-start-tag $(inputs.notes-start-tag)' || '' }}"
+        echo "notes-start-tag-argument=${{ inputs.notes-start-tag != '' && format('--notes-start-tag {0}', inputs.notes-start-tag) || '' }}"
       shell: bash
-    - name: 'Create git tag ${{ env.release-version }}'
+    - name: 'Configure git identity'
+      uses: './.github/actions/git/configure-identity'
+    - name: 'Create git tag ${{ inputs.release-version }}'
       shell: bash
       run: |
-        git tag -a ${{ env.release-version }} -m "${{ env.release-version }}"
-    - name: 'Create GitHub release PolylineAlgorithm ${{ env.release-version }}'
+        git tag -a ${{ inputs.release-version }} -m "${{ inputs.release-version }}"
+        git push origin ${{ inputs.release-version }}
+    - name: 'Create GitHub release PolylineAlgorithm ${{ inputs.release-version }}'
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
         release-version: ${{ inputs.release-version }}
         preview-argument: "${{ inputs.is-preview == 'true' && '--prerelease' || '' }}"
-        notes-start-tag-argument: "${{ inputs.notes-start-tag != '' && '--notes-start-tag $(inputs.notes-start-tag)' || '' }}"
+        notes-start-tag-argument: "${{ inputs.notes-start-tag != '' && format('--notes-start-tag {0}', inputs.notes-start-tag) || '' }}"
       run: |
         gh release create ${{ env.release-version }} --generate-notes --discussion-category "General" ${{ env.preview-argument }} ${{ env.notes-start-tag-argument }}
