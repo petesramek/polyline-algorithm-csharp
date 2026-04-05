@@ -129,7 +129,7 @@ jobs:
           assembly-version: ${{ env.assembly-version }}
           assembly-informational-version: ${{ env.assembly-informational-version }}
           file-version: ${{ env.file-version }}
-          treat-warnins-as-error: ${{ needs.workflow-variables.outputs.is-release }}
+          treat-warnings-as-error: ${{ needs.workflow-variables.outputs.is-release }}
 
   test:
     name: 'Run tests'
@@ -168,6 +168,71 @@ jobs:
 
       - name: Write code coverage report summary
         run: cat ${{ steps.code-coverage-report.outputs.code-coverage-report-file }} >> $GITHUB_STEP_SUMMARY
+
+  update-api-unshipped:
+    name: 'Update PublicAPI.Unshipped.txt'
+    needs: [workflow-variables, build, validate-release]
+    if: ${{ needs.workflow-variables.outputs.is-preview == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout ${{ github.ref }}'
+        uses: actions/checkout@v6
+
+      - name: 'Setup .NET'
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.dotnet-sdk-version }}
+
+      - name: 'Add missing API declarations to PublicAPI.Unshipped.txt'
+        shell: bash
+        run: dotnet format analyzers src/PolylineAlgorithm/PolylineAlgorithm.csproj --diagnostics RS0016
+
+      - name: 'Configure git identity'
+        uses: './.github/actions/git/configure-identity'
+
+      - name: 'Commit and push updated API files'
+        shell: bash
+        run: |
+          git add src/PolylineAlgorithm/PublicAPI.Unshipped.txt
+          git diff --staged --quiet || (
+            git commit -m "Update PublicAPI.Unshipped.txt with new API declarations" &&
+            git pull --rebase origin ${{ github.ref_name }} &&
+            git push
+          )
+
+  promote-api-files:
+    name: 'Promote PublicAPI files (Unshipped -> Shipped)'
+    needs: [workflow-variables, test, validate-release]
+    if: ${{ needs.workflow-variables.outputs.is-release == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout ${{ github.ref }}'
+        uses: actions/checkout@v6
+
+      - name: 'Promote Unshipped.txt into Shipped.txt'
+        shell: bash
+        run: |
+          UNSHIPPED="src/PolylineAlgorithm/PublicAPI.Unshipped.txt"
+          SHIPPED="src/PolylineAlgorithm/PublicAPI.Shipped.txt"
+
+          # Append every non-blank, non-header line from Unshipped into Shipped
+          tail -n +2 "$UNSHIPPED" | grep -v '^[[:space:]]*$' >> "$SHIPPED" || true
+
+          # Reset Unshipped to just the nullable-enable header (with BOM to match convention)
+          printf '\xef\xbb\xbf#nullable enable\n' > "$UNSHIPPED"
+
+      - name: 'Configure git identity'
+        uses: './.github/actions/git/configure-identity'
+
+      - name: 'Commit and push promoted API files'
+        shell: bash
+        run: |
+          git add src/PolylineAlgorithm/PublicAPI.Shipped.txt src/PolylineAlgorithm/PublicAPI.Unshipped.txt
+          git diff --staged --quiet || (
+            git commit -m "Promote PublicAPI.Unshipped.txt into PublicAPI.Shipped.txt for release" &&
+            git pull --rebase origin ${{ github.ref_name }} &&
+            git push
+          )
 
   pack:
     name: 'Package binaries'
@@ -219,8 +284,14 @@ jobs:
 
   publish-package:
     name: 'Publish package'
-    needs: [pack, validate-release, publish-documentation]
-    if: ${{ always() && needs.pack.result == 'success' && needs.validate-release.result == 'success' && (needs.publish-documentation.result == 'success' || needs.publish-documentation.result == 'skipped') }}
+    needs: [pack, validate-release, publish-documentation, update-api-unshipped, promote-api-files]
+    if: |
+      always() &&
+      needs.pack.result == 'success' &&
+      needs.validate-release.result == 'success' &&
+      (needs.publish-documentation.result == 'success' || needs.publish-documentation.result == 'skipped') &&
+      (needs.promote-api-files.result == 'success' || needs.promote-api-files.result == 'skipped') &&
+      (needs.update-api-unshipped.result == 'success' || needs.update-api-unshipped.result == 'skipped')
     env:
       package-artifact-name: ${{ needs.pack.outputs.package-artifact-name }}
     runs-on: ubuntu-latest

@@ -274,3 +274,6 @@ dotnet_naming_style.underscore_camel_case.capitalization = camel_case
 # Public API analyzer
 
 dotnet_public_api_analyzer.require_api_files = true
+
+# RS0017: Symbol removed from public API - always an error (breaking change detection)
+dotnet_diagnostic.RS0017.severity = error

@@ -130,7 +130,7 @@ jobs:
           assembly-version: ${{ env.assembly-version }}
           assembly-informational-version: ${{ env.assembly-informational-version }}
           file-version: ${{ env.file-version }}
-          treat-warnins-as-error: ${{ needs.workflow-variables.outputs.is-release }}
+          treat-warnings-as-error: ${{ needs.workflow-variables.outputs.is-release }}
 
   test:
     name: 'Run tests'
