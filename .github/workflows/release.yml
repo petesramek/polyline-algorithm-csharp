@@ -361,9 +361,68 @@ jobs:
           is-preview: ${{ env.is-preview }}
           notes-start-tag: ${{ steps.determine-notes-start-tag.outputs.notes-start-tag }}
 
+  update-changelog:
+    name: 'Update CHANGELOG.md'
+    needs: [workflow-variables, release, versioning]
+    if: ${{ needs.workflow-variables.outputs.is-release == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      release-version: ${{ needs.versioning.outputs.release-version }}
+    steps:
+      - name: 'Checkout ${{ github.ref }}'
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.ref }}
+
+      - name: 'Fetch release notes'
+        shell: bash
+        run: |
+          gh release view ${{ env.release-version }} --json body --jq '.body' > /tmp/release-notes.txt
+
+      - name: 'Prepend entry to CHANGELOG.md'
+        shell: bash
+        run: |
+          release_date=$(date -u +%Y-%m-%d)
+          {
+            echo "## ${{ env.release-version }} — ${release_date}"
+            echo ""
+            cat /tmp/release-notes.txt
+            echo ""
+          } > /tmp/new-entry.txt
+          awk '
+            /<!-- New entries are prepended automatically by the release workflow. -->/ {
+              print
+              print ""
+              while ((getline line < "/tmp/new-entry.txt") > 0) print line
+              close("/tmp/new-entry.txt")
+              next
+            }
+            { print }
+          ' CHANGELOG.md > /tmp/changelog-new.md
+          mv /tmp/changelog-new.md CHANGELOG.md
+
+      - name: 'Configure git identity'
+        uses: './.github/actions/git/configure-identity'
+
+      - name: 'Commit and push CHANGELOG.md'
+        shell: bash
+        run: |
+          git add CHANGELOG.md
+          git diff --staged --quiet || (
+            git commit -m "Update CHANGELOG.md for ${{ env.release-version }}" &&
+            git pull --rebase origin ${{ github.ref_name }} &&
+            git push
+          )
+
+      - name: 'Write changelog summary'
+        shell: bash
+        run: |
+          echo "✅ CHANGELOG.md updated for **${{ env.release-version }}**." >> $GITHUB_STEP_SUMMARY
+
   merge-to-main:
     name: 'Merge ${{ github.ref_name }} into main'
-    needs: [workflow-variables, release, versioning]
+    needs: [workflow-variables, release, versioning, update-changelog]
     if: ${{ needs.workflow-variables.outputs.is-release == 'true' }}
     runs-on: ubuntu-latest
     permissions:
