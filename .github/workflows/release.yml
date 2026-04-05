@@ -371,17 +371,10 @@ jobs:
           git checkout -b "${{ steps.resolve-support-branch.outputs.support-branch }}"
           git push --set-upstream origin "${{ steps.resolve-support-branch.outputs.support-branch }}"
 
-      - name: 'Lock support branch'
-        if: ${{ steps.check-support-branch.outputs.support-branch-exists == 'false' }}
-        uses: './.github/actions/github/branch-protection/lock'
-        with:
-          branch: ${{ steps.resolve-support-branch.outputs.support-branch }}
-          token: ${{ secrets.GH_ADMIN_TOKEN }}
-
       - name: 'Write support branch summary'
         run: |
           if [[ "${{ steps.check-support-branch.outputs.support-branch-exists }}" == "false" ]]; then
-            echo "✅ Created and locked support branch **${{ steps.resolve-support-branch.outputs.support-branch }}**." >> $GITHUB_STEP_SUMMARY
+            echo "✅ Created support branch **${{ steps.resolve-support-branch.outputs.support-branch }}**." >> $GITHUB_STEP_SUMMARY
           else
             echo "⏭️ Support branch **${{ steps.resolve-support-branch.outputs.support-branch }}** already exists." >> $GITHUB_STEP_SUMMARY
           fi
