@@ -290,9 +290,44 @@ jobs:
             ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.nupkg
             ${{ runner.temp }}/${{ env.nuget-packages-directory }}/**/*.snupkg
 
+  benchmark:
+    name: Benchmark with .NET CLI on ${{ matrix.os }}
+    needs: [workflow-variables, build, validate-release]
+    if: ${{ needs.workflow-variables.outputs.is-release == 'true' || vars.BENCHMARKDOTNET_RUN_OVERRIDE == 'true' }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: 'Checkout ${{ github.head_ref || github.ref }}'
+        uses: actions/checkout@v6
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            8.x
+            10.x
+      - name: Download Build
+        uses: actions/download-artifact@v8
+        with:
+          name: build
+      - name: Benchmark
+        working-directory: ${{ vars.BENCHMARKDOTNET_WORKING_DIRECTORY }}
+        run: dotnet run --configuration ${{ env.build-configuration }} /p:Platform=${{ env.build-platform }} --framework ${{ vars.DEFAULT_BUILD_FRAMEWORK }} --runtimes ${{ vars.BENCHMARKDOTNET_RUNTIMES }} --filter ${{ vars.BENCHMARKDOTNET_FILTER }} --artifacts ${{ runner.temp }}/benchmarks/ --exporters GitHub --memory --iterationTime 100 --join
+      - name: Upload Benchmark Results
+        uses: actions/upload-artifact@v7
+        with:
+          name: benchmark-${{ matrix.os }}
+          path: |
+            ${{ runner.temp }}/benchmarks/**/*-report-github.md
+      - name: Write Benchmark Summary
+        shell: bash
+        run: cat **/*-report-github.md > $GITHUB_STEP_SUMMARY
+        working-directory: ${{ runner.temp }}/benchmarks/
+
   publish-documentation:
     name: 'Publish documentation'
-    needs: [pack, validate-release, workflow-variables]
+    needs: [pack, benchmark, validate-release, workflow-variables]
     if: ${{ needs.workflow-variables.outputs.is-release == 'true' }}
     uses: ./.github/workflows/publish-documentation.yml
     permissions:

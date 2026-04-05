@@ -96,6 +96,21 @@ jobs:
         run: |
           cp -r api-reference/guide api-reference/${{ env.friendly-version }}/guide
 
+      - name: 'Download benchmark results'
+        uses: actions/download-artifact@v8
+        with:
+          pattern: benchmark-*
+          path: /tmp/benchmarks
+          merge-multiple: true
+
+      - name: 'Inject benchmark results into guide for v${{ env.friendly-version }}'
+        shell: bash
+        run: |
+          find /tmp/benchmarks -name "*-report-github.md" | sort | xargs -r cat > /tmp/benchmark_results.md
+          awk '/{benchmarks_section}/{while((getline line < "/tmp/benchmark_results.md") > 0) print line; close("/tmp/benchmark_results.md"); next} {print}' \
+            "api-reference/${{ env.friendly-version }}/guide/benchmarks.md" > /tmp/benchmarks.md
+          mv /tmp/benchmarks.md "api-reference/${{ env.friendly-version }}/guide/benchmarks.md"
+
       - name: 'Discover all versions'
         id: discover-versions
         shell: bash
