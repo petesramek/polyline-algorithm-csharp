@@ -3,7 +3,7 @@ title: Interface IPolylineEncoder<TValue, TPolyline>
 body:
 - api1: Interface IPolylineEncoder<TValue, TPolyline>
   id: PolylineAlgorithm_Abstraction_IPolylineEncoder_2
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/bugfix/incorrect-normalization/src/PolylineAlgorithm/Abstraction/IPolylineEncoder.cs#L36
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Abstraction/IPolylineEncoder.cs#L36
   metadata:
     uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2
     commentId: T:PolylineAlgorithm.Abstraction.IPolylineEncoder`2
@@ -63,7 +63,7 @@ body:
 - h2: Methods
 - api3: Encode(ReadOnlySpan<TValue>, CancellationToken)
   id: PolylineAlgorithm_Abstraction_IPolylineEncoder_2_Encode_System_ReadOnlySpan__0__System_Threading_CancellationToken_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/bugfix/incorrect-normalization/src/PolylineAlgorithm/Abstraction/IPolylineEncoder.cs#L76
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Abstraction/IPolylineEncoder.cs#L76
   metadata:
     uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2.Encode(System.ReadOnlySpan{`0},System.Threading.CancellationToken)
     commentId: M:PolylineAlgorithm.Abstraction.IPolylineEncoder`2.Encode(System.ReadOnlySpan{`0},System.Threading.CancellationToken)
