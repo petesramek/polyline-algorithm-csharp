@@ -12,7 +12,7 @@ inputs:
   file-version:
     description: 'Assembly file version.'
     required: true
-  treat-warnins-as-error:
+  treat-warnings-as-error:
     description: 'Treat warnings as errors.'
     required: true
   project-path:
