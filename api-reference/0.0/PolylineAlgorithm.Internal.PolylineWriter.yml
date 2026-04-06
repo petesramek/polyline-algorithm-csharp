@@ -1,0 +1,65 @@
+### YamlMime:ApiPage
+title: Struct PolylineWriter
+body:
+- api1: Struct PolylineWriter
+  id: PolylineAlgorithm_Internal_PolylineWriter
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Internal/PolylineWriter.cs#L22
+  metadata:
+    uid: PolylineAlgorithm.Internal.PolylineWriter
+    commentId: T:PolylineAlgorithm.Internal.PolylineWriter
+- facts:
+  - name: Namespace
+    value:
+      text: PolylineAlgorithm.Internal
+      url: PolylineAlgorithm.Internal.html
+  - name: Assembly
+    value: PolylineAlgorithm.dll
+- markdown: Engine-owned stateful cursor that feeds values written by a formatter into the polyline encoding pipeline.
+- code: public ref struct PolylineWriter
+- h4: Inherited Members
+- list:
+  - text: object.Equals(object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - text: object.Equals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - text: object.GetHashCode()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - text: object.GetType()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - text: object.ReferenceEquals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - text: object.ToString()
+    url: https://learn.microsoft.com/dotnet/api/system.object.tostring
+- h2: Remarks
+- markdown: >-
+    Each instance wraps a caller-provided <xref href="System.Char" data-throw-if-not-resolved="false"></xref> buffer sized to the worst-case maximum
+
+    capacity so that the buffer never needs to grow. The buffer may be stack-allocated or rented from
+
+    <xref href="System.Buffers.ArrayPool%601" data-throw-if-not-resolved="false"></xref>; the engine calls BeginItem before
+
+    invoking the formatter for each item so that the slot index resets correctly while delta state is
+
+    preserved across item boundaries.
+- h2: Methods
+- api3: Write(double, ref int)
+  id: PolylineAlgorithm_Internal_PolylineWriter_Write_System_Double_System_Int32__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Internal/PolylineWriter.cs#L36
+  metadata:
+    uid: PolylineAlgorithm.Internal.PolylineWriter.Write(System.Double,System.Int32@)
+    commentId: M:PolylineAlgorithm.Internal.PolylineWriter.Write(System.Double,System.Int32@)
+- markdown: Emits one field value into the encoding pipeline.
+- code: public void Write(double value, ref int state)
+- h4: Parameters
+- parameters:
+  - name: value
+    type:
+    - text: double
+      url: https://learn.microsoft.com/dotnet/api/system.double
+  - name: state
+    type:
+    - text: int
+      url: https://learn.microsoft.com/dotnet/api/system.int32
+languageId: csharp
+metadata:
+  description: Engine-owned stateful cursor that feeds values written by a formatter into the polyline encoding pipeline.

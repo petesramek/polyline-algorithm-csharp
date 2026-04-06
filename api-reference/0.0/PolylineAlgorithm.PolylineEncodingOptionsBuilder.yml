@@ -3,7 +3,7 @@ title: Class PolylineEncodingOptionsBuilder
 body:
 - api1: Class PolylineEncodingOptionsBuilder
   id: PolylineAlgorithm_PolylineEncodingOptionsBuilder
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L15
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L14
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder
     commentId: T:PolylineAlgorithm.PolylineEncodingOptionsBuilder
@@ -39,7 +39,7 @@ body:
 - h2: Methods
 - api3: Build()
   id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_Build
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L38
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L36
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.Build
     commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.Build
@@ -53,7 +53,7 @@ body:
     description: A configured <xref href="PolylineAlgorithm.PolylineEncodingOptions" data-throw-if-not-resolved="false"></xref> instance.
 - api3: Create()
   id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_Create
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L28
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L26
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.Create
     commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.Create
@@ -67,7 +67,7 @@ body:
     description: An <xref href="PolylineAlgorithm.PolylineEncodingOptionsBuilder" data-throw-if-not-resolved="false"></xref> instance for configuring polyline encoding options.
 - api3: WithLoggerFactory(ILoggerFactory)
   id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_WithLoggerFactory_Microsoft_Extensions_Logging_ILoggerFactory_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L97
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L67
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithLoggerFactory(Microsoft.Extensions.Logging.ILoggerFactory)
     commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithLoggerFactory(Microsoft.Extensions.Logging.ILoggerFactory)
@@ -88,7 +88,7 @@ body:
     description: The current <xref href="PolylineAlgorithm.PolylineEncodingOptionsBuilder" data-throw-if-not-resolved="false"></xref> instance for method chaining.
 - api3: WithPrecision(uint)
   id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_WithPrecision_System_UInt32_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L82
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L52
   metadata:
     uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithPrecision(System.UInt32)
     commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithPrecision(System.UInt32)
@@ -107,35 +107,6 @@ body:
     - text: PolylineEncodingOptionsBuilder
       url: PolylineAlgorithm.PolylineEncodingOptionsBuilder.html
     description: The current <xref href="PolylineAlgorithm.PolylineEncodingOptionsBuilder" data-throw-if-not-resolved="false"></xref> instance for method chaining.
-- api3: WithStackAllocLimit(int)
-  id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_WithStackAllocLimit_System_Int32_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L61
-  metadata:
-    uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithStackAllocLimit(System.Int32)
-    commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithStackAllocLimit(System.Int32)
-- markdown: Configures the buffer size used for stack allocation during polyline encoding operations.
-- code: public PolylineEncodingOptionsBuilder WithStackAllocLimit(int stackAllocLimit)
-- h4: Parameters
-- parameters:
-  - name: stackAllocLimit
-    type:
-    - text: int
-      url: https://learn.microsoft.com/dotnet/api/system.int32
-    description: The maximum buffer size to use for stack allocation. Must be greater than or equal to 1.
-- h4: Returns
-- parameters:
-  - type:
-    - text: PolylineEncodingOptionsBuilder
-      url: PolylineAlgorithm.PolylineEncodingOptionsBuilder.html
-    description: The current <xref href="PolylineAlgorithm.PolylineEncodingOptionsBuilder" data-throw-if-not-resolved="false"></xref> instance for method chaining.
-- h4: Remarks
-- markdown: This method allows customization of the internal buffer size for encoding, which can impact performance and memory usage.
-- h4: Exceptions
-- parameters:
-  - type:
-    - text: ArgumentOutOfRangeException
-      url: https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception
-    description: Thrown if <code class="paramref">stackAllocLimit</code> is less than 1.
 languageId: csharp
 metadata:
   description: Provides a builder for configuring options for polyline encoding operations.

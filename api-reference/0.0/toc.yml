@@ -32,3 +32,12 @@
     href: PolylineAlgorithm.Extensions.PolylineDecoderExtensions.yml
   - name: PolylineEncoderExtensions
     href: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.yml
+- name: PolylineAlgorithm.Internal
+  href: PolylineAlgorithm.Internal.yml
+  items:
+  - name: Classes
+  - name: PolylineReader
+    href: PolylineAlgorithm.Internal.PolylineReader.yml
+  - name: Structs
+  - name: PolylineWriter
+    href: PolylineAlgorithm.Internal.PolylineWriter.yml

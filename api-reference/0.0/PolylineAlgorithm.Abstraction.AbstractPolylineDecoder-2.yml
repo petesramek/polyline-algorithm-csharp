@@ -50,9 +50,9 @@ body:
     url: https://learn.microsoft.com/dotnet/api/system.object.tostring
 - h2: Remarks
 - markdown: >-
-    Derive from this class to implement a decoder for a specific polyline type. Override <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineDecoder%602.GetReadOnlyMemory(%600%40)" data-throw-if-not-resolved="false"></xref>,
+    Derive from this class to implement a decoder for a specific polyline type. Override <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineDecoder%602.GetReadOnlyMemory(%600%40)" data-throw-if-not-resolved="false"></xref>
 
-    <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineDecoder%602.ValuesPerItem" data-throw-if-not-resolved="false"></xref>, and <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineDecoder%602.CreateItem(System.ReadOnlyMemory%7bSystem.Double%7d)" data-throw-if-not-resolved="false"></xref> to provide type-specific behavior.
+    and <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineDecoder%602.Read(PolylineAlgorithm.Internal.PolylineReader)" data-throw-if-not-resolved="false"></xref> to provide type-specific behavior.
 - h2: Constructors
 - api3: AbstractPolylineDecoder()
   id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2__ctor
@@ -97,52 +97,7 @@ body:
   - type:
     - text: PolylineEncodingOptions
       url: PolylineAlgorithm.PolylineEncodingOptions.html
-- api3: ValuesPerItem
-  id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_ValuesPerItem
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L206
-  metadata:
-    uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.ValuesPerItem
-    commentId: P:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.ValuesPerItem
-- markdown: Gets the number of values decoded per item from the polyline.
-- code: protected abstract int ValuesPerItem { get; }
-- h4: Property Value
-- parameters:
-  - type:
-    - text: int
-      url: https://learn.microsoft.com/dotnet/api/system.int32
-- h4: Remarks
-- markdown: >-
-    Must be greater than zero. Each item in the decoded output is constructed from this many consecutive
-
-    delta-decoded values. For a standard geographic coordinate pair (latitude + longitude), return <code>2</code>.
 - h2: Methods
-- api3: CreateItem(ReadOnlyMemory<double>)
-  id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_CreateItem_System_ReadOnlyMemory_System_Double__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L218
-  metadata:
-    uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.CreateItem(System.ReadOnlyMemory{System.Double})
-    commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.CreateItem(System.ReadOnlyMemory{System.Double})
-- markdown: Creates a <code class="typeparamref">TCoordinate</code> instance from the specified decoded values.
-- code: protected abstract TCoordinate CreateItem(ReadOnlyMemory<double> values)
-- h4: Parameters
-- parameters:
-  - name: values
-    type:
-    - text: ReadOnlyMemory
-      url: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
-    - <
-    - text: double
-      url: https://learn.microsoft.com/dotnet/api/system.double
-    - '>'
-    description: >-
-      A <xref href="System.ReadOnlyMemory%601" data-throw-if-not-resolved="false"></xref> of <xref href="System.Double" data-throw-if-not-resolved="false"></xref> containing the decoded values for this item.
-
-      The length equals <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineDecoder%602.ValuesPerItem" data-throw-if-not-resolved="false"></xref>. Implementations should copy values out rather than store the memory.
-- h4: Returns
-- parameters:
-  - type:
-    - TCoordinate
-    description: A <code class="typeparamref">TCoordinate</code> instance representing the decoded item.
 - api3: Decode(TPolyline, CancellationToken)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_Decode__0_System_Threading_CancellationToken_
   src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L81
@@ -195,7 +150,7 @@ body:
     description: Thrown when <code class="paramref">cancellationToken</code> is canceled during decoding.
 - api3: GetReadOnlyMemory(in TPolyline)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_GetReadOnlyMemory__0__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L196
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L176
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.GetReadOnlyMemory(`0@)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.GetReadOnlyMemory(`0@)
@@ -217,9 +172,41 @@ body:
       url: https://learn.microsoft.com/dotnet/api/system.char
     - '>'
     description: A <xref href="System.ReadOnlyMemory%601" data-throw-if-not-resolved="false"></xref> of <xref href="System.Char" data-throw-if-not-resolved="false"></xref> representing the encoded polyline characters.
+- api3: Read(PolylineReader)
+  id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_Read_PolylineAlgorithm_Internal_PolylineReader_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L195
+  metadata:
+    uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Read(PolylineAlgorithm.Internal.PolylineReader)
+    commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.Read(PolylineAlgorithm.Internal.PolylineReader)
+- markdown: Reads field values from the polyline decoding pipeline and constructs one <code class="typeparamref">TCoordinate</code> item.
+- code: protected abstract TCoordinate Read(PolylineReader reader)
+- h4: Parameters
+- parameters:
+  - name: reader
+    type:
+    - text: PolylineReader
+      url: PolylineAlgorithm.Internal.PolylineReader.html
+    description: >-
+      The <xref href="PolylineAlgorithm.Internal.PolylineReader" data-throw-if-not-resolved="false"></xref> cursor provided by the engine. Call <xref href="PolylineAlgorithm.Internal.PolylineReader.Read(System.Int32%40)" data-throw-if-not-resolved="false"></xref>
+
+      once for each expected field value, in the same order used by the corresponding encoder's
+
+      Write override.
+- h4: Returns
+- parameters:
+  - type:
+    - TCoordinate
+    description: A <code class="typeparamref">TCoordinate</code> instance constructed from the decoded field values.
+- h4: Remarks
+- markdown: >-
+    Implementations must always call <xref href="PolylineAlgorithm.Internal.PolylineReader.Read(System.Int32%40)" data-throw-if-not-resolved="false"></xref> the same number of times,
+
+    in the same field order, for every item. The number of reads must match the number of writes
+
+    performed by the corresponding encoder's Write override.
 - api3: ValidateFormat(ReadOnlyMemory<char>, ILogger?)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineDecoder_2_ValidateFormat_System_ReadOnlyMemory_System_Char__Microsoft_Extensions_Logging_ILogger_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L176
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineDecoder.cs#L156
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.ValidateFormat(System.ReadOnlyMemory{System.Char},Microsoft.Extensions.Logging.ILogger)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineDecoder`2.ValidateFormat(System.ReadOnlyMemory{System.Char},Microsoft.Extensions.Logging.ILogger)

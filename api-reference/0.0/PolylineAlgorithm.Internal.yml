@@ -1,0 +1,21 @@
+### YamlMime:ApiPage
+title: Namespace PolylineAlgorithm.Internal
+body:
+- api1: Namespace PolylineAlgorithm.Internal
+  id: PolylineAlgorithm_Internal
+  metadata:
+    uid: PolylineAlgorithm.Internal
+    commentId: N:PolylineAlgorithm.Internal
+- h3: Classes
+- parameters:
+  - type:
+      text: PolylineReader
+      url: PolylineAlgorithm.Internal.PolylineReader.html
+    description: Engine-owned stateful cursor that delivers decoded field values to a formatter during polyline decoding.
+- h3: Structs
+- parameters:
+  - type:
+      text: PolylineWriter
+      url: PolylineAlgorithm.Internal.PolylineWriter.html
+    description: Engine-owned stateful cursor that feeds values written by a formatter into the polyline encoding pipeline.
+languageId: csharp

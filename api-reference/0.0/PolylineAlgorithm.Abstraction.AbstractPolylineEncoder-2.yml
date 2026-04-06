@@ -58,7 +58,7 @@ body:
 - markdown: >-
     Derive from this class to implement an encoder for a specific item and polyline type. Override
 
-    <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.ValuesPerItem" data-throw-if-not-resolved="false"></xref>, <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.GetValues(%600%2cSystem.Span%7bSystem.Double%7d)" data-throw-if-not-resolved="false"></xref>, and <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.CreatePolyline(System.ReadOnlyMemory%7bSystem.Char%7d)" data-throw-if-not-resolved="false"></xref> to provide type-specific behavior.
+    <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.Write(%600%2cPolylineAlgorithm.Internal.PolylineWriter%40)" data-throw-if-not-resolved="false"></xref>, and <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.CreatePolyline(System.ReadOnlySpan%7bSystem.Char%7d)" data-throw-if-not-resolved="false"></xref> to provide type-specific behavior.
 - h2: Constructors
 - api3: AbstractPolylineEncoder()
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2__ctor
@@ -103,44 +103,26 @@ body:
   - type:
     - text: PolylineEncodingOptions
       url: PolylineAlgorithm.PolylineEncodingOptions.html
-- api3: ValuesPerItem
-  id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_ValuesPerItem
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L196
-  metadata:
-    uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.ValuesPerItem
-    commentId: P:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.ValuesPerItem
-- markdown: Gets the number of values extracted from each <code class="typeparamref">TCoordinate</code> item during encoding.
-- code: protected abstract int ValuesPerItem { get; }
-- h4: Property Value
-- parameters:
-  - type:
-    - text: int
-      url: https://learn.microsoft.com/dotnet/api/system.int32
-- h4: Remarks
-- markdown: >-
-    Must be greater than zero. Each value is written as a separate delta-encoded block in the output polyline.
-
-    For a standard geographic coordinate pair (latitude + longitude), return <code>2</code>.
 - h2: Methods
-- api3: CreatePolyline(ReadOnlyMemory<char>)
-  id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_CreatePolyline_System_ReadOnlyMemory_System_Char__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L186
+- api3: CreatePolyline(ReadOnlySpan<char>)
+  id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_CreatePolyline_System_ReadOnlySpan_System_Char__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L143
   metadata:
-    uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.CreatePolyline(System.ReadOnlyMemory{System.Char})
-    commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.CreatePolyline(System.ReadOnlyMemory{System.Char})
-- markdown: Creates a polyline instance from the provided read-only sequence of characters.
-- code: protected abstract TPolyline CreatePolyline(ReadOnlyMemory<char> polyline)
+    uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.CreatePolyline(System.ReadOnlySpan{System.Char})
+    commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.CreatePolyline(System.ReadOnlySpan{System.Char})
+- markdown: Creates a polyline instance from the provided read-only span of characters.
+- code: protected abstract TPolyline CreatePolyline(ReadOnlySpan<char> polyline)
 - h4: Parameters
 - parameters:
   - name: polyline
     type:
-    - text: ReadOnlyMemory
-      url: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+    - text: ReadOnlySpan
+      url: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
     - <
     - text: char
       url: https://learn.microsoft.com/dotnet/api/system.char
     - '>'
-    description: A <xref href="System.ReadOnlyMemory%601" data-throw-if-not-resolved="false"></xref> containing the encoded polyline characters.
+    description: A <xref href="System.ReadOnlySpan%601" data-throw-if-not-resolved="false"></xref> containing the encoded polyline characters.
 - h4: Returns
 - parameters:
   - type:
@@ -153,10 +135,7 @@ body:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Encode(System.ReadOnlySpan{`0},System.Threading.CancellationToken)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Encode(System.ReadOnlySpan{`0},System.Threading.CancellationToken)
 - markdown: Encodes a collection of <code class="typeparamref">TCoordinate</code> instances into an encoded <code class="typeparamref">TPolyline</code> string.
-- code: >-
-    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "Method contains local methods. Actual method only 55 lines.")]
-
-    public TPolyline Encode(ReadOnlySpan<TCoordinate> coordinates, CancellationToken cancellationToken = default)
+- code: public TPolyline Encode(ReadOnlySpan<TCoordinate> coordinates, CancellationToken cancellationToken = default)
 - h4: Parameters
 - parameters:
   - name: coordinates
@@ -192,29 +171,37 @@ body:
     - text: InvalidOperationException
       url: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
     description: Thrown when the internal encoding buffer cannot accommodate the encoded value.
-- api3: GetValues(TCoordinate, Span<double>)
-  id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_GetValues__0_System_Span_System_Double__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L205
+- api3: Write(TCoordinate, ref PolylineWriter)
+  id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_Write__0_PolylineAlgorithm_Internal_PolylineWriter__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/assess-repository-state/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L160
   metadata:
-    uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetValues(`0,System.Span{System.Double})
-    commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetValues(`0,System.Span{System.Double})
-- markdown: Extracts the encoded values from the specified item into the provided span.
-- code: protected abstract void GetValues(TCoordinate item, Span<double> values)
+    uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Write(`0,PolylineAlgorithm.Internal.PolylineWriter@)
+    commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Write(`0,PolylineAlgorithm.Internal.PolylineWriter@)
+- markdown: Writes the field values of the specified item into the polyline encoding pipeline.
+- code: protected abstract void Write(TCoordinate item, ref PolylineWriter writer)
 - h4: Parameters
 - parameters:
   - name: item
     type:
     - TCoordinate
-    description: The item from which to extract values.
-  - name: values
+    description: The item whose field values are to be encoded.
+  - name: writer
     type:
-    - text: Span
-      url: https://learn.microsoft.com/dotnet/api/system.span-1
-    - <
-    - text: double
-      url: https://learn.microsoft.com/dotnet/api/system.double
-    - '>'
-    description: A span that receives the extracted values. Its length equals <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.ValuesPerItem" data-throw-if-not-resolved="false"></xref>.
+    - text: PolylineWriter
+      url: PolylineAlgorithm.Internal.PolylineWriter.html
+    description: >-
+      The <xref href="PolylineAlgorithm.Internal.PolylineWriter" data-throw-if-not-resolved="false"></xref> cursor provided by the engine. Call <xref href="PolylineAlgorithm.Internal.PolylineWriter.Write(System.Double%2cSystem.Int32%40)" data-throw-if-not-resolved="false"></xref>
+
+      once for each field value, in a fixed, consistent order. The engine handles delta computation,
+
+      zigzag encoding, and output buffering.
+- h4: Remarks
+- markdown: >-
+    Implementations must always call <xref href="PolylineAlgorithm.Internal.PolylineWriter.Write(System.Double%2cSystem.Int32%40)" data-throw-if-not-resolved="false"></xref> the same number of times,
+
+    in the same field order, for every item. The corresponding Read override must
+
+    call <xref href="PolylineAlgorithm.Internal.PolylineReader.Read(System.Int32%40)" data-throw-if-not-resolved="false"></xref> the same number of times in the same order.
 languageId: csharp
 metadata:
   description: Provides a base implementation for encoding sequences of items into encoded polyline strings.
