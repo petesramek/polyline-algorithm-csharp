@@ -8,14 +8,13 @@ namespace PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal.Diagnostics;
 using System;
-using System.Buffers;
 using System.Runtime.CompilerServices;
 
 /// <summary>
 /// Engine-owned stateful cursor that feeds values written by a formatter into the polyline encoding pipeline.
 /// </summary>
 /// <remarks>
-/// Each instance wraps an <see cref="ArrayPool{T}"/>-backed output buffer sized to the worst-case maximum
+/// Each instance wraps a caller-provided <see cref="char"/> buffer sized to the worst-case maximum
 /// capacity so that the buffer never needs to grow. The engine calls <see cref="BeginItem"/> before
 /// invoking the formatter for each item so that the slot index resets correctly while delta state is
 /// preserved across item boundaries.
@@ -27,8 +26,8 @@ internal sealed class PolylineWriter : IPolylineWriter {
     private int[] _previous;
     private int _slotIndex;
 
-    internal PolylineWriter(int capacity, uint precision) {
-        _buffer = ArrayPool<char>.Shared.Rent(capacity);
+    internal PolylineWriter(char[] buffer, uint precision) {
+        _buffer = buffer;
         _precision = precision;
         _previous = [];
         _slotIndex = 0;
@@ -68,12 +67,7 @@ internal sealed class PolylineWriter : IPolylineWriter {
 
     /// <summary>
     /// Returns the encoded polyline characters written so far.
-    /// The caller must not use this memory after <see cref="ReturnBuffer"/> is called.
+    /// The caller must not use this memory after the buffer is returned to <see cref="System.Buffers.ArrayPool{T}"/>.
     /// </summary>
     internal ReadOnlyMemory<char> WrittenMemory => _buffer.AsMemory(0, _position);
-
-    /// <summary>
-    /// Returns the rented buffer to the pool. Must be called exactly once when encoding is complete.
-    /// </summary>
-    internal void ReturnBuffer() => ArrayPool<char>.Shared.Return(_buffer);
 }

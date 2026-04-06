@@ -10,6 +10,7 @@ using PolylineAlgorithm;
 using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Internal.Diagnostics;
 using System;
+using System.Buffers;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -88,7 +89,16 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
         // Worst-case maximum: every value uses the maximum number of encoded characters.
         int maxCapacity = coordinates.Length * 2 * Defaults.Polyline.Block.Length.Max;
-        PolylineWriter writer = new(maxCapacity, Options.Precision);
+
+        // Use ArrayPool for large buffers to avoid large heap allocations; for small buffers a fresh
+        // allocation is cheaper than pool overhead.
+        const int StackAllocThreshold = 512;
+        char[]? rentedBuffer = maxCapacity > StackAllocThreshold
+            ? ArrayPool<char>.Shared.Rent(maxCapacity)
+            : null;
+        char[] buffer = rentedBuffer ?? new char[maxCapacity];
+
+        PolylineWriter writer = new(buffer, Options.Precision);
 
         TPolyline result;
 
@@ -102,7 +112,9 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
             result = CreatePolyline(writer.WrittenMemory);
         } finally {
-            writer.ReturnBuffer();
+            if (rentedBuffer is not null) {
+                ArrayPool<char>.Shared.Return(rentedBuffer);
+            }
         }
 
         _logger
@@ -150,4 +162,3 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected abstract void Write(TCoordinate item, IPolylineWriter writer);
 }
-
