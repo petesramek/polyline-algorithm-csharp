@@ -4,3 +4,7 @@ PolylineAlgorithm.Internal.PolylineValueState.PolylineValueState() -> void
 PolylineAlgorithm.Internal.PolylineValueState.Value.get -> int
 PolylineAlgorithm.Internal.PolylineReader.Read(ref PolylineAlgorithm.Internal.PolylineValueState state) -> double
 PolylineAlgorithm.Internal.PolylineWriter.Write(double value, ref PolylineAlgorithm.Internal.PolylineValueState state) -> void
+abstract PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.ValuesPerItem.get -> int
+abstract PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.Read(PolylineAlgorithm.Internal.PolylineReader! reader, PolylineAlgorithm.Internal.PolylineValueState[]! states) -> TCoordinate
+abstract PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.ValuesPerItem.get -> int
+abstract PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.Write(TCoordinate item, ref PolylineAlgorithm.Internal.PolylineWriter writer, PolylineAlgorithm.Internal.PolylineValueState[]! states) -> void

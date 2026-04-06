@@ -91,12 +91,13 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
         ValidateFormat(sequence, _logger);
 
         PolylineReader reader = new(sequence, Options.Precision);
+        PolylineValueState[] states = new PolylineValueState[ValuesPerItem];
 
         try {
             while (!reader.IsEmpty) {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                TCoordinate item = Read(reader);
+                TCoordinate item = Read(reader, states);
 
                 //_logger?.LogDecodedItemDebug(reader.SlotIndex, reader.Position);
 
@@ -106,6 +107,16 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
             _logger?.LogOperationFinishedDebug(OperationName);
         }
     }
+
+    /// <summary>
+    /// Gets the number of field values encoded or decoded per item.
+    /// </summary>
+    /// <remarks>
+    /// The base class uses this value to allocate the per-call state array that is passed to
+    /// <see cref="Read"/>. Implementations must return a constant value that matches the
+    /// number of <see cref="PolylineReader.Read"/> calls made inside <see cref="Read"/>.
+    /// </remarks>
+    protected abstract int ValuesPerItem { get; }
 
     /// <summary>
     /// Validates that the provided polyline is not <see langword="null"/>.
@@ -184,14 +195,19 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     /// once for each expected field value, in the same order used by the corresponding encoder's
     /// <see cref="Write"/> override.
     /// </param>
+    /// <param name="states">
+    /// The per-field delta accumulation state array, allocated by the base class for the duration of
+    /// the <see cref="Decode"/> call. Index into this array in the same fixed order used for each field
+    /// (e.g. <c>states[0]</c> for latitude, <c>states[1]</c> for longitude).
+    /// </param>
     /// <returns>
     /// A <typeparamref name="TCoordinate"/> instance constructed from the decoded field values.
     /// </returns>
     /// <remarks>
     /// Implementations must always call <see cref="PolylineReader.Read"/> the same number of times,
-    /// in the same field order, for every item. The number of reads must match the number of writes
-    /// performed by the corresponding encoder's <see cref="Write"/> override.
+    /// in the same field order, for every item. The number of reads must match <see cref="ValuesPerItem"/>
+    /// and the number of writes performed by the corresponding encoder's <see cref="Write"/> override.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected abstract TCoordinate Read(PolylineReader reader);
+    protected abstract TCoordinate Read(PolylineReader reader, PolylineValueState[] states);
 }

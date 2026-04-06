@@ -88,7 +88,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
         ValidateEmptyCoordinates(ref coordinates, _logger, OperationName);
 
         // Worst-case maximum: every value uses the maximum number of encoded characters.
-        int maxCapacity = coordinates.Length * 2 * Defaults.Polyline.Block.Length.Max;
+        int maxCapacity = coordinates.Length * ValuesPerItem * Defaults.Polyline.Block.Length.Max;
 
         // Use stackalloc for small buffers (zero heap allocation); fall back to ArrayPool for large ones.
         const int StackAllocThreshold = 512;
@@ -98,6 +98,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
             : stackalloc char[maxCapacity];
 
         PolylineWriter writer = new(buffer, Options.Precision);
+        PolylineValueState[] states = new PolylineValueState[ValuesPerItem];
 
         TPolyline result;
 
@@ -105,7 +106,7 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
             for (var i = 0; i < coordinates.Length; i++) {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                Write(coordinates[i], ref writer);
+                Write(coordinates[i], ref writer, states);
             }
 
             result = CreatePolyline(writer.WrittenSpan);
@@ -134,6 +135,16 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     }
 
     /// <summary>
+    /// Gets the number of field values encoded or decoded per item.
+    /// </summary>
+    /// <remarks>
+    /// The base class uses this value to allocate the per-call state array that is passed to
+    /// <see cref="Write"/>. Implementations must return a constant value that matches the
+    /// number of <see cref="PolylineWriter.Write"/> calls made inside <see cref="Write"/>.
+    /// </remarks>
+    protected abstract int ValuesPerItem { get; }
+
+    /// <summary>
     /// Creates a polyline instance from the provided read-only span of characters.
     /// </summary>
     /// <param name="polyline">A <see cref="ReadOnlySpan{T}"/> containing the encoded polyline characters.</param>
@@ -152,11 +163,17 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     /// once for each field value, in a fixed, consistent order. The engine handles delta computation,
     /// zigzag encoding, and output buffering.
     /// </param>
+    /// <param name="states">
+    /// The per-field delta accumulation state array, allocated by the base class for the duration of
+    /// the <see cref="Encode"/> call. Index into this array in the same fixed order used for each field
+    /// (e.g. <c>states[0]</c> for latitude, <c>states[1]</c> for longitude).
+    /// </param>
     /// <remarks>
     /// Implementations must always call <see cref="PolylineWriter.Write"/> the same number of times,
-    /// in the same field order, for every item. The corresponding <see cref="Read"/> override must
-    /// call <see cref="PolylineReader.Read"/> the same number of times in the same order.
+    /// in the same field order, for every item. The number of calls must match <see cref="ValuesPerItem"/>.
+    /// The corresponding <see cref="Read"/> override must call <see cref="PolylineReader.Read"/> the
+    /// same number of times in the same order.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected abstract void Write(TCoordinate item, ref PolylineWriter writer);
+    protected abstract void Write(TCoordinate item, ref PolylineWriter writer, PolylineValueState[] states);
 }

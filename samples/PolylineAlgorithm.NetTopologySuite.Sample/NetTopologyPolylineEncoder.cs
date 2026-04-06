@@ -14,9 +14,6 @@ using System;
 /// Polyline encoder using NetTopologySuite's Point type.
 /// </summary>
 internal sealed class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point, string> {
-    private PolylineValueState _latitudeState;
-    private PolylineValueState _longitudeState;
-
     /// <summary>
     /// Creates encoded polyline string from span.
     /// </summary>
@@ -30,16 +27,20 @@ internal sealed class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point
         return polyline.ToString();
     }
 
+    /// <inheritdoc />
+    protected override int ValuesPerItem => 2;
+
     /// <summary>
     /// Writes latitude and longitude from a NetTopologySuite Point into the polyline encoding pipeline.
     /// </summary>
     /// <param name="item">The point to write. Field 0 = latitude (Y), field 1 = longitude (X).</param>
     /// <param name="writer">The writer provided by the engine.</param>
-    protected override void Write(Point item, ref PolylineWriter writer) {
+    /// <param name="states">Per-field delta accumulation states.</param>
+    protected override void Write(Point item, ref PolylineWriter writer, PolylineValueState[] states) {
         ArgumentNullException.ThrowIfNull(item);
 
         // NetTopologySuite Point: Y = latitude, X = longitude
-        writer.Write(item.Y, ref _latitudeState);
-        writer.Write(item.X, ref _longitudeState);
+        writer.Write(item.Y, ref states[0]);
+        writer.Write(item.X, ref states[1]);
     }
 }

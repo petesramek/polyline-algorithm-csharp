@@ -16,19 +16,17 @@ using System;
 [TestClass]
 public sealed class AbstractPolylineEncoderTests {
     private sealed class TestStringEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
-        private PolylineValueState _latitudeState;
-        private PolylineValueState _longitudeState;
-
         public TestStringEncoder()
             : base() { }
 
         public TestStringEncoder(PolylineEncodingOptions options)
             : base(options) { }
 
+        protected override int ValuesPerItem => 2;
         protected override string CreatePolyline(ReadOnlySpan<char> polyline) => polyline.ToString();
-        protected override void Write((double Latitude, double Longitude) item, ref PolylineWriter writer) {
-            writer.Write(item.Latitude, ref _latitudeState);
-            writer.Write(item.Longitude, ref _longitudeState);
+        protected override void Write((double Latitude, double Longitude) item, ref PolylineWriter writer, PolylineValueState[] states) {
+            writer.Write(item.Latitude, ref states[0]);
+            writer.Write(item.Longitude, ref states[1]);
         }
     }
 

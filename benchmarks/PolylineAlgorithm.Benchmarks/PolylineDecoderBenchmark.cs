@@ -94,11 +94,10 @@ public class PolylineDecoderBenchmark {
     }
 
     private sealed class StringPolylineDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-        private PolylineValueState _latitudeState;
-        private PolylineValueState _longitudeState;
+        protected override int ValuesPerItem => 2;
 
-        protected override (double Latitude, double Longitude) Read(PolylineReader reader) =>
-            (reader.Read(ref _latitudeState), reader.Read(ref _longitudeState));
+        protected override (double Latitude, double Longitude) Read(PolylineReader reader, PolylineValueState[] states) =>
+            (reader.Read(ref states[0]), reader.Read(ref states[1]));
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) {
             return polyline?.AsMemory() ?? Memory<char>.Empty;
@@ -106,11 +105,10 @@ public class PolylineDecoderBenchmark {
     }
 
     private sealed class CharArrayPolylineDecoder : AbstractPolylineDecoder<char[], (double Latitude, double Longitude)> {
-        private PolylineValueState _latitudeState;
-        private PolylineValueState _longitudeState;
+        protected override int ValuesPerItem => 2;
 
-        protected override (double Latitude, double Longitude) Read(PolylineReader reader) =>
-            (reader.Read(ref _latitudeState), reader.Read(ref _longitudeState));
+        protected override (double Latitude, double Longitude) Read(PolylineReader reader, PolylineValueState[] states) =>
+            (reader.Read(ref states[0]), reader.Read(ref states[1]));
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in char[] polyline) {
             return polyline?.AsMemory() ?? Memory<char>.Empty;
@@ -118,11 +116,10 @@ public class PolylineDecoderBenchmark {
     }
 
     private sealed class MemoryCharPolylineDecoder : AbstractPolylineDecoder<ReadOnlyMemory<char>, (double Latitude, double Longitude)> {
-        private PolylineValueState _latitudeState;
-        private PolylineValueState _longitudeState;
+        protected override int ValuesPerItem => 2;
 
-        protected override (double Latitude, double Longitude) Read(PolylineReader reader) =>
-            (reader.Read(ref _latitudeState), reader.Read(ref _longitudeState));
+        protected override (double Latitude, double Longitude) Read(PolylineReader reader, PolylineValueState[] states) =>
+            (reader.Read(ref states[0]), reader.Read(ref states[1]));
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in ReadOnlyMemory<char> polyline) {
             return polyline;

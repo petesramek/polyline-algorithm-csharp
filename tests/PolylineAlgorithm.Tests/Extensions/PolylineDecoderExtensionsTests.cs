@@ -18,21 +18,17 @@ using System.Collections.Generic;
 [TestClass]
 public sealed class PolylineDecoderExtensionsTests {
     private sealed class TestStringDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-        private PolylineValueState _latitudeState;
-        private PolylineValueState _longitudeState;
-
+        protected override int ValuesPerItem => 2;
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
-        protected override (double Latitude, double Longitude) Read(PolylineReader reader) =>
-            (reader.Read(ref _latitudeState), reader.Read(ref _longitudeState));
+        protected override (double Latitude, double Longitude) Read(PolylineReader reader, PolylineValueState[] states) =>
+            (reader.Read(ref states[0]), reader.Read(ref states[1]));
     }
 
     private sealed class TestMemoryDecoder : AbstractPolylineDecoder<ReadOnlyMemory<char>, (double Latitude, double Longitude)> {
-        private PolylineValueState _latitudeState;
-        private PolylineValueState _longitudeState;
-
+        protected override int ValuesPerItem => 2;
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in ReadOnlyMemory<char> polyline) => polyline;
-        protected override (double Latitude, double Longitude) Read(PolylineReader reader) =>
-            (reader.Read(ref _latitudeState), reader.Read(ref _longitudeState));
+        protected override (double Latitude, double Longitude) Read(PolylineReader reader, PolylineValueState[] states) =>
+            (reader.Read(ref states[0]), reader.Read(ref states[1]));
     }
 
     // ----- Decode(char[]) for IPolylineDecoder<string, TValue> -----
