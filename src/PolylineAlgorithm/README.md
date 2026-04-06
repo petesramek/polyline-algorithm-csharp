@@ -41,12 +41,11 @@ using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal;
 
 public sealed class MyPolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
-    private PolylineValueState _latitudeState;
-    private PolylineValueState _longitudeState;
+    protected override int ValuesPerItem => 2;
 
-    protected override void Write((double Latitude, double Longitude) item, ref PolylineWriter writer) {
-        writer.Write(item.Latitude, ref _latitudeState);   // field 0
-        writer.Write(item.Longitude, ref _longitudeState); // field 1
+    protected override void Write((double Latitude, double Longitude) item, ref PolylineWriter writer, PolylineValueState[] states) {
+        writer.Write(item.Latitude, ref states[0]);   // field 0
+        writer.Write(item.Longitude, ref states[1]);  // field 1
     }
     protected override string CreatePolyline(ReadOnlySpan<char> polyline) => polyline.ToString();
 }
@@ -78,11 +77,10 @@ using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal;
 
 public sealed class MyPolylineDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-    private PolylineValueState _latitudeState;
-    private PolylineValueState _longitudeState;
+    protected override int ValuesPerItem => 2;
 
-    protected override (double Latitude, double Longitude) Read(PolylineReader reader) =>
-        (reader.Read(ref _latitudeState), reader.Read(ref _longitudeState));  // field 0, field 1
+    protected override (double Latitude, double Longitude) Read(PolylineReader reader, PolylineValueState[] states) =>
+        (reader.Read(ref states[0]), reader.Read(ref states[1]));  // field 0, field 1
     protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
 }
 ```
