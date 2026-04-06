@@ -181,7 +181,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     /// Reads field values from the polyline decoding pipeline and constructs one <typeparamref name="TCoordinate"/> item.
     /// </summary>
     /// <param name="reader">
-    /// The <see cref="IPolylineReader"/> cursor provided by the engine. Call <see cref="IPolylineReader.Read"/>
+    /// The <see cref="PolylineReader"/> cursor provided by the engine. Call <see cref="PolylineReader.Read"/>
     /// once for each expected field value, in the same order used by the corresponding encoder's
     /// <see cref="Write"/> override.
     /// </param>
@@ -189,10 +189,10 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     /// A <typeparamref name="TCoordinate"/> instance constructed from the decoded field values.
     /// </returns>
     /// <remarks>
-    /// Implementations must always call <see cref="IPolylineReader.Read"/> the same number of times,
+    /// Implementations must always call <see cref="PolylineReader.Read"/> the same number of times,
     /// in the same field order, for every item. The number of reads must match the number of writes
     /// performed by the corresponding encoder's <see cref="Write"/> override.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected abstract TCoordinate Read(IPolylineReader reader);
+    protected abstract TCoordinate Read(PolylineReader reader);
 }

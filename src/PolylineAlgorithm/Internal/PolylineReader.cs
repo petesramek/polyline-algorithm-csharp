@@ -5,7 +5,6 @@
 
 namespace PolylineAlgorithm.Internal;
 
-using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal.Diagnostics;
 using System.Runtime.CompilerServices;
 
@@ -18,7 +17,7 @@ using System.Runtime.CompilerServices;
 /// The engine calls <see cref="BeginItem"/> before invoking the formatter for each item so that the
 /// slot index resets correctly while delta state is preserved across item boundaries.
 /// </remarks>
-internal sealed class PolylineReader : IPolylineReader {
+public sealed class PolylineReader {
     private readonly ReadOnlyMemory<char> _sequence;
     private int _position;
     private int[] _accumulated;

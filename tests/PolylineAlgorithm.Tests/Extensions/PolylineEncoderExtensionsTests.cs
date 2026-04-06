@@ -7,6 +7,7 @@ namespace PolylineAlgorithm.Tests.Extensions;
 
 using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Extensions;
+using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Utility;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,8 @@ using System.Collections.Generic;
 [TestClass]
 public sealed class PolylineEncoderExtensionsTests {
     private sealed class TestStringEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
-        protected override string CreatePolyline(ReadOnlyMemory<char> polyline) => polyline.ToString();
-        protected override void Write((double Latitude, double Longitude) item, IPolylineWriter writer) {
+        protected override string CreatePolyline(ReadOnlySpan<char> polyline) => polyline.ToString();
+        protected override void Write((double Latitude, double Longitude) item, ref PolylineWriter writer) {
             writer.Write(item.Latitude);
             writer.Write(item.Longitude);
         }

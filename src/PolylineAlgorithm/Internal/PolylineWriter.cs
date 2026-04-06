@@ -5,7 +5,6 @@
 
 namespace PolylineAlgorithm.Internal;
 
-using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal.Diagnostics;
 using System;
 using System.Runtime.CompilerServices;
@@ -15,18 +14,19 @@ using System.Runtime.CompilerServices;
 /// </summary>
 /// <remarks>
 /// Each instance wraps a caller-provided <see cref="char"/> buffer sized to the worst-case maximum
-/// capacity so that the buffer never needs to grow. The engine calls <see cref="BeginItem"/> before
+/// capacity so that the buffer never needs to grow. The buffer may be stack-allocated or rented from
+/// <see cref="System.Buffers.ArrayPool{T}"/>; the engine calls <see cref="BeginItem"/> before
 /// invoking the formatter for each item so that the slot index resets correctly while delta state is
 /// preserved across item boundaries.
 /// </remarks>
-internal sealed class PolylineWriter : IPolylineWriter {
-    private readonly char[] _buffer;
+public ref struct PolylineWriter {
+    private Span<char> _buffer;
     private int _position;
     private readonly uint _precision;
     private int[] _previous;
     private int _slotIndex;
 
-    internal PolylineWriter(char[] buffer, uint precision) {
+    internal PolylineWriter(Span<char> buffer, uint precision) {
         _buffer = buffer;
         _precision = precision;
         _previous = [];
@@ -48,7 +48,7 @@ internal sealed class PolylineWriter : IPolylineWriter {
         _previous[_slotIndex] = normalized;
         _slotIndex++;
 
-        if (!PolylineEncoding.TryWriteValue(delta, _buffer.AsSpan(), ref _position)) {
+        if (!PolylineEncoding.TryWriteValue(delta, _buffer, ref _position)) {
             ExceptionGuard.ThrowCouldNotWriteEncodedValueToBuffer();
         }
     }
@@ -67,7 +67,6 @@ internal sealed class PolylineWriter : IPolylineWriter {
 
     /// <summary>
     /// Returns the encoded polyline characters written so far.
-    /// The caller must not use this memory after the buffer is returned to <see cref="System.Buffers.ArrayPool{T}"/>.
     /// </summary>
-    internal ReadOnlyMemory<char> WrittenMemory => _buffer.AsMemory(0, _position);
+    internal ReadOnlySpan<char> WrittenSpan => _buffer[.._position];
 }

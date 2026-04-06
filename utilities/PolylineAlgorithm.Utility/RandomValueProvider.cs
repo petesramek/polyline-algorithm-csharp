@@ -6,6 +6,7 @@
 namespace PolylineAlgorithm.Utility;
 
 using PolylineAlgorithm.Abstraction;
+using PolylineAlgorithm.Internal;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -105,11 +106,11 @@ internal static class RandomValueProvider {
 
     private sealed class PolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
 
-        protected override string CreatePolyline(ReadOnlyMemory<char> polyline) {
+        protected override string CreatePolyline(ReadOnlySpan<char> polyline) {
             return polyline.ToString();
         }
 
-        protected override void Write((double Latitude, double Longitude) item, IPolylineWriter writer) {
+        protected override void Write((double Latitude, double Longitude) item, ref PolylineWriter writer) {
             writer.Write(item.Latitude);
             writer.Write(item.Longitude);
         }

@@ -9,6 +9,7 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
 using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Extensions;
+using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Utility;
 using System.Collections.Generic;
 
@@ -85,8 +86,8 @@ public class PolylineEncoderBenchmark {
     }
 
     private sealed class StringPolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
-        protected override string CreatePolyline(ReadOnlyMemory<char> polyline) => polyline.ToString();
-        protected override void Write((double Latitude, double Longitude) item, IPolylineWriter writer) {
+        protected override string CreatePolyline(ReadOnlySpan<char> polyline) => polyline.ToString();
+        protected override void Write((double Latitude, double Longitude) item, ref PolylineWriter writer) {
             writer.Write(item.Latitude);
             writer.Write(item.Longitude);
         }

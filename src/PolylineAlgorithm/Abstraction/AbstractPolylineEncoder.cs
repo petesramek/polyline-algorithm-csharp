@@ -90,13 +90,12 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
         // Worst-case maximum: every value uses the maximum number of encoded characters.
         int maxCapacity = coordinates.Length * 2 * Defaults.Polyline.Block.Length.Max;
 
-        // Use ArrayPool for large buffers to avoid large heap allocations; for small buffers a fresh
-        // allocation is cheaper than pool overhead.
+        // Use stackalloc for small buffers (zero heap allocation); fall back to ArrayPool for large ones.
         const int StackAllocThreshold = 512;
-        char[]? rentedBuffer = maxCapacity > StackAllocThreshold
-            ? ArrayPool<char>.Shared.Rent(maxCapacity)
-            : null;
-        char[] buffer = rentedBuffer ?? new char[maxCapacity];
+        char[]? rentedBuffer = null;
+        Span<char> buffer = maxCapacity > StackAllocThreshold
+            ? (rentedBuffer = ArrayPool<char>.Shared.Rent(maxCapacity)).AsSpan(0, maxCapacity)
+            : stackalloc char[maxCapacity];
 
         PolylineWriter writer = new(buffer, Options.Precision);
 
@@ -107,10 +106,10 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
                 cancellationToken.ThrowIfCancellationRequested();
 
                 writer.BeginItem();
-                Write(coordinates[i], writer);
+                Write(coordinates[i], ref writer);
             }
 
-            result = CreatePolyline(writer.WrittenMemory);
+            result = CreatePolyline(writer.WrittenSpan);
         } finally {
             if (rentedBuffer is not null) {
                 ArrayPool<char>.Shared.Return(rentedBuffer);
@@ -136,29 +135,29 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
     }
 
     /// <summary>
-    /// Creates a polyline instance from the provided read-only sequence of characters.
+    /// Creates a polyline instance from the provided read-only span of characters.
     /// </summary>
-    /// <param name="polyline">A <see cref="ReadOnlyMemory{T}"/> containing the encoded polyline characters.</param>
+    /// <param name="polyline">A <see cref="ReadOnlySpan{T}"/> containing the encoded polyline characters.</param>
     /// <returns>
     /// An instance of <typeparamref name="TPolyline"/> representing the encoded polyline.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected abstract TPolyline CreatePolyline(ReadOnlyMemory<char> polyline);
+    protected abstract TPolyline CreatePolyline(ReadOnlySpan<char> polyline);
 
     /// <summary>
     /// Writes the field values of the specified item into the polyline encoding pipeline.
     /// </summary>
     /// <param name="item">The item whose field values are to be encoded.</param>
     /// <param name="writer">
-    /// The <see cref="IPolylineWriter"/> cursor provided by the engine. Call <see cref="IPolylineWriter.Write"/>
+    /// The <see cref="PolylineWriter"/> cursor provided by the engine. Call <see cref="PolylineWriter.Write"/>
     /// once for each field value, in a fixed, consistent order. The engine handles delta computation,
     /// zigzag encoding, and output buffering.
     /// </param>
     /// <remarks>
-    /// Implementations must always call <see cref="IPolylineWriter.Write"/> the same number of times,
+    /// Implementations must always call <see cref="PolylineWriter.Write"/> the same number of times,
     /// in the same field order, for every item. The corresponding <see cref="Read"/> override must
-    /// call <see cref="IPolylineReader.Read"/> the same number of times in the same order.
+    /// call <see cref="PolylineReader.Read"/> the same number of times in the same order.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected abstract void Write(TCoordinate item, IPolylineWriter writer);
+    protected abstract void Write(TCoordinate item, ref PolylineWriter writer);
 }

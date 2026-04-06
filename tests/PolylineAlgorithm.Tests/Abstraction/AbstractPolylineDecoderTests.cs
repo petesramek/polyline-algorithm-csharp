@@ -6,6 +6,7 @@
 namespace PolylineAlgorithm.Tests.Abstraction;
 
 using PolylineAlgorithm.Abstraction;
+using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Utility;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ using System.Collections.Generic;
 public sealed class AbstractPolylineDecoderTests {
     private sealed class TestStringDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
-        protected override (double Latitude, double Longitude) Read(IPolylineReader reader) =>
+        protected override (double Latitude, double Longitude) Read(PolylineReader reader) =>
             (reader.Read(), reader.Read());
     }
 
@@ -26,7 +27,7 @@ public sealed class AbstractPolylineDecoderTests {
             : base(options) { }
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
-        protected override (double Latitude, double Longitude) Read(IPolylineReader reader) =>
+        protected override (double Latitude, double Longitude) Read(PolylineReader reader) =>
             (reader.Read(), reader.Read());
     }
 

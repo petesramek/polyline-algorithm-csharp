@@ -1,17 +1,17 @@
 #nullable enable
 abstract PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.GetReadOnlyMemory(in TPolyline polyline) -> System.ReadOnlyMemory<char>
-abstract PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.Read(PolylineAlgorithm.Abstraction.IPolylineReader! reader) -> TCoordinate
-abstract PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.CreatePolyline(System.ReadOnlyMemory<char> polyline) -> TPolyline
-abstract PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.Write(TCoordinate item, PolylineAlgorithm.Abstraction.IPolylineWriter! writer) -> void
+abstract PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.Read(PolylineAlgorithm.Internal.PolylineReader! reader) -> TCoordinate
+abstract PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.CreatePolyline(System.ReadOnlySpan<char> polyline) -> TPolyline
+abstract PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.Write(TCoordinate item, ref PolylineAlgorithm.Internal.PolylineWriter writer) -> void
 PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.AbstractPolylineDecoder() -> void
 PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.AbstractPolylineDecoder(PolylineAlgorithm.PolylineEncodingOptions! options) -> void
 PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.Decode(TPolyline polyline, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IEnumerable<TCoordinate>!
 PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.Options.get -> PolylineAlgorithm.PolylineEncodingOptions!
 PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.Encode(System.ReadOnlySpan<TCoordinate> coordinates, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> TPolyline
-PolylineAlgorithm.Abstraction.IPolylineReader
-PolylineAlgorithm.Abstraction.IPolylineReader.Read() -> double
-PolylineAlgorithm.Abstraction.IPolylineWriter
-PolylineAlgorithm.Abstraction.IPolylineWriter.Write(double value) -> void
+PolylineAlgorithm.Internal.PolylineReader
+PolylineAlgorithm.Internal.PolylineReader.Read() -> double
+PolylineAlgorithm.Internal.PolylineWriter
+PolylineAlgorithm.Internal.PolylineWriter.Write(double value) -> void
 PolylineAlgorithm.InvalidPolylineException.InvalidPolylineException() -> void
 PolylineAlgorithm.InvalidPolylineException.InvalidPolylineException(string! message, System.Exception! innerException) -> void
 static PolylineAlgorithm.PolylineEncoding.GetRequiredBufferSize(int delta) -> int

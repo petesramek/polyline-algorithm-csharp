@@ -7,6 +7,7 @@ namespace PolylineAlgorithm.NetTopologySuite.Sample;
 
 using global::NetTopologySuite.Geometries;
 using PolylineAlgorithm.Abstraction;
+using PolylineAlgorithm.Internal;
 using System;
 
 /// <summary>
@@ -14,11 +15,11 @@ using System;
 /// </summary>
 internal sealed class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point, string> {
     /// <summary>
-    /// Creates encoded polyline string from memory.
+    /// Creates encoded polyline string from span.
     /// </summary>
-    /// <param name="polyline">Polyline memory.</param>
+    /// <param name="polyline">Polyline span.</param>
     /// <returns>Encoded polyline string.</returns>
-    protected override string CreatePolyline(ReadOnlyMemory<char> polyline) {
+    protected override string CreatePolyline(ReadOnlySpan<char> polyline) {
         if (polyline.IsEmpty) {
             return string.Empty;
         }
@@ -31,7 +32,7 @@ internal sealed class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point
     /// </summary>
     /// <param name="item">The point to write. Field 0 = latitude (Y), field 1 = longitude (X).</param>
     /// <param name="writer">The writer provided by the engine.</param>
-    protected override void Write(Point item, IPolylineWriter writer) {
+    protected override void Write(Point item, ref PolylineWriter writer) {
         ArgumentNullException.ThrowIfNull(item);
 
         // NetTopologySuite Point: Y = latitude, X = longitude

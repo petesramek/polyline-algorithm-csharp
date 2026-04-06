@@ -7,6 +7,7 @@ namespace PolylineAlgorithm.NetTopologySuite.Sample;
 
 using global::NetTopologySuite.Geometries;
 using PolylineAlgorithm.Abstraction;
+using PolylineAlgorithm.Internal;
 using System;
 
 /// <summary>
@@ -27,7 +28,7 @@ internal sealed class NetTopologyPolylineDecoder : AbstractPolylineDecoder<strin
     /// </summary>
     /// <param name="reader">The reader provided by the engine. Field 0 = latitude, field 1 = longitude.</param>
     /// <returns>Point instance.</returns>
-    protected override Point Read(IPolylineReader reader) {
+    protected override Point Read(PolylineReader reader) {
         double latitude = reader.Read();
         double longitude = reader.Read();
 

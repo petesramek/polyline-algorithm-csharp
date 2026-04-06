@@ -6,6 +6,7 @@
 namespace PolylineAlgorithm.Tests.Abstraction;
 
 using PolylineAlgorithm.Abstraction;
+using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Utility;
 using System;
 
@@ -21,8 +22,8 @@ public sealed class AbstractPolylineEncoderTests {
         public TestStringEncoder(PolylineEncodingOptions options)
             : base(options) { }
 
-        protected override string CreatePolyline(ReadOnlyMemory<char> polyline) => polyline.ToString();
-        protected override void Write((double Latitude, double Longitude) item, IPolylineWriter writer) {
+        protected override string CreatePolyline(ReadOnlySpan<char> polyline) => polyline.ToString();
+        protected override void Write((double Latitude, double Longitude) item, ref PolylineWriter writer) {
             writer.Write(item.Latitude);
             writer.Write(item.Longitude);
         }

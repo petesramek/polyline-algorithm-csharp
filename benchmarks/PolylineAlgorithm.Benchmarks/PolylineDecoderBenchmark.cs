@@ -8,6 +8,7 @@ namespace PolylineAlgorithm.Benchmarks;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
 using PolylineAlgorithm.Abstraction;
+using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Utility;
 
 /// <summary>
@@ -93,7 +94,7 @@ public class PolylineDecoderBenchmark {
     }
 
     private sealed class StringPolylineDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-        protected override (double Latitude, double Longitude) Read(IPolylineReader reader) =>
+        protected override (double Latitude, double Longitude) Read(PolylineReader reader) =>
             (reader.Read(), reader.Read());
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) {
@@ -102,7 +103,7 @@ public class PolylineDecoderBenchmark {
     }
 
     private sealed class CharArrayPolylineDecoder : AbstractPolylineDecoder<char[], (double Latitude, double Longitude)> {
-        protected override (double Latitude, double Longitude) Read(IPolylineReader reader) =>
+        protected override (double Latitude, double Longitude) Read(PolylineReader reader) =>
             (reader.Read(), reader.Read());
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in char[] polyline) {
@@ -111,7 +112,7 @@ public class PolylineDecoderBenchmark {
     }
 
     private sealed class MemoryCharPolylineDecoder : AbstractPolylineDecoder<ReadOnlyMemory<char>, (double Latitude, double Longitude)> {
-        protected override (double Latitude, double Longitude) Read(IPolylineReader reader) =>
+        protected override (double Latitude, double Longitude) Read(PolylineReader reader) =>
             (reader.Read(), reader.Read());
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in ReadOnlyMemory<char> polyline) {
