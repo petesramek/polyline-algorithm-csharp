@@ -14,8 +14,8 @@ namespace PolylineAlgorithm.Abstraction;
 /// Provides a base implementation for decoding encoded polyline strings into sequences of items.
 /// </summary>
 /// <remarks>
-/// Derive from this class to implement a decoder for a specific polyline type. Override <see cref="GetReadOnlyMemory"/>,
-/// <see cref="ValuesPerItem"/>, and <see cref="CreateItem"/> to provide type-specific behavior.
+/// Derive from this class to implement a decoder for a specific polyline type. Override <see cref="GetReadOnlyMemory"/>
+/// and <see cref="Read"/> to provide type-specific behavior.
 /// </remarks>
 /// <typeparam name="TPolyline">The type that represents the encoded polyline input.</typeparam>
 /// <typeparam name="TCoordinate">The type that represents a decoded item.</typeparam>
@@ -90,37 +90,18 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
         ValidateSequence(sequence, _logger);
         ValidateFormat(sequence, _logger);
 
-        int valuesPerItem = ValuesPerItem;
-        int[] accumulated = new int[valuesPerItem];
-        double[] decodedValues = new double[valuesPerItem];
-        int position = 0;
+        PolylineReader reader = new(sequence, Options.Precision);
 
         try {
-            while (position < sequence.Length) {
+            while (!reader.IsEmpty) {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                bool allRead = true;
-                for (int v = 0; v < valuesPerItem; v++) {
-                    if (!PolylineEncoding.TryReadValue(ref accumulated[v], sequence, ref position)) {
-                        allRead = false;
-                        break;
-                    }
-                }
+                reader.BeginItem();
+                TCoordinate item = Read(reader);
 
-                if (!allRead) {
-                    _logger?.LogOperationFailedDebug(OperationName);
-                    _logger?.LogInvalidPolylineWarning(position);
+                _logger?.LogDecodedItemDebug(reader.SlotIndex, reader.Position);
 
-                    ExceptionGuard.ThrowInvalidPolylineFormat(position);
-                }
-
-                for (int v = 0; v < valuesPerItem; v++) {
-                    decodedValues[v] = PolylineEncoding.Denormalize(accumulated[v], Options.Precision);
-                }
-
-                _logger?.LogDecodedItemDebug(valuesPerItem, position);
-
-                yield return CreateItem(decodedValues.AsMemory());
+                yield return item;
             }
         } finally {
             _logger?.LogOperationFinishedDebug(OperationName);
@@ -197,24 +178,21 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     protected abstract ReadOnlyMemory<char> GetReadOnlyMemory(in TPolyline polyline);
 
     /// <summary>
-    /// Gets the number of values decoded per item from the polyline.
+    /// Reads field values from the polyline decoding pipeline and constructs one <typeparamref name="TCoordinate"/> item.
     /// </summary>
-    /// <remarks>
-    /// Must be greater than zero. Each item in the decoded output is constructed from this many consecutive
-    /// delta-decoded values. For a standard geographic coordinate pair (latitude + longitude), return <c>2</c>.
-    /// </remarks>
-    protected abstract int ValuesPerItem { get; }
-
-    /// <summary>
-    /// Creates a <typeparamref name="TCoordinate"/> instance from the specified decoded values.
-    /// </summary>
-    /// <param name="values">
-    /// A <see cref="ReadOnlyMemory{T}"/> of <see cref="double"/> containing the decoded values for this item.
-    /// The length equals <see cref="ValuesPerItem"/>. Implementations should copy values out rather than store the memory.
+    /// <param name="reader">
+    /// The <see cref="IPolylineReader"/> cursor provided by the engine. Call <see cref="IPolylineReader.Read"/>
+    /// once for each expected field value, in the same order used by the corresponding encoder's
+    /// <see cref="Write"/> override.
     /// </param>
     /// <returns>
-    /// A <typeparamref name="TCoordinate"/> instance representing the decoded item.
+    /// A <typeparamref name="TCoordinate"/> instance constructed from the decoded field values.
     /// </returns>
+    /// <remarks>
+    /// Implementations must always call <see cref="IPolylineReader.Read"/> the same number of times,
+    /// in the same field order, for every item. The number of reads must match the number of writes
+    /// performed by the corresponding encoder's <see cref="Write"/> override.
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected abstract TCoordinate CreateItem(ReadOnlyMemory<double> values);
+    protected abstract TCoordinate Read(IPolylineReader reader);
 }

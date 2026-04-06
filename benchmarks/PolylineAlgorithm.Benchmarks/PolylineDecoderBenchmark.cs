@@ -93,41 +93,29 @@ public class PolylineDecoderBenchmark {
     }
 
     private sealed class StringPolylineDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-        protected override (double Latitude, double Longitude) CreateItem(ReadOnlyMemory<double> values) {
-            ReadOnlySpan<double> span = values.Span;
-            return (span[0], span[1]);
-        }
+        protected override (double Latitude, double Longitude) Read(IPolylineReader reader) =>
+            (reader.Read(), reader.Read());
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) {
             return polyline?.AsMemory() ?? Memory<char>.Empty;
         }
-
-        protected override int ValuesPerItem => 2;
     }
 
     private sealed class CharArrayPolylineDecoder : AbstractPolylineDecoder<char[], (double Latitude, double Longitude)> {
-        protected override (double Latitude, double Longitude) CreateItem(ReadOnlyMemory<double> values) {
-            ReadOnlySpan<double> span = values.Span;
-            return (span[0], span[1]);
-        }
+        protected override (double Latitude, double Longitude) Read(IPolylineReader reader) =>
+            (reader.Read(), reader.Read());
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in char[] polyline) {
             return polyline?.AsMemory() ?? Memory<char>.Empty;
         }
-
-        protected override int ValuesPerItem => 2;
     }
 
     private sealed class MemoryCharPolylineDecoder : AbstractPolylineDecoder<ReadOnlyMemory<char>, (double Latitude, double Longitude)> {
-        protected override (double Latitude, double Longitude) CreateItem(ReadOnlyMemory<double> values) {
-            ReadOnlySpan<double> span = values.Span;
-            return (span[0], span[1]);
-        }
+        protected override (double Latitude, double Longitude) Read(IPolylineReader reader) =>
+            (reader.Read(), reader.Read());
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in ReadOnlyMemory<char> polyline) {
             return polyline;
         }
-
-        protected override int ValuesPerItem => 2;
     }
 }

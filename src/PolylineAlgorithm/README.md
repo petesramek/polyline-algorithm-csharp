@@ -40,10 +40,9 @@ using PolylineAlgorithm;
 using PolylineAlgorithm.Abstraction;
 
 public sealed class MyPolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
-    protected override int ValuesPerItem => 2;
-    protected override void GetValues((double Latitude, double Longitude) item, Span<double> values) {
-        values[0] = item.Latitude;
-        values[1] = item.Longitude;
+    protected override void Write((double Latitude, double Longitude) item, IPolylineWriter writer) {
+        writer.Write(item.Latitude);   // field 0
+        writer.Write(item.Longitude);  // field 1
     }
     protected override string CreatePolyline(ReadOnlyMemory<char> polyline) => polyline.ToString();
 }
@@ -74,11 +73,8 @@ using PolylineAlgorithm;
 using PolylineAlgorithm.Abstraction;
 
 public sealed class MyPolylineDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-    protected override int ValuesPerItem => 2;
-    protected override (double Latitude, double Longitude) CreateItem(ReadOnlyMemory<double> values) {
-        ReadOnlySpan<double> span = values.Span;
-        return (span[0], span[1]);
-    }
+    protected override (double Latitude, double Longitude) Read(IPolylineReader reader) =>
+        (reader.Read(), reader.Read());  // field 0, field 1
     protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
 }
 ```
@@ -101,7 +97,6 @@ using Microsoft.Extensions.Logging;
 
 PolylineEncodingOptions options = PolylineEncodingOptionsBuilder.Create()
     .WithPrecision(6)                        // 6 decimal places instead of the default 5
-    .WithStackAllocLimit(1024)               // increase stack-alloc buffer
     .WithLoggerFactory(loggerFactory)        // plug in your ILoggerFactory
     .Build();
 

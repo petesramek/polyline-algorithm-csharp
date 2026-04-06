@@ -23,19 +23,15 @@ internal sealed class NetTopologyPolylineDecoder : AbstractPolylineDecoder<strin
     }
 
     /// <summary>
-    /// Gets the number of values per point (latitude + longitude = 2).
+    /// Creates a NetTopologySuite Point from decoded field values.
     /// </summary>
-    protected override int ValuesPerItem => 2;
-
-    /// <summary>
-    /// Creates a NetTopologySuite Point from decoded values.
-    /// </summary>
-    /// <param name="values">Decoded values: values[0] = latitude, values[1] = longitude.</param>
+    /// <param name="reader">The reader provided by the engine. Field 0 = latitude, field 1 = longitude.</param>
     /// <returns>Point instance.</returns>
-    protected override Point CreateItem(ReadOnlyMemory<double> values) {
-        ReadOnlySpan<double> span = values.Span;
+    protected override Point Read(IPolylineReader reader) {
+        double latitude = reader.Read();
+        double longitude = reader.Read();
 
-        // NetTopologySuite Point: x = longitude (values[1]), y = latitude (values[0])
-        return new Point(span[1], span[0]);
+        // NetTopologySuite Point: x = longitude, y = latitude
+        return new Point(longitude, latitude);
     }
 }

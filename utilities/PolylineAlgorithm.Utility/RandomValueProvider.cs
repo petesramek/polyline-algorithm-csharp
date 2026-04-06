@@ -109,11 +109,9 @@ internal static class RandomValueProvider {
             return polyline.ToString();
         }
 
-        protected override int ValuesPerItem => 2;
-
-        protected override void GetValues((double Latitude, double Longitude) item, Span<double> values) {
-            values[0] = item.Latitude;
-            values[1] = item.Longitude;
+        protected override void Write((double Latitude, double Longitude) item, IPolylineWriter writer) {
+            writer.Write(item.Latitude);
+            writer.Write(item.Longitude);
         }
     }
 }

@@ -27,20 +27,15 @@ internal sealed class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point
     }
 
     /// <summary>
-    /// Gets the number of values per point (latitude + longitude = 2).
+    /// Writes latitude and longitude from a NetTopologySuite Point into the polyline encoding pipeline.
     /// </summary>
-    protected override int ValuesPerItem => 2;
-
-    /// <summary>
-    /// Extracts latitude and longitude from a NetTopologySuite Point into the provided span.
-    /// </summary>
-    /// <param name="item">The point to extract values from.</param>
-    /// <param name="values">The span to receive the values: values[0] = latitude (Y), values[1] = longitude (X).</param>
-    protected override void GetValues(Point item, Span<double> values) {
+    /// <param name="item">The point to write. Field 0 = latitude (Y), field 1 = longitude (X).</param>
+    /// <param name="writer">The writer provided by the engine.</param>
+    protected override void Write(Point item, IPolylineWriter writer) {
         ArgumentNullException.ThrowIfNull(item);
 
         // NetTopologySuite Point: Y = latitude, X = longitude
-        values[0] = item.Y;
-        values[1] = item.X;
+        writer.Write(item.Y);
+        writer.Write(item.X);
     }
 }
