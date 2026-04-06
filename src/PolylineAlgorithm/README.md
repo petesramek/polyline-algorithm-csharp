@@ -41,9 +41,12 @@ using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal;
 
 public sealed class MyPolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
+    private PolylineValueState _latitudeState;
+    private PolylineValueState _longitudeState;
+
     protected override void Write((double Latitude, double Longitude) item, ref PolylineWriter writer) {
-        writer.Write(item.Latitude);   // field 0
-        writer.Write(item.Longitude);  // field 1
+        writer.Write(item.Latitude, ref _latitudeState);   // field 0
+        writer.Write(item.Longitude, ref _longitudeState); // field 1
     }
     protected override string CreatePolyline(ReadOnlySpan<char> polyline) => polyline.ToString();
 }
@@ -75,8 +78,11 @@ using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal;
 
 public sealed class MyPolylineDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
+    private PolylineValueState _latitudeState;
+    private PolylineValueState _longitudeState;
+
     protected override (double Latitude, double Longitude) Read(PolylineReader reader) =>
-        (reader.Read(), reader.Read());  // field 0, field 1
+        (reader.Read(ref _latitudeState), reader.Read(ref _longitudeState));  // field 0, field 1
     protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
 }
 ```
