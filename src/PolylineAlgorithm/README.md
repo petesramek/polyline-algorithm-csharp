@@ -38,13 +38,14 @@ The library provides abstract base classes to build your own encoder and decoder
 ```csharp
 using PolylineAlgorithm;
 using PolylineAlgorithm.Abstraction;
+using PolylineAlgorithm.Internal;
 
 public sealed class MyPolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
-    protected override void Write((double Latitude, double Longitude) item, IPolylineWriter writer) {
+    protected override void Write((double Latitude, double Longitude) item, ref PolylineWriter writer) {
         writer.Write(item.Latitude);   // field 0
         writer.Write(item.Longitude);  // field 1
     }
-    protected override string CreatePolyline(ReadOnlyMemory<char> polyline) => polyline.ToString();
+    protected override string CreatePolyline(ReadOnlySpan<char> polyline) => polyline.ToString();
 }
 ```
 
@@ -71,9 +72,10 @@ Console.WriteLine(encoded);
 ```csharp
 using PolylineAlgorithm;
 using PolylineAlgorithm.Abstraction;
+using PolylineAlgorithm.Internal;
 
 public sealed class MyPolylineDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-    protected override (double Latitude, double Longitude) Read(IPolylineReader reader) =>
+    protected override (double Latitude, double Longitude) Read(PolylineReader reader) =>
         (reader.Read(), reader.Read());  // field 0, field 1
     protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
 }
