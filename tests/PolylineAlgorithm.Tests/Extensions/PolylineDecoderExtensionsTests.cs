@@ -18,8 +18,8 @@ using System.Collections.Generic;
 [TestClass]
 public sealed class PolylineDecoderExtensionsTests {
     private sealed class TestStringDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-        private int _latitudeState;
-        private int _longitudeState;
+        private PolylineValueState _latitudeState;
+        private PolylineValueState _longitudeState;
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
         protected override (double Latitude, double Longitude) Read(PolylineReader reader) =>
@@ -27,8 +27,8 @@ public sealed class PolylineDecoderExtensionsTests {
     }
 
     private sealed class TestMemoryDecoder : AbstractPolylineDecoder<ReadOnlyMemory<char>, (double Latitude, double Longitude)> {
-        private int _latitudeState;
-        private int _longitudeState;
+        private PolylineValueState _latitudeState;
+        private PolylineValueState _longitudeState;
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in ReadOnlyMemory<char> polyline) => polyline;
         protected override (double Latitude, double Longitude) Read(PolylineReader reader) =>

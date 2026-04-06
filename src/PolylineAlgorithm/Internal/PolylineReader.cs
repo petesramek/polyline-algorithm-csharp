@@ -34,12 +34,12 @@ public sealed class PolylineReader {
     /// <exception cref="InvalidPolylineException">
     /// Thrown when the data runs out before the formatter has finished reading an item's fields.
     /// </exception>
-    public double Read(ref int state) {
-        if (!PolylineEncoding.TryReadValue(ref state, _sequence, ref _position)) {
+    public double Read(ref PolylineValueState state) {
+        if (!PolylineEncoding.TryReadValue(ref state._value, _sequence, ref _position)) {
             ExceptionGuard.ThrowInvalidPolylineFormat(_position);
         }
 
-        double result = PolylineEncoding.Denormalize(state, _precision);
+        double result = PolylineEncoding.Denormalize(state._value, _precision);
         
         return result;
     }

@@ -86,8 +86,8 @@ public class PolylineEncoderBenchmark {
     }
 
     private sealed class StringPolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
-        private int _latitudeState;
-        private int _longitudeState;
+        private PolylineValueState _latitudeState;
+        private PolylineValueState _longitudeState;
 
         protected override string CreatePolyline(ReadOnlySpan<char> polyline) => polyline.ToString();
         protected override void Write((double Latitude, double Longitude) item, ref PolylineWriter writer) {

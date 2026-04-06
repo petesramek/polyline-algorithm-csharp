@@ -14,8 +14,8 @@ using System;
 /// Polyline decoder using NetTopologySuite.
 /// </summary>
 internal sealed class NetTopologyPolylineDecoder : AbstractPolylineDecoder<string, Point> {
-    private int _latitudeState;
-    private int _longitudeState;
+    private PolylineValueState _latitudeState;
+    private PolylineValueState _longitudeState;
 
     /// <summary>
     /// Converts polyline string to read-only memory.

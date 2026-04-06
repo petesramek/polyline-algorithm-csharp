@@ -16,8 +16,8 @@ using System;
 [TestClass]
 public sealed class AbstractPolylineEncoderTests {
     private sealed class TestStringEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
-        private int _latitudeState;
-        private int _longitudeState;
+        private PolylineValueState _latitudeState;
+        private PolylineValueState _longitudeState;
 
         public TestStringEncoder()
             : base() { }

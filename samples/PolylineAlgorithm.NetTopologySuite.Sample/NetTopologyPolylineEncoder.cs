@@ -14,8 +14,8 @@ using System;
 /// Polyline encoder using NetTopologySuite's Point type.
 /// </summary>
 internal sealed class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point, string> {
-    private int _latitudeState;
-    private int _longitudeState;
+    private PolylineValueState _latitudeState;
+    private PolylineValueState _longitudeState;
 
     /// <summary>
     /// Creates encoded polyline string from span.

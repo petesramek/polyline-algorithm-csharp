@@ -33,12 +33,12 @@ public ref struct PolylineWriter {
     /// <summary>
     /// Emits one field value into the encoding pipeline.
     /// </summary>
-    public void Write(double value, ref int state) {
+    public void Write(double value, ref PolylineValueState state) {
         int normalized = PolylineEncoding.Normalize(value, _precision);
         
-        int delta = normalized - state;
+        int delta = normalized - state._value;
 
-        state = normalized;
+        state._value = normalized;
 
         if (!PolylineEncoding.TryWriteValue(delta, _buffer, ref _position)) {
             ExceptionGuard.ThrowCouldNotWriteEncodedValueToBuffer();

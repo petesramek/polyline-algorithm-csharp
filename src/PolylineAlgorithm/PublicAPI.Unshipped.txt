@@ -1,1 +1,6 @@
 #nullable enable
+PolylineAlgorithm.Internal.PolylineValueState
+PolylineAlgorithm.Internal.PolylineValueState.PolylineValueState() -> void
+PolylineAlgorithm.Internal.PolylineValueState.Value.get -> int
+PolylineAlgorithm.Internal.PolylineReader.Read(ref PolylineAlgorithm.Internal.PolylineValueState state) -> double
+PolylineAlgorithm.Internal.PolylineWriter.Write(double value, ref PolylineAlgorithm.Internal.PolylineValueState state) -> void
