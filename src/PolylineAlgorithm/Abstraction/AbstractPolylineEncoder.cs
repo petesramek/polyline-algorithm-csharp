@@ -86,9 +86,9 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
 
         ValidateEmptyCoordinates(ref coordinates, _logger, OperationName);
 
-        // Initial capacity assumes 2 values per item (typical lat/lon); the writer grows if needed.
-        int initialCapacity = coordinates.Length * 2 * Defaults.Polyline.Block.Length.Max;
-        PolylineWriter writer = new(initialCapacity, Options.Precision);
+        // Worst-case maximum: every value uses the maximum number of encoded characters.
+        int maxCapacity = coordinates.Length * 2 * Defaults.Polyline.Block.Length.Max;
+        PolylineWriter writer = new(maxCapacity, Options.Precision);
 
         TPolyline result;
 
