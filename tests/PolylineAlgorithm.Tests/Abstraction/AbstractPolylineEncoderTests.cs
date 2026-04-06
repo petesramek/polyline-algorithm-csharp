@@ -40,7 +40,6 @@ public sealed class AbstractPolylineEncoderTests {
         Assert.IsNotNull(encoder);
         Assert.IsNotNull(encoder.Options);
         Assert.AreEqual(5u, encoder.Options.Precision);
-        Assert.AreEqual(512, encoder.Options.StackAllocLimit);
     }
 
     /// <summary>
@@ -132,14 +131,12 @@ public sealed class AbstractPolylineEncoderTests {
     }
 
     /// <summary>
-    /// Tests that Encode still produces the correct result when the buffer exceeds the stack allocation
-    /// limit, forcing heap allocation via <see cref="System.Buffers.ArrayPool{T}"/>.
+    /// Tests that Encode produces the correct result for a standard set of coordinates.
     /// </summary>
     [TestMethod]
     public void Encode_With_Small_Stack_Alloc_Limit_Uses_Heap_Allocation_And_Produces_Correct_Result() {
-        // Arrange — force heap path by making stackAllocLimit smaller than any real encoding needs
+        // Arrange
         PolylineEncodingOptions options = PolylineEncodingOptionsBuilder.Create()
-            .WithStackAllocLimit(1)
             .Build();
         TestStringEncoder encoder = new(options);
         (double Latitude, double Longitude)[] coordinates = [.. StaticValueProvider.Valid.GetCoordinates()];

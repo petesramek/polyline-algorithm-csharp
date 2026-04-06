@@ -129,9 +129,6 @@
   <data name="ArgumentValueMustBeFiniteNumber" xml:space="preserve">
     <value>Value must be a finite number.</value>
   </data>
-  <data name="StackAllocLimitMustBeEqualOrGreaterThanFormat" xml:space="preserve">
-    <value>Stack alloc limit must be equal or greater than {0}.</value>
-  </data>
   <data name="DestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthFormat" xml:space="preserve">
     <value>Destination array length {0} must be greater than the polyline length {1}.</value>
   </data>

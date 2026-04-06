@@ -54,7 +54,6 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         // Assert
         Assert.IsNotNull(result);
         Assert.AreEqual(5u, result.Precision);
-        Assert.AreEqual(512, result.StackAllocLimit);
         Assert.IsNotNull(result.LoggerFactory);
         Assert.IsInstanceOfType<NullLoggerFactory>(result.LoggerFactory);
     }
@@ -73,22 +72,6 @@ public sealed class PolylineEncodingOptionsBuilderTests {
 
         // Assert
         Assert.AreEqual(7u, result.Precision);
-    }
-
-    /// <summary>
-    /// Tests that Build returns options with configured stack alloc limit.
-    /// </summary>
-    [TestMethod]
-    public void Build_With_Custom_Stack_Alloc_Limit_Returns_Options_With_Custom_Stack_Alloc_Limit() {
-        // Arrange
-        PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create()
-            .WithStackAllocLimit(1024);
-
-        // Act
-        PolylineEncodingOptions result = builder.Build();
-
-        // Assert
-        Assert.AreEqual(1024, result.StackAllocLimit);
     }
 
     /// <summary>
@@ -120,7 +103,6 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         ILoggerFactory loggerFactory = LoggerFactory.Create(_ => { });
         PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create()
             .WithPrecision(10)
-            .WithStackAllocLimit(2048)
             .WithLoggerFactory(loggerFactory);
 
         // Act
@@ -128,7 +110,6 @@ public sealed class PolylineEncodingOptionsBuilderTests {
 
         // Assert
         Assert.AreEqual(10u, result.Precision);
-        Assert.AreEqual(2048, result.StackAllocLimit);
         Assert.AreSame(loggerFactory, result.LoggerFactory);
 
         // Cleanup
@@ -151,105 +132,6 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         // Assert
         Assert.AreNotSame(first, second);
         Assert.AreEqual(first.Precision, second.Precision);
-        Assert.AreEqual(first.StackAllocLimit, second.StackAllocLimit);
-    }
-
-    /// <summary>
-    /// Tests that WithStackAllocLimit sets the value and returns the builder.
-    /// </summary>
-    [TestMethod]
-    public void WithStackAllocLimit_With_Valid_Value_Sets_Value_And_Returns_Self() {
-        // Arrange
-        PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
-
-        // Act
-        PolylineEncodingOptionsBuilder result = builder.WithStackAllocLimit(256);
-
-        // Assert
-        Assert.AreSame(builder, result);
-        PolylineEncodingOptions options = builder.Build();
-        Assert.AreEqual(256, options.StackAllocLimit);
-    }
-
-    /// <summary>
-    /// Tests that WithStackAllocLimit accepts minimum value of 1.
-    /// </summary>
-    [TestMethod]
-    public void WithStackAllocLimit_With_Minimum_Value_Sets_Value() {
-        // Arrange
-        PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
-
-        // Act
-        builder.WithStackAllocLimit(1);
-        PolylineEncodingOptions result = builder.Build();
-
-        // Assert
-        Assert.AreEqual(1, result.StackAllocLimit);
-    }
-
-    /// <summary>
-    /// Tests that WithStackAllocLimit throws ArgumentOutOfRangeException for zero.
-    /// </summary>
-    [TestMethod]
-    public void WithStackAllocLimit_With_Zero_Throws_ArgumentOutOfRangeException() {
-        // Arrange
-        PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
-
-        // Act
-        var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => builder.WithStackAllocLimit(0));
-
-        // Assert
-        Assert.AreEqual("stackAllocLimit", exception.ParamName);
-    }
-
-    /// <summary>
-    /// Tests that WithStackAllocLimit throws ArgumentOutOfRangeException for negative value.
-    /// </summary>
-    [TestMethod]
-    public void WithStackAllocLimit_With_Negative_Value_Throws_ArgumentOutOfRangeException() {
-        // Arrange
-        PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
-
-        // Act
-        var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => builder.WithStackAllocLimit(-10));
-
-        // Assert
-        Assert.AreEqual("stackAllocLimit", exception.ParamName);
-    }
-
-    /// <summary>
-    /// Tests that WithStackAllocLimit accepts large value.
-    /// </summary>
-    [TestMethod]
-    public void WithStackAllocLimit_With_Large_Value_Sets_Value() {
-        // Arrange
-        PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
-
-        // Act
-        PolylineEncodingOptions result = builder
-            .WithStackAllocLimit(100000)
-            .Build();
-
-        // Assert
-        Assert.AreEqual(100000, result.StackAllocLimit);
-    }
-
-    /// <summary>
-    /// Tests that WithStackAllocLimit can be called multiple times.
-    /// </summary>
-    [TestMethod]
-    public void WithStackAllocLimit_With_Multiple_Calls_Last_Value_Wins() {
-        // Arrange
-        PolylineEncodingOptionsBuilder builder = PolylineEncodingOptionsBuilder.Create();
-
-        // Act
-        PolylineEncodingOptions result = builder.WithStackAllocLimit(100)
-               .WithStackAllocLimit(200)
-               .WithStackAllocLimit(300)
-               .Build();
-
-        // Assert
-        Assert.AreEqual(300, result.StackAllocLimit);
     }
 
     /// <summary>
@@ -412,14 +294,12 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         // Act
         PolylineEncodingOptions result = PolylineEncodingOptionsBuilder.Create()
             .WithPrecision(6)
-            .WithStackAllocLimit(1024)
             .WithLoggerFactory(loggerFactory)
             .Build();
 
         // Assert
         Assert.IsNotNull(result);
         Assert.AreEqual(6u, result.Precision);
-        Assert.AreEqual(1024, result.StackAllocLimit);
         Assert.AreSame(loggerFactory, result.LoggerFactory);
     }
 }

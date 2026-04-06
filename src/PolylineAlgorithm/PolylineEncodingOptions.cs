@@ -19,14 +19,13 @@ using System.Diagnostics.CodeAnalysis;
 /// </para>
 /// <list type="bullet">
 /// <item><description>The <see cref="Precision"/> level for coordinate encoding</description></item>
-/// <item><description>The <see cref="StackAllocLimit"/> for memory allocation strategy</description></item>
 /// <item><description>The <see cref="LoggerFactory"/> for diagnostic logging</description></item>
 /// </list>
 /// <para>
 /// All properties have internal setters and should be configured through a builder or factory pattern.
 /// </para>
 /// </remarks>
-[DebuggerDisplay("StackAllocLimit: {StackAllocLimit}, Precision: {Precision}, LoggerFactoryType: {GetLoggerFactoryType()}")]
+[DebuggerDisplay("Precision: {Precision}, LoggerFactoryType: {GetLoggerFactoryType()}")]
 public sealed class PolylineEncodingOptions {
     /// <summary>
     /// Gets the logger factory used for diagnostic logging during encoding operations.
@@ -58,19 +57,6 @@ public sealed class PolylineEncodingOptions {
     /// </para>
     /// </remarks>
     public uint Precision { get; internal set; } = 5;
-
-    /// <summary>
-    /// Gets the maximum buffer size (in characters) that can be allocated on the stack for encoding operations.
-    /// </summary>
-    /// <value>
-    /// The maximum number of characters for stack allocation using <c>stackalloc char[]</c>. Defaults to 512.
-    /// </value>
-    /// <remarks>
-    /// When the required buffer size for encoding exceeds this limit, memory will be allocated on the heap instead of the stack.
-    /// This setting specifically applies to stack allocation of character arrays (<c>stackalloc char[]</c>) used during polyline encoding,
-    /// balancing performance and stack safety.
-    /// </remarks>
-    public int StackAllocLimit { get; internal set; } = 512;
 
     /// <summary>
     /// Returns the type name of the logger factory for debugging purposes.

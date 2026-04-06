@@ -71,21 +71,6 @@ public sealed class ExceptionGuardTests {
     }
 
     /// <summary>
-    /// Tests that StackAllocLimitMustBeEqualOrGreaterThan throws ArgumentOutOfRangeException with correct parameter name.
-    /// </summary>
-    [TestMethod]
-    public void StackAllocLimitMustBeEqualOrGreaterThan_With_Parameters_Throws_ArgumentOutOfRangeException() {
-        // Arrange
-        const int minValue = 10;
-        const string paramName = "stackAllocLimit";
-
-        // Act & Assert
-        var ex = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ExceptionGuard.StackAllocLimitMustBeEqualOrGreaterThan(minValue, paramName));
-        Assert.AreEqual(paramName, ex.ParamName);
-        Assert.IsNotNull(ex.Message);
-    }
-
-    /// <summary>
     /// Tests that ThrowArgumentCannotBeEmptyEnumerationMessage throws ArgumentException with correct parameter name.
     /// </summary>
     [TestMethod]
@@ -187,22 +172,6 @@ public sealed class ExceptionGuardTests {
         // Act & Assert
         var ex = Assert.ThrowsExactly<InvalidPolylineException>(() => ExceptionGuard.ThrowInvalidPolylineBlockTerminator());
         Assert.IsNotNull(ex.Message);
-    }
-
-    /// <summary>
-    /// Tests that FormatStackAllocLimitMustBeEqualOrGreaterThan returns formatted message with specified value.
-    /// </summary>
-    [TestMethod]
-    public void FormatStackAllocLimitMustBeEqualOrGreaterThan_With_Min_Value_Returns_Formatted_Message() {
-        // Arrange
-        const int minValue = 10;
-
-        // Act
-        string result = ExceptionGuard.ExceptionMessage.FormatStackAllocLimitMustBeEqualOrGreaterThan(minValue);
-
-        // Assert
-        Assert.IsNotNull(result);
-        Assert.IsTrue(result.Contains("10", StringComparison.Ordinal));
     }
 
     /// <summary>

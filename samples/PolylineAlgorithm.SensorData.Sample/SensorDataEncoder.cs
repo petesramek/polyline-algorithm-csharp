@@ -98,7 +98,10 @@ internal sealed class SensorDataEncoder : IPolylineEncoder<SensorReading, string
         int position = 0;
         int length = coordinates.Length * 2 * MaxEncodedCharsPerValue;
 
-        char[]? temp = length <= Options.StackAllocLimit
+        // Use stackalloc for small buffers to avoid a heap allocation; fall back to ArrayPool for larger ones.
+        const int StackAllocLimit = 512;
+
+        char[]? temp = length <= StackAllocLimit
             ? null
             : ArrayPool<char>.Shared.Rent(length);
 

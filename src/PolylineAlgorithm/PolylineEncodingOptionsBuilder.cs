@@ -7,14 +7,12 @@ namespace PolylineAlgorithm;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using PolylineAlgorithm.Internal.Diagnostics;
 
 /// <summary>
 /// Provides a builder for configuring options for polyline encoding operations.
 /// </summary>
 public sealed class PolylineEncodingOptionsBuilder {
     private uint _precision = 5;
-    private int _stackAllocLimit = 512;
     private ILoggerFactory _loggerFactory = NullLoggerFactory.Instance;
 
     private PolylineEncodingOptionsBuilder() { }
@@ -38,36 +36,8 @@ public sealed class PolylineEncodingOptionsBuilder {
     public PolylineEncodingOptions Build() {
         return new PolylineEncodingOptions {
             Precision = _precision,
-            StackAllocLimit = _stackAllocLimit,
             LoggerFactory = _loggerFactory,
         };
-    }
-
-    /// <summary>
-    /// Configures the buffer size used for stack allocation during polyline encoding operations.
-    /// </summary>
-    /// <param name="stackAllocLimit">
-    /// The maximum buffer size to use for stack allocation. Must be greater than or equal to 1.
-    /// </param>
-    /// <returns>
-    /// The current <see cref="PolylineEncodingOptionsBuilder"/> instance for method chaining.
-    /// </returns>
-    /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if <paramref name="stackAllocLimit"/> is less than 1.
-    /// </exception>
-    /// <remarks>
-    /// This method allows customization of the internal buffer size for encoding, which can impact performance and memory usage.
-    /// </remarks>
-    public PolylineEncodingOptionsBuilder WithStackAllocLimit(int stackAllocLimit) {
-        const int minStackAllocLimit = 1;
-
-        if (minStackAllocLimit > stackAllocLimit) {
-            ExceptionGuard.StackAllocLimitMustBeEqualOrGreaterThan(minStackAllocLimit, nameof(stackAllocLimit));
-        }
-
-        _stackAllocLimit = stackAllocLimit;
-
-        return this;
     }
 
     /// <summary>

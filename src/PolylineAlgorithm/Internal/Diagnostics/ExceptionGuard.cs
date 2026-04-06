@@ -87,21 +87,6 @@ internal static class ExceptionGuard {
     }
 
     /// <summary>
-    /// Throws an <see cref="ArgumentOutOfRangeException"/> when a stack allocation limit is below the required minimum.
-    /// </summary>
-    /// <param name="minValue">Minimum required stack allocation limit.</param>
-    /// <param name="paramName">Name of the parameter representing the limit.</param>
-#if NET6_0_OR_GREATER
-    [StackTraceHidden]
-#else
-    [MethodImpl(MethodImplOptions.NoInlining)]
-#endif
-    [DoesNotReturn]
-    internal static void StackAllocLimitMustBeEqualOrGreaterThan(int minValue, string paramName) {
-        throw new ArgumentOutOfRangeException(paramName, ExceptionMessage.FormatStackAllocLimitMustBeEqualOrGreaterThan(minValue));
-    }
-
-    /// <summary>
     /// Throws an <see cref="ArgumentException"/> when an enumeration argument is empty but must contain at least one element.
     /// </summary>
     /// <param name="paramName">Name of the parameter representing the enumeration.</param>
@@ -226,7 +211,6 @@ internal static class ExceptionGuard {
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Internal use only.")]
     internal static class ExceptionMessage {
 #if NET8_0_OR_GREATER
-        private static readonly CompositeFormat StackAllocLimitMustBeEqualOrGreaterThanFormat = CompositeFormat.Parse(ExceptionMessageResource.StackAllocLimitMustBeEqualOrGreaterThanFormat);
         private static readonly CompositeFormat PolylineCannotBeShorterThanFormat = CompositeFormat.Parse(ExceptionMessageResource.PolylineCannotBeShorterThanFormat);
         private static readonly CompositeFormat PolylineIsMalformedAtFormat = CompositeFormat.Parse(ExceptionMessageResource.PolylineIsMalformedAtFormat);
         private static readonly CompositeFormat CoordinateValueMustBeBetweenFormat = CompositeFormat.Parse(ExceptionMessageResource.CoordinateValueMustBeBetweenValuesFormat);
@@ -235,7 +219,6 @@ internal static class ExceptionGuard {
         private static readonly CompositeFormat DestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthFormat = CompositeFormat.Parse(ExceptionMessageResource.DestinationArrayLengthMustBeEqualOrGreaterThanPolylineLengthFormat);
         private static readonly CompositeFormat InvalidPolylineLengthFormat = CompositeFormat.Parse(ExceptionMessageResource.InvalidPolylineLengthFormat);
 #else
-        private static readonly string StackAllocLimitMustBeEqualOrGreaterThanFormat = ExceptionMessageResource.StackAllocLimitMustBeEqualOrGreaterThanFormat;
         private static readonly string PolylineCannotBeShorterThanFormat = ExceptionMessageResource.PolylineCannotBeShorterThanFormat;
         private static readonly string PolylineIsMalformedAtFormat = ExceptionMessageResource.PolylineIsMalformedAtFormat;
         private static readonly string CoordinateValueMustBeBetweenFormat = ExceptionMessageResource.CoordinateValueMustBeBetweenValuesFormat;
@@ -249,12 +232,6 @@ internal static class ExceptionGuard {
         private static readonly string ArgumentValueMustBeFiniteNumberMessage = ExceptionMessageResource.ArgumentValueMustBeFiniteNumber;
         private static readonly string CouldNotWriteEncodedValueToTheBufferMessage = ExceptionMessageResource.CouldNotWriteEncodedValueToTheBufferMessage;
         private static readonly string InvalidPolylineBlockTerminatorMessage = ExceptionMessageResource.InvalidPolylineBlockTerminatorMessage;
-
-        /// <summary>
-        /// Formats the message for stack allocation limit violations.
-        /// </summary>
-        internal static string FormatStackAllocLimitMustBeEqualOrGreaterThan(int minValue) =>
-            string.Format(CultureInfo.InvariantCulture, StackAllocLimitMustBeEqualOrGreaterThanFormat, minValue);
 
         /// <summary>
         /// Formats the message when a polyline is shorter than the required minimum.

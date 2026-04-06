@@ -159,13 +159,5 @@ namespace PolylineAlgorithm.Properties {
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to Stack alloc limit must be equal or greater than {0}..
-        /// </summary>
-        internal static string StackAllocLimitMustBeEqualOrGreaterThanFormat {
-            get {
-                return ResourceManager.GetString("StackAllocLimitMustBeEqualOrGreaterThanFormat", resourceCulture);
-            }
-        }
     }
 }
