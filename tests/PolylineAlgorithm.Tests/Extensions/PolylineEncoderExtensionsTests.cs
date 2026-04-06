@@ -18,10 +18,13 @@ using System.Collections.Generic;
 [TestClass]
 public sealed class PolylineEncoderExtensionsTests {
     private sealed class TestStringEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
+        private int _latitudeState;
+        private int _longitudeState;
+
         protected override string CreatePolyline(ReadOnlySpan<char> polyline) => polyline.ToString();
         protected override void Write((double Latitude, double Longitude) item, ref PolylineWriter writer) {
-            writer.Write(item.Latitude);
-            writer.Write(item.Longitude);
+            writer.Write(item.Latitude, ref _latitudeState);
+            writer.Write(item.Longitude, ref _longitudeState);
         }
     }
 

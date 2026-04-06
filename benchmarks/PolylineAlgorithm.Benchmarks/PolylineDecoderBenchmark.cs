@@ -94,8 +94,11 @@ public class PolylineDecoderBenchmark {
     }
 
     private sealed class StringPolylineDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
+        private int _latitudeState;
+        private int _longitudeState;
+
         protected override (double Latitude, double Longitude) Read(PolylineReader reader) =>
-            (reader.Read(), reader.Read());
+            (reader.Read(ref _latitudeState), reader.Read(ref _longitudeState));
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) {
             return polyline?.AsMemory() ?? Memory<char>.Empty;
@@ -103,8 +106,11 @@ public class PolylineDecoderBenchmark {
     }
 
     private sealed class CharArrayPolylineDecoder : AbstractPolylineDecoder<char[], (double Latitude, double Longitude)> {
+        private int _latitudeState;
+        private int _longitudeState;
+
         protected override (double Latitude, double Longitude) Read(PolylineReader reader) =>
-            (reader.Read(), reader.Read());
+            (reader.Read(ref _latitudeState), reader.Read(ref _longitudeState));
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in char[] polyline) {
             return polyline?.AsMemory() ?? Memory<char>.Empty;
@@ -112,8 +118,11 @@ public class PolylineDecoderBenchmark {
     }
 
     private sealed class MemoryCharPolylineDecoder : AbstractPolylineDecoder<ReadOnlyMemory<char>, (double Latitude, double Longitude)> {
+        private int _latitudeState;
+        private int _longitudeState;
+
         protected override (double Latitude, double Longitude) Read(PolylineReader reader) =>
-            (reader.Read(), reader.Read());
+            (reader.Read(ref _latitudeState), reader.Read(ref _longitudeState));
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in ReadOnlyMemory<char> polyline) {
             return polyline;

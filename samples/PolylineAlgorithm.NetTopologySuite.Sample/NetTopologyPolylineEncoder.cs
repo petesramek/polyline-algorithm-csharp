@@ -14,6 +14,9 @@ using System;
 /// Polyline encoder using NetTopologySuite's Point type.
 /// </summary>
 internal sealed class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point, string> {
+    private int _latitudeState;
+    private int _longitudeState;
+
     /// <summary>
     /// Creates encoded polyline string from span.
     /// </summary>
@@ -36,7 +39,7 @@ internal sealed class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point
         ArgumentNullException.ThrowIfNull(item);
 
         // NetTopologySuite Point: Y = latitude, X = longitude
-        writer.Write(item.Y);
-        writer.Write(item.X);
+        writer.Write(item.Y, ref _latitudeState);
+        writer.Write(item.X, ref _longitudeState);
     }
 }

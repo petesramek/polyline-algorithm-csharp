@@ -17,18 +17,23 @@ using System.Collections.Generic;
 [TestClass]
 public sealed class AbstractPolylineDecoderTests {
     private sealed class TestStringDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
+        private int _latitudeState;
+        private int _longitudeState;
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
         protected override (double Latitude, double Longitude) Read(PolylineReader reader) =>
-            (reader.Read(), reader.Read());
+            (reader.Read(ref _latitudeState), reader.Read(ref _longitudeState));
     }
 
     private sealed class TestStringDecoderWithOptions : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
+        private int _latitudeState;
+        private int _longitudeState;
+
         public TestStringDecoderWithOptions(PolylineEncodingOptions options)
             : base(options) { }
 
         protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
         protected override (double Latitude, double Longitude) Read(PolylineReader reader) =>
-            (reader.Read(), reader.Read());
+            (reader.Read(ref _latitudeState), reader.Read(ref _longitudeState));
     }
 
     /// <summary>

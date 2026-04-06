@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright © Pete Sramek. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
@@ -20,15 +20,11 @@ using System.Runtime.CompilerServices;
 public sealed class PolylineReader {
     private readonly ReadOnlyMemory<char> _sequence;
     private int _position;
-    private int[] _accumulated;
-    private int _slotIndex;
     private readonly uint _precision;
 
     internal PolylineReader(ReadOnlyMemory<char> sequence, uint precision) {
         _sequence = sequence;
         _precision = precision;
-        _accumulated = [];
-        _slotIndex = 0;
         _position = 0;
     }
 
@@ -38,32 +34,15 @@ public sealed class PolylineReader {
     /// <exception cref="InvalidPolylineException">
     /// Thrown when the data runs out before the formatter has finished reading an item's fields.
     /// </exception>
-    public double Read() {
-        // Grow the per-slot accumulator array on the first item (field discovery).
-        if (_slotIndex >= _accumulated.Length) {
-            Array.Resize(ref _accumulated, _slotIndex + 1);
-        }
-
-        if (!PolylineEncoding.TryReadValue(ref _accumulated[_slotIndex], _sequence, ref _position)) {
+    public double Read(ref int state) {
+        if (!PolylineEncoding.TryReadValue(ref state, _sequence, ref _position)) {
             ExceptionGuard.ThrowInvalidPolylineFormat(_position);
         }
 
-        double result = PolylineEncoding.Denormalize(_accumulated[_slotIndex], _precision);
-        _slotIndex++;
+        double result = PolylineEncoding.Denormalize(state, _precision);
+        
         return result;
     }
-
-    /// <summary>
-    /// Resets the intra-item slot index so that delta accumulation is applied to the correct field slot
-    /// on the next item. Must be called by the engine before each call to the formatter's Read method.
-    /// </summary>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal void BeginItem() => _slotIndex = 0;
-
-    /// <summary>
-    /// Gets the number of fields read in the current (or most recently completed) item.
-    /// </summary>
-    internal int SlotIndex => _slotIndex;
 
     /// <summary>
     /// Gets the current character position in the encoded sequence.

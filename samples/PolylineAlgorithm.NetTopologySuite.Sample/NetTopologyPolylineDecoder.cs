@@ -14,6 +14,9 @@ using System;
 /// Polyline decoder using NetTopologySuite.
 /// </summary>
 internal sealed class NetTopologyPolylineDecoder : AbstractPolylineDecoder<string, Point> {
+    private int _latitudeState;
+    private int _longitudeState;
+
     /// <summary>
     /// Converts polyline string to read-only memory.
     /// </summary>
@@ -29,8 +32,8 @@ internal sealed class NetTopologyPolylineDecoder : AbstractPolylineDecoder<strin
     /// <param name="reader">The reader provided by the engine. Field 0 = latitude, field 1 = longitude.</param>
     /// <returns>Point instance.</returns>
     protected override Point Read(PolylineReader reader) {
-        double latitude = reader.Read();
-        double longitude = reader.Read();
+        double latitude = reader.Read(ref _latitudeState);
+        double longitude = reader.Read(ref _longitudeState);
 
         // NetTopologySuite Point: x = longitude, y = latitude
         return new Point(longitude, latitude);

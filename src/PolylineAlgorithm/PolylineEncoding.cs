@@ -10,6 +10,7 @@ using PolylineAlgorithm.Internal.Diagnostics;
 
 using System;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 /// <summary>
@@ -389,35 +390,43 @@ public static class PolylineEncoding {
     /// <exception cref="ArgumentException">
     /// Thrown when an invalid character is found in the polyline segment.
     /// </exception>
-    public static void ValidateCharRange(ReadOnlySpan<char> polyline) {
+    public static unsafe void ValidateCharRange(ReadOnlySpan<char> polyline) {
         int length = polyline.Length;
-        int vectorSize = Vector<ushort>.Count;
+        int vecSize = Vector<ushort>.Count;
 
-        int i = 0;
-        for (; i <= length - vectorSize; i += vectorSize) {
-            var span = MemoryMarshal.Cast<char, ushort>(polyline.Slice(i, vectorSize));
-#if NET5_0_OR_GREATER
-            var chars = new Vector<ushort>(span);
-#else
-            var chars = new Vector<ushort>(span.ToArray());
-#endif
-            var belowMin = Vector.LessThan(chars, MinVector);
-            var aboveMax = Vector.GreaterThan(chars, MaxVector);
-            if (Vector.BitwiseOr(belowMin, aboveMax) != Vector<ushort>.Zero) {
-                // Fallback to scalar check for this block
-                for (int j = 0; j < vectorSize; j++) {
-                    char character = polyline[i + j];
-                    if (character < Min || character > Max) {
-                        ExceptionGuard.ThrowInvalidPolylineCharacter(character, i + j);
+        fixed (char* p = polyline) {
+            ushort* up = (ushort*)p;
+
+            int i = 0;
+
+            // SIMD loop
+            for (; i <= length - vecSize; i += vecSize) {
+                // Load vector directly without allocations
+                var vec = Unsafe.Read<Vector<ushort>>(up + i);
+
+                var belowMin = Vector.LessThan(vec, MinVector);
+                var aboveMax = Vector.GreaterThan(vec, MaxVector);
+
+                var invalid = Vector.BitwiseOr(belowMin, aboveMax);
+
+                if (!Vector.EqualsAll(invalid, Vector<ushort>.Zero)) {
+                    // Fallback to scalar for this block
+                    for (int j = 0; j < vecSize; j++) {
+                        ushort ch = up[i + j];
+                        if (ch < Min || ch > Max) {
+                            ExceptionGuard.ThrowInvalidPolylineCharacter((char)ch, i + j);
+                        }
                     }
                 }
             }
-        }
 
-        for (; i < length; i++) {
-            char character = polyline[i];
-            if (character < Min || character > Max) {
-                ExceptionGuard.ThrowInvalidPolylineCharacter(character, i);
+            // Tail
+            for (; i < length; i++) {
+                ushort ch = up[i];
+
+                if (ch < Min || ch > Max) {
+                    ExceptionGuard.ThrowInvalidPolylineCharacter((char)ch, i);
+                }
             }
         }
     }
@@ -436,24 +445,32 @@ public static class PolylineEncoding {
     /// Thrown when a block exceeds 7 characters or the polyline does not end with a valid block terminator.
     /// </exception>
     public static void ValidateBlockLength(ReadOnlySpan<char> polyline) {
+        const int MaxBlockLen = Defaults.Polyline.Block.Length.Max;
+
         int blockLen = 0;
-        bool foundBlockEnd = false;
+        bool foundEnd = false;
 
         for (int i = 0; i < polyline.Length; i++) {
             blockLen++;
 
-            if (polyline[i] < End) {
-                foundBlockEnd = true;
-                if (blockLen > Defaults.Polyline.Block.Length.Max) {
+            if (polyline[i] >= End) {
+                if (blockLen > MaxBlockLen) {
                     ExceptionGuard.ThrowPolylineBlockTooLong(i - blockLen + 1);
                 }
-                blockLen = 0;
-            } else {
-                foundBlockEnd = false;
+
+                foundEnd = false;
+                continue;
             }
+
+            if (blockLen > MaxBlockLen) {
+                ExceptionGuard.ThrowPolylineBlockTooLong(i - blockLen + 1);
+            }
+
+            blockLen = 0;
+            foundEnd = true;
         }
 
-        if (!foundBlockEnd) {
+        if (!foundEnd) {
             ExceptionGuard.ThrowInvalidPolylineBlockTerminator();
         }
     }

@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright © Pete Sramek. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
@@ -105,7 +105,6 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
             for (var i = 0; i < coordinates.Length; i++) {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                writer.BeginItem();
                 Write(coordinates[i], ref writer);
             }
 

@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright © Pete Sramek. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
@@ -96,10 +96,9 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
             while (!reader.IsEmpty) {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                reader.BeginItem();
                 TCoordinate item = Read(reader);
 
-                _logger?.LogDecodedItemDebug(reader.SlotIndex, reader.Position);
+                //_logger?.LogDecodedItemDebug(reader.SlotIndex, reader.Position);
 
                 yield return item;
             }
