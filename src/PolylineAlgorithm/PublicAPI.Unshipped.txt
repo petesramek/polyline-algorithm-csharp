@@ -1,1 +1,15 @@
 #nullable enable
+PolylineAlgorithm.FormatterBuilder<T>
+PolylineAlgorithm.FormatterBuilder<T>.AddValue(string! name, System.Func<T, double>! selector, uint precision = 5) -> PolylineAlgorithm.FormatterBuilder<T>!
+PolylineAlgorithm.FormatterBuilder<T>.Build() -> PolylineAlgorithm.PolylineFormatter<T>!
+PolylineAlgorithm.FormatterBuilder<T>.SetBaseline(long baseline) -> PolylineAlgorithm.FormatterBuilder<T>!
+PolylineAlgorithm.PolylineFormatter<T>
+PolylineAlgorithm.PolylineFormatter<T>.GetBaseline(int index) -> long
+PolylineAlgorithm.PolylineFormatter<T>.GetValues(T item, System.Span<long> values) -> void
+PolylineAlgorithm.PolylineFormatter<T>.HasBaselines.get -> bool
+PolylineAlgorithm.PolylineFormatter<T>.Width.get -> int
+PolylineAlgorithm.PolylineOptions<T>
+PolylineAlgorithm.PolylineOptions<T>.Encoding.get -> PolylineAlgorithm.PolylineEncodingOptions!
+PolylineAlgorithm.PolylineOptions<T>.Formatter.get -> PolylineAlgorithm.PolylineFormatter<T>!
+PolylineAlgorithm.PolylineOptions<T>.PolylineOptions(PolylineAlgorithm.PolylineFormatter<T>! formatter, PolylineAlgorithm.PolylineEncodingOptions? encoding = null) -> void
+static PolylineAlgorithm.FormatterBuilder<T>.Create() -> PolylineAlgorithm.FormatterBuilder<T>!
