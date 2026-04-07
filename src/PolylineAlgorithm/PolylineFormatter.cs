@@ -5,88 +5,65 @@
 
 namespace PolylineAlgorithm;
 
+using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal;
 using System;
-using System.Runtime.CompilerServices;
 
 /// <summary>
-/// Provides an immutable, sealed rule engine that describes how to extract and scale values from
-/// an object of type <typeparamref name="T"/> for polyline encoding.
+/// Provides static factory methods and ready-made instances of <see cref="IPolylineFormatter{TPolyline}"/>
+/// for the most common polyline surface types.
 /// </summary>
-/// <typeparam name="T">The source object type from which column values are extracted.</typeparam>
 /// <remarks>
 /// <para>
-/// Instances of this class are constructed exclusively through <see cref="FormatterBuilder{T}"/>.
-/// </para>
-/// <para>
-/// The <see langword="sealed"/> modifier allows the JIT to devirtualise and inline calls to
-/// <see cref="GetValues"/>, eliminating vtable dispatch in the encoding hot loop.
+/// Use <see cref="ForString"/> or <see cref="ForMemory"/> for the two most common cases.
+/// Call <see cref="Create{T}"/> to build a custom formatter from a pair of delegates.
 /// </para>
 /// </remarks>
-public sealed class PolylineFormatter<T> {
-    private readonly FormatterRule<T>[] _rules;
+public static class PolylineFormatter {
+    /// <summary>
+    /// Gets a formatter that produces a <see cref="string"/> from the encoded char buffer and reads
+    /// the buffer back via <see cref="string.AsMemory()"/>.
+    /// </summary>
+    public static IPolylineFormatter<string> ForString { get; } =
+        new DelegatePolylineFormatter<string>(
+            static mem => new string(mem.Span),
+            static s => s.AsMemory());
 
     /// <summary>
-    /// Initializes a new instance of <see cref="PolylineFormatter{T}"/> with the baked rules.
-    /// This constructor is intentionally internal; use <see cref="FormatterBuilder{T}"/> to create instances.
+    /// Gets a pass-through formatter for <see cref="ReadOnlyMemory{T}"/> of <see cref="char"/>.
+    /// Both <c>Write</c> and <c>Read</c> are identity operations.
     /// </summary>
-    /// <param name="rules">The pre-calculated rules array produced by the builder.</param>
-    internal PolylineFormatter(FormatterRule<T>[] rules) {
-        _rules = rules;
-        Width = rules.Length;
-        HasBaselines = Array.Exists(rules, static r => r.Baseline.HasValue);
-    }
+    public static IPolylineFormatter<ReadOnlyMemory<char>> ForMemory { get; } =
+        new DelegatePolylineFormatter<ReadOnlyMemory<char>>(
+            static mem => mem,
+            static mem => mem);
 
     /// <summary>
-    /// Gets the number of columns (values per item).
-    /// This is the required length of the <see cref="Span{T}"/> passed to <see cref="GetValues"/>.
+    /// Creates a custom <see cref="IPolylineFormatter{TPolyline}"/> from a pair of delegates.
     /// </summary>
-    public int Width { get; }
-
-    /// <summary>
-    /// Gets a value indicating whether any column has a baseline defined.
-    /// When <see langword="false"/> the encoder can skip the baseline-subtraction branch entirely,
-    /// keeping the common-case encoding path branch-free.
-    /// </summary>
-    public bool HasBaselines { get; }
-
-    /// <summary>
-    /// Extracts and scales all column values from <paramref name="item"/> into the <paramref name="values"/> span.
-    /// Called once per item in the encoding hot loop. This method performs no heap allocation;
-    /// the caller is responsible for providing and owning the output buffer.
-    /// </summary>
-    /// <param name="item">The source item from which column values are extracted.</param>
-    /// <param name="values">
-    /// Output buffer that receives the scaled values.
-    /// Its length must equal <see cref="Width"/>.
+    /// <typeparam name="T">The polyline surface type.</typeparam>
+    /// <param name="write">
+    /// Converts the encoded <see cref="ReadOnlyMemory{T}"/> of <see cref="char"/> produced by the encoder
+    /// into a <typeparamref name="T"/>.
     /// </param>
-    /// <exception cref="ArgumentException">
-    /// Thrown when <paramref name="values"/>.Length does not equal <see cref="Width"/>.
+    /// <param name="read">
+    /// Extracts the encoded character buffer from a <typeparamref name="T"/> for the decoder to consume.
+    /// </param>
+    /// <returns>A sealed <see cref="IPolylineFormatter{TPolyline}"/> backed by the supplied delegates.</returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when <paramref name="write"/> or <paramref name="read"/> is <see langword="null"/>.
     /// </exception>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void GetValues(T item, Span<long> values) {
-        if (values.Length != Width) {
-            throw new ArgumentException(
-                $"Buffer length {values.Length} does not match the formatter width {Width}.",
-                nameof(values));
+    public static IPolylineFormatter<T> Create<T>(
+        Func<ReadOnlyMemory<char>, T> write,
+        Func<T, ReadOnlyMemory<char>> read) {
+        if (write is null) {
+            throw new ArgumentNullException(nameof(write));
         }
 
-        var rules = _rules; // local copy avoids repeated bounds check on the field
-        for (var i = 0; i < rules.Length; i++) {
-            ref var rule = ref rules[i];
-            values[i] = (long)(rule.Select(item) * rule.Factor);
+        if (read is null) {
+            throw new ArgumentNullException(nameof(read));
         }
+
+        return new DelegatePolylineFormatter<T>(write, read);
     }
-
-    /// <summary>
-    /// Returns the baseline for the column at <paramref name="index"/>, or <c>0</c> if none is configured.
-    /// The encoder subtracts this value from the first item's scaled column value during encoding.
-    /// </summary>
-    /// <param name="index">
-    /// The zero-based column index. Must be in the range <c>[0, <see cref="Width"/>)</c>.
-    /// An <see cref="IndexOutOfRangeException"/> is thrown if the index is out of range.
-    /// </param>
-    /// <returns>The baseline value, or <c>0</c> when no baseline has been defined for the column.</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public long GetBaseline(int index) => _rules[index].Baseline ?? 0L;
 }

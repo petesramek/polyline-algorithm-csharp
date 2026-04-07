@@ -10,23 +10,25 @@ using System;
 using System.Collections.Generic;
 
 /// <summary>
-/// Provides a fluent builder for constructing a <see cref="PolylineFormatter{T}"/>.
+/// Provides a fluent builder for constructing a <see cref="PolylineValueFormatter{T}"/>.
 /// </summary>
 /// <typeparam name="T">The source object type from which column values are extracted.</typeparam>
 /// <remarks>
 /// <para>
 /// Use <see cref="Create"/> to obtain an instance, call <see cref="AddValue"/> once per column,
 /// optionally chain <see cref="SetBaseline"/> to specify an epoch for the most-recently added column,
-/// then call <see cref="Build"/> to produce the immutable <see cref="PolylineFormatter{T}"/>.
+/// optionally chain <see cref="WithCreate"/> to register a factory for the decoding direction,
+/// then call <see cref="Build"/> to produce the immutable <see cref="PolylineValueFormatter{T}"/>.
 /// </para>
 /// <para>
-/// The builder is the <em>only</em> way to create a <see cref="PolylineFormatter{T}"/> — its
+/// The builder is the <em>only</em> way to create a <see cref="PolylineValueFormatter{T}"/> — its
 /// constructor is internal.
 /// </para>
 /// </remarks>
 public sealed class FormatterBuilder<T> {
     private readonly List<FormatterRule<T>> _rules = [];
     private readonly HashSet<string> _names = new(StringComparer.Ordinal);
+    private PolylineItemFactory<T>? _create;
 
     private FormatterBuilder() { }
 
@@ -101,19 +103,42 @@ public sealed class FormatterBuilder<T> {
     }
 
     /// <summary>
-    /// Bakes all added rules into a sealed, immutable <see cref="PolylineFormatter{T}"/>.
+    /// Registers a factory delegate used to reconstruct a <typeparamref name="T"/> from scaled values
+    /// during decoding. This enables the decoding direction of <see cref="PolylineValueFormatter{T}"/>.
+    /// </summary>
+    /// <param name="create">
+    /// A delegate that accepts the scaled integer values decoded from the polyline and returns a
+    /// <typeparamref name="T"/>. The span length always equals the number of columns added via
+    /// <see cref="AddValue"/>.
+    /// </param>
+    /// <returns>The current <see cref="FormatterBuilder{T}"/> instance for method chaining.</returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when <paramref name="create"/> is <see langword="null"/>.
+    /// </exception>
+    public FormatterBuilder<T> WithCreate(PolylineItemFactory<T> create) {
+        if (create is null) {
+            throw new ArgumentNullException(nameof(create));
+        }
+
+        _create = create;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Bakes all added rules into a sealed, immutable <see cref="PolylineValueFormatter{T}"/>.
     /// </summary>
     /// <returns>
-    /// An immutable <see cref="PolylineFormatter{T}"/> whose rules can no longer be changed.
+    /// An immutable <see cref="PolylineValueFormatter{T}"/> whose rules can no longer be changed.
     /// </returns>
     /// <exception cref="InvalidOperationException">
     /// Thrown when no rules have been added.
     /// </exception>
-    public PolylineFormatter<T> Build() {
+    public PolylineValueFormatter<T> Build() {
         if (_rules.Count == 0) {
             throw new InvalidOperationException("At least one rule must be added before calling Build.");
         }
 
-        return new PolylineFormatter<T>(_rules.ToArray());
+        return new PolylineValueFormatter<T>(_rules.ToArray(), _create);
     }
 }

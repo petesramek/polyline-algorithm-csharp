@@ -14,13 +14,24 @@ namespace PolylineAlgorithm.Abstraction;
 /// Provides a base implementation for decoding encoded polyline strings into sequences of geographic coordinates.
 /// </summary>
 /// <remarks>
-/// Derive from this class to implement a decoder for a specific polyline type. Override <see cref="GetReadOnlyMemory"/>
-/// and <see cref="CreateCoordinate"/> to provide type-specific behavior.
+/// <para>
+/// <b>Formatter-based use (no subclassing required):</b>
+/// Supply a <see cref="PolylineOptions{TPolyline, TCoordinate}"/> via the
+/// <see cref="AbstractPolylineDecoder{TPolyline, TCoordinate}(PolylineOptions{TPolyline, TCoordinate})"/>
+/// constructor. The formatters handle all type-specific concerns; override nothing.
+/// </para>
+/// <para>
+/// <b>Legacy override-based use:</b>
+/// Derive from this class and override <see cref="GetReadOnlyMemory"/> and <see cref="CreateCoordinate"/>
+/// to provide type-specific behaviour. These overrides take priority over any registered formatter.
+/// </para>
 /// </remarks>
 /// <typeparam name="TPolyline">The type that represents the encoded polyline input.</typeparam>
 /// <typeparam name="TCoordinate">The type that represents a decoded geographic coordinate.</typeparam>
-public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder<TPolyline, TCoordinate> {
+public class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder<TPolyline, TCoordinate> {
     private readonly ILogger<AbstractPolylineDecoder<TPolyline, TCoordinate>> _logger;
+    private readonly IPolylineValueFormatter<TCoordinate>? _valueFormatter;
+    private readonly IPolylineFormatter<TPolyline>? _polylineFormatter;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AbstractPolylineDecoder{TPolyline, TCoordinate}"/> class with default encoding options.
@@ -43,6 +54,35 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
         }
 
         Options = options;
+        _logger = Options
+            .LoggerFactory
+            .CreateLogger<AbstractPolylineDecoder<TPolyline, TCoordinate>>();
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AbstractPolylineDecoder{TPolyline, TCoordinate}"/> class
+    /// using the supplied <see cref="PolylineOptions{TCoordinate, TPolyline}"/>.
+    /// </summary>
+    /// <remarks>
+    /// Use this constructor when you want formatter-driven decoding without subclassing.
+    /// The <see cref="GetReadOnlyMemory"/> and <see cref="CreateCoordinate"/> hooks are not called;
+    /// all type-specific logic is delegated to the formatters.
+    /// </remarks>
+    /// <param name="options">
+    /// A <see cref="PolylineOptions{TCoordinate, TPolyline}"/> that carries both the value formatter and
+    /// the polyline formatter together with the underlying <see cref="PolylineEncodingOptions"/>.
+    /// </param>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when <paramref name="options"/> is <see langword="null"/>.
+    /// </exception>
+    public AbstractPolylineDecoder(PolylineOptions<TCoordinate, TPolyline> options) {
+        if (options is null) {
+            ExceptionGuard.ThrowArgumentNull(nameof(options));
+        }
+
+        Options = options.Encoding;
+        _polylineFormatter = options.PolylineFormatter;
+        _valueFormatter = options.ValueFormatter;
         _logger = Options
             .LoggerFactory
             .CreateLogger<AbstractPolylineDecoder<TPolyline, TCoordinate>>();
@@ -78,6 +118,7 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     /// <exception cref="OperationCanceledException">
     /// Thrown when <paramref name="cancellationToken"/> is canceled during decoding.
     /// </exception>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "MA0051:Method is too long", Justification = "Method contains two path implementations.")]
     public IEnumerable<TCoordinate> Decode(TPolyline polyline, CancellationToken cancellationToken = default) {
         const string OperationName = nameof(Decode);
 
@@ -85,36 +126,67 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
 
         ValidateNullPolyline(polyline, _logger);
 
-        ReadOnlyMemory<char> sequence = GetReadOnlyMemory(in polyline);
+        ReadOnlyMemory<char> sequence = (_valueFormatter is not null && _polylineFormatter is not null)
+            ? _polylineFormatter.Read(polyline)
+            : GetReadOnlyMemory(in polyline);
 
         ValidateSequence(sequence, _logger);
         ValidateFormat(sequence, _logger);
 
         int position = 0;
-        int encodedLatitude = 0;
-        int encodedLongitude = 0;
 
-        try {
-            while (position < sequence.Length) {
-                cancellationToken.ThrowIfCancellationRequested();
+        if (_valueFormatter is not null && _polylineFormatter is not null) {
+            int width = _valueFormatter.Width;
+            int[] accumulated = new int[width];
+            long[] longValues = new long[width];
 
-                if (!PolylineEncoding.TryReadValue(ref encodedLatitude, sequence, ref position)
-                    || !PolylineEncoding.TryReadValue(ref encodedLongitude, sequence, ref position)) {
-                    _logger?.LogOperationFailedDebug(OperationName);
-                    _logger?.LogInvalidPolylineWarning(position);
+            try {
+                while (position < sequence.Length) {
+                    cancellationToken.ThrowIfCancellationRequested();
 
-                    ExceptionGuard.ThrowInvalidPolylineFormat(position);
+                    for (int j = 0; j < width; j++) {
+                        if (!PolylineEncoding.TryReadValue(ref accumulated[j], sequence, ref position)) {
+                            _logger?.LogOperationFailedDebug(OperationName);
+                            _logger?.LogInvalidPolylineWarning(position);
+                            ExceptionGuard.ThrowInvalidPolylineFormat(position);
+                        }
+                    }
+
+                    for (int j = 0; j < width; j++) {
+                        longValues[j] = accumulated[j];
+                    }
+
+                    yield return _valueFormatter.CreateItem(longValues.AsSpan());
                 }
-
-                double decodedLatitude = PolylineEncoding.Denormalize(encodedLatitude, Options.Precision);
-                double decodedLongitude = PolylineEncoding.Denormalize(encodedLongitude, Options.Precision);
-
-                _logger?.LogDecodedCoordinateDebug(decodedLatitude, decodedLongitude, position);
-
-                yield return CreateCoordinate(decodedLatitude, decodedLongitude);
+            } finally {
+                _logger?.LogOperationFinishedDebug(OperationName);
             }
-        } finally {
-            _logger?.LogOperationFinishedDebug(OperationName);
+        } else {
+            int encodedLatitude = 0;
+            int encodedLongitude = 0;
+
+            try {
+                while (position < sequence.Length) {
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    if (!PolylineEncoding.TryReadValue(ref encodedLatitude, sequence, ref position)
+                        || !PolylineEncoding.TryReadValue(ref encodedLongitude, sequence, ref position)) {
+                        _logger?.LogOperationFailedDebug(OperationName);
+                        _logger?.LogInvalidPolylineWarning(position);
+
+                        ExceptionGuard.ThrowInvalidPolylineFormat(position);
+                    }
+
+                    double decodedLatitude = PolylineEncoding.Denormalize(encodedLatitude, Options.Precision);
+                    double decodedLongitude = PolylineEncoding.Denormalize(encodedLongitude, Options.Precision);
+
+                    _logger?.LogDecodedCoordinateDebug(decodedLatitude, decodedLongitude, position);
+
+                    yield return CreateCoordinate(decodedLatitude, decodedLongitude);
+                }
+            } finally {
+                _logger?.LogOperationFinishedDebug(OperationName);
+            }
         }
     }
 
@@ -184,8 +256,16 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     /// <returns>
     /// A <see cref="ReadOnlyMemory{T}"/> of <see cref="char"/> representing the encoded polyline characters.
     /// </returns>
+    /// <exception cref="NotSupportedException">
+    /// Thrown by the default implementation when no polyline formatter is registered and the method
+    /// has not been overridden in a derived class.
+    /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected abstract ReadOnlyMemory<char> GetReadOnlyMemory(in TPolyline polyline);
+    protected virtual ReadOnlyMemory<char> GetReadOnlyMemory(in TPolyline polyline) {
+        throw new NotSupportedException(
+            $"Override {nameof(GetReadOnlyMemory)} in a derived class, or provide a " +
+            $"{nameof(PolylineOptions<TPolyline, TCoordinate>)} with a polyline formatter.");
+    }
 
     /// <summary>
     /// Creates a <typeparamref name="TCoordinate"/> instance from the specified latitude and longitude values.
@@ -199,6 +279,14 @@ public abstract class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylin
     /// <returns>
     /// A <typeparamref name="TCoordinate"/> instance representing the specified geographic coordinate.
     /// </returns>
+    /// <exception cref="NotSupportedException">
+    /// Thrown by the default implementation when no value formatter is registered and the method
+    /// has not been overridden in a derived class.
+    /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected abstract TCoordinate CreateCoordinate(double latitude, double longitude);
+    protected virtual TCoordinate CreateCoordinate(double latitude, double longitude) {
+        throw new NotSupportedException(
+            $"Override {nameof(CreateCoordinate)} in a derived class, or provide a " +
+            $"{nameof(PolylineOptions<TPolyline, TCoordinate>)} with a value formatter.");
+    }
 }
