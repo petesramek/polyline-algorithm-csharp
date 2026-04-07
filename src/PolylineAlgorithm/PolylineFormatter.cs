@@ -60,8 +60,17 @@ public sealed class PolylineFormatter<T> {
     /// Output buffer that receives the scaled values.
     /// Its length must equal <see cref="Width"/>.
     /// </param>
+    /// <exception cref="ArgumentException">
+    /// Thrown when <paramref name="values"/>.Length does not equal <see cref="Width"/>.
+    /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void GetValues(T item, Span<long> values) {
+        if (values.Length != Width) {
+            throw new ArgumentException(
+                $"Buffer length {values.Length} does not match the formatter width {Width}.",
+                nameof(values));
+        }
+
         var rules = _rules; // local copy avoids repeated bounds check on the field
         for (var i = 0; i < rules.Length; i++) {
             ref var rule = ref rules[i];
@@ -73,7 +82,10 @@ public sealed class PolylineFormatter<T> {
     /// Returns the baseline for the column at <paramref name="index"/>, or <c>0</c> if none is configured.
     /// The encoder subtracts this value from the first item's scaled column value during encoding.
     /// </summary>
-    /// <param name="index">The zero-based column index. Must be in the range <c>[0, Width)</c>.</param>
+    /// <param name="index">
+    /// The zero-based column index. Must be in the range <c>[0, <see cref="Width"/>)</c>.
+    /// An <see cref="IndexOutOfRangeException"/> is thrown if the index is out of range.
+    /// </param>
     /// <returns>The baseline value, or <c>0</c> when no baseline has been defined for the column.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public long GetBaseline(int index) => _rules[index].Baseline ?? 0L;

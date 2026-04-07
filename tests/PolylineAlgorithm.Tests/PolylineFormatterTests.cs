@@ -354,6 +354,37 @@ public sealed class PolylineFormatterTests {
     }
 
     [TestMethod]
+    public void GetValues_With_Wrong_Buffer_Length_Throws_ArgumentException() {
+        // Arrange — formatter has Width = 2 but buffer has length 1
+        PolylineFormatter<(double X, double Y)> formatter = FormatterBuilder<(double X, double Y)>.Create()
+            .AddValue("X", static t => t.X)
+            .AddValue("Y", static t => t.Y)
+            .Build();
+
+        long[] tooShort = new long[1];
+
+        // Act & Assert
+        ArgumentException ex = Assert.ThrowsExactly<ArgumentException>(
+            () => formatter.GetValues((1.0, 2.0), tooShort.AsSpan()));
+        Assert.AreEqual("values", ex.ParamName);
+    }
+
+    [TestMethod]
+    public void GetValues_With_Oversized_Buffer_Throws_ArgumentException() {
+        // Arrange — formatter has Width = 1 but buffer has length 3
+        PolylineFormatter<double> formatter = FormatterBuilder<double>.Create()
+            .AddValue("Value", static v => v)
+            .Build();
+
+        long[] tooLong = new long[3];
+
+        // Act & Assert
+        ArgumentException ex = Assert.ThrowsExactly<ArgumentException>(
+            () => formatter.GetValues(1.0, tooLong.AsSpan()));
+        Assert.AreEqual("values", ex.ParamName);
+    }
+
+    [TestMethod]
     public void GetValues_With_Zero_Returns_Zero() {
         // Arrange
         PolylineFormatter<double> formatter = FormatterBuilder<double>.Create()
