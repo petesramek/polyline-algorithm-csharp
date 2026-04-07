@@ -9,8 +9,8 @@ using PolylineAlgorithm;
 using System;
 
 /// <summary>
-/// Tests for <see cref="FormatterBuilder{T}"/>, <see cref="PolylineFormatter{T}"/>,
-/// and <see cref="PolylineOptions{T}"/>.
+/// Tests for <see cref="FormatterBuilder{T}"/>, <see cref="PolylineValueFormatter{T}"/>,
+/// and <see cref="PolylineOptions{TValue,TPolyline}"/>.
 /// </summary>
 [TestClass]
 public sealed class PolylineFormatterTests {
@@ -105,7 +105,7 @@ public sealed class PolylineFormatterTests {
     [TestMethod]
     public void AddValue_With_Different_Names_Succeeds() {
         // Arrange & Act
-        PolylineFormatter<(double X, double Y)> formatter = FormatterBuilder<(double X, double Y)>.Create()
+        PolylineValueFormatter<(double X, double Y)> formatter = FormatterBuilder<(double X, double Y)>.Create()
             .AddValue("X", static t => t.X)
             .AddValue("Y", static t => t.Y)
             .Build();
@@ -147,7 +147,7 @@ public sealed class PolylineFormatterTests {
     [TestMethod]
     public void SetBaseline_Applies_Only_To_Last_Added_Rule() {
         // Arrange & Act
-        PolylineFormatter<(double X, double Y)> formatter = FormatterBuilder<(double X, double Y)>.Create()
+        PolylineValueFormatter<(double X, double Y)> formatter = FormatterBuilder<(double X, double Y)>.Create()
             .AddValue("X", static t => t.X)
             .AddValue("Y", static t => t.Y)
             .SetBaseline(500L)
@@ -161,7 +161,7 @@ public sealed class PolylineFormatterTests {
     [TestMethod]
     public void SetBaseline_Can_Be_Called_On_Each_Rule() {
         // Arrange & Act
-        PolylineFormatter<(double X, double Y)> formatter = FormatterBuilder<(double X, double Y)>.Create()
+        PolylineValueFormatter<(double X, double Y)> formatter = FormatterBuilder<(double X, double Y)>.Create()
             .AddValue("X", static t => t.X).SetBaseline(100L)
             .AddValue("Y", static t => t.Y).SetBaseline(200L)
             .Build();
@@ -191,21 +191,21 @@ public sealed class PolylineFormatterTests {
             .AddValue("X", static t => t.X);
 
         // Act
-        PolylineFormatter<(double X, double Y)> first = builder.Build();
-        PolylineFormatter<(double X, double Y)> second = builder.Build();
+        PolylineValueFormatter<(double X, double Y)> first = builder.Build();
+        PolylineValueFormatter<(double X, double Y)> second = builder.Build();
 
         // Assert
         Assert.AreNotSame(first, second);
     }
 
     // ---------------------------------------------------------------------------
-    // PolylineFormatter<T>.Width
+    // PolylineValueFormatter<T>.Width
     // ---------------------------------------------------------------------------
 
     [TestMethod]
     public void Width_Equals_Number_Of_Added_Rules() {
         // Arrange & Act
-        PolylineFormatter<(double X, double Y, double Z)> formatter = FormatterBuilder<(double X, double Y, double Z)>.Create()
+        PolylineValueFormatter<(double X, double Y, double Z)> formatter = FormatterBuilder<(double X, double Y, double Z)>.Create()
             .AddValue("X", static t => t.X)
             .AddValue("Y", static t => t.Y)
             .AddValue("Z", static t => t.Z)
@@ -218,7 +218,7 @@ public sealed class PolylineFormatterTests {
     [TestMethod]
     public void Width_Is_One_For_Single_Rule() {
         // Arrange & Act
-        PolylineFormatter<double> formatter = FormatterBuilder<double>.Create()
+        PolylineValueFormatter<double> formatter = FormatterBuilder<double>.Create()
             .AddValue("Value", static v => v)
             .Build();
 
@@ -227,13 +227,13 @@ public sealed class PolylineFormatterTests {
     }
 
     // ---------------------------------------------------------------------------
-    // PolylineFormatter<T>.HasBaselines
+    // PolylineValueFormatter<T>.HasBaselines
     // ---------------------------------------------------------------------------
 
     [TestMethod]
     public void HasBaselines_Is_False_When_No_Baselines_Are_Set() {
         // Arrange & Act
-        PolylineFormatter<(double X, double Y)> formatter = FormatterBuilder<(double X, double Y)>.Create()
+        PolylineValueFormatter<(double X, double Y)> formatter = FormatterBuilder<(double X, double Y)>.Create()
             .AddValue("X", static t => t.X)
             .AddValue("Y", static t => t.Y)
             .Build();
@@ -245,7 +245,7 @@ public sealed class PolylineFormatterTests {
     [TestMethod]
     public void HasBaselines_Is_True_When_Any_Baseline_Is_Set() {
         // Arrange & Act
-        PolylineFormatter<(double X, double Y)> formatter = FormatterBuilder<(double X, double Y)>.Create()
+        PolylineValueFormatter<(double X, double Y)> formatter = FormatterBuilder<(double X, double Y)>.Create()
             .AddValue("X", static t => t.X)
             .AddValue("Y", static t => t.Y).SetBaseline(100L)
             .Build();
@@ -257,7 +257,7 @@ public sealed class PolylineFormatterTests {
     [TestMethod]
     public void HasBaselines_Is_True_When_All_Baselines_Are_Set() {
         // Arrange & Act
-        PolylineFormatter<(double X, double Y)> formatter = FormatterBuilder<(double X, double Y)>.Create()
+        PolylineValueFormatter<(double X, double Y)> formatter = FormatterBuilder<(double X, double Y)>.Create()
             .AddValue("X", static t => t.X).SetBaseline(10L)
             .AddValue("Y", static t => t.Y).SetBaseline(20L)
             .Build();
@@ -267,13 +267,13 @@ public sealed class PolylineFormatterTests {
     }
 
     // ---------------------------------------------------------------------------
-    // PolylineFormatter<T>.GetBaseline
+    // PolylineValueFormatter<T>.GetBaseline
     // ---------------------------------------------------------------------------
 
     [TestMethod]
     public void GetBaseline_Returns_Zero_When_No_Baseline_Configured() {
         // Arrange
-        PolylineFormatter<double> formatter = FormatterBuilder<double>.Create()
+        PolylineValueFormatter<double> formatter = FormatterBuilder<double>.Create()
             .AddValue("Value", static v => v)
             .Build();
 
@@ -287,7 +287,7 @@ public sealed class PolylineFormatterTests {
     [TestMethod]
     public void GetBaseline_Returns_Configured_Baseline() {
         // Arrange
-        PolylineFormatter<double> formatter = FormatterBuilder<double>.Create()
+        PolylineValueFormatter<double> formatter = FormatterBuilder<double>.Create()
             .AddValue("Value", static v => v)
             .SetBaseline(42L)
             .Build();
@@ -302,7 +302,7 @@ public sealed class PolylineFormatterTests {
     [TestMethod]
     public void GetBaseline_Returns_Negative_Baseline() {
         // Arrange
-        PolylineFormatter<double> formatter = FormatterBuilder<double>.Create()
+        PolylineValueFormatter<double> formatter = FormatterBuilder<double>.Create()
             .AddValue("Value", static v => v)
             .SetBaseline(-1000L)
             .Build();
@@ -315,13 +315,13 @@ public sealed class PolylineFormatterTests {
     }
 
     // ---------------------------------------------------------------------------
-    // PolylineFormatter<T>.GetValues
+    // PolylineValueFormatter<T>.GetValues
     // ---------------------------------------------------------------------------
 
     [TestMethod]
     public void GetValues_Scales_Single_Column_By_Factor() {
         // Arrange — precision 5 → factor = 100000; use a value exact in double arithmetic
-        PolylineFormatter<double> formatter = FormatterBuilder<double>.Create()
+        PolylineValueFormatter<double> formatter = FormatterBuilder<double>.Create()
             .AddValue("Value", static v => v, precision: 5)
             .Build();
 
@@ -337,7 +337,7 @@ public sealed class PolylineFormatterTests {
     [TestMethod]
     public void GetValues_Scales_Multiple_Columns_Independently() {
         // Arrange
-        PolylineFormatter<(double Lat, double Lon)> formatter =
+        PolylineValueFormatter<(double Lat, double Lon)> formatter =
             FormatterBuilder<(double Lat, double Lon)>.Create()
                 .AddValue("Lat", static t => t.Lat, precision: 5)
                 .AddValue("Lon", static t => t.Lon, precision: 5)
@@ -356,7 +356,7 @@ public sealed class PolylineFormatterTests {
     [TestMethod]
     public void GetValues_With_Wrong_Buffer_Length_Throws_ArgumentException() {
         // Arrange — formatter has Width = 2 but buffer has length 1
-        PolylineFormatter<(double X, double Y)> formatter = FormatterBuilder<(double X, double Y)>.Create()
+        PolylineValueFormatter<(double X, double Y)> formatter = FormatterBuilder<(double X, double Y)>.Create()
             .AddValue("X", static t => t.X)
             .AddValue("Y", static t => t.Y)
             .Build();
@@ -372,7 +372,7 @@ public sealed class PolylineFormatterTests {
     [TestMethod]
     public void GetValues_With_Oversized_Buffer_Throws_ArgumentException() {
         // Arrange — formatter has Width = 1 but buffer has length 3
-        PolylineFormatter<double> formatter = FormatterBuilder<double>.Create()
+        PolylineValueFormatter<double> formatter = FormatterBuilder<double>.Create()
             .AddValue("Value", static v => v)
             .Build();
 
@@ -387,7 +387,7 @@ public sealed class PolylineFormatterTests {
     [TestMethod]
     public void GetValues_With_Zero_Returns_Zero() {
         // Arrange
-        PolylineFormatter<double> formatter = FormatterBuilder<double>.Create()
+        PolylineValueFormatter<double> formatter = FormatterBuilder<double>.Create()
             .AddValue("Value", static v => v, precision: 5)
             .Build();
 
@@ -403,7 +403,7 @@ public sealed class PolylineFormatterTests {
     [TestMethod]
     public void GetValues_With_Negative_Value_Returns_Negative_Scaled_Long() {
         // Arrange
-        PolylineFormatter<double> formatter = FormatterBuilder<double>.Create()
+        PolylineValueFormatter<double> formatter = FormatterBuilder<double>.Create()
             .AddValue("Value", static v => v, precision: 5)
             .Build();
 
@@ -419,7 +419,7 @@ public sealed class PolylineFormatterTests {
     [TestMethod]
     public void GetValues_With_Custom_Precision_Scales_Correctly() {
         // Arrange — precision 3 → factor = 1000
-        PolylineFormatter<double> formatter = FormatterBuilder<double>.Create()
+        PolylineValueFormatter<double> formatter = FormatterBuilder<double>.Create()
             .AddValue("Value", static v => v, precision: 3)
             .Build();
 
@@ -433,44 +433,71 @@ public sealed class PolylineFormatterTests {
     }
 
     // ---------------------------------------------------------------------------
-    // PolylineOptions<T> constructor validation
+    // PolylineOptions<TValue,TPolyline> constructor validation
     // ---------------------------------------------------------------------------
 
     [TestMethod]
-    public void PolylineOptions_With_Null_Formatter_Throws_ArgumentNullException() {
+    public void PolylineOptions_With_Null_ValueFormatter_Throws_ArgumentNullException() {
         // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
-            () => _ = new PolylineOptions<double>(null!));
-        Assert.AreEqual("formatter", ex.ParamName);
+            () => _ = new PolylineOptions<double, string>(null!, PolylineFormatter.ForString));
+        Assert.AreEqual("valueFormatter", ex.ParamName);
+    }
+
+    [TestMethod]
+    public void PolylineOptions_With_Null_PolylineFormatter_Throws_ArgumentNullException() {
+        // Arrange
+        PolylineValueFormatter<double> formatter = FormatterBuilder<double>.Create()
+            .AddValue("Value", static v => v)
+            .Build();
+
+        // Act & Assert
+        ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
+            () => _ = new PolylineOptions<double, string>(formatter, null!));
+        Assert.AreEqual("polylineFormatter", ex.ParamName);
     }
 
     // ---------------------------------------------------------------------------
-    // PolylineOptions<T> properties
+    // PolylineOptions<TValue,TPolyline> properties
     // ---------------------------------------------------------------------------
 
     [TestMethod]
-    public void PolylineOptions_Stores_Formatter() {
+    public void PolylineOptions_Stores_ValueFormatter() {
         // Arrange
-        PolylineFormatter<double> formatter = FormatterBuilder<double>.Create()
+        PolylineValueFormatter<double> formatter = FormatterBuilder<double>.Create()
             .AddValue("Value", static v => v)
             .Build();
 
         // Act
-        PolylineOptions<double> options = new(formatter);
+        PolylineOptions<double, string> options = new(formatter, PolylineFormatter.ForString);
 
         // Assert
-        Assert.AreSame(formatter, options.Formatter);
+        Assert.AreSame(formatter, options.ValueFormatter);
+    }
+
+    [TestMethod]
+    public void PolylineOptions_Stores_PolylineFormatter() {
+        // Arrange
+        PolylineValueFormatter<double> formatter = FormatterBuilder<double>.Create()
+            .AddValue("Value", static v => v)
+            .Build();
+
+        // Act
+        PolylineOptions<double, string> options = new(formatter, PolylineFormatter.ForString);
+
+        // Assert
+        Assert.AreSame(PolylineFormatter.ForString, options.PolylineFormatter);
     }
 
     [TestMethod]
     public void PolylineOptions_With_Null_Encoding_Uses_Default_Options() {
         // Arrange
-        PolylineFormatter<double> formatter = FormatterBuilder<double>.Create()
+        PolylineValueFormatter<double> formatter = FormatterBuilder<double>.Create()
             .AddValue("Value", static v => v)
             .Build();
 
         // Act
-        PolylineOptions<double> options = new(formatter, null);
+        PolylineOptions<double, string> options = new(formatter, PolylineFormatter.ForString, null);
 
         // Assert
         Assert.IsNotNull(options.Encoding);
@@ -481,7 +508,7 @@ public sealed class PolylineFormatterTests {
     [TestMethod]
     public void PolylineOptions_Stores_Custom_Encoding_Options() {
         // Arrange
-        PolylineFormatter<double> formatter = FormatterBuilder<double>.Create()
+        PolylineValueFormatter<double> formatter = FormatterBuilder<double>.Create()
             .AddValue("Value", static v => v)
             .Build();
         PolylineEncodingOptions encoding = PolylineEncodingOptionsBuilder.Create()
@@ -490,7 +517,7 @@ public sealed class PolylineFormatterTests {
             .Build();
 
         // Act
-        PolylineOptions<double> options = new(formatter, encoding);
+        PolylineOptions<double, string> options = new(formatter, PolylineFormatter.ForString, encoding);
 
         // Assert
         Assert.AreSame(encoding, options.Encoding);
