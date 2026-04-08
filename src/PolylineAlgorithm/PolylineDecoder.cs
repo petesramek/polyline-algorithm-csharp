@@ -93,8 +93,7 @@ public class PolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder<TPolylin
         }
 
         int width = _formatter.Width;
-        int[] accumulated = new int[width];
-        long[] longValues = new long[width];
+        long[] accumulated = new long[width];
         int position = 0;
 
         try {
@@ -109,11 +108,7 @@ public class PolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder<TPolylin
                     }
                 }
 
-                for (int j = 0; j < width; j++) {
-                    longValues[j] = accumulated[j];
-                }
-
-                yield return _formatter.CreateItem(longValues.AsSpan());
+                yield return _formatter.CreateItem(accumulated.AsSpan());
             }
         } finally {
             _logger.LogOperationFinishedDebug(OperationName);

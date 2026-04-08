@@ -110,7 +110,7 @@ public class PolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder<TCoordin
                     long delta = current - previous[j];
                     previous[j] = current;
 
-                    if (!PolylineEncoding.TryWriteValue((int)delta, buffer, ref position)) {
+                    if (!PolylineEncoding.TryWriteValue(delta, buffer, ref position)) {
                         _logger.LogOperationFailedDebug(OperationName);
                         _logger.LogCannotWriteValueToBufferWarning(position, i);
                         ExceptionGuard.ThrowCouldNotWriteEncodedValueToBuffer();

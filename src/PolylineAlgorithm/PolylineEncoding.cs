@@ -50,15 +50,12 @@ public static class PolylineEncoding {
     /// Default is 5, which is standard for polyline encoding.
     /// </param>
     /// <returns>
-    /// An integer representing the normalized value. Returns <c>0</c> if the input <paramref name="value"/> is <c>0.0</c>.
+    /// A long integer representing the normalized value. Returns <c>0</c> if the input <paramref name="value"/> is <c>0.0</c>.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown when <paramref name="value"/> is not a finite number (NaN or infinity).
     /// </exception>
-    /// <exception cref="OverflowException">
-    /// Thrown when the normalized result exceeds the range of a 32-bit signed integer during the conversion from double to int.
-    /// </exception>
-    public static int Normalize(double value, uint precision = 5) {
+    public static long Normalize(double value, uint precision = 5) {
         // Fast return if the value is zero, return 0 as the normalized value.
         if (value.Equals(default)) {
             return 0;
@@ -69,9 +66,9 @@ public static class PolylineEncoding {
             ExceptionGuard.ThrowNotFiniteNumber(nameof(value));
         }
 
-        // Fast return if precision is zero, return current value converted to Int32.
+        // Fast return if precision is zero, return current value converted to Int64.
         if (precision == default) {
-            return (int)Math.Truncate(value);
+            return (long)Math.Truncate(value);
         }
 
         uint factor = Pow10.GetFactor(precision);
@@ -79,7 +76,7 @@ public static class PolylineEncoding {
         const double Epsilon = 1e-9;
 
         checked {
-            return (int)Math.Truncate((value * factor) + (Epsilon * Math.Sign(value)));
+            return (long)Math.Truncate((value * factor) + (Epsilon * Math.Sign(value)));
         }
     }
 
@@ -108,7 +105,7 @@ public static class PolylineEncoding {
     /// </para>
     /// </remarks>
     /// <param name="value">
-    /// The integer value to denormalize. Typically produced by the <see cref="Normalize"/> method.
+    /// The long integer value to denormalize. Typically produced by the <see cref="Normalize"/> method.
     /// </param>
     /// <param name="precision">
     /// The number of decimal places used during normalization. Default is 5, matching standard polyline encoding precision.
@@ -119,7 +116,7 @@ public static class PolylineEncoding {
     /// <exception cref="OverflowException">
     /// Thrown if the arithmetic operation overflows during conversion.
     /// </exception>
-    public static double Denormalize(int value, uint precision = 5) {
+    public static double Denormalize(long value, uint precision = 5) {
         if (value.Equals(default)) {
             return default;
         }
@@ -155,7 +152,7 @@ public static class PolylineEncoding {
     /// </para>
     /// </remarks>
     /// <param name="delta">
-    /// Reference to the integer accumulator that will be updated with the decoded value.
+    /// Reference to the long accumulator that will be updated with the decoded value.
     /// </param>
     /// <param name="buffer">
     /// The buffer containing polyline-encoded characters.
@@ -166,7 +163,7 @@ public static class PolylineEncoding {
     /// <returns>
     /// <see langword="true"/> if a value was successfully read and decoded; <see langword="false"/> if the buffer ended before a complete value was read.
     /// </returns>
-    public static bool TryReadValue(ref int delta, ReadOnlyMemory<char> buffer, ref int position) {
+    public static bool TryReadValue(ref long delta, ReadOnlyMemory<char> buffer, ref int position) {
         // Validate that the position is within the bounds of the buffer.
         if (position >= buffer.Length) {
             return false;
@@ -174,14 +171,14 @@ public static class PolylineEncoding {
 
         // Initialize variables for reading the value.
         int chunk = 0;
-        int sum = 0;
+        ulong sum = 0;
         int shifter = 0;
         ReadOnlySpan<char> span = buffer.Span;
 
         // Read characters from the buffer until a termination condition is met or the end of the buffer is reached.
         while (position < buffer.Length) {
             chunk = span[position++] - Defaults.Algorithm.QuestionMark;
-            sum |= (chunk & Defaults.Algorithm.UnitSeparator) << shifter;
+            sum |= (ulong)(chunk & Defaults.Algorithm.UnitSeparator) << shifter;
             shifter += Defaults.Algorithm.ShiftLength;
 
             // If the chunk is less than the space character, it indicates the end of the value.
@@ -190,7 +187,7 @@ public static class PolylineEncoding {
             }
         }
 
-        delta += (sum & 1) == 1 ? ~(sum >> 1) : sum >> 1;
+        delta += (sum & 1) == 1 ? (long)~(sum >> 1) : (long)(sum >> 1);
 
         // If the end of the buffer was reached without reading a complete value, return false.
         return chunk < Defaults.Algorithm.Space;
@@ -220,7 +217,7 @@ public static class PolylineEncoding {
     /// </para>
     /// </remarks>
     /// <param name="delta">
-    /// The integer value to encode and write to the buffer. This value typically represents the difference between consecutive
+    /// The long value to encode and write to the buffer. This value typically represents the difference between consecutive
     /// coordinate values in polyline encoding.
     /// </param>
     /// <param name="buffer">
@@ -234,13 +231,13 @@ public static class PolylineEncoding {
     /// <see langword="true"/> if the value was successfully encoded and written to the buffer; <see langword="false"/> if the buffer
     /// does not have sufficient remaining capacity to hold the encoded value.
     /// </returns>
-    public static bool TryWriteValue(int delta, Span<char> buffer, ref int position) {
+    public static bool TryWriteValue(long delta, Span<char> buffer, ref int position) {
         // Validate that the position and required space for write is within the bounds of the buffer.
         if (buffer[position..].Length < GetRequiredBufferSize(delta)) {
             return false;
         }
 
-        int rem = delta << 1;
+        ulong rem = (ulong)(delta << 1);
 
         // If the delta is negative, we need to invert the bits to get the correct representation.
         if (delta < 0) {
@@ -248,7 +245,7 @@ public static class PolylineEncoding {
         }
 
         // Write the value to the buffer in a way that encodes it using the specified algorithm.
-        while (rem >= Defaults.Algorithm.Space) {
+        while (rem >= (ulong)Defaults.Algorithm.Space) {
             buffer[position++] =
                 (char)((Defaults.Algorithm.Space
                 | (rem & Defaults.Algorithm.UnitSeparator))
@@ -284,19 +281,20 @@ public static class PolylineEncoding {
     /// buffer overflow checks during the actual encoding process.
     /// </para>
     /// <para>
-    /// The method uses a <see langword="long"/> internally to prevent overflow during the left-shift operation on large negative values.
+    /// The method uses <see langword="ulong"/> internally to handle the full range of 64-bit signed values correctly
+    /// during the zigzag encoding step.
     /// </para>
     /// </remarks>
     /// <param name="delta">
-    /// The integer delta value to calculate the encoded size for. This value typically represents the difference between
+    /// The long delta value to calculate the encoded size for. This value typically represents the difference between
     /// consecutive coordinate values in polyline encoding.
     /// </param>
     /// <returns>
     /// The number of characters required to encode the specified delta value. The minimum return value is 1.
     /// </returns>
     /// <seealso cref="TryWriteValue"/>
-    public static int GetRequiredBufferSize(int delta) {
-        long rem = (long)delta << 1;
+    public static int GetRequiredBufferSize(long delta) {
+        ulong rem = (ulong)(delta << 1);
 
         if (delta < 0) {
             rem = ~rem;
@@ -304,7 +302,7 @@ public static class PolylineEncoding {
 
         int size = 1;
 
-        while (rem >= Defaults.Algorithm.Space) {
+        while (rem >= (ulong)Defaults.Algorithm.Space) {
             rem >>= Defaults.Algorithm.ShiftLength;
             size++;
         }

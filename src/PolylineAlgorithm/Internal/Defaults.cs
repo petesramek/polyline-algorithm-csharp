@@ -111,7 +111,7 @@ internal static class Defaults {
                 /// <summary>
                 /// The maximum number of characters allowed to represent an encoded value.
                 /// </summary>
-                internal const int Max = 7;
+                internal const int Max = 13;
             }
         }
     }

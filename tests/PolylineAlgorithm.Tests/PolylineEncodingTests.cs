@@ -20,10 +20,10 @@ public sealed class PolylineEncodingTests {
     [TestMethod]
     public void Normalize_With_Zero_Value_Returns_Zero() {
         // Act
-        int result = PolylineEncoding.Normalize(0.0);
+        long result = PolylineEncoding.Normalize(0.0);
 
         // Assert
-        Assert.AreEqual(0, result);
+        Assert.AreEqual(0L, result);
     }
 
     /// <summary>
@@ -51,9 +51,9 @@ public sealed class PolylineEncodingTests {
     [DataRow(37.789999, 5u, 3778999)]
     [DataRow(0.00001, 5u, 1)]
     [DataRow(-0.00001, 5u, -1)]
-    public void Normalize_With_Value_And_Precision_Returns_Expected_Normalized_Value(double value, uint precision, int expected) {
+    public void Normalize_With_Value_And_Precision_Returns_Expected_Normalized_Value(double value, uint precision, long expected) {
         // Act
-        int result = PolylineEncoding.Normalize(value, precision);
+        long result = PolylineEncoding.Normalize(value, precision);
 
         // Assert
         Assert.AreEqual(expected, result);
@@ -87,7 +87,7 @@ public sealed class PolylineEncodingTests {
     [DataRow(37789034, 6u, 37.789034)]
     [DataRow(1, 5u, 0.00001)]
     [DataRow(-1, 5u, -0.00001)]
-    public void Denormalize_With_Value_And_Precision_Returns_Expected_Denormalized_Value(int value, uint precision, double expected) {
+    public void Denormalize_With_Value_And_Precision_Returns_Expected_Denormalized_Value(long value, uint precision, double expected) {
         // Act
         double result = PolylineEncoding.Denormalize(value, precision);
 
@@ -106,7 +106,7 @@ public sealed class PolylineEncodingTests {
     public void TryReadValue_With_Position_At_Buffer_Length_Returns_False() {
         // Arrange
         ReadOnlyMemory<char> buffer = "_p~iF~ps|U".AsMemory();
-        int delta = 0;
+        long delta = 0;
         int position = buffer.Length;
 
         // Act
@@ -114,7 +114,7 @@ public sealed class PolylineEncodingTests {
 
         // Assert
         Assert.IsFalse(result);
-        Assert.AreEqual(0, delta);
+        Assert.AreEqual(0L, delta);
     }
 
     /// <summary>
@@ -124,7 +124,7 @@ public sealed class PolylineEncodingTests {
     public void TryReadValue_With_Position_Exceeds_Buffer_Length_Returns_False() {
         // Arrange
         ReadOnlyMemory<char> buffer = "_p~iF~ps|U".AsMemory();
-        int delta = 0;
+        long delta = 0;
         int position = buffer.Length + 1;
 
         // Act
@@ -132,7 +132,7 @@ public sealed class PolylineEncodingTests {
 
         // Assert
         Assert.IsFalse(result);
-        Assert.AreEqual(0, delta);
+        Assert.AreEqual(0L, delta);
     }
 
     /// <summary>
@@ -143,7 +143,7 @@ public sealed class PolylineEncodingTests {
         // Arrange
         // Encode value 5: zigzag = 10 = 0x0A; char = 10 + 63 = 73 = 'I'
         ReadOnlyMemory<char> buffer = "I".AsMemory(); // Single char encoding of value 5
-        int delta = 0;
+        long delta = 0;
         int position = 0;
 
         // Act
@@ -151,7 +151,7 @@ public sealed class PolylineEncodingTests {
 
         // Assert
         Assert.IsTrue(result);
-        Assert.AreEqual(5, delta);
+        Assert.AreEqual(5L, delta);
         Assert.AreEqual(1, position);
     }
 
@@ -163,7 +163,7 @@ public sealed class PolylineEncodingTests {
         // Arrange
         // _p~iF encodes latitude 38.5 (normalized = 3850000, zigzag = 7700000)
         ReadOnlyMemory<char> buffer = "_p~iF".AsMemory();
-        int delta = 0;
+        long delta = 0;
         int position = 0;
 
         // Act
@@ -171,7 +171,7 @@ public sealed class PolylineEncodingTests {
 
         // Assert
         Assert.IsTrue(result);
-        Assert.AreEqual(3850000, delta);
+        Assert.AreEqual(3850000L, delta);
         Assert.AreEqual(5, position);
     }
 
@@ -183,7 +183,7 @@ public sealed class PolylineEncodingTests {
         // Arrange
         // ~ps|U encodes longitude -120.2 (normalized = -12020000, zigzag encodes negative)
         ReadOnlyMemory<char> buffer = "~ps|U".AsMemory();
-        int delta = 0;
+        long delta = 0;
         int position = 0;
 
         // Act
@@ -191,7 +191,7 @@ public sealed class PolylineEncodingTests {
 
         // Assert
         Assert.IsTrue(result);
-        Assert.AreEqual(-12020000, delta);
+        Assert.AreEqual(-12020000L, delta);
         Assert.AreEqual(5, position);
     }
 
@@ -202,7 +202,7 @@ public sealed class PolylineEncodingTests {
     public void TryReadValue_With_Existing_Delta_Accumulates_Delta() {
         // Arrange
         ReadOnlyMemory<char> buffer = "I".AsMemory(); // encodes 5
-        int delta = 10; // existing delta
+        long delta = 10; // existing delta
         int position = 0;
 
         // Act
@@ -210,7 +210,7 @@ public sealed class PolylineEncodingTests {
 
         // Assert
         Assert.IsTrue(result);
-        Assert.AreEqual(15, delta); // 10 + 5 = 15
+        Assert.AreEqual(15L, delta); // 10 + 5 = 15
     }
 
     /// <summary>
@@ -220,12 +220,12 @@ public sealed class PolylineEncodingTests {
     public void TryReadValue_With_Multiple_Values_Reads_Sequentially() {
         // Arrange - "_p~iF~ps|U" encodes lat 38.5 then delta lon -120.2
         ReadOnlyMemory<char> buffer = "_p~iF~ps|U".AsMemory();
-        int delta = 0;
+        long delta = 0;
         int position = 0;
 
         // Act - read first value
         bool first = PolylineEncoding.TryReadValue(ref delta, buffer, ref position);
-        int firstDelta = delta;
+        long firstDelta = delta;
 
         // read second value
         bool second = PolylineEncoding.TryReadValue(ref delta, buffer, ref position);
@@ -233,7 +233,7 @@ public sealed class PolylineEncodingTests {
         // Assert
         Assert.IsTrue(first);
         Assert.IsTrue(second);
-        Assert.AreEqual(3850000, firstDelta);
+        Assert.AreEqual(3850000L, firstDelta);
         Assert.AreEqual(10, position); // consumed all 10 chars
     }
 
@@ -244,7 +244,7 @@ public sealed class PolylineEncodingTests {
     public void TryReadValue_With_Buffer_Ends_Mid_Value_Returns_False() {
         // Arrange - truncate a multi-char encoding
         ReadOnlyMemory<char> buffer = "_p~".AsMemory(); // incomplete multi-char encoding
-        int delta = 0;
+        long delta = 0;
         int position = 0;
 
         // Act
@@ -261,7 +261,7 @@ public sealed class PolylineEncodingTests {
     public void TryReadValue_Starting_From_Middle_Reads_Correctly() {
         // Arrange - "_p~iF~ps|U": start at position 5 to read the longitude value
         ReadOnlyMemory<char> buffer = "_p~iF~ps|U".AsMemory();
-        int delta = 0;
+        long delta = 0;
         int position = 5;
 
         // Act
@@ -269,7 +269,7 @@ public sealed class PolylineEncodingTests {
 
         // Assert
         Assert.IsTrue(result);
-        Assert.AreEqual(-12020000, delta);
+        Assert.AreEqual(-12020000L, delta);
         Assert.AreEqual(10, position);
     }
 
@@ -491,7 +491,7 @@ public sealed class PolylineEncodingTests {
     [DataRow(16, 2)]
     [DataRow(3778903, 5)]
     [DataRow(-12241230, 5)]
-    public void GetRequiredBufferSize_Returns_Expected_Size(int delta, int expectedSize) {
+    public void GetRequiredBufferSize_Returns_Expected_Size(long delta, int expectedSize) {
         // Act
         int size = PolylineEncoding.GetRequiredBufferSize(delta);
 
@@ -505,24 +505,24 @@ public sealed class PolylineEncodingTests {
     [TestMethod]
     public void GetRequiredBufferSize_With_Max_Int_Returns_Correct_Size() {
         // Act
-        int size = PolylineEncoding.GetRequiredBufferSize(int.MaxValue);
+        int size = PolylineEncoding.GetRequiredBufferSize(long.MaxValue);
 
         // Assert
         Assert.IsGreaterThan(0, size);
-        Assert.IsLessThanOrEqualTo(7, size); // Maximum size for int32
+        Assert.IsLessThanOrEqualTo(13, size); // Maximum size for int64
     }
 
     /// <summary>
-    /// Tests that GetRequiredBufferSize returns a valid size for the minimum negative integer.
+    /// Tests that GetRequiredBufferSize returns a valid size for the minimum negative long.
     /// </summary>
     [TestMethod]
     public void GetRequiredBufferSize_With_Min_Int_Returns_Correct_Size() {
         // Act
-        int size = PolylineEncoding.GetRequiredBufferSize(int.MinValue);
+        int size = PolylineEncoding.GetRequiredBufferSize(long.MinValue);
 
         // Assert
         Assert.IsGreaterThan(0, size);
-        Assert.IsLessThanOrEqualTo(7, size); // Maximum size for int32
+        Assert.IsLessThanOrEqualTo(13, size); // Maximum size for int64
     }
 
     /// <summary>
@@ -531,7 +531,7 @@ public sealed class PolylineEncodingTests {
     [TestMethod]
     public void GetRequiredBufferSize_Consistent_With_TryWriteValue_Matches_Actual_Size() {
         // Arrange
-        const int delta = 3778903;
+        const long delta = 3778903L;
         int expectedSize = PolylineEncoding.GetRequiredBufferSize(delta);
         Span<char> buffer = stackalloc char[expectedSize];
         int position = 0;
@@ -550,7 +550,7 @@ public sealed class PolylineEncodingTests {
     [TestMethod]
     public void GetRequiredBufferSize_With_Undersized_Buffer_Causes_TryWriteValue_To_Fail() {
         // Arrange
-        const int delta = 3778903;
+        const long delta = 3778903L;
         int requiredSize = PolylineEncoding.GetRequiredBufferSize(delta);
         Span<char> buffer = stackalloc char[requiredSize - 1]; // One char too small
         int position = 0;
@@ -609,7 +609,7 @@ public sealed class PolylineEncodingTests {
     [TestMethod]
     public void ValidateFormat_With_Block_Too_Long_Throws_InvalidPolylineException() {
         // Act & Assert
-        Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateFormat("________?")); // 8-char block (max is 7)
+        Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateFormat("_____________?")); // 14-char block (max is 13)
     }
 
     #endregion
@@ -655,7 +655,8 @@ public sealed class PolylineEncodingTests {
     [TestMethod]
     [DataRow("?")]          // single terminator
     [DataRow("_p~iF~ps|U")] // multiple blocks
-    [DataRow("______?")]    // 6 continuation chars + terminator (maximum block length)
+    [DataRow("______?")]    // 6 continuation chars + terminator (block length 7)
+    [DataRow("____________?")] // 12 continuation chars + terminator (maximum block length 13)
     [DataRow("??")]         // consecutive terminators
     [DataRow("?__?_____?")] // mixed block lengths
     public void ValidateBlockLength_With_Valid_Polyline_Does_Not_Throw(string polyline) {
@@ -667,11 +668,11 @@ public sealed class PolylineEncodingTests {
     /// Tests that ValidateBlockLength throws <see cref="InvalidPolylineException"/> for invalid block structures.
     /// </summary>
     [TestMethod]
-    [DataRow("________?")]  // 8-char block (exceeds max of 7)
+    [DataRow("_____________?")] // 13-char block (exceeds max of 13 = blockLen 14)
     [DataRow("________")]   // all continuation chars, no terminator
     [DataRow("")]           // empty polyline has no terminator
-    [DataRow("?________?")] // valid block then too-long block
-    [DataRow("________?_?")] // first block too long
+    [DataRow("?_____________?")] // valid block then too-long block
+    [DataRow("_____________?_?")] // first block too long
     public void ValidateBlockLength_With_Invalid_Polyline_Throws_InvalidPolylineException(string polyline) {
         // Act & Assert
         Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateBlockLength(polyline));
