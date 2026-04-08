@@ -40,8 +40,9 @@ internal sealed class FormatterRule<T> {
     internal long Factor { get; }
 
     /// <summary>
-    /// Gets the optional baseline (epoch). When set, the encoder subtracts this value from the
-    /// first point's scaled column value to keep the initial delta small.
+    /// Gets the optional reference value used as the baseline for the first encoded point.
+    /// When set, the encoder subtracts this value from the first item's scaled column value so that
+    /// the initial delta is <c>scaled_first_value − baseline</c> rather than <c>scaled_first_value</c>.
     /// </summary>
     internal long? Baseline { get; }
 

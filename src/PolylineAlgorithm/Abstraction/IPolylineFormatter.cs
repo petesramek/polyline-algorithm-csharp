@@ -29,8 +29,9 @@ public interface IPolylineFormatter<TCoordinate, TPolyline> {
     int Width { get; }
 
     /// <summary>
-    /// Returns the baseline (epoch) for the column at <paramref name="index"/>, or <c>0</c> if none is configured.
-    /// The encoder subtracts this value from the first item's scaled column value to keep the initial delta small.
+    /// Returns the baseline for the column at <paramref name="index"/>, or <c>0</c> if none is configured.
+    /// The encoder uses this as the starting point for the first item's delta computation: the initial
+    /// delta for the column is <c>scaled_first_value − baseline</c> rather than <c>scaled_first_value</c>.
     /// </summary>
     /// <param name="index">The zero-based column index. Must be in the range <c>[0, <see cref="Width"/>)</c>.</param>
     /// <returns>The baseline value, or <c>0</c> when no baseline has been defined for the column.</returns>

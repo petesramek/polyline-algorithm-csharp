@@ -17,7 +17,7 @@ using System.Collections.Generic;
 /// <remarks>
 /// <para>
 /// Use <see cref="Create"/> to obtain an instance, call <see cref="AddValue"/> once per column,
-/// optionally chain <see cref="SetBaseline"/> to specify an epoch for the most-recently added column,
+/// optionally chain <see cref="SetBaseline"/> to set a reference baseline for the most-recently added column,
 /// optionally chain <see cref="WithCreate"/> to register a factory for the decoding direction,
 /// call <see cref="ForPolyline"/> to supply the polyline surface delegates (required), then call
 /// <see cref="Build"/> to produce the immutable <see cref="PolylineFormatter{TCoordinate, TPolyline}"/>.
@@ -87,11 +87,17 @@ public sealed class FormatterBuilder<TCoordinate, TPolyline> {
     }
 
     /// <summary>
-    /// Sets a baseline (epoch) on the most-recently added column.
-    /// During encoding the baseline is subtracted from the first item's scaled column value,
-    /// keeping the initial delta small when the absolute first value is large.
+    /// Sets a reference value (baseline) on the most-recently added column.
+    /// During encoding, the baseline is subtracted from the first item's scaled column value so that
+    /// the initial delta is <c>scaled_first_value − baseline</c> rather than <c>scaled_first_value</c>.
+    /// Use this when the absolute scaled value of the first data point for a column would otherwise
+    /// produce a very large initial encoded delta.
     /// </summary>
-    /// <param name="baseline">The baseline value to apply to the first item's column value.</param>
+    /// <param name="baseline">
+    /// The reference value to subtract from the first item's scaled column value during encoding.
+    /// The decoder automatically adds this value back, so the reconstructed item matches the
+    /// original input.
+    /// </param>
     /// <returns>The current builder instance for method chaining.</returns>
     /// <exception cref="InvalidOperationException">
     /// Thrown when no rules have been added yet. Call <see cref="AddValue"/> before
