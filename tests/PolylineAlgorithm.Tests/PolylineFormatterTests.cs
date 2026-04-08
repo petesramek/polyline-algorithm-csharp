@@ -9,11 +9,14 @@ using PolylineAlgorithm;
 using System;
 
 /// <summary>
-/// Tests for <see cref="FormatterBuilder{T}"/>, <see cref="PolylineValueFormatter{T}"/>,
-/// and <see cref="PolylineOptions{TValue,TPolyline}"/>.
+/// Tests for <see cref="FormatterBuilder{TCoordinate, TPolyline}"/> and
+/// <see cref="PolylineFormatter{TCoordinate, TPolyline}"/>.
 /// </summary>
 [TestClass]
 public sealed class PolylineFormatterTests {
+    // Shared ForPolyline delegates used to satisfy Build() throughout these tests.
+    private static readonly Func<ReadOnlyMemory<char>, string> _write = m => new string(m.Span);
+    private static readonly Func<string, ReadOnlyMemory<char>> _read = s => s.AsMemory();
     // ---------------------------------------------------------------------------
     // FormatterBuilder<T>.Create
     // ---------------------------------------------------------------------------

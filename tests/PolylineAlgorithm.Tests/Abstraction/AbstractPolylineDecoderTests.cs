@@ -5,207 +5,58 @@
 
 namespace PolylineAlgorithm.Tests.Abstraction;
 
-using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Utility;
 using System;
 using System.Collections.Generic;
-using PolylineAlgorithm;
+using System.Threading;
 
 /// <summary>
-/// Tests for <see cref="AbstractPolylineDecoder{TPolyline, TCoordinate}"/>.
+/// Tests for <see cref="PolylineDecoder{TPolyline, TCoordinate}"/>.
 /// </summary>
 [TestClass]
 public sealed class AbstractPolylineDecoderTests {
-    private sealed class TestStringDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-        protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
-        protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) => (latitude, longitude);
+    // ------------------------------------------------------------------
+    // Helpers
+    // ------------------------------------------------------------------
+
+    private static readonly Func<ReadOnlyMemory<char>, string> _write = m => new string(m.Span);
+    private static readonly Func<string, ReadOnlyMemory<char>> _read = s => s.AsMemory();
+
+    private static PolylineDecoder<string, (double Lat, double Lon)> CreateDecoder() {
+        PolylineFormatter<(double Lat, double Lon), string> formatter =
+            FormatterBuilder<(double Lat, double Lon), string>.Create()
+                .AddValue("lat", c => c.Lat)
+                .AddValue("lon", c => c.Lon)
+                .WithCreate(static v => (v[0] / 1e5, v[1] / 1e5))
+                .ForPolyline(_write, _read)
+                .Build();
+
+        return new PolylineDecoder<string, (double Lat, double Lon)>(
+            new PolylineOptions<(double Lat, double Lon), string>(formatter));
     }
 
-    private sealed class TestStringDecoderWithOptions : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-        public TestStringDecoderWithOptions(PolylineEncodingOptions options)
-            : base(options) { }
+    // ------------------------------------------------------------------
+    // Constructor
+    // ------------------------------------------------------------------
 
-        protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
-        protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) => (latitude, longitude);
-    }
-
-    /// <summary>
-    /// Tests that Decode with a null polyline throws <see cref="ArgumentNullException"/>.
-    /// </summary>
-    [TestMethod]
-    public void Decode_With_Null_Polyline_Throws_ArgumentNullException() {
-        // Arrange
-        TestStringDecoder decoder = new();
-
-        // Act & Assert
-        ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(() => decoder.Decode((string?)null!).ToList());
-        Assert.AreEqual("polyline", ex.ParamName);
-    }
-
-    /// <summary>
-    /// Tests that Decode with an empty polyline throws <see cref="InvalidPolylineException"/>.
-    /// </summary>
-    [TestMethod]
-    public void Decode_With_Empty_Polyline_Throws_InvalidPolylineException() {
-        // Arrange
-        TestStringDecoder decoder = new();
-
-        // Act & Assert
-        Assert.ThrowsExactly<InvalidPolylineException>(() => decoder.Decode(string.Empty).ToList());
-    }
-
-    /// <summary>
-    /// Tests that Decode with a polyline containing an invalid character throws <see cref="InvalidPolylineException"/>.
-    /// </summary>
-    [TestMethod]
-    public void Decode_With_Invalid_Character_Polyline_Throws_InvalidPolylineException() {
-        // Arrange
-        TestStringDecoder decoder = new();
-
-        // '!' (33) is below allowed range ('?' == 63)
-        // Act & Assert
-        Assert.ThrowsExactly<InvalidPolylineException>(() => decoder.Decode("!").ToList());
-    }
-
-    /// <summary>
-    /// Tests that Decode with a valid polyline returns the expected coordinates.
-    /// </summary>
-    [TestMethod]
-    public void Decode_With_Valid_Polyline_Returns_Expected_Coordinates() {
-        // Arrange
-        TestStringDecoder decoder = new();
-        string polyline = StaticValueProvider.Valid.GetPolyline();
-        (double Latitude, double Longitude)[] expected = [.. StaticValueProvider.Valid.GetCoordinates()];
-
-        // Act
-        (double Latitude, double Longitude)[] result = [.. decoder.Decode(polyline)];
-
-        // Assert
-        Assert.AreEqual(expected.Length, result.Length);
-        for (int i = 0; i < expected.Length; i++) {
-            Assert.AreEqual(expected[i].Latitude, result[i].Latitude, 1e-5);
-            Assert.AreEqual(expected[i].Longitude, result[i].Longitude, 1e-5);
-        }
-    }
-
-    /// <summary>
-    /// Tests that the options constructor with null throws <see cref="ArgumentNullException"/>.
-    /// </summary>
+    /// <summary>Tests that a null options argument throws <see cref="ArgumentNullException"/>.</summary>
     [TestMethod]
     public void Constructor_With_Null_Options_Throws_ArgumentNullException() {
         // Act & Assert
-        ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(() => new TestStringDecoderWithOptions(null!));
-        Assert.AreEqual("options", ex.ParamName);
-    }
-
-    /// <summary>
-    /// Tests that the Options property returns the configured options.
-    /// </summary>
-    [TestMethod]
-    public void Options_With_Default_Returns_Default_Options() {
-        // Arrange
-        TestStringDecoder decoder = new();
-
-        // Assert
-        Assert.IsNotNull(decoder.Options);
-        Assert.AreEqual(5u, decoder.Options.Precision);
-    }
-
-    /// <summary>
-    /// Tests that the options constructor stores the provided options.
-    /// </summary>
-    [TestMethod]
-    public void Constructor_With_Options_Stores_Options() {
-        // Arrange
-        PolylineEncodingOptions options = PolylineEncodingOptionsBuilder.Create()
-            .WithPrecision(7)
-            .Build();
-
-        // Act
-        TestStringDecoderWithOptions decoder = new(options);
-
-        // Assert
-        Assert.AreSame(options, decoder.Options);
-    }
-
-    /// <summary>
-    /// Tests that Decode with a pre-cancelled token throws <see cref="OperationCanceledException"/>.
-    /// </summary>
-    [TestMethod]
-    public void Decode_With_Pre_Cancelled_Token_Throws_OperationCanceledException() {
-        // Arrange
-        TestStringDecoder decoder = new();
-        string polyline = StaticValueProvider.Valid.GetPolyline();
-        using CancellationTokenSource cts = new();
-        cts.Cancel();
-
-        // Act & Assert
-        Assert.ThrowsExactly<OperationCanceledException>(() => decoder.Decode(polyline, cts.Token).ToList());
-    }
-
-    // -------------------------------------------------------------------------
-    // Formatter-based path (PolylineOptions<TValue, TPolyline> constructor)
-    // -------------------------------------------------------------------------
-
-    /// <summary>
-    /// Tests that the PolylineOptions constructor with null throws <see cref="ArgumentNullException"/>.
-    /// </summary>
-    [TestMethod]
-    public void Constructor_With_Null_PolylineOptions_Throws_ArgumentNullException() {
-        // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
-            () => new AbstractPolylineDecoder<string, (double, double)>((PolylineOptions<(double, double), string>)null!));
+            () => new PolylineDecoder<string, (double, double)>(null!));
         Assert.AreEqual("options", ex.ParamName);
     }
 
-    /// <summary>
-    /// Tests that the formatter-based decoder decodes the known polyline to the expected coordinates.
-    /// </summary>
+    // ------------------------------------------------------------------
+    // Decode — argument validation
+    // ------------------------------------------------------------------
+
+    /// <summary>Tests that a null polyline throws <see cref="ArgumentNullException"/>.</summary>
     [TestMethod]
-    public void Decode_FormatterPath_With_Known_Polyline_Returns_Expected_Coordinates() {
+    public void Decode_With_Null_Polyline_Throws_ArgumentNullException() {
         // Arrange
-        PolylineValueFormatter<(double Latitude, double Longitude)> valueFormatter =
-            FormatterBuilder<(double Latitude, double Longitude)>.Create()
-                .AddValue("lat", c => c.Latitude)
-                .AddValue("lon", c => c.Longitude)
-                .WithCreate(static values => (values[0] / 1e5, values[1] / 1e5))
-                .Build();
-
-        PolylineOptions<(double Latitude, double Longitude), string> options = new(
-            valueFormatter,
-            PolylineFormatter.ForString);
-
-        AbstractPolylineDecoder<string, (double Latitude, double Longitude)> decoder = new(options);
-
-        string polyline = StaticValueProvider.Valid.GetPolyline();
-        (double Latitude, double Longitude)[] expected = [.. StaticValueProvider.Valid.GetCoordinates()];
-
-        // Act
-        (double Latitude, double Longitude)[] result = [.. decoder.Decode(polyline)];
-
-        // Assert
-        Assert.AreEqual(expected.Length, result.Length);
-        for (int i = 0; i < expected.Length; i++) {
-            Assert.AreEqual(expected[i].Latitude, result[i].Latitude, 1e-5);
-            Assert.AreEqual(expected[i].Longitude, result[i].Longitude, 1e-5);
-        }
-    }
-
-    /// <summary>
-    /// Tests that the formatter-based decoder throws <see cref="ArgumentNullException"/> for a null polyline.
-    /// </summary>
-    [TestMethod]
-    public void Decode_FormatterPath_With_Null_Polyline_Throws_ArgumentNullException() {
-        // Arrange
-        PolylineValueFormatter<(double, double)> valueFormatter =
-            FormatterBuilder<(double, double)>.Create()
-                .AddValue("lat", c => c.Item1)
-                .AddValue("lon", c => c.Item2)
-                .WithCreate(static values => (values[0] / 1e5, values[1] / 1e5))
-                .Build();
-
-        AbstractPolylineDecoder<string, (double, double)> decoder = new(
-            new PolylineOptions<(double, double), string>(valueFormatter, PolylineFormatter.ForString));
+        PolylineDecoder<string, (double Lat, double Lon)> decoder = CreateDecoder();
 
         // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
@@ -213,22 +64,79 @@ public sealed class AbstractPolylineDecoderTests {
         Assert.AreEqual("polyline", ex.ParamName);
     }
 
+    /// <summary>Tests that an empty polyline throws <see cref="InvalidPolylineException"/>.</summary>
+    [TestMethod]
+    public void Decode_With_Empty_Polyline_Throws_InvalidPolylineException() {
+        // Arrange
+        PolylineDecoder<string, (double Lat, double Lon)> decoder = CreateDecoder();
+
+        // Act & Assert
+        Assert.ThrowsExactly<InvalidPolylineException>(
+            () => decoder.Decode(string.Empty).ToList());
+    }
+
     /// <summary>
-    /// Tests that the formatter-based decoder with a pre-cancelled token throws <see cref="OperationCanceledException"/>.
+    /// Tests that a polyline containing a character outside the valid range throws
+    /// <see cref="InvalidPolylineException"/>.
     /// </summary>
     [TestMethod]
-    public void Decode_FormatterPath_With_Pre_Cancelled_Token_Throws_OperationCanceledException() {
+    public void Decode_With_Invalid_Character_Polyline_Throws_InvalidPolylineException() {
         // Arrange
-        PolylineValueFormatter<(double, double)> valueFormatter =
-            FormatterBuilder<(double, double)>.Create()
-                .AddValue("lat", c => c.Item1)
-                .AddValue("lon", c => c.Item2)
-                .WithCreate(static values => (values[0] / 1e5, values[1] / 1e5))
-                .Build();
+        PolylineDecoder<string, (double Lat, double Lon)> decoder = CreateDecoder();
 
-        AbstractPolylineDecoder<string, (double, double)> decoder = new(
-            new PolylineOptions<(double, double), string>(valueFormatter, PolylineFormatter.ForString));
+        // '!' (33) is below the allowed minimum '?' (63)
+        // Act & Assert
+        Assert.ThrowsExactly<InvalidPolylineException>(
+            () => decoder.Decode("!").ToList());
+    }
 
+    /// <summary>
+    /// Tests that a polyline that contains only enough data for one of the required columns
+    /// (i.e., a partial item) throws <see cref="InvalidPolylineException"/>.
+    /// </summary>
+    [TestMethod]
+    public void Decode_With_Truncated_Polyline_Throws_InvalidPolylineException() {
+        // Arrange — "?" encodes a single delta-0 value.  A 2-column formatter reads lat
+        // successfully from "?" but then finds no bytes left for lon → invalid.
+        PolylineDecoder<string, (double Lat, double Lon)> decoder = CreateDecoder();
+
+        // Act & Assert
+        Assert.ThrowsExactly<InvalidPolylineException>(
+            () => decoder.Decode("?").ToList());
+    }
+
+    // ------------------------------------------------------------------
+    // Decode — happy path
+    // ------------------------------------------------------------------
+
+    /// <summary>Tests that a valid polyline produces the expected coordinates.</summary>
+    [TestMethod]
+    public void Decode_With_Valid_Polyline_Returns_Expected_Coordinates() {
+        // Arrange
+        PolylineDecoder<string, (double Lat, double Lon)> decoder = CreateDecoder();
+        string polyline = StaticValueProvider.Valid.GetPolyline();
+        (double Latitude, double Longitude)[] expected = [.. StaticValueProvider.Valid.GetCoordinates()];
+
+        // Act
+        (double Lat, double Lon)[] result = [.. decoder.Decode(polyline)];
+
+        // Assert
+        Assert.AreEqual(expected.Length, result.Length);
+        for (int i = 0; i < expected.Length; i++) {
+            Assert.AreEqual(expected[i].Latitude, result[i].Lat, 1e-5);
+            Assert.AreEqual(expected[i].Longitude, result[i].Lon, 1e-5);
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // Decode — cancellation
+    // ------------------------------------------------------------------
+
+    /// <summary>Tests that a pre-cancelled token throws <see cref="OperationCanceledException"/>.</summary>
+    [TestMethod]
+    public void Decode_With_Pre_Cancelled_Token_Throws_OperationCanceledException() {
+        // Arrange
+        PolylineDecoder<string, (double Lat, double Lon)> decoder = CreateDecoder();
         string polyline = StaticValueProvider.Valid.GetPolyline();
         using CancellationTokenSource cts = new();
         cts.Cancel();
@@ -236,5 +144,33 @@ public sealed class AbstractPolylineDecoderTests {
         // Act & Assert
         Assert.ThrowsExactly<OperationCanceledException>(
             () => decoder.Decode(polyline, cts.Token).ToList());
+    }
+
+    // ------------------------------------------------------------------
+    // Decode — missing WithCreate factory
+    // ------------------------------------------------------------------
+
+    /// <summary>
+    /// Tests that decoding with a formatter that has no <c>WithCreate</c> factory throws
+    /// <see cref="InvalidOperationException"/>.
+    /// </summary>
+    [TestMethod]
+    public void Decode_Without_WithCreate_Throws_InvalidOperationException() {
+        // Arrange — formatter built without WithCreate
+        PolylineFormatter<(double Lat, double Lon), string> formatter =
+            FormatterBuilder<(double Lat, double Lon), string>.Create()
+                .AddValue("lat", c => c.Lat)
+                .AddValue("lon", c => c.Lon)
+                .ForPolyline(_write, _read)
+                .Build();
+
+        PolylineDecoder<string, (double Lat, double Lon)> decoder =
+            new(new PolylineOptions<(double Lat, double Lon), string>(formatter));
+
+        string polyline = StaticValueProvider.Valid.GetPolyline();
+
+        // Act & Assert
+        Assert.ThrowsExactly<InvalidOperationException>(
+            () => decoder.Decode(polyline).ToList());
     }
 }

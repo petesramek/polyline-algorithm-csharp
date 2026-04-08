@@ -14,7 +14,7 @@ using System;
 /// <typeparam name="T">The coordinate or item type to create.</typeparam>
 /// <param name="values">
 /// The scaled integer values accumulated from the polyline decoder. Each element corresponds to one
-/// column as defined by the <see cref="FormatterBuilder{T}"/> that built the associated formatter.
+/// column as defined by the <see cref="FormatterBuilder{TCoordinate, TPolyline}"/> that built the associated formatter.
 /// </param>
 /// <returns>A <typeparamref name="T"/> instance reconstructed from <paramref name="values"/>.</returns>
 public delegate T PolylineItemFactory<T>(ReadOnlySpan<long> values);

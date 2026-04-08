@@ -40,6 +40,7 @@ public sealed class FormatterBuilder<TCoordinate, TPolyline> {
     /// Creates a new <see cref="FormatterBuilder{TCoordinate, TPolyline}"/> instance.
     /// </summary>
     /// <returns>A fresh builder with no rules and no polyline delegates.</returns>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Factory method on a generic builder intentionally lives on the type so callers write FormatterBuilder<T, U>.Create() without needing a separate non-generic factory class.")]
     public static FormatterBuilder<TCoordinate, TPolyline> Create() => new();
 
     /// <summary>

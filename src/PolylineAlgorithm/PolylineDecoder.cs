@@ -38,6 +38,7 @@ public class PolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder<TPolylin
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="options"/> is <see langword="null"/>.
     /// </exception>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null is verified before use via ExceptionGuard.ThrowArgumentNull, which is annotated [DoesNotReturn]. CA1062 does not recognise custom [DoesNotReturn] helpers as null guards.")]
     public PolylineDecoder(PolylineOptions<TCoordinate, TPolyline> options) {
         if (options is null) {
             ExceptionGuard.ThrowArgumentNull(nameof(options));

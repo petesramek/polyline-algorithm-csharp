@@ -38,9 +38,21 @@ PolylineAlgorithm.PolylineEncoder<TCoordinate, TPolyline>
 PolylineAlgorithm.PolylineEncoder<TCoordinate, TPolyline>.Encode(System.ReadOnlySpan<TCoordinate> coordinates, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> TPolyline
 PolylineAlgorithm.PolylineEncoder<TCoordinate, TPolyline>.PolylineEncoder(PolylineAlgorithm.PolylineOptions<TCoordinate, TPolyline>! options) -> void
 PolylineAlgorithm.Extensions.PolylineDecoderExtensions
+static PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode<TValue>(this PolylineAlgorithm.Abstraction.IPolylineDecoder<string!, TValue>! decoder, char[]! polyline) -> System.Collections.Generic.IEnumerable<TValue>!
+static PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode<TValue>(this PolylineAlgorithm.Abstraction.IPolylineDecoder<string!, TValue>! decoder, System.ReadOnlyMemory<char> polyline) -> System.Collections.Generic.IEnumerable<TValue>!
+static PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode<TValue>(this PolylineAlgorithm.Abstraction.IPolylineDecoder<System.ReadOnlyMemory<char>, TValue>! decoder, string! polyline) -> System.Collections.Generic.IEnumerable<TValue>!
 PolylineAlgorithm.Extensions.PolylineEncoderExtensions
+static PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode<TCoordinate, TPolyline>(this PolylineAlgorithm.Abstraction.IPolylineEncoder<TCoordinate, TPolyline>! encoder, System.Collections.Generic.List<TCoordinate>! coordinates) -> TPolyline
+static PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode<TCoordinate, TPolyline>(this PolylineAlgorithm.Abstraction.IPolylineEncoder<TCoordinate, TPolyline>! encoder, TCoordinate[]! coordinates) -> TPolyline
 PolylineAlgorithm.InvalidPolylineException
 PolylineAlgorithm.InvalidPolylineException.InvalidPolylineException() -> void
-PolylineAlgorithm.InvalidPolylineException.InvalidPolylineException(string! message) -> void
 PolylineAlgorithm.InvalidPolylineException.InvalidPolylineException(string! message, System.Exception! innerException) -> void
 PolylineAlgorithm.PolylineEncoding
+static PolylineAlgorithm.PolylineEncoding.Normalize(double value, uint precision = 5) -> int
+static PolylineAlgorithm.PolylineEncoding.Denormalize(int value, uint precision = 5) -> double
+static PolylineAlgorithm.PolylineEncoding.TryReadValue(ref int delta, System.ReadOnlyMemory<char> buffer, ref int position) -> bool
+static PolylineAlgorithm.PolylineEncoding.TryWriteValue(int delta, System.Span<char> buffer, ref int position) -> bool
+static PolylineAlgorithm.PolylineEncoding.GetRequiredBufferSize(int delta) -> int
+static PolylineAlgorithm.PolylineEncoding.ValidateFormat(System.ReadOnlySpan<char> polyline) -> void
+static PolylineAlgorithm.PolylineEncoding.ValidateCharRange(System.ReadOnlySpan<char> polyline) -> void
+static PolylineAlgorithm.PolylineEncoding.ValidateBlockLength(System.ReadOnlySpan<char> polyline) -> void
