@@ -213,9 +213,13 @@ public class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder<
         Span<char> buffer = temp is null ? stackalloc char[length] : temp.AsSpan(0, length);
 
         int position = 0;
-        int[] previous = new int[width];
+        long[] previous = new long[width];
         long[] values = new long[width];
         string encodedResult;
+
+        for (int j = 0; j < width; j++) {
+            previous[j] = _valueFormatter.GetBaseline(j);
+        }
 
         try {
             for (var i = 0; i < coordinates.Length; i++) {
@@ -224,11 +228,11 @@ public class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder<
                 _valueFormatter.GetValues(coordinates[i], values.AsSpan());
 
                 for (int j = 0; j < width; j++) {
-                    int current = (int)values[j];
-                    int delta = current - previous[j];
+                    long current = values[j];
+                    long delta = current - previous[j];
                     previous[j] = current;
 
-                    if (!PolylineEncoding.TryWriteValue(delta, buffer, ref position)) {
+                    if (!PolylineEncoding.TryWriteValue((int)delta, buffer, ref position)) {
                         _logger.LogOperationFailedDebug(OperationName);
                         _logger.LogCannotWriteValueToBufferWarning(position, i);
                         ExceptionGuard.ThrowCouldNotWriteEncodedValueToBuffer();

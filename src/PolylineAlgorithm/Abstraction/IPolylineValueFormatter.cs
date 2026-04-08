@@ -52,4 +52,12 @@ public interface IPolylineValueFormatter<TValue> {
     /// the length of the span received in <see cref="CreateItem"/>.
     /// </summary>
     int Width { get; }
+
+    /// <summary>
+    /// Returns the baseline (epoch) for the column at <paramref name="index"/>, or <c>0</c> if none is configured.
+    /// The encoder subtracts this value from the first item's scaled column value to keep the initial delta small.
+    /// </summary>
+    /// <param name="index">The zero-based column index. Must be in the range <c>[0, <see cref="Width"/>)</c>.</param>
+    /// <returns>The baseline value, or <c>0</c> when no baseline has been defined for the column.</returns>
+    long GetBaseline(int index) => 0L;
 }

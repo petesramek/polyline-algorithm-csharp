@@ -9,6 +9,7 @@ PolylineAlgorithm.Abstraction.IPolylineFormatter<TPolyline>.Read(TPolyline polyl
 PolylineAlgorithm.Abstraction.IPolylineFormatter<TPolyline>.Write(System.ReadOnlyMemory<char> encoded) -> TPolyline
 PolylineAlgorithm.Abstraction.IPolylineValueFormatter<TValue>
 PolylineAlgorithm.Abstraction.IPolylineValueFormatter<TValue>.CreateItem(System.ReadOnlySpan<long> values) -> TValue
+PolylineAlgorithm.Abstraction.IPolylineValueFormatter<TValue>.GetBaseline(int index) -> long
 PolylineAlgorithm.Abstraction.IPolylineValueFormatter<TValue>.GetValues(TValue item, System.Span<long> values) -> void
 PolylineAlgorithm.Abstraction.IPolylineValueFormatter<TValue>.Width.get -> int
 PolylineAlgorithm.PolylineFormatter

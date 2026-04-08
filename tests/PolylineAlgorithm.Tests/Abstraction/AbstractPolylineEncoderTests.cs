@@ -8,6 +8,7 @@ namespace PolylineAlgorithm.Tests.Abstraction;
 using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Utility;
 using System;
+using PolylineAlgorithm;
 
 /// <summary>
 /// Tests for <see cref="AbstractPolylineEncoder{TCoordinate, TPolyline}"/>.
@@ -148,5 +149,127 @@ public sealed class AbstractPolylineEncoderTests {
 
         // Assert
         Assert.AreEqual(expected, result);
+    }
+
+    // -------------------------------------------------------------------------
+    // Formatter-based path (PolylineOptions<TValue, TPolyline> constructor)
+    // -------------------------------------------------------------------------
+
+    /// <summary>
+    /// Tests that the PolylineOptions constructor with null throws <see cref="ArgumentNullException"/>.
+    /// </summary>
+    [TestMethod]
+    public void Constructor_With_Null_PolylineOptions_Throws_ArgumentNullException() {
+        // Act & Assert
+        ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
+            () => new AbstractPolylineEncoder<(double, double), string>((PolylineOptions<(double, double), string>)null!));
+        Assert.AreEqual("options", ex.ParamName);
+    }
+
+    /// <summary>
+    /// Tests that the formatter-based encoder round-trips known coordinates through the polyline wire format.
+    /// </summary>
+    [TestMethod]
+    public void Encode_FormatterPath_With_Known_Coordinates_Returns_Expected_Polyline() {
+        // Arrange
+        PolylineValueFormatter<(double Latitude, double Longitude)> valueFormatter =
+            FormatterBuilder<(double Latitude, double Longitude)>.Create()
+                .AddValue("lat", c => c.Latitude)
+                .AddValue("lon", c => c.Longitude)
+                .Build();
+
+        PolylineOptions<(double Latitude, double Longitude), string> options = new(
+            valueFormatter,
+            PolylineFormatter.ForString);
+
+        AbstractPolylineEncoder<(double Latitude, double Longitude), string> encoder = new(options);
+
+        (double Latitude, double Longitude)[] coordinates = [.. StaticValueProvider.Valid.GetCoordinates()];
+        string expected = StaticValueProvider.Valid.GetPolyline();
+
+        // Act
+        string result = encoder.Encode(coordinates.AsSpan());
+
+        // Assert
+        Assert.AreEqual(expected, result);
+    }
+
+    /// <summary>
+    /// Tests that the formatter-based encoder respects a non-zero baseline by subtracting it
+    /// from the first item's scaled value, producing a smaller first delta.
+    /// </summary>
+    [TestMethod]
+    public void Encode_FormatterPath_With_Baseline_Produces_Correct_First_Delta() {
+        // Arrange: a single coordinate at (1.0, 2.0) with precision 5.
+        // Without baseline, scaled values are (100000, 200000).
+        // With baseline lat=100000, the first lat delta must be 0 (100000 - 100000).
+        PolylineValueFormatter<(double Lat, double Lon)> valueFormatter =
+            FormatterBuilder<(double Lat, double Lon)>.Create()
+                .AddValue("lat", c => c.Lat)
+                .SetBaseline(100000L)   // scaled value of 1.0 at precision 5
+                .AddValue("lon", c => c.Lon)
+                .Build();
+
+        PolylineOptions<(double Lat, double Lon), string> optionsWithBaseline = new(
+            valueFormatter,
+            PolylineFormatter.ForString);
+
+        PolylineValueFormatter<(double Lat, double Lon)> valueFormatterNoBaseline =
+            FormatterBuilder<(double Lat, double Lon)>.Create()
+                .AddValue("lat", c => c.Lat)
+                .AddValue("lon", c => c.Lon)
+                .Build();
+
+        PolylineOptions<(double Lat, double Lon), string> optionsNoBaseline = new(
+            valueFormatterNoBaseline,
+            PolylineFormatter.ForString);
+
+        AbstractPolylineEncoder<(double Lat, double Lon), string> encoderWithBaseline = new(optionsWithBaseline);
+        AbstractPolylineEncoder<(double Lat, double Lon), string> encoderNoBaseline = new(optionsNoBaseline);
+
+        (double, double)[] coordinates = [(1.0, 2.0)];
+
+        // Act
+        string resultWithBaseline = encoderWithBaseline.Encode(coordinates.AsSpan());
+        string resultNoBaseline = encoderNoBaseline.Encode(coordinates.AsSpan());
+
+        // Assert: baseline shifts the first delta so the results differ, and the baseline result
+        // encodes a smaller (zero) latitude delta.
+        Assert.AreNotEqual(resultNoBaseline, resultWithBaseline);
+    }
+
+    /// <summary>
+    /// Tests that the formatter-based encoder produces output that the formatter-based decoder can
+    /// reconstruct exactly (full round-trip).
+    /// </summary>
+    [TestMethod]
+    public void Encode_FormatterPath_RoundTrip_Produces_Original_Coordinates() {
+        // Arrange
+        PolylineValueFormatter<(double Latitude, double Longitude)> valueFormatter =
+            FormatterBuilder<(double Latitude, double Longitude)>.Create()
+                .AddValue("lat", c => c.Latitude)
+                .AddValue("lon", c => c.Longitude)
+                .WithCreate(static values => (values[0] / 1e5, values[1] / 1e5))
+                .Build();
+
+        PolylineOptions<(double Latitude, double Longitude), string> options = new(
+            valueFormatter,
+            PolylineFormatter.ForString);
+
+        AbstractPolylineEncoder<(double Latitude, double Longitude), string> encoder = new(options);
+        AbstractPolylineDecoder<string, (double Latitude, double Longitude)> decoder = new(options);
+
+        (double Latitude, double Longitude)[] original = [.. StaticValueProvider.Valid.GetCoordinates()];
+
+        // Act
+        string encoded = encoder.Encode(original.AsSpan());
+        (double Latitude, double Longitude)[] decoded = [.. decoder.Decode(encoded)];
+
+        // Assert
+        Assert.AreEqual(original.Length, decoded.Length);
+        for (int i = 0; i < original.Length; i++) {
+            Assert.AreEqual(original[i].Latitude, decoded[i].Latitude, 1e-5);
+            Assert.AreEqual(original[i].Longitude, decoded[i].Longitude, 1e-5);
+        }
     }
 }

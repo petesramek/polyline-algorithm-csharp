@@ -16,8 +16,8 @@ namespace PolylineAlgorithm.Abstraction;
 /// <remarks>
 /// <para>
 /// <b>Formatter-based use (no subclassing required):</b>
-/// Supply a <see cref="PolylineOptions{TPolyline, TCoordinate}"/> via the
-/// <see cref="AbstractPolylineDecoder{TPolyline, TCoordinate}(PolylineOptions{TPolyline, TCoordinate})"/>
+/// Supply a <see cref="PolylineOptions{TCoordinate, TPolyline}"/> via the
+/// <see cref="AbstractPolylineDecoder{TPolyline, TCoordinate}(PolylineOptions{TCoordinate, TPolyline})"/>
 /// constructor. The formatters handle all type-specific concerns; override nothing.
 /// </para>
 /// <para>
