@@ -57,7 +57,7 @@ public class PolylineDecoderBenchmark {
         FormatterBuilder<(double Latitude, double Longitude), T>.Create()
             .AddValue("lat", static c => c.Latitude)
             .AddValue("lon", static c => c.Longitude)
-            .WithCreate(static v => (v[0] / 1e5, v[1] / 1e5))
+            .WithCreate(static v => (v[0], v[1]))
             .ForPolyline(write, read)
             .Build();
 

@@ -25,7 +25,7 @@ PolylineAlgorithm.PolylineFormatter<TCoordinate, TPolyline>.Read(TPolyline polyl
 PolylineAlgorithm.PolylineFormatter<TCoordinate, TPolyline>.Width.get -> int
 PolylineAlgorithm.PolylineFormatter<TCoordinate, TPolyline>.Write(System.ReadOnlyMemory<char> encoded) -> TPolyline
 PolylineAlgorithm.PolylineItemFactory<T>
-virtual PolylineAlgorithm.PolylineItemFactory<T>.Invoke(System.ReadOnlySpan<long> values) -> T
+virtual PolylineAlgorithm.PolylineItemFactory<T>.Invoke(System.ReadOnlySpan<double> values) -> T
 PolylineAlgorithm.PolylineOptions<TCoordinate, TPolyline>
 PolylineAlgorithm.PolylineOptions<TCoordinate, TPolyline>.Formatter.get -> PolylineAlgorithm.Abstraction.IPolylineFormatter<TCoordinate, TPolyline>!
 PolylineAlgorithm.PolylineOptions<TCoordinate, TPolyline>.LoggerFactory.get -> Microsoft.Extensions.Logging.ILoggerFactory!

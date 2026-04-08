@@ -110,12 +110,14 @@ public sealed class FormatterBuilder<TCoordinate, TPolyline> {
 
     /// <summary>
     /// Registers a factory delegate used to reconstruct a <typeparamref name="TCoordinate"/> from
-    /// scaled values during decoding.
+    /// denormalized values during decoding.
     /// </summary>
     /// <param name="create">
-    /// A delegate that accepts the scaled integer values decoded from the polyline and returns a
-    /// <typeparamref name="TCoordinate"/>. The span length always equals the number of columns added
-    /// via <see cref="AddValue"/>.
+    /// A delegate that accepts the denormalized <see cref="double"/> values reconstructed from the
+    /// polyline and returns a <typeparamref name="TCoordinate"/>. The formatter automatically divides
+    /// each accumulated scaled integer by its precision factor and adds back any baseline configured
+    /// via <see cref="SetBaseline"/>, so the span values match the original values supplied to the
+    /// encoder. The span length always equals the number of columns added via <see cref="AddValue"/>.
     /// </param>
     /// <returns>The current builder instance for method chaining.</returns>
     /// <exception cref="ArgumentNullException">

@@ -8,13 +8,15 @@ namespace PolylineAlgorithm;
 using System;
 
 /// <summary>
-/// Represents a factory method that reconstructs a <typeparamref name="T"/> item from an array of
-/// scaled integer values decoded from a polyline.
+/// Represents a factory method that reconstructs a <typeparamref name="T"/> item from denormalized
+/// values decoded from a polyline.
 /// </summary>
 /// <typeparam name="T">The coordinate or item type to create.</typeparam>
 /// <param name="values">
-/// The scaled integer values accumulated from the polyline decoder. Each element corresponds to one
-/// column as defined by the <see cref="FormatterBuilder{TCoordinate, TPolyline}"/> that built the associated formatter.
+/// The denormalized values reconstructed by the polyline decoder. Each element corresponds to the
+/// original <see cref="double"/> value that was encoded, with the precision factor divided out and any
+/// baseline added back. The span length equals the number of columns defined via
+/// <see cref="FormatterBuilder{TCoordinate, TPolyline}.AddValue"/>.
 /// </param>
 /// <returns>A <typeparamref name="T"/> instance reconstructed from <paramref name="values"/>.</returns>
-public delegate T PolylineItemFactory<T>(ReadOnlySpan<long> values);
+public delegate T PolylineItemFactory<T>(ReadOnlySpan<double> values);

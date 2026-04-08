@@ -22,7 +22,7 @@ public sealed class PolylineDecoderExtensionsTests {
             FormatterBuilder<(double Latitude, double Longitude), string>.Create()
                 .AddValue("lat", static c => c.Latitude)
                 .AddValue("lon", static c => c.Longitude)
-                .WithCreate(static v => (v[0] / 1e5, v[1] / 1e5))
+                .WithCreate(static v => (v[0], v[1]))
                 .ForPolyline(static m => new string(m.Span), static s => s.AsMemory())
                 .Build();
 
@@ -35,7 +35,7 @@ public sealed class PolylineDecoderExtensionsTests {
             FormatterBuilder<(double Latitude, double Longitude), ReadOnlyMemory<char>>.Create()
                 .AddValue("lat", static c => c.Latitude)
                 .AddValue("lon", static c => c.Longitude)
-                .WithCreate(static v => (v[0] / 1e5, v[1] / 1e5))
+                .WithCreate(static v => (v[0], v[1]))
                 .ForPolyline(static m => m, static m => m)
                 .Build();
 

@@ -98,7 +98,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
             .AddValue("Value", static v => v);
 
         // Act
-        FormatterBuilder<double, string> result = builder.WithCreate(static v => v[0] / 1e5);
+        FormatterBuilder<double, string> result = builder.WithCreate(static v => v[0]);
 
         // Assert
         Assert.AreSame(builder, result);
@@ -162,14 +162,15 @@ public sealed class PolylineEncodingOptionsBuilderTests {
     /// <summary>Tests that CreateItem with a factory correctly constructs the item.</summary>
     [TestMethod]
     public void CreateItem_With_Factory_Returns_Expected_Value() {
-        // Arrange — precision 5, factory divides by 1e5
+        // Arrange — precision 5; the formatter automatically divides the accumulated scaled integer
+        // by the factor (1e5), so the factory receives the denormalized double directly.
         PolylineFormatter<double, string> formatter = FormatterBuilder<double, string>.Create()
             .AddValue("Value", static v => v, precision: 5)
-            .WithCreate(static v => v[0] / 1e5)
+            .WithCreate(static v => v[0])
             .ForPolyline(_write, _read)
             .Build();
 
-        // Act — 3850000 / 100000.0 = 38.5
+        // Act — accumulated value 3850000 → 3850000 / 100000.0 = 38.5 passed to factory
         double result = formatter.CreateItem(new long[] { 3850000L }.AsSpan());
 
         // Assert
@@ -184,7 +185,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
             FormatterBuilder<(double Lat, double Lon), string>.Create()
                 .AddValue("Lat", static t => t.Lat, precision: 5)
                 .AddValue("Lon", static t => t.Lon, precision: 5)
-                .WithCreate(static v => (v[0] / 1e5, v[1] / 1e5))
+                .WithCreate(static v => (v[0], v[1]))
                 .ForPolyline(_write, _read)
                 .Build();
 

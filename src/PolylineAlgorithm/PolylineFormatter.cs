@@ -89,6 +89,16 @@ public sealed class PolylineFormatter<TCoordinate, TPolyline> : IPolylineFormatt
                 $"Call {nameof(FormatterBuilder<TCoordinate, TPolyline>)}.{nameof(FormatterBuilder<TCoordinate, TPolyline>.WithCreate)} before building.");
         }
 
-        return _create(values);
+        // Denormalize each accumulated scaled integer back to the original double:
+        // add back the baseline that was subtracted during encoding, then divide by the precision factor.
+        var rules = _rules;
+        int width = rules.Length;
+        double[] doubles = new double[width];
+        for (var i = 0; i < width; i++) {
+            ref var rule = ref rules[i];
+            doubles[i] = (values[i] + (rule.Baseline ?? 0L)) / (double)rule.Factor;
+        }
+
+        return _create(doubles);
     }
 }

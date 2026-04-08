@@ -61,12 +61,15 @@ public interface IPolylineFormatter<TCoordinate, TPolyline> {
     ReadOnlyMemory<char> Read(TPolyline polyline);
 
     /// <summary>
-    /// Reconstructs a <typeparamref name="TCoordinate"/> from the given scaled integer values.
-    /// Called once per decoded item in the decoding loop.
+    /// Reconstructs a <typeparamref name="TCoordinate"/> from the given accumulated scaled integer values.
+    /// Called once per decoded item in the decoding loop. Implementations are responsible for
+    /// denormalizing the raw scaled integers (e.g. dividing by the precision factor and adding back
+    /// any baseline) before constructing the item.
     /// </summary>
     /// <param name="values">
-    /// The accumulated scaled integer values decoded from the polyline. Each element corresponds to
-    /// the same column position as in <see cref="GetValues"/>.
+    /// The raw accumulated scaled integer values decoded from the polyline. Each element corresponds to
+    /// the same column position as in <see cref="GetValues"/>. These are the direct output of the
+    /// delta-accumulation loop in the decoder before any denormalization is applied.
     /// </param>
     /// <returns>A <typeparamref name="TCoordinate"/> reconstructed from <paramref name="values"/>.</returns>
     TCoordinate CreateItem(ReadOnlySpan<long> values);
