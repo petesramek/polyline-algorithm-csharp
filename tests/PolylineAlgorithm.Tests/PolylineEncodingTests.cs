@@ -609,7 +609,7 @@ public sealed class PolylineEncodingTests {
     [TestMethod]
     public void ValidateFormat_With_Block_Too_Long_Throws_InvalidPolylineException() {
         // Act & Assert
-        Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateFormat("_____________?")); // 14-char block (max is 13)
+        Assert.ThrowsExactly<InvalidPolylineException>(() => PolylineEncoding.ValidateFormat("_____________?")); // 13 continuation chars + terminator = block length 14, exceeds max of 13
     }
 
     #endregion
@@ -668,7 +668,7 @@ public sealed class PolylineEncodingTests {
     /// Tests that ValidateBlockLength throws <see cref="InvalidPolylineException"/> for invalid block structures.
     /// </summary>
     [TestMethod]
-    [DataRow("_____________?")] // 13-char block (exceeds max of 13 = blockLen 14)
+    [DataRow("_____________?")] // 13 continuation chars + terminator = block length 14, exceeds max of 13
     [DataRow("________")]   // all continuation chars, no terminator
     [DataRow("")]           // empty polyline has no terminator
     [DataRow("?_____________?")] // valid block then too-long block
