@@ -16,11 +16,11 @@ using System.Threading;
 /// <remarks>
 /// <para>
 /// This class demonstrates implementing <see cref="IPolylineDecoder{TPolyline,TValue}"/> for a custom
-/// scalar type, following the same structural pattern as <see cref="AbstractPolylineDecoder{TPolyline,TCoordinate}"/>.
+/// scalar type, following the same structural pattern as a custom polyline decoder.
 /// </para>
 /// <para>
 /// Each encoded pair consists of a delta-compressed Unix timestamp (seconds since Unix epoch, precision 0)
-/// followed by a delta-compressed temperature value (at <see cref="PolylineEncodingOptions.Precision"/>).
+/// followed by a delta-compressed temperature value (at <see cref="SensorEncodingOptions.Precision"/>).
 /// Both are recovered and used to reconstruct the original <see cref="SensorReading"/>.
 /// </para>
 /// </remarks>
@@ -30,19 +30,19 @@ internal sealed class SensorDataDecoder : IPolylineDecoder<string, SensorReading
     /// Initializes a new instance of the <see cref="SensorDataDecoder"/> class with default encoding options.
     /// </summary>
     public SensorDataDecoder()
-        : this(new PolylineEncodingOptions()) { }
+        : this(new SensorEncodingOptions()) { }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SensorDataDecoder"/> class with the specified encoding options.
     /// </summary>
     /// <param name="options">
-    /// The <see cref="PolylineEncodingOptions"/> to use for decoding operations.
-    /// The <see cref="PolylineEncodingOptions.Precision"/> value must match the precision used during encoding.
+    /// The <see cref="SensorEncodingOptions"/> to use for decoding operations.
+    /// The <see cref="SensorEncodingOptions.Precision"/> value must match the precision used during encoding.
     /// </param>
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="options"/> is <see langword="null"/>.
     /// </exception>
-    public SensorDataDecoder(PolylineEncodingOptions options) {
+    public SensorDataDecoder(SensorEncodingOptions options) {
         ArgumentNullException.ThrowIfNull(options);
 
         Options = options;
@@ -51,7 +51,7 @@ internal sealed class SensorDataDecoder : IPolylineDecoder<string, SensorReading
     /// <summary>
     /// Gets the encoding options used by this decoder.
     /// </summary>
-    public PolylineEncodingOptions Options { get; }
+    public SensorEncodingOptions Options { get; }
 
     /// <summary>
     /// Decodes a polyline string back into a sequence of <see cref="SensorReading"/> values.

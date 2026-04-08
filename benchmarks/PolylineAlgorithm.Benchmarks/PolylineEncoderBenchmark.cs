@@ -1,19 +1,14 @@
-//
-// Copyright © Pete Sramek. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-//
-
 namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
-using PolylineAlgorithm.Abstraction;
+using PolylineAlgorithm;
 using PolylineAlgorithm.Extensions;
 using PolylineAlgorithm.Utility;
 using System.Collections.Generic;
 
 /// <summary>
-/// Benchmarks for <see cref="AbstractPolylineEncoder{TCoordinate, TPolyline}"/>.
+/// Benchmarks for <see cref="PolylineEncoder{TCoordinate, TPolyline}"/>.
 /// </summary>
 public class PolylineEncoderBenchmark {
     private readonly Consumer _consumer = new();
@@ -45,7 +40,19 @@ public class PolylineEncoderBenchmark {
     /// <summary>
     /// Polyline encoder instance.
     /// </summary>
-    private readonly StringPolylineEncoder _encoder = new();
+    private readonly PolylineEncoder<(double Latitude, double Longitude), string> _encoder = CreateEncoder();
+
+    private static PolylineEncoder<(double Latitude, double Longitude), string> CreateEncoder() {
+        PolylineFormatter<(double Latitude, double Longitude), string> formatter =
+            FormatterBuilder<(double Latitude, double Longitude), string>.Create()
+                .AddValue("lat", static c => c.Latitude)
+                .AddValue("lon", static c => c.Longitude)
+                .ForPolyline(static m => new string(m.Span), static s => s.AsMemory())
+                .Build();
+
+        return new PolylineEncoder<(double Latitude, double Longitude), string>(
+            new PolylineOptions<(double Latitude, double Longitude), string>(formatter));
+    }
 
     /// <summary>
     /// Sets up benchmark data.
@@ -82,11 +89,5 @@ public class PolylineEncoderBenchmark {
     public void PolylineEncoder_Encode_List() {
         var polyline = _encoder.Encode(List);
         _consumer.Consume(polyline);
-    }
-
-    private sealed class StringPolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
-        protected override string CreatePolyline(ReadOnlyMemory<char> polyline) => polyline.ToString();
-        protected override double GetLatitude((double Latitude, double Longitude) current) => current.Latitude;
-        protected override double GetLongitude((double Latitude, double Longitude) current) => current.Longitude;
     }
 }

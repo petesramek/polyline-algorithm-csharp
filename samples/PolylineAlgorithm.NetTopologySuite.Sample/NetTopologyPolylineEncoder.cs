@@ -6,46 +6,34 @@
 namespace PolylineAlgorithm.NetTopologySuite.Sample;
 
 using global::NetTopologySuite.Geometries;
+using PolylineAlgorithm;
 using PolylineAlgorithm.Abstraction;
+using System.Threading;
 
 /// <summary>
 /// Polyline encoder using NetTopologySuite's Point type.
 /// </summary>
-internal sealed class NetTopologyPolylineEncoder : AbstractPolylineEncoder<Point, string> {
-    /// <summary>
-    /// Creates encoded polyline string from memory.
-    /// </summary>
-    /// <param name="polyline">Polyline memory.</param>
-    /// <returns>Encoded polyline string.</returns>
-    protected override string CreatePolyline(ReadOnlyMemory<char> polyline) {
-        if (polyline.IsEmpty) {
-            return string.Empty;
-        }
-
-        return polyline.ToString();
-    }
+internal sealed class NetTopologyPolylineEncoder : IPolylineEncoder<Point, string> {
+    private readonly PolylineEncoder<Point, string> _inner;
 
     /// <summary>
-    /// Gets latitude from point.
+    /// Initializes a new instance of the <see cref="NetTopologyPolylineEncoder"/> class.
     /// </summary>
-    /// <param name="current">Point instance.</param>
-    /// <returns>Latitude value.</returns>
-    protected override double GetLatitude(Point current) {
-        ArgumentNullException.ThrowIfNull(current);
+    internal NetTopologyPolylineEncoder() {
+        PolylineFormatter<Point, string> formatter =
+            FormatterBuilder<Point, string>.Create()
+                // NetTopologySuite Point: Y = latitude, X = longitude
+                .AddValue("lat", static p => { ArgumentNullException.ThrowIfNull(p); return p.Y; })
+                .AddValue("lon", static p => { ArgumentNullException.ThrowIfNull(p); return p.X; })
+                .ForPolyline(
+                    static m => m.IsEmpty ? string.Empty : new string(m.Span),
+                    static s => s.AsMemory())
+                .Build();
 
-        // NetTopologySuite Point: Y = latitude
-        return current.Y;
+        _inner = new PolylineEncoder<Point, string>(new PolylineOptions<Point, string>(formatter));
     }
 
-    /// <summary>
-    /// Gets longitude from point.
-    /// </summary>
-    /// <param name="current">Point instance.</param>
-    /// <returns>Longitude value.</returns>
-    protected override double GetLongitude(Point current) {
-        ArgumentNullException.ThrowIfNull(current);
-
-        // NetTopologySuite Point: X = longitude
-        return current.X;
-    }
+    /// <inheritdoc/>
+    public string Encode(ReadOnlySpan<Point> coordinates, CancellationToken cancellationToken = default)
+        => _inner.Encode(coordinates, cancellationToken);
 }

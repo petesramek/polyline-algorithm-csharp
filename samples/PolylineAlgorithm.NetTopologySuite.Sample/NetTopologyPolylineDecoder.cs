@@ -6,30 +6,37 @@
 namespace PolylineAlgorithm.NetTopologySuite.Sample;
 
 using global::NetTopologySuite.Geometries;
+using PolylineAlgorithm;
 using PolylineAlgorithm.Abstraction;
-using System;
+using System.Collections.Generic;
+using System.Threading;
 
 /// <summary>
 /// Polyline decoder using NetTopologySuite.
 /// </summary>
-internal sealed class NetTopologyPolylineDecoder : AbstractPolylineDecoder<string, Point> {
-    /// <summary>
-    /// Creates a NetTopologySuite point from latitude and longitude.
-    /// </summary>
-    /// <param name="latitude">Latitude value.</param>
-    /// <param name="longitude">Longitude value.</param>
-    /// <returns>Point instance.</returns>
-    protected override Point CreateCoordinate(double latitude, double longitude) {
-        // NetTopologySuite Point: x = longitude, y = latitude
-        return new Point(longitude, latitude);
-    }
+internal sealed class NetTopologyPolylineDecoder : IPolylineDecoder<string, Point> {
+    private readonly PolylineDecoder<string, Point> _inner;
 
     /// <summary>
-    /// Converts polyline string to read-only memory.
+    /// Initializes a new instance of the <see cref="NetTopologyPolylineDecoder"/> class.
     /// </summary>
-    /// <param name="polyline">Encoded polyline string.</param>
-    /// <returns>ReadOnlyMemory of characters.</returns>
-    protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) {
-        return polyline.AsMemory();
+    internal NetTopologyPolylineDecoder() {
+        PolylineFormatter<Point, string> formatter =
+            FormatterBuilder<Point, string>.Create()
+                // NetTopologySuite Point: Y = latitude, X = longitude
+                .AddValue("lat", static p => p.Y)
+                .AddValue("lon", static p => p.X)
+                // v[0] = scaled latitude, v[1] = scaled longitude (factor = 1e5 for default precision 5)
+                .WithCreate(static v => new Point(x: v[1] / 1e5, y: v[0] / 1e5))
+                .ForPolyline(
+                    static m => m.IsEmpty ? string.Empty : new string(m.Span),
+                    static s => s.AsMemory())
+                .Build();
+
+        _inner = new PolylineDecoder<string, Point>(new PolylineOptions<Point, string>(formatter));
     }
+
+    /// <inheritdoc/>
+    public IEnumerable<Point> Decode(string polyline, CancellationToken cancellationToken = default)
+        => _inner.Decode(polyline, cancellationToken);
 }

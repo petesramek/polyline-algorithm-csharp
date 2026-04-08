@@ -5,6 +5,7 @@
 
 namespace PolylineAlgorithm.Tests.Extensions;
 
+using PolylineAlgorithm;
 using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Extensions;
 using PolylineAlgorithm.Utility;
@@ -16,10 +17,16 @@ using System.Collections.Generic;
 /// </summary>
 [TestClass]
 public sealed class PolylineEncoderExtensionsTests {
-    private sealed class TestStringEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
-        protected override string CreatePolyline(ReadOnlyMemory<char> polyline) => polyline.ToString();
-        protected override double GetLatitude((double Latitude, double Longitude) current) => current.Latitude;
-        protected override double GetLongitude((double Latitude, double Longitude) current) => current.Longitude;
+    private static PolylineEncoder<(double Latitude, double Longitude), string> CreateTestEncoder() {
+        PolylineFormatter<(double Latitude, double Longitude), string> formatter =
+            FormatterBuilder<(double Latitude, double Longitude), string>.Create()
+                .AddValue("lat", static c => c.Latitude)
+                .AddValue("lon", static c => c.Longitude)
+                .ForPolyline(static m => new string(m.Span), static s => s.AsMemory())
+                .Build();
+
+        return new PolylineEncoder<(double Latitude, double Longitude), string>(
+            new PolylineOptions<(double Latitude, double Longitude), string>(formatter));
     }
 
     // ----- Encode(List<T>) -----
@@ -45,7 +52,7 @@ public sealed class PolylineEncoderExtensionsTests {
     [TestMethod]
     public void Encode_With_List_Null_Coordinates_Throws_ArgumentNullException() {
         // Arrange
-        TestStringEncoder encoder = new();
+        var encoder = CreateTestEncoder();
         List<(double, double)>? coordinates = null;
 
         // Act & Assert
@@ -60,7 +67,7 @@ public sealed class PolylineEncoderExtensionsTests {
     [TestMethod]
     public void Encode_With_List_Valid_Coordinates_Returns_Expected_Polyline() {
         // Arrange
-        TestStringEncoder encoder = new();
+        var encoder = CreateTestEncoder();
         List<(double Latitude, double Longitude)> coordinates = [.. StaticValueProvider.Valid.GetCoordinates()];
         string expected = StaticValueProvider.Valid.GetPolyline();
 
@@ -95,7 +102,7 @@ public sealed class PolylineEncoderExtensionsTests {
     [TestMethod]
     public void Encode_With_Array_Null_Coordinates_Throws_ArgumentNullException() {
         // Arrange — call the extension method explicitly (same reasoning as above).
-        IPolylineEncoder<(double, double), string> encoder = new TestStringEncoder();
+        IPolylineEncoder<(double, double), string> encoder = CreateTestEncoder();
         (double, double)[]? coordinates = null;
 
         // Act & Assert
@@ -110,7 +117,7 @@ public sealed class PolylineEncoderExtensionsTests {
     [TestMethod]
     public void Encode_With_Array_Valid_Coordinates_Returns_Expected_Polyline() {
         // Arrange
-        TestStringEncoder encoder = new();
+        var encoder = CreateTestEncoder();
         (double Latitude, double Longitude)[] coordinates = [.. StaticValueProvider.Valid.GetCoordinates()];
         string expected = StaticValueProvider.Valid.GetPolyline();
 

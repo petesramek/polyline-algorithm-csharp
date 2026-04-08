@@ -17,16 +17,16 @@ using System.Threading;
 /// <remarks>
 /// <para>
 /// This class demonstrates implementing <see cref="IPolylineEncoder{TValue,TPolyline}"/> for a custom
-/// scalar type, following the same structural pattern as <see cref="AbstractPolylineEncoder{TCoordinate,TPolyline}"/>.
+/// scalar type, following the same structural pattern as a custom polyline encoder.
 /// </para>
 /// <para>
-/// Because sensor readings carry two numeric dimensions (timestamp and temperature), the base class designed
+/// Because sensor readings carry two numeric dimensions (timestamp and temperature), the generic encoder
 /// for geographic coordinate pairs is not used. Instead, <see cref="PolylineEncoding"/> static
 /// helpers are called directly to perform normalisation, delta computation, and character-level encoding.
 /// </para>
 /// <para>
 /// Each reading is encoded as a pair of delta-compressed values:
-/// the Unix timestamp in seconds (precision 0) followed by the temperature (at <see cref="PolylineEncodingOptions.Precision"/>).
+/// the Unix timestamp in seconds (precision 0) followed by the temperature (at <see cref="SensorEncodingOptions.Precision"/>).
 /// </para>
 /// </remarks>
 internal sealed class SensorDataEncoder : IPolylineEncoder<SensorReading, string> {
@@ -38,18 +38,18 @@ internal sealed class SensorDataEncoder : IPolylineEncoder<SensorReading, string
     /// Initializes a new instance of the <see cref="SensorDataEncoder"/> class with default encoding options.
     /// </summary>
     public SensorDataEncoder()
-        : this(new PolylineEncodingOptions()) { }
+        : this(new SensorEncodingOptions()) { }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SensorDataEncoder"/> class with the specified encoding options.
     /// </summary>
     /// <param name="options">
-    /// The <see cref="PolylineEncodingOptions"/> to use for encoding operations.
+    /// The <see cref="SensorEncodingOptions"/> to use for encoding operations.
     /// </param>
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="options"/> is <see langword="null"/>.
     /// </exception>
-    public SensorDataEncoder(PolylineEncodingOptions options) {
+    public SensorDataEncoder(SensorEncodingOptions options) {
         ArgumentNullException.ThrowIfNull(options);
 
         Options = options;
@@ -58,7 +58,7 @@ internal sealed class SensorDataEncoder : IPolylineEncoder<SensorReading, string
     /// <summary>
     /// Gets the encoding options used by this encoder.
     /// </summary>
-    public PolylineEncodingOptions Options { get; }
+    public SensorEncodingOptions Options { get; }
 
     /// <summary>
     /// Encodes a sequence of <see cref="SensorReading"/> values into a polyline string.
