@@ -264,7 +264,7 @@ public class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder<
     protected virtual ReadOnlyMemory<char> GetReadOnlyMemory(in TPolyline polyline) {
         throw new NotSupportedException(
             $"Override {nameof(GetReadOnlyMemory)} in a derived class, or provide a " +
-            $"{nameof(PolylineOptions<TPolyline, TCoordinate>)} with a polyline formatter.");
+            $"{nameof(PolylineOptions<TCoordinate, TPolyline>)} with a polyline formatter.");
     }
 
     /// <summary>
@@ -287,6 +287,6 @@ public class AbstractPolylineDecoder<TPolyline, TCoordinate> : IPolylineDecoder<
     protected virtual TCoordinate CreateCoordinate(double latitude, double longitude) {
         throw new NotSupportedException(
             $"Override {nameof(CreateCoordinate)} in a derived class, or provide a " +
-            $"{nameof(PolylineOptions<TPolyline, TCoordinate>)} with a value formatter.");
+            $"{nameof(PolylineOptions<TCoordinate, TPolyline>)} with a value formatter.");
     }
 }
