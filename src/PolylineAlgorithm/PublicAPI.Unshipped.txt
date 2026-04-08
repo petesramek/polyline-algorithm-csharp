@@ -1,34 +1,46 @@
 #nullable enable
-PolylineAlgorithm.FormatterBuilder<T>
-PolylineAlgorithm.FormatterBuilder<T>.AddValue(string! name, System.Func<T, double>! selector, uint precision = 5) -> PolylineAlgorithm.FormatterBuilder<T>!
-PolylineAlgorithm.FormatterBuilder<T>.Build() -> PolylineAlgorithm.PolylineValueFormatter<T>!
-PolylineAlgorithm.FormatterBuilder<T>.SetBaseline(long baseline) -> PolylineAlgorithm.FormatterBuilder<T>!
-PolylineAlgorithm.FormatterBuilder<T>.WithCreate(PolylineAlgorithm.PolylineItemFactory<T>! create) -> PolylineAlgorithm.FormatterBuilder<T>!
-PolylineAlgorithm.Abstraction.IPolylineFormatter<TPolyline>
-PolylineAlgorithm.Abstraction.IPolylineFormatter<TPolyline>.Read(TPolyline polyline) -> System.ReadOnlyMemory<char>
-PolylineAlgorithm.Abstraction.IPolylineFormatter<TPolyline>.Write(System.ReadOnlyMemory<char> encoded) -> TPolyline
-PolylineAlgorithm.Abstraction.IPolylineValueFormatter<TValue>
-PolylineAlgorithm.Abstraction.IPolylineValueFormatter<TValue>.CreateItem(System.ReadOnlySpan<long> values) -> TValue
-PolylineAlgorithm.Abstraction.IPolylineValueFormatter<TValue>.GetBaseline(int index) -> long
-PolylineAlgorithm.Abstraction.IPolylineValueFormatter<TValue>.GetValues(TValue item, System.Span<long> values) -> void
-PolylineAlgorithm.Abstraction.IPolylineValueFormatter<TValue>.Width.get -> int
-PolylineAlgorithm.PolylineFormatter
-static PolylineAlgorithm.PolylineFormatter.ForMemory.get -> PolylineAlgorithm.Abstraction.IPolylineFormatter<System.ReadOnlyMemory<char>>!
-static PolylineAlgorithm.PolylineFormatter.ForString.get -> PolylineAlgorithm.Abstraction.IPolylineFormatter<string!>!
-static PolylineAlgorithm.PolylineFormatter.Create<T>(System.Func<System.ReadOnlyMemory<char>, T>! write, System.Func<T, System.ReadOnlyMemory<char>>! read) -> PolylineAlgorithm.Abstraction.IPolylineFormatter<T>!
+PolylineAlgorithm.Abstraction.IPolylineFormatter<TCoordinate, TPolyline>
+PolylineAlgorithm.Abstraction.IPolylineFormatter<TCoordinate, TPolyline>.CreateItem(System.ReadOnlySpan<long> values) -> TCoordinate
+PolylineAlgorithm.Abstraction.IPolylineFormatter<TCoordinate, TPolyline>.GetBaseline(int index) -> long
+PolylineAlgorithm.Abstraction.IPolylineFormatter<TCoordinate, TPolyline>.GetValues(TCoordinate item, System.Span<long> values) -> void
+PolylineAlgorithm.Abstraction.IPolylineFormatter<TCoordinate, TPolyline>.Read(TPolyline polyline) -> System.ReadOnlyMemory<char>
+PolylineAlgorithm.Abstraction.IPolylineFormatter<TCoordinate, TPolyline>.Width.get -> int
+PolylineAlgorithm.Abstraction.IPolylineFormatter<TCoordinate, TPolyline>.Write(System.ReadOnlyMemory<char> encoded) -> TPolyline
+PolylineAlgorithm.Abstraction.IPolylineDecoder<TPolyline, TValue>
+PolylineAlgorithm.Abstraction.IPolylineDecoder<TPolyline, TValue>.Decode(TPolyline polyline, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IEnumerable<TValue>!
+PolylineAlgorithm.Abstraction.IPolylineEncoder<TValue, TPolyline>
+PolylineAlgorithm.Abstraction.IPolylineEncoder<TValue, TPolyline>.Encode(System.ReadOnlySpan<TValue> coordinates, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> TPolyline
+PolylineAlgorithm.FormatterBuilder<TCoordinate, TPolyline>
+PolylineAlgorithm.FormatterBuilder<TCoordinate, TPolyline>.AddValue(string! name, System.Func<TCoordinate, double>! selector, uint precision = 5) -> PolylineAlgorithm.FormatterBuilder<TCoordinate, TPolyline>!
+PolylineAlgorithm.FormatterBuilder<TCoordinate, TPolyline>.Build() -> PolylineAlgorithm.PolylineFormatter<TCoordinate, TPolyline>!
+PolylineAlgorithm.FormatterBuilder<TCoordinate, TPolyline>.ForPolyline(System.Func<System.ReadOnlyMemory<char>, TPolyline>! write, System.Func<TPolyline, System.ReadOnlyMemory<char>>! read) -> PolylineAlgorithm.FormatterBuilder<TCoordinate, TPolyline>!
+PolylineAlgorithm.FormatterBuilder<TCoordinate, TPolyline>.SetBaseline(long baseline) -> PolylineAlgorithm.FormatterBuilder<TCoordinate, TPolyline>!
+PolylineAlgorithm.FormatterBuilder<TCoordinate, TPolyline>.WithCreate(PolylineAlgorithm.PolylineItemFactory<TCoordinate>! create) -> PolylineAlgorithm.FormatterBuilder<TCoordinate, TPolyline>!
+static PolylineAlgorithm.FormatterBuilder<TCoordinate, TPolyline>.Create() -> PolylineAlgorithm.FormatterBuilder<TCoordinate, TPolyline>!
+PolylineAlgorithm.PolylineFormatter<TCoordinate, TPolyline>
+PolylineAlgorithm.PolylineFormatter<TCoordinate, TPolyline>.CreateItem(System.ReadOnlySpan<long> values) -> TCoordinate
+PolylineAlgorithm.PolylineFormatter<TCoordinate, TPolyline>.GetBaseline(int index) -> long
+PolylineAlgorithm.PolylineFormatter<TCoordinate, TPolyline>.GetValues(TCoordinate item, System.Span<long> values) -> void
+PolylineAlgorithm.PolylineFormatter<TCoordinate, TPolyline>.Read(TPolyline polyline) -> System.ReadOnlyMemory<char>
+PolylineAlgorithm.PolylineFormatter<TCoordinate, TPolyline>.Width.get -> int
+PolylineAlgorithm.PolylineFormatter<TCoordinate, TPolyline>.Write(System.ReadOnlyMemory<char> encoded) -> TPolyline
 PolylineAlgorithm.PolylineItemFactory<T>
-PolylineAlgorithm.PolylineValueFormatter<T>
-PolylineAlgorithm.PolylineValueFormatter<T>.CanCreateItem.get -> bool
-PolylineAlgorithm.PolylineValueFormatter<T>.CreateItem(System.ReadOnlySpan<long> values) -> T
-PolylineAlgorithm.PolylineValueFormatter<T>.GetBaseline(int index) -> long
-PolylineAlgorithm.PolylineValueFormatter<T>.GetValues(T item, System.Span<long> values) -> void
-PolylineAlgorithm.PolylineValueFormatter<T>.HasBaselines.get -> bool
-PolylineAlgorithm.PolylineValueFormatter<T>.Width.get -> int
-PolylineAlgorithm.PolylineOptions<TValue, TPolyline>
-PolylineAlgorithm.PolylineOptions<TValue, TPolyline>.Encoding.get -> PolylineAlgorithm.PolylineEncodingOptions!
-PolylineAlgorithm.PolylineOptions<TValue, TPolyline>.PolylineFormatter.get -> PolylineAlgorithm.Abstraction.IPolylineFormatter<TPolyline>!
-PolylineAlgorithm.PolylineOptions<TValue, TPolyline>.PolylineOptions(PolylineAlgorithm.Abstraction.IPolylineValueFormatter<TValue>! valueFormatter, PolylineAlgorithm.Abstraction.IPolylineFormatter<TPolyline>! polylineFormatter, PolylineAlgorithm.PolylineEncodingOptions? encoding = null) -> void
-PolylineAlgorithm.PolylineOptions<TValue, TPolyline>.ValueFormatter.get -> PolylineAlgorithm.Abstraction.IPolylineValueFormatter<TValue>!
-PolylineAlgorithm.Abstraction.AbstractPolylineEncoder<TCoordinate, TPolyline>.AbstractPolylineEncoder(PolylineAlgorithm.PolylineOptions<TCoordinate, TPolyline>! options) -> void
-PolylineAlgorithm.Abstraction.AbstractPolylineDecoder<TPolyline, TCoordinate>.AbstractPolylineDecoder(PolylineAlgorithm.PolylineOptions<TCoordinate, TPolyline>! options) -> void
-static PolylineAlgorithm.FormatterBuilder<T>.Create() -> PolylineAlgorithm.FormatterBuilder<T>!
+virtual PolylineAlgorithm.PolylineItemFactory<T>.Invoke(System.ReadOnlySpan<long> values) -> T
+PolylineAlgorithm.PolylineOptions<TCoordinate, TPolyline>
+PolylineAlgorithm.PolylineOptions<TCoordinate, TPolyline>.Formatter.get -> PolylineAlgorithm.Abstraction.IPolylineFormatter<TCoordinate, TPolyline>!
+PolylineAlgorithm.PolylineOptions<TCoordinate, TPolyline>.LoggerFactory.get -> Microsoft.Extensions.Logging.ILoggerFactory!
+PolylineAlgorithm.PolylineOptions<TCoordinate, TPolyline>.PolylineOptions(PolylineAlgorithm.Abstraction.IPolylineFormatter<TCoordinate, TPolyline>! formatter, int stackAllocLimit = 512, Microsoft.Extensions.Logging.ILoggerFactory? loggerFactory = null) -> void
+PolylineAlgorithm.PolylineOptions<TCoordinate, TPolyline>.StackAllocLimit.get -> int
+PolylineAlgorithm.PolylineDecoder<TPolyline, TCoordinate>
+PolylineAlgorithm.PolylineDecoder<TPolyline, TCoordinate>.Decode(TPolyline polyline, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IEnumerable<TCoordinate>!
+PolylineAlgorithm.PolylineDecoder<TPolyline, TCoordinate>.PolylineDecoder(PolylineAlgorithm.PolylineOptions<TCoordinate, TPolyline>! options) -> void
+PolylineAlgorithm.PolylineEncoder<TCoordinate, TPolyline>
+PolylineAlgorithm.PolylineEncoder<TCoordinate, TPolyline>.Encode(System.ReadOnlySpan<TCoordinate> coordinates, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> TPolyline
+PolylineAlgorithm.PolylineEncoder<TCoordinate, TPolyline>.PolylineEncoder(PolylineAlgorithm.PolylineOptions<TCoordinate, TPolyline>! options) -> void
+PolylineAlgorithm.Extensions.PolylineDecoderExtensions
+PolylineAlgorithm.Extensions.PolylineEncoderExtensions
+PolylineAlgorithm.InvalidPolylineException
+PolylineAlgorithm.InvalidPolylineException.InvalidPolylineException() -> void
+PolylineAlgorithm.InvalidPolylineException.InvalidPolylineException(string! message) -> void
+PolylineAlgorithm.InvalidPolylineException.InvalidPolylineException(string! message, System.Exception! innerException) -> void
+PolylineAlgorithm.PolylineEncoding

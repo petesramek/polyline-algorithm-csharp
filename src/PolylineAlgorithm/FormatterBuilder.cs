@@ -10,33 +10,37 @@ using System;
 using System.Collections.Generic;
 
 /// <summary>
-/// Provides a fluent builder for constructing a <see cref="PolylineValueFormatter{T}"/>.
+/// Provides a fluent builder for constructing a <see cref="PolylineFormatter{TCoordinate, TPolyline}"/>.
 /// </summary>
-/// <typeparam name="T">The source object type from which column values are extracted.</typeparam>
+/// <typeparam name="TCoordinate">The coordinate or item type from which column values are extracted.</typeparam>
+/// <typeparam name="TPolyline">The polyline surface type produced and consumed by the formatter.</typeparam>
 /// <remarks>
 /// <para>
 /// Use <see cref="Create"/> to obtain an instance, call <see cref="AddValue"/> once per column,
 /// optionally chain <see cref="SetBaseline"/> to specify an epoch for the most-recently added column,
 /// optionally chain <see cref="WithCreate"/> to register a factory for the decoding direction,
-/// then call <see cref="Build"/> to produce the immutable <see cref="PolylineValueFormatter{T}"/>.
+/// call <see cref="ForPolyline"/> to supply the polyline surface delegates (required), then call
+/// <see cref="Build"/> to produce the immutable <see cref="PolylineFormatter{TCoordinate, TPolyline}"/>.
 /// </para>
 /// <para>
-/// The builder is the <em>only</em> way to create a <see cref="PolylineValueFormatter{T}"/> — its
-/// constructor is internal.
+/// The builder is the <em>only</em> way to create a <see cref="PolylineFormatter{TCoordinate, TPolyline}"/>
+/// — its constructor is internal.
 /// </para>
 /// </remarks>
-public sealed class FormatterBuilder<T> {
-    private readonly List<FormatterRule<T>> _rules = [];
+public sealed class FormatterBuilder<TCoordinate, TPolyline> {
+    private readonly List<FormatterRule<TCoordinate>> _rules = [];
     private readonly HashSet<string> _names = new(StringComparer.Ordinal);
-    private PolylineItemFactory<T>? _create;
+    private PolylineItemFactory<TCoordinate>? _create;
+    private Func<ReadOnlyMemory<char>, TPolyline>? _write;
+    private Func<TPolyline, ReadOnlyMemory<char>>? _read;
 
     private FormatterBuilder() { }
 
     /// <summary>
-    /// Creates a new <see cref="FormatterBuilder{T}"/> instance.
+    /// Creates a new <see cref="FormatterBuilder{TCoordinate, TPolyline}"/> instance.
     /// </summary>
-    /// <returns>A fresh <see cref="FormatterBuilder{T}"/> with no rules.</returns>
-    public static FormatterBuilder<T> Create() => new();
+    /// <returns>A fresh builder with no rules and no polyline delegates.</returns>
+    public static FormatterBuilder<TCoordinate, TPolyline> Create() => new();
 
     /// <summary>
     /// Adds a column with the specified value selector and precision.
@@ -46,20 +50,20 @@ public sealed class FormatterBuilder<T> {
     /// </param>
     /// <param name="selector">
     /// A delegate that extracts the column's raw <see cref="double"/> value from an item of type
-    /// <typeparamref name="T"/>.
+    /// <typeparamref name="TCoordinate"/>.
     /// </param>
     /// <param name="precision">
     /// The number of decimal places to preserve. Each extracted value is multiplied by
     /// 10^<paramref name="precision"/> before encoding. Defaults to 5.
     /// </param>
-    /// <returns>The current <see cref="FormatterBuilder{T}"/> instance for method chaining.</returns>
+    /// <returns>The current builder instance for method chaining.</returns>
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="name"/> or <paramref name="selector"/> is <see langword="null"/>.
     /// </exception>
     /// <exception cref="ArgumentException">
     /// Thrown when <paramref name="name"/> is empty, or a rule with the same name already exists.
     /// </exception>
-    public FormatterBuilder<T> AddValue(string name, Func<T, double> selector, uint precision = 5) {
+    public FormatterBuilder<TCoordinate, TPolyline> AddValue(string name, Func<TCoordinate, double> selector, uint precision = 5) {
         if (name is null) {
             throw new ArgumentNullException(nameof(name));
         }
@@ -76,7 +80,7 @@ public sealed class FormatterBuilder<T> {
             throw new ArgumentException($"A rule with the name '{name}' has already been added.", nameof(name));
         }
 
-        _rules.Add(new FormatterRule<T>(name, (long)Pow10.GetFactor(precision), selector));
+        _rules.Add(new FormatterRule<TCoordinate>(name, (long)Pow10.GetFactor(precision), selector));
 
         return this;
     }
@@ -87,35 +91,36 @@ public sealed class FormatterBuilder<T> {
     /// keeping the initial delta small when the absolute first value is large.
     /// </summary>
     /// <param name="baseline">The baseline value to apply to the first item's column value.</param>
-    /// <returns>The current <see cref="FormatterBuilder{T}"/> instance for method chaining.</returns>
+    /// <returns>The current builder instance for method chaining.</returns>
     /// <exception cref="InvalidOperationException">
-    /// Thrown when no rules have been added yet. Call <see cref="AddValue"/> before <see cref="SetBaseline"/>.
+    /// Thrown when no rules have been added yet. Call <see cref="AddValue"/> before
+    /// <see cref="SetBaseline"/>.
     /// </exception>
-    public FormatterBuilder<T> SetBaseline(long baseline) {
+    public FormatterBuilder<TCoordinate, TPolyline> SetBaseline(long baseline) {
         if (_rules.Count == 0) {
             throw new InvalidOperationException("Cannot set a baseline when no rules have been added. Call AddValue first.");
         }
 
         var last = _rules[^1];
-        _rules[^1] = new FormatterRule<T>(last.Name, last.Factor, last.Select, baseline);
+        _rules[^1] = new FormatterRule<TCoordinate>(last.Name, last.Factor, last.Select, baseline);
 
         return this;
     }
 
     /// <summary>
-    /// Registers a factory delegate used to reconstruct a <typeparamref name="T"/> from scaled values
-    /// during decoding. This enables the decoding direction of <see cref="PolylineValueFormatter{T}"/>.
+    /// Registers a factory delegate used to reconstruct a <typeparamref name="TCoordinate"/> from
+    /// scaled values during decoding.
     /// </summary>
     /// <param name="create">
     /// A delegate that accepts the scaled integer values decoded from the polyline and returns a
-    /// <typeparamref name="T"/>. The span length always equals the number of columns added via
-    /// <see cref="AddValue"/>.
+    /// <typeparamref name="TCoordinate"/>. The span length always equals the number of columns added
+    /// via <see cref="AddValue"/>.
     /// </param>
-    /// <returns>The current <see cref="FormatterBuilder{T}"/> instance for method chaining.</returns>
+    /// <returns>The current builder instance for method chaining.</returns>
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="create"/> is <see langword="null"/>.
     /// </exception>
-    public FormatterBuilder<T> WithCreate(PolylineItemFactory<T> create) {
+    public FormatterBuilder<TCoordinate, TPolyline> WithCreate(PolylineItemFactory<TCoordinate> create) {
         if (create is null) {
             throw new ArgumentNullException(nameof(create));
         }
@@ -126,19 +131,60 @@ public sealed class FormatterBuilder<T> {
     }
 
     /// <summary>
-    /// Bakes all added rules into a sealed, immutable <see cref="PolylineValueFormatter{T}"/>.
+    /// Supplies the polyline-surface delegates required to convert between the raw character buffer
+    /// and a <typeparamref name="TPolyline"/>. This call is mandatory before <see cref="Build"/>.
+    /// </summary>
+    /// <param name="write">
+    /// Converts the encoded <see cref="ReadOnlyMemory{T}"/> of <see cref="char"/> produced by the encoder
+    /// into a <typeparamref name="TPolyline"/>.
+    /// </param>
+    /// <param name="read">
+    /// Extracts the encoded character buffer from a <typeparamref name="TPolyline"/> for the decoder to
+    /// consume.
+    /// </param>
+    /// <returns>The current builder instance for method chaining.</returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when <paramref name="write"/> or <paramref name="read"/> is <see langword="null"/>.
+    /// </exception>
+    public FormatterBuilder<TCoordinate, TPolyline> ForPolyline(
+        Func<ReadOnlyMemory<char>, TPolyline> write,
+        Func<TPolyline, ReadOnlyMemory<char>> read) {
+        if (write is null) {
+            throw new ArgumentNullException(nameof(write));
+        }
+
+        if (read is null) {
+            throw new ArgumentNullException(nameof(read));
+        }
+
+        _write = write;
+        _read = read;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Bakes all added rules and delegates into a sealed, immutable
+    /// <see cref="PolylineFormatter{TCoordinate, TPolyline}"/>.
     /// </summary>
     /// <returns>
-    /// An immutable <see cref="PolylineValueFormatter{T}"/> whose rules can no longer be changed.
+    /// An immutable <see cref="PolylineFormatter{TCoordinate, TPolyline}"/> whose configuration can
+    /// no longer be changed.
     /// </returns>
     /// <exception cref="InvalidOperationException">
-    /// Thrown when no rules have been added.
+    /// Thrown when no rules have been added, or when <see cref="ForPolyline"/> has not been called.
     /// </exception>
-    public PolylineValueFormatter<T> Build() {
+    public PolylineFormatter<TCoordinate, TPolyline> Build() {
         if (_rules.Count == 0) {
             throw new InvalidOperationException("At least one rule must be added before calling Build.");
         }
 
-        return new PolylineValueFormatter<T>(_rules.ToArray(), _create);
+        if (_write is null || _read is null) {
+            throw new InvalidOperationException(
+                $"Polyline surface delegates must be supplied before calling Build. " +
+                $"Call {nameof(ForPolyline)} first.");
+        }
+
+        return new PolylineFormatter<TCoordinate, TPolyline>(_rules.ToArray(), _create, _write, _read);
     }
 }

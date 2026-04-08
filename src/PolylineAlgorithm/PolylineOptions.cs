@@ -5,70 +5,68 @@
 
 namespace PolylineAlgorithm;
 
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using PolylineAlgorithm.Abstraction;
 using System;
 
 /// <summary>
 /// Provides unified configuration for a formatter-driven encoding or decoding operation.
 /// </summary>
-/// <typeparam name="TValue">The coordinate or item type understood by the value formatter.</typeparam>
-/// <typeparam name="TPolyline">The polyline surface type understood by the polyline formatter.</typeparam>
+/// <typeparam name="TCoordinate">The coordinate or item type understood by the formatter.</typeparam>
+/// <typeparam name="TPolyline">The polyline surface type understood by the formatter.</typeparam>
 /// <remarks>
-/// Combines an <see cref="IPolylineValueFormatter{TValue}"/> (which defines the column schema, scaling
-/// rules, and item factory) with an <see cref="IPolylineFormatter{TPolyline}"/> (which converts between
-/// the raw character buffer and the surface type) and a <see cref="PolylineEncodingOptions"/> (which
-/// controls buffer sizes, precision for legacy paths, and logging).
+/// Supply an <see cref="IPolylineFormatter{TCoordinate, TPolyline}"/> and optional settings,
+/// then pass this instance to <see cref="PolylineEncoder{TCoordinate, TPolyline}"/> and/or
+/// <see cref="PolylineDecoder{TPolyline, TCoordinate}"/>.
 /// </remarks>
-public sealed class PolylineOptions<TValue, TPolyline> {
+public sealed class PolylineOptions<TCoordinate, TPolyline> {
     /// <summary>
-    /// Initializes a new instance of <see cref="PolylineOptions{TValue, TPolyline}"/>.
+    /// Initializes a new instance of <see cref="PolylineOptions{TCoordinate, TPolyline}"/>.
     /// </summary>
-    /// <param name="valueFormatter">
-    /// The formatter that defines the column schema, scaling rules, and item factory. Must not be
-    /// <see langword="null"/>.
+    /// <param name="formatter">
+    /// The unified formatter that handles all type-specific concerns: value extraction, item
+    /// reconstruction, and polyline surface conversion. Must not be <see langword="null"/>.
     /// </param>
-    /// <param name="polylineFormatter">
-    /// The formatter that converts between the raw character buffer and
-    /// <typeparamref name="TPolyline"/>. Must not be <see langword="null"/>.
+    /// <param name="stackAllocLimit">
+    /// The maximum buffer size (in characters) for stack allocation. Defaults to 512.
     /// </param>
-    /// <param name="encoding">
-    /// The encoding options that control buffer sizes, precision, and logging.
-    /// Pass <see langword="null"/> to use default options.
+    /// <param name="loggerFactory">
+    /// The logger factory for diagnostic logging. Pass <see langword="null"/> to use
+    /// <see cref="NullLoggerFactory.Instance"/>.
     /// </param>
     /// <exception cref="ArgumentNullException">
-    /// Thrown when <paramref name="valueFormatter"/> or <paramref name="polylineFormatter"/> is
-    /// <see langword="null"/>.
+    /// Thrown when <paramref name="formatter"/> is <see langword="null"/>.
     /// </exception>
     public PolylineOptions(
-        IPolylineValueFormatter<TValue> valueFormatter,
-        IPolylineFormatter<TPolyline> polylineFormatter,
-        PolylineEncodingOptions? encoding = null) {
-        if (valueFormatter is null) {
-            throw new ArgumentNullException(nameof(valueFormatter));
+        IPolylineFormatter<TCoordinate, TPolyline> formatter,
+        int stackAllocLimit = 512,
+        ILoggerFactory? loggerFactory = null) {
+        if (formatter is null) {
+            throw new ArgumentNullException(nameof(formatter));
         }
 
-        if (polylineFormatter is null) {
-            throw new ArgumentNullException(nameof(polylineFormatter));
-        }
-
-        ValueFormatter = valueFormatter;
-        PolylineFormatter = polylineFormatter;
-        Encoding = encoding ?? new PolylineEncodingOptions();
+        Formatter = formatter;
+        StackAllocLimit = stackAllocLimit;
+        LoggerFactory = loggerFactory ?? NullLoggerFactory.Instance;
     }
 
     /// <summary>
-    /// Gets the formatter that defines the column schema, scaling rules, and item factory.
+    /// Gets the unified formatter that handles value extraction, item reconstruction, and polyline
+    /// surface conversion.
     /// </summary>
-    public IPolylineValueFormatter<TValue> ValueFormatter { get; }
+    public IPolylineFormatter<TCoordinate, TPolyline> Formatter { get; }
 
     /// <summary>
-    /// Gets the formatter that converts between the raw character buffer and
-    /// <typeparamref name="TPolyline"/>.
+    /// Gets the maximum buffer size (in characters) that may be allocated on the stack for encoding.
+    /// When the required buffer size exceeds this limit, memory is rented from
+    /// <see cref="System.Buffers.ArrayPool{T}"/> instead. Defaults to 512.
     /// </summary>
-    public IPolylineFormatter<TPolyline> PolylineFormatter { get; }
+    public int StackAllocLimit { get; }
 
     /// <summary>
-    /// Gets the encoding options that control buffer sizes, precision, and logging.
+    /// Gets the logger factory used for diagnostic logging during encoding and decoding operations.
+    /// Defaults to <see cref="NullLoggerFactory.Instance"/>.
     /// </summary>
-    public PolylineEncodingOptions Encoding { get; }
+    public ILoggerFactory LoggerFactory { get; }
 }

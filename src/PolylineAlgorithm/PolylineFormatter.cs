@@ -8,62 +8,87 @@ namespace PolylineAlgorithm;
 using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal;
 using System;
+using System.Runtime.CompilerServices;
 
 /// <summary>
-/// Provides static factory methods and ready-made instances of <see cref="IPolylineFormatter{TPolyline}"/>
-/// for the most common polyline surface types.
+/// A sealed, immutable formatter that implements <see cref="IPolylineFormatter{TCoordinate, TPolyline}"/>.
 /// </summary>
+/// <typeparam name="TCoordinate">The coordinate or item type.</typeparam>
+/// <typeparam name="TPolyline">The polyline surface type.</typeparam>
 /// <remarks>
-/// <para>
-/// Use <see cref="ForString"/> or <see cref="ForMemory"/> for the two most common cases.
-/// Call <see cref="Create{T}"/> to build a custom formatter from a pair of delegates.
-/// </para>
+/// Instances are constructed exclusively through <see cref="FormatterBuilder{TCoordinate, TPolyline}"/>.
+/// The <see langword="sealed"/> modifier allows the JIT to devirtualise and inline calls to the
+/// interface methods in the encoding/decoding hot loop.
 /// </remarks>
-public static class PolylineFormatter {
-    /// <summary>
-    /// Gets a formatter that produces a <see cref="string"/> from the encoded char buffer and reads
-    /// the buffer back via <see cref="string.AsMemory()"/>.
-    /// </summary>
-    public static IPolylineFormatter<string> ForString { get; } =
-        new DelegatePolylineFormatter<string>(
-            static mem => new string(mem.Span),
-            static s => s.AsMemory());
+public sealed class PolylineFormatter<TCoordinate, TPolyline> : IPolylineFormatter<TCoordinate, TPolyline> {
+    private readonly FormatterRule<TCoordinate>[] _rules;
+    private readonly PolylineItemFactory<TCoordinate>? _create;
+    private readonly Func<ReadOnlyMemory<char>, TPolyline> _write;
+    private readonly Func<TPolyline, ReadOnlyMemory<char>> _read;
 
     /// <summary>
-    /// Gets a pass-through formatter for <see cref="ReadOnlyMemory{T}"/> of <see cref="char"/>.
-    /// Both <c>Write</c> and <c>Read</c> are identity operations.
+    /// Initializes a new instance. Intentionally internal — use
+    /// <see cref="FormatterBuilder{TCoordinate, TPolyline}"/> to create instances.
     /// </summary>
-    public static IPolylineFormatter<ReadOnlyMemory<char>> ForMemory { get; } =
-        new DelegatePolylineFormatter<ReadOnlyMemory<char>>(
-            static mem => mem,
-            static mem => mem);
+    internal PolylineFormatter(
+        FormatterRule<TCoordinate>[] rules,
+        PolylineItemFactory<TCoordinate>? create,
+        Func<ReadOnlyMemory<char>, TPolyline> write,
+        Func<TPolyline, ReadOnlyMemory<char>> read) {
+        _rules = rules;
+        _create = create;
+        _write = write;
+        _read = read;
+        Width = rules.Length;
+    }
 
-    /// <summary>
-    /// Creates a custom <see cref="IPolylineFormatter{TPolyline}"/> from a pair of delegates.
-    /// </summary>
-    /// <typeparam name="T">The polyline surface type.</typeparam>
-    /// <param name="write">
-    /// Converts the encoded <see cref="ReadOnlyMemory{T}"/> of <see cref="char"/> produced by the encoder
-    /// into a <typeparamref name="T"/>.
-    /// </param>
-    /// <param name="read">
-    /// Extracts the encoded character buffer from a <typeparamref name="T"/> for the decoder to consume.
-    /// </param>
-    /// <returns>A sealed <see cref="IPolylineFormatter{TPolyline}"/> backed by the supplied delegates.</returns>
-    /// <exception cref="ArgumentNullException">
-    /// Thrown when <paramref name="write"/> or <paramref name="read"/> is <see langword="null"/>.
+    /// <inheritdoc/>
+    public int Width { get; }
+
+    /// <inheritdoc/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public long GetBaseline(int index) => _rules[index].Baseline ?? 0L;
+
+    /// <inheritdoc/>
+    /// <exception cref="ArgumentException">
+    /// Thrown when <paramref name="values"/>.Length does not equal <see cref="Width"/>.
     /// </exception>
-    public static IPolylineFormatter<T> Create<T>(
-        Func<ReadOnlyMemory<char>, T> write,
-        Func<T, ReadOnlyMemory<char>> read) {
-        if (write is null) {
-            throw new ArgumentNullException(nameof(write));
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void GetValues(TCoordinate item, Span<long> values) {
+        if (values.Length != Width) {
+            throw new ArgumentException(
+                $"Buffer length {values.Length} does not match the formatter width {Width}.",
+                nameof(values));
         }
 
-        if (read is null) {
-            throw new ArgumentNullException(nameof(read));
+        var rules = _rules;
+        for (var i = 0; i < rules.Length; i++) {
+            ref var rule = ref rules[i];
+            values[i] = (long)(rule.Select(item) * rule.Factor);
+        }
+    }
+
+    /// <inheritdoc/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public TPolyline Write(ReadOnlyMemory<char> encoded) => _write(encoded);
+
+    /// <inheritdoc/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ReadOnlyMemory<char> Read(TPolyline polyline) => _read(polyline);
+
+    /// <inheritdoc/>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when no factory delegate was supplied via
+    /// <see cref="FormatterBuilder{TCoordinate, TPolyline}.WithCreate"/>.
+    /// </exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public TCoordinate CreateItem(ReadOnlySpan<long> values) {
+        if (_create is null) {
+            throw new InvalidOperationException(
+                $"Cannot reconstruct an item because no factory was registered. " +
+                $"Call {nameof(FormatterBuilder<TCoordinate, TPolyline>)}.{nameof(FormatterBuilder<TCoordinate, TPolyline>.WithCreate)} before building.");
         }
 
-        return new DelegatePolylineFormatter<T>(write, read);
+        return _create(values);
     }
 }
