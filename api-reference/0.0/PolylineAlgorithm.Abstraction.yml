@@ -31,4 +31,20 @@ body:
       Implementations interpret the generic <code class="typeparamref">TValue</code> type and produce an encoded
 
       representation of those coordinates as <code class="typeparamref">TPolyline</code>.
+  - type:
+      text: IPolylineFormatter<TPolyline>
+      url: PolylineAlgorithm.Abstraction.IPolylineFormatter-1.html
+    description: >-
+      Defines how to produce a <code class="typeparamref">TPolyline</code> from an encoded character buffer (output/write
+
+      direction), and how to extract that buffer back from a <code class="typeparamref">TPolyline</code> (input/read
+
+      direction).
+  - type:
+      text: IPolylineValueFormatter<TValue>
+      url: PolylineAlgorithm.Abstraction.IPolylineValueFormatter-1.html
+    description: >-
+      Defines how to extract scaled numeric values from a <code class="typeparamref">TValue</code> during encoding, and
+
+      how to reconstruct a <code class="typeparamref">TValue</code> from those values during decoding.
 languageId: csharp

@@ -3,7 +3,7 @@ title: Class PolylineDecoderExtensions
 body:
 - api1: Class PolylineDecoderExtensions
   id: PolylineAlgorithm_Extensions_PolylineDecoderExtensions
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Extensions/PolylineDecoderExtensions.cs#L16
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Extensions/PolylineDecoderExtensions.cs#L16
   metadata:
     uid: PolylineAlgorithm.Extensions.PolylineDecoderExtensions
     commentId: T:PolylineAlgorithm.Extensions.PolylineDecoderExtensions
@@ -41,7 +41,7 @@ body:
 - h2: Methods
 - api3: Decode<TValue>(IPolylineDecoder<string, TValue>, char[])
   id: PolylineAlgorithm_Extensions_PolylineDecoderExtensions_Decode__1_PolylineAlgorithm_Abstraction_IPolylineDecoder_System_String___0__System_Char___
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Extensions/PolylineDecoderExtensions.cs#L33
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Extensions/PolylineDecoderExtensions.cs#L33
   metadata:
     uid: PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode``1(PolylineAlgorithm.Abstraction.IPolylineDecoder{System.String,``0},System.Char[])
     commentId: M:PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode``1(PolylineAlgorithm.Abstraction.IPolylineDecoder{System.String,``0},System.Char[])
@@ -89,7 +89,7 @@ body:
     description: Thrown when <code class="paramref">decoder</code> or <code class="paramref">polyline</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 - api3: Decode<TValue>(IPolylineDecoder<string, TValue>, ReadOnlyMemory<char>)
   id: PolylineAlgorithm_Extensions_PolylineDecoderExtensions_Decode__1_PolylineAlgorithm_Abstraction_IPolylineDecoder_System_String___0__System_ReadOnlyMemory_System_Char__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Extensions/PolylineDecoderExtensions.cs#L61
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Extensions/PolylineDecoderExtensions.cs#L61
   metadata:
     uid: PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode``1(PolylineAlgorithm.Abstraction.IPolylineDecoder{System.String,``0},System.ReadOnlyMemory{System.Char})
     commentId: M:PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode``1(PolylineAlgorithm.Abstraction.IPolylineDecoder{System.String,``0},System.ReadOnlyMemory{System.Char})
@@ -139,7 +139,7 @@ body:
     description: Thrown when <code class="paramref">decoder</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 - api3: Decode<TValue>(IPolylineDecoder<ReadOnlyMemory<char>, TValue>, string)
   id: PolylineAlgorithm_Extensions_PolylineDecoderExtensions_Decode__1_PolylineAlgorithm_Abstraction_IPolylineDecoder_System_ReadOnlyMemory_System_Char____0__System_String_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Extensions/PolylineDecoderExtensions.cs#L86
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Extensions/PolylineDecoderExtensions.cs#L86
   metadata:
     uid: PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode``1(PolylineAlgorithm.Abstraction.IPolylineDecoder{System.ReadOnlyMemory{System.Char},``0},System.String)
     commentId: M:PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode``1(PolylineAlgorithm.Abstraction.IPolylineDecoder{System.ReadOnlyMemory{System.Char},``0},System.String)

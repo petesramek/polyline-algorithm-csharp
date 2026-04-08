@@ -3,7 +3,7 @@ title: Class AbstractPolylineEncoder<TCoordinate, TPolyline>
 body:
 - api1: Class AbstractPolylineEncoder<TCoordinate, TPolyline>
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L27
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L37
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2
     commentId: T:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2
@@ -15,7 +15,7 @@ body:
   - name: Assembly
     value: PolylineAlgorithm.dll
 - markdown: Provides a base implementation for encoding sequences of geographic coordinates into encoded polyline strings.
-- code: 'public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder<TCoordinate, TPolyline>'
+- code: 'public class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder<TCoordinate, TPolyline>'
 - h4: Type Parameters
 - parameters:
   - name: TCoordinate
@@ -56,13 +56,33 @@ body:
     url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1____0___
 - h2: Remarks
 - markdown: >-
-    Derive from this class to implement an encoder for a specific coordinate and polyline type. Override
+    <p>
 
-    <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.GetLatitude(%600)" data-throw-if-not-resolved="false"></xref>, <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.GetLongitude(%600)" data-throw-if-not-resolved="false"></xref>, and <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.CreatePolyline(System.ReadOnlyMemory%7bSystem.Char%7d)" data-throw-if-not-resolved="false"></xref> to provide type-specific behavior.
+    <b>Formatter-based use (no subclassing required):</b>
+
+    Supply a <xref href="PolylineAlgorithm.PolylineOptions%602" data-throw-if-not-resolved="false"></xref> via the
+
+    <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.%23ctor(PolylineAlgorithm.PolylineOptions%7b%600%2c%601%7d)" data-throw-if-not-resolved="false"></xref>
+
+    constructor. The formatter handles all type-specific concerns; override nothing.
+
+    </p>
+
+    <p>
+
+    <b>Legacy override-based use:</b>
+
+    Derive from this class and override <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.GetLatitude(%600)" data-throw-if-not-resolved="false"></xref>, <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.GetLongitude(%600)" data-throw-if-not-resolved="false"></xref>,
+
+    and <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.CreatePolyline(System.ReadOnlyMemory%7bSystem.Char%7d)" data-throw-if-not-resolved="false"></xref> to provide type-specific behaviour. These overrides take
+
+    priority over any registered formatter.
+
+    </p>
 - h2: Constructors
 - api3: AbstractPolylineEncoder()
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2__ctor
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L33
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L45
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor
@@ -70,7 +90,7 @@ body:
 - code: protected AbstractPolylineEncoder()
 - api3: AbstractPolylineEncoder(PolylineEncodingOptions)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2__ctor_PolylineAlgorithm_PolylineEncodingOptions_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L43
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L55
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor(PolylineAlgorithm.PolylineEncodingOptions)
@@ -89,10 +109,50 @@ body:
     - text: ArgumentNullException
       url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
     description: Thrown when <code class="paramref">options</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>
+- api3: AbstractPolylineEncoder(PolylineOptions<TCoordinate, TPolyline>)
+  id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2__ctor_PolylineAlgorithm_PolylineOptions__0__1__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L82
+  metadata:
+    uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor(PolylineAlgorithm.PolylineOptions{`0,`1})
+    commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.#ctor(PolylineAlgorithm.PolylineOptions{`0,`1})
+- markdown: >-
+    Initializes a new instance of the <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602" data-throw-if-not-resolved="false"></xref> class
+
+    using the supplied <xref href="PolylineAlgorithm.PolylineOptions%602" data-throw-if-not-resolved="false"></xref>.
+- code: public AbstractPolylineEncoder(PolylineOptions<TCoordinate, TPolyline> options)
+- h4: Parameters
+- parameters:
+  - name: options
+    type:
+    - text: PolylineOptions
+      url: PolylineAlgorithm.PolylineOptions-2.html
+    - <
+    - TCoordinate
+    - ','
+    - " "
+    - TPolyline
+    - '>'
+    description: >-
+      A <xref href="PolylineAlgorithm.PolylineOptions%602" data-throw-if-not-resolved="false"></xref> that carries both the value formatter and
+
+      the polyline formatter together with the underlying <xref href="PolylineAlgorithm.PolylineEncodingOptions" data-throw-if-not-resolved="false"></xref>.
+- h4: Remarks
+- markdown: >-
+    Use this constructor when you want formatter-driven encoding without subclassing.
+
+    The <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.GetLatitude(%600)" data-throw-if-not-resolved="false"></xref>, <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.GetLongitude(%600)" data-throw-if-not-resolved="false"></xref>, and <xref href="PolylineAlgorithm.Abstraction.AbstractPolylineEncoder%602.CreatePolyline(System.ReadOnlyMemory%7bSystem.Char%7d)" data-throw-if-not-resolved="false"></xref> hooks
+
+    are not called; all type-specific logic is delegated to the formatters.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentNullException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+    description: Thrown when <code class="paramref">options</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 - h2: Properties
 - api3: Options
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_Options
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L57
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L98
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Options
     commentId: P:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Options
@@ -106,12 +166,12 @@ body:
 - h2: Methods
 - api3: CreatePolyline(ReadOnlyMemory<char>)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_CreatePolyline_System_ReadOnlyMemory_System_Char__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L174
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L266
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.CreatePolyline(System.ReadOnlyMemory{System.Char})
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.CreatePolyline(System.ReadOnlyMemory{System.Char})
 - markdown: Creates a polyline instance from the provided read-only sequence of characters.
-- code: protected abstract TPolyline CreatePolyline(ReadOnlyMemory<char> polyline)
+- code: protected virtual TPolyline CreatePolyline(ReadOnlyMemory<char> polyline)
 - h4: Parameters
 - parameters:
   - name: polyline
@@ -128,9 +188,18 @@ body:
   - type:
     - TPolyline
     description: An instance of <code class="typeparamref">TPolyline</code> representing the encoded polyline.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: NotSupportedException
+      url: https://learn.microsoft.com/dotnet/api/system.notsupportedexception
+    description: >-
+      Thrown by the default implementation when no polyline formatter is registered and the method
+
+      has not been overridden in a derived class.
 - api3: Encode(ReadOnlySpan<TCoordinate>, CancellationToken)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_Encode_System_ReadOnlySpan__0__System_Threading_CancellationToken_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L80
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L121
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Encode(System.ReadOnlySpan{`0},System.Threading.CancellationToken)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.Encode(System.ReadOnlySpan{`0},System.Threading.CancellationToken)
@@ -176,12 +245,12 @@ body:
     description: Thrown when the internal encoding buffer cannot accommodate the encoded value.
 - api3: GetLatitude(TCoordinate)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_GetLatitude__0_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L194
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L302
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLatitude(`0)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLatitude(`0)
 - markdown: Extracts the latitude value from the specified coordinate.
-- code: protected abstract double GetLatitude(TCoordinate current)
+- code: protected virtual double GetLatitude(TCoordinate current)
 - h4: Parameters
 - parameters:
   - name: current
@@ -194,14 +263,23 @@ body:
     - text: double
       url: https://learn.microsoft.com/dotnet/api/system.double
     description: The latitude value as a <xref href="System.Double" data-throw-if-not-resolved="false"></xref>.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: NotSupportedException
+      url: https://learn.microsoft.com/dotnet/api/system.notsupportedexception
+    description: >-
+      Thrown by the default implementation when no value formatter is registered and the method
+
+      has not been overridden in a derived class.
 - api3: GetLongitude(TCoordinate)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_GetLongitude__0_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L184
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L284
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLongitude(`0)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLongitude(`0)
 - markdown: Extracts the longitude value from the specified coordinate.
-- code: protected abstract double GetLongitude(TCoordinate current)
+- code: protected virtual double GetLongitude(TCoordinate current)
 - h4: Parameters
 - parameters:
   - name: current
@@ -214,6 +292,15 @@ body:
     - text: double
       url: https://learn.microsoft.com/dotnet/api/system.double
     description: The longitude value as a <xref href="System.Double" data-throw-if-not-resolved="false"></xref>.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: NotSupportedException
+      url: https://learn.microsoft.com/dotnet/api/system.notsupportedexception
+    description: >-
+      Thrown by the default implementation when no value formatter is registered and the method
+
+      has not been overridden in a derived class.
 languageId: csharp
 metadata:
   description: Provides a base implementation for encoding sequences of geographic coordinates into encoded polyline strings.

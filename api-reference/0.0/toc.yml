@@ -3,6 +3,8 @@
   href: PolylineAlgorithm.yml
   items:
   - name: Classes
+  - name: FormatterBuilder<T>
+    href: PolylineAlgorithm.FormatterBuilder-1.yml
   - name: InvalidPolylineException
     href: PolylineAlgorithm.InvalidPolylineException.yml
   - name: PolylineEncoding
@@ -11,6 +13,15 @@
     href: PolylineAlgorithm.PolylineEncodingOptions.yml
   - name: PolylineEncodingOptionsBuilder
     href: PolylineAlgorithm.PolylineEncodingOptionsBuilder.yml
+  - name: PolylineFormatter
+    href: PolylineAlgorithm.PolylineFormatter.yml
+  - name: PolylineOptions<TValue, TPolyline>
+    href: PolylineAlgorithm.PolylineOptions-2.yml
+  - name: PolylineValueFormatter<T>
+    href: PolylineAlgorithm.PolylineValueFormatter-1.yml
+  - name: Delegates
+  - name: PolylineItemFactory<T>
+    href: PolylineAlgorithm.PolylineItemFactory-1.yml
 - name: PolylineAlgorithm.Abstraction
   href: PolylineAlgorithm.Abstraction.yml
   items:
@@ -24,6 +35,10 @@
     href: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.yml
   - name: IPolylineEncoder<TValue, TPolyline>
     href: PolylineAlgorithm.Abstraction.IPolylineEncoder-2.yml
+  - name: IPolylineFormatter<TPolyline>
+    href: PolylineAlgorithm.Abstraction.IPolylineFormatter-1.yml
+  - name: IPolylineValueFormatter<TValue>
+    href: PolylineAlgorithm.Abstraction.IPolylineValueFormatter-1.yml
 - name: PolylineAlgorithm.Extensions
   href: PolylineAlgorithm.Extensions.yml
   items:

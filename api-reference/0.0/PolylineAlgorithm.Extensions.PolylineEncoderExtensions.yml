@@ -3,7 +3,7 @@ title: Class PolylineEncoderExtensions
 body:
 - api1: Class PolylineEncoderExtensions
   id: PolylineAlgorithm_Extensions_PolylineEncoderExtensions
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L19
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L19
   metadata:
     uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions
     commentId: T:PolylineAlgorithm.Extensions.PolylineEncoderExtensions
@@ -41,7 +41,7 @@ body:
 - h2: Methods
 - api3: Encode<TCoordinate, TPolyline>(IPolylineEncoder<TCoordinate, TPolyline>, List<TCoordinate>)
   id: PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1__System_Collections_Generic_List___0__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L37
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L37
   metadata:
     uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},System.Collections.Generic.List{``0})
     commentId: M:PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},System.Collections.Generic.List{``0})
@@ -92,7 +92,7 @@ body:
     description: Thrown when <code class="paramref">encoder</code> or <code class="paramref">coordinates</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 - api3: Encode<TCoordinate, TPolyline>(IPolylineEncoder<TCoordinate, TPolyline>, TCoordinate[])
   id: PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1____0___
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/review-github-templates/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L73
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L73
   metadata:
     uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},``0[])
     commentId: M:PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},``0[])

@@ -1,0 +1,168 @@
+### YamlMime:ApiPage
+title: Class PolylineFormatter
+body:
+- api1: Class PolylineFormatter
+  id: PolylineAlgorithm_PolylineFormatter
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineFormatter.cs#L22
+  metadata:
+    uid: PolylineAlgorithm.PolylineFormatter
+    commentId: T:PolylineAlgorithm.PolylineFormatter
+- facts:
+  - name: Namespace
+    value:
+      text: PolylineAlgorithm
+      url: PolylineAlgorithm.html
+  - name: Assembly
+    value: PolylineAlgorithm.dll
+- markdown: >-
+    Provides static factory methods and ready-made instances of <xref href="PolylineAlgorithm.Abstraction.IPolylineFormatter%601" data-throw-if-not-resolved="false"></xref>
+
+    for the most common polyline surface types.
+- code: public static class PolylineFormatter
+- h4: Inheritance
+- inheritance:
+  - text: object
+    url: https://learn.microsoft.com/dotnet/api/system.object
+  - text: PolylineFormatter
+    url: PolylineAlgorithm.PolylineFormatter.html
+- h4: Inherited Members
+- list:
+  - text: object.Equals(object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - text: object.Equals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - text: object.GetHashCode()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - text: object.GetType()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - text: object.MemberwiseClone()
+    url: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - text: object.ReferenceEquals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - text: object.ToString()
+    url: https://learn.microsoft.com/dotnet/api/system.object.tostring
+- h2: Remarks
+- markdown: >-
+    <p>
+
+    Use <xref href="PolylineAlgorithm.PolylineFormatter.ForString" data-throw-if-not-resolved="false"></xref> or <xref href="PolylineAlgorithm.PolylineFormatter.ForMemory" data-throw-if-not-resolved="false"></xref> for the two most common cases.
+
+    Call <xref href="PolylineAlgorithm.PolylineFormatter.Create%60%601(System.Func%7bSystem.ReadOnlyMemory%7bSystem.Char%7d%2c%60%600%7d%2cSystem.Func%7b%60%600%2cSystem.ReadOnlyMemory%7bSystem.Char%7d%7d)" data-throw-if-not-resolved="false"></xref> to build a custom formatter from a pair of delegates.
+
+    </p>
+- h2: Properties
+- api3: ForMemory
+  id: PolylineAlgorithm_PolylineFormatter_ForMemory
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineFormatter.cs#L36
+  metadata:
+    uid: PolylineAlgorithm.PolylineFormatter.ForMemory
+    commentId: P:PolylineAlgorithm.PolylineFormatter.ForMemory
+- markdown: >-
+    Gets a pass-through formatter for <xref href="System.ReadOnlyMemory%601" data-throw-if-not-resolved="false"></xref> of <xref href="System.Char" data-throw-if-not-resolved="false"></xref>.
+
+    Both <code>Write</code> and <code>Read</code> are identity operations.
+- code: public static IPolylineFormatter<ReadOnlyMemory<char>> ForMemory { get; }
+- h4: Property Value
+- parameters:
+  - type:
+    - text: IPolylineFormatter
+      url: PolylineAlgorithm.Abstraction.IPolylineFormatter-1.html
+    - <
+    - text: ReadOnlyMemory
+      url: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+    - <
+    - text: char
+      url: https://learn.microsoft.com/dotnet/api/system.char
+    - '>'
+    - '>'
+- api3: ForString
+  id: PolylineAlgorithm_PolylineFormatter_ForString
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineFormatter.cs#L27
+  metadata:
+    uid: PolylineAlgorithm.PolylineFormatter.ForString
+    commentId: P:PolylineAlgorithm.PolylineFormatter.ForString
+- markdown: >-
+    Gets a formatter that produces a <xref href="System.String" data-throw-if-not-resolved="false"></xref> from the encoded char buffer and reads
+
+    the buffer back via string.AsMemory().
+- code: public static IPolylineFormatter<string> ForString { get; }
+- h4: Property Value
+- parameters:
+  - type:
+    - text: IPolylineFormatter
+      url: PolylineAlgorithm.Abstraction.IPolylineFormatter-1.html
+    - <
+    - text: string
+      url: https://learn.microsoft.com/dotnet/api/system.string
+    - '>'
+- h2: Methods
+- api3: Create<T>(Func<ReadOnlyMemory<char>, T>, Func<T, ReadOnlyMemory<char>>)
+  id: PolylineAlgorithm_PolylineFormatter_Create__1_System_Func_System_ReadOnlyMemory_System_Char____0__System_Func___0_System_ReadOnlyMemory_System_Char___
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineFormatter.cs#L56
+  metadata:
+    uid: PolylineAlgorithm.PolylineFormatter.Create``1(System.Func{System.ReadOnlyMemory{System.Char},``0},System.Func{``0,System.ReadOnlyMemory{System.Char}})
+    commentId: M:PolylineAlgorithm.PolylineFormatter.Create``1(System.Func{System.ReadOnlyMemory{System.Char},``0},System.Func{``0,System.ReadOnlyMemory{System.Char}})
+- markdown: Creates a custom <xref href="PolylineAlgorithm.Abstraction.IPolylineFormatter%601" data-throw-if-not-resolved="false"></xref> from a pair of delegates.
+- code: public static IPolylineFormatter<T> Create<T>(Func<ReadOnlyMemory<char>, T> write, Func<T, ReadOnlyMemory<char>> read)
+- h4: Parameters
+- parameters:
+  - name: write
+    type:
+    - text: Func
+      url: https://learn.microsoft.com/dotnet/api/system.func-2
+    - <
+    - text: ReadOnlyMemory
+      url: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+    - <
+    - text: char
+      url: https://learn.microsoft.com/dotnet/api/system.char
+    - '>'
+    - ','
+    - " "
+    - T
+    - '>'
+    description: >-
+      Converts the encoded <xref href="System.ReadOnlyMemory%601" data-throw-if-not-resolved="false"></xref> of <xref href="System.Char" data-throw-if-not-resolved="false"></xref> produced by the encoder
+
+      into a <code class="typeparamref">T</code>.
+  - name: read
+    type:
+    - text: Func
+      url: https://learn.microsoft.com/dotnet/api/system.func-2
+    - <
+    - T
+    - ','
+    - " "
+    - text: ReadOnlyMemory
+      url: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+    - <
+    - text: char
+      url: https://learn.microsoft.com/dotnet/api/system.char
+    - '>'
+    - '>'
+    description: Extracts the encoded character buffer from a <code class="typeparamref">T</code> for the decoder to consume.
+- h4: Returns
+- parameters:
+  - type:
+    - text: IPolylineFormatter
+      url: PolylineAlgorithm.Abstraction.IPolylineFormatter-1.html
+    - <
+    - T
+    - '>'
+    description: A sealed <xref href="PolylineAlgorithm.Abstraction.IPolylineFormatter%601" data-throw-if-not-resolved="false"></xref> backed by the supplied delegates.
+- h4: Type Parameters
+- parameters:
+  - name: T
+    description: The polyline surface type.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentNullException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+    description: Thrown when <code class="paramref">write</code> or <code class="paramref">read</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+languageId: csharp
+metadata:
+  description: >-
+    Provides static factory methods and ready-made instances of 
+
+    for the most common polyline surface types.
