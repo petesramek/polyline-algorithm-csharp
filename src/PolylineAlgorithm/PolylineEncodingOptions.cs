@@ -39,8 +39,9 @@ public sealed class PolylineEncodingOptions<TCoordinate> {
 
     /// <summary>
     /// Gets a value indicating whether a previous coordinate has been supplied to seed the delta
-    /// baseline. When <see langword="false"/> the formatter's built-in baseline (or zero) is used,
-    /// which is equivalent to the existing default behaviour.
+    /// baseline. When <see langword="false"/> the formatter's built-in baseline is used as the
+    /// starting point (which defaults to zero when no baseline has been configured), equivalent to
+    /// the existing default behaviour.
     /// </summary>
     public bool HasPrevious { get; }
 
