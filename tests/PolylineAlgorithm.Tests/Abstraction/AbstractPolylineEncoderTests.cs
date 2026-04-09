@@ -24,8 +24,8 @@ public sealed class AbstractPolylineEncoderTests {
     private static PolylineEncoder<(double Lat, double Lon), string> CreateEncoder(int stackAllocLimit = 512) {
         PolylineFormatter<(double Lat, double Lon), string> formatter =
             FormatterBuilder<(double Lat, double Lon), string>.Create()
-                .AddValue("lat", c => c.Lat)
-                .AddValue("lon", c => c.Lon)
+                .AddValue("lat", static c => c.Lat)
+                .AddValue("lon", static c => c.Lon)
                 .ForPolyline(_write, _read)
                 .Build();
 

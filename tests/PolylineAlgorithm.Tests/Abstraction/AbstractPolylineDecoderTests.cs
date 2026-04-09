@@ -25,8 +25,8 @@ public sealed class AbstractPolylineDecoderTests {
     private static PolylineDecoder<string, (double Lat, double Lon)> CreateDecoder() {
         PolylineFormatter<(double Lat, double Lon), string> formatter =
             FormatterBuilder<(double Lat, double Lon), string>.Create()
-                .AddValue("lat", c => c.Lat)
-                .AddValue("lon", c => c.Lon)
+                .AddValue("lat", static c => c.Lat)
+                .AddValue("lon", static c => c.Lon)
                 .WithCreate(static v => (v[0], v[1]))
                 .ForPolyline(_write, _read)
                 .Build();
