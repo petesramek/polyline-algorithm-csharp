@@ -7,10 +7,12 @@ Google's Encoded Polyline Algorithm compresses sequences of geographic coordinat
 ## Features
 
 - Google-compliant polyline encoding/decoding for geographic coordinates
-- Extensible APIs for custom coordinate and polyline types (`AbstractPolylineEncoder<TCoordinate, TPolyline>`, `AbstractPolylineDecoder<TPolyline, TCoordinate>`)
+- Fluent `FormatterBuilder<TCoordinate, TPolyline>` for configuring custom coordinate and polyline types
+- Immutable, sealed `PolylineFormatter<TCoordinate, TPolyline>` built via `FormatterBuilder`
+- `PolylineEncoder<TCoordinate, TPolyline>` and `PolylineDecoder<TPolyline, TCoordinate>` — configurable via `PolylineOptions`
 - Extension methods for encoding from `List<T>` and arrays (`PolylineEncoderExtensions`)
 - Robust input validation and descriptive exceptions
-- Configurable with `PolylineEncodingOptions` (precision, buffer size, logging)
+- Configurable stack-alloc buffer size and logging via `PolylineOptions`
 - Thread-safe, stateless APIs
 - Low-level utilities via static `PolylineEncoding` class (Normalize, Denormalize, TryReadValue, TryWriteValue, ValidateFormat, etc.)
 - Benchmarks and unit tests for correctness and performance
@@ -31,19 +33,20 @@ Install-Package PolylineAlgorithm
 
 ## Quick Start
 
-The library provides abstract base classes to build your own encoder and decoder for any coordinate and polyline type.
+Use `FormatterBuilder` to configure your coordinate and polyline types, then construct `PolylineEncoder` and `PolylineDecoder` from the resulting `PolylineOptions`.
 
-### Implement a custom encoder
+### Build a formatter
 
 ```csharp
 using PolylineAlgorithm;
-using PolylineAlgorithm.Abstraction;
 
-public sealed class MyPolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
-    protected override double GetLatitude((double Latitude, double Longitude) coordinate) => coordinate.Latitude;
-    protected override double GetLongitude((double Latitude, double Longitude) coordinate) => coordinate.Longitude;
-    protected override string CreatePolyline(ReadOnlyMemory<char> polyline) => polyline.ToString();
-}
+PolylineFormatter<(double Lat, double Lon), string> formatter =
+    FormatterBuilder<(double Lat, double Lon), string>.Create()
+        .AddValue("lat", static c => c.Lat)
+        .AddValue("lon", static c => c.Lon)
+        .WithCreate(static v => (v[0], v[1]))
+        .ForPolyline(static m => new string(m.Span), static s => s.AsMemory())
+        .Build();
 ```
 
 ### Encode coordinates
@@ -51,55 +54,43 @@ public sealed class MyPolylineEncoder : AbstractPolylineEncoder<(double Latitude
 ```csharp
 using PolylineAlgorithm.Extensions;
 
-var coordinates = new List<(double Latitude, double Longitude)>
+PolylineOptions<(double Lat, double Lon), string> options = new(formatter);
+PolylineEncoder<(double Lat, double Lon), string> encoder = new(options);
+
+var coordinates = new List<(double Lat, double Lon)>
 {
     (48.858370, 2.294481),
     (51.500729, -0.124625)
 };
 
-var encoder = new MyPolylineEncoder();
 string encoded = encoder.Encode(coordinates); // extension method for List<T>
 
 Console.WriteLine(encoded);
 // Output: "yseiHoc_MwacOjnwM"
 ```
 
-### Implement a custom decoder
-
-```csharp
-using PolylineAlgorithm;
-using PolylineAlgorithm.Abstraction;
-
-public sealed class MyPolylineDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-    protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) => (latitude, longitude);
-    protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
-}
-```
-
 ### Decode polyline
 
 ```csharp
-string encoded = "yseiHoc_MwacOjnwM";
+PolylineDecoder<string, (double Lat, double Lon)> decoder = new(options);
 
-var decoder = new MyPolylineDecoder();
-IEnumerable<(double Latitude, double Longitude)> decoded = decoder.Decode(encoded);
+IEnumerable<(double Lat, double Lon)> decoded = decoder.Decode("yseiHoc_MwacOjnwM");
 ```
 
 ## Advanced Usage
 
-Use `PolylineEncodingOptionsBuilder` to customize precision, buffer size, and logging, then pass the built options to the encoder or decoder constructor:
+Pass a `stackAllocLimit` and an `ILoggerFactory` to `PolylineOptions` to customize buffer sizing and logging:
 
 ```csharp
 using Microsoft.Extensions.Logging;
 
-PolylineEncodingOptions options = PolylineEncodingOptionsBuilder.Create()
-    .WithPrecision(6)                        // 6 decimal places instead of the default 5
-    .WithStackAllocLimit(1024)               // increase stack-alloc buffer
-    .WithLoggerFactory(loggerFactory)        // plug in your ILoggerFactory
-    .Build();
+PolylineOptions<(double Lat, double Lon), string> options = new(
+    formatter,
+    stackAllocLimit: 1024,
+    loggerFactory: loggerFactory);
 
-var encoder = new MyPolylineEncoder(options);
-var decoder = new MyPolylineDecoder(options);
+PolylineEncoder<(double Lat, double Lon), string> encoder = new(options);
+PolylineDecoder<string, (double Lat, double Lon)> decoder = new(options);
 ```
 
 Use static methods on `PolylineEncoding` for low-level normalization, validation, and bit-level read/write operations.
@@ -114,8 +105,8 @@ Use static methods on `PolylineEncoding` for low-level normalization, validation
   The decoder throws `InvalidPolylineException` with a descriptive message. Wrap calls in a try/catch in your application.
 - **What .NET versions are supported?**  
   Any environment supporting `netstandard2.1`
-- **How do I customize encoder options?**  
-  Use `PolylineEncodingOptionsBuilder` and pass the built options to the encoder or decoder constructor.
+- **How do I customize encoder/decoder options?**  
+  Create a `PolylineOptions<TCoordinate, TPolyline>` with your `PolylineFormatter`, optional `stackAllocLimit`, and optional `ILoggerFactory`, then pass it to the `PolylineEncoder` or `PolylineDecoder` constructor.
 - **Where can I get help?**  
   [GitHub issues](https://github.com/petesramek/polyline-algorithm-csharp/issues)
 
