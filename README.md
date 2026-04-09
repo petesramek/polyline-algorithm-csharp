@@ -21,10 +21,12 @@ Google's Encoded Polyline Algorithm compresses sequences of geographic coordinat
 ## Features
 
 - Fully compliant Google Encoded Polyline Algorithm for .NET Standard 2.1+
-- Extensible APIs — implement your own encoder/decoder for any coordinate or polyline type
-- Robust input validation with descriptive exceptions for malformed or out-of-range data
-- Advanced configuration via `PolylineEncodingOptions` (precision, buffer size, logging)
+- Fully fluent `FormatterBuilder<TCoordinate, TPolyline>` — configure coordinate fields, factories, and polyline I/O in one chain
+- Sealed, immutable `PolylineFormatter<TCoordinate, TPolyline>` produced by the builder
+- Type-safe `PolylineEncoder<TCoordinate, TPolyline>` and `PolylineDecoder<TPolyline, TCoordinate>` with no inheritance required
+- `PolylineOptions<TCoordinate, TPolyline>` for stack-alloc limits and optional logging
 - Extension methods for encoding directly from `List<T>` and arrays
+- Robust input validation with descriptive exceptions for malformed or out-of-range data
 - Logging and diagnostic support via `Microsoft.Extensions.Logging`
 - Low-level utilities for normalization, validation, and bit-level operations via static `PolylineEncoding` class
 - Thread-safe, stateless APIs
@@ -48,75 +50,101 @@ Install-Package PolylineAlgorithm
 
 ## Usage
 
-The library provides abstract base classes to implement your own encoder and decoder for any coordinate and polyline type. Inherit from `AbstractPolylineEncoder` or `AbstractPolylineDecoder`, override the coordinate accessors, then call `Encode` or `Decode`.
+The library uses a fluent `FormatterBuilder` to describe how to map between your coordinate type and a polyline type — no inheritance required. Build a `PolylineFormatter`, wrap it in `PolylineOptions`, then instantiate `PolylineEncoder` and `PolylineDecoder`.
 
 ### Quick Start
 
 ```csharp
-// 1. Implement a minimal encoder (see full example below)
-var encoder = new MyPolylineEncoder();
-string encoded = encoder.Encode(coordinates);    // e.g. "yseiHoc_MwacOjnwM"
+using PolylineAlgorithm;
 
-// 2. Implement a minimal decoder (see full example below)
-var decoder = new MyPolylineDecoder();
-IEnumerable<(double Latitude, double Longitude)> decoded = decoder.Decode(encoded);
+// 1. Build a formatter that maps (double Lat, double Lon) ↔ string polyline
+PolylineFormatter<(double Lat, double Lon), string> formatter =
+    FormatterBuilder<(double Lat, double Lon), string>.Create()
+        .AddValue("lat", static c => c.Lat)
+        .AddValue("lon", static c => c.Lon)
+        .WithCreate(static v => (v[0], v[1]))
+        .ForPolyline(static m => new string(m.Span), static s => s.AsMemory())
+        .Build();
+
+PolylineOptions<(double Lat, double Lon), string> options = new(formatter);
+
+PolylineEncoder<(double Lat, double Lon), string> encoder = new(options);
+PolylineDecoder<string, (double Lat, double Lon)> decoder = new(options);
+
+// 2. Encode
+var coordinates = new List<(double, double)> { (48.858370, 2.294481), (51.500729, -0.124625) };
+string encoded = encoder.Encode(coordinates); // extension method for List<T>
+// Output: "yseiHoc_MwacOjnwM"
+
+// 3. Decode
+IEnumerable<(double Lat, double Lon)> decoded = decoder.Decode(encoded);
 ```
 
-### Custom encoder and decoder
+### Building a formatter
 
-#### Encoding
+`FormatterBuilder<TCoordinate, TPolyline>` configures how the library reads and writes your types:
 
-Custom encoder implementation.
+| Method | Purpose |
+|---|---|
+| `FormatterBuilder<TC,TP>.Create()` | Static factory to start building |
+| `.AddValue(name, selector, precision=5)` | Register a coordinate field (latitude, longitude, …) |
+| `.SetBaseline(long)` | Override the encoding baseline (optional) |
+| `.WithCreate(factory)` | Factory delegate `PolylineItemFactory<TC>`: `TC(ReadOnlySpan<double> values)` — required for decoding |
+| `.ForPolyline(write, read)` | How to convert `ReadOnlyMemory<char>` → `TP` and `TP` → `ReadOnlyMemory<char>` |
+| `.Build()` | Returns an immutable `PolylineFormatter<TC,TP>` |
+
+```csharp
+PolylineFormatter<(double Lat, double Lon), string> formatter =
+    FormatterBuilder<(double Lat, double Lon), string>.Create()
+        .AddValue("lat", static c => c.Lat)
+        .AddValue("lon", static c => c.Lon)
+        .WithCreate(static v => (v[0], v[1]))
+        .ForPolyline(static m => new string(m.Span), static s => s.AsMemory())
+        .Build();
+```
+
+### Encoding
 
 ```csharp
 using PolylineAlgorithm;
-using PolylineAlgorithm.Abstraction;
-
-public sealed class MyPolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
-    protected override double GetLatitude((double Latitude, double Longitude) coordinate) => coordinate.Latitude;
-    protected override double GetLongitude((double Latitude, double Longitude) coordinate) => coordinate.Longitude;
-    protected override string CreatePolyline(ReadOnlyMemory<char> polyline) => polyline.ToString();
-}
-```
-
-Custom encoder usage.
-
-```csharp
 using PolylineAlgorithm.Extensions;
 
-var coordinates = new List<(double Latitude, double Longitude)>
+PolylineOptions<(double Lat, double Lon), string> options = new(formatter);
+PolylineEncoder<(double Lat, double Lon), string> encoder = new(options);
+
+var coordinates = new List<(double Lat, double Lon)>
 {
     (48.858370, 2.294481),
     (51.500729, -0.124625)
 };
 
-var encoder = new MyPolylineEncoder();
 string encoded = encoder.Encode(coordinates); // extension method for List<T>
-
-Console.WriteLine(encoded);
+Console.WriteLine(encoded); // yseiHoc_MwacOjnwM
 ```
 
-#### Decoding
-
-Custom decoder implementation.
+### Decoding
 
 ```csharp
 using PolylineAlgorithm;
-using PolylineAlgorithm.Abstraction;
 
-public sealed class MyPolylineDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-    protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) => (latitude, longitude);
-    protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
-}
+PolylineOptions<(double Lat, double Lon), string> options = new(formatter);
+PolylineDecoder<string, (double Lat, double Lon)> decoder = new(options);
+
+IEnumerable<(double Lat, double Lon)> decoded = decoder.Decode("yseiHoc_MwacOjnwM");
 ```
 
-Custom decoder usage.
+### Advanced options (logging, stack-alloc limit)
 
 ```csharp
-string encoded = "yseiHoc_MwacOjnwM";
+using Microsoft.Extensions.Logging;
 
-var decoder = new MyPolylineDecoder();
-IEnumerable<(double Latitude, double Longitude)> decoded = decoder.Decode(encoded);
+PolylineOptions<(double Lat, double Lon), string> options = new(
+    formatter,
+    stackAllocLimit: 1024,
+    loggerFactory: loggerFactory);
+
+var encoder = new PolylineEncoder<(double Lat, double Lon), string>(options);
+var decoder = new PolylineDecoder<string, (double Lat, double Lon)>(options);
 ```
 
 > **Note:**
@@ -148,7 +176,7 @@ A: All platforms supporting `netstandard2.1` (including .NET Core and .NET 5+).
 A: The decoder will throw descriptive exceptions (`InvalidPolylineException`) for malformed polyline strings. Check exception handling in your application.
 
 **Q: How do I customize encoding options (e.g., precision, buffer size, logging)?**
-A: Use `PolylineEncodingOptionsBuilder` to set custom options and pass the built `PolylineEncodingOptions` to the encoder or decoder constructor.
+A: Pass a `PolylineOptions<TC,TP>` to the encoder/decoder constructor. Set `stackAllocLimit` to control buffer size and `loggerFactory` for logging. Precision is set per-field via `.AddValue(name, selector, precision)` on the `FormatterBuilder`.
 
 **Q: Is the library thread-safe?**
 A: Yes, the main encoding and decoding APIs are stateless and thread-safe. If using mutable shared resources, manage synchronization in your code.
@@ -160,7 +188,7 @@ A: Yes! Any environment supporting `netstandard2.1` can use this library.
 A: Open a GitHub issue using the provided templates in the repository and tag @petesramek.
 
 **Q: Is there support for elevation, time stamps, or third coordinate values?**
-A: Not currently, not planned to be added, but you can extend by implementing your own encoder/decoder using `PolylineEncoding` class methods.
+A: Not currently, not planned to be added, but you can extend by adding extra `.AddValue(...)` calls in your `FormatterBuilder` and using `PolylineEncoding` class methods for low-level operations.
 
 **Q: How do I contribute documentation improvements?**
 A: Update XML doc comments in the codebase and submit a PR; all public APIs require XML documentation. To improve guides, update the relevant markdown file in the `/api-reference/guide` folder.
