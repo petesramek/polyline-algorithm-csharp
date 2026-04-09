@@ -36,6 +36,7 @@ public static class PolylineEncoderExtensions {
     /// </exception>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1002:Do not expose generic lists", Justification = "We need a list as we do need to marshal it as span.")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "MA0016:Prefer using collection abstraction instead of implementation", Justification = "We need a list as we do need to marshal it as span.")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null is verified before use via ExceptionGuard.ThrowArgumentNull, which is annotated [DoesNotReturn]. CA1062 does not recognise custom [DoesNotReturn] helpers as null guards.")]
     public static TPolyline Encode<TCoordinate, TPolyline>(this IPolylineEncoder<TCoordinate, TPolyline> encoder, List<TCoordinate> coordinates) {
         if (encoder is null) {
             ExceptionGuard.ThrowArgumentNull(nameof(encoder));
@@ -70,6 +71,7 @@ public static class PolylineEncoderExtensions {
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="encoder"/> or <paramref name="coordinates"/> is <see langword="null"/>.
     /// </exception>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null is verified before use via ExceptionGuard.ThrowArgumentNull, which is annotated [DoesNotReturn]. CA1062 does not recognise custom [DoesNotReturn] helpers as null guards.")]
     public static TPolyline Encode<TCoordinate, TPolyline>(this IPolylineEncoder<TCoordinate, TPolyline> encoder, TCoordinate[] coordinates) {
         if (encoder is null) {
             ExceptionGuard.ThrowArgumentNull(nameof(encoder));
@@ -80,5 +82,79 @@ public static class PolylineEncoderExtensions {
         }
 
         return encoder.Encode(coordinates.AsSpan());
+    }
+
+    /// <summary>
+    /// Encodes a <see cref="List{T}"/> of <typeparamref name="TCoordinate"/> instances into an encoded
+    /// polyline, applying per-call <paramref name="options"/> to control the delta baseline.
+    /// </summary>
+    /// <typeparam name="TCoordinate">The type that represents a geographic coordinate to encode.</typeparam>
+    /// <typeparam name="TPolyline">The type that represents the encoded polyline output.</typeparam>
+    /// <param name="encoder">The chunked encoder instance.</param>
+    /// <param name="coordinates">The list of coordinates to encode.</param>
+    /// <param name="options">
+    /// Per-call options that control the starting delta baseline. Pass <see langword="null"/> to use
+    /// the formatter's default baseline.
+    /// </param>
+    /// <returns>
+    /// A <typeparamref name="TPolyline"/> representing the encoded polyline.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when <paramref name="encoder"/> or <paramref name="coordinates"/> is <see langword="null"/>.
+    /// </exception>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1002:Do not expose generic lists", Justification = "We need a list as we do need to marshal it as span.")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "MA0016:Prefer using collection abstraction instead of implementation", Justification = "We need a list as we do need to marshal it as span.")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null is verified before use via ExceptionGuard.ThrowArgumentNull, which is annotated [DoesNotReturn]. CA1062 does not recognise custom [DoesNotReturn] helpers as null guards.")]
+    public static TPolyline Encode<TCoordinate, TPolyline>(
+        this IChunkedPolylineEncoder<TCoordinate, TPolyline> encoder,
+        List<TCoordinate> coordinates,
+        PolylineEncodingOptions<TCoordinate>? options) {
+        if (encoder is null) {
+            ExceptionGuard.ThrowArgumentNull(nameof(encoder));
+        }
+
+        if (coordinates is null) {
+            ExceptionGuard.ThrowArgumentNull(nameof(coordinates));
+        }
+
+#if NET5_0_OR_GREATER
+        return encoder.Encode(CollectionsMarshal.AsSpan(coordinates), options, CancellationToken.None);
+#else
+        return encoder.Encode([.. coordinates], options, CancellationToken.None);
+#endif
+    }
+
+    /// <summary>
+    /// Encodes an array of <typeparamref name="TCoordinate"/> instances into an encoded polyline,
+    /// applying per-call <paramref name="options"/> to control the delta baseline.
+    /// </summary>
+    /// <typeparam name="TCoordinate">The type that represents a geographic coordinate to encode.</typeparam>
+    /// <typeparam name="TPolyline">The type that represents the encoded polyline output.</typeparam>
+    /// <param name="encoder">The chunked encoder instance.</param>
+    /// <param name="coordinates">The array of coordinates to encode.</param>
+    /// <param name="options">
+    /// Per-call options that control the starting delta baseline. Pass <see langword="null"/> to use
+    /// the formatter's default baseline.
+    /// </param>
+    /// <returns>
+    /// A <typeparamref name="TPolyline"/> representing the encoded polyline.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when <paramref name="encoder"/> or <paramref name="coordinates"/> is <see langword="null"/>.
+    /// </exception>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null is verified before use via ExceptionGuard.ThrowArgumentNull, which is annotated [DoesNotReturn]. CA1062 does not recognise custom [DoesNotReturn] helpers as null guards.")]
+    public static TPolyline Encode<TCoordinate, TPolyline>(
+        this IChunkedPolylineEncoder<TCoordinate, TPolyline> encoder,
+        TCoordinate[] coordinates,
+        PolylineEncodingOptions<TCoordinate>? options) {
+        if (encoder is null) {
+            ExceptionGuard.ThrowArgumentNull(nameof(encoder));
+        }
+
+        if (coordinates is null) {
+            ExceptionGuard.ThrowArgumentNull(nameof(coordinates));
+        }
+
+        return encoder.Encode(coordinates.AsSpan(), options, CancellationToken.None);
     }
 }

@@ -7,11 +7,11 @@ namespace PolylineAlgorithm.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
-using PolylineAlgorithm.Abstraction;
+using PolylineAlgorithm;
 using PolylineAlgorithm.Utility;
 
 /// <summary>
-/// Benchmarks for <see cref="PolylineDecoder"/>.
+/// Benchmarks for <see cref="PolylineDecoder{TPolyline, TCoordinate}"/>.
 /// </summary>
 public class PolylineDecoderBenchmark {
     private readonly Consumer _consumer = new();
@@ -40,17 +40,50 @@ public class PolylineDecoderBenchmark {
     /// <summary>
     /// String polyline decoder instance.
     /// </summary>
-    private readonly StringPolylineDecoder _stringDecoder = new();
+    private readonly PolylineDecoder<string, (double Latitude, double Longitude)> _stringDecoder = CreateStringDecoder();
 
     /// <summary>
     /// Char array polyline decoder instance.
     /// </summary>
-    private readonly CharArrayPolylineDecoder _charArrayDecoder = new();
+    private readonly PolylineDecoder<char[], (double Latitude, double Longitude)> _charArrayDecoder = CreateCharArrayDecoder();
 
     /// <summary>
-    /// String polyline decoder instance.
+    /// Memory char polyline decoder instance.
     /// </summary>
-    private readonly MemoryCharPolylineDecoder _memoryCharDecoder = new();
+    private readonly PolylineDecoder<ReadOnlyMemory<char>, (double Latitude, double Longitude)> _memoryCharDecoder = CreateMemoryDecoder();
+
+    private static PolylineFormatter<(double Latitude, double Longitude), T> BuildFormatter<T>(
+        Func<ReadOnlyMemory<char>, T> write, Func<T, ReadOnlyMemory<char>> read) =>
+        FormatterBuilder<(double Latitude, double Longitude), T>.Create()
+            .AddValue("lat", static c => c.Latitude)
+            .AddValue("lon", static c => c.Longitude)
+            .WithCreate(static v => (v[0], v[1]))
+            .ForPolyline(write, read)
+            .Build();
+
+    private static PolylineDecoder<string, (double Latitude, double Longitude)> CreateStringDecoder() {
+        var fmt = BuildFormatter<string>(
+            static m => new string(m.Span),
+            static s => s?.AsMemory() ?? Memory<char>.Empty);
+        return new PolylineDecoder<string, (double Latitude, double Longitude)>(
+            new PolylineOptions<(double Latitude, double Longitude), string>(fmt));
+    }
+
+    private static PolylineDecoder<char[], (double Latitude, double Longitude)> CreateCharArrayDecoder() {
+        var fmt = BuildFormatter<char[]>(
+            static m => m.ToArray(),
+            static a => a?.AsMemory() ?? Memory<char>.Empty);
+        return new PolylineDecoder<char[], (double Latitude, double Longitude)>(
+            new PolylineOptions<(double Latitude, double Longitude), char[]>(fmt));
+    }
+
+    private static PolylineDecoder<ReadOnlyMemory<char>, (double Latitude, double Longitude)> CreateMemoryDecoder() {
+        var fmt = BuildFormatter<ReadOnlyMemory<char>>(
+            static m => m,
+            static m => m);
+        return new PolylineDecoder<ReadOnlyMemory<char>, (double Latitude, double Longitude)>(
+            new PolylineOptions<(double Latitude, double Longitude), ReadOnlyMemory<char>>(fmt));
+    }
 
     /// <summary>
     /// Sets up benchmark data.
@@ -90,35 +123,5 @@ public class PolylineDecoderBenchmark {
         _memoryCharDecoder
             .Decode(Memory)
             .Consume(_consumer);
-    }
-
-    private sealed class StringPolylineDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-        protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) {
-            return (latitude, longitude);
-        }
-
-        protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) {
-            return polyline?.AsMemory() ?? Memory<char>.Empty;
-        }
-    }
-
-    private sealed class CharArrayPolylineDecoder : AbstractPolylineDecoder<char[], (double Latitude, double Longitude)> {
-        protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) {
-            return (latitude, longitude);
-        }
-
-        protected override ReadOnlyMemory<char> GetReadOnlyMemory(in char[] polyline) {
-            return polyline?.AsMemory() ?? Memory<char>.Empty;
-        }
-    }
-
-    private sealed class MemoryCharPolylineDecoder : AbstractPolylineDecoder<ReadOnlyMemory<char>, (double Latitude, double Longitude)> {
-        protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) {
-            return (latitude, longitude);
-        }
-
-        protected override ReadOnlyMemory<char> GetReadOnlyMemory(in ReadOnlyMemory<char> polyline) {
-            return polyline;
-        }
     }
 }

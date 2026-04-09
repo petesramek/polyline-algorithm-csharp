@@ -5,6 +5,7 @@
 
 namespace PolylineAlgorithm.Tests.Extensions;
 
+using PolylineAlgorithm;
 using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Extensions;
 using PolylineAlgorithm.Utility;
@@ -16,14 +17,30 @@ using System.Collections.Generic;
 /// </summary>
 [TestClass]
 public sealed class PolylineDecoderExtensionsTests {
-    private sealed class TestStringDecoder : AbstractPolylineDecoder<string, (double Latitude, double Longitude)> {
-        protected override ReadOnlyMemory<char> GetReadOnlyMemory(in string polyline) => polyline.AsMemory();
-        protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) => (latitude, longitude);
+    private static PolylineDecoder<string, (double Latitude, double Longitude)> CreateStringDecoder() {
+        PolylineFormatter<(double Latitude, double Longitude), string> formatter =
+            FormatterBuilder<(double Latitude, double Longitude), string>.Create()
+                .AddValue("lat", static c => c.Latitude)
+                .AddValue("lon", static c => c.Longitude)
+                .WithCreate(static v => (v[0], v[1]))
+                .ForPolyline(static m => new string(m.Span), static s => s.AsMemory())
+                .Build();
+
+        return new PolylineDecoder<string, (double Latitude, double Longitude)>(
+            new PolylineOptions<(double Latitude, double Longitude), string>(formatter));
     }
 
-    private sealed class TestMemoryDecoder : AbstractPolylineDecoder<ReadOnlyMemory<char>, (double Latitude, double Longitude)> {
-        protected override ReadOnlyMemory<char> GetReadOnlyMemory(in ReadOnlyMemory<char> polyline) => polyline;
-        protected override (double Latitude, double Longitude) CreateCoordinate(double latitude, double longitude) => (latitude, longitude);
+    private static PolylineDecoder<ReadOnlyMemory<char>, (double Latitude, double Longitude)> CreateMemoryDecoder() {
+        PolylineFormatter<(double Latitude, double Longitude), ReadOnlyMemory<char>> formatter =
+            FormatterBuilder<(double Latitude, double Longitude), ReadOnlyMemory<char>>.Create()
+                .AddValue("lat", static c => c.Latitude)
+                .AddValue("lon", static c => c.Longitude)
+                .WithCreate(static v => (v[0], v[1]))
+                .ForPolyline(static m => m, static m => m)
+                .Build();
+
+        return new PolylineDecoder<ReadOnlyMemory<char>, (double Latitude, double Longitude)>(
+            new PolylineOptions<(double Latitude, double Longitude), ReadOnlyMemory<char>>(formatter));
     }
 
     // ----- Decode(char[]) for IPolylineDecoder<string, TValue> -----
@@ -49,7 +66,7 @@ public sealed class PolylineDecoderExtensionsTests {
     [TestMethod]
     public void Decode_With_Char_Array_Null_Polyline_Throws_ArgumentNullException() {
         // Arrange
-        TestStringDecoder decoder = new();
+        var decoder = CreateStringDecoder();
         char[]? polyline = null;
 
         // Act & Assert
@@ -64,7 +81,7 @@ public sealed class PolylineDecoderExtensionsTests {
     [TestMethod]
     public void Decode_With_Char_Array_Valid_Polyline_Returns_Expected_Coordinates() {
         // Arrange
-        TestStringDecoder decoder = new();
+        var decoder = CreateStringDecoder();
         char[] polyline = StaticValueProvider.Valid.GetPolyline().ToCharArray();
         (double Latitude, double Longitude)[] expected = [.. StaticValueProvider.Valid.GetCoordinates()];
 
@@ -102,7 +119,7 @@ public sealed class PolylineDecoderExtensionsTests {
     [TestMethod]
     public void Decode_With_Memory_Valid_Polyline_Returns_Expected_Coordinates() {
         // Arrange
-        TestStringDecoder decoder = new();
+        var decoder = CreateStringDecoder();
         ReadOnlyMemory<char> polyline = StaticValueProvider.Valid.GetPolyline().AsMemory();
         (double Latitude, double Longitude)[] expected = [.. StaticValueProvider.Valid.GetCoordinates()];
 
@@ -140,7 +157,7 @@ public sealed class PolylineDecoderExtensionsTests {
     [TestMethod]
     public void Decode_With_String_Null_Polyline_Throws_ArgumentNullException() {
         // Arrange
-        TestMemoryDecoder decoder = new();
+        var decoder = CreateMemoryDecoder();
         string? polyline = null;
 
         // Act & Assert
@@ -155,7 +172,7 @@ public sealed class PolylineDecoderExtensionsTests {
     [TestMethod]
     public void Decode_With_String_Valid_Polyline_Returns_Expected_Coordinates() {
         // Arrange
-        TestMemoryDecoder decoder = new();
+        var decoder = CreateMemoryDecoder();
         string polyline = StaticValueProvider.Valid.GetPolyline();
         (double Latitude, double Longitude)[] expected = [.. StaticValueProvider.Valid.GetCoordinates()];
 

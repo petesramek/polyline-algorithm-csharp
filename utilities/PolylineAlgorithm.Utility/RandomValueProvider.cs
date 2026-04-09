@@ -5,7 +5,6 @@
 
 namespace PolylineAlgorithm.Utility;
 
-using PolylineAlgorithm.Abstraction;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -20,7 +19,19 @@ using System.Linq;
 internal static class RandomValueProvider {
     private static readonly Random _random = new(DateTime.Now.Millisecond);
     private static readonly ConcurrentDictionary<int, PolylineCoordinateCollectionPair> _cache = new();
-    private static readonly PolylineEncoder _encoder = new();
+    private static readonly PolylineEncoder<(double Latitude, double Longitude), string> _encoder = CreateEncoder();
+
+    private static PolylineEncoder<(double Latitude, double Longitude), string> CreateEncoder() {
+        PolylineFormatter<(double Latitude, double Longitude), string> formatter =
+            FormatterBuilder<(double Latitude, double Longitude), string>.Create()
+                .AddValue("lat", static c => c.Latitude)
+                .AddValue("lon", static c => c.Longitude)
+                .ForPolyline(static m => new string(m.Span), static s => s.AsMemory())
+                .Build();
+
+        return new PolylineEncoder<(double Latitude, double Longitude), string>(
+            new PolylineOptions<(double Latitude, double Longitude), string>(formatter));
+    }
 
     /// <summary>
     /// Gets a collection of random latitude/longitude tuples of the specified count.
@@ -103,18 +114,4 @@ internal static class RandomValueProvider {
         public string Polyline { get; } = polyline;
     }
 
-    private sealed class PolylineEncoder : AbstractPolylineEncoder<(double Latitude, double Longitude), string> {
-
-        protected override string CreatePolyline(ReadOnlyMemory<char> polyline) {
-            return polyline.ToString();
-        }
-
-        protected override double GetLatitude((double Latitude, double Longitude) current) {
-            return current.Latitude;
-        }
-
-        protected override double GetLongitude((double Latitude, double Longitude) current) {
-            return current.Longitude;
-        }
-    }
 }

@@ -30,6 +30,7 @@ public static class PolylineDecoderExtensions {
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="decoder"/> or <paramref name="polyline"/> is <see langword="null"/>.
     /// </exception>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null is verified before use via ExceptionGuard.ThrowArgumentNull, which is annotated [DoesNotReturn]. CA1062 does not recognise custom [DoesNotReturn] helpers as null guards.")]
     public static IEnumerable<TValue> Decode<TValue>(this IPolylineDecoder<string, TValue> decoder, char[] polyline) {
         if (decoder is null) {
             ExceptionGuard.ThrowArgumentNull(nameof(decoder));
@@ -58,6 +59,7 @@ public static class PolylineDecoderExtensions {
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="decoder"/> is <see langword="null"/>.
     /// </exception>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null is verified before use via ExceptionGuard.ThrowArgumentNull, which is annotated [DoesNotReturn]. CA1062 does not recognise custom [DoesNotReturn] helpers as null guards.")]
     public static IEnumerable<TValue> Decode<TValue>(this IPolylineDecoder<string, TValue> decoder, ReadOnlyMemory<char> polyline) {
         if (decoder is null) {
             ExceptionGuard.ThrowArgumentNull(nameof(decoder));
@@ -83,6 +85,7 @@ public static class PolylineDecoderExtensions {
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="decoder"/> or <paramref name="polyline"/> is <see langword="null"/>.
     /// </exception>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null is verified before use via ExceptionGuard.ThrowArgumentNull, which is annotated [DoesNotReturn]. CA1062 does not recognise custom [DoesNotReturn] helpers as null guards.")]
     public static IEnumerable<TValue> Decode<TValue>(this IPolylineDecoder<ReadOnlyMemory<char>, TValue> decoder, string polyline) {
         if (decoder is null) {
             ExceptionGuard.ThrowArgumentNull(nameof(decoder));
@@ -93,5 +96,39 @@ public static class PolylineDecoderExtensions {
         }
 
         return decoder.Decode(polyline.AsMemory());
+    }
+
+    /// <summary>
+    /// Decodes an encoded polyline string into a sequence of geographic coordinates, applying per-call
+    /// <paramref name="options"/> to seed the accumulated-delta state.
+    /// </summary>
+    /// <typeparam name="TValue">The coordinate type returned by the decoder.</typeparam>
+    /// <param name="decoder">The chunked decoder instance.</param>
+    /// <param name="polyline">The encoded polyline string to decode.</param>
+    /// <param name="options">
+    /// Per-call options that control the accumulated-delta seed. Pass <see langword="null"/> to start
+    /// from zero (the default behaviour).
+    /// </param>
+    /// <returns>
+    /// An <see cref="IEnumerable{T}"/> of <typeparamref name="TValue"/> containing the decoded
+    /// coordinate pairs.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when <paramref name="decoder"/> or <paramref name="polyline"/> is <see langword="null"/>.
+    /// </exception>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null is verified before use via ExceptionGuard.ThrowArgumentNull, which is annotated [DoesNotReturn]. CA1062 does not recognise custom [DoesNotReturn] helpers as null guards.")]
+    public static IEnumerable<TValue> Decode<TValue>(
+        this IChunkedPolylineDecoder<string, TValue> decoder,
+        string polyline,
+        PolylineDecodingOptions<TValue>? options) {
+        if (decoder is null) {
+            ExceptionGuard.ThrowArgumentNull(nameof(decoder));
+        }
+
+        if (polyline is null) {
+            ExceptionGuard.ThrowArgumentNull(nameof(polyline));
+        }
+
+        return decoder.Decode(polyline, options, CancellationToken.None);
     }
 }

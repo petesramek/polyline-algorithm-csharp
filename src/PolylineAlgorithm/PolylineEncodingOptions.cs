@@ -5,79 +5,49 @@
 
 namespace PolylineAlgorithm;
 
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-
 /// <summary>
-/// Provides configuration options for polyline encoding operations.
+/// Per-call options for a chunked encoding operation.
 /// </summary>
+/// <typeparam name="TCoordinate">The coordinate type understood by the formatter.</typeparam>
 /// <remarks>
-/// <para>
-/// This class allows you to configure various aspects of polyline encoding, including:
-/// </para>
-/// <list type="bullet">
-/// <item><description>The <see cref="Precision"/> level for coordinate encoding</description></item>
-/// <item><description>The <see cref="StackAllocLimit"/> for memory allocation strategy</description></item>
-/// <item><description>The <see cref="LoggerFactory"/> for diagnostic logging</description></item>
-/// </list>
-/// <para>
-/// All properties have internal setters and should be configured through a builder or factory pattern.
-/// </para>
+/// Pass an instance of this class to the chunked
+/// <see cref="Abstraction.IChunkedPolylineEncoder{TValue, TPolyline}.Encode"/> overload to control
+/// the delta baseline used at the start of each chunk. When <see cref="HasPrevious"/> is
+/// <see langword="false"/> the formatter's built-in baseline (or zero) is used, which is equivalent
+/// to the existing default behaviour.
 /// </remarks>
-[DebuggerDisplay("StackAllocLimit: {StackAllocLimit}, Precision: {Precision}, LoggerFactoryType: {GetLoggerFactoryType()}")]
-public sealed class PolylineEncodingOptions {
-    /// <summary>
-    /// Gets the logger factory used for diagnostic logging during encoding operations.
-    /// </summary>
-    /// <value>
-    /// An <see cref="ILoggerFactory"/> instance. Defaults to <see cref="NullLoggerFactory.Instance"/>.
-    /// </value>
-    /// <remarks>
-    /// The default logger factory is <see cref="NullLoggerFactory"/>, which does not log any messages.
-    /// To enable logging, provide a custom <see cref="ILoggerFactory"/> implementation.
-    /// </remarks>
-    public ILoggerFactory LoggerFactory { get; internal set; } = NullLoggerFactory.Instance;
+public sealed class PolylineEncodingOptions<TCoordinate> {
+    private readonly TCoordinate _previous;
 
     /// <summary>
-    /// Gets the precision level used for encoding coordinate values.
+    /// Initializes a new instance of <see cref="PolylineEncodingOptions{TCoordinate}"/> with no
+    /// previous coordinate (formatter default baseline will be used).
     /// </summary>
-    /// <value>
-    /// The number of decimal places to use when encoding coordinate values. Defaults to 5.
-    /// </value>
-    /// <remarks>
-    /// <para>
-    /// The precision determines the number of decimal places to which each coordinate value (latitude or longitude)
-    /// is multiplied and truncated (not rounded) before encoding. For example, a precision of 5 means each coordinate is multiplied by 10^5
-    /// and truncated to an integer before encoding.
-    /// </para>
-    /// <para>
-    /// This setting does not directly correspond to a physical distance or accuracy in meters, but rather controls
-    /// the granularity of the encoded values.
-    /// </para>
-    /// </remarks>
-    public uint Precision { get; internal set; } = 5;
+    public PolylineEncodingOptions() { }
 
     /// <summary>
-    /// Gets the maximum buffer size (in characters) that can be allocated on the stack for encoding operations.
+    /// Initializes a new instance of <see cref="PolylineEncodingOptions{TCoordinate}"/> with the
+    /// specified previous coordinate used to seed the delta baseline.
     /// </summary>
-    /// <value>
-    /// The maximum number of characters for stack allocation using <c>stackalloc char[]</c>. Defaults to 512.
-    /// </value>
-    /// <remarks>
-    /// When the required buffer size for encoding exceeds this limit, memory will be allocated on the heap instead of the stack.
-    /// This setting specifically applies to stack allocation of character arrays (<c>stackalloc char[]</c>) used during polyline encoding,
-    /// balancing performance and stack safety.
-    /// </remarks>
-    public int StackAllocLimit { get; internal set; } = 512;
+    /// <param name="previous">
+    /// The last coordinate of the previous chunk, used to seed the delta baseline.
+    /// </param>
+    public PolylineEncodingOptions(TCoordinate previous) {
+        _previous = previous;
+        HasPrevious = true;
+    }
 
     /// <summary>
-    /// Returns the type name of the logger factory for debugging purposes.
+    /// Gets a value indicating whether a previous coordinate has been supplied to seed the delta
+    /// baseline. When <see langword="false"/> the formatter's built-in baseline is used as the
+    /// starting point (which defaults to zero when no baseline has been configured), equivalent to
+    /// the existing default behaviour.
     /// </summary>
-    /// <returns>
-    /// A string containing the type name of the current <see cref="LoggerFactory"/> instance.
-    /// </returns>
-    [ExcludeFromCodeCoverage]
-    private string GetLoggerFactoryType() => LoggerFactory.GetType().Name;
+    public bool HasPrevious { get; }
+
+    /// <summary>
+    /// Gets the last coordinate of the previous chunk, used to seed the delta baseline.
+    /// Only meaningful when <see cref="HasPrevious"/> is <see langword="true"/>.
+    /// </summary>
+    public TCoordinate Previous => _previous;
 }

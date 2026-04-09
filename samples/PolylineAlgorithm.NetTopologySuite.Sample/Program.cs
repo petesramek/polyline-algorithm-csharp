@@ -4,10 +4,27 @@
 //
 
 using NetTopologySuite.Geometries;
-using PolylineAlgorithm.NetTopologySuite.Sample;
+using PolylineAlgorithm;
 
 public class Program {
     public static void Main(string[] args) {
+        // Build a formatter for NetTopologySuite's Point type.
+        // NTS convention: Y = latitude, X = longitude.
+        PolylineFormatter<Point, string> formatter =
+            FormatterBuilder<Point, string>.Create()
+                .AddValue("lat", static p => p.Y)
+                .AddValue("lon", static p => p.X)
+                // The formatter automatically denormalizes scaled values, so v[0] = latitude, v[1] = longitude.
+                .WithCreate(static v => new Point(x: v[1], y: v[0]))
+                .ForPolyline(
+                    static m => m.IsEmpty ? string.Empty : new string(m.Span),
+                    static s => s.AsMemory())
+                .Build();
+
+        PolylineOptions<Point, string> options = new(formatter);
+        PolylineEncoder<Point, string> encoder = new(options);
+        PolylineDecoder<string, Point> decoder = new(options);
+
         // Sample route: Seattle → Bellevue → Redmond
         var points = new Point[]
         {
@@ -15,9 +32,6 @@ public class Program {
             new(x: -122.2015, y: 47.6101),  // Bellevue
             new(x: -122.1215, y: 47.6740),  // Redmond
         };
-
-        var encoder = new NetTopologyPolylineEncoder();
-        var decoder = new NetTopologyPolylineDecoder();
 
         // Encode
         string encoded = encoder.Encode(points);
