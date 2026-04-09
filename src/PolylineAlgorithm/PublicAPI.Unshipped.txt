@@ -56,3 +56,22 @@ static PolylineAlgorithm.PolylineEncoding.ValidateBlockLength(System.ReadOnlySpa
 static PolylineAlgorithm.PolylineEncoding.ValidateCharRange(System.ReadOnlySpan<char> polyline) -> void
 static PolylineAlgorithm.PolylineEncoding.ValidateFormat(System.ReadOnlySpan<char> polyline) -> void
 virtual PolylineAlgorithm.PolylineItemFactory<T>.Invoke(System.ReadOnlySpan<double> values) -> T
+PolylineAlgorithm.Abstraction.IChunkedPolylineDecoder<TPolyline, TValue>
+PolylineAlgorithm.Abstraction.IChunkedPolylineDecoder<TPolyline, TValue>.Decode(TPolyline polyline, PolylineAlgorithm.PolylineDecodingOptions<TValue>? options, System.Threading.CancellationToken cancellationToken) -> System.Collections.Generic.IEnumerable<TValue>!
+PolylineAlgorithm.Abstraction.IChunkedPolylineEncoder<TValue, TPolyline>
+PolylineAlgorithm.Abstraction.IChunkedPolylineEncoder<TValue, TPolyline>.Encode(System.ReadOnlySpan<TValue> coordinates, PolylineAlgorithm.PolylineEncodingOptions<TValue>? options, System.Threading.CancellationToken cancellationToken) -> TPolyline
+PolylineAlgorithm.PolylineDecodingOptions<TCoordinate>
+PolylineAlgorithm.PolylineDecodingOptions<TCoordinate>.HasPrevious.get -> bool
+PolylineAlgorithm.PolylineDecodingOptions<TCoordinate>.PolylineDecodingOptions() -> void
+PolylineAlgorithm.PolylineDecodingOptions<TCoordinate>.PolylineDecodingOptions(TCoordinate previous) -> void
+PolylineAlgorithm.PolylineDecodingOptions<TCoordinate>.Previous.get -> TCoordinate
+PolylineAlgorithm.PolylineDecoder<TPolyline, TCoordinate>.Decode(TPolyline polyline, PolylineAlgorithm.PolylineDecodingOptions<TCoordinate>? options, System.Threading.CancellationToken cancellationToken) -> System.Collections.Generic.IEnumerable<TCoordinate>!
+PolylineAlgorithm.PolylineEncodingOptions<TCoordinate>
+PolylineAlgorithm.PolylineEncodingOptions<TCoordinate>.HasPrevious.get -> bool
+PolylineAlgorithm.PolylineEncodingOptions<TCoordinate>.PolylineEncodingOptions() -> void
+PolylineAlgorithm.PolylineEncodingOptions<TCoordinate>.PolylineEncodingOptions(TCoordinate previous) -> void
+PolylineAlgorithm.PolylineEncodingOptions<TCoordinate>.Previous.get -> TCoordinate
+PolylineAlgorithm.PolylineEncoder<TCoordinate, TPolyline>.Encode(System.ReadOnlySpan<TCoordinate> coordinates, PolylineAlgorithm.PolylineEncodingOptions<TCoordinate>? options, System.Threading.CancellationToken cancellationToken) -> TPolyline
+static PolylineAlgorithm.Extensions.PolylineDecoderExtensions.Decode<TValue>(this PolylineAlgorithm.Abstraction.IChunkedPolylineDecoder<string!, TValue>! decoder, string! polyline, PolylineAlgorithm.PolylineDecodingOptions<TValue>? options) -> System.Collections.Generic.IEnumerable<TValue>!
+static PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode<TCoordinate, TPolyline>(this PolylineAlgorithm.Abstraction.IChunkedPolylineEncoder<TCoordinate, TPolyline>! encoder, System.Collections.Generic.List<TCoordinate>! coordinates, PolylineAlgorithm.PolylineEncodingOptions<TCoordinate>? options) -> TPolyline
+static PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode<TCoordinate, TPolyline>(this PolylineAlgorithm.Abstraction.IChunkedPolylineEncoder<TCoordinate, TPolyline>! encoder, TCoordinate[]! coordinates, PolylineAlgorithm.PolylineEncodingOptions<TCoordinate>? options) -> TPolyline

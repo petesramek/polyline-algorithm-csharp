@@ -25,7 +25,7 @@ using System.Threading;
 /// <see cref="IPolylineFormatter{TCoordinate, TPolyline}"/> to the constructor. The formatter handles
 /// all type-specific concerns; no subclassing is required.
 /// </remarks>
-public class PolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder<TCoordinate, TPolyline> {
+public class PolylineEncoder<TCoordinate, TPolyline> : IChunkedPolylineEncoder<TCoordinate, TPolyline> {
     private readonly IPolylineFormatter<TCoordinate, TPolyline> _formatter;
     private readonly PolylineOptions<TCoordinate, TPolyline> _options;
     private readonly ILogger<PolylineEncoder<TCoordinate, TPolyline>> _logger;
@@ -95,9 +95,7 @@ public class PolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder<TCoordin
         long[] previous = new long[width];
         long[] values = new long[width];
 
-        for (int j = 0; j < width; j++) {
-            previous[j] = _formatter.GetBaseline(j);
-        }
+        SeedPrevious(previous, null);
 
         try {
             for (int i = 0; i < coordinates.Length; i++) {
@@ -127,6 +125,106 @@ public class PolylineEncoder<TCoordinate, TPolyline> : IPolylineEncoder<TCoordin
         } finally {
             if (temp is not null) {
                 ArrayPool<char>.Shared.Return(temp);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Encodes a collection of <typeparamref name="TCoordinate"/> instances into an encoded
+    /// <typeparamref name="TPolyline"/>, applying per-call <paramref name="options"/> to control the
+    /// delta baseline. Use this overload to encode large sequences in independent chunks that can be
+    /// concatenated into a single valid polyline.
+    /// </summary>
+    /// <param name="coordinates">The collection of coordinates to encode.</param>
+    /// <param name="options">
+    /// Per-call options that control the starting delta baseline. Pass <see langword="null"/> or an
+    /// instance with <see cref="PolylineEncodingOptions{TCoordinate}.Previous"/> set to
+    /// <see langword="null"/> to use the formatter's default baseline (same as calling
+    /// <see cref="Encode(ReadOnlySpan{TCoordinate}, CancellationToken)"/>).
+    /// </param>
+    /// <param name="cancellationToken">A token that can be used to cancel the operation.</param>
+    /// <returns>
+    /// An instance of <typeparamref name="TPolyline"/> representing the encoded coordinates.
+    /// </returns>
+    /// <exception cref="ArgumentException">
+    /// Thrown when <paramref name="coordinates"/> is empty.
+    /// </exception>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when the internal encoding buffer cannot accommodate the encoded value.
+    /// </exception>
+    /// <exception cref="OperationCanceledException">
+    /// Thrown when <paramref name="cancellationToken"/> is canceled.
+    /// </exception>
+    public TPolyline Encode(
+        ReadOnlySpan<TCoordinate> coordinates,
+        PolylineEncodingOptions<TCoordinate>? options,
+        CancellationToken cancellationToken) {
+        const string OperationName = nameof(Encode);
+
+        _logger.LogOperationStartedDebug(OperationName);
+
+        Debug.Assert(coordinates.Length >= 0, "Count must be non-negative.");
+
+        if (coordinates.Length < 1) {
+            _logger.LogOperationFailedDebug(OperationName);
+            _logger.LogEmptyArgumentWarning(nameof(coordinates));
+            ExceptionGuard.ThrowArgumentCannotBeEmptyEnumerationMessage(nameof(coordinates));
+        }
+
+        int width = _formatter.Width;
+        int length = GetMaxBufferLength(coordinates.Length, width);
+
+        char[]? temp = length <= _options.StackAllocLimit
+            ? null
+            : ArrayPool<char>.Shared.Rent(length);
+
+        Span<char> buffer = temp is null ? stackalloc char[length] : temp.AsSpan(0, length);
+
+        int position = 0;
+        long[] previous = new long[width];
+        long[] values = new long[width];
+
+        SeedPrevious(previous, options);
+
+        try {
+            for (int i = 0; i < coordinates.Length; i++) {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                _formatter.GetValues(coordinates[i], values.AsSpan());
+
+                for (int j = 0; j < width; j++) {
+                    long current = values[j];
+                    long delta = current - previous[j];
+                    previous[j] = current;
+
+                    if (!PolylineEncoding.TryWriteValue(delta, buffer, ref position)) {
+                        _logger.LogOperationFailedDebug(OperationName);
+                        _logger.LogCannotWriteValueToBufferWarning(position, i);
+                        ExceptionGuard.ThrowCouldNotWriteEncodedValueToBuffer();
+                    }
+                }
+            }
+
+            string encodedResult = buffer[..position].ToString();
+
+            _logger.LogOperationFinishedDebug(OperationName);
+
+            return _formatter.Write(encodedResult.AsMemory());
+        } finally {
+            if (temp is not null) {
+                ArrayPool<char>.Shared.Return(temp);
+            }
+        }
+    }
+
+    private void SeedPrevious(long[] previous, PolylineEncodingOptions<TCoordinate>? options) {
+        int width = _formatter.Width;
+
+        if (options is { HasPrevious: true }) {
+            _formatter.GetValues(options.Previous, previous.AsSpan());
+        } else {
+            for (int j = 0; j < width; j++) {
+                previous[j] = _formatter.GetBaseline(j);
             }
         }
     }

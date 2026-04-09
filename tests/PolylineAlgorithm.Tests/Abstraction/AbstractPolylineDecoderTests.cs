@@ -173,4 +173,154 @@ public sealed class AbstractPolylineDecoderTests {
         Assert.ThrowsExactly<InvalidOperationException>(
             () => decoder.Decode(polyline).ToList());
     }
+
+    // ------------------------------------------------------------------
+    // Chunked Decode — options overload
+    // ------------------------------------------------------------------
+
+    /// <summary>
+    /// Tests that the chunked overload with null options produces the same result as the standard
+    /// overload.
+    /// </summary>
+    [TestMethod]
+    public void Decode_Chunked_With_Null_Options_Produces_Same_Result_As_Standard() {
+        // Arrange
+        PolylineDecoder<string, (double Lat, double Lon)> decoder = CreateDecoder();
+        string polyline = StaticValueProvider.Valid.GetPolyline();
+
+        // Act
+        List<(double Lat, double Lon)> standard = decoder.Decode(polyline).ToList();
+        List<(double Lat, double Lon)> chunked = decoder.Decode(polyline, null, CancellationToken.None).ToList();
+
+        // Assert
+        Assert.AreEqual(standard.Count, chunked.Count);
+        for (int i = 0; i < standard.Count; i++) {
+            Assert.AreEqual(standard[i].Lat, chunked[i].Lat, 1e-5);
+            Assert.AreEqual(standard[i].Lon, chunked[i].Lon, 1e-5);
+        }
+    }
+
+    /// <summary>
+    /// Tests that chunked decoding with a Previous coordinate seeds the accumulated state
+    /// correctly, producing a result different from standard decoding of the same polyline.
+    /// </summary>
+    [TestMethod]
+    public void Decode_Chunked_With_Previous_Seeds_Accumulated_State() {
+        // Arrange — build a chunked polyline where chunk B is relative to the last of chunk A
+        PolylineFormatter<(double Lat, double Lon), string> formatter =
+            FormatterBuilder<(double Lat, double Lon), string>.Create()
+                .AddValue("lat", c => c.Lat)
+                .AddValue("lon", c => c.Lon)
+                .WithCreate(static v => (v[0], v[1]))
+                .ForPolyline(_write, _read)
+                .Build();
+
+        PolylineOptions<(double Lat, double Lon), string> options = new(formatter);
+        PolylineEncoder<(double Lat, double Lon), string> encoder = new(options);
+        PolylineDecoder<string, (double Lat, double Lon)> decoder = new(options);
+
+        (double Lat, double Lon)[] chunkA = [(38.5, -120.2), (40.7, -120.95)];
+        (double Lat, double Lon)[] chunkB = [(43.252, -126.453)];
+
+        string polylineB = encoder.Encode(
+            chunkB.AsSpan(),
+            new PolylineEncodingOptions<(double Lat, double Lon)>(chunkA[^1]),
+            CancellationToken.None);
+
+        // Act
+        (double Lat, double Lon) decodedWithSeed = decoder.Decode(
+            polylineB,
+            new PolylineDecodingOptions<(double Lat, double Lon)>(chunkA[^1]),
+            CancellationToken.None).First();
+
+        // Assert — decoded value should match the original chunkB[0]
+        Assert.AreEqual(chunkB[0].Lat, decodedWithSeed.Lat, 1e-5);
+        Assert.AreEqual(chunkB[0].Lon, decodedWithSeed.Lon, 1e-5);
+    }
+
+    /// <summary>
+    /// Tests chunked encode + chunked decode round-trip: splitting a sequence into two chunks,
+    /// encoding with chaining, then decoding each chunk independently with Previous seed produces
+    /// the original sequence.
+    /// </summary>
+    [TestMethod]
+    public void Decode_Chunked_RoundTrip_Reproduces_Full_Sequence() {
+        // Arrange
+        PolylineFormatter<(double Lat, double Lon), string> formatter =
+            FormatterBuilder<(double Lat, double Lon), string>.Create()
+                .AddValue("lat", c => c.Lat)
+                .AddValue("lon", c => c.Lon)
+                .WithCreate(static v => (v[0], v[1]))
+                .ForPolyline(_write, _read)
+                .Build();
+
+        PolylineOptions<(double Lat, double Lon), string> options = new(formatter);
+        PolylineEncoder<(double Lat, double Lon), string> encoder = new(options);
+        PolylineDecoder<string, (double Lat, double Lon)> decoder = new(options);
+
+        (double Lat, double Lon)[] all = [
+            (38.5, -120.2),
+            (40.7, -120.95),
+            (43.252, -126.453),
+            (47.6, -122.3),
+        ];
+
+        (double Lat, double Lon)[] chunkA = all[..2];
+        (double Lat, double Lon)[] chunkB = all[2..];
+
+        // Encode chunked
+        string polylineA = encoder.Encode(chunkA.AsSpan());
+        string polylineB = encoder.Encode(
+            chunkB.AsSpan(),
+            new PolylineEncodingOptions<(double Lat, double Lon)>(chunkA[^1]),
+            CancellationToken.None);
+
+        // Decode chunked
+        List<(double Lat, double Lon)> decodedA = decoder.Decode(polylineA).ToList();
+        List<(double Lat, double Lon)> decodedB = decoder.Decode(
+            polylineB,
+            new PolylineDecodingOptions<(double Lat, double Lon)>(decodedA[^1]),
+            CancellationToken.None).ToList();
+
+        List<(double Lat, double Lon)> combined = [.. decodedA, .. decodedB];
+
+        // Assert
+        Assert.AreEqual(all.Length, combined.Count);
+        for (int i = 0; i < all.Length; i++) {
+            Assert.AreEqual(all[i].Lat, combined[i].Lat, 1e-5);
+            Assert.AreEqual(all[i].Lon, combined[i].Lon, 1e-5);
+        }
+    }
+
+    /// <summary>
+    /// Tests that a null polyline throws <see cref="ArgumentNullException"/> when using the
+    /// chunked overload.
+    /// </summary>
+    [TestMethod]
+    public void Decode_Chunked_With_Null_Polyline_Throws_ArgumentNullException() {
+        // Arrange
+        PolylineDecoder<string, (double Lat, double Lon)> decoder = CreateDecoder();
+
+        // Act & Assert
+        ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
+            () => decoder.Decode(null!, null, CancellationToken.None).ToList());
+        Assert.AreEqual("polyline", ex.ParamName);
+    }
+
+    /// <summary>
+    /// Tests that a pre-cancelled token throws <see cref="OperationCanceledException"/> in the
+    /// chunked overload.
+    /// </summary>
+    [TestMethod]
+    public void Decode_Chunked_With_Pre_Cancelled_Token_Throws_OperationCanceledException() {
+        // Arrange
+        PolylineDecoder<string, (double Lat, double Lon)> decoder = CreateDecoder();
+        string polyline = StaticValueProvider.Valid.GetPolyline();
+        using CancellationTokenSource cts = new();
+        cts.Cancel();
+
+        // Act & Assert
+        Assert.ThrowsExactly<OperationCanceledException>(
+            () => decoder.Decode(polyline, null, cts.Token).ToList());
+    }
 }

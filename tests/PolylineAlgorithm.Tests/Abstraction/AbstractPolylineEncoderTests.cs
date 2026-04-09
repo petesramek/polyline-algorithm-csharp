@@ -221,4 +221,136 @@ public sealed class AbstractPolylineEncoderTests {
             Assert.AreEqual(original[i].Lon, decoded[i].Lon, 1e-5);
         }
     }
+
+    // ------------------------------------------------------------------
+    // Chunked Encode — options overload
+    // ------------------------------------------------------------------
+
+    /// <summary>
+    /// Tests that the chunked overload with null options produces the same result as the standard
+    /// overload (no baseline difference).
+    /// </summary>
+    [TestMethod]
+    public void Encode_Chunked_With_Null_Options_Produces_Same_Result_As_Standard() {
+        // Arrange
+        PolylineEncoder<(double Lat, double Lon), string> encoder = CreateEncoder();
+        (double, double)[] coordinates = [(38.5, -120.2), (40.7, -120.95), (43.252, -126.453)];
+
+        // Act
+        string standard = encoder.Encode(coordinates.AsSpan());
+        string chunked = encoder.Encode(coordinates.AsSpan(), null, CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(standard, chunked);
+    }
+
+    /// <summary>
+    /// Tests that chunked encoding with a Previous coordinate seeds the delta baseline correctly,
+    /// producing a result different from standard encoding of the same coordinates.
+    /// </summary>
+    [TestMethod]
+    public void Encode_Chunked_With_Previous_Seeds_Delta_Baseline() {
+        // Arrange
+        PolylineEncoder<(double Lat, double Lon), string> encoder = CreateEncoder();
+        (double Lat, double Lon)[] chunkA = [(38.5, -120.2), (40.7, -120.95)];
+        (double Lat, double Lon)[] chunkB = [(43.252, -126.453)];
+
+        // Act — encode chunk B starting from zero (standard) and from chunkA's last point
+        string standardB = encoder.Encode(chunkB.AsSpan());
+        string chunkedB = encoder.Encode(
+            chunkB.AsSpan(),
+            new PolylineEncodingOptions<(double Lat, double Lon)>(chunkA[^1]),
+            CancellationToken.None);
+
+        // Assert — the two polylines must differ because the first delta changes
+        Assert.AreNotEqual(standardB, chunkedB);
+    }
+
+    /// <summary>
+    /// Tests that encoding in two chunks produces a polyline that, when concatenated, decodes to
+    /// the same coordinate sequence as encoding the full sequence at once.
+    /// </summary>
+    [TestMethod]
+    public void Encode_Chunked_Concatenated_Decodes_To_Full_Sequence() {
+        // Arrange
+        PolylineFormatter<(double Lat, double Lon), string> formatter =
+            FormatterBuilder<(double Lat, double Lon), string>.Create()
+                .AddValue("lat", c => c.Lat)
+                .AddValue("lon", c => c.Lon)
+                .WithCreate(static v => (v[0], v[1]))
+                .ForPolyline(_write, _read)
+                .Build();
+
+        PolylineOptions<(double Lat, double Lon), string> options = new(formatter);
+        PolylineEncoder<(double Lat, double Lon), string> encoder = new(options);
+        PolylineDecoder<string, (double Lat, double Lon)> decoder = new(options);
+
+        (double Lat, double Lon)[] all = [
+            (38.5, -120.2),
+            (40.7, -120.95),
+            (43.252, -126.453),
+            (47.6, -122.3),
+        ];
+
+        (double Lat, double Lon)[] chunkA = all[..2];
+        (double Lat, double Lon)[] chunkB = all[2..];
+
+        // Act
+        string polylineA = encoder.Encode(chunkA.AsSpan());
+        string polylineB = encoder.Encode(
+            chunkB.AsSpan(),
+            new PolylineEncodingOptions<(double Lat, double Lon)>(chunkA[^1]),
+            CancellationToken.None);
+
+        string concatenated = polylineA + polylineB;
+        string fullEncoding = encoder.Encode(all.AsSpan());
+
+        (double Lat, double Lon)[] decodedConcatenated = [.. decoder.Decode(concatenated)];
+        (double Lat, double Lon)[] decodedFull = [.. decoder.Decode(fullEncoding)];
+
+        // Assert
+        Assert.AreEqual(concatenated, fullEncoding,
+            "Chunked-then-concatenated polyline should equal the full-sequence encoding.");
+        Assert.AreEqual(all.Length, decodedConcatenated.Length);
+        for (int i = 0; i < all.Length; i++) {
+            Assert.AreEqual(all[i].Lat, decodedConcatenated[i].Lat, 1e-5);
+            Assert.AreEqual(all[i].Lon, decodedConcatenated[i].Lon, 1e-5);
+            Assert.AreEqual(decodedFull[i].Lat, decodedConcatenated[i].Lat, 1e-5);
+            Assert.AreEqual(decodedFull[i].Lon, decodedConcatenated[i].Lon, 1e-5);
+        }
+    }
+
+    /// <summary>
+    /// Tests that an empty span still throws <see cref="ArgumentException"/> when using the
+    /// chunked overload.
+    /// </summary>
+    [TestMethod]
+    public void Encode_Chunked_With_Empty_Span_Throws_ArgumentException() {
+        // Arrange
+        PolylineEncoder<(double Lat, double Lon), string> encoder = CreateEncoder();
+
+        // Act & Assert
+        Assert.ThrowsExactly<ArgumentException>(
+            () => encoder.Encode(
+                ReadOnlySpan<(double, double)>.Empty,
+                new PolylineEncodingOptions<(double Lat, double Lon)>(),
+                CancellationToken.None));
+    }
+
+    /// <summary>
+    /// Tests that a pre-cancelled token throws <see cref="OperationCanceledException"/> in the
+    /// chunked overload.
+    /// </summary>
+    [TestMethod]
+    public void Encode_Chunked_With_Pre_Cancelled_Token_Throws_OperationCanceledException() {
+        // Arrange
+        PolylineEncoder<(double Lat, double Lon), string> encoder = CreateEncoder();
+        using CancellationTokenSource cts = new();
+        cts.Cancel();
+        (double, double)[] coordinates = [(0.0, 0.0), (1.0, 1.0)];
+
+        // Act & Assert
+        Assert.ThrowsExactly<OperationCanceledException>(
+            () => encoder.Encode(coordinates.AsSpan(), null, cts.Token));
+    }
 }
