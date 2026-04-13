@@ -133,12 +133,12 @@ public class PolylineEncoder<TValue, TPolyline> : IPolylineEncoder<TValue, TPoly
         char[]? rented = null;
 
         int position = 0;
-        bool hasItems = false;
+        bool anyItemProcessed = false;
 
         try {
             foreach (TValue item in coordinates) {
                 cancellationToken.ThrowIfCancellationRequested();
-                hasItems = true;
+                anyItemProcessed = true;
                 _formatter.GetValues(item, values);
 
                 for (int j = 0; j < width; j++) {
@@ -159,7 +159,7 @@ public class PolylineEncoder<TValue, TPolyline> : IPolylineEncoder<TValue, TPoly
                 }
             }
 
-            if (!hasItems) {
+            if (!anyItemProcessed) {
                 _logger.LogOperationFailedDebug(OperationName);
                 _logger.LogEmptyArgumentWarning(nameof(coordinates));
                 ExceptionGuard.ThrowArgumentCannotBeEmptyEnumerationMessage(nameof(coordinates));
