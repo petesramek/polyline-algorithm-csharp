@@ -1,0 +1,354 @@
+### YamlMime:ApiPage
+title: Class FormatterBuilder<TValue, TPolyline>
+body:
+- api1: Class FormatterBuilder<TValue, TPolyline>
+  id: PolylineAlgorithm_FormatterBuilder_2
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/FormatterBuilder.cs#L30
+  metadata:
+    uid: PolylineAlgorithm.FormatterBuilder`2
+    commentId: T:PolylineAlgorithm.FormatterBuilder`2
+- facts:
+  - name: Namespace
+    value:
+      text: PolylineAlgorithm
+      url: PolylineAlgorithm.html
+  - name: Assembly
+    value: PolylineAlgorithm.dll
+- markdown: Provides a fluent builder for constructing a <xref href="PolylineAlgorithm.PolylineFormatter%602" data-throw-if-not-resolved="false"></xref>.
+- code: public sealed class FormatterBuilder<TValue, TPolyline>
+- h4: Type Parameters
+- parameters:
+  - name: TValue
+    description: The coordinate or item type from which column values are extracted.
+  - name: TPolyline
+    description: The polyline surface type produced and consumed by the formatter.
+- h4: Inheritance
+- inheritance:
+  - text: object
+    url: https://learn.microsoft.com/dotnet/api/system.object
+  - text: FormatterBuilder<TValue, TPolyline>
+    url: PolylineAlgorithm.FormatterBuilder-2.html
+- h4: Inherited Members
+- list:
+  - text: object.Equals(object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - text: object.Equals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - text: object.GetHashCode()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - text: object.GetType()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - text: object.ReferenceEquals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - text: object.ToString()
+    url: https://learn.microsoft.com/dotnet/api/system.object.tostring
+- h2: Remarks
+- markdown: >-
+    <p>
+
+    Use <xref href="PolylineAlgorithm.FormatterBuilder%602.Create" data-throw-if-not-resolved="false"></xref> to obtain an instance, call <xref href="PolylineAlgorithm.FormatterBuilder%602.AddValue(System.String%2cSystem.Func%7b%600%2cSystem.Double%7d%2cSystem.UInt32)" data-throw-if-not-resolved="false"></xref> once per column,
+
+    optionally chain <xref href="PolylineAlgorithm.FormatterBuilder%602.SetBaseline(System.Int64)" data-throw-if-not-resolved="false"></xref> to set a reference baseline for the most-recently added column,
+
+    optionally chain <xref href="PolylineAlgorithm.FormatterBuilder%602.WithValueFactory(PolylineAlgorithm.PolylineItemFactory%7b%600%7d)" data-throw-if-not-resolved="false"></xref> to register a factory for the decoding direction,
+
+    call <xref href="PolylineAlgorithm.FormatterBuilder%602.WithReaderWriter(System.Func%7bSystem.ReadOnlyMemory%7bSystem.Char%7d%2c%601%7d%2cSystem.Func%7b%601%2cSystem.ReadOnlyMemory%7bSystem.Char%7d%7d)" data-throw-if-not-resolved="false"></xref> to supply the polyline surface delegates (required), then call
+
+    <xref href="PolylineAlgorithm.FormatterBuilder%602.Build" data-throw-if-not-resolved="false"></xref> to produce the immutable <xref href="PolylineAlgorithm.PolylineFormatter%602" data-throw-if-not-resolved="false"></xref>.
+
+    </p>
+
+    <p>
+
+    The builder is the <em>only</em> way to create a <xref href="PolylineAlgorithm.PolylineFormatter%602" data-throw-if-not-resolved="false"></xref>
+
+    — its constructor is internal.
+
+    </p>
+- h2: Methods
+- api3: AddValue(string, Func<TValue, double>, uint)
+  id: PolylineAlgorithm_FormatterBuilder_2_AddValue_System_String_System_Func__0_System_Double__System_UInt32_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/FormatterBuilder.cs#L67
+  metadata:
+    uid: PolylineAlgorithm.FormatterBuilder`2.AddValue(System.String,System.Func{`0,System.Double},System.UInt32)
+    commentId: M:PolylineAlgorithm.FormatterBuilder`2.AddValue(System.String,System.Func{`0,System.Double},System.UInt32)
+- markdown: Adds a column with the specified value selector and precision.
+- code: public FormatterBuilder<TValue, TPolyline> AddValue(string name, Func<TValue, double> selector, uint precision = 5)
+- h4: Parameters
+- parameters:
+  - name: name
+    type:
+    - text: string
+      url: https://learn.microsoft.com/dotnet/api/system.string
+    description: A unique, non-null, non-empty name that identifies the column. Used for diagnostics only.
+  - name: selector
+    type:
+    - text: Func
+      url: https://learn.microsoft.com/dotnet/api/system.func-2
+    - <
+    - TValue
+    - ','
+    - " "
+    - text: double
+      url: https://learn.microsoft.com/dotnet/api/system.double
+    - '>'
+    description: >-
+      A delegate that extracts the column's raw <xref href="System.Double" data-throw-if-not-resolved="false"></xref> value from an item of type
+
+      <code class="typeparamref">TValue</code>.
+  - name: precision
+    type:
+    - text: uint
+      url: https://learn.microsoft.com/dotnet/api/system.uint32
+    description: >-
+      The number of decimal places to preserve. Each extracted value is multiplied by
+
+      10^<code class="paramref">precision</code> before encoding. Defaults to 5.
+    optional: true
+- h4: Returns
+- parameters:
+  - type:
+    - text: FormatterBuilder
+      url: PolylineAlgorithm.FormatterBuilder-2.html
+    - <
+    - TValue
+    - ','
+    - " "
+    - TPolyline
+    - '>'
+    description: The current builder instance for method chaining.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentNullException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+    description: Thrown when <code class="paramref">name</code> or <code class="paramref">selector</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+  - type:
+    - text: ArgumentException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentexception
+    description: Thrown when <code class="paramref">name</code> is empty, or a rule with the same name already exists.
+- api3: Build()
+  id: PolylineAlgorithm_FormatterBuilder_2_Build
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/FormatterBuilder.cs#L186
+  metadata:
+    uid: PolylineAlgorithm.FormatterBuilder`2.Build
+    commentId: M:PolylineAlgorithm.FormatterBuilder`2.Build
+- markdown: >-
+    Bakes all added rules and delegates into a sealed, immutable
+
+    <xref href="PolylineAlgorithm.PolylineFormatter%602" data-throw-if-not-resolved="false"></xref>.
+- code: public PolylineFormatter<TValue, TPolyline> Build()
+- h4: Returns
+- parameters:
+  - type:
+    - text: PolylineFormatter
+      url: PolylineAlgorithm.PolylineFormatter-2.html
+    - <
+    - TValue
+    - ','
+    - " "
+    - TPolyline
+    - '>'
+    description: >-
+      An immutable <xref href="PolylineAlgorithm.PolylineFormatter%602" data-throw-if-not-resolved="false"></xref> whose configuration can
+
+      no longer be changed.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: InvalidOperationException
+      url: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+    description: Thrown when no rules have been added, or when <xref href="PolylineAlgorithm.FormatterBuilder%602.WithReaderWriter(System.Func%7bSystem.ReadOnlyMemory%7bSystem.Char%7d%2c%601%7d%2cSystem.Func%7b%601%2cSystem.ReadOnlyMemory%7bSystem.Char%7d%7d)" data-throw-if-not-resolved="false"></xref> has not been called.
+- api3: Create()
+  id: PolylineAlgorithm_FormatterBuilder_2_Create
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/FormatterBuilder.cs#L43
+  metadata:
+    uid: PolylineAlgorithm.FormatterBuilder`2.Create
+    commentId: M:PolylineAlgorithm.FormatterBuilder`2.Create
+- markdown: Creates a new <xref href="PolylineAlgorithm.FormatterBuilder%602" data-throw-if-not-resolved="false"></xref> instance.
+- code: >-
+    [SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Factory method on a generic builder intentionally lives on the type so callers write FormatterBuilder<T, U>.Create() without needing a separate non-generic factory class.")]
+
+    public static FormatterBuilder<TValue, TPolyline> Create()
+- h4: Returns
+- parameters:
+  - type:
+    - text: FormatterBuilder
+      url: PolylineAlgorithm.FormatterBuilder-2.html
+    - <
+    - TValue
+    - ','
+    - " "
+    - TPolyline
+    - '>'
+    description: A fresh builder with no rules and no polyline delegates.
+- api3: SetBaseline(long)
+  id: PolylineAlgorithm_FormatterBuilder_2_SetBaseline_System_Int64_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/FormatterBuilder.cs#L106
+  metadata:
+    uid: PolylineAlgorithm.FormatterBuilder`2.SetBaseline(System.Int64)
+    commentId: M:PolylineAlgorithm.FormatterBuilder`2.SetBaseline(System.Int64)
+- markdown: >-
+    Sets a reference value (baseline) on the most-recently added column.
+
+    During encoding, the baseline is subtracted from the first item's scaled column value so that
+
+    the initial delta is <code>scaled_first_value − baseline</code> rather than <code>scaled_first_value</code>.
+
+    Use this when the absolute scaled value of the first data point for a column would otherwise
+
+    produce a very large initial encoded delta.
+- code: public FormatterBuilder<TValue, TPolyline> SetBaseline(long baseline)
+- h4: Parameters
+- parameters:
+  - name: baseline
+    type:
+    - text: long
+      url: https://learn.microsoft.com/dotnet/api/system.int64
+    description: >-
+      The reference value to subtract from the first item's scaled column value during encoding.
+
+      The decoder automatically adds this value back, so the reconstructed item matches the
+
+      original input.
+- h4: Returns
+- parameters:
+  - type:
+    - text: FormatterBuilder
+      url: PolylineAlgorithm.FormatterBuilder-2.html
+    - <
+    - TValue
+    - ','
+    - " "
+    - TPolyline
+    - '>'
+    description: The current builder instance for method chaining.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: InvalidOperationException
+      url: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+    description: >-
+      Thrown when no rules have been added yet. Call <xref href="PolylineAlgorithm.FormatterBuilder%602.AddValue(System.String%2cSystem.Func%7b%600%2cSystem.Double%7d%2cSystem.UInt32)" data-throw-if-not-resolved="false"></xref> before
+
+      <xref href="PolylineAlgorithm.FormatterBuilder%602.SetBaseline(System.Int64)" data-throw-if-not-resolved="false"></xref>.
+- api3: WithReaderWriter(Func<ReadOnlyMemory<char>, TPolyline>, Func<TPolyline, ReadOnlyMemory<char>>)
+  id: PolylineAlgorithm_FormatterBuilder_2_WithReaderWriter_System_Func_System_ReadOnlyMemory_System_Char___1__System_Func__1_System_ReadOnlyMemory_System_Char___
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/FormatterBuilder.cs#L158
+  metadata:
+    uid: PolylineAlgorithm.FormatterBuilder`2.WithReaderWriter(System.Func{System.ReadOnlyMemory{System.Char},`1},System.Func{`1,System.ReadOnlyMemory{System.Char}})
+    commentId: M:PolylineAlgorithm.FormatterBuilder`2.WithReaderWriter(System.Func{System.ReadOnlyMemory{System.Char},`1},System.Func{`1,System.ReadOnlyMemory{System.Char}})
+- markdown: >-
+    Supplies the polyline-surface delegates required to convert between the raw character buffer
+
+    and a <code class="typeparamref">TPolyline</code>. This call is mandatory before <xref href="PolylineAlgorithm.FormatterBuilder%602.Build" data-throw-if-not-resolved="false"></xref>.
+- code: public FormatterBuilder<TValue, TPolyline> WithReaderWriter(Func<ReadOnlyMemory<char>, TPolyline> write, Func<TPolyline, ReadOnlyMemory<char>> read)
+- h4: Parameters
+- parameters:
+  - name: write
+    type:
+    - text: Func
+      url: https://learn.microsoft.com/dotnet/api/system.func-2
+    - <
+    - text: ReadOnlyMemory
+      url: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+    - <
+    - text: char
+      url: https://learn.microsoft.com/dotnet/api/system.char
+    - '>'
+    - ','
+    - " "
+    - TPolyline
+    - '>'
+    description: >-
+      Converts the encoded <xref href="System.ReadOnlyMemory%601" data-throw-if-not-resolved="false"></xref> of <xref href="System.Char" data-throw-if-not-resolved="false"></xref> produced by the encoder
+
+      into a <code class="typeparamref">TPolyline</code>.
+  - name: read
+    type:
+    - text: Func
+      url: https://learn.microsoft.com/dotnet/api/system.func-2
+    - <
+    - TPolyline
+    - ','
+    - " "
+    - text: ReadOnlyMemory
+      url: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+    - <
+    - text: char
+      url: https://learn.microsoft.com/dotnet/api/system.char
+    - '>'
+    - '>'
+    description: >-
+      Extracts the encoded character buffer from a <code class="typeparamref">TPolyline</code> for the decoder to
+
+      consume.
+- h4: Returns
+- parameters:
+  - type:
+    - text: FormatterBuilder
+      url: PolylineAlgorithm.FormatterBuilder-2.html
+    - <
+    - TValue
+    - ','
+    - " "
+    - TPolyline
+    - '>'
+    description: The current builder instance for method chaining.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentNullException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+    description: Thrown when <code class="paramref">write</code> or <code class="paramref">read</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+- api3: WithValueFactory(PolylineItemFactory<TValue>)
+  id: PolylineAlgorithm_FormatterBuilder_2_WithValueFactory_PolylineAlgorithm_PolylineItemFactory__0__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/FormatterBuilder.cs#L132
+  metadata:
+    uid: PolylineAlgorithm.FormatterBuilder`2.WithValueFactory(PolylineAlgorithm.PolylineItemFactory{`0})
+    commentId: M:PolylineAlgorithm.FormatterBuilder`2.WithValueFactory(PolylineAlgorithm.PolylineItemFactory{`0})
+- markdown: >-
+    Registers a factory delegate used to reconstruct a <code class="typeparamref">TValue</code> from
+
+    denormalized values during decoding.
+- code: public FormatterBuilder<TValue, TPolyline> WithValueFactory(PolylineItemFactory<TValue> create)
+- h4: Parameters
+- parameters:
+  - name: create
+    type:
+    - text: PolylineItemFactory
+      url: PolylineAlgorithm.PolylineItemFactory-1.html
+    - <
+    - TValue
+    - '>'
+    description: >-
+      A delegate that accepts the denormalized <xref href="System.Double" data-throw-if-not-resolved="false"></xref> values reconstructed from the
+
+      polyline and returns a <code class="typeparamref">TValue</code>. The formatter automatically divides
+
+      each accumulated scaled integer by its precision factor and adds back any baseline configured
+
+      via <xref href="PolylineAlgorithm.FormatterBuilder%602.SetBaseline(System.Int64)" data-throw-if-not-resolved="false"></xref>, so the span values match the original values supplied to the
+
+      encoder. The span length always equals the number of columns added via <xref href="PolylineAlgorithm.FormatterBuilder%602.AddValue(System.String%2cSystem.Func%7b%600%2cSystem.Double%7d%2cSystem.UInt32)" data-throw-if-not-resolved="false"></xref>.
+- h4: Returns
+- parameters:
+  - type:
+    - text: FormatterBuilder
+      url: PolylineAlgorithm.FormatterBuilder-2.html
+    - <
+    - TValue
+    - ','
+    - " "
+    - TPolyline
+    - '>'
+    description: The current builder instance for method chaining.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentNullException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+    description: Thrown when <code class="paramref">create</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+languageId: csharp
+metadata:
+  description: Provides a fluent builder for constructing a .

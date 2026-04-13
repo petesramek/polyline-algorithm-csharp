@@ -1,0 +1,42 @@
+### YamlMime:TableOfContent
+- name: PolylineAlgorithm
+  href: PolylineAlgorithm.yml
+  items:
+  - name: Classes
+  - name: FormatterBuilder<TValue, TPolyline>
+    href: PolylineAlgorithm.FormatterBuilder-2.yml
+  - name: InvalidPolylineException
+    href: PolylineAlgorithm.InvalidPolylineException.yml
+  - name: PolylineDecoder<TPolyline, TValue>
+    href: PolylineAlgorithm.PolylineDecoder-2.yml
+  - name: PolylineDecodingOptions<TValue>
+    href: PolylineAlgorithm.PolylineDecodingOptions-1.yml
+  - name: PolylineEncoder<TValue, TPolyline>
+    href: PolylineAlgorithm.PolylineEncoder-2.yml
+  - name: PolylineEncoding
+    href: PolylineAlgorithm.PolylineEncoding.yml
+  - name: PolylineEncodingOptions<TValue>
+    href: PolylineAlgorithm.PolylineEncodingOptions-1.yml
+  - name: PolylineFormatter<TValue, TPolyline>
+    href: PolylineAlgorithm.PolylineFormatter-2.yml
+  - name: PolylineOptions<TValue, TPolyline>
+    href: PolylineAlgorithm.PolylineOptions-2.yml
+  - name: Delegates
+  - name: PolylineItemFactory<T>
+    href: PolylineAlgorithm.PolylineItemFactory-1.yml
+- name: PolylineAlgorithm.Abstraction
+  href: PolylineAlgorithm.Abstraction.yml
+  items:
+  - name: Interfaces
+  - name: IPolylineDecoder<TPolyline, TValue>
+    href: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.yml
+  - name: IPolylineEncoder<TValue, TPolyline>
+    href: PolylineAlgorithm.Abstraction.IPolylineEncoder-2.yml
+  - name: IPolylineFormatter<TValue, TPolyline>
+    href: PolylineAlgorithm.Abstraction.IPolylineFormatter-2.yml
+- name: PolylineAlgorithm.Extensions
+  href: PolylineAlgorithm.Extensions.yml
+  items:
+  - name: Classes
+  - name: PolylineEncoderExtensions
+    href: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.yml

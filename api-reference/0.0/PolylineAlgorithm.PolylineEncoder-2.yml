@@ -1,0 +1,210 @@
+### YamlMime:ApiPage
+title: Class PolylineEncoder<TValue, TPolyline>
+body:
+- api1: Class PolylineEncoder<TValue, TPolyline>
+  id: PolylineAlgorithm_PolylineEncoder_2
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineEncoder.cs#L28
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncoder`2
+    commentId: T:PolylineAlgorithm.PolylineEncoder`2
+- facts:
+  - name: Namespace
+    value:
+      text: PolylineAlgorithm
+      url: PolylineAlgorithm.html
+  - name: Assembly
+    value: PolylineAlgorithm.dll
+- markdown: Encodes sequences of geographic coordinates into encoded polyline representations.
+- code: 'public class PolylineEncoder<TValue, TPolyline> : IPolylineEncoder<TValue, TPolyline>'
+- h4: Type Parameters
+- parameters:
+  - name: TValue
+    description: The type that represents a geographic coordinate to encode.
+  - name: TPolyline
+    description: The type that represents the encoded polyline output.
+- h4: Inheritance
+- inheritance:
+  - text: object
+    url: https://learn.microsoft.com/dotnet/api/system.object
+  - text: PolylineEncoder<TValue, TPolyline>
+    url: PolylineAlgorithm.PolylineEncoder-2.html
+- h4: Implements
+- list:
+  - text: IPolylineEncoder<TValue, TPolyline>
+    url: PolylineAlgorithm.Abstraction.IPolylineEncoder-2.html
+- h4: Inherited Members
+- list:
+  - text: object.Equals(object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - text: object.Equals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - text: object.GetHashCode()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - text: object.GetType()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - text: object.MemberwiseClone()
+    url: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - text: object.ReferenceEquals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - text: object.ToString()
+    url: https://learn.microsoft.com/dotnet/api/system.object.tostring
+- h4: Extension Methods
+- list:
+  - text: PolylineEncoderExtensions.Encode<TValue, TPolyline>(IPolylineEncoder<TValue, TPolyline>, TValue[], PolylineEncodingOptions<TValue>?, CancellationToken)
+    url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html#PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1____0___PolylineAlgorithm_PolylineEncodingOptions___0__System_Threading_CancellationToken_
+- h2: Remarks
+- markdown: >-
+    Pass a <xref href="PolylineAlgorithm.PolylineOptions%602" data-throw-if-not-resolved="false"></xref> that carries a
+
+    <xref href="PolylineAlgorithm.Abstraction.IPolylineFormatter%602" data-throw-if-not-resolved="false"></xref> to the constructor. The formatter handles
+
+    all type-specific concerns; no subclassing is required.
+- h2: Constructors
+- api3: PolylineEncoder(PolylineOptions<TValue, TPolyline>)
+  id: PolylineAlgorithm_PolylineEncoder_2__ctor_PolylineAlgorithm_PolylineOptions__0__1__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineEncoder.cs#L43
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncoder`2.#ctor(PolylineAlgorithm.PolylineOptions{`0,`1})
+    commentId: M:PolylineAlgorithm.PolylineEncoder`2.#ctor(PolylineAlgorithm.PolylineOptions{`0,`1})
+- markdown: Initializes a new instance of <xref href="PolylineAlgorithm.PolylineEncoder%602" data-throw-if-not-resolved="false"></xref>.
+- code: >-
+    [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null is verified before use via ExceptionGuard.ThrowArgumentNull, which is annotated [DoesNotReturn]. CA1062 does not recognise custom [DoesNotReturn] helpers as null guards.")]
+
+    public PolylineEncoder(PolylineOptions<TValue, TPolyline> options)
+- h4: Parameters
+- parameters:
+  - name: options
+    type:
+    - text: PolylineOptions
+      url: PolylineAlgorithm.PolylineOptions-2.html
+    - <
+    - TValue
+    - ','
+    - " "
+    - TPolyline
+    - '>'
+    description: >-
+      A <xref href="PolylineAlgorithm.PolylineOptions%602" data-throw-if-not-resolved="false"></xref> that carries the formatter and settings.
+
+      Must not be <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentNullException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+    description: Thrown when <code class="paramref">options</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+- h2: Methods
+- api3: Encode(ReadOnlySpan<TValue>, CancellationToken)
+  id: PolylineAlgorithm_PolylineEncoder_2_Encode_System_ReadOnlySpan__0__System_Threading_CancellationToken_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineEncoder.cs#L72
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncoder`2.Encode(System.ReadOnlySpan{`0},System.Threading.CancellationToken)
+    commentId: M:PolylineAlgorithm.PolylineEncoder`2.Encode(System.ReadOnlySpan{`0},System.Threading.CancellationToken)
+- markdown: >-
+    Encodes a collection of <code class="typeparamref">TValue</code> instances into an encoded
+
+    <code class="typeparamref">TPolyline</code>.
+- code: public TPolyline Encode(ReadOnlySpan<TValue> coordinates, CancellationToken cancellationToken = default)
+- h4: Parameters
+- parameters:
+  - name: coordinates
+    type:
+    - text: ReadOnlySpan
+      url: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+    - <
+    - TValue
+    - '>'
+    description: The collection of coordinates to encode.
+  - name: cancellationToken
+    type:
+    - text: CancellationToken
+      url: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+    description: A token that can be used to cancel the operation.
+    optional: true
+- h4: Returns
+- parameters:
+  - type:
+    - TPolyline
+    description: An instance of <code class="typeparamref">TPolyline</code> representing the encoded coordinates.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentexception
+    description: Thrown when <code class="paramref">coordinates</code> is empty.
+  - type:
+    - text: InvalidOperationException
+      url: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+    description: Thrown when the internal encoding buffer cannot accommodate the encoded value.
+  - type:
+    - text: OperationCanceledException
+      url: https://learn.microsoft.com/dotnet/api/system.operationcanceledexception
+    description: Thrown when <code class="paramref">cancellationToken</code> is canceled.
+- api3: Encode(ReadOnlySpan<TValue>, PolylineEncodingOptions<TValue>?, CancellationToken)
+  id: PolylineAlgorithm_PolylineEncoder_2_Encode_System_ReadOnlySpan__0__PolylineAlgorithm_PolylineEncodingOptions__0__System_Threading_CancellationToken_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineEncoder.cs#L158
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncoder`2.Encode(System.ReadOnlySpan{`0},PolylineAlgorithm.PolylineEncodingOptions{`0},System.Threading.CancellationToken)
+    commentId: M:PolylineAlgorithm.PolylineEncoder`2.Encode(System.ReadOnlySpan{`0},PolylineAlgorithm.PolylineEncodingOptions{`0},System.Threading.CancellationToken)
+- markdown: >-
+    Encodes a collection of <code class="typeparamref">TValue</code> instances into an encoded
+
+    <code class="typeparamref">TPolyline</code>, applying per-call <code class="paramref">options</code> to control the
+
+    delta baseline. Use this overload to encode large sequences in independent chunks that can be
+
+    concatenated into a single valid polyline.
+- code: public TPolyline Encode(ReadOnlySpan<TValue> coordinates, PolylineEncodingOptions<TValue>? options, CancellationToken cancellationToken)
+- h4: Parameters
+- parameters:
+  - name: coordinates
+    type:
+    - text: ReadOnlySpan
+      url: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+    - <
+    - TValue
+    - '>'
+    description: The collection of coordinates to encode.
+  - name: options
+    type:
+    - text: PolylineEncodingOptions
+      url: PolylineAlgorithm.PolylineEncodingOptions-1.html
+    - <
+    - TValue
+    - '>'
+    - '?'
+    description: >-
+      Per-call options that control the starting delta baseline. Pass <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or an
+
+      instance with <xref href="PolylineAlgorithm.PolylineEncodingOptions%601.Previous" data-throw-if-not-resolved="false"></xref> set to
+
+      <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to use the formatter's default baseline (same as calling
+
+      <xref href="PolylineAlgorithm.PolylineEncoder%602.Encode(System.ReadOnlySpan%7b%600%7d%2cSystem.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref>).
+  - name: cancellationToken
+    type:
+    - text: CancellationToken
+      url: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+    description: A token that can be used to cancel the operation.
+- h4: Returns
+- parameters:
+  - type:
+    - TPolyline
+    description: An instance of <code class="typeparamref">TPolyline</code> representing the encoded coordinates.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentexception
+    description: Thrown when <code class="paramref">coordinates</code> is empty.
+  - type:
+    - text: InvalidOperationException
+      url: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+    description: Thrown when the internal encoding buffer cannot accommodate the encoded value.
+  - type:
+    - text: OperationCanceledException
+      url: https://learn.microsoft.com/dotnet/api/system.operationcanceledexception
+    description: Thrown when <code class="paramref">cancellationToken</code> is canceled.
+languageId: csharp
+metadata:
+  description: Encodes sequences of geographic coordinates into encoded polyline representations.

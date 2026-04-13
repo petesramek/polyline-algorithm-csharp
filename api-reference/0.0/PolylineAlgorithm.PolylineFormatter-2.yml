@@ -1,0 +1,229 @@
+### YamlMime:ApiPage
+title: Class PolylineFormatter<TValue, TPolyline>
+body:
+- api1: Class PolylineFormatter<TValue, TPolyline>
+  id: PolylineAlgorithm_PolylineFormatter_2
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineFormatter.cs#L23
+  metadata:
+    uid: PolylineAlgorithm.PolylineFormatter`2
+    commentId: T:PolylineAlgorithm.PolylineFormatter`2
+- facts:
+  - name: Namespace
+    value:
+      text: PolylineAlgorithm
+      url: PolylineAlgorithm.html
+  - name: Assembly
+    value: PolylineAlgorithm.dll
+- markdown: A sealed, immutable formatter that implements <xref href="PolylineAlgorithm.Abstraction.IPolylineFormatter%602" data-throw-if-not-resolved="false"></xref>.
+- code: 'public sealed class PolylineFormatter<TValue, TPolyline> : IPolylineFormatter<TValue, TPolyline>'
+- h4: Type Parameters
+- parameters:
+  - name: TValue
+    description: The coordinate or item type.
+  - name: TPolyline
+    description: The polyline surface type.
+- h4: Inheritance
+- inheritance:
+  - text: object
+    url: https://learn.microsoft.com/dotnet/api/system.object
+  - text: PolylineFormatter<TValue, TPolyline>
+    url: PolylineAlgorithm.PolylineFormatter-2.html
+- h4: Implements
+- list:
+  - text: IPolylineFormatter<TValue, TPolyline>
+    url: PolylineAlgorithm.Abstraction.IPolylineFormatter-2.html
+- h4: Inherited Members
+- list:
+  - text: object.Equals(object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - text: object.Equals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - text: object.GetHashCode()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - text: object.GetType()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - text: object.ReferenceEquals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - text: object.ToString()
+    url: https://learn.microsoft.com/dotnet/api/system.object.tostring
+- h2: Remarks
+- markdown: >-
+    Instances are constructed exclusively through <xref href="PolylineAlgorithm.FormatterBuilder%602" data-throw-if-not-resolved="false"></xref>.
+
+    The <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/sealed">sealed</a> modifier allows the JIT to devirtualise and inline calls to the
+
+    interface methods in the encoding/decoding hot loop.
+- h2: Properties
+- api3: Width
+  id: PolylineAlgorithm_PolylineFormatter_2_Width
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineFormatter.cs#L46
+  metadata:
+    uid: PolylineAlgorithm.PolylineFormatter`2.Width
+    commentId: P:PolylineAlgorithm.PolylineFormatter`2.Width
+- markdown: >-
+    Gets the number of values (columns) per encoded item.
+
+    This is the required length of the <xref href="System.Span%601" data-throw-if-not-resolved="false"></xref> passed to <xref href="PolylineAlgorithm.Abstraction.IPolylineFormatter%602.GetValues(%600%2cSystem.Span%7bSystem.Int64%7d)" data-throw-if-not-resolved="false"></xref>
+
+    and the length of the span received in <xref href="PolylineAlgorithm.Abstraction.IPolylineFormatter%602.CreateItem(System.ReadOnlySpan%7bSystem.Int64%7d)" data-throw-if-not-resolved="false"></xref>.
+- code: public int Width { get; }
+- h4: Property Value
+- parameters:
+  - type:
+    - text: int
+      url: https://learn.microsoft.com/dotnet/api/system.int32
+- h2: Methods
+- api3: CreateItem(ReadOnlySpan<long>)
+  id: PolylineAlgorithm_PolylineFormatter_2_CreateItem_System_ReadOnlySpan_System_Int64__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineFormatter.cs#L84
+  metadata:
+    uid: PolylineAlgorithm.PolylineFormatter`2.CreateItem(System.ReadOnlySpan{System.Int64})
+    commentId: M:PolylineAlgorithm.PolylineFormatter`2.CreateItem(System.ReadOnlySpan{System.Int64})
+- markdown: >-
+    Reconstructs a <code class="typeparamref">TValue</code> from the given accumulated scaled integer values.
+
+    Called once per decoded item in the decoding loop. Implementations are responsible for
+
+    denormalizing the raw scaled integers (e.g. dividing by the precision factor and adding back
+
+    any baseline) before constructing the item.
+- code: public TValue CreateItem(ReadOnlySpan<long> values)
+- h4: Parameters
+- parameters:
+  - name: values
+    type:
+    - text: ReadOnlySpan
+      url: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+    - <
+    - text: long
+      url: https://learn.microsoft.com/dotnet/api/system.int64
+    - '>'
+    description: >-
+      The raw accumulated scaled integer values decoded from the polyline. Each element corresponds to
+
+      the same column position as in <xref href="PolylineAlgorithm.Abstraction.IPolylineFormatter%602.GetValues(%600%2cSystem.Span%7bSystem.Int64%7d)" data-throw-if-not-resolved="false"></xref>. These are the direct output of the
+
+      delta-accumulation loop in the decoder before any denormalization is applied.
+- h4: Returns
+- parameters:
+  - type:
+    - TValue
+    description: A <code class="typeparamref">TValue</code> reconstructed from <code class="paramref">values</code>.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: InvalidOperationException
+      url: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+    description: >-
+      Thrown when no factory delegate was supplied via
+
+      <xref href="PolylineAlgorithm.FormatterBuilder%602.WithValueFactory(PolylineAlgorithm.PolylineItemFactory%7b%600%7d)" data-throw-if-not-resolved="false"></xref>.
+- api3: GetBaseline(int)
+  id: PolylineAlgorithm_PolylineFormatter_2_GetBaseline_System_Int32_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineFormatter.cs#L49
+  metadata:
+    uid: PolylineAlgorithm.PolylineFormatter`2.GetBaseline(System.Int32)
+    commentId: M:PolylineAlgorithm.PolylineFormatter`2.GetBaseline(System.Int32)
+- markdown: >-
+    Returns the baseline for the column at <code class="paramref">index</code>, or <code>0</code> if none is configured.
+
+    The encoder uses this as the starting point for the first item's delta computation: the initial
+
+    delta for the column is <code>scaled_first_value − baseline</code> rather than <code>scaled_first_value</code>.
+- code: public long GetBaseline(int index)
+- h4: Parameters
+- parameters:
+  - name: index
+    type:
+    - text: int
+      url: https://learn.microsoft.com/dotnet/api/system.int32
+    description: The zero-based column index. Must be in the range <code>[0, <xref href="PolylineAlgorithm.Abstraction.IPolylineFormatter%602.Width" data-throw-if-not-resolved="false"></xref>)</code>.
+- h4: Returns
+- parameters:
+  - type:
+    - text: long
+      url: https://learn.microsoft.com/dotnet/api/system.int64
+    description: The baseline value, or <code>0</code> when no baseline has been defined for the column.
+- api3: GetValues(TValue, Span<long>)
+  id: PolylineAlgorithm_PolylineFormatter_2_GetValues__0_System_Span_System_Int64__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineFormatter.cs#L56
+  metadata:
+    uid: PolylineAlgorithm.PolylineFormatter`2.GetValues(`0,System.Span{System.Int64})
+    commentId: M:PolylineAlgorithm.PolylineFormatter`2.GetValues(`0,System.Span{System.Int64})
+- markdown: >-
+    Extracts and scales all column values from <code class="paramref">item</code> into the <code class="paramref">values</code> span.
+
+    Called once per item in the encoding loop.
+- code: public void GetValues(TValue item, Span<long> values)
+- h4: Parameters
+- parameters:
+  - name: item
+    type:
+    - TValue
+    description: The source item from which column values are extracted.
+  - name: values
+    type:
+    - text: Span
+      url: https://learn.microsoft.com/dotnet/api/system.span-1
+    - <
+    - text: long
+      url: https://learn.microsoft.com/dotnet/api/system.int64
+    - '>'
+    description: Output buffer that receives the scaled integer values. Its length must equal <xref href="PolylineAlgorithm.Abstraction.IPolylineFormatter%602.Width" data-throw-if-not-resolved="false"></xref>.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentexception
+    description: Thrown when <code class="paramref">values</code>.Length does not equal <xref href="PolylineAlgorithm.PolylineFormatter%602.Width" data-throw-if-not-resolved="false"></xref>.
+- api3: Read(TPolyline)
+  id: PolylineAlgorithm_PolylineFormatter_2_Read__1_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineFormatter.cs#L76
+  metadata:
+    uid: PolylineAlgorithm.PolylineFormatter`2.Read(`1)
+    commentId: M:PolylineAlgorithm.PolylineFormatter`2.Read(`1)
+- markdown: Extracts the character buffer from a <code class="typeparamref">TPolyline</code> for the decoder to read.
+- code: public ReadOnlyMemory<char> Read(TPolyline polyline)
+- h4: Parameters
+- parameters:
+  - name: polyline
+    type:
+    - TPolyline
+    description: The polyline to read from.
+- h4: Returns
+- parameters:
+  - type:
+    - text: ReadOnlyMemory
+      url: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+    - <
+    - text: char
+      url: https://learn.microsoft.com/dotnet/api/system.char
+    - '>'
+    description: A <xref href="System.ReadOnlyMemory%601" data-throw-if-not-resolved="false"></xref> of <xref href="System.Char" data-throw-if-not-resolved="false"></xref> representing the encoded characters.
+- api3: Write(ReadOnlyMemory<char>)
+  id: PolylineAlgorithm_PolylineFormatter_2_Write_System_ReadOnlyMemory_System_Char__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineFormatter.cs#L72
+  metadata:
+    uid: PolylineAlgorithm.PolylineFormatter`2.Write(System.ReadOnlyMemory{System.Char})
+    commentId: M:PolylineAlgorithm.PolylineFormatter`2.Write(System.ReadOnlyMemory{System.Char})
+- markdown: Creates a <code class="typeparamref">TPolyline</code> from the encoded character buffer produced by the encoder.
+- code: public TPolyline Write(ReadOnlyMemory<char> encoded)
+- h4: Parameters
+- parameters:
+  - name: encoded
+    type:
+    - text: ReadOnlyMemory
+      url: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+    - <
+    - text: char
+      url: https://learn.microsoft.com/dotnet/api/system.char
+    - '>'
+    description: The encoded polyline as a read-only memory of characters.
+- h4: Returns
+- parameters:
+  - type:
+    - TPolyline
+    description: A <code class="typeparamref">TPolyline</code> wrapping or derived from <code class="paramref">encoded</code>.
+languageId: csharp
+metadata:
+  description: A sealed, immutable formatter that implements .

@@ -1,0 +1,15 @@
+### YamlMime:ApiPage
+title: Namespace PolylineAlgorithm.Extensions
+body:
+- api1: Namespace PolylineAlgorithm.Extensions
+  id: PolylineAlgorithm_Extensions
+  metadata:
+    uid: PolylineAlgorithm.Extensions
+    commentId: N:PolylineAlgorithm.Extensions
+- h3: Classes
+- parameters:
+  - type:
+      text: PolylineEncoderExtensions
+      url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html
+    description: Provides extension methods for the <xref href="PolylineAlgorithm.Abstraction.IPolylineEncoder%602" data-throw-if-not-resolved="false"></xref> interface to facilitate encoding geographic coordinates into polylines.
+languageId: csharp

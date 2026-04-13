@@ -1,0 +1,165 @@
+### YamlMime:ApiPage
+title: Class PolylineDecoder<TPolyline, TValue>
+body:
+- api1: Class PolylineDecoder<TPolyline, TValue>
+  id: PolylineAlgorithm_PolylineDecoder_2
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineDecoder.cs#L27
+  metadata:
+    uid: PolylineAlgorithm.PolylineDecoder`2
+    commentId: T:PolylineAlgorithm.PolylineDecoder`2
+- facts:
+  - name: Namespace
+    value:
+      text: PolylineAlgorithm
+      url: PolylineAlgorithm.html
+  - name: Assembly
+    value: PolylineAlgorithm.dll
+- markdown: Decodes encoded polyline representations into sequences of geographic coordinates.
+- code: 'public class PolylineDecoder<TPolyline, TValue> : IPolylineDecoder<TPolyline, TValue>'
+- h4: Type Parameters
+- parameters:
+  - name: TPolyline
+    description: The type that represents the encoded polyline input.
+  - name: TValue
+    description: The type that represents a decoded geographic coordinate.
+- h4: Inheritance
+- inheritance:
+  - text: object
+    url: https://learn.microsoft.com/dotnet/api/system.object
+  - text: PolylineDecoder<TPolyline, TValue>
+    url: PolylineAlgorithm.PolylineDecoder-2.html
+- h4: Implements
+- list:
+  - text: IPolylineDecoder<TPolyline, TValue>
+    url: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html
+- h4: Inherited Members
+- list:
+  - text: object.Equals(object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - text: object.Equals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - text: object.GetHashCode()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - text: object.GetType()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - text: object.MemberwiseClone()
+    url: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - text: object.ReferenceEquals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - text: object.ToString()
+    url: https://learn.microsoft.com/dotnet/api/system.object.tostring
+- h2: Remarks
+- markdown: >-
+    Pass a <xref href="PolylineAlgorithm.PolylineOptions%602" data-throw-if-not-resolved="false"></xref> that carries a
+
+    <xref href="PolylineAlgorithm.Abstraction.IPolylineFormatter%602" data-throw-if-not-resolved="false"></xref> to the constructor. The formatter handles
+
+    all type-specific concerns; no subclassing is required.
+- h2: Constructors
+- api3: PolylineDecoder(PolylineOptions<TValue, TPolyline>)
+  id: PolylineAlgorithm_PolylineDecoder_2__ctor_PolylineAlgorithm_PolylineOptions__1__0__
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineDecoder.cs#L41
+  metadata:
+    uid: PolylineAlgorithm.PolylineDecoder`2.#ctor(PolylineAlgorithm.PolylineOptions{`1,`0})
+    commentId: M:PolylineAlgorithm.PolylineDecoder`2.#ctor(PolylineAlgorithm.PolylineOptions{`1,`0})
+- markdown: Initializes a new instance of <xref href="PolylineAlgorithm.PolylineDecoder%602" data-throw-if-not-resolved="false"></xref>.
+- code: >-
+    [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null is verified before use via ExceptionGuard.ThrowArgumentNull, which is annotated [DoesNotReturn]. CA1062 does not recognise custom [DoesNotReturn] helpers as null guards.")]
+
+    public PolylineDecoder(PolylineOptions<TValue, TPolyline> options)
+- h4: Parameters
+- parameters:
+  - name: options
+    type:
+    - text: PolylineOptions
+      url: PolylineAlgorithm.PolylineOptions-2.html
+    - <
+    - TValue
+    - ','
+    - " "
+    - TPolyline
+    - '>'
+    description: >-
+      A <xref href="PolylineAlgorithm.PolylineOptions%602" data-throw-if-not-resolved="false"></xref> that carries the formatter and settings.
+
+      Must not be <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentNullException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+    description: Thrown when <code class="paramref">options</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+- h2: Methods
+- api3: Decode(TPolyline, PolylineDecodingOptions<TValue>?, CancellationToken)
+  id: PolylineAlgorithm_PolylineDecoder_2_Decode__0_PolylineAlgorithm_PolylineDecodingOptions__1__System_Threading_CancellationToken_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/copilot/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineDecoder.cs#L78
+  metadata:
+    uid: PolylineAlgorithm.PolylineDecoder`2.Decode(`0,PolylineAlgorithm.PolylineDecodingOptions{`1},System.Threading.CancellationToken)
+    commentId: M:PolylineAlgorithm.PolylineDecoder`2.Decode(`0,PolylineAlgorithm.PolylineDecodingOptions{`1},System.Threading.CancellationToken)
+- markdown: >-
+    Decodes an encoded <code class="typeparamref">TPolyline</code> into a sequence of
+
+    <code class="typeparamref">TValue</code> instances, applying per-call <code class="paramref">options</code> to
+
+    seed the accumulated-delta state. Use this overload to decode polylines that were produced by
+
+    chunked encoding.
+- code: public IEnumerable<TValue> Decode(TPolyline polyline, PolylineDecodingOptions<TValue>? options = null, CancellationToken cancellationToken = default)
+- h4: Parameters
+- parameters:
+  - name: polyline
+    type:
+    - TPolyline
+    description: The encoded polyline to decode. Must not be <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+  - name: options
+    type:
+    - text: PolylineDecodingOptions
+      url: PolylineAlgorithm.PolylineDecodingOptions-1.html
+    - <
+    - TValue
+    - '>'
+    - '?'
+    description: >-
+      Per-call options that control the accumulated-delta seed. Pass <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or an
+
+      instance with <xref href="PolylineAlgorithm.PolylineDecodingOptions%601.Previous" data-throw-if-not-resolved="false"></xref> set to
+
+      <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to start from zero (same as calling
+
+      Decode(TPolyline, CancellationToken)).
+    optional: true
+  - name: cancellationToken
+    type:
+    - text: CancellationToken
+      url: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+    description: A token that can be used to cancel the operation.
+    optional: true
+- h4: Returns
+- parameters:
+  - type:
+    - text: IEnumerable
+      url: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+    - <
+    - TValue
+    - '>'
+    description: >-
+      An <xref href="System.Collections.Generic.IEnumerable%601" data-throw-if-not-resolved="false"></xref> of <code class="typeparamref">TValue</code> representing the decoded
+
+      coordinates.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentNullException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+    description: Thrown when <code class="paramref">polyline</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+  - type:
+    - text: InvalidPolylineException
+      url: PolylineAlgorithm.InvalidPolylineException.html
+    description: Thrown when the polyline format is invalid or malformed.
+  - type:
+    - text: OperationCanceledException
+      url: https://learn.microsoft.com/dotnet/api/system.operationcanceledexception
+    description: Thrown when <code class="paramref">cancellationToken</code> is canceled during decoding.
+languageId: csharp
+metadata:
+  description: Decodes encoded polyline representations into sequences of geographic coordinates.
