@@ -4,6 +4,7 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
 using PolylineAlgorithm;
 using PolylineAlgorithm.Utility;
+using System.Collections.Generic;
 
 /// <summary>
 /// Benchmarks for <see cref="PolylineEncoder{TValue, TPolyline}"/>.
@@ -24,9 +25,9 @@ public class PolylineEncoderBenchmark {
     public (double Latitude, double Longitude)[] Array { get; private set; }
 
     /// <summary>
-    /// Coordinates as read-only memory.
+    /// Coordinates as list.
     /// </summary>
-    public ReadOnlyMemory<(double Latitude, double Longitude)> Memory { get; private set; }
+    public List<(double Latitude, double Longitude)> List { get; private set; }
 
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
@@ -53,15 +54,15 @@ public class PolylineEncoderBenchmark {
     [GlobalSetup]
     public void SetupData() {
         Array = [.. RandomValueProvider.GetCoordinates(CoordinatesCount)];
-        Memory = Array.AsMemory();
+        List = [.. RandomValueProvider.GetCoordinates(CoordinatesCount)];
     }
 
     /// <summary>
-    /// Benchmark: encode coordinates from span.
+    /// Benchmark: encode coordinates from list.
     /// </summary>
     [Benchmark]
-    public void PolylineEncoder_Encode_Span() {
-        var polyline = _encoder.Encode(Memory.Span);
+    public void PolylineEncoder_Encode_List() {
+        var polyline = _encoder.Encode(List);
         _consumer.Consume(polyline);
     }
 

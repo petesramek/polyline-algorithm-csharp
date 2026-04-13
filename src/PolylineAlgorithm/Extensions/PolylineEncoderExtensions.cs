@@ -7,7 +7,8 @@ namespace PolylineAlgorithm.Extensions;
 
 using PolylineAlgorithm.Abstraction;
 using PolylineAlgorithm.Internal.Diagnostics;
-using System;
+using System.Collections.Generic;
+using System.Threading;
 
 /// <summary>
 /// Provides extension methods for the <see cref="IPolylineEncoder{TValue, TPolyline}"/> interface to facilitate encoding values into polylines.
@@ -27,7 +28,7 @@ public static class PolylineEncoderExtensions {
     /// <returns>
     /// A <typeparamref name="TPolyline"/> instance representing the encoded polyline for the provided values.
     /// </returns>
-    /// <exception cref="ArgumentNullException">
+    /// <exception cref="System.ArgumentNullException">
     /// Thrown when <paramref name="encoder"/> or <paramref name="values"/> is <see langword="null"/>.
     /// </exception>
     public static TPolyline Encode<TValue, TPolyline>(
@@ -43,6 +44,6 @@ public static class PolylineEncoderExtensions {
             ExceptionGuard.ThrowArgumentNull(nameof(values));
         }
 
-        return encoder.Encode(values.AsSpan(), options, cancellationToken);
+        return encoder.Encode(values, options, cancellationToken);
     }
 }

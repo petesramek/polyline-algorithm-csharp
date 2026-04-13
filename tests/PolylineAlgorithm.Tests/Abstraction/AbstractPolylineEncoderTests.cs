@@ -60,7 +60,7 @@ public sealed class AbstractPolylineEncoderTests {
     // Encode — argument validation
     // ------------------------------------------------------------------
 
-    /// <summary>Tests that encoding an empty span throws <see cref="ArgumentException"/>.</summary>
+    /// <summary>Tests that encoding an empty sequence throws <see cref="ArgumentException"/>.</summary>
     [TestMethod]
     public void Encode_With_Empty_Span_Throws_ArgumentException() {
         // Arrange
@@ -68,7 +68,7 @@ public sealed class AbstractPolylineEncoderTests {
 
         // Act & Assert
         Assert.ThrowsExactly<ArgumentException>(
-            () => encoder.Encode(ReadOnlySpan<(double, double)>.Empty));
+            () => encoder.Encode(Array.Empty<(double, double)>()));
     }
 
     // ------------------------------------------------------------------
@@ -83,7 +83,7 @@ public sealed class AbstractPolylineEncoderTests {
         (double, double)[] coordinates = [(0.0, 0.0)];
 
         // Act
-        string result = encoder.Encode(coordinates.AsSpan());
+        string result = encoder.Encode(coordinates);
 
         // Assert
         Assert.IsNotNull(result);
@@ -99,7 +99,7 @@ public sealed class AbstractPolylineEncoderTests {
         string expected = StaticValueProvider.Valid.GetPolyline();
 
         // Act
-        string result = encoder.Encode(coordinates.AsSpan());
+        string result = encoder.Encode(coordinates);
 
         // Assert
         Assert.AreEqual(expected, result);
@@ -120,7 +120,7 @@ public sealed class AbstractPolylineEncoderTests {
 
         // Act & Assert
         Assert.ThrowsExactly<OperationCanceledException>(
-            () => encoder.Encode(coordinates.AsSpan(), cts.Token));
+            () => encoder.Encode(coordinates, cts.Token));
     }
 
     // ------------------------------------------------------------------
@@ -139,7 +139,7 @@ public sealed class AbstractPolylineEncoderTests {
         string expected = StaticValueProvider.Valid.GetPolyline();
 
         // Act
-        string result = encoder.Encode(coordinates.AsSpan());
+        string result = encoder.Encode(coordinates);
 
         // Assert
         Assert.AreEqual(expected, result);
@@ -178,8 +178,8 @@ public sealed class AbstractPolylineEncoderTests {
         (double, double)[] coordinates = [(1.0, 2.0)];
 
         // Act
-        string resultWith = encoderWithBaseline.Encode(coordinates.AsSpan());
-        string resultWithout = encoderNoBaseline.Encode(coordinates.AsSpan());
+        string resultWith = encoderWithBaseline.Encode(coordinates);
+        string resultWithout = encoderNoBaseline.Encode(coordinates);
 
         // Assert — the two encodings must differ because the first lat delta changes
         Assert.AreNotEqual(resultWithout, resultWith);
@@ -211,7 +211,7 @@ public sealed class AbstractPolylineEncoderTests {
         (double Lat, double Lon)[] original = [.. StaticValueProvider.Valid.GetCoordinates()];
 
         // Act
-        string encoded = encoder.Encode(original.AsSpan());
+        string encoded = encoder.Encode(original);
         (double Lat, double Lon)[] decoded = [.. decoder.Decode(encoded)];
 
         // Assert
@@ -237,8 +237,8 @@ public sealed class AbstractPolylineEncoderTests {
         (double, double)[] coordinates = [(38.5, -120.2), (40.7, -120.95), (43.252, -126.453)];
 
         // Act
-        string standard = encoder.Encode(coordinates.AsSpan());
-        string chunked = encoder.Encode(coordinates.AsSpan(), null, CancellationToken.None);
+        string standard = encoder.Encode(coordinates);
+        string chunked = encoder.Encode(coordinates, null, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(standard, chunked);
@@ -256,9 +256,9 @@ public sealed class AbstractPolylineEncoderTests {
         (double Lat, double Lon)[] chunkB = [(43.252, -126.453)];
 
         // Act — encode chunk B starting from zero (standard) and from chunkA's last point
-        string standardB = encoder.Encode(chunkB.AsSpan());
+        string standardB = encoder.Encode(chunkB);
         string chunkedB = encoder.Encode(
-            chunkB.AsSpan(),
+            chunkB,
             new PolylineEncodingOptions<(double Lat, double Lon)>(chunkA[^1]),
             CancellationToken.None);
 
@@ -296,14 +296,14 @@ public sealed class AbstractPolylineEncoderTests {
         (double Lat, double Lon)[] chunkB = all[2..];
 
         // Act
-        string polylineA = encoder.Encode(chunkA.AsSpan());
+        string polylineA = encoder.Encode(chunkA);
         string polylineB = encoder.Encode(
-            chunkB.AsSpan(),
+            chunkB,
             new PolylineEncodingOptions<(double Lat, double Lon)>(chunkA[^1]),
             CancellationToken.None);
 
         string concatenated = polylineA + polylineB;
-        string fullEncoding = encoder.Encode(all.AsSpan());
+        string fullEncoding = encoder.Encode(all);
 
         (double Lat, double Lon)[] decodedConcatenated = [.. decoder.Decode(concatenated)];
         (double Lat, double Lon)[] decodedFull = [.. decoder.Decode(fullEncoding)];
@@ -332,7 +332,7 @@ public sealed class AbstractPolylineEncoderTests {
         // Act & Assert
         Assert.ThrowsExactly<ArgumentException>(
             () => encoder.Encode(
-                ReadOnlySpan<(double, double)>.Empty,
+                Array.Empty<(double, double)>(),
                 new PolylineEncodingOptions<(double Lat, double Lon)>(),
                 CancellationToken.None));
     }
@@ -351,6 +351,6 @@ public sealed class AbstractPolylineEncoderTests {
 
         // Act & Assert
         Assert.ThrowsExactly<OperationCanceledException>(
-            () => encoder.Encode(coordinates.AsSpan(), null, cts.Token));
+            () => encoder.Encode(coordinates, null, cts.Token));
     }
 }

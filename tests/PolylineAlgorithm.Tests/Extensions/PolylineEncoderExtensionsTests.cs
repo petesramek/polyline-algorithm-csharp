@@ -36,8 +36,7 @@ public sealed class PolylineEncoderExtensionsTests {
     /// </summary>
     [TestMethod]
     public void Encode_With_Array_Null_Encoder_Throws_ArgumentNullException() {
-        // Arrange — call the extension method explicitly because IPolylineEncoder.Encode(ReadOnlySpan<T>)
-        // would be preferred over the extension when calling through method syntax with an array argument.
+        // Arrange — call the extension method explicitly to target the array overload.
         IPolylineEncoder<(double, double), string>? encoder = null;
         (double, double)[] coordinates = [(0.0, 0.0)];
 

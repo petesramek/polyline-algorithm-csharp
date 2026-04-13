@@ -7,12 +7,10 @@ namespace PolylineAlgorithm;
 
 using Microsoft.Extensions.Logging;
 using PolylineAlgorithm.Abstraction;
-using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Internal.Diagnostics;
 using System;
 using System.Buffers;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 using System.Threading;
 
 /// <summary>
@@ -60,73 +58,24 @@ public class PolylineEncoder<TValue, TPolyline> : IPolylineEncoder<TValue, TPoly
     /// <returns>
     /// An instance of <typeparamref name="TPolyline"/> representing the encoded values.
     /// </returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when <paramref name="coordinates"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref="ArgumentException">
     /// Thrown when <paramref name="coordinates"/> is empty.
-    /// </exception>
-    /// <exception cref="InvalidOperationException">
-    /// Thrown when the internal encoding buffer cannot accommodate the encoded value.
     /// </exception>
     /// <exception cref="OperationCanceledException">
     /// Thrown when <paramref name="cancellationToken"/> is canceled.
     /// </exception>
-    public TPolyline Encode(ReadOnlySpan<TValue> coordinates, CancellationToken cancellationToken = default) {
-        const string OperationName = nameof(Encode);
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null is verified before use via ExceptionGuard.ThrowArgumentNull, which is annotated [DoesNotReturn]. CA1062 does not recognise custom [DoesNotReturn] helpers as null guards.")]
+    public TPolyline Encode(IEnumerable<TValue> coordinates, CancellationToken cancellationToken = default) {
+        _logger.LogOperationStartedDebug(nameof(Encode));
 
-        _logger.LogOperationStartedDebug(OperationName);
-
-        Debug.Assert(coordinates.Length >= 0, "Count must be non-negative.");
-
-        if (coordinates.Length < 1) {
-            _logger.LogOperationFailedDebug(OperationName);
-            _logger.LogEmptyArgumentWarning(nameof(coordinates));
-            ExceptionGuard.ThrowArgumentCannotBeEmptyEnumerationMessage(nameof(coordinates));
+        if (coordinates is null) {
+            ExceptionGuard.ThrowArgumentNull(nameof(coordinates));
         }
 
-        int width = _formatter.Width;
-        int length = GetMaxBufferLength(coordinates.Length, width);
-
-        char[]? temp = length <= _options.StackAllocLimit
-            ? null
-            : ArrayPool<char>.Shared.Rent(length);
-
-        Span<char> buffer = temp is null ? stackalloc char[length] : temp.AsSpan(0, length);
-
-        int position = 0;
-        long[] previous = new long[width];
-        long[] values = new long[width];
-
-        SeedPrevious(previous, null);
-
-        try {
-            for (int i = 0; i < coordinates.Length; i++) {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                _formatter.GetValues(coordinates[i], values.AsSpan());
-
-                for (int j = 0; j < width; j++) {
-                    long current = values[j];
-                    long delta = current - previous[j];
-                    previous[j] = current;
-
-                    if (!PolylineEncoding.TryWriteValue(delta, buffer, ref position)) {
-                        _logger.LogOperationFailedDebug(OperationName);
-                        _logger.LogCannotWriteValueToBufferWarning(position, i);
-                        ExceptionGuard.ThrowCouldNotWriteEncodedValueToBuffer();
-                    }
-                }
-            }
-
-            // Convert to string inside the try block so the buffer is still valid.
-            string encodedResult = buffer[..position].ToString();
-
-            _logger.LogOperationFinishedDebug(OperationName);
-
-            return _formatter.Write(encodedResult.AsMemory());
-        } finally {
-            if (temp is not null) {
-                ArrayPool<char>.Shared.Return(temp);
-            }
-        }
+        return EncodeCore(coordinates, null, cancellationToken);
     }
 
     /// <summary>
@@ -140,66 +89,80 @@ public class PolylineEncoder<TValue, TPolyline> : IPolylineEncoder<TValue, TPoly
     /// Per-call options that control the starting delta baseline. Pass <see langword="null"/> or an
     /// instance with <see cref="PolylineEncodingOptions{TValue}.Previous"/> set to
     /// <see langword="null"/> to use the formatter's default baseline (same as calling
-    /// <see cref="Encode(ReadOnlySpan{TValue}, CancellationToken)"/>).
+    /// <see cref="Encode(IEnumerable{TValue}, CancellationToken)"/>).
     /// </param>
     /// <param name="cancellationToken">A token that can be used to cancel the operation.</param>
     /// <returns>
     /// An instance of <typeparamref name="TPolyline"/> representing the encoded values.
     /// </returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when <paramref name="coordinates"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref="ArgumentException">
     /// Thrown when <paramref name="coordinates"/> is empty.
-    /// </exception>
-    /// <exception cref="InvalidOperationException">
-    /// Thrown when the internal encoding buffer cannot accommodate the encoded value.
     /// </exception>
     /// <exception cref="OperationCanceledException">
     /// Thrown when <paramref name="cancellationToken"/> is canceled.
     /// </exception>
-    public TPolyline Encode(ReadOnlySpan<TValue> coordinates, PolylineEncodingOptions<TValue>? options, CancellationToken cancellationToken) {
-        const string OperationName = nameof(Encode);
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null is verified before use via ExceptionGuard.ThrowArgumentNull, which is annotated [DoesNotReturn]. CA1062 does not recognise custom [DoesNotReturn] helpers as null guards.")]
+    public TPolyline Encode(IEnumerable<TValue> coordinates, PolylineEncodingOptions<TValue>? options, CancellationToken cancellationToken) {
+        _logger.LogOperationStartedDebug(nameof(Encode));
 
-        _logger.LogOperationStartedDebug(OperationName);
-
-        Debug.Assert(coordinates.Length >= 0, "Count must be non-negative.");
-
-        if (coordinates.Length < 1) {
-            _logger.LogOperationFailedDebug(OperationName);
-            _logger.LogEmptyArgumentWarning(nameof(coordinates));
-            ExceptionGuard.ThrowArgumentCannotBeEmptyEnumerationMessage(nameof(coordinates));
+        if (coordinates is null) {
+            ExceptionGuard.ThrowArgumentNull(nameof(coordinates));
         }
 
+        return EncodeCore(coordinates, options, cancellationToken);
+    }
+
+    private TPolyline EncodeCore(IEnumerable<TValue> coordinates, PolylineEncodingOptions<TValue>? options, CancellationToken cancellationToken) {
+        const string OperationName = nameof(Encode);
+        const int MaxStackWidth = 8;
+
         int width = _formatter.Width;
-        int length = GetMaxBufferLength(coordinates.Length, width);
 
-        char[]? temp = length <= _options.StackAllocLimit
-            ? null
-            : ArrayPool<char>.Shared.Rent(length);
-
-        Span<char> buffer = temp is null ? stackalloc char[length] : temp.AsSpan(0, length);
-
-        int position = 0;
-        long[] previous = new long[width];
-        long[] values = new long[width];
+        Span<long> previous = width <= MaxStackWidth ? stackalloc long[MaxStackWidth] : new long[width];
+        Span<long> values   = width <= MaxStackWidth ? stackalloc long[MaxStackWidth] : new long[width];
+        previous = previous[..width];
+        values   = values[..width];
 
         SeedPrevious(previous, options);
 
-        try {
-            for (int i = 0; i < coordinates.Length; i++) {
-                cancellationToken.ThrowIfCancellationRequested();
+        int stackLimit = _options.StackAllocLimit;
+        Span<char> buffer = stackalloc char[stackLimit];
+        char[]? rented = null;
 
-                _formatter.GetValues(coordinates[i], values.AsSpan());
+        int position = 0;
+        bool anyItemProcessed = false;
+
+        try {
+            foreach (TValue item in coordinates) {
+                cancellationToken.ThrowIfCancellationRequested();
+                anyItemProcessed = true;
+                _formatter.GetValues(item, values);
 
                 for (int j = 0; j < width; j++) {
                     long current = values[j];
                     long delta = current - previous[j];
                     previous[j] = current;
 
-                    if (!PolylineEncoding.TryWriteValue(delta, buffer, ref position)) {
-                        _logger.LogOperationFailedDebug(OperationName);
-                        _logger.LogCannotWriteValueToBufferWarning(position, i);
-                        ExceptionGuard.ThrowCouldNotWriteEncodedValueToBuffer();
+                    while (!PolylineEncoding.TryWriteValue(delta, buffer, ref position)) {
+                        int newSize = rented is null ? stackLimit * 2 : rented.Length * 2;
+                        char[] newRented = ArrayPool<char>.Shared.Rent(newSize);
+                        buffer[..position].CopyTo(newRented);
+                        if (rented is not null) {
+                            ArrayPool<char>.Shared.Return(rented);
+                        }
+                        rented = newRented;
+                        buffer = rented.AsSpan();
                     }
                 }
+            }
+
+            if (!anyItemProcessed) {
+                _logger.LogOperationFailedDebug(OperationName);
+                _logger.LogEmptyArgumentWarning(nameof(coordinates));
+                ExceptionGuard.ThrowArgumentCannotBeEmptyEnumerationMessage(nameof(coordinates));
             }
 
             string encodedResult = buffer[..position].ToString();
@@ -208,33 +171,19 @@ public class PolylineEncoder<TValue, TPolyline> : IPolylineEncoder<TValue, TPoly
 
             return _formatter.Write(encodedResult.AsMemory());
         } finally {
-            if (temp is not null) {
-                ArrayPool<char>.Shared.Return(temp);
+            if (rented is not null) {
+                ArrayPool<char>.Shared.Return(rented);
             }
         }
     }
 
-    private void SeedPrevious(long[] previous, PolylineEncodingOptions<TValue>? options) {
-        int width = _formatter.Width;
-
+    private void SeedPrevious(Span<long> previous, PolylineEncodingOptions<TValue>? options) {
         if (options is { HasPrevious: true }) {
-            _formatter.GetValues(options.Previous, previous.AsSpan());
+            _formatter.GetValues(options.Previous, previous);
         } else {
-            for (int j = 0; j < width; j++) {
+            for (int j = 0; j < previous.Length; j++) {
                 previous[j] = _formatter.GetBaseline(j);
             }
         }
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static int GetMaxBufferLength(int count, int valuesPerItem) {
-        Debug.Assert(count > 0, "Count must be greater than zero.");
-        Debug.Assert(valuesPerItem > 0, "Values per item must be greater than zero.");
-
-        int requestedBufferLength = count * valuesPerItem * Defaults.Polyline.Block.Length.Max;
-
-        Debug.Assert(requestedBufferLength > 0, "Requested buffer length must be greater than zero.");
-
-        return requestedBufferLength;
     }
 }
