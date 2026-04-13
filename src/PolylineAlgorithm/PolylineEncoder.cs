@@ -18,41 +18,41 @@ using System.Threading;
 /// <summary>
 /// Encodes sequences of geographic coordinates into encoded polyline representations.
 /// </summary>
-/// <typeparam name="TCoordinate">The type that represents a geographic coordinate to encode.</typeparam>
+/// <typeparam name="TValue">The type that represents a geographic coordinate to encode.</typeparam>
 /// <typeparam name="TPolyline">The type that represents the encoded polyline output.</typeparam>
 /// <remarks>
-/// Pass a <see cref="PolylineOptions{TCoordinate, TPolyline}"/> that carries a
-/// <see cref="IPolylineFormatter{TCoordinate, TPolyline}"/> to the constructor. The formatter handles
+/// Pass a <see cref="PolylineOptions{TValue, TPolyline}"/> that carries a
+/// <see cref="IPolylineFormatter{TValue, TPolyline}"/> to the constructor. The formatter handles
 /// all type-specific concerns; no subclassing is required.
 /// </remarks>
-public class PolylineEncoder<TCoordinate, TPolyline> : IChunkedPolylineEncoder<TCoordinate, TPolyline> {
-    private readonly IPolylineFormatter<TCoordinate, TPolyline> _formatter;
-    private readonly PolylineOptions<TCoordinate, TPolyline> _options;
-    private readonly ILogger<PolylineEncoder<TCoordinate, TPolyline>> _logger;
+public class PolylineEncoder<TValue, TPolyline> : IPolylineEncoder<TValue, TPolyline> {
+    private readonly IPolylineFormatter<TValue, TPolyline> _formatter;
+    private readonly PolylineOptions<TValue, TPolyline> _options;
+    private readonly ILogger<PolylineEncoder<TValue, TPolyline>> _logger;
 
     /// <summary>
-    /// Initializes a new instance of <see cref="PolylineEncoder{TCoordinate, TPolyline}"/>.
+    /// Initializes a new instance of <see cref="PolylineEncoder{TValue, TPolyline}"/>.
     /// </summary>
     /// <param name="options">
-    /// A <see cref="PolylineOptions{TCoordinate, TPolyline}"/> that carries the formatter and settings.
+    /// A <see cref="PolylineOptions{TValue, TPolyline}"/> that carries the formatter and settings.
     /// Must not be <see langword="null"/>.
     /// </param>
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="options"/> is <see langword="null"/>.
     /// </exception>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null is verified before use via ExceptionGuard.ThrowArgumentNull, which is annotated [DoesNotReturn]. CA1062 does not recognise custom [DoesNotReturn] helpers as null guards.")]
-    public PolylineEncoder(PolylineOptions<TCoordinate, TPolyline> options) {
+    public PolylineEncoder(PolylineOptions<TValue, TPolyline> options) {
         if (options is null) {
             ExceptionGuard.ThrowArgumentNull(nameof(options));
         }
 
         _options = options;
         _formatter = options.Formatter;
-        _logger = options.LoggerFactory.CreateLogger<PolylineEncoder<TCoordinate, TPolyline>>();
+        _logger = options.LoggerFactory.CreateLogger<PolylineEncoder<TValue, TPolyline>>();
     }
 
     /// <summary>
-    /// Encodes a collection of <typeparamref name="TCoordinate"/> instances into an encoded
+    /// Encodes a collection of <typeparamref name="TValue"/> instances into an encoded
     /// <typeparamref name="TPolyline"/>.
     /// </summary>
     /// <param name="coordinates">The collection of coordinates to encode.</param>
@@ -69,7 +69,7 @@ public class PolylineEncoder<TCoordinate, TPolyline> : IChunkedPolylineEncoder<T
     /// <exception cref="OperationCanceledException">
     /// Thrown when <paramref name="cancellationToken"/> is canceled.
     /// </exception>
-    public TPolyline Encode(ReadOnlySpan<TCoordinate> coordinates, CancellationToken cancellationToken = default) {
+    public TPolyline Encode(ReadOnlySpan<TValue> coordinates, CancellationToken cancellationToken = default) {
         const string OperationName = nameof(Encode);
 
         _logger.LogOperationStartedDebug(OperationName);
@@ -130,7 +130,7 @@ public class PolylineEncoder<TCoordinate, TPolyline> : IChunkedPolylineEncoder<T
     }
 
     /// <summary>
-    /// Encodes a collection of <typeparamref name="TCoordinate"/> instances into an encoded
+    /// Encodes a collection of <typeparamref name="TValue"/> instances into an encoded
     /// <typeparamref name="TPolyline"/>, applying per-call <paramref name="options"/> to control the
     /// delta baseline. Use this overload to encode large sequences in independent chunks that can be
     /// concatenated into a single valid polyline.
@@ -138,9 +138,9 @@ public class PolylineEncoder<TCoordinate, TPolyline> : IChunkedPolylineEncoder<T
     /// <param name="coordinates">The collection of coordinates to encode.</param>
     /// <param name="options">
     /// Per-call options that control the starting delta baseline. Pass <see langword="null"/> or an
-    /// instance with <see cref="PolylineEncodingOptions{TCoordinate}.Previous"/> set to
+    /// instance with <see cref="PolylineEncodingOptions{TValue}.Previous"/> set to
     /// <see langword="null"/> to use the formatter's default baseline (same as calling
-    /// <see cref="Encode(ReadOnlySpan{TCoordinate}, CancellationToken)"/>).
+    /// <see cref="Encode(ReadOnlySpan{TValue}, CancellationToken)"/>).
     /// </param>
     /// <param name="cancellationToken">A token that can be used to cancel the operation.</param>
     /// <returns>
@@ -155,10 +155,7 @@ public class PolylineEncoder<TCoordinate, TPolyline> : IChunkedPolylineEncoder<T
     /// <exception cref="OperationCanceledException">
     /// Thrown when <paramref name="cancellationToken"/> is canceled.
     /// </exception>
-    public TPolyline Encode(
-        ReadOnlySpan<TCoordinate> coordinates,
-        PolylineEncodingOptions<TCoordinate>? options,
-        CancellationToken cancellationToken) {
+    public TPolyline Encode(ReadOnlySpan<TValue> coordinates, PolylineEncodingOptions<TValue>? options, CancellationToken cancellationToken) {
         const string OperationName = nameof(Encode);
 
         _logger.LogOperationStartedDebug(OperationName);
@@ -217,7 +214,7 @@ public class PolylineEncoder<TCoordinate, TPolyline> : IChunkedPolylineEncoder<T
         }
     }
 
-    private void SeedPrevious(long[] previous, PolylineEncodingOptions<TCoordinate>? options) {
+    private void SeedPrevious(long[] previous, PolylineEncodingOptions<TValue>? options) {
         int width = _formatter.Width;
 
         if (options is { HasPrevious: true }) {

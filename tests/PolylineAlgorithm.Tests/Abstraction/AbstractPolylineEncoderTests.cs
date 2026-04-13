@@ -10,7 +10,7 @@ using System;
 using System.Threading;
 
 /// <summary>
-/// Tests for <see cref="PolylineEncoder{TCoordinate, TPolyline}"/>.
+/// Tests for <see cref="PolylineEncoder{TValue, TPolyline}"/>.
 /// </summary>
 [TestClass]
 public sealed class AbstractPolylineEncoderTests {
@@ -26,7 +26,7 @@ public sealed class AbstractPolylineEncoderTests {
             FormatterBuilder<(double Lat, double Lon), string>.Create()
                 .AddValue("lat", static c => c.Lat)
                 .AddValue("lon", static c => c.Lon)
-                .ForPolyline(_write, _read)
+                .WithReaderWriter(_write, _read)
                 .Build();
 
         return new PolylineEncoder<(double Lat, double Lon), string>(
@@ -160,14 +160,14 @@ public sealed class AbstractPolylineEncoderTests {
             FormatterBuilder<(double, double), string>.Create()
                 .AddValue("lat", c => c.Item1).SetBaseline(100000L)   // scaled 1.0 at precision 5
                 .AddValue("lon", c => c.Item2)
-                .ForPolyline(_write, _read)
+                .WithReaderWriter(_write, _read)
                 .Build();
 
         PolylineFormatter<(double, double), string> formatterNoBaseline =
             FormatterBuilder<(double, double), string>.Create()
                 .AddValue("lat", c => c.Item1)
                 .AddValue("lon", c => c.Item2)
-                .ForPolyline(_write, _read)
+                .WithReaderWriter(_write, _read)
                 .Build();
 
         PolylineEncoder<(double, double), string> encoderWithBaseline =
@@ -200,8 +200,8 @@ public sealed class AbstractPolylineEncoderTests {
             FormatterBuilder<(double Lat, double Lon), string>.Create()
                 .AddValue("lat", c => c.Lat)
                 .AddValue("lon", c => c.Lon)
-                .WithCreate(static v => (v[0], v[1]))
-                .ForPolyline(_write, _read)
+                .WithValueFactory(static v => (v[0], v[1]))
+                .WithReaderWriter(_write, _read)
                 .Build();
 
         PolylineOptions<(double Lat, double Lon), string> options = new(formatter);
@@ -277,8 +277,8 @@ public sealed class AbstractPolylineEncoderTests {
             FormatterBuilder<(double Lat, double Lon), string>.Create()
                 .AddValue("lat", c => c.Lat)
                 .AddValue("lon", c => c.Lon)
-                .WithCreate(static v => (v[0], v[1]))
-                .ForPolyline(_write, _read)
+                .WithValueFactory(static v => (v[0], v[1]))
+                .WithReaderWriter(_write, _read)
                 .Build();
 
         PolylineOptions<(double Lat, double Lon), string> options = new(formatter);

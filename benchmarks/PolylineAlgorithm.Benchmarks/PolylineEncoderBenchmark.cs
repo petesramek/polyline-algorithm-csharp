@@ -3,12 +3,10 @@ namespace PolylineAlgorithm.Benchmarks;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
 using PolylineAlgorithm;
-using PolylineAlgorithm.Extensions;
 using PolylineAlgorithm.Utility;
-using System.Collections.Generic;
 
 /// <summary>
-/// Benchmarks for <see cref="PolylineEncoder{TCoordinate, TPolyline}"/>.
+/// Benchmarks for <see cref="PolylineEncoder{TValue, TPolyline}"/>.
 /// </summary>
 public class PolylineEncoderBenchmark {
     private readonly Consumer _consumer = new();
@@ -20,11 +18,6 @@ public class PolylineEncoderBenchmark {
     public int CoordinatesCount { get; set; }
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-    /// <summary>
-    /// Coordinates as list.
-    /// </summary>
-    public List<(double Latitude, double Longitude)> List { get; private set; }
-
     /// <summary>
     /// Coordinates as array.
     /// </summary>
@@ -47,7 +40,7 @@ public class PolylineEncoderBenchmark {
             FormatterBuilder<(double Latitude, double Longitude), string>.Create()
                 .AddValue("lat", static c => c.Latitude)
                 .AddValue("lon", static c => c.Longitude)
-                .ForPolyline(static m => new string(m.Span), static s => s.AsMemory())
+                .WithReaderWriter(static m => new string(m.Span), static s => s.AsMemory())
                 .Build();
 
         return new PolylineEncoder<(double Latitude, double Longitude), string>(
@@ -59,8 +52,7 @@ public class PolylineEncoderBenchmark {
     /// </summary>
     [GlobalSetup]
     public void SetupData() {
-        List = [.. RandomValueProvider.GetCoordinates(CoordinatesCount)];
-        Array = [.. List];
+        Array = [.. RandomValueProvider.GetCoordinates(CoordinatesCount)];
         Memory = Array.AsMemory();
     }
 
@@ -79,15 +71,6 @@ public class PolylineEncoderBenchmark {
     [Benchmark]
     public void PolylineEncoder_Encode_Array() {
         var polyline = _encoder.Encode(Array);
-        _consumer.Consume(polyline);
-    }
-
-    /// <summary>
-    /// Benchmark: encode coordinates from list.
-    /// </summary>
-    [Benchmark]
-    public void PolylineEncoder_Encode_List() {
-        var polyline = _encoder.Encode(List);
         _consumer.Consume(polyline);
     }
 }

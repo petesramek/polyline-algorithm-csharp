@@ -8,7 +8,7 @@ namespace PolylineAlgorithm.Internal;
 using System;
 
 /// <summary>
-/// Represents a single column rule baked into a <see cref="PolylineFormatter{TCoordinate, TPolyline}"/>.
+/// Represents a single column rule baked into a <see cref="PolylineFormatter{TValue, TPolyline}"/>.
 /// Stores the pre-calculated factor and an optional baseline alongside the user-supplied value selector.
 /// </summary>
 /// <typeparam name="T">The source object type from which the column value is extracted.</typeparam>

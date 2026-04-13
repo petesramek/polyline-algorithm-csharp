@@ -73,5 +73,5 @@ public interface IPolylineEncoder<TValue, TPolyline> {
     /// <exception cref="System.OperationCanceledException">
     /// Thrown if the operation is canceled via <paramref name="cancellationToken"/>.
     /// </exception>
-    TPolyline Encode(ReadOnlySpan<TValue> coordinates, CancellationToken cancellationToken = default);
+    TPolyline Encode(ReadOnlySpan<TValue> coordinates, PolylineEncodingOptions<TValue>? options = null, CancellationToken cancellationToken = default);
 }

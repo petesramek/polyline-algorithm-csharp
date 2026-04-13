@@ -11,7 +11,7 @@ using PolylineAlgorithm;
 using PolylineAlgorithm.Utility;
 
 /// <summary>
-/// Benchmarks for <see cref="PolylineDecoder{TPolyline, TCoordinate}"/>.
+/// Benchmarks for <see cref="PolylineDecoder{TPolyline, TValue}"/>.
 /// </summary>
 public class PolylineDecoderBenchmark {
     private readonly Consumer _consumer = new();
@@ -57,8 +57,8 @@ public class PolylineDecoderBenchmark {
         FormatterBuilder<(double Latitude, double Longitude), T>.Create()
             .AddValue("lat", static c => c.Latitude)
             .AddValue("lon", static c => c.Longitude)
-            .WithCreate(static v => (v[0], v[1]))
-            .ForPolyline(write, read)
+            .WithValueFactory(static v => (v[0], v[1]))
+            .WithReaderWriter(write, read)
             .Build();
 
     private static PolylineDecoder<string, (double Latitude, double Longitude)> CreateStringDecoder() {

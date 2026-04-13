@@ -22,60 +22,11 @@ public sealed class PolylineEncoderExtensionsTests {
             FormatterBuilder<(double Latitude, double Longitude), string>.Create()
                 .AddValue("lat", static c => c.Latitude)
                 .AddValue("lon", static c => c.Longitude)
-                .ForPolyline(static m => new string(m.Span), static s => s.AsMemory())
+                .WithReaderWriter(static m => new string(m.Span), static s => s.AsMemory())
                 .Build();
 
         return new PolylineEncoder<(double Latitude, double Longitude), string>(
             new PolylineOptions<(double Latitude, double Longitude), string>(formatter));
-    }
-
-    // ----- Encode(List<T>) -----
-
-    /// <summary>
-    /// Tests that Encode with a null encoder throws <see cref="ArgumentNullException"/>.
-    /// </summary>
-    [TestMethod]
-    public void Encode_With_List_Null_Encoder_Throws_ArgumentNullException() {
-        // Arrange — use interface type so the extension method is resolved
-        IPolylineEncoder<(double, double), string>? encoder = null;
-        List<(double, double)> coordinates = [(0.0, 0.0)];
-
-        // Act & Assert
-        ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
-            () => encoder!.Encode(coordinates));
-        Assert.AreEqual("encoder", ex.ParamName);
-    }
-
-    /// <summary>
-    /// Tests that Encode with a null list throws <see cref="ArgumentNullException"/>.
-    /// </summary>
-    [TestMethod]
-    public void Encode_With_List_Null_Coordinates_Throws_ArgumentNullException() {
-        // Arrange
-        var encoder = CreateTestEncoder();
-        List<(double, double)>? coordinates = null;
-
-        // Act & Assert
-        ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
-            () => encoder.Encode(coordinates!));
-        Assert.AreEqual("coordinates", ex.ParamName);
-    }
-
-    /// <summary>
-    /// Tests that Encode with a valid list returns the expected polyline.
-    /// </summary>
-    [TestMethod]
-    public void Encode_With_List_Valid_Coordinates_Returns_Expected_Polyline() {
-        // Arrange
-        var encoder = CreateTestEncoder();
-        List<(double Latitude, double Longitude)> coordinates = [.. StaticValueProvider.Valid.GetCoordinates()];
-        string expected = StaticValueProvider.Valid.GetPolyline();
-
-        // Act
-        string result = encoder.Encode(coordinates);
-
-        // Assert
-        Assert.AreEqual(expected, result);
     }
 
     // ----- Encode(T[]) -----

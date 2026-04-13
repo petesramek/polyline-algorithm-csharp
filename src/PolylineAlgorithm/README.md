@@ -1,4 +1,4 @@
-﻿# PolylineAlgorithm for .NET
+# PolylineAlgorithm for .NET
 
 [![NuGet](https://img.shields.io/nuget/v/PolylineAlgorithm)](https://www.nuget.org/packages/PolylineAlgorithm)
 
@@ -7,9 +7,9 @@ Google's Encoded Polyline Algorithm compresses sequences of geographic coordinat
 ## Features
 
 - Google-compliant polyline encoding/decoding for geographic coordinates
-- Fluent `FormatterBuilder<TCoordinate, TPolyline>` for configuring custom coordinate and polyline types
-- Immutable, sealed `PolylineFormatter<TCoordinate, TPolyline>` built via `FormatterBuilder`
-- `PolylineEncoder<TCoordinate, TPolyline>` and `PolylineDecoder<TPolyline, TCoordinate>` — configurable via `PolylineOptions`
+- Fluent `FormatterBuilder<TValue, TPolyline>` for configuring custom coordinate and polyline types
+- Immutable, sealed `PolylineFormatter<TValue, TPolyline>` built via `FormatterBuilder`
+- `PolylineEncoder<TValue, TPolyline>` and `PolylineDecoder<TPolyline, TValue>` — configurable via `PolylineOptions`
 - Extension methods for encoding from `List<T>` and arrays (`PolylineEncoderExtensions`)
 - Robust input validation and descriptive exceptions
 - Configurable stack-alloc buffer size and logging via `PolylineOptions`
@@ -106,7 +106,7 @@ Use static methods on `PolylineEncoding` for low-level normalization, validation
 - **What .NET versions are supported?**  
   Any environment supporting `netstandard2.1`
 - **How do I customize encoder/decoder options?**  
-  Create a `PolylineOptions<TCoordinate, TPolyline>` with your `PolylineFormatter`, optional `stackAllocLimit`, and optional `ILoggerFactory`, then pass it to the `PolylineEncoder` or `PolylineDecoder` constructor.
+  Create a `PolylineOptions<TValue, TPolyline>` with your `PolylineFormatter`, optional `stackAllocLimit`, and optional `ILoggerFactory`, then pass it to the `PolylineEncoder` or `PolylineDecoder` constructor.
 - **Where can I get help?**  
   [GitHub issues](https://github.com/petesramek/polyline-algorithm-csharp/issues)
 

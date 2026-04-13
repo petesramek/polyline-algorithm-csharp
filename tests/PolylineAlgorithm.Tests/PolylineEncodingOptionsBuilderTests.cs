@@ -9,9 +9,9 @@ using PolylineAlgorithm;
 using System;
 
 /// <summary>
-/// Tests for <see cref="FormatterBuilder{TCoordinate,TPolyline}.ForPolyline"/>,
-/// <see cref="FormatterBuilder{TCoordinate,TPolyline}.WithCreate"/>, and
-/// <see cref="PolylineFormatter{TCoordinate,TPolyline}"/> write/read/create delegation.
+/// Tests for <see cref="FormatterBuilder{TValue,TPolyline}.WithReaderWriter"/>,
+/// <see cref="FormatterBuilder{TValue,TPolyline}.WithValueFactory"/>, and
+/// <see cref="PolylineFormatter{TValue,TPolyline}"/> write/read/create delegation.
 /// </summary>
 [TestClass]
 public sealed class PolylineEncodingOptionsBuilderTests {
@@ -31,7 +31,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
 
         // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
-            () => builder.ForPolyline(null!, _read));
+            () => builder.WithReaderWriter(null!, _read));
         Assert.AreEqual("write", ex.ParamName);
     }
 
@@ -44,7 +44,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
 
         // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
-            () => builder.ForPolyline(_write, null!));
+            () => builder.WithReaderWriter(_write, null!));
         Assert.AreEqual("read", ex.ParamName);
     }
 
@@ -56,7 +56,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
             .AddValue("Value", static v => v);
 
         // Act
-        FormatterBuilder<double, string> result = builder.ForPolyline(_write, _read);
+        FormatterBuilder<double, string> result = builder.WithReaderWriter(_write, _read);
 
         // Assert
         Assert.AreSame(builder, result);
@@ -86,7 +86,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
 
         // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
-            () => builder.WithCreate(null!));
+            () => builder.WithValueFactory(null!));
         Assert.AreEqual("create", ex.ParamName);
     }
 
@@ -98,7 +98,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
             .AddValue("Value", static v => v);
 
         // Act
-        FormatterBuilder<double, string> result = builder.WithCreate(static v => v[0]);
+        FormatterBuilder<double, string> result = builder.WithValueFactory(static v => v[0]);
 
         // Assert
         Assert.AreSame(builder, result);
@@ -115,7 +115,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         ReadOnlyMemory<char> input = "hello".AsMemory();
         PolylineFormatter<double, string> formatter = FormatterBuilder<double, string>.Create()
             .AddValue("Value", static v => v)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         // Act
@@ -131,7 +131,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         // Arrange
         PolylineFormatter<double, string> formatter = FormatterBuilder<double, string>.Create()
             .AddValue("Value", static v => v)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         // Act
@@ -151,7 +151,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         // Arrange — no WithCreate call
         PolylineFormatter<double, string> formatter = FormatterBuilder<double, string>.Create()
             .AddValue("Value", static v => v)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         // Act & Assert
@@ -166,8 +166,8 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         // by the factor (1e5), so the factory receives the denormalized double directly.
         PolylineFormatter<double, string> formatter = FormatterBuilder<double, string>.Create()
             .AddValue("Value", static v => v, precision: 5)
-            .WithCreate(static v => v[0])
-            .ForPolyline(_write, _read)
+            .WithValueFactory(static v => v[0])
+            .WithReaderWriter(_write, _read)
             .Build();
 
         // Act — accumulated value 3850000 → 3850000 / 100000.0 = 38.5 passed to factory
@@ -185,8 +185,8 @@ public sealed class PolylineEncodingOptionsBuilderTests {
             FormatterBuilder<(double Lat, double Lon), string>.Create()
                 .AddValue("Lat", static t => t.Lat, precision: 5)
                 .AddValue("Lon", static t => t.Lon, precision: 5)
-                .WithCreate(static v => (v[0], v[1]))
-                .ForPolyline(_write, _read)
+                .WithValueFactory(static v => (v[0], v[1]))
+                .WithReaderWriter(_write, _read)
                 .Build();
 
         // Act

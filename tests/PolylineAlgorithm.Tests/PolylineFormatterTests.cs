@@ -11,8 +11,8 @@ using PolylineAlgorithm;
 using System;
 
 /// <summary>
-/// Tests for <see cref="FormatterBuilder{TCoordinate, TPolyline}"/> and
-/// <see cref="PolylineFormatter{TCoordinate, TPolyline}"/>.
+/// Tests for <see cref="FormatterBuilder{TValue, TPolyline}"/> and
+/// <see cref="PolylineFormatter{TValue, TPolyline}"/>.
 /// </summary>
 [TestClass]
 public sealed class PolylineFormatterTests {
@@ -113,7 +113,7 @@ public sealed class PolylineFormatterTests {
         PolylineFormatter<(double X, double Y), string> formatter = FormatterBuilder<(double X, double Y), string>.Create()
             .AddValue("X", static t => t.X)
             .AddValue("Y", static t => t.Y)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         // Assert
@@ -157,7 +157,7 @@ public sealed class PolylineFormatterTests {
             .AddValue("X", static t => t.X)
             .AddValue("Y", static t => t.Y)
             .SetBaseline(500L)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         // Assert — only Y (index 1) has a baseline; X (index 0) returns 0
@@ -171,7 +171,7 @@ public sealed class PolylineFormatterTests {
         PolylineFormatter<(double X, double Y), string> formatter = FormatterBuilder<(double X, double Y), string>.Create()
             .AddValue("X", static t => t.X).SetBaseline(100L)
             .AddValue("Y", static t => t.Y).SetBaseline(200L)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         // Assert
@@ -197,7 +197,7 @@ public sealed class PolylineFormatterTests {
         // Arrange
         FormatterBuilder<(double X, double Y), string> builder = FormatterBuilder<(double X, double Y), string>.Create()
             .AddValue("X", static t => t.X)
-            .ForPolyline(_write, _read);
+            .WithReaderWriter(_write, _read);
 
         // Act
         PolylineFormatter<(double X, double Y), string> first = builder.Build();
@@ -218,7 +218,7 @@ public sealed class PolylineFormatterTests {
             .AddValue("X", static t => t.X)
             .AddValue("Y", static t => t.Y)
             .AddValue("Z", static t => t.Z)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         // Assert
@@ -230,7 +230,7 @@ public sealed class PolylineFormatterTests {
         // Arrange & Act
         PolylineFormatter<double, string> formatter = FormatterBuilder<double, string>.Create()
             .AddValue("Value", static v => v)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         // Assert
@@ -246,7 +246,7 @@ public sealed class PolylineFormatterTests {
         // Arrange
         PolylineFormatter<double, string> formatter = FormatterBuilder<double, string>.Create()
             .AddValue("Value", static v => v)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         // Act
@@ -262,7 +262,7 @@ public sealed class PolylineFormatterTests {
         PolylineFormatter<double, string> formatter = FormatterBuilder<double, string>.Create()
             .AddValue("Value", static v => v)
             .SetBaseline(42L)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         // Act
@@ -278,7 +278,7 @@ public sealed class PolylineFormatterTests {
         PolylineFormatter<double, string> formatter = FormatterBuilder<double, string>.Create()
             .AddValue("Value", static v => v)
             .SetBaseline(-1000L)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         // Act
@@ -297,7 +297,7 @@ public sealed class PolylineFormatterTests {
         // Arrange — precision 5 → factor = 100000; use a value exact in double arithmetic
         PolylineFormatter<double, string> formatter = FormatterBuilder<double, string>.Create()
             .AddValue("Value", static v => v, precision: 5)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         Span<long> output = stackalloc long[1];
@@ -316,7 +316,7 @@ public sealed class PolylineFormatterTests {
             FormatterBuilder<(double Lat, double Lon), string>.Create()
                 .AddValue("Lat", static t => t.Lat, precision: 5)
                 .AddValue("Lon", static t => t.Lon, precision: 5)
-                .ForPolyline(_write, _read)
+                .WithReaderWriter(_write, _read)
                 .Build();
 
         Span<long> output = stackalloc long[2];
@@ -335,7 +335,7 @@ public sealed class PolylineFormatterTests {
         PolylineFormatter<(double X, double Y), string> formatter = FormatterBuilder<(double X, double Y), string>.Create()
             .AddValue("X", static t => t.X)
             .AddValue("Y", static t => t.Y)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         long[] tooShort = new long[1];
@@ -351,7 +351,7 @@ public sealed class PolylineFormatterTests {
         // Arrange — formatter has Width = 1 but buffer has length 3
         PolylineFormatter<double, string> formatter = FormatterBuilder<double, string>.Create()
             .AddValue("Value", static v => v)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         long[] tooLong = new long[3];
@@ -367,7 +367,7 @@ public sealed class PolylineFormatterTests {
         // Arrange
         PolylineFormatter<double, string> formatter = FormatterBuilder<double, string>.Create()
             .AddValue("Value", static v => v, precision: 5)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         Span<long> output = stackalloc long[1];
@@ -384,7 +384,7 @@ public sealed class PolylineFormatterTests {
         // Arrange
         PolylineFormatter<double, string> formatter = FormatterBuilder<double, string>.Create()
             .AddValue("Value", static v => v, precision: 5)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         Span<long> output = stackalloc long[1];
@@ -401,7 +401,7 @@ public sealed class PolylineFormatterTests {
         // Arrange — precision 3 → factor = 1000
         PolylineFormatter<double, string> formatter = FormatterBuilder<double, string>.Create()
             .AddValue("Value", static v => v, precision: 3)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         Span<long> output = stackalloc long[1];
@@ -414,7 +414,7 @@ public sealed class PolylineFormatterTests {
     }
 
     // ---------------------------------------------------------------------------
-    // PolylineOptions<TCoordinate, TPolyline> constructor validation
+    // PolylineOptions<TValue, TPolyline> constructor validation
     // ---------------------------------------------------------------------------
 
     [TestMethod]
@@ -426,7 +426,7 @@ public sealed class PolylineFormatterTests {
     }
 
     // ---------------------------------------------------------------------------
-    // PolylineOptions<TCoordinate, TPolyline> properties
+    // PolylineOptions<TValue, TPolyline> properties
     // ---------------------------------------------------------------------------
 
     [TestMethod]
@@ -434,7 +434,7 @@ public sealed class PolylineFormatterTests {
         // Arrange
         PolylineFormatter<double, string> formatter = FormatterBuilder<double, string>.Create()
             .AddValue("Value", static v => v)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         // Act
@@ -449,7 +449,7 @@ public sealed class PolylineFormatterTests {
         // Arrange
         PolylineFormatter<double, string> formatter = FormatterBuilder<double, string>.Create()
             .AddValue("Value", static v => v)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         // Act
@@ -464,7 +464,7 @@ public sealed class PolylineFormatterTests {
         // Arrange
         PolylineFormatter<double, string> formatter = FormatterBuilder<double, string>.Create()
             .AddValue("Value", static v => v)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         // Act
@@ -479,7 +479,7 @@ public sealed class PolylineFormatterTests {
         // Arrange
         PolylineFormatter<double, string> formatter = FormatterBuilder<double, string>.Create()
             .AddValue("Value", static v => v)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         // Act
@@ -494,7 +494,7 @@ public sealed class PolylineFormatterTests {
         // Arrange
         PolylineFormatter<double, string> formatter = FormatterBuilder<double, string>.Create()
             .AddValue("Value", static v => v)
-            .ForPolyline(_write, _read)
+            .WithReaderWriter(_write, _read)
             .Build();
 
         using ILoggerFactory loggerFactory = LoggerFactory.Create(_ => { });

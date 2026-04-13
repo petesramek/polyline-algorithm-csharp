@@ -8,44 +8,43 @@ namespace PolylineAlgorithm;
 /// <summary>
 /// Per-call options for a chunked decoding operation.
 /// </summary>
-/// <typeparam name="TCoordinate">The coordinate type understood by the formatter.</typeparam>
+/// <typeparam name="TValue">The value type understood by the formatter.</typeparam>
 /// <remarks>
 /// Pass an instance of this class to the chunked
-/// <see cref="Abstraction.IChunkedPolylineDecoder{TPolyline, TValue}.Decode"/> overload to control
+/// <see cref="Abstraction.IPolylineDecoder{TPolyline, TValue}.Decode"/> overload to control
 /// the accumulated-delta seed used at the start of each chunk. When <see cref="HasPrevious"/> is
 /// <see langword="false"/> zero-initialisation is used, which is the existing default behaviour.
 /// </remarks>
-public sealed class PolylineDecodingOptions<TCoordinate> {
-    private readonly TCoordinate _previous;
+public sealed class PolylineDecodingOptions<TValue> {
 
     /// <summary>
-    /// Initializes a new instance of <see cref="PolylineDecodingOptions{TCoordinate}"/> with no
-    /// previous coordinate (zero-initialised baseline will be used).
+    /// Initializes a new instance of <see cref="PolylineDecodingOptions{TValue}"/> with no
+    /// previous value (zero-initialised baseline will be used).
     /// </summary>
     public PolylineDecodingOptions() { }
 
     /// <summary>
-    /// Initializes a new instance of <see cref="PolylineDecodingOptions{TCoordinate}"/> with the
-    /// specified previous coordinate used to seed the accumulated-delta state.
+    /// Initializes a new instance of <see cref="PolylineDecodingOptions{TValue}"/> with the
+    /// specified previous value used to seed the accumulated-delta state.
     /// </summary>
     /// <param name="previous">
-    /// The last coordinate of the previous chunk, used to seed the accumulated-delta state.
+    /// The last value of the previous chunk, used to seed the accumulated-delta state.
     /// </param>
-    public PolylineDecodingOptions(TCoordinate previous) {
-        _previous = previous;
+    public PolylineDecodingOptions(TValue previous) {
+        Previous = previous;
         HasPrevious = true;
     }
 
     /// <summary>
-    /// Gets a value indicating whether a previous coordinate has been supplied to seed the
+    /// Gets a value indicating whether a previous value has been supplied to seed the
     /// accumulated-delta state. When <see langword="false"/> zero-initialisation is used, which is
     /// the existing default.
     /// </summary>
     public bool HasPrevious { get; }
 
     /// <summary>
-    /// Gets the last coordinate of the previous chunk, used to seed the accumulated-delta state.
+    /// Gets the last value of the previous chunk, used to seed the accumulated-delta state.
     /// Only meaningful when <see cref="HasPrevious"/> is <see langword="true"/>.
     /// </summary>
-    public TCoordinate Previous => _previous;
+    public TValue Previous { get; }
 }

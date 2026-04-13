@@ -8,19 +8,19 @@ namespace PolylineAlgorithm.Abstraction;
 using System;
 
 /// <summary>
-/// Defines how to extract and scale values from a <typeparamref name="TCoordinate"/> for encoding,
-/// reconstruct a <typeparamref name="TCoordinate"/> from scaled values for decoding,
+/// Defines how to extract and scale values from a <typeparamref name="TValue"/> for encoding,
+/// reconstruct a <typeparamref name="TValue"/> from scaled values for decoding,
 /// produce a <typeparamref name="TPolyline"/> from an encoded character buffer, and extract that buffer
 /// back from a <typeparamref name="TPolyline"/>.
 /// </summary>
-/// <typeparam name="TCoordinate">The coordinate or item type. For example a struct with Latitude/Longitude.</typeparam>
+/// <typeparam name="TValue">The coordinate or item type. For example a struct with Latitude/Longitude.</typeparam>
 /// <typeparam name="TPolyline">The polyline surface type. For example <see cref="string"/> or
 /// <see cref="ReadOnlyMemory{T}"/> of <see cref="char"/>.</typeparam>
 /// <remarks>
-/// Use <see cref="FormatterBuilder{TCoordinate, TPolyline}"/> to build a
-/// <see cref="PolylineFormatter{TCoordinate, TPolyline}"/> that implements this interface.
+/// Use <see cref="FormatterBuilder{TValue, TPolyline}"/> to build a
+/// <see cref="PolylineFormatter{TValue, TPolyline}"/> that implements this interface.
 /// </remarks>
-public interface IPolylineFormatter<TCoordinate, TPolyline> {
+public interface IPolylineFormatter<TValue, TPolyline> {
     /// <summary>
     /// Gets the number of values (columns) per encoded item.
     /// This is the required length of the <see cref="Span{T}"/> passed to <see cref="GetValues"/>
@@ -45,7 +45,7 @@ public interface IPolylineFormatter<TCoordinate, TPolyline> {
     /// <param name="values">
     /// Output buffer that receives the scaled integer values. Its length must equal <see cref="Width"/>.
     /// </param>
-    void GetValues(TCoordinate item, Span<long> values);
+    void GetValues(TValue item, Span<long> values);
 
     /// <summary>
     /// Creates a <typeparamref name="TPolyline"/> from the encoded character buffer produced by the encoder.
@@ -62,7 +62,7 @@ public interface IPolylineFormatter<TCoordinate, TPolyline> {
     ReadOnlyMemory<char> Read(TPolyline polyline);
 
     /// <summary>
-    /// Reconstructs a <typeparamref name="TCoordinate"/> from the given accumulated scaled integer values.
+    /// Reconstructs a <typeparamref name="TValue"/> from the given accumulated scaled integer values.
     /// Called once per decoded item in the decoding loop. Implementations are responsible for
     /// denormalizing the raw scaled integers (e.g. dividing by the precision factor and adding back
     /// any baseline) before constructing the item.
@@ -72,6 +72,6 @@ public interface IPolylineFormatter<TCoordinate, TPolyline> {
     /// the same column position as in <see cref="GetValues"/>. These are the direct output of the
     /// delta-accumulation loop in the decoder before any denormalization is applied.
     /// </param>
-    /// <returns>A <typeparamref name="TCoordinate"/> reconstructed from <paramref name="values"/>.</returns>
-    TCoordinate CreateItem(ReadOnlySpan<long> values);
+    /// <returns>A <typeparamref name="TValue"/> reconstructed from <paramref name="values"/>.</returns>
+    TValue CreateItem(ReadOnlySpan<long> values);
 }

@@ -21,10 +21,10 @@ public static class Program {
                 .SetBaseline(TimestampBaseEpoch)
                 .AddValue("temperature", static r => r.Temperature, precision: 5)
                 // The formatter automatically denormalizes: v[0] = Unix seconds, v[1] = temperature.
-                .WithCreate(static v => new SensorReading(
+                .WithValueFactory(static v => new SensorReading(
                     DateTimeOffset.FromUnixTimeSeconds((long)v[0]),
                     v[1]))
-                .ForPolyline(static m => new string(m.Span), static s => s.AsMemory())
+                .WithReaderWriter(static m => new string(m.Span), static s => s.AsMemory())
                 .Build();
 
         PolylineOptions<SensorReading, string> options = new(formatter);

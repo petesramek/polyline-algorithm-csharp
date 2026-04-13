@@ -15,8 +15,8 @@ public class Program {
                 .AddValue("lat", static p => p.Y)
                 .AddValue("lon", static p => p.X)
                 // The formatter automatically denormalizes scaled values, so v[0] = latitude, v[1] = longitude.
-                .WithCreate(static v => new Point(x: v[1], y: v[0]))
-                .ForPolyline(
+                .WithValueFactory(static v => new Point(x: v[1], y: v[0]))
+                .WithReaderWriter(
                     static m => m.IsEmpty ? string.Empty : new string(m.Span),
                     static s => s.AsMemory())
                 .Build();

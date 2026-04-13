@@ -11,28 +11,28 @@ using System;
 using System.Runtime.CompilerServices;
 
 /// <summary>
-/// A sealed, immutable formatter that implements <see cref="IPolylineFormatter{TCoordinate, TPolyline}"/>.
+/// A sealed, immutable formatter that implements <see cref="IPolylineFormatter{TValue, TPolyline}"/>.
 /// </summary>
-/// <typeparam name="TCoordinate">The coordinate or item type.</typeparam>
+/// <typeparam name="TValue">The coordinate or item type.</typeparam>
 /// <typeparam name="TPolyline">The polyline surface type.</typeparam>
 /// <remarks>
-/// Instances are constructed exclusively through <see cref="FormatterBuilder{TCoordinate, TPolyline}"/>.
+/// Instances are constructed exclusively through <see cref="FormatterBuilder{TValue, TPolyline}"/>.
 /// The <see langword="sealed"/> modifier allows the JIT to devirtualise and inline calls to the
 /// interface methods in the encoding/decoding hot loop.
 /// </remarks>
-public sealed class PolylineFormatter<TCoordinate, TPolyline> : IPolylineFormatter<TCoordinate, TPolyline> {
-    private readonly FormatterRule<TCoordinate>[] _rules;
-    private readonly PolylineItemFactory<TCoordinate>? _create;
+public sealed class PolylineFormatter<TValue, TPolyline> : IPolylineFormatter<TValue, TPolyline> {
+    private readonly FormatterRule<TValue>[] _rules;
+    private readonly PolylineItemFactory<TValue>? _create;
     private readonly Func<ReadOnlyMemory<char>, TPolyline> _write;
     private readonly Func<TPolyline, ReadOnlyMemory<char>> _read;
 
     /// <summary>
     /// Initializes a new instance. Intentionally internal — use
-    /// <see cref="FormatterBuilder{TCoordinate, TPolyline}"/> to create instances.
+    /// <see cref="FormatterBuilder{TValue, TPolyline}"/> to create instances.
     /// </summary>
     internal PolylineFormatter(
-        FormatterRule<TCoordinate>[] rules,
-        PolylineItemFactory<TCoordinate>? create,
+        FormatterRule<TValue>[] rules,
+        PolylineItemFactory<TValue>? create,
         Func<ReadOnlyMemory<char>, TPolyline> write,
         Func<TPolyline, ReadOnlyMemory<char>> read) {
         _rules = rules;
@@ -54,7 +54,7 @@ public sealed class PolylineFormatter<TCoordinate, TPolyline> : IPolylineFormatt
     /// Thrown when <paramref name="values"/>.Length does not equal <see cref="Width"/>.
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void GetValues(TCoordinate item, Span<long> values) {
+    public void GetValues(TValue item, Span<long> values) {
         if (values.Length != Width) {
             throw new ArgumentException(
                 $"Buffer length {values.Length} does not match the formatter width {Width}.",
@@ -79,14 +79,14 @@ public sealed class PolylineFormatter<TCoordinate, TPolyline> : IPolylineFormatt
     /// <inheritdoc/>
     /// <exception cref="InvalidOperationException">
     /// Thrown when no factory delegate was supplied via
-    /// <see cref="FormatterBuilder{TCoordinate, TPolyline}.WithCreate"/>.
+    /// <see cref="FormatterBuilder{TValue, TPolyline}.WithValueFactory"/>.
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public TCoordinate CreateItem(ReadOnlySpan<long> values) {
+    public TValue CreateItem(ReadOnlySpan<long> values) {
         if (_create is null) {
             throw new InvalidOperationException(
                 $"Cannot reconstruct an item because no factory was registered. " +
-                $"Call {nameof(FormatterBuilder<TCoordinate, TPolyline>)}.{nameof(FormatterBuilder<TCoordinate, TPolyline>.WithCreate)} before building.");
+                $"Call {nameof(FormatterBuilder<TValue, TPolyline>)}.{nameof(FormatterBuilder<TValue, TPolyline>.WithValueFactory)} before building.");
         }
 
         // Denormalize each accumulated scaled integer back to the original double:

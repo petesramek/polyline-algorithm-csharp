@@ -26,7 +26,7 @@ internal static class RandomValueProvider {
             FormatterBuilder<(double Latitude, double Longitude), string>.Create()
                 .AddValue("lat", static c => c.Latitude)
                 .AddValue("lon", static c => c.Longitude)
-                .ForPolyline(static m => new string(m.Span), static s => s.AsMemory())
+                .WithReaderWriter(static m => new string(m.Span), static s => s.AsMemory())
                 .Build();
 
         return new PolylineEncoder<(double Latitude, double Longitude), string>(

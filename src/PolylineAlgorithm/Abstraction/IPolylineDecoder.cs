@@ -19,7 +19,7 @@ using System.Threading;
 /// The coordinate type returned by the decoder. Typical implementations return a struct or class that
 /// contains latitude and longitude (for example a <c>LatLng</c> type or a <c>ValueTuple&lt;double,double&gt;</c>).
 /// </typeparam>
-public interface IPolylineDecoder<TPolyline, out TValue> {
+public interface IPolylineDecoder<TPolyline, TValue> {
     /// <summary>
     /// Decodes the specified encoded polyline into an ordered sequence of geographic coordinates.
     /// The sequence preserves the original vertex order encoded by the <paramref name="polyline"/>.
@@ -45,5 +45,5 @@ public interface IPolylineDecoder<TPolyline, out TValue> {
     /// <exception cref="OperationCanceledException">
     /// Thrown when the provided <paramref name="cancellationToken"/> requests cancellation.
     /// </exception>
-    IEnumerable<TValue> Decode(TPolyline polyline, CancellationToken cancellationToken = default);
+    IEnumerable<TValue> Decode(TPolyline polyline, PolylineDecodingOptions<TValue>? options = null, CancellationToken cancellationToken = default);
 }

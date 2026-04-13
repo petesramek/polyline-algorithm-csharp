@@ -13,16 +13,16 @@ using System;
 /// <summary>
 /// Provides unified configuration for a formatter-driven encoding or decoding operation.
 /// </summary>
-/// <typeparam name="TCoordinate">The coordinate or item type understood by the formatter.</typeparam>
+/// <typeparam name="TValue">The coordinate or item type understood by the formatter.</typeparam>
 /// <typeparam name="TPolyline">The polyline surface type understood by the formatter.</typeparam>
 /// <remarks>
-/// Supply an <see cref="IPolylineFormatter{TCoordinate, TPolyline}"/> and optional settings,
-/// then pass this instance to <see cref="PolylineEncoder{TCoordinate, TPolyline}"/> and/or
-/// <see cref="PolylineDecoder{TPolyline, TCoordinate}"/>.
+/// Supply an <see cref="IPolylineFormatter{TValue, TPolyline}"/> and optional settings,
+/// then pass this instance to <see cref="PolylineEncoder{TValue, TPolyline}"/> and/or
+/// <see cref="PolylineDecoder{TPolyline, TValue}"/>.
 /// </remarks>
-public sealed class PolylineOptions<TCoordinate, TPolyline> {
+public sealed class PolylineOptions<TValue, TPolyline> {
     /// <summary>
-    /// Initializes a new instance of <see cref="PolylineOptions{TCoordinate, TPolyline}"/>.
+    /// Initializes a new instance of <see cref="PolylineOptions{TValue, TPolyline}"/>.
     /// </summary>
     /// <param name="formatter">
     /// The unified formatter that handles all type-specific concerns: value extraction, item
@@ -39,7 +39,7 @@ public sealed class PolylineOptions<TCoordinate, TPolyline> {
     /// Thrown when <paramref name="formatter"/> is <see langword="null"/>.
     /// </exception>
     public PolylineOptions(
-        IPolylineFormatter<TCoordinate, TPolyline> formatter,
+        IPolylineFormatter<TValue, TPolyline> formatter,
         int stackAllocLimit = 512,
         ILoggerFactory? loggerFactory = null) {
         if (formatter is null) {
@@ -55,7 +55,7 @@ public sealed class PolylineOptions<TCoordinate, TPolyline> {
     /// Gets the unified formatter that handles value extraction, item reconstruction, and polyline
     /// surface conversion.
     /// </summary>
-    public IPolylineFormatter<TCoordinate, TPolyline> Formatter { get; }
+    public IPolylineFormatter<TValue, TPolyline> Formatter { get; }
 
     /// <summary>
     /// Gets the maximum buffer size (in characters) that may be allocated on the stack for encoding.
