@@ -59,7 +59,7 @@ public sealed class PolylineEncoderExtensionsTests {
         // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
             () => PolylineEncoderExtensions.Encode<(double, double), string>(encoder, coordinates!));
-        Assert.AreEqual("coordinates", ex.ParamName);
+        Assert.AreEqual("values", ex.ParamName);
     }
 
     /// <summary>

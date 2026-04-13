@@ -82,8 +82,8 @@ internal static class ExceptionGuard {
     [MethodImpl(MethodImplOptions.NoInlining)]
 #endif
     [DoesNotReturn]
-    internal static void ThrowCoordinateValueOutOfRange(double value, double min, double max, string paramName) {
-        throw new ArgumentOutOfRangeException(paramName, ExceptionMessage.FormatCoordinateValueMustBeBetween(paramName, min, max));
+    internal static void ThrowValueOutOfRange(double value, double min, double max, string paramName) {
+        throw new ArgumentOutOfRangeException(paramName, ExceptionMessage.FormatValueMustBeBetween(paramName, min, max));
     }
 
     /// <summary>
@@ -271,7 +271,7 @@ internal static class ExceptionGuard {
         /// <summary>
         /// Formats a message indicating a value parameter must be within a range.
         /// </summary>
-        internal static string FormatCoordinateValueMustBeBetween(string name, double min, double max) =>
+        internal static string FormatValueMustBeBetween(string name, double min, double max) =>
             string.Format(CultureInfo.InvariantCulture, CoordinateValueMustBeBetweenFormat, name, min, max);
 
         /// <summary>

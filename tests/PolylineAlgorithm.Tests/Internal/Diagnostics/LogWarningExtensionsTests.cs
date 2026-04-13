@@ -69,7 +69,7 @@ public sealed class LogWarningExtensionsTests {
     public void LogCannotWriteValueToBufferWarning_Logs_Expected_Message() {
         var logger = new TestLogger();
         logger.LogCannotWriteValueToBufferWarning(4, 5);
-        Assert.IsTrue(logger.Logs.Exists(l => l.Message.Contains("Cannot write to internal buffer at position 4. Current coordinate is at index 5.", StringComparison.Ordinal)));
+        Assert.IsTrue(logger.Logs.Exists(l => l.Message.Contains("Cannot write to internal buffer at position 4. Current value is at index 5.", StringComparison.Ordinal)));
     }
 
     /// <summary>

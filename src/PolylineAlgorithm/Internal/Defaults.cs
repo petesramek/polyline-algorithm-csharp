@@ -53,7 +53,7 @@ internal static class Defaults {
     /// <summary>
     /// Contains default values and constants for geographic value validation.
     /// </summary>
-    internal static class Coordinate {
+    internal static class Value {
         /// <summary>
         /// Provides constants representing latitude values, including the default, minimum, and maximum valid values.
         /// </summary>

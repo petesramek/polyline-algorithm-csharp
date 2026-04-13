@@ -52,6 +52,6 @@ internal static partial class LogDebugExtensions {
     /// <param name="latitude">The decoded latitude value.</param>
     /// <param name="longitude">The decoded longitude value.</param>
     /// <param name="position">The position in the polyline buffer at which the value was decoded.</param>
-    [LoggerMessage(EVENT_ID_BASE + 4, LOG_LEVEL, "Decoded coordinate: (Latitude: {latitude}, Longitude: {longitude}) at position {position}.")]
+    [LoggerMessage(EVENT_ID_BASE + 4, LOG_LEVEL, "Decoded value: (Latitude: {latitude}, Longitude: {longitude}) at position {position}.")]
     internal static partial void LogDecodedCoordinateDebug(this ILogger logger, double latitude, double longitude, int position);
 }
