@@ -3,7 +3,7 @@ title: Class PolylineEncoderExtensions
 body:
 - api1: Class PolylineEncoderExtensions
   id: PolylineAlgorithm_Extensions_PolylineEncoderExtensions
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L15
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L16
   metadata:
     uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions
     commentId: T:PolylineAlgorithm.Extensions.PolylineEncoderExtensions
@@ -41,7 +41,7 @@ body:
 - h2: Methods
 - api3: Encode<TValue, TPolyline>(IPolylineEncoder<TValue, TPolyline>, TValue[], PolylineEncodingOptions<TValue>?, CancellationToken)
   id: PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1____0___PolylineAlgorithm_PolylineEncodingOptions___0__System_Threading_CancellationToken_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L33
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L34
   metadata:
     uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},``0[],PolylineAlgorithm.PolylineEncodingOptions{``0},System.Threading.CancellationToken)
     commentId: M:PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},``0[],PolylineAlgorithm.PolylineEncodingOptions{``0},System.Threading.CancellationToken)

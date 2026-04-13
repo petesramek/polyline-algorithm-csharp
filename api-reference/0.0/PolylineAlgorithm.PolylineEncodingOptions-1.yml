@@ -44,7 +44,7 @@ body:
 - markdown: >-
     Pass an instance of this class to the chunked
 
-    <xref href="PolylineAlgorithm.Abstraction.IPolylineEncoder%602.Encode(System.ReadOnlySpan%7b%600%7d%2cPolylineAlgorithm.PolylineEncodingOptions%7b%600%7d%2cSystem.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref> overload to control
+    <xref href="PolylineAlgorithm.Abstraction.IPolylineEncoder%602.Encode(System.Collections.Generic.IEnumerable%7b%600%7d%2cPolylineAlgorithm.PolylineEncodingOptions%7b%600%7d%2cSystem.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref> overload to control
 
     the delta baseline used at the start of each chunk. When <xref href="PolylineAlgorithm.PolylineEncodingOptions%601.HasPrevious" data-throw-if-not-resolved="false"></xref> is
 
