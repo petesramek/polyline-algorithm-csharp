@@ -7,13 +7,10 @@ namespace PolylineAlgorithm;
 
 using Microsoft.Extensions.Logging;
 using PolylineAlgorithm.Abstraction;
-using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Internal.Diagnostics;
 using System;
 using System.Buffers;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Threading;
 
 /// <summary>
@@ -67,74 +64,18 @@ public class PolylineEncoder<TValue, TPolyline> : IPolylineEncoder<TValue, TPoly
     /// <exception cref="ArgumentException">
     /// Thrown when <paramref name="coordinates"/> is empty.
     /// </exception>
-    /// <exception cref="InvalidOperationException">
-    /// Thrown when the internal encoding buffer cannot accommodate the encoded value.
-    /// </exception>
     /// <exception cref="OperationCanceledException">
     /// Thrown when <paramref name="cancellationToken"/> is canceled.
     /// </exception>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null is verified before use via ExceptionGuard.ThrowArgumentNull, which is annotated [DoesNotReturn]. CA1062 does not recognise custom [DoesNotReturn] helpers as null guards.")]
     public TPolyline Encode(IEnumerable<TValue> coordinates, CancellationToken cancellationToken = default) {
-        const string OperationName = nameof(Encode);
-
-        _logger.LogOperationStartedDebug(OperationName);
+        _logger.LogOperationStartedDebug(nameof(Encode));
 
         if (coordinates is null) {
             ExceptionGuard.ThrowArgumentNull(nameof(coordinates));
         }
 
-        IReadOnlyList<TValue> items = coordinates as IReadOnlyList<TValue> ?? [.. coordinates];
-
-        if (items.Count < 1) {
-            _logger.LogOperationFailedDebug(OperationName);
-            _logger.LogEmptyArgumentWarning(nameof(coordinates));
-            ExceptionGuard.ThrowArgumentCannotBeEmptyEnumerationMessage(nameof(coordinates));
-        }
-
-        int width = _formatter.Width;
-        int length = GetMaxBufferLength(items.Count, width);
-
-        char[]? temp = length <= _options.StackAllocLimit
-            ? null
-            : ArrayPool<char>.Shared.Rent(length);
-
-        Span<char> buffer = temp is null ? stackalloc char[length] : temp.AsSpan(0, length);
-
-        int position = 0;
-        long[] previous = new long[width];
-        long[] values = new long[width];
-
-        SeedPrevious(previous, null);
-
-        try {
-            for (int i = 0; i < items.Count; i++) {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                _formatter.GetValues(items[i], values.AsSpan());
-
-                for (int j = 0; j < width; j++) {
-                    long current = values[j];
-                    long delta = current - previous[j];
-                    previous[j] = current;
-
-                    if (!PolylineEncoding.TryWriteValue(delta, buffer, ref position)) {
-                        _logger.LogOperationFailedDebug(OperationName);
-                        _logger.LogCannotWriteValueToBufferWarning(position, i);
-                        ExceptionGuard.ThrowCouldNotWriteEncodedValueToBuffer();
-                    }
-                }
-            }
-
-            // Convert to string inside the try block so the buffer is still valid.
-            string encodedResult = buffer[..position].ToString();
-
-            _logger.LogOperationFinishedDebug(OperationName);
-
-            return _formatter.Write(encodedResult.AsMemory());
-        } finally {
-            if (temp is not null) {
-                ArrayPool<char>.Shared.Return(temp);
-            }
-        }
+        return EncodeCore(coordinates, null, cancellationToken);
     }
 
     /// <summary>
@@ -160,61 +101,68 @@ public class PolylineEncoder<TValue, TPolyline> : IPolylineEncoder<TValue, TPoly
     /// <exception cref="ArgumentException">
     /// Thrown when <paramref name="coordinates"/> is empty.
     /// </exception>
-    /// <exception cref="InvalidOperationException">
-    /// Thrown when the internal encoding buffer cannot accommodate the encoded value.
-    /// </exception>
     /// <exception cref="OperationCanceledException">
     /// Thrown when <paramref name="cancellationToken"/> is canceled.
     /// </exception>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null is verified before use via ExceptionGuard.ThrowArgumentNull, which is annotated [DoesNotReturn]. CA1062 does not recognise custom [DoesNotReturn] helpers as null guards.")]
     public TPolyline Encode(IEnumerable<TValue> coordinates, PolylineEncodingOptions<TValue>? options, CancellationToken cancellationToken) {
-        const string OperationName = nameof(Encode);
-
-        _logger.LogOperationStartedDebug(OperationName);
+        _logger.LogOperationStartedDebug(nameof(Encode));
 
         if (coordinates is null) {
             ExceptionGuard.ThrowArgumentNull(nameof(coordinates));
         }
 
-        IReadOnlyList<TValue> items = coordinates as IReadOnlyList<TValue> ?? [.. coordinates];
+        return EncodeCore(coordinates, options, cancellationToken);
+    }
 
-        if (items.Count < 1) {
-            _logger.LogOperationFailedDebug(OperationName);
-            _logger.LogEmptyArgumentWarning(nameof(coordinates));
-            ExceptionGuard.ThrowArgumentCannotBeEmptyEnumerationMessage(nameof(coordinates));
-        }
+    private TPolyline EncodeCore(IEnumerable<TValue> coordinates, PolylineEncodingOptions<TValue>? options, CancellationToken cancellationToken) {
+        const string OperationName = nameof(Encode);
+        const int MaxStackWidth = 8;
 
         int width = _formatter.Width;
-        int length = GetMaxBufferLength(items.Count, width);
 
-        char[]? temp = length <= _options.StackAllocLimit
-            ? null
-            : ArrayPool<char>.Shared.Rent(length);
-
-        Span<char> buffer = temp is null ? stackalloc char[length] : temp.AsSpan(0, length);
-
-        int position = 0;
-        long[] previous = new long[width];
-        long[] values = new long[width];
+        Span<long> previous = width <= MaxStackWidth ? stackalloc long[MaxStackWidth] : new long[width];
+        Span<long> values   = width <= MaxStackWidth ? stackalloc long[MaxStackWidth] : new long[width];
+        previous = previous[..width];
+        values   = values[..width];
 
         SeedPrevious(previous, options);
 
-        try {
-            for (int i = 0; i < items.Count; i++) {
-                cancellationToken.ThrowIfCancellationRequested();
+        int stackLimit = _options.StackAllocLimit;
+        Span<char> buffer = stackalloc char[stackLimit];
+        char[]? rented = null;
 
-                _formatter.GetValues(items[i], values.AsSpan());
+        int position = 0;
+        bool hasItems = false;
+
+        try {
+            foreach (TValue item in coordinates) {
+                cancellationToken.ThrowIfCancellationRequested();
+                hasItems = true;
+                _formatter.GetValues(item, values);
 
                 for (int j = 0; j < width; j++) {
                     long current = values[j];
                     long delta = current - previous[j];
                     previous[j] = current;
 
-                    if (!PolylineEncoding.TryWriteValue(delta, buffer, ref position)) {
-                        _logger.LogOperationFailedDebug(OperationName);
-                        _logger.LogCannotWriteValueToBufferWarning(position, i);
-                        ExceptionGuard.ThrowCouldNotWriteEncodedValueToBuffer();
+                    while (!PolylineEncoding.TryWriteValue(delta, buffer, ref position)) {
+                        int newSize = rented is null ? stackLimit * 2 : rented.Length * 2;
+                        char[] newRented = ArrayPool<char>.Shared.Rent(newSize);
+                        buffer[..position].CopyTo(newRented);
+                        if (rented is not null) {
+                            ArrayPool<char>.Shared.Return(rented);
+                        }
+                        rented = newRented;
+                        buffer = rented.AsSpan();
                     }
                 }
+            }
+
+            if (!hasItems) {
+                _logger.LogOperationFailedDebug(OperationName);
+                _logger.LogEmptyArgumentWarning(nameof(coordinates));
+                ExceptionGuard.ThrowArgumentCannotBeEmptyEnumerationMessage(nameof(coordinates));
             }
 
             string encodedResult = buffer[..position].ToString();
@@ -223,33 +171,19 @@ public class PolylineEncoder<TValue, TPolyline> : IPolylineEncoder<TValue, TPoly
 
             return _formatter.Write(encodedResult.AsMemory());
         } finally {
-            if (temp is not null) {
-                ArrayPool<char>.Shared.Return(temp);
+            if (rented is not null) {
+                ArrayPool<char>.Shared.Return(rented);
             }
         }
     }
 
-    private void SeedPrevious(long[] previous, PolylineEncodingOptions<TValue>? options) {
-        int width = _formatter.Width;
-
+    private void SeedPrevious(Span<long> previous, PolylineEncodingOptions<TValue>? options) {
         if (options is { HasPrevious: true }) {
-            _formatter.GetValues(options.Previous, previous.AsSpan());
+            _formatter.GetValues(options.Previous, previous);
         } else {
-            for (int j = 0; j < width; j++) {
+            for (int j = 0; j < previous.Length; j++) {
                 previous[j] = _formatter.GetBaseline(j);
             }
         }
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static int GetMaxBufferLength(int count, int valuesPerItem) {
-        Debug.Assert(count > 0, "Count must be greater than zero.");
-        Debug.Assert(valuesPerItem > 0, "Values per item must be greater than zero.");
-
-        int requestedBufferLength = count * valuesPerItem * Defaults.Polyline.Block.Length.Max;
-
-        Debug.Assert(requestedBufferLength > 0, "Requested buffer length must be greater than zero.");
-
-        return requestedBufferLength;
     }
 }
