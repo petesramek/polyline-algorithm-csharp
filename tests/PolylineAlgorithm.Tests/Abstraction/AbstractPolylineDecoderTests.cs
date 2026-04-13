@@ -223,7 +223,7 @@ public sealed class AbstractPolylineDecoderTests {
         (double Lat, double Lon)[] chunkB = [(43.252, -126.453)];
 
         string polylineB = encoder.Encode(
-            chunkB.AsSpan(),
+            chunkB,
             new PolylineEncodingOptions<(double Lat, double Lon)>(chunkA[^1]),
             CancellationToken.None);
 
@@ -269,9 +269,9 @@ public sealed class AbstractPolylineDecoderTests {
         (double Lat, double Lon)[] chunkB = all[2..];
 
         // Encode chunked
-        string polylineA = encoder.Encode(chunkA.AsSpan());
+        string polylineA = encoder.Encode(chunkA);
         string polylineB = encoder.Encode(
-            chunkB.AsSpan(),
+            chunkB,
             new PolylineEncodingOptions<(double Lat, double Lon)>(chunkA[^1]),
             CancellationToken.None);
 

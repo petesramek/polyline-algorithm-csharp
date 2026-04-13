@@ -4,6 +4,10 @@
 //
 
 namespace PolylineAlgorithm.Abstraction;
+
+using System.Collections.Generic;
+using System.Threading;
+
 /// <summary>
 /// Contract for encoding a sequence of values into an encoded polyline representation.
 /// Implementations interpret the generic <typeparamref name="TValue"/> type and produce an encoded
@@ -30,8 +34,6 @@ namespace PolylineAlgorithm.Abstraction;
 ///   - Value precision and rounding rules (for example 1e-5 for 5-decimal precision).
 ///   - Value ordering and whether altitude or additional dimensions are supported.
 ///   - Thread-safety guarantees: whether instances are safe to reuse concurrently or must be instantiated per-call.
-/// - Implementations are encouraged to be memory-efficient; the API accepts a <see cref="ReadOnlySpan{T}"/>
-///   to avoid forced allocations when callers already have contiguous memory.
 /// </remarks>
 public interface IPolylineEncoder<TValue, TPolyline> {
     /// <summary>
@@ -39,9 +41,10 @@ public interface IPolylineEncoder<TValue, TPolyline> {
     /// The order of values in <paramref name="coordinates"/> is preserved in the encoded result.
     /// </summary>
     /// <param name="coordinates">
-    /// The collection of <typeparamref name="TValue"/> instances to encode into a polyline.
-    /// The span may be empty; implementations should return an appropriate empty encoded representation
+    /// The sequence of <typeparamref name="TValue"/> instances to encode into a polyline.
+    /// The sequence may be empty; implementations should return an appropriate empty encoded representation
     /// (for example an empty string or an empty memory slice) rather than <see langword="null"/>.
+    /// Must not be <see langword="null"/>.
     /// </param>
     /// <param name="cancellationToken">
     /// A <see cref="System.Threading.CancellationToken"/> that can be used to cancel the encoding operation.
@@ -70,8 +73,11 @@ public interface IPolylineEncoder<TValue, TPolyline> {
     /// - For large input sequences, implementations may provide streaming or incremental encoders; those
     ///   variants can still implement this interface by materializing the final encoded result.
     /// </remarks>
+    /// <exception cref="System.ArgumentNullException">
+    /// Thrown if <paramref name="coordinates"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref="System.OperationCanceledException">
     /// Thrown if the operation is canceled via <paramref name="cancellationToken"/>.
     /// </exception>
-    TPolyline Encode(ReadOnlySpan<TValue> coordinates, PolylineEncodingOptions<TValue>? options = null, CancellationToken cancellationToken = default);
+    TPolyline Encode(IEnumerable<TValue> coordinates, PolylineEncodingOptions<TValue>? options = null, CancellationToken cancellationToken = default);
 }

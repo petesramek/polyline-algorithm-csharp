@@ -11,6 +11,7 @@ using PolylineAlgorithm.Internal;
 using PolylineAlgorithm.Internal.Diagnostics;
 using System;
 using System.Buffers;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -60,6 +61,9 @@ public class PolylineEncoder<TValue, TPolyline> : IPolylineEncoder<TValue, TPoly
     /// <returns>
     /// An instance of <typeparamref name="TPolyline"/> representing the encoded values.
     /// </returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when <paramref name="coordinates"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref="ArgumentException">
     /// Thrown when <paramref name="coordinates"/> is empty.
     /// </exception>
@@ -69,21 +73,25 @@ public class PolylineEncoder<TValue, TPolyline> : IPolylineEncoder<TValue, TPoly
     /// <exception cref="OperationCanceledException">
     /// Thrown when <paramref name="cancellationToken"/> is canceled.
     /// </exception>
-    public TPolyline Encode(ReadOnlySpan<TValue> coordinates, CancellationToken cancellationToken = default) {
+    public TPolyline Encode(IEnumerable<TValue> coordinates, CancellationToken cancellationToken = default) {
         const string OperationName = nameof(Encode);
 
         _logger.LogOperationStartedDebug(OperationName);
 
-        Debug.Assert(coordinates.Length >= 0, "Count must be non-negative.");
+        if (coordinates is null) {
+            ExceptionGuard.ThrowArgumentNull(nameof(coordinates));
+        }
 
-        if (coordinates.Length < 1) {
+        IReadOnlyList<TValue> items = coordinates as IReadOnlyList<TValue> ?? [.. coordinates];
+
+        if (items.Count < 1) {
             _logger.LogOperationFailedDebug(OperationName);
             _logger.LogEmptyArgumentWarning(nameof(coordinates));
             ExceptionGuard.ThrowArgumentCannotBeEmptyEnumerationMessage(nameof(coordinates));
         }
 
         int width = _formatter.Width;
-        int length = GetMaxBufferLength(coordinates.Length, width);
+        int length = GetMaxBufferLength(items.Count, width);
 
         char[]? temp = length <= _options.StackAllocLimit
             ? null
@@ -98,10 +106,10 @@ public class PolylineEncoder<TValue, TPolyline> : IPolylineEncoder<TValue, TPoly
         SeedPrevious(previous, null);
 
         try {
-            for (int i = 0; i < coordinates.Length; i++) {
+            for (int i = 0; i < items.Count; i++) {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                _formatter.GetValues(coordinates[i], values.AsSpan());
+                _formatter.GetValues(items[i], values.AsSpan());
 
                 for (int j = 0; j < width; j++) {
                     long current = values[j];
@@ -140,12 +148,15 @@ public class PolylineEncoder<TValue, TPolyline> : IPolylineEncoder<TValue, TPoly
     /// Per-call options that control the starting delta baseline. Pass <see langword="null"/> or an
     /// instance with <see cref="PolylineEncodingOptions{TValue}.Previous"/> set to
     /// <see langword="null"/> to use the formatter's default baseline (same as calling
-    /// <see cref="Encode(ReadOnlySpan{TValue}, CancellationToken)"/>).
+    /// <see cref="Encode(IEnumerable{TValue}, CancellationToken)"/>).
     /// </param>
     /// <param name="cancellationToken">A token that can be used to cancel the operation.</param>
     /// <returns>
     /// An instance of <typeparamref name="TPolyline"/> representing the encoded values.
     /// </returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when <paramref name="coordinates"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref="ArgumentException">
     /// Thrown when <paramref name="coordinates"/> is empty.
     /// </exception>
@@ -155,21 +166,25 @@ public class PolylineEncoder<TValue, TPolyline> : IPolylineEncoder<TValue, TPoly
     /// <exception cref="OperationCanceledException">
     /// Thrown when <paramref name="cancellationToken"/> is canceled.
     /// </exception>
-    public TPolyline Encode(ReadOnlySpan<TValue> coordinates, PolylineEncodingOptions<TValue>? options, CancellationToken cancellationToken) {
+    public TPolyline Encode(IEnumerable<TValue> coordinates, PolylineEncodingOptions<TValue>? options, CancellationToken cancellationToken) {
         const string OperationName = nameof(Encode);
 
         _logger.LogOperationStartedDebug(OperationName);
 
-        Debug.Assert(coordinates.Length >= 0, "Count must be non-negative.");
+        if (coordinates is null) {
+            ExceptionGuard.ThrowArgumentNull(nameof(coordinates));
+        }
 
-        if (coordinates.Length < 1) {
+        IReadOnlyList<TValue> items = coordinates as IReadOnlyList<TValue> ?? [.. coordinates];
+
+        if (items.Count < 1) {
             _logger.LogOperationFailedDebug(OperationName);
             _logger.LogEmptyArgumentWarning(nameof(coordinates));
             ExceptionGuard.ThrowArgumentCannotBeEmptyEnumerationMessage(nameof(coordinates));
         }
 
         int width = _formatter.Width;
-        int length = GetMaxBufferLength(coordinates.Length, width);
+        int length = GetMaxBufferLength(items.Count, width);
 
         char[]? temp = length <= _options.StackAllocLimit
             ? null
@@ -184,10 +199,10 @@ public class PolylineEncoder<TValue, TPolyline> : IPolylineEncoder<TValue, TPoly
         SeedPrevious(previous, options);
 
         try {
-            for (int i = 0; i < coordinates.Length; i++) {
+            for (int i = 0; i < items.Count; i++) {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                _formatter.GetValues(coordinates[i], values.AsSpan());
+                _formatter.GetValues(items[i], values.AsSpan());
 
                 for (int j = 0; j < width; j++) {
                     long current = values[j];
