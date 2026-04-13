@@ -81,7 +81,7 @@ public sealed class FormatterBuilder<TValue, TPolyline> {
             throw new ArgumentException($"A rule with the name '{name}' has already been added.", nameof(name));
         }
 
-        _rules.Add(new FormatterRule<TValue>(name, (long)Pow10.GetFactor(precision), selector));
+        _rules.Add(new FormatterRule<TValue>(name, (long)Factor.Get(precision), selector));
 
         return this;
     }

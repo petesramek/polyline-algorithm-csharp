@@ -71,7 +71,7 @@ public static class PolylineEncoding {
             return (long)Math.Truncate(value);
         }
 
-        uint factor = Pow10.GetFactor(precision);
+        uint factor = Factor.Get(precision);
 
         const double Epsilon = 1e-9;
 
@@ -126,7 +126,7 @@ public static class PolylineEncoding {
             return value;
         }
 
-        uint factor = Pow10.GetFactor(precision);
+        uint factor = Factor.Get(precision);
 
         checked {
 

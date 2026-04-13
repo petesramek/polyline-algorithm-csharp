@@ -9,11 +9,11 @@ using System;
 /// This class caches common powers of 10 (10^0 through 10^9) for efficient lookup,
 /// falling back to <see cref="Math.Pow"/> for larger exponents.
 /// </remarks>
-internal static class Pow10 {
+internal static class Factor {
     /// <summary>
     /// Pre-computed powers of 10 from 10^0 to 10^9.
     /// </summary>
-    private static readonly uint[] _pow10 = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000];
+    private static readonly uint[] _factors = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000];
 
     /// <summary>
     /// Returns the power of 10 for the specified precision level.
@@ -32,9 +32,9 @@ internal static class Pow10 {
     /// <exception cref="OverflowException">
     /// Thrown if the computed value exceeds <see cref="uint.MaxValue"/>.
     /// </exception>
-    public static uint GetFactor(uint precision) {
+    public static uint Get(uint precision) {
         checked {
-            return precision < _pow10.Length ? _pow10[precision] : (uint)Math.Pow(10, precision);
+            return precision < _factors.Length ? _factors[precision] : (uint)Math.Pow(10, precision);
         }
     }
 }
