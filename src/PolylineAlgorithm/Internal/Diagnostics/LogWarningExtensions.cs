@@ -60,9 +60,9 @@ internal static partial class LogWarningExtensions {
     /// </summary>
     /// <param name="logger">The <see cref="ILogger"/> used to write the log entry.</param>
     /// <param name="position">The buffer position where the write was attempted.</param>
-    /// <param name="coordinateIndex">The index of the current coordinate that prevented the write.</param>
-    [LoggerMessage(EVENT_ID_BASE + 4, LOG_LEVEL, "Cannot write to internal buffer at position {position}. Current coordinate is at index {coordinateIndex}.")]
-    internal static partial void LogCannotWriteValueToBufferWarning(this ILogger logger, int position, int coordinateIndex);
+    /// <param name="valueIndex">The index of the current value that prevented the write.</param>
+    [LoggerMessage(EVENT_ID_BASE + 4, LOG_LEVEL, "Cannot write to internal buffer at position {position}. Current value is at index {valueIndex}.")]
+    internal static partial void LogCannotWriteValueToBufferWarning(this ILogger logger, int position, int valueIndex);
 
     /// <summary>
     /// Logs a warning when a polyline is shorter than the minimal required length.

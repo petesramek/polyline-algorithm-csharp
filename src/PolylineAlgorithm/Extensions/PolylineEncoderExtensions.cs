@@ -10,13 +10,13 @@ using PolylineAlgorithm.Internal.Diagnostics;
 using System;
 
 /// <summary>
-/// Provides extension methods for the <see cref="IPolylineEncoder{TValue, TPolyline}"/> interface to facilitate encoding geographic coordinates into polylines.
+/// Provides extension methods for the <see cref="IPolylineEncoder{TValue, TPolyline}"/> interface to facilitate encoding values into polylines.
 /// </summary>
 public static class PolylineEncoderExtensions {
     /// <summary>
     /// Encodes an array of <typeparamref name="TValue"/> instances into an encoded polyline.
     /// </summary>
-    /// <typeparam name="TValue">The type that represents a geographic coordinate to encode.</typeparam>
+    /// <typeparam name="TValue">The type that represents a value to encode.</typeparam>
     /// <typeparam name="TPolyline">The type that represents the encoded polyline output.</typeparam>
     /// <param name="encoder">
     /// The <see cref="IPolylineEncoder{TValue, TPolyline}"/> instance used to perform the encoding operation.
@@ -25,7 +25,7 @@ public static class PolylineEncoderExtensions {
     /// The array of <typeparamref name="TValue"/> objects to encode.
     /// </param>
     /// <returns>
-    /// A <typeparamref name="TPolyline"/> instance representing the encoded polyline for the provided coordinates.
+    /// A <typeparamref name="TPolyline"/> instance representing the encoded polyline for the provided values.
     /// </returns>
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="encoder"/> or <paramref name="values"/> is <see langword="null"/>.

@@ -15,10 +15,10 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 
 /// <summary>
-/// Decodes encoded polyline representations into sequences of geographic coordinates.
+/// Decodes encoded polyline representations into sequences of values.
 /// </summary>
 /// <typeparam name="TPolyline">The type that represents the encoded polyline input.</typeparam>
-/// <typeparam name="TValue">The type that represents a decoded geographic coordinate.</typeparam>
+/// <typeparam name="TValue">The type that represents a decoded value.</typeparam>
 /// <remarks>
 /// Pass a <see cref="PolylineOptions{TValue, TPolyline}"/> that carries a
 /// <see cref="IPolylineFormatter{TValue, TPolyline}"/> to the constructor. The formatter handles
@@ -64,7 +64,7 @@ public class PolylineDecoder<TPolyline, TValue> : IPolylineDecoder<TPolyline, TV
     /// <param name="cancellationToken">A token that can be used to cancel the operation.</param>
     /// <returns>
     /// An <see cref="IEnumerable{T}"/> of <typeparamref name="TValue"/> representing the decoded
-    /// coordinates.
+    /// values.
     /// </returns>
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="polyline"/> is <see langword="null"/>.

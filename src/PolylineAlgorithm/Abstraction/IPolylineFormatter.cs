@@ -13,7 +13,7 @@ using System;
 /// produce a <typeparamref name="TPolyline"/> from an encoded character buffer, and extract that buffer
 /// back from a <typeparamref name="TPolyline"/>.
 /// </summary>
-/// <typeparam name="TValue">The coordinate or item type. For example a struct with Latitude/Longitude.</typeparam>
+/// <typeparam name="TValue">The value or item type. For example a struct with Latitude/Longitude.</typeparam>
 /// <typeparam name="TPolyline">The polyline surface type. For example <see cref="string"/> or
 /// <see cref="ReadOnlyMemory{T}"/> of <see cref="char"/>.</typeparam>
 /// <remarks>

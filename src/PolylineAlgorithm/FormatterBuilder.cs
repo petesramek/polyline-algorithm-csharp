@@ -12,7 +12,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Provides a fluent builder for constructing a <see cref="PolylineFormatter{TValue, TPolyline}"/>.
 /// </summary>
-/// <typeparam name="TValue">The coordinate or item type from which column values are extracted.</typeparam>
+/// <typeparam name="TValue">The value or item type from which column values are extracted.</typeparam>
 /// <typeparam name="TPolyline">The polyline surface type produced and consumed by the formatter.</typeparam>
 /// <remarks>
 /// <para>
