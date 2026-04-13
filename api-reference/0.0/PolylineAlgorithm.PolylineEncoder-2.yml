@@ -3,7 +3,7 @@ title: Class PolylineEncoder<TValue, TPolyline>
 body:
 - api1: Class PolylineEncoder<TValue, TPolyline>
   id: PolylineAlgorithm_PolylineEncoder_2
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineEncoder.cs#L28
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineEncoder.cs#L26
   metadata:
     uid: PolylineAlgorithm.PolylineEncoder`2
     commentId: T:PolylineAlgorithm.PolylineEncoder`2
@@ -62,7 +62,7 @@ body:
 - h2: Constructors
 - api3: PolylineEncoder(PolylineOptions<TValue, TPolyline>)
   id: PolylineAlgorithm_PolylineEncoder_2__ctor_PolylineAlgorithm_PolylineOptions__0__1__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineEncoder.cs#L43
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineEncoder.cs#L41
   metadata:
     uid: PolylineAlgorithm.PolylineEncoder`2.#ctor(PolylineAlgorithm.PolylineOptions{`0,`1})
     commentId: M:PolylineAlgorithm.PolylineEncoder`2.#ctor(PolylineAlgorithm.PolylineOptions{`0,`1})
@@ -94,23 +94,26 @@ body:
       url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
     description: Thrown when <code class="paramref">options</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 - h2: Methods
-- api3: Encode(ReadOnlySpan<TValue>, CancellationToken)
-  id: PolylineAlgorithm_PolylineEncoder_2_Encode_System_ReadOnlySpan__0__System_Threading_CancellationToken_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineEncoder.cs#L72
+- api3: Encode(IEnumerable<TValue>, CancellationToken)
+  id: PolylineAlgorithm_PolylineEncoder_2_Encode_System_Collections_Generic_IEnumerable__0__System_Threading_CancellationToken_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineEncoder.cs#L70
   metadata:
-    uid: PolylineAlgorithm.PolylineEncoder`2.Encode(System.ReadOnlySpan{`0},System.Threading.CancellationToken)
-    commentId: M:PolylineAlgorithm.PolylineEncoder`2.Encode(System.ReadOnlySpan{`0},System.Threading.CancellationToken)
+    uid: PolylineAlgorithm.PolylineEncoder`2.Encode(System.Collections.Generic.IEnumerable{`0},System.Threading.CancellationToken)
+    commentId: M:PolylineAlgorithm.PolylineEncoder`2.Encode(System.Collections.Generic.IEnumerable{`0},System.Threading.CancellationToken)
 - markdown: >-
     Encodes a collection of <code class="typeparamref">TValue</code> instances into an encoded
 
     <code class="typeparamref">TPolyline</code>.
-- code: public TPolyline Encode(ReadOnlySpan<TValue> coordinates, CancellationToken cancellationToken = default)
+- code: >-
+    [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null is verified before use via ExceptionGuard.ThrowArgumentNull, which is annotated [DoesNotReturn]. CA1062 does not recognise custom [DoesNotReturn] helpers as null guards.")]
+
+    public TPolyline Encode(IEnumerable<TValue> coordinates, CancellationToken cancellationToken = default)
 - h4: Parameters
 - parameters:
   - name: coordinates
     type:
-    - text: ReadOnlySpan
-      url: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+    - text: IEnumerable
+      url: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
     - <
     - TValue
     - '>'
@@ -129,23 +132,23 @@ body:
 - h4: Exceptions
 - parameters:
   - type:
+    - text: ArgumentNullException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+    description: Thrown when <code class="paramref">coordinates</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+  - type:
     - text: ArgumentException
       url: https://learn.microsoft.com/dotnet/api/system.argumentexception
     description: Thrown when <code class="paramref">coordinates</code> is empty.
   - type:
-    - text: InvalidOperationException
-      url: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
-    description: Thrown when the internal encoding buffer cannot accommodate the encoded value.
-  - type:
     - text: OperationCanceledException
       url: https://learn.microsoft.com/dotnet/api/system.operationcanceledexception
     description: Thrown when <code class="paramref">cancellationToken</code> is canceled.
-- api3: Encode(ReadOnlySpan<TValue>, PolylineEncodingOptions<TValue>?, CancellationToken)
-  id: PolylineAlgorithm_PolylineEncoder_2_Encode_System_ReadOnlySpan__0__PolylineAlgorithm_PolylineEncodingOptions__0__System_Threading_CancellationToken_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineEncoder.cs#L158
+- api3: Encode(IEnumerable<TValue>, PolylineEncodingOptions<TValue>?, CancellationToken)
+  id: PolylineAlgorithm_PolylineEncoder_2_Encode_System_Collections_Generic_IEnumerable__0__PolylineAlgorithm_PolylineEncodingOptions__0__System_Threading_CancellationToken_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineEncoder.cs#L107
   metadata:
-    uid: PolylineAlgorithm.PolylineEncoder`2.Encode(System.ReadOnlySpan{`0},PolylineAlgorithm.PolylineEncodingOptions{`0},System.Threading.CancellationToken)
-    commentId: M:PolylineAlgorithm.PolylineEncoder`2.Encode(System.ReadOnlySpan{`0},PolylineAlgorithm.PolylineEncodingOptions{`0},System.Threading.CancellationToken)
+    uid: PolylineAlgorithm.PolylineEncoder`2.Encode(System.Collections.Generic.IEnumerable{`0},PolylineAlgorithm.PolylineEncodingOptions{`0},System.Threading.CancellationToken)
+    commentId: M:PolylineAlgorithm.PolylineEncoder`2.Encode(System.Collections.Generic.IEnumerable{`0},PolylineAlgorithm.PolylineEncodingOptions{`0},System.Threading.CancellationToken)
 - markdown: >-
     Encodes a collection of <code class="typeparamref">TValue</code> instances into an encoded
 
@@ -154,13 +157,16 @@ body:
     delta baseline. Use this overload to encode large sequences in independent chunks that can be
 
     concatenated into a single valid polyline.
-- code: public TPolyline Encode(ReadOnlySpan<TValue> coordinates, PolylineEncodingOptions<TValue>? options, CancellationToken cancellationToken)
+- code: >-
+    [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null is verified before use via ExceptionGuard.ThrowArgumentNull, which is annotated [DoesNotReturn]. CA1062 does not recognise custom [DoesNotReturn] helpers as null guards.")]
+
+    public TPolyline Encode(IEnumerable<TValue> coordinates, PolylineEncodingOptions<TValue>? options, CancellationToken cancellationToken)
 - h4: Parameters
 - parameters:
   - name: coordinates
     type:
-    - text: ReadOnlySpan
-      url: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+    - text: IEnumerable
+      url: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
     - <
     - TValue
     - '>'
@@ -180,7 +186,7 @@ body:
 
       <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to use the formatter's default baseline (same as calling
 
-      <xref href="PolylineAlgorithm.PolylineEncoder%602.Encode(System.ReadOnlySpan%7b%600%7d%2cSystem.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref>).
+      <xref href="PolylineAlgorithm.PolylineEncoder%602.Encode(System.Collections.Generic.IEnumerable%7b%600%7d%2cSystem.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref>).
   - name: cancellationToken
     type:
     - text: CancellationToken
@@ -194,13 +200,13 @@ body:
 - h4: Exceptions
 - parameters:
   - type:
+    - text: ArgumentNullException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+    description: Thrown when <code class="paramref">coordinates</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+  - type:
     - text: ArgumentException
       url: https://learn.microsoft.com/dotnet/api/system.argumentexception
     description: Thrown when <code class="paramref">coordinates</code> is empty.
-  - type:
-    - text: InvalidOperationException
-      url: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
-    description: Thrown when the internal encoding buffer cannot accommodate the encoded value.
   - type:
     - text: OperationCanceledException
       url: https://learn.microsoft.com/dotnet/api/system.operationcanceledexception

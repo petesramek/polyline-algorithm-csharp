@@ -3,7 +3,7 @@ title: Interface IPolylineEncoder<TValue, TPolyline>
 body:
 - api1: Interface IPolylineEncoder<TValue, TPolyline>
   id: PolylineAlgorithm_Abstraction_IPolylineEncoder_2
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Abstraction/IPolylineEncoder.cs#L36
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Abstraction/IPolylineEncoder.cs#L38
   metadata:
     uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2
     commentId: T:PolylineAlgorithm.Abstraction.IPolylineEncoder`2
@@ -56,35 +56,35 @@ body:
       - Value precision and rounding rules (for example 1e-5 for 5-decimal precision).
       - Value ordering and whether altitude or additional dimensions are supported.
       - Thread-safety guarantees: whether instances are safe to reuse concurrently or must be instantiated per-call.
-    - Implementations are encouraged to be memory-efficient; the API accepts a <xref href="System.ReadOnlySpan%601" data-throw-if-not-resolved="false"></xref>
-      to avoid forced allocations when callers already have contiguous memory.
 - h2: Methods
-- api3: Encode(ReadOnlySpan<TValue>, PolylineEncodingOptions<TValue>?, CancellationToken)
-  id: PolylineAlgorithm_Abstraction_IPolylineEncoder_2_Encode_System_ReadOnlySpan__0__PolylineAlgorithm_PolylineEncodingOptions__0__System_Threading_CancellationToken_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Abstraction/IPolylineEncoder.cs#L76
+- api3: Encode(IEnumerable<TValue>, PolylineEncodingOptions<TValue>?, CancellationToken)
+  id: PolylineAlgorithm_Abstraction_IPolylineEncoder_2_Encode_System_Collections_Generic_IEnumerable__0__PolylineAlgorithm_PolylineEncodingOptions__0__System_Threading_CancellationToken_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Abstraction/IPolylineEncoder.cs#L82
   metadata:
-    uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2.Encode(System.ReadOnlySpan{`0},PolylineAlgorithm.PolylineEncodingOptions{`0},System.Threading.CancellationToken)
-    commentId: M:PolylineAlgorithm.Abstraction.IPolylineEncoder`2.Encode(System.ReadOnlySpan{`0},PolylineAlgorithm.PolylineEncodingOptions{`0},System.Threading.CancellationToken)
+    uid: PolylineAlgorithm.Abstraction.IPolylineEncoder`2.Encode(System.Collections.Generic.IEnumerable{`0},PolylineAlgorithm.PolylineEncodingOptions{`0},System.Threading.CancellationToken)
+    commentId: M:PolylineAlgorithm.Abstraction.IPolylineEncoder`2.Encode(System.Collections.Generic.IEnumerable{`0},PolylineAlgorithm.PolylineEncodingOptions{`0},System.Threading.CancellationToken)
 - markdown: >-
     Encodes a sequence of values into an encoded polyline representation.
 
     The order of values in <code class="paramref">coordinates</code> is preserved in the encoded result.
-- code: TPolyline Encode(ReadOnlySpan<TValue> coordinates, PolylineEncodingOptions<TValue>? options = null, CancellationToken cancellationToken = default)
+- code: TPolyline Encode(IEnumerable<TValue> coordinates, PolylineEncodingOptions<TValue>? options = null, CancellationToken cancellationToken = default)
 - h4: Parameters
 - parameters:
   - name: coordinates
     type:
-    - text: ReadOnlySpan
-      url: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+    - text: IEnumerable
+      url: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
     - <
     - TValue
     - '>'
     description: >-
-      The collection of <code class="typeparamref">TValue</code> instances to encode into a polyline.
+      The sequence of <code class="typeparamref">TValue</code> instances to encode into a polyline.
 
-      The span may be empty; implementations should return an appropriate empty encoded representation
+      The sequence may be empty; implementations should return an appropriate empty encoded representation
 
       (for example an empty string or an empty memory slice) rather than <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
+      Must not be <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
   - name: options
     type:
     - text: PolylineEncodingOptions
@@ -135,6 +135,10 @@ body:
       variants can still implement this interface by materializing the final encoded result.
 - h4: Exceptions
 - parameters:
+  - type:
+    - text: ArgumentNullException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+    description: Thrown if <code class="paramref">coordinates</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
   - type:
     - text: OperationCanceledException
       url: https://learn.microsoft.com/dotnet/api/system.operationcanceledexception
