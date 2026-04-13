@@ -1,0 +1,35 @@
+### YamlMime:ApiPage
+title: Namespace PolylineAlgorithm.Abstraction
+body:
+- api1: Namespace PolylineAlgorithm.Abstraction
+  id: PolylineAlgorithm_Abstraction
+  metadata:
+    uid: PolylineAlgorithm.Abstraction
+    commentId: N:PolylineAlgorithm.Abstraction
+- h3: Interfaces
+- parameters:
+  - type:
+      text: IPolylineDecoder<TPolyline, TValue>
+      url: PolylineAlgorithm.Abstraction.IPolylineDecoder-2.html
+    description: Defines a contract for decoding an encoded polyline into a sequence of values.
+  - type:
+      text: IPolylineEncoder<TValue, TPolyline>
+      url: PolylineAlgorithm.Abstraction.IPolylineEncoder-2.html
+    description: >-
+      Contract for encoding a sequence of values into an encoded polyline representation.
+
+      Implementations interpret the generic <code class="typeparamref">TValue</code> type and produce an encoded
+
+      representation of those values as <code class="typeparamref">TPolyline</code>.
+  - type:
+      text: IPolylineFormatter<TValue, TPolyline>
+      url: PolylineAlgorithm.Abstraction.IPolylineFormatter-2.html
+    description: >-
+      Defines how to extract and scale values from a <code class="typeparamref">TValue</code> for encoding,
+
+      reconstruct a <code class="typeparamref">TValue</code> from scaled values for decoding,
+
+      produce a <code class="typeparamref">TPolyline</code> from an encoded character buffer, and extract that buffer
+
+      back from a <code class="typeparamref">TPolyline</code>.
+languageId: csharp

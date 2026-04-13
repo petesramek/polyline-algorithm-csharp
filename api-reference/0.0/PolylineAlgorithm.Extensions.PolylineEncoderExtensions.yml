@@ -1,0 +1,102 @@
+### YamlMime:ApiPage
+title: Class PolylineEncoderExtensions
+body:
+- api1: Class PolylineEncoderExtensions
+  id: PolylineAlgorithm_Extensions_PolylineEncoderExtensions
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L15
+  metadata:
+    uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions
+    commentId: T:PolylineAlgorithm.Extensions.PolylineEncoderExtensions
+- facts:
+  - name: Namespace
+    value:
+      text: PolylineAlgorithm.Extensions
+      url: PolylineAlgorithm.Extensions.html
+  - name: Assembly
+    value: PolylineAlgorithm.dll
+- markdown: Provides extension methods for the <xref href="PolylineAlgorithm.Abstraction.IPolylineEncoder%602" data-throw-if-not-resolved="false"></xref> interface to facilitate encoding values into polylines.
+- code: public static class PolylineEncoderExtensions
+- h4: Inheritance
+- inheritance:
+  - text: object
+    url: https://learn.microsoft.com/dotnet/api/system.object
+  - text: PolylineEncoderExtensions
+    url: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.html
+- h4: Inherited Members
+- list:
+  - text: object.Equals(object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - text: object.Equals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - text: object.GetHashCode()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - text: object.GetType()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - text: object.MemberwiseClone()
+    url: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - text: object.ReferenceEquals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - text: object.ToString()
+    url: https://learn.microsoft.com/dotnet/api/system.object.tostring
+- h2: Methods
+- api3: Encode<TValue, TPolyline>(IPolylineEncoder<TValue, TPolyline>, TValue[], PolylineEncodingOptions<TValue>?, CancellationToken)
+  id: PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1____0___PolylineAlgorithm_PolylineEncodingOptions___0__System_Threading_CancellationToken_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L33
+  metadata:
+    uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},``0[],PolylineAlgorithm.PolylineEncodingOptions{``0},System.Threading.CancellationToken)
+    commentId: M:PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},``0[],PolylineAlgorithm.PolylineEncodingOptions{``0},System.Threading.CancellationToken)
+- markdown: Encodes an array of <code class="typeparamref">TValue</code> instances into an encoded polyline.
+- code: public static TPolyline Encode<TValue, TPolyline>(this IPolylineEncoder<TValue, TPolyline> encoder, TValue[] values, PolylineEncodingOptions<TValue>? options = null, CancellationToken cancellationToken = default)
+- h4: Parameters
+- parameters:
+  - name: encoder
+    type:
+    - text: IPolylineEncoder
+      url: PolylineAlgorithm.Abstraction.IPolylineEncoder-2.html
+    - <
+    - TValue
+    - ','
+    - " "
+    - TPolyline
+    - '>'
+    description: The <xref href="PolylineAlgorithm.Abstraction.IPolylineEncoder%602" data-throw-if-not-resolved="false"></xref> instance used to perform the encoding operation.
+  - name: values
+    type:
+    - TValue
+    - '['
+    - ']'
+    description: The array of <code class="typeparamref">TValue</code> objects to encode.
+  - name: options
+    type:
+    - text: PolylineEncodingOptions
+      url: PolylineAlgorithm.PolylineEncodingOptions-1.html
+    - <
+    - TValue
+    - '>'
+    - '?'
+    optional: true
+  - name: cancellationToken
+    type:
+    - text: CancellationToken
+      url: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+    optional: true
+- h4: Returns
+- parameters:
+  - type:
+    - TPolyline
+    description: A <code class="typeparamref">TPolyline</code> instance representing the encoded polyline for the provided values.
+- h4: Type Parameters
+- parameters:
+  - name: TValue
+    description: The type that represents a value to encode.
+  - name: TPolyline
+    description: The type that represents the encoded polyline output.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentNullException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+    description: Thrown when <code class="paramref">encoder</code> or <code class="paramref">values</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+languageId: csharp
+metadata:
+  description: Provides extension methods for the  interface to facilitate encoding values into polylines.

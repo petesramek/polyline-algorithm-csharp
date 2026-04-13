@@ -1,0 +1,121 @@
+### YamlMime:ApiPage
+title: Class PolylineEncodingOptions<TValue>
+body:
+- api1: Class PolylineEncodingOptions<TValue>
+  id: PolylineAlgorithm_PolylineEncodingOptions_1
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L19
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncodingOptions`1
+    commentId: T:PolylineAlgorithm.PolylineEncodingOptions`1
+- facts:
+  - name: Namespace
+    value:
+      text: PolylineAlgorithm
+      url: PolylineAlgorithm.html
+  - name: Assembly
+    value: PolylineAlgorithm.dll
+- markdown: Per-call options for a chunked encoding operation.
+- code: public sealed class PolylineEncodingOptions<TValue>
+- h4: Type Parameters
+- parameters:
+  - name: TValue
+    description: The value type understood by the formatter.
+- h4: Inheritance
+- inheritance:
+  - text: object
+    url: https://learn.microsoft.com/dotnet/api/system.object
+  - text: PolylineEncodingOptions<TValue>
+    url: PolylineAlgorithm.PolylineEncodingOptions-1.html
+- h4: Inherited Members
+- list:
+  - text: object.Equals(object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - text: object.Equals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - text: object.GetHashCode()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - text: object.GetType()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - text: object.ReferenceEquals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - text: object.ToString()
+    url: https://learn.microsoft.com/dotnet/api/system.object.tostring
+- h2: Remarks
+- markdown: >-
+    Pass an instance of this class to the chunked
+
+    <xref href="PolylineAlgorithm.Abstraction.IPolylineEncoder%602.Encode(System.ReadOnlySpan%7b%600%7d%2cPolylineAlgorithm.PolylineEncodingOptions%7b%600%7d%2cSystem.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref> overload to control
+
+    the delta baseline used at the start of each chunk. When <xref href="PolylineAlgorithm.PolylineEncodingOptions%601.HasPrevious" data-throw-if-not-resolved="false"></xref> is
+
+    <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> the formatter's built-in baseline (or zero) is used, which is equivalent
+
+    to the existing default behaviour.
+- h2: Constructors
+- api3: PolylineEncodingOptions()
+  id: PolylineAlgorithm_PolylineEncodingOptions_1__ctor
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L26
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncodingOptions`1.#ctor
+    commentId: M:PolylineAlgorithm.PolylineEncodingOptions`1.#ctor
+- markdown: >-
+    Initializes a new instance of <xref href="PolylineAlgorithm.PolylineEncodingOptions%601" data-throw-if-not-resolved="false"></xref> with no
+
+    previous value (formatter default baseline will be used).
+- code: public PolylineEncodingOptions()
+- api3: PolylineEncodingOptions(TValue)
+  id: PolylineAlgorithm_PolylineEncodingOptions_1__ctor__0_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L35
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncodingOptions`1.#ctor(`0)
+    commentId: M:PolylineAlgorithm.PolylineEncodingOptions`1.#ctor(`0)
+- markdown: >-
+    Initializes a new instance of <xref href="PolylineAlgorithm.PolylineEncodingOptions%601" data-throw-if-not-resolved="false"></xref> with the
+
+    specified previous value used to seed the delta baseline.
+- code: public PolylineEncodingOptions(TValue previous)
+- h4: Parameters
+- parameters:
+  - name: previous
+    type:
+    - TValue
+    description: The last value of the previous chunk, used to seed the delta baseline.
+- h2: Properties
+- api3: HasPrevious
+  id: PolylineAlgorithm_PolylineEncodingOptions_1_HasPrevious
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L46
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncodingOptions`1.HasPrevious
+    commentId: P:PolylineAlgorithm.PolylineEncodingOptions`1.HasPrevious
+- markdown: >-
+    Gets a value indicating whether a previous value has been supplied to seed the delta
+
+    baseline. When <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> the formatter's built-in baseline is used as the
+
+    starting point (which defaults to zero when no baseline has been configured), equivalent to
+
+    the existing default behaviour.
+- code: public bool HasPrevious { get; }
+- h4: Property Value
+- parameters:
+  - type:
+    - text: bool
+      url: https://learn.microsoft.com/dotnet/api/system.boolean
+- api3: Previous
+  id: PolylineAlgorithm_PolylineEncodingOptions_1_Previous
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineEncodingOptions.cs#L52
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncodingOptions`1.Previous
+    commentId: P:PolylineAlgorithm.PolylineEncodingOptions`1.Previous
+- markdown: >-
+    Gets the last value of the previous chunk, used to seed the delta baseline.
+
+    Only meaningful when <xref href="PolylineAlgorithm.PolylineEncodingOptions%601.HasPrevious" data-throw-if-not-resolved="false"></xref> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>.
+- code: public TValue Previous { get; }
+- h4: Property Value
+- parameters:
+  - type:
+    - TValue
+languageId: csharp
+metadata:
+  description: Per-call options for a chunked encoding operation.

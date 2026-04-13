@@ -1,0 +1,117 @@
+### YamlMime:ApiPage
+title: Class PolylineDecodingOptions<TValue>
+body:
+- api1: Class PolylineDecodingOptions<TValue>
+  id: PolylineAlgorithm_PolylineDecodingOptions_1
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineDecodingOptions.cs#L18
+  metadata:
+    uid: PolylineAlgorithm.PolylineDecodingOptions`1
+    commentId: T:PolylineAlgorithm.PolylineDecodingOptions`1
+- facts:
+  - name: Namespace
+    value:
+      text: PolylineAlgorithm
+      url: PolylineAlgorithm.html
+  - name: Assembly
+    value: PolylineAlgorithm.dll
+- markdown: Per-call options for a chunked decoding operation.
+- code: public sealed class PolylineDecodingOptions<TValue>
+- h4: Type Parameters
+- parameters:
+  - name: TValue
+    description: The value type understood by the formatter.
+- h4: Inheritance
+- inheritance:
+  - text: object
+    url: https://learn.microsoft.com/dotnet/api/system.object
+  - text: PolylineDecodingOptions<TValue>
+    url: PolylineAlgorithm.PolylineDecodingOptions-1.html
+- h4: Inherited Members
+- list:
+  - text: object.Equals(object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - text: object.Equals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - text: object.GetHashCode()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - text: object.GetType()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - text: object.ReferenceEquals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - text: object.ToString()
+    url: https://learn.microsoft.com/dotnet/api/system.object.tostring
+- h2: Remarks
+- markdown: >-
+    Pass an instance of this class to the chunked
+
+    <xref href="PolylineAlgorithm.Abstraction.IPolylineDecoder%602.Decode(%600%2cPolylineAlgorithm.PolylineDecodingOptions%7b%601%7d%2cSystem.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref> overload to control
+
+    the accumulated-delta seed used at the start of each chunk. When <xref href="PolylineAlgorithm.PolylineDecodingOptions%601.HasPrevious" data-throw-if-not-resolved="false"></xref> is
+
+    <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> zero-initialisation is used, which is the existing default behaviour.
+- h2: Constructors
+- api3: PolylineDecodingOptions()
+  id: PolylineAlgorithm_PolylineDecodingOptions_1__ctor
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineDecodingOptions.cs#L24
+  metadata:
+    uid: PolylineAlgorithm.PolylineDecodingOptions`1.#ctor
+    commentId: M:PolylineAlgorithm.PolylineDecodingOptions`1.#ctor
+- markdown: >-
+    Initializes a new instance of <xref href="PolylineAlgorithm.PolylineDecodingOptions%601" data-throw-if-not-resolved="false"></xref> with no
+
+    previous value (zero-initialised baseline will be used).
+- code: public PolylineDecodingOptions()
+- api3: PolylineDecodingOptions(TValue)
+  id: PolylineAlgorithm_PolylineDecodingOptions_1__ctor__0_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineDecodingOptions.cs#L33
+  metadata:
+    uid: PolylineAlgorithm.PolylineDecodingOptions`1.#ctor(`0)
+    commentId: M:PolylineAlgorithm.PolylineDecodingOptions`1.#ctor(`0)
+- markdown: >-
+    Initializes a new instance of <xref href="PolylineAlgorithm.PolylineDecodingOptions%601" data-throw-if-not-resolved="false"></xref> with the
+
+    specified previous value used to seed the accumulated-delta state.
+- code: public PolylineDecodingOptions(TValue previous)
+- h4: Parameters
+- parameters:
+  - name: previous
+    type:
+    - TValue
+    description: The last value of the previous chunk, used to seed the accumulated-delta state.
+- h2: Properties
+- api3: HasPrevious
+  id: PolylineAlgorithm_PolylineDecodingOptions_1_HasPrevious
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineDecodingOptions.cs#L43
+  metadata:
+    uid: PolylineAlgorithm.PolylineDecodingOptions`1.HasPrevious
+    commentId: P:PolylineAlgorithm.PolylineDecodingOptions`1.HasPrevious
+- markdown: >-
+    Gets a value indicating whether a previous value has been supplied to seed the
+
+    accumulated-delta state. When <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> zero-initialisation is used, which is
+
+    the existing default.
+- code: public bool HasPrevious { get; }
+- h4: Property Value
+- parameters:
+  - type:
+    - text: bool
+      url: https://learn.microsoft.com/dotnet/api/system.boolean
+- api3: Previous
+  id: PolylineAlgorithm_PolylineDecodingOptions_1_Previous
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/extend-polylinealgorithm-multi-dimensional-support/src/PolylineAlgorithm/PolylineDecodingOptions.cs#L49
+  metadata:
+    uid: PolylineAlgorithm.PolylineDecodingOptions`1.Previous
+    commentId: P:PolylineAlgorithm.PolylineDecodingOptions`1.Previous
+- markdown: >-
+    Gets the last value of the previous chunk, used to seed the accumulated-delta state.
+
+    Only meaningful when <xref href="PolylineAlgorithm.PolylineDecodingOptions%601.HasPrevious" data-throw-if-not-resolved="false"></xref> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>.
+- code: public TValue Previous { get; }
+- h4: Property Value
+- parameters:
+  - type:
+    - TValue
+languageId: csharp
+metadata:
+  description: Per-call options for a chunked decoding operation.
