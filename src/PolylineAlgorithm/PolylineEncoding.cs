@@ -14,19 +14,19 @@ using System.Runtime.InteropServices;
 
 /// <summary>
 /// Provides methods for encoding and decoding polyline data, as well as utilities for normalizing and de-normalizing
-/// geographic coordinate values.
+/// values.
 /// </summary>
 /// <remarks>The <see cref="PolylineEncoding"/> class includes functionality for working with encoded polyline
-/// data, such as reading and writing encoded values, as well as methods for normalizing and de-normalizing geographic
-/// coordinates. It also provides validation utilities to ensure values conform to expected ranges for latitude and
+/// data, such as reading and writing encoded values, as well as methods for normalizing and de-normalizing
+/// values. It also provides validation utilities to ensure values conform to expected ranges for latitude and
 /// longitude.</remarks>
 public static class PolylineEncoding {
     /// <summary>
-    /// Normalizes a geographic coordinate value to an integer representation based on the specified precision.
+    /// Normalizes a value to an integer representation based on the specified precision.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This method converts a floating-point coordinate value into a normalized integer by multiplying it by 10 raised
+    /// This method converts a floating-point value into a normalized integer by multiplying it by 10 raised
     /// to the power of the specified precision, then truncating the result to an integer.
     /// </para>
     /// <para>
@@ -81,7 +81,7 @@ public static class PolylineEncoding {
     }
 
     /// <summary>
-    /// Converts a normalized integer coordinate value back to its floating-point representation based on the specified precision.
+    /// Converts a normalized integer value back to its floating-point representation based on the specified precision.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -111,7 +111,7 @@ public static class PolylineEncoding {
     /// The number of decimal places used during normalization. Default is 5, matching standard polyline encoding precision.
     /// </param>
     /// <returns>
-    /// The denormalized floating-point coordinate value.
+    /// The denormalized floating-point value.
     /// </returns>
     /// <exception cref="OverflowException">
     /// Thrown if the arithmetic operation overflows during conversion.
@@ -213,12 +213,12 @@ public static class PolylineEncoding {
     /// If the buffer does not have enough remaining capacity, the method returns <see langword="false"/> without modifying the buffer or position.
     /// </para>
     /// <para>
-    /// This method is the inverse of <see cref="TryReadValue"/> and can be used to encode coordinate deltas for polyline serialization.
+    /// This method is the inverse of <see cref="TryReadValue"/> and can be used to encode value deltas for polyline serialization.
     /// </para>
     /// </remarks>
     /// <param name="delta">
     /// The long value to encode and write to the buffer. This value typically represents the difference between consecutive
-    /// coordinate values in polyline encoding.
+    /// values in polyline encoding.
     /// </param>
     /// <param name="buffer">
     /// The destination buffer where the encoded characters will be written. Must have sufficient capacity to hold the encoded value.
@@ -287,7 +287,7 @@ public static class PolylineEncoding {
     /// </remarks>
     /// <param name="delta">
     /// The long delta value to calculate the encoded size for. This value typically represents the difference between
-    /// consecutive coordinate values in polyline encoding.
+    /// consecutive values in polyline encoding.
     /// </param>
     /// <returns>
     /// The number of characters required to encode the specified delta value. The minimum return value is 1.

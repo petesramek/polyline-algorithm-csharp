@@ -70,20 +70,20 @@ internal static class ExceptionGuard {
     }
 
     /// <summary>
-    /// Throws an <see cref="ArgumentOutOfRangeException"/> when a coordinate value is outside the allowed range.
+    /// Throws an <see cref="ArgumentOutOfRangeException"/> when a value is outside the allowed range.
     /// </summary>
-    /// <param name="value">The coordinate value that was out of range.</param>
+    /// <param name="value">The value that was out of range.</param>
     /// <param name="min">Inclusive minimum allowed value.</param>
     /// <param name="max">Inclusive maximum allowed value.</param>
-    /// <param name="paramName">Name of the parameter containing the coordinate.</param>
+    /// <param name="paramName">Name of the parameter containing the value.</param>
 #if NET6_0_OR_GREATER
     [StackTraceHidden]
 #else
     [MethodImpl(MethodImplOptions.NoInlining)]
 #endif
     [DoesNotReturn]
-    internal static void ThrowCoordinateValueOutOfRange(double value, double min, double max, string paramName) {
-        throw new ArgumentOutOfRangeException(paramName, ExceptionMessage.FormatCoordinateValueMustBeBetween(paramName, min, max));
+    internal static void ThrowValueOutOfRange(double value, double min, double max, string paramName) {
+        throw new ArgumentOutOfRangeException(paramName, ExceptionMessage.FormatValueMustBeBetween(paramName, min, max));
     }
 
     /// <summary>
@@ -269,9 +269,9 @@ internal static class ExceptionGuard {
             string.Format(CultureInfo.InvariantCulture, PolylineIsMalformedAtFormat, position);
 
         /// <summary>
-        /// Formats a message indicating a coordinate parameter must be within a range.
+        /// Formats a message indicating a value parameter must be within a range.
         /// </summary>
-        internal static string FormatCoordinateValueMustBeBetween(string name, double min, double max) =>
+        internal static string FormatValueMustBeBetween(string name, double min, double max) =>
             string.Format(CultureInfo.InvariantCulture, CoordinateValueMustBeBetweenFormat, name, min, max);
 
         /// <summary>

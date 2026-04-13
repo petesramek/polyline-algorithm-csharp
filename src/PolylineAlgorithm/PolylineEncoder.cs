@@ -16,9 +16,9 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 
 /// <summary>
-/// Encodes sequences of geographic coordinates into encoded polyline representations.
+/// Encodes sequences of values into encoded polyline representations.
 /// </summary>
-/// <typeparam name="TValue">The type that represents a geographic coordinate to encode.</typeparam>
+/// <typeparam name="TValue">The type that represents a value to encode.</typeparam>
 /// <typeparam name="TPolyline">The type that represents the encoded polyline output.</typeparam>
 /// <remarks>
 /// Pass a <see cref="PolylineOptions{TValue, TPolyline}"/> that carries a
@@ -55,10 +55,10 @@ public class PolylineEncoder<TValue, TPolyline> : IPolylineEncoder<TValue, TPoly
     /// Encodes a collection of <typeparamref name="TValue"/> instances into an encoded
     /// <typeparamref name="TPolyline"/>.
     /// </summary>
-    /// <param name="coordinates">The collection of coordinates to encode.</param>
+    /// <param name="coordinates">The collection of values to encode.</param>
     /// <param name="cancellationToken">A token that can be used to cancel the operation.</param>
     /// <returns>
-    /// An instance of <typeparamref name="TPolyline"/> representing the encoded coordinates.
+    /// An instance of <typeparamref name="TPolyline"/> representing the encoded values.
     /// </returns>
     /// <exception cref="ArgumentException">
     /// Thrown when <paramref name="coordinates"/> is empty.
@@ -135,7 +135,7 @@ public class PolylineEncoder<TValue, TPolyline> : IPolylineEncoder<TValue, TPoly
     /// delta baseline. Use this overload to encode large sequences in independent chunks that can be
     /// concatenated into a single valid polyline.
     /// </summary>
-    /// <param name="coordinates">The collection of coordinates to encode.</param>
+    /// <param name="coordinates">The collection of values to encode.</param>
     /// <param name="options">
     /// Per-call options that control the starting delta baseline. Pass <see langword="null"/> or an
     /// instance with <see cref="PolylineEncodingOptions{TValue}.Previous"/> set to
@@ -144,7 +144,7 @@ public class PolylineEncoder<TValue, TPolyline> : IPolylineEncoder<TValue, TPoly
     /// </param>
     /// <param name="cancellationToken">A token that can be used to cancel the operation.</param>
     /// <returns>
-    /// An instance of <typeparamref name="TPolyline"/> representing the encoded coordinates.
+    /// An instance of <typeparamref name="TPolyline"/> representing the encoded values.
     /// </returns>
     /// <exception cref="ArgumentException">
     /// Thrown when <paramref name="coordinates"/> is empty.

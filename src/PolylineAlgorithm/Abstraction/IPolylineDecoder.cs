@@ -9,19 +9,19 @@ using System.Collections.Generic;
 using System.Threading;
 
 /// <summary>
-/// Defines a contract for decoding an encoded polyline into a sequence of geographic coordinates.
+/// Defines a contract for decoding an encoded polyline into a sequence of values.
 /// </summary>
 /// <typeparam name="TPolyline">
 /// The type that represents the encoded polyline input. Common implementations use <see cref="string"/>,
 /// but custom wrapper types are allowed to carry additional metadata.
 /// </typeparam>
 /// <typeparam name="TValue">
-/// The coordinate type returned by the decoder. Typical implementations return a struct or class that
+/// The value type returned by the decoder. Typical implementations return a struct or class that
 /// contains latitude and longitude (for example a <c>LatLng</c> type or a <c>ValueTuple&lt;double,double&gt;</c>).
 /// </typeparam>
 public interface IPolylineDecoder<TPolyline, TValue> {
     /// <summary>
-    /// Decodes the specified encoded polyline into an ordered sequence of geographic coordinates.
+    /// Decodes the specified encoded polyline into an ordered sequence of values.
     /// The sequence preserves the original vertex order encoded by the <paramref name="polyline"/>.
     /// </summary>
     /// <param name="polyline">
@@ -35,7 +35,7 @@ public interface IPolylineDecoder<TPolyline, TValue> {
     /// </param>
     /// <returns>
     /// An <see cref="IEnumerable{T}"/> of <typeparamref name="TValue"/> representing the decoded
-    /// latitude/longitude pairs (or equivalent coordinates) in the same order they were encoded.
+    /// latitude/longitude pairs (or equivalent values) in the same order they were encoded.
     /// </returns>
     /// <remarks>
     /// Implementations commonly follow the Google Encoded Polyline Algorithm Format, but this interface

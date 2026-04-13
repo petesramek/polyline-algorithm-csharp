@@ -8,7 +8,7 @@ namespace PolylineAlgorithm;
 /// <summary>
 /// Per-call options for a chunked encoding operation.
 /// </summary>
-/// <typeparam name="TValue">The coordinate type understood by the formatter.</typeparam>
+/// <typeparam name="TValue">The value type understood by the formatter.</typeparam>
 /// <remarks>
 /// Pass an instance of this class to the chunked
 /// <see cref="Abstraction.IPolylineEncoder{TValue, TPolyline}.Encode"/> overload to control
@@ -21,16 +21,16 @@ public sealed class PolylineEncodingOptions<TValue> {
 
     /// <summary>
     /// Initializes a new instance of <see cref="PolylineEncodingOptions{TValue}"/> with no
-    /// previous coordinate (formatter default baseline will be used).
+    /// previous value (formatter default baseline will be used).
     /// </summary>
     public PolylineEncodingOptions() { }
 
     /// <summary>
     /// Initializes a new instance of <see cref="PolylineEncodingOptions{TValue}"/> with the
-    /// specified previous coordinate used to seed the delta baseline.
+    /// specified previous value used to seed the delta baseline.
     /// </summary>
     /// <param name="previous">
-    /// The last coordinate of the previous chunk, used to seed the delta baseline.
+    /// The last value of the previous chunk, used to seed the delta baseline.
     /// </param>
     public PolylineEncodingOptions(TValue previous) {
         _previous = previous;
@@ -38,7 +38,7 @@ public sealed class PolylineEncodingOptions<TValue> {
     }
 
     /// <summary>
-    /// Gets a value indicating whether a previous coordinate has been supplied to seed the delta
+    /// Gets a value indicating whether a previous value has been supplied to seed the delta
     /// baseline. When <see langword="false"/> the formatter's built-in baseline is used as the
     /// starting point (which defaults to zero when no baseline has been configured), equivalent to
     /// the existing default behaviour.
@@ -46,7 +46,7 @@ public sealed class PolylineEncodingOptions<TValue> {
     public bool HasPrevious { get; }
 
     /// <summary>
-    /// Gets the last coordinate of the previous chunk, used to seed the delta baseline.
+    /// Gets the last value of the previous chunk, used to seed the delta baseline.
     /// Only meaningful when <see cref="HasPrevious"/> is <see langword="true"/>.
     /// </summary>
     public TValue Previous => _previous;

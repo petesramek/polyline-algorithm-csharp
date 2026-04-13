@@ -54,10 +54,10 @@ public sealed class ExceptionGuardTests {
     }
 
     /// <summary>
-    /// Tests that ThrowCoordinateValueOutOfRange throws ArgumentOutOfRangeException with correct parameter name.
+    /// Tests that ThrowValueOutOfRange throws ArgumentOutOfRangeException with correct parameter name.
     /// </summary>
     [TestMethod]
-    public void ThrowCoordinateValueOutOfRange_With_Parameters_Throws_ArgumentOutOfRangeException() {
+    public void ThrowValueOutOfRange_With_Parameters_Throws_ArgumentOutOfRangeException() {
         // Arrange
         const double value = 100.0;
         const double min = -90.0;
@@ -65,7 +65,7 @@ public sealed class ExceptionGuardTests {
         const string paramName = "latitude";
 
         // Act & Assert
-        var ex = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ExceptionGuard.ThrowCoordinateValueOutOfRange(value, min, max, paramName));
+        var ex = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ExceptionGuard.ThrowValueOutOfRange(value, min, max, paramName));
         Assert.AreEqual(paramName, ex.ParamName);
         Assert.IsNotNull(ex.Message);
     }
@@ -288,17 +288,17 @@ public sealed class ExceptionGuardTests {
     }
 
     /// <summary>
-    /// Tests that FormatCoordinateValueMustBeBetween returns formatted message with all parameters.
+    /// Tests that FormatValueMustBeBetween returns formatted message with all parameters.
     /// </summary>
     [TestMethod]
-    public void FormatCoordinateValueMustBeBetween_With_Parameters_Returns_Formatted_Message() {
+    public void FormatValueMustBeBetween_With_Parameters_Returns_Formatted_Message() {
         // Arrange
         const string name = "latitude";
         const double min = -90.0;
         const double max = 90.0;
 
         // Act
-        string result = ExceptionGuard.ExceptionMessage.FormatCoordinateValueMustBeBetween(name, min, max);
+        string result = ExceptionGuard.ExceptionMessage.FormatValueMustBeBetween(name, min, max);
 
         // Assert
         Assert.IsNotNull(result);
@@ -308,17 +308,17 @@ public sealed class ExceptionGuardTests {
     }
 
     /// <summary>
-    /// Tests that FormatCoordinateValueMustBeBetween with positive values returns formatted message.
+    /// Tests that FormatValueMustBeBetween with positive values returns formatted message.
     /// </summary>
     [TestMethod]
-    public void FormatCoordinateValueMustBeBetween_With_Positive_Values_Returns_Formatted_Message() {
+    public void FormatValueMustBeBetween_With_Positive_Values_Returns_Formatted_Message() {
         // Arrange
         const string name = "longitude";
         const double min = 0.0;
         const double max = 180.0;
 
         // Act
-        string result = ExceptionGuard.ExceptionMessage.FormatCoordinateValueMustBeBetween(name, min, max);
+        string result = ExceptionGuard.ExceptionMessage.FormatValueMustBeBetween(name, min, max);
 
         // Assert
         Assert.IsNotNull(result);
@@ -328,17 +328,17 @@ public sealed class ExceptionGuardTests {
     }
 
     /// <summary>
-    /// Tests that FormatCoordinateValueMustBeBetween with fractional values returns formatted message.
+    /// Tests that FormatValueMustBeBetween with fractional values returns formatted message.
     /// </summary>
     [TestMethod]
-    public void FormatCoordinateValueMustBeBetween_With_Fractional_Values_Returns_Formatted_Message() {
+    public void FormatValueMustBeBetween_With_Fractional_Values_Returns_Formatted_Message() {
         // Arrange
         const string name = "value";
         const double min = 1.5;
         const double max = 10.75;
 
         // Act
-        string result = ExceptionGuard.ExceptionMessage.FormatCoordinateValueMustBeBetween(name, min, max);
+        string result = ExceptionGuard.ExceptionMessage.FormatValueMustBeBetween(name, min, max);
 
         // Assert
         Assert.IsNotNull(result);

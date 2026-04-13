@@ -13,7 +13,7 @@ using System.Runtime.CompilerServices;
 /// <summary>
 /// A sealed, immutable formatter that implements <see cref="IPolylineFormatter{TValue, TPolyline}"/>.
 /// </summary>
-/// <typeparam name="TValue">The coordinate or item type.</typeparam>
+/// <typeparam name="TValue">The value or item type.</typeparam>
 /// <typeparam name="TPolyline">The polyline surface type.</typeparam>
 /// <remarks>
 /// Instances are constructed exclusively through <see cref="FormatterBuilder{TValue, TPolyline}"/>.

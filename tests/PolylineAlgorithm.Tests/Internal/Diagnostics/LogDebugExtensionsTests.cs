@@ -93,7 +93,7 @@ public sealed class LogDebugExtensionsTests {
 
         Assert.HasCount(1, logger.Logs);
         Assert.AreEqual(LogLevel.Debug, logger.Logs[0].Level);
-        Assert.Contains(string.Create(CultureInfo.InvariantCulture, $"Decoded coordinate: (Latitude: {latitude}, Longitude: {longitude}) at position {position}."), logger.Logs[0].Message, StringComparison.Ordinal);
+        Assert.Contains(string.Create(CultureInfo.InvariantCulture, $"Decoded value: (Latitude: {latitude}, Longitude: {longitude}) at position {position}."), logger.Logs[0].Message, StringComparison.Ordinal);
     }
 
     /// <summary>
@@ -155,7 +155,7 @@ public sealed class LogDebugExtensionsTests {
 
         Assert.HasCount(1, logger.Logs);
         Assert.AreEqual(LogLevel.Debug, logger.Logs[0].Level);
-        Assert.Contains("Decoded coordinate", logger.Logs[0].Message, StringComparison.Ordinal);
+        Assert.Contains("Decoded value", logger.Logs[0].Message, StringComparison.Ordinal);
     }
 
     /// <summary>

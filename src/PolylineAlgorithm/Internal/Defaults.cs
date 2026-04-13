@@ -11,7 +11,7 @@ using System.Diagnostics.CodeAnalysis;
 /// Provides default values and constants used throughout the Polyline Algorithm.
 /// </summary>
 /// <remarks>
-/// Organizes defaults for algorithm parameters, polyline encoding, and geographic coordinates into nested static classes.
+/// Organizes defaults for algorithm parameters, polyline encoding, and geographic values into nested static classes.
 /// </remarks>
 [ExcludeFromCodeCoverage]
 internal static class Defaults {
@@ -51,9 +51,9 @@ internal static class Defaults {
     }
 
     /// <summary>
-    /// Contains default values and constants for geographic coordinate validation.
+    /// Contains default values and constants for geographic value validation.
     /// </summary>
-    internal static class Coordinate {
+    internal static class Value {
         /// <summary>
         /// Provides constants representing latitude values, including the default, minimum, and maximum valid values.
         /// </summary>

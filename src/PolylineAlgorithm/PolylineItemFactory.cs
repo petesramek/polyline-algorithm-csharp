@@ -11,7 +11,7 @@ using System;
 /// Represents a factory method that reconstructs a <typeparamref name="T"/> item from denormalized
 /// values decoded from a polyline.
 /// </summary>
-/// <typeparam name="T">The coordinate or item type to create.</typeparam>
+/// <typeparam name="T">The value or item type to create.</typeparam>
 /// <param name="values">
 /// The denormalized values reconstructed by the polyline decoder. Each element corresponds to the
 /// original <see cref="double"/> value that was encoded, with the precision factor divided out and any

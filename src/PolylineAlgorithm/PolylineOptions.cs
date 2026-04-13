@@ -13,7 +13,7 @@ using System;
 /// <summary>
 /// Provides unified configuration for a formatter-driven encoding or decoding operation.
 /// </summary>
-/// <typeparam name="TValue">The coordinate or item type understood by the formatter.</typeparam>
+/// <typeparam name="TValue">The value or item type understood by the formatter.</typeparam>
 /// <typeparam name="TPolyline">The polyline surface type understood by the formatter.</typeparam>
 /// <remarks>
 /// Supply an <see cref="IPolylineFormatter{TValue, TPolyline}"/> and optional settings,
