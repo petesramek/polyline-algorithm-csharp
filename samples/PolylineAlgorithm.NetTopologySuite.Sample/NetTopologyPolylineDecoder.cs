@@ -12,7 +12,7 @@ using System;
 /// <summary>
 /// Polyline decoder using NetTopologySuite.
 /// </summary>
-public sealed class NetTopologyPolylineDecoder : AbstractPolylineDecoder<string, Point> {
+internal sealed class NetTopologyPolylineDecoder : AbstractPolylineDecoder<string, Point> {
     /// <summary>
     /// Creates a NetTopologySuite point from latitude and longitude.
     /// </summary>
