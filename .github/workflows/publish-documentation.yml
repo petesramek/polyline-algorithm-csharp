@@ -1,4 +1,4 @@
-﻿name: 'Publish documentation'
+name: 'Publish documentation'
 
 on:
   workflow_dispatch:
@@ -172,7 +172,7 @@ jobs:
         run: docfx build api-reference/api-reference.json
 
       - name: 'Upload artifact'
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           name: github-pages
           path: './api-reference/_docs'
