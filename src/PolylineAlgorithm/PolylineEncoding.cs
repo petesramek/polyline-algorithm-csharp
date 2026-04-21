@@ -330,123 +330,75 @@ public static class PolylineEncoding {
     private const ushort End = (Defaults.Algorithm.QuestionMark + Defaults.Algorithm.Space);
 
     /// <summary>
-    /// SIMD vector containing the minimum valid character value for efficient range validation of polyline segments.
-    /// </summary>
-    private static readonly Vector<ushort> MinVector = new(Min);
-
-    /// <summary>
-    /// SIMD vector containing the maximum valid character value for efficient range validation of polyline segments.
-    /// </summary>
-    private static readonly Vector<ushort> MaxVector = new(Max);
-
-    /// <summary>
-    /// Validates the format of a polyline segment, ensuring all characters are valid and block structure is correct.
+    /// Validates a single encoded polyline segment for both character correctness and encoded-value block structure.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This method performs two levels of validation on the provided polyline segment:
+    /// The method performs two validations in a single linear pass over <paramref name="polyline"/>:
     /// </para>
     /// <list type="number">
     ///   <item>
     ///     <description>
-    ///       <b>Character Range Validation:</b> Checks that every character in the polyline is within the valid ASCII range for polyline encoding ('?' [63] to '_' [95], inclusive).
-    ///       Uses SIMD acceleration for efficient validation of large segments.
+    ///       <b>Character range:</b> every character must be within the allowed ASCII range for the polyline algorithm
+    ///       (from '?' (63) up to '_' (95), inclusive). If a character outside this range is encountered, an exception is raised
+    ///       (see <see cref="ExceptionGuard.ThrowInvalidPolylineCharacter(char,int)"/>).
     ///     </description>
     ///   </item>
     ///   <item>
     ///     <description>
-    ///       <b>Block Structure Validation:</b> Ensures that each encoded value (block) does not exceed 7 characters and that the polyline ends with a valid block terminator.
+    ///       <b>Block structure:</b> each encoded value is composed of one or more 5-bit chunks and must end with a terminator
+    ///       (a character with value less than <see cref="End"/>). Blocks may not exceed the configured maximum length
+    ///       (<see cref="Defaults.Polyline.Block.Length.Max"/>); violations raise
+    ///       <see cref="ExceptionGuard.ThrowPolylineBlockTooLong(int)"/>. The method also ensures the entire polyline ends with
+    ///       a valid block terminator (<see cref="ExceptionGuard.ThrowInvalidPolylineBlockTerminator"/>).
     ///     </description>
     ///   </item>
     /// </list>
     /// <para>
-    /// If an invalid character or block structure is detected, an <see cref="ArgumentException"/> is thrown with details about the error.
+    /// Implementation notes:
+    /// <list type="bullet">
+    ///   <item><description>Time: O(n) where n is the number of characters in <paramref name="polyline"/>.</description></item>
+    ///   <item><description>Memory: O(1) additional allocations (scalar single-pass validation).</description></item>
+    ///   <item><description>For character-only validation that may benefit from SIMD/vectorization, use <see cref="ValidateCharRange(ReadOnlySpan{char})"/>.</description></item>
+    ///   <item><description>The method reports specific errors through the <see cref="ExceptionGuard"/> helpers:
+    ///     <see cref="ExceptionGuard.ThrowInvalidPolylineCharacter(char,int)"/>,
+    ///     <see cref="ExceptionGuard.ThrowPolylineBlockTooLong(int)"/>, and
+    ///     <see cref="ExceptionGuard.ThrowInvalidPolylineBlockTerminator()"/>.</description></item>
+    /// </list>
     /// </para>
     /// </remarks>
-    /// <param name="polyline">A span representing the polyline segment to validate.</param>
+    /// <param name="polyline">A span containing the encoded polyline segment to validate.</param>
     /// <exception cref="ArgumentException">
-    /// Thrown when an invalid character is found or the block structure is invalid.
+    /// Thrown when the polyline contains an invalid character, a block exceeds the maximum allowed length, or the polyline
+    /// does not end with a valid block terminator. Concrete exceptions are raised via <see cref="ExceptionGuard"/>.
     /// </exception>
+    /// <returns>Nothing. The method completes successfully if validation passes; otherwise it throws via <see cref="ExceptionGuard"/>.</returns>
+    /// <example>
+    /// <code language="csharp">
+    /// // Validates an encoded segment and throws if malformed:
+    /// PolylineEncoding.ValidateFormat(somePolylineSpan);
+    /// </code>
+    /// </example>
     public static void ValidateFormat(ReadOnlySpan<char> polyline) {
-        // 1. SIMD character check (reuse existing method)
-        ValidateCharRange(polyline);
-        // 2. Block structure check
-        ValidateBlockLength(polyline);
-    }
-
-    /// <summary>
-    /// Validates that all characters in the polyline segment are within the allowed ASCII range for polyline encoding.
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// Uses SIMD vectorization for efficient validation of large spans. Falls back to scalar checks for any block where an invalid character is detected.
-    /// </para>
-    /// <para>
-    /// The valid range is from '?' (63) to '_' (95), inclusive. If an invalid character is found, an <see cref="ArgumentException"/> is thrown.
-    /// </para>
-    /// </remarks>
-    /// <param name="polyline">A span representing the polyline segment to validate.</param>
-    /// <exception cref="ArgumentException">
-    /// Thrown when an invalid character is found in the polyline segment.
-    /// </exception>
-    public static void ValidateCharRange(ReadOnlySpan<char> polyline) {
-        int length = polyline.Length;
-        int vectorSize = Vector<ushort>.Count;
-
-        int i = 0;
-        for (; i <= length - vectorSize; i += vectorSize) {
-            var span = MemoryMarshal.Cast<char, ushort>(polyline.Slice(i, vectorSize));
-#if NET5_0_OR_GREATER
-            var chars = new Vector<ushort>(span);
-#else
-            var chars = new Vector<ushort>(span.ToArray());
-#endif
-            var belowMin = Vector.LessThan(chars, MinVector);
-            var aboveMax = Vector.GreaterThan(chars, MaxVector);
-            if (Vector.BitwiseOr(belowMin, aboveMax) != Vector<ushort>.Zero) {
-                // Fallback to scalar check for this block
-                for (int j = 0; j < vectorSize; j++) {
-                    char character = polyline[i + j];
-                    if (character < Min || character > Max) {
-                        ExceptionGuard.ThrowInvalidPolylineCharacter(character, i + j);
-                    }
-                }
-            }
-        }
-
-        for (; i < length; i++) {
-            char character = polyline[i];
-            if (character < Min || character > Max) {
-                ExceptionGuard.ThrowInvalidPolylineCharacter(character, i);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Validates the block structure of a polyline segment, ensuring each encoded value does not exceed 7 characters and the polyline ends correctly.
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// Iterates through the polyline, counting the length of each block (a sequence of characters representing an encoded value).
-    /// Throws an <see cref="ArgumentException"/> if any block exceeds 7 characters or if the polyline does not end with a valid block terminator.
-    /// </para>
-    /// </remarks>
-    /// <param name="polyline">A span representing the polyline segment to validate.</param>
-    /// <exception cref="ArgumentException">
-    /// Thrown when a block exceeds 7 characters or the polyline does not end with a valid block terminator.
-    /// </exception>
-    public static void ValidateBlockLength(ReadOnlySpan<char> polyline) {
         int blockLen = 0;
         bool foundBlockEnd = false;
 
         for (int i = 0; i < polyline.Length; i++) {
+            char c = polyline[i];
+
+            if (c < Min || c > Max) {
+                ExceptionGuard.ThrowInvalidPolylineCharacter(c, i);
+            }
+
             blockLen++;
 
-            if (polyline[i] < End) {
+            if (c < End) {
                 foundBlockEnd = true;
+
                 if (blockLen > Defaults.Polyline.Block.Length.Max) {
                     ExceptionGuard.ThrowPolylineBlockTooLong(i - blockLen + 1);
                 }
+
                 blockLen = 0;
             } else {
                 foundBlockEnd = false;

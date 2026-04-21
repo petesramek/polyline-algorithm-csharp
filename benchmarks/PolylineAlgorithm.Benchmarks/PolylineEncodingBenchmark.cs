@@ -28,11 +28,5 @@ public class PolylineEncodingBenchmark {
     }
 
     [Benchmark(Baseline = true)]
-    public void ValidateCharRange() => PolylineEncoding.ValidateCharRange(polyline);
-
-    [Benchmark]
-    public void ValidateBlockLength() => PolylineEncoding.ValidateBlockLength(polyline);
-
-    [Benchmark]
     public void ValidateFormat() => PolylineEncoding.ValidateFormat(polyline);
 }
