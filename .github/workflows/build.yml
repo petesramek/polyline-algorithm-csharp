@@ -1,4 +1,4 @@
-﻿name: Build
+name: Build
 
 on:
   workflow_dispatch:
@@ -54,9 +54,9 @@ jobs:
         release-version: ${{ steps.format-version.outputs.release-version }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: ${{ env.dotnet-sdk-version }}
       - name: 'Extract version from branch name'
@@ -102,7 +102,7 @@ jobs:
 
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: 'Format source code'
         uses: ./.github/actions/source/format
@@ -121,7 +121,7 @@ jobs:
 
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: 'Compile source code'
         uses: ./.github/actions/source/compile
@@ -138,10 +138,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: 'Setup .NET'
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: ${{ env.dotnet-sdk-version }}
 
@@ -184,10 +184,10 @@ jobs:
         package-artifact-name: ${{ env.package-artifact-name }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: ${{ env.dotnet-sdk-version }}
 
@@ -217,10 +217,10 @@ jobs:
     environment: 'Development'
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: ${{ env.dotnet-sdk-version }}
 
@@ -242,7 +242,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6 
+        uses: actions/checkout@v7 
       - name: 'Generate assembly metadata'
         uses: ./.github/actions/documentation/docfx-metadata
         with:
