@@ -51,11 +51,11 @@ jobs:
 
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0 # Ensure the full git history is available for versioning
       - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: ${{ env.dotnet-sdk-version }}
       - name: 'Extract version from branch name'
@@ -72,10 +72,10 @@ jobs:
       friendly-version: ${{ needs.versioning.outputs.friendly-version }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: ${{ env.dotnet-sdk-version }}
 
