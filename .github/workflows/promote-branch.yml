@@ -40,7 +40,7 @@ jobs:
         friendly-version: ${{ steps.extract-version.outputs.version }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
         uses: actions/setup-dotnet@v5
         with:
@@ -61,7 +61,7 @@ jobs:
         pull-request-exists: ${{ steps.check-pull-request-exists.outputs.pull-request-exists }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: 'Set target branch'
         id: set-target-branch
         run: |
@@ -156,7 +156,7 @@ jobs:
         target-branch: ${{ env.target-branch }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: 'Check promotion type'
         if: ${{ (env.promotion-type != 'release') && (env.promotion-type != 'preview') }}
         run: |
@@ -200,7 +200,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
         uses: actions/setup-dotnet@v5
         with:
