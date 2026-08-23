@@ -66,7 +66,7 @@ jobs:
         release-version: ${{ steps.format-version.outputs.release-version }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
         uses: actions/setup-dotnet@v5
         with:
@@ -120,7 +120,7 @@ jobs:
 
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: 'Compile source code'
         uses: ./.github/actions/source/compile
@@ -137,7 +137,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: 'Setup .NET'
         uses: actions/setup-dotnet@v5
@@ -178,7 +178,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: 'Setup .NET'
         uses: actions/setup-dotnet@v5
@@ -225,7 +225,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: 'Promote Unshipped.txt into Shipped.txt'
         shell: bash
@@ -266,7 +266,7 @@ jobs:
         package-artifact-name: ${{ env.package-artifact-name }}
     steps:
       - name: 'Checkout ${{ github.base_ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
@@ -300,7 +300,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Install .NET SDK
         uses: actions/setup-dotnet@v5
         with:
@@ -351,7 +351,7 @@ jobs:
     environment: 'NuGet'
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
@@ -378,7 +378,7 @@ jobs:
       notes-start-tag: ${{ needs.workflow-variables.outputs.notes-start-tag }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-tags: true
 
@@ -406,7 +406,7 @@ jobs:
       release-version: ${{ needs.versioning.outputs.release-version }}
     steps:
       - name: 'Checkout ${{ github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: ${{ github.ref }}
 
@@ -469,7 +469,7 @@ jobs:
       current-version: ${{ needs.versioning.outputs.friendly-version }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -524,7 +524,7 @@ jobs:
       current-version: ${{ needs.versioning.outputs.friendly-version }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
