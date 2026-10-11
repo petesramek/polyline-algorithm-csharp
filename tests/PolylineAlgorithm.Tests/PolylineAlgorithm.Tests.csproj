@@ -17,7 +17,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
-		<PackageReference Include="Microsoft.Testing.Extensions.VSTestBridge" Version="2.4.1" />
+		<PackageReference Include="Microsoft.Testing.Extensions.VSTestBridge" Version="2.5.1" />
 		<PackageReference Include="MSTest" Version="4.4.1" />
 		<PackageReference Include="Microsoft.Testing.Platform.MSBuild" Version="2.4.1" />
 		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.11.2" />
