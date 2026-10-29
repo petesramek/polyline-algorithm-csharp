@@ -1,0 +1,141 @@
+### YamlMime:ApiPage
+title: Class PolylineEncodingOptionsBuilder
+body:
+- api1: Class PolylineEncodingOptionsBuilder
+  id: PolylineAlgorithm_PolylineEncodingOptionsBuilder
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L15
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder
+    commentId: T:PolylineAlgorithm.PolylineEncodingOptionsBuilder
+- facts:
+  - name: Namespace
+    value:
+      text: PolylineAlgorithm
+      url: PolylineAlgorithm.html
+  - name: Assembly
+    value: PolylineAlgorithm.dll
+- markdown: Provides a builder for configuring options for polyline encoding operations.
+- code: public sealed class PolylineEncodingOptionsBuilder
+- h4: Inheritance
+- inheritance:
+  - text: object
+    url: https://learn.microsoft.com/dotnet/api/system.object
+  - text: PolylineEncodingOptionsBuilder
+    url: PolylineAlgorithm.PolylineEncodingOptionsBuilder.html
+- h4: Inherited Members
+- list:
+  - text: object.Equals(object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - text: object.Equals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - text: object.GetHashCode()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - text: object.GetType()
+    url: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - text: object.ReferenceEquals(object, object)
+    url: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - text: object.ToString()
+    url: https://learn.microsoft.com/dotnet/api/system.object.tostring
+- h2: Methods
+- api3: Build()
+  id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_Build
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L38
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.Build
+    commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.Build
+- markdown: Builds a new <xref href="PolylineAlgorithm.PolylineEncodingOptions" data-throw-if-not-resolved="false"></xref> instance using the configured options.
+- code: public PolylineEncodingOptions Build()
+- h4: Returns
+- parameters:
+  - type:
+    - text: PolylineEncodingOptions
+      url: PolylineAlgorithm.PolylineEncodingOptions.html
+    description: A configured <xref href="PolylineAlgorithm.PolylineEncodingOptions" data-throw-if-not-resolved="false"></xref> instance.
+- api3: Create()
+  id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_Create
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L28
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.Create
+    commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.Create
+- markdown: Creates a new <xref href="PolylineAlgorithm.PolylineEncodingOptionsBuilder" data-throw-if-not-resolved="false"></xref> instance for the specified coordinate type.
+- code: public static PolylineEncodingOptionsBuilder Create()
+- h4: Returns
+- parameters:
+  - type:
+    - text: PolylineEncodingOptionsBuilder
+      url: PolylineAlgorithm.PolylineEncodingOptionsBuilder.html
+    description: An <xref href="PolylineAlgorithm.PolylineEncodingOptionsBuilder" data-throw-if-not-resolved="false"></xref> instance for configuring polyline encoding options.
+- api3: WithLoggerFactory(ILoggerFactory)
+  id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_WithLoggerFactory_Microsoft_Extensions_Logging_ILoggerFactory_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L97
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithLoggerFactory(Microsoft.Extensions.Logging.ILoggerFactory)
+    commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithLoggerFactory(Microsoft.Extensions.Logging.ILoggerFactory)
+- markdown: Configures the <xref href="Microsoft.Extensions.Logging.ILoggerFactory" data-throw-if-not-resolved="false"></xref> to be used for logging during polyline encoding operations.
+- code: public PolylineEncodingOptionsBuilder WithLoggerFactory(ILoggerFactory loggerFactory)
+- h4: Parameters
+- parameters:
+  - name: loggerFactory
+    type:
+    - text: ILoggerFactory
+      url: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory
+    description: The <xref href="Microsoft.Extensions.Logging.ILoggerFactory" data-throw-if-not-resolved="false"></xref> instance to use for logging. If <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>, a <xref href="Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory" data-throw-if-not-resolved="false"></xref> will be used instead.
+- h4: Returns
+- parameters:
+  - type:
+    - text: PolylineEncodingOptionsBuilder
+      url: PolylineAlgorithm.PolylineEncodingOptionsBuilder.html
+    description: The current <xref href="PolylineAlgorithm.PolylineEncodingOptionsBuilder" data-throw-if-not-resolved="false"></xref> instance for method chaining.
+- api3: WithPrecision(uint)
+  id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_WithPrecision_System_UInt32_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L82
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithPrecision(System.UInt32)
+    commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithPrecision(System.UInt32)
+- markdown: Sets the coordinate encoding precision.
+- code: public PolylineEncodingOptionsBuilder WithPrecision(uint precision)
+- h4: Parameters
+- parameters:
+  - name: precision
+    type:
+    - text: uint
+      url: https://learn.microsoft.com/dotnet/api/system.uint32
+    description: The number of decimal places to use for encoding coordinate values. Default is 5.
+- h4: Returns
+- parameters:
+  - type:
+    - text: PolylineEncodingOptionsBuilder
+      url: PolylineAlgorithm.PolylineEncodingOptionsBuilder.html
+    description: The current <xref href="PolylineAlgorithm.PolylineEncodingOptionsBuilder" data-throw-if-not-resolved="false"></xref> instance for method chaining.
+- api3: WithStackAllocLimit(int)
+  id: PolylineAlgorithm_PolylineEncodingOptionsBuilder_WithStackAllocLimit_System_Int32_
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/PolylineEncodingOptionsBuilder.cs#L61
+  metadata:
+    uid: PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithStackAllocLimit(System.Int32)
+    commentId: M:PolylineAlgorithm.PolylineEncodingOptionsBuilder.WithStackAllocLimit(System.Int32)
+- markdown: Configures the buffer size used for stack allocation during polyline encoding operations.
+- code: public PolylineEncodingOptionsBuilder WithStackAllocLimit(int stackAllocLimit)
+- h4: Parameters
+- parameters:
+  - name: stackAllocLimit
+    type:
+    - text: int
+      url: https://learn.microsoft.com/dotnet/api/system.int32
+    description: The maximum buffer size to use for stack allocation. Must be greater than or equal to 1.
+- h4: Returns
+- parameters:
+  - type:
+    - text: PolylineEncodingOptionsBuilder
+      url: PolylineAlgorithm.PolylineEncodingOptionsBuilder.html
+    description: The current <xref href="PolylineAlgorithm.PolylineEncodingOptionsBuilder" data-throw-if-not-resolved="false"></xref> instance for method chaining.
+- h4: Remarks
+- markdown: This method allows customization of the internal buffer size for encoding, which can impact performance and memory usage.
+- h4: Exceptions
+- parameters:
+  - type:
+    - text: ArgumentOutOfRangeException
+      url: https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception
+    description: Thrown if <code class="paramref">stackAllocLimit</code> is less than 1.
+languageId: csharp
+metadata:
+  description: Provides a builder for configuring options for polyline encoding operations.
