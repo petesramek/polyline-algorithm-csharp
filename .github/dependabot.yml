@@ -16,6 +16,11 @@ updates:
       - "dependencies"
     assignees:
       - "petesramek"
+    ignore:
+      - dependency-name: "Microsoft.CodeAnalysis.PublicApiAnalyzers"
+        versions: [ "5.*" ]
+      - dependency-name: "Microsoft.Extensions.Logging.Abstractions"
+        versions: [ "[6.0.0,12.0.0)" ]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
