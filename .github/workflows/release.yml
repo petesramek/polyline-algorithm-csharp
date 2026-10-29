@@ -399,6 +399,7 @@ jobs:
   release:
     name: 'Create release'
     needs: [workflow-variables, publish-package, validate-release, versioning]
+    if: ${{ !cancelled() && needs.workflow-variables.result == 'success' && needs.publish-package.result == 'success' && needs.validate-release.result == 'success' && needs.versioning.result == 'success' }}
     runs-on: ubuntu-latest
     env:
       release-version: ${{ needs.versioning.outputs.release-version }}
