@@ -399,7 +399,7 @@ jobs:
   release:
     name: 'Create release'
     needs: [workflow-variables, publish-package, validate-release, versioning]
-    if: ${{ !cancelled() && needs.workflow-variables.result == 'success' && needs.publish-package.result == 'success' && needs.validate-release.result == 'success' && needs.versioning.result == 'success' }}
+    if: ${{ !cancelled() && needs.workflow-variables.outputs.is-release == 'true' && needs.workflow-variables.result == 'success' && needs.publish-package.result == 'success' && needs.validate-release.result == 'success' && needs.versioning.result == 'success' }}
     runs-on: ubuntu-latest
     env:
       release-version: ${{ needs.versioning.outputs.release-version }}
@@ -428,7 +428,7 @@ jobs:
   update-changelog:
     name: 'Update CHANGELOG.md'
     needs: [workflow-variables, release, versioning]
-    if: ${{ needs.workflow-variables.outputs.is-release == 'true' }}
+    if: ${{ !cancelled() && needs.workflow-variables.outputs.is-release == 'true' && needs.workflow-variables.result == 'success' && needs.publish-package.result == 'success' && needs.validate-release.result == 'success' && needs.versioning.result == 'success' }}
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
@@ -487,7 +487,7 @@ jobs:
   merge-to-main:
     name: 'Merge ${{ github.ref_name }} into main'
     needs: [workflow-variables, release, versioning, update-changelog]
-    if: ${{ needs.workflow-variables.outputs.is-release == 'true' }}
+    if: ${{ !cancelled() && needs.workflow-variables.outputs.is-release == 'true' && needs.workflow-variables.result == 'success' && needs.publish-package.result == 'success' && needs.validate-release.result == 'success' && needs.versioning.result == 'success' }}
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -547,7 +547,7 @@ jobs:
   create-support-branch:
     name: 'Create support branch for ${{ github.ref_name }}'
     needs: [workflow-variables, release, versioning]
-    if: ${{ needs.workflow-variables.outputs.is-release == 'true' }}
+    if: ${{ !cancelled() && needs.workflow-variables.outputs.is-release == 'true' && needs.workflow-variables.result == 'success' && needs.publish-package.result == 'success' && needs.validate-release.result == 'success' && needs.versioning.result == 'success' }}
     runs-on: ubuntu-latest
     env:
       current-version: ${{ needs.versioning.outputs.friendly-version }}
@@ -576,7 +576,6 @@ jobs:
       - name: 'Configure git identity'
         if: ${{ steps.check-support-branch.outputs.support-branch-exists == 'false' }}
         uses: './.github/actions/git/configure-identity'
-
       - name: 'Create support branch'
         if: ${{ steps.check-support-branch.outputs.support-branch-exists == 'false' }}
         run: |
