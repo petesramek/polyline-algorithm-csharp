@@ -30,4 +30,9 @@
 		</AssemblyAttribute>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.SourceLink.GitHub" Version="10.0.403" />
+	  <PackageReference Update="Roslynator.Analyzers" Version="5.0.1" />
+	</ItemGroup>
+
 </Project>

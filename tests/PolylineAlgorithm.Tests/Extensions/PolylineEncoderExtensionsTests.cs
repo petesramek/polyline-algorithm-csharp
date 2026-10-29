@@ -36,7 +36,7 @@ public sealed class PolylineEncoderExtensionsTests {
         // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
             () => encoder!.Encode(coordinates));
-        Assert.AreEqual("encoder", ex.ParamName);
+        Assert.AreEqual("encoder", ex.ParamName, StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ public sealed class PolylineEncoderExtensionsTests {
         // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
             () => encoder.Encode(coordinates!));
-        Assert.AreEqual("coordinates", ex.ParamName);
+        Assert.AreEqual("coordinates", ex.ParamName, StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -68,7 +68,7 @@ public sealed class PolylineEncoderExtensionsTests {
         string result = encoder.Encode(coordinates);
 
         // Assert
-        Assert.AreEqual(expected, result);
+        Assert.AreEqual(expected, result, StringComparer.Ordinal);
     }
 
     // ----- Encode(T[]) -----
@@ -86,7 +86,7 @@ public sealed class PolylineEncoderExtensionsTests {
         // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
             () => PolylineEncoderExtensions.Encode<(double, double), string>(encoder!, coordinates));
-        Assert.AreEqual("encoder", ex.ParamName);
+        Assert.AreEqual("encoder", ex.ParamName, StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -101,7 +101,7 @@ public sealed class PolylineEncoderExtensionsTests {
         // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
             () => PolylineEncoderExtensions.Encode<(double, double), string>(encoder, coordinates!));
-        Assert.AreEqual("coordinates", ex.ParamName);
+        Assert.AreEqual("coordinates", ex.ParamName, StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -118,6 +118,6 @@ public sealed class PolylineEncoderExtensionsTests {
         string result = encoder.Encode(coordinates);
 
         // Assert
-        Assert.AreEqual(expected, result);
+        Assert.AreEqual(expected, result, StringComparer.Ordinal);
     }
 }

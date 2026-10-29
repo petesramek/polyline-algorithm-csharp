@@ -106,7 +106,7 @@ body:
 - h2: Methods
 - api3: CreatePolyline(ReadOnlyMemory<char>)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_CreatePolyline_System_ReadOnlyMemory_System_Char__
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L174
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L172
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.CreatePolyline(System.ReadOnlyMemory{System.Char})
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.CreatePolyline(System.ReadOnlyMemory{System.Char})
@@ -176,7 +176,7 @@ body:
     description: Thrown when the internal encoding buffer cannot accommodate the encoded value.
 - api3: GetLatitude(TCoordinate)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_GetLatitude__0_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L194
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L192
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLatitude(`0)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLatitude(`0)
@@ -196,7 +196,7 @@ body:
     description: The latitude value as a <xref href="System.Double" data-throw-if-not-resolved="false"></xref>.
 - api3: GetLongitude(TCoordinate)
   id: PolylineAlgorithm_Abstraction_AbstractPolylineEncoder_2_GetLongitude__0_
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L184
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Abstraction/AbstractPolylineEncoder.cs#L182
   metadata:
     uid: PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLongitude(`0)
     commentId: M:PolylineAlgorithm.Abstraction.AbstractPolylineEncoder`2.GetLongitude(`0)

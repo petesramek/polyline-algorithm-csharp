@@ -110,4 +110,4 @@ The `X.Y` in `preview/X.Y` and `release/X.Y` drives the version pipeline. See [V
 
 ## Locking and Unlocking Branches
 
-`preview/**` and `release/**` branches are locked via the [`github/branch-protection/lock`](./composite-actions.md#githubbranch-protectionlock) composite action when created. `develop/X.Y` and `support/X.Y` branches must be manually configured as protected in repository settings (PR required, no direct pushes). The [`github/branch-protection/unlock`](./composite-actions.md#githubbranch-protectionunlock) action temporarily removes protection when a workflow needs to push directly (e.g., `bump-version.yml`). Branches are always re-locked immediately after.
+`develop/**`, `preview/**`, `release/**` and `main` are protected by repository rulesets (Settings → Rules). The [`github/branch-protection/unlock`](./composite-actions.md#githubbranch-protectionunlock) action temporarily excludes a branch from its rulesets when a workflow needs to push directly (e.g., `bump-version.yml`). Branches are always re-locked immediately after.
