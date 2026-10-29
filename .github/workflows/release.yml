@@ -273,12 +273,12 @@ jobs:
           working-directory: src/PolylineAlgorithm
 
       - name: 'Restore release branch protection'
-        if: ${{ always() && steps.unlock-release-branch.outputs.branch-protection-settings != '' }}
+        if: ${{ always() && steps.unlock-release-branch.outputs.ruleset-ids != '' }}
         uses: './.github/actions/github/branch-protection/lock'
         with:
           branch: ${{ github.ref_name }}
           token: ${{ secrets.GH_ADMIN_TOKEN }}
-          protection-settings: ${{ steps.unlock-release-branch.outputs.branch-protection-settings }}
+          ruleset-ids: ${{ steps.unlock-release-branch.outputs.ruleset-ids }}
 
   pack:
     name: 'Package binaries'
