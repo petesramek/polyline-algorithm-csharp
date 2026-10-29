@@ -239,6 +239,7 @@ jobs:
     needs: [versioning, build]
     env:
       friendly-version: ${{ needs.versioning.outputs.friendly-version }}
+    if: ${{ needs.workflow-variables.outputs.is-release != 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
