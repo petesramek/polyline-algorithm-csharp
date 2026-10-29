@@ -228,6 +228,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: 'Promote Unshipped.txt into Shipped.txt'
+        id: promote-api
         shell: bash
         run: |
           UNSHIPPED="src/PolylineAlgorithm/PublicAPI.Unshipped.txt"
@@ -239,18 +240,45 @@ jobs:
           # Reset Unshipped to just the nullable-enable header (with BOM to match convention)
           printf '\xef\xbb\xbf#nullable enable\n' > "$UNSHIPPED"
 
-      - name: 'Configure git identity'
-        uses: './.github/actions/git/configure-identity'
+          if git diff --quiet -- "$UNSHIPPED" "$SHIPPED"; then
+            echo "has-changes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has-changes=true" >> "$GITHUB_OUTPUT"
+          fi
 
-      - name: 'Commit and push promoted API files'
-        shell: bash
-        run: |
-          git add src/PolylineAlgorithm/PublicAPI.Shipped.txt src/PolylineAlgorithm/PublicAPI.Unshipped.txt
-          git diff --staged --quiet || (
-            git commit -m "Promote PublicAPI.Unshipped.txt into PublicAPI.Shipped.txt for release" &&
-            git pull --rebase origin ${{ github.ref_name }} &&
-            git push
-          )
+      - name: 'Upload promoted API files'
+        if: ${{ steps.promote-api.outputs.has-changes == 'true' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: promoted-api-files
+          path: |
+            src/PolylineAlgorithm/PublicAPI.Shipped.txt
+            src/PolylineAlgorithm/PublicAPI.Unshipped.txt
+
+      - name: 'Unlock release branch for API file promotion'
+        id: unlock-release-branch
+        if: ${{ steps.promote-api.outputs.has-changes == 'true' }}
+        uses: './.github/actions/github/branch-protection/unlock'
+        with:
+          branch: ${{ github.ref_name }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+          fail-on-error: 'true'
+
+      - name: 'Push promoted API files'
+        if: ${{ steps.promote-api.outputs.has-changes == 'true' }}
+        uses: './.github/actions/git/push-changes'
+        with:
+          artifact-name: promoted-api-files
+          commit-message: 'Promote PublicAPI.Unshipped.txt into PublicAPI.Shipped.txt for release'
+          working-directory: src/PolylineAlgorithm
+
+      - name: 'Restore release branch protection'
+        if: ${{ always() && steps.unlock-release-branch.outputs.branch-protection-settings != '' }}
+        uses: './.github/actions/github/branch-protection/lock'
+        with:
+          branch: ${{ github.ref_name }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+          protection-settings: ${{ steps.unlock-release-branch.outputs.branch-protection-settings }}
 
   pack:
     name: 'Package binaries'
