@@ -250,9 +250,23 @@ jobs:
           docfx-json-manifest: './api-reference/assembly-metadata.json'
           temporary-directory: './api-reference/temp'
           output-directory: './api-reference/${{ env.friendly-version }}'
+      - name: 'Unlock branch for assembly metadata push'
+        id: unlock-branch
+        uses: ./.github/actions/github/branch-protection/unlock
+        with:
+          branch: ${{ github.ref_name }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+          fail-on-error: 'true'
       - name: 'Push assembly metadata artifact'
         uses: ./.github/actions/git/push-changes
         with:
           artifact-name: 'assembly-metadata'
           commit-message: 'Updated docs for version ${{ env.friendly-version }}'
           working-directory: './api-reference/${{ env.friendly-version }}'
+      - name: 'Restore branch protection'
+        if: ${{ always() && steps.unlock-branch.outputs.ruleset-ids != '' }}
+        uses: ./.github/actions/github/branch-protection/lock
+        with:
+          branch: ${{ github.ref_name }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+          ruleset-ids: ${{ steps.unlock-branch.outputs.ruleset-ids }}
