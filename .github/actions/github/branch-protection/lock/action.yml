@@ -32,6 +32,10 @@ inputs:
     description: 'When true, enforces linear history (no merge commits). When false (default), merge commits are allowed. Set to false before automated merges that create merge commits.'
     required: false
     default: 'false'
+  protection-settings:
+    description: 'Original branch protection settings to restore, as compact JSON. When supplied, the other protection options are ignored.'
+    required: false
+    default: ''
 
 runs:
   using: composite
@@ -40,35 +44,49 @@ runs:
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.token }}
+        BRANCH: ${{ inputs.branch }}
+        REPOSITORY: ${{ github.repository }}
+        PROTECTION_SETTINGS: ${{ inputs.protection-settings }}
       run: |
-        ENFORCE_ADMINS=true
-        if [ '${{ inputs.bypass-admins }}' = 'true' ]; then
-          ENFORCE_ADMINS=false
+        branch_path=$(jq -rn --arg branch "$BRANCH" '$branch | @uri')
+        endpoint="/repos/$REPOSITORY/branches/$branch_path/protection"
+
+        if [ -n "$PROTECTION_SETTINGS" ]; then
+          if ! echo "$PROTECTION_SETTINGS" | jq -e 'type == "object"' > /dev/null; then
+            echo "::error::Invalid branch protection settings supplied for '$BRANCH'."
+            exit 1
+          fi
+          payload="$PROTECTION_SETTINGS"
+        else
+          ENFORCE_ADMINS=true
+          if [ '${{ inputs.bypass-admins }}' = 'true' ]; then
+            ENFORCE_ADMINS=false
+          fi
+
+          payload=$(jq -n \
+            --argjson review_count '${{ inputs.required-approving-review-count }}' \
+            --argjson dismiss_stale '${{ inputs.dismiss-stale-reviews }}' \
+            --argjson enforce_admins "$ENFORCE_ADMINS" \
+            --argjson lock_branch '${{ inputs.lock-branch }}' \
+            --argjson skip_reviews '${{ inputs.skip-pull-request-reviews }}' \
+            --argjson required_linear_history '${{ inputs.required-linear-history }}' \
+            '{
+              "required_status_checks": null,
+              "enforce_admins": $enforce_admins,
+              "required_pull_request_reviews": (if $skip_reviews then null else {
+                "dismiss_stale_reviews": $dismiss_stale,
+                "require_code_owner_reviews": false,
+                "required_approving_review_count": $review_count
+              } end),
+              "restrictions": null,
+              "allow_force_pushes": false,
+              "allow_deletions": false,
+              "lock_branch": $lock_branch,
+              "required_linear_history": $required_linear_history
+            }')
         fi
 
-        PAYLOAD=$(jq -n \
-          --argjson review_count '${{ inputs.required-approving-review-count }}' \
-          --argjson dismiss_stale '${{ inputs.dismiss-stale-reviews }}' \
-          --argjson enforce_admins "$ENFORCE_ADMINS" \
-          --argjson lock_branch '${{ inputs.lock-branch }}' \
-          --argjson skip_reviews '${{ inputs.skip-pull-request-reviews }}' \
-          --argjson required_linear_history '${{ inputs.required-linear-history }}' \
-          '{
-            "required_status_checks": null,
-            "enforce_admins": $enforce_admins,
-            "required_pull_request_reviews": (if $skip_reviews then null else {
-              "dismiss_stale_reviews": $dismiss_stale,
-              "require_code_owner_reviews": false,
-              "required_approving_review_count": $review_count
-            } end),
-            "restrictions": null,
-            "allow_force_pushes": false,
-            "allow_deletions": false,
-            "lock_branch": $lock_branch,
-            "required_linear_history": $required_linear_history
-          }')
-
-        if ! echo "$PAYLOAD" | gh api --method PUT /repos/${{ github.repository }}/branches/${{ inputs.branch }}/protection --input -; then
+        if ! echo "$payload" | gh api --method PUT "$endpoint" --input -; then
           echo "::error::Failed to apply branch protection to '${{ inputs.branch }}'. Ensure the token has 'administration: write' permission and the branch exists."
           exit 1
         fi

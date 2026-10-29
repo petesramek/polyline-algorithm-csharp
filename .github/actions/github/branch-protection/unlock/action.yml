@@ -12,18 +12,73 @@ inputs:
     description: 'When true, the step fails if branch protection cannot be removed. When false (default), errors are silently ignored.'
     required: false
     default: 'false'
+outputs:
+  branch-protection-settings:
+    description: 'The branch protection settings that were removed, for restoring them later.'
+    value: ${{ steps.unlock.outputs.branch-protection-settings }}
 
 runs:
   using: composite
   steps:
     - name: 'Unlock branch ${{ inputs.branch }}'
+      id: unlock
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.token }}
+        BRANCH: ${{ inputs.branch }}
+        REPOSITORY: ${{ github.repository }}
+        FAIL_ON_ERROR: ${{ inputs.fail-on-error }}
       run: |
-        if [ '${{ inputs.fail-on-error }}' = 'true' ]; then
-          gh api --method DELETE /repos/${{ github.repository }}/branches/${{ inputs.branch }}/protection
-        else
-          gh api --method DELETE /repos/${{ github.repository }}/branches/${{ inputs.branch }}/protection || true
+        branch_path=$(jq -rn --arg branch "$BRANCH" '$branch | @uri')
+        endpoint="/repos/$REPOSITORY/branches/$branch_path/protection"
+
+        if ! branch_protection=$(gh api "$endpoint"); then
+          if [ "$FAIL_ON_ERROR" = 'true' ]; then
+            echo "::error::Failed to read protection settings for '$BRANCH'."
+            exit 1
+          fi
+          exit 0
         fi
+
+        protection_settings=$(echo "$branch_protection" | jq -c '{
+          required_status_checks: (if .required_status_checks == null then null else {
+            strict: .required_status_checks.strict,
+            contexts: .required_status_checks.contexts,
+            checks: (.required_status_checks.checks // [])
+          } end),
+          enforce_admins: (.enforce_admins.enabled // false),
+          required_pull_request_reviews: (if .required_pull_request_reviews == null then null else {
+            dismiss_stale_reviews: .required_pull_request_reviews.dismiss_stale_reviews,
+            require_code_owner_reviews: .required_pull_request_reviews.require_code_owner_reviews,
+            required_approving_review_count: .required_pull_request_reviews.required_approving_review_count,
+            require_last_push_approval: (.required_pull_request_reviews.require_last_push_approval // false),
+            dismissal_restrictions: (if .required_pull_request_reviews.dismissal_restrictions == null then null else {
+              users: [.required_pull_request_reviews.dismissal_restrictions.users[]?.login],
+              teams: [.required_pull_request_reviews.dismissal_restrictions.teams[]?.slug],
+              apps: [.required_pull_request_reviews.dismissal_restrictions.apps[]?.slug]
+            } end),
+            bypass_pull_request_allowances: (if .required_pull_request_reviews.bypass_pull_request_allowances == null then null else {
+              users: [.required_pull_request_reviews.bypass_pull_request_allowances.users[]?.login],
+              teams: [.required_pull_request_reviews.bypass_pull_request_allowances.teams[]?.slug],
+              apps: [.required_pull_request_reviews.bypass_pull_request_allowances.apps[]?.slug]
+            } end)
+          } end),
+          restrictions: (if .restrictions == null then null else {
+            users: [.restrictions.users[]?.login],
+            teams: [.restrictions.teams[]?.slug],
+            apps: [.restrictions.apps[]?.slug]
+          } end),
+          allow_force_pushes: (.allow_force_pushes.enabled // false),
+          allow_deletions: (.allow_deletions.enabled // false),
+          required_linear_history: (.required_linear_history.enabled // false),
+          lock_branch: (.lock_branch.enabled // false)
+        }')
+        echo "branch-protection-settings=$protection_settings" >> "$GITHUB_OUTPUT"
+
+        if [ "$FAIL_ON_ERROR" = 'true' ]; then
+          gh api --method DELETE "$endpoint"
+        elif ! gh api --method DELETE "$endpoint"; then
+          exit 0
+        fi
+
         echo "🔓 Branch protection removed from '${{ inputs.branch }}'." >> $GITHUB_STEP_SUMMARY
