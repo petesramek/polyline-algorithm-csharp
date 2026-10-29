@@ -51,6 +51,8 @@ body:
 
     [SuppressMessage("Design", "MA0016:Prefer using collection abstraction instead of implementation", Justification = "We need a list as we do need to marshal it as span.")]
 
+    [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "It is guarder using ExceptionGuard.ThrowArgumentNull(nameof(encoder));")]
+
     public static TPolyline Encode<TCoordinate, TPolyline>(this IPolylineEncoder<TCoordinate, TPolyline> encoder, List<TCoordinate> coordinates)
 - h4: Parameters
 - parameters:
@@ -92,12 +94,15 @@ body:
     description: Thrown when <code class="paramref">encoder</code> or <code class="paramref">coordinates</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 - api3: Encode<TCoordinate, TPolyline>(IPolylineEncoder<TCoordinate, TPolyline>, TCoordinate[])
   id: PolylineAlgorithm_Extensions_PolylineEncoderExtensions_Encode__2_PolylineAlgorithm_Abstraction_IPolylineEncoder___0___1____0___
-  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L73
+  src: https://github.com/petesramek/polyline-algorithm-csharp/blob/develop/1.0/src/PolylineAlgorithm/Extensions/PolylineEncoderExtensions.cs#L74
   metadata:
     uid: PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},``0[])
     commentId: M:PolylineAlgorithm.Extensions.PolylineEncoderExtensions.Encode``2(PolylineAlgorithm.Abstraction.IPolylineEncoder{``0,``1},``0[])
 - markdown: Encodes an array of <code class="typeparamref">TCoordinate</code> instances into an encoded polyline.
-- code: public static TPolyline Encode<TCoordinate, TPolyline>(this IPolylineEncoder<TCoordinate, TPolyline> encoder, TCoordinate[] coordinates)
+- code: >-
+    [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "It is guarder using ExceptionGuard.ThrowArgumentNull(nameof(encoder));")]
+
+    public static TPolyline Encode<TCoordinate, TPolyline>(this IPolylineEncoder<TCoordinate, TPolyline> encoder, TCoordinate[] coordinates)
 - h4: Parameters
 - parameters:
   - name: encoder

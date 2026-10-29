@@ -1,4 +1,4 @@
-﻿name: 'Publish documentation'
+name: 'Publish documentation'
 
 on:
   workflow_dispatch:
@@ -51,11 +51,11 @@ jobs:
 
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0 # Ensure the full git history is available for versioning
       - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: ${{ env.dotnet-sdk-version }}
       - name: 'Extract version from branch name'
@@ -72,10 +72,10 @@ jobs:
       friendly-version: ${{ needs.versioning.outputs.friendly-version }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: ${{ env.dotnet-sdk-version }}
 
@@ -95,6 +95,21 @@ jobs:
         shell: bash
         run: |
           cp -r api-reference/guide api-reference/${{ env.friendly-version }}/guide
+
+      - name: 'Download benchmark results'
+        uses: actions/download-artifact@v8
+        with:
+          pattern: benchmark-*
+          path: /tmp/benchmarks
+          merge-multiple: true
+
+      - name: 'Inject benchmark results into guide for v${{ env.friendly-version }}'
+        shell: bash
+        run: |
+          find /tmp/benchmarks -name "*-report-github.md" | sort | xargs -r cat > /tmp/benchmark_results.md
+          awk '/{benchmarks_section}/{while((getline line < "/tmp/benchmark_results.md") > 0) print line; close("/tmp/benchmark_results.md"); next} {print}' \
+            "api-reference/${{ env.friendly-version }}/guide/benchmarks.md" > /tmp/benchmarks.md
+          mv /tmp/benchmarks.md "api-reference/${{ env.friendly-version }}/guide/benchmarks.md"
 
       - name: 'Discover all versions'
         id: discover-versions
@@ -151,15 +166,15 @@ jobs:
           {
             echo "## Released Versions"
             echo ""
-            echo "| Version | Guide | API Reference |"
-            echo "|---------|-------|---------------|"
+            echo "| Version | Guide | API Reference | Release Notes |"
+            echo "|---------|-------|---------------|---------------|"
             for ver in $(echo "${{ steps.discover-versions.outputs.versions }}" | tr ',' '\n' | sort -Vr); do
               if [ "$ver" = "$latest" ]; then
                 label="v${ver} (latest)"
               else
                 label="v${ver}"
               fi
-              echo "| ${label} | [Guide](${ver}/guide/getting-started.html) | [API Reference](${ver}/PolylineAlgorithm.html) |"
+              echo "| ${label} | [Guide](${ver}/guide/getting-started.html) | [API Reference](${ver}/PolylineAlgorithm.html) | [Release Notes](https://github.com/petesramek/polyline-algorithm-csharp/releases/tag/v${ver}) |"
             done
           } > /tmp/versions_section.md
           awk '/{versions_section}/{while((getline line < "/tmp/versions_section.md") > 0) print line; close("/tmp/versions_section.md"); next} {print}' \
@@ -172,7 +187,7 @@ jobs:
         run: docfx build api-reference/api-reference.json
 
       - name: 'Upload artifact'
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           name: github-pages
           path: './api-reference/_docs'

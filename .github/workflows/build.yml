@@ -1,4 +1,4 @@
-﻿name: Build
+name: Build
 
 on:
   workflow_dispatch:
@@ -54,9 +54,9 @@ jobs:
         release-version: ${{ steps.format-version.outputs.release-version }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: 'Setup .NET ${{ env.dotnet-sdk-version }}'
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: ${{ env.dotnet-sdk-version }}
       - name: 'Extract version from branch name'
@@ -102,7 +102,7 @@ jobs:
 
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: 'Format source code'
         uses: ./.github/actions/source/format
@@ -121,7 +121,7 @@ jobs:
 
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: 'Compile source code'
         uses: ./.github/actions/source/compile
@@ -130,7 +130,7 @@ jobs:
           assembly-version: ${{ env.assembly-version }}
           assembly-informational-version: ${{ env.assembly-informational-version }}
           file-version: ${{ env.file-version }}
-          treat-warnins-as-error: ${{ needs.workflow-variables.outputs.is-release }}
+          treat-warnings-as-error: ${{ needs.workflow-variables.outputs.is-release }}
 
   test:
     name: 'Run tests'
@@ -138,10 +138,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: 'Setup .NET'
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: ${{ env.dotnet-sdk-version }}
 
@@ -184,10 +184,10 @@ jobs:
         package-artifact-name: ${{ env.package-artifact-name }}
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: ${{ env.dotnet-sdk-version }}
 
@@ -217,10 +217,10 @@ jobs:
     environment: 'Development'
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: ${{ env.dotnet-sdk-version }}
 
@@ -239,10 +239,11 @@ jobs:
     needs: [versioning, build]
     env:
       friendly-version: ${{ needs.versioning.outputs.friendly-version }}
+    if: ${{ needs.versioning.outputs.friendly-version != '0.0' }}
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout ${{ github.head_ref || github.ref }}'
-        uses: actions/checkout@v6 
+        uses: actions/checkout@v7 
       - name: 'Generate assembly metadata'
         uses: ./.github/actions/documentation/docfx-metadata
         with:
@@ -250,9 +251,23 @@ jobs:
           docfx-json-manifest: './api-reference/assembly-metadata.json'
           temporary-directory: './api-reference/temp'
           output-directory: './api-reference/${{ env.friendly-version }}'
+      - name: 'Unlock branch for assembly metadata push'
+        id: unlock-branch
+        uses: ./.github/actions/github/branch-protection/unlock
+        with:
+          branch: ${{ github.ref_name }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+          fail-on-error: 'true'
       - name: 'Push assembly metadata artifact'
         uses: ./.github/actions/git/push-changes
         with:
           artifact-name: 'assembly-metadata'
           commit-message: 'Updated docs for version ${{ env.friendly-version }}'
           working-directory: './api-reference/${{ env.friendly-version }}'
+      - name: 'Restore branch protection'
+        if: ${{ always() && steps.unlock-branch.outputs.ruleset-ids != '' }}
+        uses: ./.github/actions/github/branch-protection/lock
+        with:
+          branch: ${{ github.ref_name }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+          ruleset-ids: ${{ steps.unlock-branch.outputs.ruleset-ids }}

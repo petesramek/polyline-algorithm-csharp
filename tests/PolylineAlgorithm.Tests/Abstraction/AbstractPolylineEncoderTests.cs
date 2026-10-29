@@ -48,7 +48,7 @@ public sealed class AbstractPolylineEncoderTests {
     public void Constructor_With_Null_Options_Throws_ArgumentNullException() {
         // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(() => new TestStringEncoder(null!));
-        Assert.AreEqual("options", ex.ParamName);
+        Assert.AreEqual("options", ex.ParamName, StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -111,7 +111,7 @@ public sealed class AbstractPolylineEncoderTests {
         string result = encoder.Encode(coordinates.AsSpan());
 
         // Assert
-        Assert.AreEqual(expected, result);
+        Assert.AreEqual(expected, result, StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -147,6 +147,6 @@ public sealed class AbstractPolylineEncoderTests {
         string result = encoder.Encode(coordinates.AsSpan());
 
         // Assert
-        Assert.AreEqual(expected, result);
+        Assert.AreEqual(expected, result, StringComparer.Ordinal);
     }
 }

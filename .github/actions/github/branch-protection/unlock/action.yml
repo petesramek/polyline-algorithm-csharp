@@ -1,29 +1,71 @@
 name: 'Unlock branch'
 author: 'Pete Sramek'
-description: 'Remove branch protection to allow a workflow to push directly. Always re-lock after the operation.'
+description: 'Temporarily exempt a branch from the repository rulesets that apply to it (adds it to each ruleset exclude list) so a workflow can push directly. Always restore afterwards.'
 inputs:
   branch:
     description: 'Branch name to unlock.'
     required: true
   token:
-    description: 'GitHub token with administration:write (repo admin) permission. Use a PAT; GITHUB_TOKEN cannot call the branch protection API.'
+    description: 'GitHub token with administration:write (repo admin) permission. Use a PAT; GITHUB_TOKEN cannot modify rulesets.'
     required: true
   fail-on-error:
-    description: 'When true, the step fails if branch protection cannot be removed. When false (default), errors are silently ignored.'
+    description: 'When true, the step fails if the rulesets cannot be updated. When false (default), errors are ignored.'
     required: false
     default: 'false'
+outputs:
+  ruleset-ids:
+    description: 'Space-separated IDs of the rulesets the branch was excluded from, for restoring them later.'
+    value: ${{ steps.unlock.outputs.ruleset-ids }}
 
 runs:
   using: composite
   steps:
     - name: 'Unlock branch ${{ inputs.branch }}'
+      id: unlock
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.token }}
+        BRANCH: ${{ inputs.branch }}
+        REPOSITORY: ${{ github.repository }}
+        FAIL_ON_ERROR: ${{ inputs.fail-on-error }}
       run: |
-        if [ '${{ inputs.fail-on-error }}' = 'true' ]; then
-          gh api --method DELETE /repos/${{ github.repository }}/branches/${{ inputs.branch }}/protection
-        else
-          gh api --method DELETE /repos/${{ github.repository }}/branches/${{ inputs.branch }}/protection || true
-        fi
-        echo "🔓 Branch protection removed from '${{ inputs.branch }}'." >> $GITHUB_STEP_SUMMARY
+        fail() {
+          if [ "$FAIL_ON_ERROR" = 'true' ]; then
+            echo "::error::$1"
+            exit 1
+          fi
+          exit 0
+        }
+
+        branch_path=$(jq -rn --arg branch "$BRANCH" '$branch | @uri')
+        ref="refs/heads/$BRANCH"
+
+        rules=$(gh api "/repos/$REPOSITORY/rules/branches/$branch_path") \
+          || fail "Failed to read rules applying to '$BRANCH'."
+
+        # Only repository-level rulesets can be edited through the repository endpoint.
+        ids=$(echo "$rules" | jq -r '[.[] | select(.ruleset_source_type == "Repository") | .ruleset_id] | unique | .[]')
+
+        changed=""
+        for id in $ids; do
+          endpoint="/repos/$REPOSITORY/rulesets/$id"
+          ruleset=$(gh api "$endpoint") || fail "Failed to read ruleset $id."
+          payload=$(echo "$ruleset" | jq -c --arg ref "$ref" \
+            '{conditions: (.conditions | .ref_name.exclude = ((.ref_name.exclude // []) + [$ref] | unique))}')
+          if echo "$payload" | gh api --method PUT "$endpoint" --input - > /dev/null; then
+            changed="$changed $id"
+          else
+            echo "::error::Failed to exclude '$BRANCH' from ruleset $id."
+            # Roll back what was already changed so protection is not left weakened.
+            for done_id in $changed; do
+              gh api "/repos/$REPOSITORY/rulesets/$done_id" | jq -c --arg ref "$ref" \
+                '{conditions: (.conditions | .ref_name.exclude -= [$ref])}' \
+                | gh api --method PUT "/repos/$REPOSITORY/rulesets/$done_id" --input - > /dev/null || true
+            done
+            fail "Failed to unlock '$BRANCH'."
+          fi
+        done
+
+        changed=$(echo $changed)
+        echo "ruleset-ids=$changed" >> "$GITHUB_OUTPUT"
+        echo "🔓 Branch '$BRANCH' excluded from rulesets: ${changed:-none}." >> $GITHUB_STEP_SUMMARY

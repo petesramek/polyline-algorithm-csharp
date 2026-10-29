@@ -9,6 +9,13 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
+		<!-- RS0017: Symbol removed from public API — hard error so breaking changes can never be
+		     silently committed. The editorconfig dotnet_diagnostic setting alone is not honoured
+		     by MSBuild for third-party NuGet analyzers; WarningsAsErrors is required. -->
+		<WarningsAsErrors>$(WarningsAsErrors);RS0017</WarningsAsErrors>
+	</PropertyGroup>
+
+	<PropertyGroup>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 	</PropertyGroup>
 
@@ -39,7 +46,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="4.*">
+		<PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="5.*">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
@@ -68,6 +75,11 @@
 			<LastGenOutput>ExceptionMessageResource.Designer.cs</LastGenOutput>
 			<Generator>ResXFileCodeGenerator</Generator>
 		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.SourceLink.GitHub" Version="10.0.403" />
+	  <PackageReference Update="Roslynator.Analyzers" Version="5.0.1" />
 	</ItemGroup>
 
 </Project>

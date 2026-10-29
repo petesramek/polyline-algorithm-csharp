@@ -30,6 +30,7 @@ public static class PolylineDecoderExtensions {
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="decoder"/> or <paramref name="polyline"/> is <see langword="null"/>.
     /// </exception>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "It is guarder using ExceptionGuard.ThrowArgumentNull(nameof(decoder));")]
     public static IEnumerable<TValue> Decode<TValue>(this IPolylineDecoder<string, TValue> decoder, char[] polyline) {
         if (decoder is null) {
             ExceptionGuard.ThrowArgumentNull(nameof(decoder));
@@ -58,6 +59,7 @@ public static class PolylineDecoderExtensions {
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="decoder"/> is <see langword="null"/>.
     /// </exception>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "It is guarder using ExceptionGuard.ThrowArgumentNull(nameof(decoder));")]
     public static IEnumerable<TValue> Decode<TValue>(this IPolylineDecoder<string, TValue> decoder, ReadOnlyMemory<char> polyline) {
         if (decoder is null) {
             ExceptionGuard.ThrowArgumentNull(nameof(decoder));
@@ -83,6 +85,7 @@ public static class PolylineDecoderExtensions {
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="decoder"/> or <paramref name="polyline"/> is <see langword="null"/>.
     /// </exception>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "It is guarder using ExceptionGuard.ThrowArgumentNull(nameof(decoder));")]
     public static IEnumerable<TValue> Decode<TValue>(this IPolylineDecoder<ReadOnlyMemory<char>, TValue> decoder, string polyline) {
         if (decoder is null) {
             ExceptionGuard.ThrowArgumentNull(nameof(decoder));

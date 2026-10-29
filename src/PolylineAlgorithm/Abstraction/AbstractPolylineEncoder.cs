@@ -84,8 +84,6 @@ public abstract class AbstractPolylineEncoder<TCoordinate, TPolyline> : IPolylin
         _logger
             .LogOperationStartedDebug(OperationName);
 
-        Debug.Assert(coordinates.Length >= 0, "Count must be non-negative.");
-
         ValidateEmptyCoordinates(ref coordinates, _logger);
 
         CoordinateDelta delta = new();
