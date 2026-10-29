@@ -205,18 +205,34 @@ jobs:
           fi
           rm -f "$SHIPPED.bak"
 
-      - name: 'Configure git identity'
-        uses: './.github/actions/git/configure-identity'
+      - name: 'Upload updated API files'
+        uses: actions/upload-artifact@v7
+        with:
+          name: updated-api-unshipped
+          path: src/PolylineAlgorithm/PublicAPI.Unshipped.txt
 
-      - name: 'Commit and push updated API files'
-        shell: bash
-        run: |
-          git add src/PolylineAlgorithm/PublicAPI.Unshipped.txt
-          git diff --staged --quiet || (
-            git commit -m "Sync PublicAPI.Unshipped.txt (add new, remove dropped preview APIs)" &&
-            git pull --rebase origin ${{ github.ref_name }} &&
-            git push
-          )
+      - name: 'Unlock branch for API file sync'
+        id: unlock-branch
+        uses: './.github/actions/github/branch-protection/unlock'
+        with:
+          branch: ${{ github.ref_name }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+          fail-on-error: 'true'
+
+      - name: 'Push updated API files'
+        uses: './.github/actions/git/push-changes'
+        with:
+          artifact-name: updated-api-unshipped
+          commit-message: 'Sync PublicAPI.Unshipped.txt (add new, remove dropped preview APIs)'
+          working-directory: src/PolylineAlgorithm
+
+      - name: 'Restore branch protection'
+        if: ${{ always() && steps.unlock-branch.outputs.ruleset-ids != '' }}
+        uses: './.github/actions/github/branch-protection/lock'
+        with:
+          branch: ${{ github.ref_name }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+          ruleset-ids: ${{ steps.unlock-branch.outputs.ruleset-ids }}
 
   promote-api-files:
     name: 'Promote PublicAPI files (Unshipped -> Shipped)'
@@ -466,18 +482,34 @@ jobs:
           ' CHANGELOG.md > /tmp/changelog-new.md
           mv /tmp/changelog-new.md CHANGELOG.md
 
-      - name: 'Configure git identity'
-        uses: './.github/actions/git/configure-identity'
+      - name: 'Upload CHANGELOG.md'
+        uses: actions/upload-artifact@v7
+        with:
+          name: changelog
+          path: CHANGELOG.md
 
-      - name: 'Commit and push CHANGELOG.md'
-        shell: bash
-        run: |
-          git add CHANGELOG.md
-          git diff --staged --quiet || (
-            git commit -m "Update CHANGELOG.md for ${{ env.release-version }}" &&
-            git pull --rebase origin ${{ github.ref_name }} &&
-            git push
-          )
+      - name: 'Unlock branch for CHANGELOG.md update'
+        id: unlock-branch
+        uses: './.github/actions/github/branch-protection/unlock'
+        with:
+          branch: ${{ github.ref_name }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+          fail-on-error: 'true'
+
+      - name: 'Push CHANGELOG.md'
+        uses: './.github/actions/git/push-changes'
+        with:
+          artifact-name: changelog
+          commit-message: 'Update CHANGELOG.md for ${{ env.release-version }}'
+          working-directory: '.'
+
+      - name: 'Restore branch protection'
+        if: ${{ always() && steps.unlock-branch.outputs.ruleset-ids != '' }}
+        uses: './.github/actions/github/branch-protection/lock'
+        with:
+          branch: ${{ github.ref_name }}
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
+          ruleset-ids: ${{ steps.unlock-branch.outputs.ruleset-ids }}
 
       - name: 'Write changelog summary'
         shell: bash
