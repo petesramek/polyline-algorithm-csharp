@@ -56,7 +56,10 @@ runs:
             echo "::error::Invalid branch protection settings supplied for '$BRANCH'."
             exit 1
           fi
-          payload="$PROTECTION_SETTINGS"
+          payload=$(echo "$PROTECTION_SETTINGS" | jq -c '
+            if .required_pull_request_reviews != null
+            then .required_pull_request_reviews |= with_entries(select(.value != null))
+            else . end')
         else
           ENFORCE_ADMINS=true
           if [ '${{ inputs.bypass-admins }}' = 'true' ]; then
