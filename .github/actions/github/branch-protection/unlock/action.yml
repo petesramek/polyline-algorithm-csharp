@@ -43,7 +43,6 @@ runs:
         protection_settings=$(echo "$branch_protection" | jq -c '{
           required_status_checks: (if .required_status_checks == null then null else {
             strict: .required_status_checks.strict,
-            contexts: .required_status_checks.contexts,
             checks: (.required_status_checks.checks // [])
           } end),
           enforce_admins: (.enforce_admins.enabled // false),
