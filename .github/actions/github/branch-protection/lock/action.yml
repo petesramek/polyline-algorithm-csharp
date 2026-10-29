@@ -1,41 +1,16 @@
 name: 'Lock branch'
 author: 'Pete Sramek'
-description: 'Apply branch protection to prevent direct pushes. Requires PRs with configurable approval count; admins can optionally bypass all restrictions.'
+description: 'Restore ruleset protection for a branch previously unlocked by the unlock action (removes it from each ruleset exclude list).'
 inputs:
   branch:
     description: 'Branch name to lock.'
     required: true
   token:
-    description: 'GitHub token with administration:write (repo admin) permission. Use a PAT; GITHUB_TOKEN cannot call the branch protection API.'
+    description: 'GitHub token with administration:write (repo admin) permission. Use a PAT; GITHUB_TOKEN cannot modify rulesets.'
     required: true
-  lock-branch:
-    description: 'When true, sets lock_branch to prevent even PR merges (use during automated operations). When false (default), only direct pushes are blocked; PRs can still be merged.'
-    required: false
-    default: 'false'
-  required-approving-review-count:
-    description: 'Number of approving reviews required before a PR can be merged. Set to 0 to require PRs without requiring approvals.'
-    required: false
-    default: '1'
-  dismiss-stale-reviews:
-    description: 'When true, approved reviews are dismissed when new commits are pushed to the branch.'
-    required: false
-    default: 'true'
-  bypass-admins:
-    description: 'When true, repository admins are exempt from all branch protection rules (enforce_admins is disabled). When false (default), admins are also subject to the rules.'
-    required: false
-    default: 'false'
-  skip-pull-request-reviews:
-    description: 'When true, sets required_pull_request_reviews to null (removes PR review requirement). Use temporarily before automated merges so the merge API is not blocked. When false (default), PR reviews are required as configured.'
-    required: false
-    default: 'false'
-  required-linear-history:
-    description: 'When true, enforces linear history (no merge commits). When false (default), merge commits are allowed. Set to false before automated merges that create merge commits.'
-    required: false
-    default: 'false'
-  protection-settings:
-    description: 'Original branch protection settings to restore, as compact JSON. When supplied, the other protection options are ignored.'
-    required: false
-    default: ''
+  ruleset-ids:
+    description: 'Space-separated ruleset IDs, as output by the unlock action.'
+    required: true
 
 runs:
   using: composite
@@ -46,51 +21,18 @@ runs:
         GH_TOKEN: ${{ inputs.token }}
         BRANCH: ${{ inputs.branch }}
         REPOSITORY: ${{ github.repository }}
-        PROTECTION_SETTINGS: ${{ inputs.protection-settings }}
+        RULESET_IDS: ${{ inputs.ruleset-ids }}
       run: |
-        branch_path=$(jq -rn --arg branch "$BRANCH" '$branch | @uri')
-        endpoint="/repos/$REPOSITORY/branches/$branch_path/protection"
-
-        if [ -n "$PROTECTION_SETTINGS" ]; then
-          if ! echo "$PROTECTION_SETTINGS" | jq -e 'type == "object"' > /dev/null; then
-            echo "::error::Invalid branch protection settings supplied for '$BRANCH'."
-            exit 1
+        ref="refs/heads/$BRANCH"
+        failed=0
+        for id in $RULESET_IDS; do
+          endpoint="/repos/$REPOSITORY/rulesets/$id"
+          if ! gh api "$endpoint" \
+            | jq -c --arg ref "$ref" '{conditions: (.conditions | .ref_name.exclude -= [$ref])}' \
+            | gh api --method PUT "$endpoint" --input - > /dev/null; then
+            echo "::error::Failed to restore ruleset $id for '$BRANCH'."
+            failed=1
           fi
-          payload=$(echo "$PROTECTION_SETTINGS" | jq -c '
-            if .required_pull_request_reviews != null
-            then .required_pull_request_reviews |= with_entries(select(.value != null))
-            else . end')
-        else
-          ENFORCE_ADMINS=true
-          if [ '${{ inputs.bypass-admins }}' = 'true' ]; then
-            ENFORCE_ADMINS=false
-          fi
-
-          payload=$(jq -n \
-            --argjson review_count '${{ inputs.required-approving-review-count }}' \
-            --argjson dismiss_stale '${{ inputs.dismiss-stale-reviews }}' \
-            --argjson enforce_admins "$ENFORCE_ADMINS" \
-            --argjson lock_branch '${{ inputs.lock-branch }}' \
-            --argjson skip_reviews '${{ inputs.skip-pull-request-reviews }}' \
-            --argjson required_linear_history '${{ inputs.required-linear-history }}' \
-            '{
-              "required_status_checks": null,
-              "enforce_admins": $enforce_admins,
-              "required_pull_request_reviews": (if $skip_reviews then null else {
-                "dismiss_stale_reviews": $dismiss_stale,
-                "require_code_owner_reviews": false,
-                "required_approving_review_count": $review_count
-              } end),
-              "restrictions": null,
-              "allow_force_pushes": false,
-              "allow_deletions": false,
-              "lock_branch": $lock_branch,
-              "required_linear_history": $required_linear_history
-            }')
-        fi
-
-        if ! echo "$payload" | gh api --method PUT "$endpoint" --input -; then
-          echo "::error::Failed to apply branch protection to '${{ inputs.branch }}'. Ensure the token has 'administration: write' permission and the branch exists."
-          exit 1
-        fi
-        echo "🔒 Branch '${{ inputs.branch }}' is now protected." >> $GITHUB_STEP_SUMMARY
+        done
+        [ "$failed" = 0 ] || exit 1
+        echo "🔒 Branch '$BRANCH' is protected again." >> $GITHUB_STEP_SUMMARY

@@ -55,28 +55,30 @@ All reusable GitHub Actions live under `.github/actions/`. They are referenced w
 ## github/branch-protection/lock
 
 **Path:** `.github/actions/github/branch-protection/lock`  
-**Description:** Applies branch protection rules to a branch via the GitHub API: requires at least one PR approval, disables force pushes and deletions.
+**Description:** Restores ruleset protection for a branch by removing it from the exclude list of the repository rulesets listed in `ruleset-ids` (output of `unlock`).
 
 | Input | Required | Description |
 |---|---|---|
-| `branch` | ✅ | Branch name to protect |
+| `branch` | ✅ | Branch name to re-protect |
+| `token` | ✅ | Admin PAT (`administration: write`) |
+| `ruleset-ids` | ✅ | Space-separated ruleset IDs from `unlock` |
 
-**Requires:** `administration: write` permission on the workflow token.  
-**Used by:** `promote-branch` workflow (after creating a new `preview/**` or `release/**` branch).
+**Used by:** `release` and `backtrack` workflows.
 
 ---
 
 ## github/branch-protection/unlock
 
 **Path:** `.github/actions/github/branch-protection/unlock`  
-**Description:** Removes all branch protection rules from a branch so a workflow can push directly to it. Always re-lock immediately after.
+**Description:** Temporarily excludes a branch from every repository ruleset that applies to it (via `GET /rules/branches/{branch}`), so a workflow can push directly. Outputs `ruleset-ids`; always restore with `lock` afterwards.
 
 | Input | Required | Description |
 |---|---|---|
 | `branch` | ✅ | Branch name to unprotect |
+| `token` | ✅ | Admin PAT (`administration: write`) |
+| `fail-on-error` | ❌ | Fail the step on errors (default `false`) |
 
-**Requires:** `administration: write` permission on the workflow token.  
-**Used by:** Workflows that need to push commits directly to protected branches (e.g., `bump-version`).
+**Used by:** `release` (API file promotion) and `backtrack` workflows.
 
 ---
 
