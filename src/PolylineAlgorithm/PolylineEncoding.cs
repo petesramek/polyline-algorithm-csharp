@@ -330,53 +330,38 @@ public static class PolylineEncoding {
     private const ushort End = (Defaults.Algorithm.QuestionMark + Defaults.Algorithm.Space);
 
     /// <summary>
-    /// Validates a single encoded polyline segment for both character correctness and encoded-value block structure.
+    /// Validates that an encoded polyline segment is structurally well-formed.
     /// </summary>
     /// <remarks>
-    /// <para>
-    /// The method performs two validations in a single linear pass over <paramref name="polyline"/>:
-    /// </para>
+    /// This method performs a single pass over <paramref name="polyline"/> and validates:
     /// <list type="number">
     ///   <item>
     ///     <description>
-    ///       <b>Character range:</b> every character must be within the allowed ASCII range for the polyline algorithm
-    ///       (from '?' (63) up to '_' (95), inclusive). If a character outside this range is encountered, an exception is raised
-    ///       (see <see cref="ExceptionGuard.ThrowInvalidPolylineCharacter(char,int)"/>).
+    ///       <b>Character range:</b> each character must be in the inclusive algorithm range
+    ///       from <c>'?'</c> (63) to <c>'_'</c> (95). Invalid characters are reported with
+    ///       <see cref="ExceptionGuard.ThrowInvalidPolylineCharacter(char, int)"/>.
     ///     </description>
     ///   </item>
     ///   <item>
     ///     <description>
-    ///       <b>Block structure:</b> each encoded value is composed of one or more 5-bit chunks and must end with a terminator
-    ///       (a character with value less than <see cref="End"/>). Blocks may not exceed the configured maximum length
-    ///       (<see cref="Defaults.Polyline.Block.Length.Max"/>); violations raise
-    ///       <see cref="ExceptionGuard.ThrowPolylineBlockTooLong(int)"/>. The method also ensures the entire polyline ends with
-    ///       a valid block terminator (<see cref="ExceptionGuard.ThrowInvalidPolylineBlockTerminator"/>).
+    ///       <b>Value block termination:</b> each encoded value block must end with a character
+    ///       whose code is less than <see cref="End"/>. A block longer than
+    ///       <see cref="Defaults.Polyline.Block.Length.Max"/> is reported with
+    ///       <see cref="ExceptionGuard.ThrowPolylineBlockTooLong(int)"/>, and a missing final block
+    ///       terminator is reported with <see cref="ExceptionGuard.ThrowInvalidPolylineBlockTerminator()"/>.
     ///     </description>
     ///   </item>
     /// </list>
-    /// <para>
-    /// Implementation notes:
-    /// <list type="bullet">
-    ///   <item><description>Time: O(n) where n is the number of characters in <paramref name="polyline"/>.</description></item>
-    ///   <item><description>Memory: O(1) additional allocations (scalar single-pass validation).</description></item>
-    ///   <item><description>For character-only validation that may benefit from SIMD/vectorization, use <see cref="ValidateCharRange(ReadOnlySpan{char})"/>.</description></item>
-    ///   <item><description>The method reports specific errors through the <see cref="ExceptionGuard"/> helpers:
-    ///     <see cref="ExceptionGuard.ThrowInvalidPolylineCharacter(char,int)"/>,
-    ///     <see cref="ExceptionGuard.ThrowPolylineBlockTooLong(int)"/>, and
-    ///     <see cref="ExceptionGuard.ThrowInvalidPolylineBlockTerminator()"/>.</description></item>
-    /// </list>
-    /// </para>
+    /// Complexity: O(n) time and O(1) additional memory.
     /// </remarks>
-    /// <param name="polyline">A span containing the encoded polyline segment to validate.</param>
+    /// <param name="polyline">Encoded polyline text to validate.</param>
     /// <exception cref="ArgumentException">
-    /// Thrown when the polyline contains an invalid character, a block exceeds the maximum allowed length, or the polyline
-    /// does not end with a valid block terminator. Concrete exceptions are raised via <see cref="ExceptionGuard"/>.
+    /// Thrown when the input contains an invalid character, contains a block longer than allowed,
+    /// or does not end with a valid block terminator (including empty input).
     /// </exception>
-    /// <returns>Nothing. The method completes successfully if validation passes; otherwise it throws via <see cref="ExceptionGuard"/>.</returns>
     /// <example>
     /// <code language="csharp">
-    /// // Validates an encoded segment and throws if malformed:
-    /// PolylineEncoding.ValidateFormat(somePolylineSpan);
+    /// PolylineEncoding.ValidateFormat(encodedPolyline);
     /// </code>
     /// </example>
     public static void ValidateFormat(ReadOnlySpan<char> polyline) {

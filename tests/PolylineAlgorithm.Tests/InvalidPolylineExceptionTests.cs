@@ -38,7 +38,7 @@ public sealed class InvalidPolylineExceptionTests {
         InvalidPolylineException ex = new(message, inner);
 
         // Assert
-        Assert.AreEqual(message, ex.Message);
+        Assert.AreEqual(message, ex.Message, StringComparer.Ordinal);
         Assert.AreSame(inner, ex.InnerException);
     }
 }

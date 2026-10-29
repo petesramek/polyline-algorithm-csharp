@@ -23,7 +23,7 @@ public sealed class ExceptionGuardTests {
 
         // Act & Assert
         var ex = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ExceptionGuard.ThrowNotFiniteNumber(paramName));
-        Assert.AreEqual(paramName, ex.ParamName);
+        Assert.AreEqual(paramName, ex.ParamName, StringComparer.Ordinal);
         Assert.IsNotNull(ex.Message);
     }
 
@@ -37,7 +37,7 @@ public sealed class ExceptionGuardTests {
 
         // Act & Assert
         var ex = Assert.ThrowsExactly<ArgumentNullException>(() => ExceptionGuard.ThrowArgumentNull(paramName));
-        Assert.AreEqual(paramName, ex.ParamName);
+        Assert.AreEqual(paramName, ex.ParamName, StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ public sealed class ExceptionGuardTests {
 
         // Act & Assert
         var ex = Assert.ThrowsExactly<OverflowException>(() => ExceptionGuard.ThrowBufferOverflow(message));
-        Assert.AreEqual(message, ex.Message);
+        Assert.AreEqual(message, ex.Message, StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -66,7 +66,7 @@ public sealed class ExceptionGuardTests {
 
         // Act & Assert
         var ex = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ExceptionGuard.ThrowCoordinateValueOutOfRange(value, min, max, paramName));
-        Assert.AreEqual(paramName, ex.ParamName);
+        Assert.AreEqual(paramName, ex.ParamName, StringComparer.Ordinal);
         Assert.IsNotNull(ex.Message);
     }
 
@@ -81,7 +81,7 @@ public sealed class ExceptionGuardTests {
 
         // Act & Assert
         var ex = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ExceptionGuard.StackAllocLimitMustBeEqualOrGreaterThan(minValue, paramName));
-        Assert.AreEqual(paramName, ex.ParamName);
+        Assert.AreEqual(paramName, ex.ParamName, StringComparer.Ordinal);
         Assert.IsNotNull(ex.Message);
     }
 
@@ -95,7 +95,7 @@ public sealed class ExceptionGuardTests {
 
         // Act & Assert
         var ex = Assert.ThrowsExactly<ArgumentException>(() => ExceptionGuard.ThrowArgumentCannotBeEmptyEnumerationMessage(paramName));
-        Assert.AreEqual(paramName, ex.ParamName);
+        Assert.AreEqual(paramName, ex.ParamName, StringComparer.Ordinal);
         Assert.IsNotNull(ex.Message);
     }
 
@@ -121,7 +121,7 @@ public sealed class ExceptionGuardTests {
 
         // Act & Assert
         var ex = Assert.ThrowsExactly<ArgumentException>(() => ExceptionGuard.ThrowDestinationArrayLengthMustBeEqualOrGreaterThanPolylineLength(destinationLength, polylineLength, paramName));
-        Assert.AreEqual(paramName, ex.ParamName);
+        Assert.AreEqual(paramName, ex.ParamName, StringComparer.Ordinal);
         Assert.IsNotNull(ex.Message);
     }
 

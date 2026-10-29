@@ -199,7 +199,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => builder.WithStackAllocLimit(0));
 
         // Assert
-        Assert.AreEqual("stackAllocLimit", exception.ParamName);
+        Assert.AreEqual("stackAllocLimit", exception.ParamName, StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -214,7 +214,7 @@ public sealed class PolylineEncodingOptionsBuilderTests {
         var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => builder.WithStackAllocLimit(-10));
 
         // Assert
-        Assert.AreEqual("stackAllocLimit", exception.ParamName);
+        Assert.AreEqual("stackAllocLimit", exception.ParamName, StringComparer.Ordinal);
     }
 
     /// <summary>

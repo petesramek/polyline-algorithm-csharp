@@ -40,7 +40,7 @@ public sealed class PolylineDecoderExtensionsTests {
         // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
             () => decoder!.Decode(polyline).ToList());
-        Assert.AreEqual("decoder", ex.ParamName);
+        Assert.AreEqual("decoder", ex.ParamName, StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public sealed class PolylineDecoderExtensionsTests {
         // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
             () => decoder.Decode(polyline!).ToList());
-        Assert.AreEqual("polyline", ex.ParamName);
+        Assert.AreEqual("polyline", ex.ParamName, StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -93,7 +93,7 @@ public sealed class PolylineDecoderExtensionsTests {
         // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
             () => decoder!.Decode(polyline).ToList());
-        Assert.AreEqual("decoder", ex.ParamName);
+        Assert.AreEqual("decoder", ex.ParamName, StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -131,7 +131,7 @@ public sealed class PolylineDecoderExtensionsTests {
         // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
             () => PolylineDecoderExtensions.Decode<(double, double)>(decoder!, polyline).ToList());
-        Assert.AreEqual("decoder", ex.ParamName);
+        Assert.AreEqual("decoder", ex.ParamName, StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -146,7 +146,7 @@ public sealed class PolylineDecoderExtensionsTests {
         // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(
             () => decoder.Decode(polyline!).ToList());
-        Assert.AreEqual("polyline", ex.ParamName);
+        Assert.AreEqual("polyline", ex.ParamName, StringComparer.Ordinal);
     }
 
     /// <summary>
