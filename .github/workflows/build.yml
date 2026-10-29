@@ -6,6 +6,8 @@ on:
     branches-ignore:
       - 'preview/**'
       - 'release/**'
+    paths:
+      - 'src/**'
 
 permissions:
   actions: read
