@@ -299,7 +299,7 @@ runs:
   using: composite
   steps:
     - name: 'Checkout ${{ github.head_ref || github.ref }}'
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
     - name: 'My step'
       id: my-step
       shell: bash
