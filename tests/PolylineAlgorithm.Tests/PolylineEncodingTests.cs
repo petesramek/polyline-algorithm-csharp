@@ -344,7 +344,7 @@ public sealed class PolylineEncodingTests {
         // Assert
         Assert.IsTrue(result);
         Assert.AreEqual(5, position);
-        Assert.AreEqual("_p~iF", new string(buffer[..5]));
+        Assert.AreEqual("_p~iF", new string(buffer[..5]), StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -362,7 +362,7 @@ public sealed class PolylineEncodingTests {
         // Assert
         Assert.IsTrue(result);
         Assert.AreEqual(5, position);
-        Assert.AreEqual("~ps|U", new string(buffer[..5]));
+        Assert.AreEqual("~ps|U", new string(buffer[..5]), StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -381,7 +381,7 @@ public sealed class PolylineEncodingTests {
         // Assert
         Assert.IsTrue(first);
         Assert.IsTrue(second);
-        Assert.AreEqual("_p~iF~ps|U", new string(buffer[..10]));
+        Assert.AreEqual("_p~iF~ps|U", new string(buffer[..10]), StringComparer.Ordinal);
     }
 
     /// <summary>

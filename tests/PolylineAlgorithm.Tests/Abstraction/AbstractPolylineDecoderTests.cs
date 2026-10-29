@@ -38,7 +38,7 @@ public sealed class AbstractPolylineDecoderTests {
 
         // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(() => decoder.Decode((string?)null!).ToList());
-        Assert.AreEqual("polyline", ex.ParamName);
+        Assert.AreEqual("polyline", ex.ParamName, StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -94,7 +94,7 @@ public sealed class AbstractPolylineDecoderTests {
     public void Constructor_With_Null_Options_Throws_ArgumentNullException() {
         // Act & Assert
         ArgumentNullException ex = Assert.ThrowsExactly<ArgumentNullException>(() => new TestStringDecoderWithOptions(null!));
-        Assert.AreEqual("options", ex.ParamName);
+        Assert.AreEqual("options", ex.ParamName, StringComparer.Ordinal);
     }
 
     /// <summary>
